@@ -62,11 +62,11 @@ interface Deal {
 }
 
 const activityTypes = [
-  { value: 'call', label: 'Call', icon: 'phone' },
+  { value: 'call', label: 'Llamada', icon: 'phone' },
   { value: 'email', label: 'Email', icon: 'mail' },
-  { value: 'meeting', label: 'Meeting', icon: 'groups' },
-  { value: 'note', label: 'Note', icon: 'sticky_note_2' },
-  { value: 'task', label: 'Task', icon: 'task_alt' },
+  { value: 'meeting', label: 'Reunión', icon: 'groups' },
+  { value: 'note', label: 'Nota', icon: 'sticky_note_2' },
+  { value: 'task', label: 'Tarea', icon: 'task_alt' },
 ];
 
 const activityIcons: Record<string, string> = {
@@ -100,12 +100,12 @@ function relativeTime(dateStr: string): string {
   const then = new Date(dateStr).getTime();
   const diff = now - then;
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
+  if (days < 7) return `hace ${days} d`;
   return new Date(dateStr).toLocaleDateString();
 }
 
@@ -220,7 +220,7 @@ export default function CrmContactDetailPage() {
   }
 
   async function deleteContact() {
-    if (!confirm('Are you sure you want to delete this contact?')) return;
+    if (!confirm('¿Seguro que quieres eliminar este contacto?')) return;
     await fetch(`/api/portal/crm/contacts/${contactId}`, { method: 'DELETE' });
     router.push('/portal/crm/contacts');
   }
@@ -300,13 +300,13 @@ export default function CrmContactDetailPage() {
     const d = await res.json();
     setEmailSending(false);
     if (d.success) {
-      setEmailSuccess('Email sent successfully.');
+      setEmailSuccess('Email enviado correctamente.');
       setEmailForm({ subject: '', body: '' });
       setShowEmailForm(false);
       fetchActivities();
       setTimeout(() => setEmailSuccess(''), 3000);
     } else {
-      setEmailError(d.message ?? 'Failed to send email.');
+      setEmailError(d.message ?? 'No se pudo enviar el email.');
     }
   }
 
@@ -322,9 +322,9 @@ export default function CrmContactDetailPage() {
     return (
       <div className="text-center py-20">
         <span className="material-icons text-4xl text-muted-foreground">person_off</span>
-        <p className="mt-2 text-muted-foreground">Contact not found.</p>
+        <p className="mt-2 text-muted-foreground">Contacto no encontrado.</p>
         <Link href="/portal/crm/contacts" className="text-primary text-sm hover:underline mt-2 inline-block">
-          Back to contacts
+          Volver a contactos
         </Link>
       </div>
     );
@@ -335,7 +335,7 @@ export default function CrmContactDetailPage() {
       {/* Back link */}
       <Link href="/portal/crm/contacts" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-1">
         <span className="material-icons text-base">arrow_back</span>
-        Contacts
+        Contactos
       </Link>
 
       {/* Page Header */}
@@ -361,7 +361,7 @@ export default function CrmContactDetailPage() {
           contact.title || contact.companyName ? (
             <>
               {contact.title}
-              {contact.title && contact.companyName ? ' at ' : contact.companyName ? 'at ' : ''}
+              {contact.title && contact.companyName ? ' en ' : contact.companyName ? 'en ' : ''}
               {contact.companyName && (
                 contact.companyId ? (
                   <Link href={`/portal/crm/companies/${contact.companyId}`} className="text-primary hover:underline">
@@ -379,13 +379,13 @@ export default function CrmContactDetailPage() {
             {!editing && contact.email && (
               <button onClick={() => setShowEmailForm(true)} className={pBtnPrimary}>
                 <span className="material-icons text-base">mail</span>
-                Send Email
+                Enviar email
               </button>
             )}
             {!editing && (
               <button onClick={startEditing} className={pBtnGhost}>
                 <span className="material-icons text-base">edit</span>
-                Edit
+                Editar
               </button>
             )}
             <button
@@ -393,7 +393,7 @@ export default function CrmContactDetailPage() {
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-destructive transition hover:border-destructive/40 hover:shadow-sm"
             >
               <span className="material-icons text-base">delete</span>
-              Delete
+              Eliminar
             </button>
           </div>
         }
@@ -402,7 +402,7 @@ export default function CrmContactDetailPage() {
       {/* Status + score chips */}
       <div className="flex items-center gap-2 -mt-3">
         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[contact.status] ?? 'bg-gray-100 text-gray-700'}`}>
-          {contact.status}
+          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Lead', customer: 'Cliente' })[contact.status] ?? contact.status}
         </span>
         {contact.score > 0 && (
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1 ${
@@ -440,7 +440,7 @@ export default function CrmContactDetailPage() {
             }`}
           >
             <span className="material-icons text-base">handshake</span>
-            Deals ({deals.length})
+            Negocios ({deals.length})
           </button>
           <button
             onClick={() => setActiveTab('custom-fields')}
@@ -451,7 +451,7 @@ export default function CrmContactDetailPage() {
             }`}
           >
             <span className="material-icons text-base">tune</span>
-            Custom Fields
+            Campos personalizados
           </button>
         </div>
 
@@ -461,10 +461,10 @@ export default function CrmContactDetailPage() {
         {/* Edit form */}
         {editing && (
         <form onSubmit={saveEdit} className={`${pCard} p-6 space-y-4`}>
-          <h2 className={pSectionTitle}>Edit Contact</h2>
+          <h2 className={pSectionTitle}>Editar contacto</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">First Name</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre</label>
               <input
                 required
                 value={editForm.firstName}
@@ -473,7 +473,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Last Name</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Apellidos</label>
               <input
                 required
                 value={editForm.lastName}
@@ -499,7 +499,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">LinkedIn URL</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">URL de LinkedIn</label>
               <input
                 type="url"
                 value={editForm.linkedinUrl}
@@ -509,7 +509,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Cargo</label>
               <input
                 value={editForm.title}
                 onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))}
@@ -525,7 +525,7 @@ export default function CrmContactDetailPage() {
                   setEditForm(f => ({ ...f, companyId: opt ? String(opt.id) : '' }));
                   setEditCompanyLabel(opt ? opt.name : null);
                 }}
-                placeholder="Select company…"
+                placeholder="Seleccionar empresa…"
               />
             </div>
             <div>
@@ -536,9 +536,9 @@ export default function CrmContactDetailPage() {
                 className={pSelect}
               >
                 <option value="lead">Lead</option>
-                <option value="active">Active</option>
-                <option value="customer">Customer</option>
-                <option value="inactive">Inactive</option>
+                <option value="active">Activo</option>
+                <option value="customer">Cliente</option>
+                <option value="inactive">Inactivo</option>
               </select>
             </div>
             <div>
@@ -548,9 +548,9 @@ export default function CrmContactDetailPage() {
                 onChange={e => setEditForm(f => ({ ...f, source: e.target.value }))}
                 className={pSelect}
               >
-                <option value="">None</option>
+                <option value="">Ninguno</option>
                 {['web', 'referral', 'cold-call', 'event', 'social', 'other'].map(s => (
-                  <option key={s} value={s}>{s.replace('-', ' ')}</option>
+                  <option key={s} value={s}>{({ web: 'Web', referral: 'Referido', 'cold-call': 'Llamada en frío', event: 'Evento', social: 'Redes sociales', other: 'Otro' })[s] ?? s.replace('-', ' ')}</option>
                 ))}
               </select>
             </div>
@@ -573,11 +573,11 @@ export default function CrmContactDetailPage() {
           </div>
           <div className="flex gap-2 justify-end">
             <button type="button" onClick={cancelEdit} className={pBtnGhost}>
-              Cancel
+              Cancelar
             </button>
             <button type="submit" disabled={saving} className={pBtnPrimary}>
               {saving && <span className="material-icons animate-spin text-sm">refresh</span>}
-              Save Changes
+              Guardar cambios
             </button>
           </div>
         </form>
@@ -595,7 +595,7 @@ export default function CrmContactDetailPage() {
       {showEmailForm && (
         <form onSubmit={sendEmail} className={`${pCard} p-6 space-y-4`}>
           <div className="flex items-center justify-between">
-            <h2 className={pSectionTitle}>Send Email to {contact.email}</h2>
+            <h2 className={pSectionTitle}>Enviar email a {contact.email}</h2>
             <button type="button" onClick={() => setShowEmailForm(false)} className="text-muted-foreground hover:text-foreground">
               <span className="material-icons text-base">close</span>
             </button>
@@ -607,7 +607,7 @@ export default function CrmContactDetailPage() {
             </div>
           )}
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Subject</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Asunto</label>
             <input
               required
               value={emailForm.subject}
@@ -616,7 +616,7 @@ export default function CrmContactDetailPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Body</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Cuerpo</label>
             <textarea
               required
               value={emailForm.body}
@@ -640,7 +640,7 @@ export default function CrmContactDetailPage() {
             >
               {emailSending && <span className="material-icons animate-spin text-sm">refresh</span>}
               <span className="material-icons text-sm">send</span>
-              Send Email
+              Enviar email
             </button>
           </div>
         </form>
@@ -653,15 +653,15 @@ export default function CrmContactDetailPage() {
         <div className="space-y-6">
           {/* Contact Info */}
           <div className={`${pCard} p-6 space-y-4`}>
-            <h2 className={pSectionTitle}>Contact Information</h2>
+            <h2 className={pSectionTitle}>Información del contacto</h2>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">mail</span>
-                <span className="text-sm text-foreground">{contact.email ?? 'No email'}</span>
+                <span className="text-sm text-foreground">{contact.email ?? 'Sin email'}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">phone</span>
-                <span className="text-sm text-foreground">{contact.phone ?? 'No phone'}</span>
+                <span className="text-sm text-foreground">{contact.phone ?? 'Sin teléfono'}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">link</span>
@@ -670,30 +670,30 @@ export default function CrmContactDetailPage() {
                     {contact.linkedinUrl.replace(/^https?:\/\/(www\.)?/i, '')}
                   </a>
                 ) : (
-                  <span className="text-sm text-foreground">No LinkedIn</span>
+                  <span className="text-sm text-foreground">Sin LinkedIn</span>
                 )}
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">location_on</span>
-                <span className="text-sm text-foreground">{contact.address ?? 'No address'}</span>
+                <span className="text-sm text-foreground">{contact.address ?? 'Sin dirección'}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">source</span>
-                <span className="text-sm text-foreground capitalize">{contact.source ?? 'Unknown source'}</span>
+                <span className="text-sm text-foreground capitalize">{contact.source ?? 'Origen desconocido'}</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-base text-muted-foreground">calendar_today</span>
-                <span className="text-sm text-muted-foreground">Added {new Date(contact.createdAt).toLocaleDateString()}</span>
+                <span className="text-sm text-muted-foreground">Añadido {new Date(contact.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
           </div>
 
           {/* Tags */}
           <div className={`${pCard} p-6 space-y-3`}>
-            <h2 className={pSectionTitle}>Tags</h2>
+            <h2 className={pSectionTitle}>Etiquetas</h2>
             <div className="flex flex-wrap gap-2">
               {(contact.tags ?? []).length === 0 && (
-                <p className="text-sm text-muted-foreground">No tags yet.</p>
+                <p className="text-sm text-muted-foreground">Aún no hay etiquetas.</p>
               )}
               {(contact.tags ?? []).map(tag => (
                 <span
@@ -712,7 +712,7 @@ export default function CrmContactDetailPage() {
               <input
                 value={newTag}
                 onChange={e => setNewTag(e.target.value)}
-                placeholder="Add tag..."
+                placeholder="Añadir etiqueta..."
                 onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
                 className={`${pInput} py-1.5`}
               />
@@ -721,7 +721,7 @@ export default function CrmContactDetailPage() {
                 disabled={!newTag.trim()}
                 className={`${pBtnPrimary} py-1.5 px-3`}
               >
-                Add
+                Añadir
               </button>
             </div>
           </div>
@@ -731,7 +731,7 @@ export default function CrmContactDetailPage() {
         <div className="space-y-6">
           {/* Log Activity Form */}
           <div className={`${pCard} p-6 space-y-4`}>
-            <h2 className={pSectionTitle}>Log Activity</h2>
+            <h2 className={pSectionTitle}>Registrar actividad</h2>
             <form onSubmit={logActivity} className="space-y-3">
               <div className="flex gap-2">
                 {activityTypes.map(t => (
@@ -754,13 +754,13 @@ export default function CrmContactDetailPage() {
                 required
                 value={activityForm.title}
                 onChange={e => setActivityForm(f => ({ ...f, title: e.target.value }))}
-                placeholder="Activity title..."
+                placeholder="Título de la actividad..."
                 className={pInput}
               />
               <textarea
                 value={activityForm.description}
                 onChange={e => setActivityForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Description (optional)..."
+                placeholder="Descripción (opcional)..."
                 rows={2}
                 className={`${pInput} resize-none`}
               />
@@ -770,16 +770,16 @@ export default function CrmContactDetailPage() {
                 className={pBtnPrimary}
               >
                 {activitySaving && <span className="material-icons animate-spin text-sm">refresh</span>}
-                Log Activity
+                Registrar actividad
               </button>
             </form>
           </div>
 
           {/* Activity Timeline */}
           <div className={`${pCard} p-6 space-y-4`}>
-            <h2 className={pSectionTitle}>Activity Timeline</h2>
+            <h2 className={pSectionTitle}>Cronología de actividad</h2>
             {activities.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No activities logged yet.</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">Aún no hay actividades registradas.</p>
             ) : (
               <div className="space-y-1">
                 {activities.map((a, i) => (
@@ -815,17 +815,17 @@ export default function CrmContactDetailPage() {
         {activeTab === 'deals' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className={pSectionTitle}>Deals</h2>
+              <h2 className={pSectionTitle}>Negocios</h2>
               <div className="flex items-center gap-3">
-                <Link href="/portal/crm/deals" className="text-xs text-primary hover:underline">View pipeline</Link>
-                <button onClick={() => setShowDealForm(true)} className={pBtnPrimary}><span className="material-icons text-base">add</span>Add Deal</button>
+                <Link href="/portal/crm/deals" className="text-xs text-primary hover:underline">Ver pipeline</Link>
+                <button onClick={() => setShowDealForm(true)} className={pBtnPrimary}><span className="material-icons text-base">add</span>Añadir negocio</button>
               </div>
             </div>
             {showDealForm && (
               <CrmAddDealModal contactId={Number(contactId)} companyId={contact.companyId ?? undefined} onClose={() => setShowDealForm(false)} onCreated={() => { setShowDealForm(false); fetchContact(); }} />
             )}
             {deals.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No deals associated with this contact.</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">No hay negocios asociados a este contacto.</p>
             ) : (
               <div className="divide-y divide-border">
                 {deals.map(d => (
@@ -837,7 +837,7 @@ export default function CrmContactDetailPage() {
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-semibold text-foreground">{formatMoney(d.value)}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${dealStatusColor[d.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                        {d.status}
+                        {({ open: 'Abierto', won: 'Ganado', lost: 'Perdido' })[d.status] ?? d.status}
                       </span>
                     </div>
                   </div>
