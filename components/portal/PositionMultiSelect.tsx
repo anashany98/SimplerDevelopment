@@ -91,7 +91,7 @@ export default function PositionMultiSelect({
                 removeValue(s);
               }}
               className="flex items-center hover:text-primary/70"
-              aria-label={`Remove ${s}`}
+              aria-label={`Eliminar ${s}`}
             >
               <span className="material-icons text-sm">close</span>
             </button>
