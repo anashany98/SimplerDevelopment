@@ -45,7 +45,7 @@ describe('GET /api/portal/workflows/templates @workflows @templates', () => {
     expect(res.status).toBe(401);
   });
 
-  it('returns the 5 seed templates with the slim shape', async () => {
+  it('returns the 7 seed templates with the slim shape', async () => {
     mockedAuth.mockResolvedValue(A.session);
     const route = await import('@/app/api/portal/workflows/templates/route');
     const res = await callHandler<{ data: TemplateListItem[] }>(
@@ -53,11 +53,13 @@ describe('GET /api/portal/workflows/templates @workflows @templates', () => {
     );
     expect(res.status).toBe(200);
     const data = res.data?.data ?? [];
-    expect(data).toHaveLength(5);
+    expect(data).toHaveLength(7);
 
     const ids = data.map((t) => t.id).sort();
     expect(ids).toEqual([
+      'deal-outcome-branches',
       'form-submission-auto-task',
+      'form-submission-to-list',
       'new-lead-nurture',
       'stage-advance-celebration',
       'stale-deal-nudge',
@@ -81,7 +83,7 @@ describe('GET /api/portal/workflows/templates @workflows @templates', () => {
     // serves from. If this ever breaks the route response will still be
     // valid, but a clone via POST /api/portal/workflows would produce a
     // broken workflow.
-    expect(WORKFLOW_TEMPLATES).toHaveLength(5);
+    expect(WORKFLOW_TEMPLATES).toHaveLength(7);
     for (const tpl of WORKFLOW_TEMPLATES) {
       assertGraphValid(tpl.id, tpl.graph);
     }

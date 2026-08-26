@@ -87,7 +87,7 @@ describe('POST /api/portal/workflows @workflows @create', () => {
     expect(wf).toBeTruthy();
     expect(wf!.clientId).toBe(A.client.id);
     expect(wf!.status).toBe('draft');
-    expect(wf!.name).toBe('Untitled workflow');
+    expect(wf!.name).toBe('Flujo sin título');
     expect(wf!.graph.nodes).toHaveLength(1);
     expect(wf!.graph.nodes[0].type).toBe('trigger');
     expect(wf!.graph.edges).toHaveLength(0);
@@ -103,7 +103,7 @@ describe('POST /api/portal/workflows @workflows @create', () => {
     expect(res.status).toBe(200);
     const wf = res.data?.data;
     expect(wf!.status).toBe('draft');
-    expect(wf!.name).toMatch(/lead nurture/i);
+    expect(wf!.name).toMatch(/prospectos/i);
     // Sanity-check the cloned graph matches the seed template shape.
     const nodeIds = wf!.graph.nodes.map((n) => n.id).sort();
     expect(nodeIds).toEqual(['trigger', 'wait-1h', 'welcome-email']);

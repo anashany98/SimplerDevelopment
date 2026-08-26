@@ -360,7 +360,7 @@ describe('POST /api/portal/workflows', () => {
     authMock.mockResolvedValue(SESSION);
     authorizePortalMock.mockResolvedValue({ ok: true });
     getPortalClientMock.mockResolvedValue({ id: 42 });
-    const newRow = { id: 99, clientId: 42, name: 'Untitled workflow' };
+    const newRow = { id: 99, clientId: 42, name: 'Flujo sin título' };
     insertReturnQueue.push([newRow]);
 
     const res = await workflowsRoute.POST(makeJsonReq('http://x/wf', 'POST', {}));
@@ -372,7 +372,7 @@ describe('POST /api/portal/workflows', () => {
     expect(insertCalls).toHaveLength(1);
     expect(insertCalls[0].table).toBe('workflows');
     const values = insertCalls[0].values as Record<string, unknown>;
-    expect(values.name).toBe('Untitled workflow');
+    expect(values.name).toBe('Flujo sin título');
     expect(values.description).toBeNull();
     expect(values.clientId).toBe(42);
     expect(values.createdBy).toBe(7);
@@ -478,7 +478,7 @@ describe('POST /api/portal/workflows', () => {
     expect(values.description).toBe('Custom desc');
   });
 
-  it('defaults to "Untitled workflow" when body has only whitespace name and no template', async () => {
+  it('defaults to "Flujo sin título" when body has only whitespace name and no template', async () => {
     authMock.mockResolvedValue(SESSION);
     authorizePortalMock.mockResolvedValue({ ok: true });
     getPortalClientMock.mockResolvedValue({ id: 42 });
@@ -486,7 +486,7 @@ describe('POST /api/portal/workflows', () => {
 
     await workflowsRoute.POST(makeJsonReq('http://x/wf', 'POST', { name: '   ' }));
     const values = insertCalls[0].values as Record<string, unknown>;
-    expect(values.name).toBe('Untitled workflow');
+    expect(values.name).toBe('Flujo sin título');
     expect(values.description).toBeNull();
   });
 
@@ -504,7 +504,7 @@ describe('POST /api/portal/workflows', () => {
     const res = await workflowsRoute.POST(req);
     expect(res.status).toBe(200);
     const values = insertCalls[0].values as Record<string, unknown>;
-    expect(values.name).toBe('Untitled workflow');
+    expect(values.name).toBe('Flujo sin título');
   });
 });
 

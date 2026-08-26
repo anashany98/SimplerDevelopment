@@ -30,6 +30,12 @@ const STATUS_BADGE: Record<string, string> = {
   paused: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
 };
 
+const STATUS_LABEL: Record<string, string> = {
+  draft: 'Borrador',
+  active: 'Activo',
+  paused: 'Pausado',
+};
+
 export default function WorkflowsListPage() {
   const router = useRouter();
   const [rows, setRows] = useState<WorkflowRow[]>([]);
@@ -57,7 +63,7 @@ export default function WorkflowsListPage() {
       const res = await fetch('/api/portal/workflows', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Untitled workflow' }),
+        body: JSON.stringify({ name: 'Flujo sin título' }),
       });
       const data = await res.json();
       if (data?.success && data.data?.id) router.push(`/portal/automations/workflows/${data.data.id}`);
@@ -83,20 +89,20 @@ export default function WorkflowsListPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Beta notice — workflow execution is not yet implemented */}
+      {/* Aviso Beta — la ejecución se procesa por el cron de fondo */}
       <div className="flex items-start gap-3 px-4 py-3 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200">
         <span className="material-icons text-xl mt-0.5 shrink-0">science</span>
         <div className="text-sm">
-          <span className="font-semibold">Beta — workflows do not execute yet.</span>{' '}
-          You can build and save workflow graphs, but activating a workflow has no runtime effect.
-          Use <strong>Automations</strong> (Rules) for live trigger-to-action rules today.
+          <span className="font-semibold">Beta — la ejecución de flujos aún se está afinando.</span>{' '}
+          Los flujos activos se ejecutan en segundo plano desde eventos de CRM y formularios.
+          Los disparadores programados y de webhook se pueden probar con «Probar ejecución».
         </div>
       </div>
 
       <PortalPageHeader
-        eyebrow="Automations"
-        title="Workflows"
-        subtitle="Visual trigger to action automations. Build a graph, test it, then activate."
+        eyebrow="Automatizaciones"
+        title="Flujos de trabajo"
+        subtitle="Automatizaciones visuales de disparador a acción. Construye un grafo, pruébalo y actívalo."
         actions={
           <>
             <button
@@ -105,7 +111,7 @@ export default function WorkflowsListPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-lg">auto_awesome</span>
-              New from template
+              Nuevo desde plantilla
             </button>
             <button
               type="button"
@@ -114,7 +120,7 @@ export default function WorkflowsListPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-lg">add</span>
-              New blank
+              Nuevo en blanco
             </button>
           </>
         }
@@ -123,7 +129,7 @@ export default function WorkflowsListPage() {
       {showTemplatePicker && (
         <div className={`${pCard} p-5 space-y-3`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-foreground">Pick a template</h2>
+            <h2 className="text-sm font-semibold text-foreground">Elige una plantilla</h2>
             <button
               type="button"
               onClick={() => setShowTemplatePicker(false)}
@@ -147,14 +153,14 @@ export default function WorkflowsListPage() {
                     <div className="text-sm font-medium text-foreground truncate">{t.name}</div>
                     <div className="text-xs text-muted-foreground line-clamp-2 mt-1">{t.description}</div>
                     <div className="text-xs text-muted-foreground mt-2">
-                      Trigger: <code className="font-mono">{t.triggerKind}</code> · {t.nodeCount} nodes
+                      Disparador: <code className="font-mono">{t.triggerKind}</code> · {t.nodeCount} nodos
                     </div>
                   </div>
                 </div>
               </button>
             ))}
             {templates.length === 0 && (
-              <div className="text-sm text-muted-foreground col-span-full">No templates available.</div>
+              <div className="text-sm text-muted-foreground col-span-full">No hay plantillas disponibles.</div>
             )}
           </div>
         </div>
@@ -163,15 +169,15 @@ export default function WorkflowsListPage() {
       {loading ? (
         <div className={`${pCard} p-10 text-center`}>
           <span className="material-icons text-3xl text-muted-foreground animate-spin">progress_activity</span>
-          <p className="text-sm text-muted-foreground mt-2">Loading workflows...</p>
+          <p className="text-sm text-muted-foreground mt-2">Cargando flujos de trabajo...</p>
         </div>
       ) : rows.length === 0 ? (
         <div className={`${pCard} p-10 text-center space-y-4`}>
           <span className="material-icons text-5xl text-muted-foreground/50">account_tree</span>
-          <h2 className="text-lg font-semibold text-foreground">No workflows yet</h2>
+          <h2 className="text-lg font-semibold text-foreground">Aún no hay flujos de trabajo</h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Workflows let you chain triggers and actions visually. Start from a template, or
-            spin up a blank canvas and drag nodes onto it.
+            Los flujos de trabajo encadenan disparadores y acciones de forma visual.
+            Empieza desde una plantilla o crea un lienzo en blanco y arrastra nodos.
           </p>
         </div>
       ) : (
@@ -180,11 +186,11 @@ export default function WorkflowsListPage() {
           <table className="w-full text-sm min-w-[640px]">
             <thead className="bg-muted/50">
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Trigger</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Updated</th>
-                <th className="px-4 py-3 font-medium" aria-label="actions" />
+                <th className="px-4 py-3 font-medium">Nombre</th>
+                <th className="px-4 py-3 font-medium">Disparador</th>
+                <th className="px-4 py-3 font-medium">Estado</th>
+                <th className="px-4 py-3 font-medium">Actualizado</th>
+                <th className="px-4 py-3 font-medium" aria-label="acciones" />
               </tr>
             </thead>
             <tbody>
@@ -210,7 +216,7 @@ export default function WorkflowsListPage() {
                         STATUS_BADGE[w.status] ?? STATUS_BADGE.draft
                       }`}
                     >
-                      {w.status}
+                      {STATUS_LABEL[w.status] ?? w.status}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">
@@ -221,7 +227,7 @@ export default function WorkflowsListPage() {
                       href={`/portal/automations/workflows/${w.id}`}
                       className="text-xs text-primary hover:underline inline-flex items-center gap-1"
                     >
-                      Open
+                      Abrir
                       <span className="material-icons text-sm">arrow_forward</span>
                     </Link>
                   </td>

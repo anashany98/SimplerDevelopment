@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     description?: string;
   };
 
-  let name = body.name?.trim() || 'Untitled workflow';
+  let name = body.name?.trim() || 'Flujo sin título';
   let description: string | null = body.description?.trim() || null;
   let trigger: WorkflowTriggerConfig = { kind: 'contact.created' };
   let graph: WorkflowGraph = {
