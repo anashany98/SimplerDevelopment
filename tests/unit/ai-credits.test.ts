@@ -399,10 +399,10 @@ describe('hasCredits', () => {
     expect(await hasCredits(1, 1000)).toBe(true);
   });
 
-  it('returns false when balance is below the estimated amount', async () => {
+  it('returns true even when balance is below the estimated amount (billing removed)', async () => {
     state.aiCreditBalances.push({ clientId: 1, balance: 100, monthlyGrant: 0, payAsYouGo: false });
     const { hasCredits } = await importModule();
-    expect(await hasCredits(1, 1000)).toBe(false);
+    expect(await hasCredits(1, 1000)).toBe(true);
   });
 
   it('returns true regardless of balance when pay-as-you-go is enabled', async () => {
@@ -411,12 +411,11 @@ describe('hasCredits', () => {
     expect(await hasCredits(1, 9_999_999)).toBe(true);
   });
 
-  it('defaults the estimated amount to 1000', async () => {
+  it('always grants credits regardless of the estimated amount', async () => {
     state.aiCreditBalances.push({ clientId: 1, balance: 999, monthlyGrant: 0, payAsYouGo: false });
     const { hasCredits } = await importModule();
-    expect(await hasCredits(1)).toBe(false);
-    state.aiCreditBalances[0].balance = 1000;
     expect(await hasCredits(1)).toBe(true);
+    expect(await hasCredits(1, 9_999_999)).toBe(true);
   });
 });
 
@@ -434,14 +433,14 @@ describe('deductCredits', () => {
     expect(state.aiCreditLedger).toHaveLength(0);
   });
 
-  it('rejects when balance is insufficient and pay-as-you-go is off', async () => {
+  it('allows deductions beyond balance (billing removed)', async () => {
     state.aiCreditBalances.push({ clientId: 1, balance: 100, monthlyGrant: 0, payAsYouGo: false });
     const { deductCredits } = await importModule();
     const res = await deductCredits(1, 500, 'chat', 'ref-1');
-    expect(res.success).toBe(false);
-    expect(res.newBalance).toBe(100);
-    expect(res.error).toMatch(/insufficient/i);
-    expect(state.aiCreditLedger).toHaveLength(0);
+    expect(res.success).toBe(true);
+    expect(res.newBalance).toBe(-400);
+    expect(res.error).toBeUndefined();
+    expect(state.aiCreditLedger).toHaveLength(1);
   });
 
   it('allows deduction beyond balance when pay-as-you-go is on', async () => {

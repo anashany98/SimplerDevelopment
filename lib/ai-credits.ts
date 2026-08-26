@@ -41,9 +41,9 @@ export async function getBalance(clientId: number): Promise<CreditBalance> {
 /**
  * Quick check if client has enough credits for an AI operation.
  */
-export async function hasCredits(clientId: number, estimatedAmount: number = 1000): Promise<boolean> {
-  const { balance, payAsYouGo } = await getBalance(clientId);
-  return payAsYouGo || balance >= estimatedAmount;
+export async function hasCredits(_clientId: number, _estimatedAmount: number = 1000): Promise<boolean> {
+  // Billing removed (2026-08): AI is free, credits are never required.
+  return true;
 }
 
 /**
@@ -58,14 +58,12 @@ export async function deductCredits(
   referenceId: string,
   description?: string,
 ): Promise<{ success: boolean; newBalance: number; error?: string }> {
-  const { balance, payAsYouGo } = await getBalance(clientId);
+  const { balance } = await getBalance(clientId);
 
   if (amount <= 0) return { success: true, newBalance: balance };
 
-  if (!payAsYouGo && balance < amount) {
-    return { success: false, newBalance: balance, error: 'Insufficient AI credits. Purchase more credits or enable pay-as-you-go.' };
-  }
-
+  // Billing removed (2026-08): deductions always succeed. Usage is still
+  // metered in the ledger, but the balance may go negative.
   const newBalance = balance - amount;
 
   // Atomic update: decrement balance and insert ledger entry

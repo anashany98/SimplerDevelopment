@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { clients, clientMembers, clientServices, services, clientWebsites } from '@/lib/db/schema';
+import { clients, clientMembers, clientWebsites } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { getPortalClient, resolveClientSite, resolvePortalSite, getPortalRole } from '@/lib/portal-client';
 import { resolvePortalFromCurrentRequest, hasScope } from '@/lib/mcp-auth';
@@ -280,17 +280,10 @@ async function resolveRole(userId: number, client: typeof clients.$inferSelect):
  * Check if a client has access to a service category.
  * Returns true if they have a direct subscription OR an all-in-one bundle.
  */
-export async function hasServiceAccess(clientId: number, category: string): Promise<boolean> {
-  const subscriptions = await db
-    .select({ category: services.category })
-    .from(clientServices)
-    .innerJoin(services, eq(services.id, clientServices.serviceId))
-    .where(and(
-      eq(clientServices.clientId, clientId),
-      eq(clientServices.status, 'active'),
-    ));
-
-  return subscriptions.some(s => serviceCategoryMatches(s.category, category));
+export async function hasServiceAccess(_clientId: number, _category: string): Promise<boolean> {
+  // Billing removed (2026-08): every feature is free, so every service gate
+  // grants access. Args are kept so call sites keep type-checking.
+  return true;
 }
 
 /**
