@@ -62,12 +62,12 @@ interface SigningEvent {
 }
 
 const ESIGN_LABEL: Record<string, string> = {
-  not_sent: 'Not sent',
-  sent: 'Sent — awaiting signature',
-  viewed: 'Opened by signer',
-  signed: 'Signed',
-  declined: 'Declined',
-  canceled: 'Canceled',
+  not_sent: 'No enviado',
+  sent: 'Enviado — esperando firma',
+  viewed: 'Abierto por el firmante',
+  signed: 'Firmado',
+  declined: 'Rechazado',
+  canceled: 'Cancelado',
 };
 
 const ESIGN_COLOR: Record<string, string> = {
@@ -122,13 +122,13 @@ export default function PortalContractDetailPage() {
       if (cJson.success) {
         setContract(cJson.data as Contract);
       } else {
-        setErrorText(cJson.error || 'Failed to load contract');
+        setErrorText(cJson.error || 'No se pudo cargar el contrato');
       }
       if (eJson.success) {
         setEvents(eJson.data as SigningEvent[]);
       }
     } catch (err) {
-      setErrorText(err instanceof Error ? err.message : 'Failed to load contract');
+      setErrorText(err instanceof Error ? err.message : 'No se pudo cargar el contrato');
     } finally {
       setLoading(false);
     }
@@ -158,13 +158,13 @@ export default function PortalContractDetailPage() {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setErrorText(json.error || 'Failed to send for signature');
+        setErrorText(json.error || 'No se pudo enviar para firma');
       } else {
         setSendDialogOpen(false);
         await reload();
       }
     } catch (err) {
-      setErrorText(err instanceof Error ? err.message : 'Failed to send');
+      setErrorText(err instanceof Error ? err.message : 'No se pudo enviar');
     } finally {
       setSending(false);
     }
@@ -178,12 +178,12 @@ export default function PortalContractDetailPage() {
       const res = await fetch(`/api/portal/crm/contracts/${contractId}/sign-url`);
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setErrorText(json.error || 'Failed to fetch sign URL');
+        setErrorText(json.error || 'No se pudo obtener la URL de firma');
       } else {
         setSignUrl(json.data.signUrl);
       }
     } catch (err) {
-      setErrorText(err instanceof Error ? err.message : 'Failed to fetch sign URL');
+      setErrorText(err instanceof Error ? err.message : 'No se pudo obtener la URL de firma');
     } finally {
       setSignLoading(false);
     }
@@ -191,29 +191,29 @@ export default function PortalContractDetailPage() {
 
   const handleCancel = async () => {
     if (!contractId) return;
-    if (!confirm('Cancel this signature request? This cannot be undone.')) return;
+    if (!confirm('¿Cancelar esta solicitud de firma? No se puede deshacer.')) return;
     try {
       const res = await fetch(`/api/portal/crm/contracts/${contractId}/cancel-signature`, {
         method: 'POST',
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setErrorText(json.error || 'Failed to cancel');
+        setErrorText(json.error || 'No se pudo cancelar');
       } else {
         await reload();
       }
     } catch (err) {
-      setErrorText(err instanceof Error ? err.message : 'Failed to cancel');
+      setErrorText(err instanceof Error ? err.message : 'No se pudo cancelar');
     }
   };
 
   if (loading) {
-    return <div className="p-6 text-muted-foreground">Loading contract...</div>;
+    return <div className="p-6 text-muted-foreground">Cargando contrato...</div>;
   }
   if (!contract) {
     return (
       <div className="p-6">
-        <div className="text-foreground font-semibold">Contract not found</div>
+        <div className="text-foreground font-semibold">Contrato no encontrado</div>
         {errorText && <div className="text-sm text-red-600 mt-2">{errorText}</div>}
       </div>
     );
@@ -240,9 +240,9 @@ export default function PortalContractDetailPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-foreground">draw</span>
             <div>
-              <div className="font-semibold text-foreground">E-signature</div>
+              <div className="font-semibold text-foreground">Firma electrónica</div>
               <div className="text-xs text-muted-foreground">
-                Powered by DropboxSign — embedded signing, no email round-trip required.
+                Con DropboxSign — firma integrada, sin necesidad de idas y venidas por email.
               </div>
             </div>
           </div>
@@ -253,10 +253,10 @@ export default function PortalContractDetailPage() {
 
         {contract.esignSignerEmail && (
           <div className="text-sm text-muted-foreground">
-            Signer: <span className="font-medium text-foreground">{contract.esignSignerName}</span>{' '}
+            Firmante: <span className="font-medium text-foreground">{contract.esignSignerName}</span>{' '}
             &lt;{contract.esignSignerEmail}&gt;
             {contract.esignSentAt && (
-              <span className="ml-2">· sent {new Date(contract.esignSentAt).toLocaleString()}</span>
+              <span className="ml-2">· enviado {new Date(contract.esignSentAt).toLocaleString()}</span>
             )}
           </div>
         )}
@@ -268,7 +268,7 @@ export default function PortalContractDetailPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">send</span>
-              Send for signature
+              Enviar para firma
             </button>
           )}
           {canSign && (
@@ -278,7 +278,7 @@ export default function PortalContractDetailPage() {
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 disabled:opacity-60"
             >
               <span className="material-icons text-base">edit_note</span>
-              {signLoading ? 'Loading…' : 'Sign now'}
+              {signLoading ? 'Cargando…' : 'Firmar ahora'}
             </button>
           )}
           {canCancel && (
@@ -287,7 +287,7 @@ export default function PortalContractDetailPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">block</span>
-              Cancel signature request
+              Cancelar solicitud de firma
             </button>
           )}
           {esignStatus === 'signed' && contract.esignAuditFileUrl && (
@@ -298,7 +298,7 @@ export default function PortalContractDetailPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">picture_as_pdf</span>
-              Download signed PDF
+              Descargar PDF firmado
             </a>
           )}
         </div>
@@ -308,10 +308,10 @@ export default function PortalContractDetailPage() {
       <div className="rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-2 mb-3">
           <span className="material-icons text-muted-foreground">history</span>
-          <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Audit trail</h2>
+          <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Rastro de auditoría</h2>
         </div>
         {events.length === 0 ? (
-          <div className="text-sm text-muted-foreground py-4">No signing events yet.</div>
+          <div className="text-sm text-muted-foreground py-4">Aún no hay eventos de firma.</div>
         ) : (
           <ol className="space-y-2">
             {events.map(ev => (
@@ -336,25 +336,25 @@ export default function PortalContractDetailPage() {
       {sendDialogOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-2xl border border-border p-6 max-w-md w-full">
-            <h3 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground mb-3">Send contract for signature</h3>
+            <h3 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground mb-3">Enviar contrato para firma</h3>
             <div className="space-y-3">
               <label className="block">
-                <span className="text-xs font-medium text-muted-foreground">Signer name</span>
+                <span className="text-xs font-medium text-muted-foreground">Nombre del firmante</span>
                 <input
                   value={signerName}
                   onChange={e => setSignerName(e.target.value)}
                   className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
-                  placeholder="Jane Doe"
+                  placeholder="María García"
                 />
               </label>
               <label className="block">
-                <span className="text-xs font-medium text-muted-foreground">Signer email</span>
+                <span className="text-xs font-medium text-muted-foreground">Email del firmante</span>
                 <input
                   value={signerEmail}
                   onChange={e => setSignerEmail(e.target.value)}
                   type="email"
                   className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
-                  placeholder="jane@example.com"
+                  placeholder="maria@example.com"
                 />
               </label>
             </div>
@@ -364,14 +364,14 @@ export default function PortalContractDetailPage() {
                 className={pBtnGhost}
                 disabled={sending}
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 onClick={handleSend}
                 disabled={sending || !signerEmail || !signerName}
                 className={pBtnPrimary}
               >
-                {sending ? 'Sending…' : 'Send'}
+                {sending ? 'Enviando…' : 'Enviar'}
               </button>
             </div>
           </div>
@@ -383,14 +383,14 @@ export default function PortalContractDetailPage() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-2xl border border-border w-full max-w-4xl h-[80vh] flex flex-col">
             <div className="flex items-center justify-between p-3 border-b border-border">
-              <div className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Sign contract</div>
+              <div className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Firmar contrato</div>
               <button
                 onClick={() => {
                   setSignUrl(null);
                   void reload();
                 }}
                 className="material-icons text-muted-foreground hover:text-foreground"
-                aria-label="Close"
+                aria-label="Cerrar"
               >
                 close
               </button>
