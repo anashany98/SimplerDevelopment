@@ -42,15 +42,16 @@ interface SavedView {
   isDefault: boolean;
 }
 
+// Labels en español; los `value` son identificadores del backend y no cambian.
 const statusOptions = [
-  { value: '', label: 'All Statuses' },
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-  { value: 'lead', label: 'Lead' },
-  { value: 'customer', label: 'Customer' },
+  { value: '', label: 'Todos los estados' },
+  { value: 'active', label: 'Activo' },
+  { value: 'inactive', label: 'Inactivo' },
+  { value: 'lead', label: 'Prospecto' },
+  { value: 'customer', label: 'Cliente' },
 ];
 
-const sourceOptions = ['web', 'referral', 'cold-call', 'event', 'social', 'other'];
+const SOURCE_LABELS: Record<string, string> = { web: 'Web', referral: 'Referido', 'cold-call': 'Llamada en frío', event: 'Evento', social: 'Redes sociales', other: 'Otro' };
 
 const statusColor: Record<string, string> = {
   active: 'bg-green-100 text-green-700',
@@ -255,7 +256,7 @@ export default function CrmContactsPage() {
     const d = await res.json();
     setSaving(false);
     if (!d.success) {
-      setError(d.message ?? 'Failed to create contact.');
+      setError(d.message ?? 'No se pudo crear el contacto.');
       return;
     }
     setShowForm(false);
@@ -272,8 +273,8 @@ export default function CrmContactsPage() {
       {/* Header */}
       <PortalPageHeader
         eyebrow="CRM"
-        title="Contacts"
-        subtitle={loading ? '' : `${total} contact${total !== 1 ? 's' : ''}`}
+        title="Contactos"
+        subtitle={loading ? '' : `${total} contacto${total !== 1 ? 's' : ''}`}
         actions={
           <div className="flex items-center gap-2">
             <CrmImportExport entityType="contact" currentFilters={{ search, status: statusFilter, companyId: companyFilter, title: titleFilter.join(',') }} onImportComplete={fetchContacts} />
@@ -282,7 +283,7 @@ export default function CrmContactsPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">{showForm ? 'close' : 'person_add'}</span>
-              {showForm ? 'Cancel' : 'Add Contact'}
+              {showForm ? 'Cancelar' : 'Añadir contacto'}
             </button>
           </div>
         }
@@ -291,7 +292,7 @@ export default function CrmContactsPage() {
       {/* Inline form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-6 space-y-4">
-          <h3 className="font-semibold text-foreground">New Contact</h3>
+          <h3 className="font-semibold text-foreground">Nuevo contacto</h3>
           <CrmDuplicateWarning email={form.email} phone={form.phone} firstName={form.firstName} lastName={form.lastName} />
           {error && (
             <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
@@ -301,7 +302,7 @@ export default function CrmContactsPage() {
           )}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">First Name *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre *</label>
               <input
                 required
                 value={form.firstName}
@@ -310,7 +311,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Last Name *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Apellido *</label>
               <input
                 required
                 value={form.lastName}
@@ -319,7 +320,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Correo electrónico</label>
               <input
                 type="email"
                 value={form.email}
@@ -328,7 +329,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Phone</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Teléfono</label>
               <input
                 value={form.phone}
                 onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
@@ -336,7 +337,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">LinkedIn URL</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">URL de LinkedIn</label>
               <input
                 type="url"
                 value={form.linkedinUrl}
@@ -346,7 +347,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Cargo</label>
               <input
                 value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
@@ -354,7 +355,7 @@ export default function CrmContactsPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Company</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Empresa</label>
               <CrmCompanyTypeaheadPicker
                 value={form.companyId}
                 selectedLabel={formCompanyLabel}
@@ -362,33 +363,33 @@ export default function CrmContactsPage() {
                   setForm(f => ({ ...f, companyId: opt ? String(opt.id) : '' }));
                   setFormCompanyLabel(opt ? opt.name : null);
                 }}
-                placeholder="Select company…"
+                placeholder="Selecciona empresa…"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Source</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Origen</label>
               <select
                 value={form.source}
                 onChange={e => setForm(f => ({ ...f, source: e.target.value }))}
                 className="w-full appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
               >
-                <option value="">Select source</option>
-                {sourceOptions.map(s => (
-                  <option key={s} value={s}>{s.replace('-', ' ')}</option>
+                <option value="">Selecciona origen</option>
+                {Object.keys(SOURCE_LABELS).map(s => (
+                  <option key={s} value={s}>{SOURCE_LABELS[s] ?? s}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
               <select
                 value={form.status}
                 onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                 className="w-full appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
               >
-                <option value="lead">Lead</option>
-                <option value="active">Active</option>
-                <option value="customer">Customer</option>
-                <option value="inactive">Inactive</option>
+                <option value="lead">Prospecto</option>
+                <option value="active">Activo</option>
+                <option value="customer">Cliente</option>
+                <option value="inactive">Inactivo</option>
               </select>
             </div>
             <div className="sm:col-span-2 lg:col-span-1">
@@ -407,7 +408,7 @@ export default function CrmContactsPage() {
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons animate-spin text-sm">refresh</span>}
-              Create Contact
+              Crear contacto
             </button>
           </div>
         </form>
@@ -419,7 +420,7 @@ export default function CrmContactsPage() {
           <div className="flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">bookmark</span>
             <select
-              aria-label="Saved view" value={selectedViewId ?? ''}
+              aria-label="Vista guardada" value={selectedViewId ?? ''}
               onChange={e => {
                 const id = e.target.value ? Number(e.target.value) : null;
                 const view = savedViews.find(v => v.id === id) ?? null;
@@ -427,7 +428,7 @@ export default function CrmContactsPage() {
               }}
               className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
             >
-              <option value="">All Contacts</option>
+              <option value="">Todos los contactos</option>
               {savedViews.map(v => (
                 <option key={v.id} value={v.id}>{v.name}</option>
               ))}
@@ -436,7 +437,7 @@ export default function CrmContactsPage() {
               <button
                 onClick={() => handleDeleteView(selectedViewId)}
                 className="flex items-center p-1.5 text-muted-foreground hover:text-destructive transition-colors rounded"
-                title="Delete saved view"
+                title="Eliminar vista guardada"
               >
                 <span className="material-icons text-base">delete</span>
               </button>
@@ -448,14 +449,14 @@ export default function CrmContactsPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">save</span>
-              Save View
+              Guardar vista
             </button>
           )}
           {showSaveViewForm && (
             <form onSubmit={handleSaveView} className="flex items-center gap-2">
               <input
                 autoFocus
-                placeholder="View name..."
+                placeholder="Nombre de la vista..."
                 value={viewName}
                 onChange={e => setViewName(e.target.value)}
                 className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15 w-40"
@@ -466,7 +467,7 @@ export default function CrmContactsPage() {
               className={pBtnPrimary}
               >
                 {savingView ? <span className="material-icons animate-spin text-sm">refresh</span> : <span className="material-icons text-sm">check</span>}
-                Save
+                Guardar
               </button>
               <button
                 type="button"
@@ -482,14 +483,14 @@ export default function CrmContactsPage() {
           <div className="relative flex-1 min-w-[200px]">
             <span className="material-icons text-base text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">search</span>
             <input
-              placeholder="Search contacts..."
+              placeholder="Buscar contactos..."
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
               className="w-full pl-9 pr-3 rounded-xl border border-border bg-card py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
             />
           </div>
           <select
-            aria-label="Filter by status" value={statusFilter}
+            aria-label="Filtrar por estado" value={statusFilter}
             onChange={e => { setStatusFilter(e.target.value); setPage(1); }}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
@@ -506,8 +507,8 @@ export default function CrmContactsPage() {
                 setCompanyFilterLabel(opt ? opt.name : null);
                 setPage(1);
               }}
-              placeholder="All Companies"
-              noneLabel="All Companies"
+              placeholder="Todas las empresas"
+              noneLabel="Todas las empresas"
             />
           </div>
           <PositionMultiSelect
@@ -532,12 +533,12 @@ export default function CrmContactsPage() {
         ) : contacts.length === 0 ? (
           <div className="p-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground mb-3 block">person_off</span>
-            <p className="text-muted-foreground mb-4">No contacts found.</p>
+            <p className="text-muted-foreground mb-4">No se encontraron contactos.</p>
             <button
               onClick={() => setShowForm(true)}
               className={pBtnPrimary}
             >
-              Add First Contact
+              Añadir primer contacto
             </button>
           </div>
         ) : (
@@ -545,13 +546,13 @@ export default function CrmContactsPage() {
             <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th className="text-left px-5 py-3 font-medium text-muted-foreground">Name</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Email</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Phone</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Company</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Score</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden xl:table-cell">Last Contacted</th>
+                  <th className="text-left px-5 py-3 font-medium text-muted-foreground">Nombre</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Correo electrónico</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Teléfono</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Empresa</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Puntuación</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden xl:table-cell">Último contacto</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -586,7 +587,7 @@ export default function CrmContactsPage() {
                     <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell">{c.companyName ?? '---'}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[c.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                        {c.status}
+                        {statusOptions.find(o => o.value === c.status)?.label ?? c.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
@@ -612,7 +613,7 @@ export default function CrmContactsPage() {
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-xs text-muted-foreground">
-            Page {page} of {totalPages}
+            Página {page} de {totalPages}
           </p>
           <div className="flex gap-1">
             <button
