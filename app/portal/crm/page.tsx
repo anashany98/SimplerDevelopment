@@ -74,7 +74,7 @@ function relativeTime(dateStr: string): string {
 
 function DonutChart({ won, lost, open }: { won: number; lost: number; open: number }) {
   const total = won + lost + open;
-  if (total === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">Aún no hay datos de oportunidades</div>;
+  if (total === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">Aún no hay datos de negocios</div>;
 
   const radius = 50;
   const circumference = 2 * Math.PI * radius;
@@ -94,7 +94,7 @@ function DonutChart({ won, lost, open }: { won: number; lost: number; open: numb
           return <circle key={seg.label} cx="60" cy="60" r={radius} fill="none" stroke={seg.color} strokeWidth="16" strokeDasharray={`${seg.dash} ${circumference - seg.dash}`} strokeDashoffset={o} transform="rotate(-90 60 60)" className="transition-all duration-700" />;
         })}
         <text x="60" y="56" textAnchor="middle" className="fill-foreground text-xl font-bold" fontSize="20">{total}</text>
-        <text x="60" y="72" textAnchor="middle" className="fill-muted-foreground" fontSize="10">Oportunidades</text>
+        <text x="60" y="72" textAnchor="middle" className="fill-muted-foreground" fontSize="10">Negocios</text>
       </svg>
       <div className="space-y-1.5">
         {segments.map((seg) => (
@@ -150,7 +150,7 @@ function FunnelChart({ stages }: { stages: FunnelStage[] }) {
         <div key={stage.stage_name} className="space-y-0.5">
           <div className="flex justify-between text-xs">
             <span className="text-foreground font-medium">{stage.stage_name}</span>
-            <span className="text-muted-foreground">{Number(stage.deal_count)} oportunidades &middot; {formatMoney(Number(stage.total_value), { fractionDigits: 0 })}</span>
+            <span className="text-muted-foreground">{Number(stage.deal_count)} negocios &middot; {formatMoney(Number(stage.total_value), { fractionDigits: 0 })}</span>
           </div>
           <div className="w-full bg-accent rounded-full h-4 overflow-hidden">
             <div className="h-full rounded-full transition-all duration-700" style={{ width: `${Math.max((Number(stage.total_value) / maxValue) * 100, 2)}%`, backgroundColor: stage.color || '#6366f1' }} />
@@ -305,7 +305,7 @@ export default function CrmDashboardPage() {
               <span className="material-icons text-sm">person_add</span>Añadir contacto
             </Link>
             <Link href="/portal/crm/deals" className={`${pBtnGhost} w-full text-xs`}>
-              <span className="material-icons text-sm">add_circle</span>Crear oportunidad
+              <span className="material-icons text-sm">add_circle</span>Crear negocio
             </Link>
             <Link href="/portal/crm/companies" className={`${pBtnGhost} w-full text-xs`}>
               <span className="material-icons text-sm">domain_add</span>Añadir empresa
@@ -320,12 +320,12 @@ export default function CrmDashboardPage() {
       {/* Top Deals Table */}
       {analytics && analytics.topDeals.length > 0 && (
         <div className="bg-card border border-border rounded-2xl p-5">
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Oportunidades abiertas principales</h2>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Negocios abiertos principales</h2>
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 text-xs text-muted-foreground font-medium">Oportunidad</th>
+                  <th className="pb-2 text-xs text-muted-foreground font-medium">Negocio</th>
                   <th className="pb-2 text-xs text-muted-foreground font-medium text-right">Valor</th>
                   <th className="pb-2 text-xs text-muted-foreground font-medium text-right" />
                 </tr>

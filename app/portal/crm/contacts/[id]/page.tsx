@@ -402,7 +402,7 @@ export default function CrmContactDetailPage() {
       {/* Status + score chips */}
       <div className="flex items-center gap-2 -mt-3">
         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[contact.status] ?? 'bg-gray-100 text-gray-700'}`}>
-          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Lead', customer: 'Cliente' })[contact.status] ?? contact.status}
+          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Prospecto', customer: 'Cliente' })[contact.status] ?? contact.status}
         </span>
         {contact.score > 0 && (
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1 ${
@@ -535,7 +535,7 @@ export default function CrmContactDetailPage() {
                 onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
                 className={pSelect}
               >
-                <option value="lead">Lead</option>
+                <option value="lead">Prospecto</option>
                 <option value="active">Activo</option>
                 <option value="customer">Cliente</option>
                 <option value="inactive">Inactivo</option>

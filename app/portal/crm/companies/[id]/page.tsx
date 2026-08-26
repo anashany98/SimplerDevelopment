@@ -641,7 +641,7 @@ export default function CrmCompanyDetailPage() {
                         className={pSelect}
                       >
                         <option value="active">Activo</option>
-                        <option value="lead">Lead</option>
+                        <option value="lead">Prospecto</option>
                         <option value="customer">Cliente</option>
                         <option value="inactive">Inactivo</option>
                       </select>
@@ -684,7 +684,7 @@ export default function CrmCompanyDetailPage() {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[c.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Lead', customer: 'Cliente' })[c.status] ?? c.status}
+                          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Prospecto', customer: 'Cliente' })[c.status] ?? c.status}
                         </span>
                         <span className="material-icons text-base text-muted-foreground">chevron_right</span>
                       </div>
