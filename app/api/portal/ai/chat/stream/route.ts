@@ -86,8 +86,13 @@ const MAX_TOOL_CALLS = 20;
 // and routes to the predicted domains' tools. Unlike the non-streaming route,
 // we DON'T run the classifier in 'shadow' mode here — a blocking Haiku call
 // before the stream would delay time-to-first-token for telemetry-only value,
-// so streaming opts into the cost only when routing actually applies ('active').
-const ROUTER_MODE: 'shadow' | 'active' = 'shadow';
+// so streaming opts into the cost only when 'active' applies.
+//
+// Gated by env (PORTAL_ROUTER_MODE, default 'shadow') — same flag as the
+// non-streaming route, so a single env flip activates routing on both paths.
+function resolveRouterMode(): 'shadow' | 'active' {
+  return process.env.PORTAL_ROUTER_MODE === 'active' ? 'active' : 'shadow';
+}
 
 interface IncomingMessage {
   role: 'user' | 'assistant';
@@ -336,7 +341,7 @@ export async function POST(req: Request) {
         // call (protecting time-to-first-token). Classifier failures fail open
         // to the full surface. Used for every turn of the loop.
         let loopTools = PORTAL_TOOLS;
-        if (STREAM_TOOLS_ENABLED && ROUTER_MODE === 'active') {
+        if (STREAM_TOOLS_ENABLED && resolveRouterMode() === 'active') {
           try {
             const classification = await classifyPortalRequest(lastTurn.content.trim(), anthropic);
             loopTools = toolsForDomains(classification.domains, PORTAL_TOOLS);
