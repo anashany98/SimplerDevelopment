@@ -91,7 +91,19 @@ export const sdMcp = new MCPClient({
  * Lazy tool loader. Resolves the scoped SD tool catalogue over HTTP on first use
  * (not at import time) so this package still builds/loads when the parent app
  * isn't running. Throws a readable error if no key is configured.
+ *
+ * Cached for TOOLS_TTL_MS: the catalogue is ~450 tools and changes only when
+ * the portal adds/removes MCP tools, so re-fetching it per request is pure
+ * latency. The per-call Authorization is still resolved fresh from
+ * requestContext each time (see the `fetch` wrapper above), so caching the
+ * catalogue never caches credentials — the portal re-authorizes every tool
+ * call server-side. A tenant whose key scope is narrower than the cached
+ * catalogue may see tools it can't call (a per-call 401 from the portal), not
+ * a security exposure.
  */
+const TOOL_CACHE_TTL_MS = 60_000;
+let toolsCache: { tools: Awaited<ReturnType<typeof sdMcp.listTools>>; expiresAt: number } | null = null;
+
 export async function sdTools() {
   if (!sdMcpConfigured && !sdMcpMultiTenant) {
     throw new Error(
@@ -101,5 +113,11 @@ export async function sdTools() {
         'per-tenant token supplied per request). See BRAIN_AGENT_README.md.',
     );
   }
-  return sdMcp.listTools();
+  if (toolsCache && toolsCache.expiresAt > Date.now()) {
+    return toolsCache.tools;
+  }
+  const tools = await sdMcp.listTools();
+  toolsCache = { tools, expiresAt: Date.now() + TOOL_CACHE_TTL_MS };
+  return tools;
 }
+
