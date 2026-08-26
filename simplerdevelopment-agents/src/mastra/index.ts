@@ -21,6 +21,20 @@ import { sdMcp, sdMcpConfigured } from './mcp/sd-mcp';
 // an internal chunk.
 const MASTRA_RESOURCE_ID_KEY = 'mastra__resourceId';
 
+// Fail-fast (spec: "refuse to start without SD_AGENTS_INTERNAL_SECRET"). In
+// production the HTTP surface is the only way in and every request needs the
+// shared secret — booting without it would 401 everything (or worse, if
+// someone later softens the middleware). Dev/CLI runs (run-brain.ts /
+// run-portal.ts / Studio) don't set it and must keep working, so the guard is
+// scoped to NODE_ENV=production (the Dockerfile/Railway set it).
+if (process.env.NODE_ENV === 'production' && !process.env.SD_AGENTS_INTERNAL_SECRET) {
+  throw new Error(
+    'SD_AGENTS_INTERNAL_SECRET is required in production: the agents HTTP API is ' +
+      'private-network-only and every request must authenticate with the shared ' +
+      'internal secret. Set it on the Railway service (see railway.toml).',
+  );
+}
+
 export const mastra = new Mastra({
   workflows: { weatherWorkflow, brainWorkflow },
   agents: {
