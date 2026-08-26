@@ -15,7 +15,12 @@ sources:
 
 # ADR: Consolidate Mastra on the separate-service integration
 
-**Status: accepted** 2026-07-09 (owner sign-off via QAD-038). The in-process experiment (`lib/ai/mastra/**` + `/api/portal/brain/agent-mastra`) has been deleted and `@mastra/core` dropped from the app; the separate `simplerdevelopment-agents/` service is the committed shape. Remaining ADR items 2–3 (LibSQLStore→`@mastra/pg`, Phase-2 streaming wiring) tracked as separate cards.
+**Status: accepted** 2026-07-09 (owner sign-off via QAD-038). The in-process experiment (`lib/ai/mastra/**` + `/api/portal/brain/agent-mastra`) has been deleted and `@mastra/core` dropped from the app; the separate `simplerdevelopment-agents/` service is the committed shape.
+
+**Items 2–3 done 2026-08-26** (commits `dc16f74`, `84b9c79`, `e4a6b11`):
+- Item 2 ✅ — `LibSQLStore(file:./mastra.db)` + DuckDB replaced with `@mastra/pg` `PostgresStore` (pinned `1.14.0` for `@mastra/core@1.46` compat) reading `DATABASE_URL`/`MASTRA_DATABASE_URL`; schema auto-created (35 `mastra_*` tables verified live). Tenant guardrail: app sends `x-sd-tenant-id` → middleware maps to `mastra__resourceId` so Memory is scoped per-tenant.
+- Item 3 ✅ (blocking variant) — `app/api/portal/brain/agent` now calls `runBrainWorkflowOnService` when `SD_AGENTS_URL`/`SD_AGENTS_INTERNAL_SECRET` are set, mapping the blocking workflow result to the route's SSE frames; falls back to the in-process loop when unconfigured. (Spec Q3 locked blocking-first; streaming SSE parity remains a possible future refinement.)
+- Item 5 ⏳ — env vars documented in `.env.example` (lines ~106–115, incl. `MASTRA_DATABASE_URL`/`MASTRA_DB_SSL`) and `railway.toml`; **P6 Railway wiring + live-stack verification of `requestContext.token → sdMcp.listTools()` still open** (needs `railway login` / a deployed stack).
 
 ## Context
 
