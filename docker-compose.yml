@@ -182,11 +182,15 @@ services:
     # detached container and crash-loops under restart:unless-stopped. Use the
     # production build+start flow instead — same as the Dockerfile and the
     # deployed Railway service — which serves the HTTP API the app calls.
-    # The build is skipped when .mastra/output already exists (it persists on the
-    # host bind-mount), so only the first start pays the ~5-min cold bundle;
-    # later starts go straight to `start`. Force a rebuild after changing agent
-    # code with: docker compose exec agents rm -rf .mastra/output && docker compose restart agents
-    command: sh -lc "bun install --frozen-lockfile && { [ -f .mastra/output/index.mjs ] && echo 'reusing existing .mastra/output build' || bun run build; } && bun run start"
+    # The build persists on the host bind-mount and is REUSED only when it is
+    # genuinely up-to-date: if any source file (src/**, package.json, bun.lock,
+    # tsconfig.json) is newer than .mastra/output/index.mjs, we rebuild. This
+    # avoids the stale-build trap where a changed dep (e.g. a @mastra/* bump)
+    # was silently served from a previous build and crashed at runtime. Only the
+    # first start pays the ~5-min cold bundle; later starts go straight to
+    # `start` unless something changed. Force a rebuild manually with:
+    #   docker compose exec agents rm -rf .mastra/output && docker compose restart agents
+    command: sh -lc "bun install --frozen-lockfile && { [ -f .mastra/output/index.mjs ] && [ -z \"$(find src package.json bun.lock tsconfig.json -newer .mastra/output/index.mjs -print -quit)\" ] && echo 'reusing existing .mastra/output build' || { echo 'building .mastra/output (source or deps changed)'; bun run build; }; } && bun run start"
     depends_on:
       app:
         condition: service_healthy
