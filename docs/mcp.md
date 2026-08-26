@@ -68,6 +68,40 @@ claude mcp add --transport http simplerdevelopment \
 
 ---
 
+## Option C — ChatGPT (OpenAI) desktop
+
+ChatGPT desktop connects to remote MCP servers through its `mcp.json` config file.
+
+1. **Create an API key**: [`/portal/settings/api-keys`](/portal/settings/api-keys) → **New key** → copy the `sd_mcp_…` value (shown once).
+2. **Create (or edit) the ChatGPT config file**:
+   - macOS: `~/.chatgpt/mcp.json`
+   - Windows: `%USERPROFILE%\.chatgpt\mcp.json`
+3. **Add the server** using the Streamable HTTP transport (`type: "http"`, NOT `sse`):
+
+   ```json
+   {
+     "mcpServers": {
+       "freebuff": {
+         "type": "http",
+         "url": "http://localhost:3000/api/mcp",
+         "headers": {
+           "Authorization": "Bearer sd_mcp_your_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+4. **Restart ChatGPT desktop** and enable the **freebuff** server in its MCP/tools settings. The portal's tools (500+ across 22 product domains) become available as ChatGPT actions — the same tools Claude Code and the portal's own agents use.
+
+Notes:
+
+- Point `url` at your deployed host (e.g. `https://your-domain.com/api/mcp`) when not running locally.
+- Keys are scoped: request `*` for full access or a subset (e.g. `crm:*`, `projects:*`) to limit blast radius.
+- Verify the endpoint from a terminal before touching ChatGPT: `curl -X POST http://localhost:3000/api/mcp -H "Content-Type: application/json" -H "Authorization: Bearer sd_mcp_..." -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"probe","version":"1.0"}}}'`
+
+---
+
 ## Available tools
 
 The server exposes **450+ tools across 22 product domains**. Rather than listing every tool here, the reference pages below describe each domain in detail:
