@@ -1,5 +1,6 @@
 /**
- * Billing AI tools — invoices, payment methods, pay-invoice navigation.
+ * Billing AI tools — invoices and services. Payments are disabled on this
+ * instance, so `pay_invoice` only reports status and never opens a checkout.
  */
 import type { PortalTool } from './types';
 import { db } from '@/lib/db';
@@ -29,7 +30,7 @@ export const billingTools: PortalTool[] = [
   {
     name: 'pay_invoice',
     requiresApproval: true,
-    description: 'Navigate the user to pay a specific invoice. This opens the invoice with the pay button highlighted.',
+    description: 'Check an invoice payment status and explain how to settle it. Online payment is disabled on this instance, so this never opens a checkout — it reports the invoice status and the manual settlement options.',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -114,10 +115,9 @@ export const billingHandlers: Record<string, BillingHandler> = {
     if (inv.status === 'draft' || inv.status === 'cancelled') return { error: `Invoice ${inv.number} is ${inv.status} and cannot be paid.` };
 
     return {
-      action: 'navigate',
-      path: `/portal/billing`,
-      section: `invoice-${inv.id}`,
-      message: `Click "Pay Now" on invoice ${inv.number} to proceed to checkout.`,
+      message:
+        `Invoice ${inv.number} is ${inv.status}. Online payment is disabled on this instance — ` +
+        `settle it manually (bank transfer or marked paid) from the invoices page.`,
     };
   },
 };
