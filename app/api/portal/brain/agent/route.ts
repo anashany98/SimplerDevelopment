@@ -638,9 +638,11 @@ export async function POST(req: Request): Promise<Response> {
                 { role: 'assistant', content: contentBlocks as Anthropic.ContentBlock[] },
                 { role: 'user', content: toolResults },
               ];
-              // Reset finalText — the text we accumulated was pre-tool partial;
-              // the next turn will be the real final answer.
-              finalText = '';
+              // Do NOT reset finalText here. The client accumulates token frames
+              // across tool frames (BrainAgentChat.tsx), so the user already saw
+              // this pre-tool text; wiping it would drop it from the persisted
+              // history while it stays visible in the UI. The next turn appends
+              // to it, so the saved message matches what was displayed.
               continue;
             }
 
