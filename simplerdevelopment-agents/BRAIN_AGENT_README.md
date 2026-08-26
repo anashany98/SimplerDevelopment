@@ -176,6 +176,9 @@ and the agent is a thin, observable, swappable client. See the ADR in
 | `SD_MCP_URL` | `http://localhost:3000/api/mcp` | portal MCP endpoint |
 | `SD_MCP_API_KEY` | _(unset)_ | `sd_mcp_…` portal key (scoped). **Dev/CLI only** — ignored (with a warning) when `SD_AGENTS_INTERNAL_SECRET` is set, since multi-tenant mode must use per-request tenant tokens, never a long-lived shared key |
 | `SD_AGENTS_INTERNAL_SECRET` | _(unset)_ | enables multi-tenant mode behind the parent app; every request must carry `x-sd-tenant-token` or the MCP client fails closed |
+| `DATABASE_URL` | _(unset)_ | Postgres for Mastra Memory + observability (falls back to the app's DB). Schema auto-created on first start |
+| `MASTRA_DATABASE_URL` | _(unset)_ | optional — point the agents service at a dedicated Postgres instead of the app's `DATABASE_URL` |
+| `MASTRA_DB_SSL` | _(unset)_ | set to `1` when the Postgres requires TLS (Railway/Neon/Supabase public endpoints) |
 | `ANTHROPIC_API_KEY` | _(unset)_ | required — Claude provider |
 | `SD_BRAIN_MODEL` | `anthropic/claude-sonnet-4-6` | tool-loop model |
 | `SD_BRAIN_FAST_MODEL` | `anthropic/claude-haiku-4-5` | classify/plan/ground model |

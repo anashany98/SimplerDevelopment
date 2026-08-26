@@ -1,9 +1,7 @@
 
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
-import { LibSQLStore } from '@mastra/libsql';
-import { DuckDBStore } from "@mastra/duckdb";
-import { MastraCompositeStore } from '@mastra/core/storage';
+import { PostgresStore } from '@mastra/pg';
 import { Observability, MastraStorageExporter, MastraPlatformExporter, SensitiveDataFilter } from '@mastra/observability';
 import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
@@ -16,6 +14,12 @@ import { brainWorkflow } from './workflows/brain-workflow';
 import { portalAssistant } from './agents/portal-assistant';
 import { portalClassifier } from './agents/portal-intent';
 import { sdMcp, sdMcpConfigured } from './mcp/sd-mcp';
+
+// Mastra's memory scoping key, read from requestContext by the agent runtime
+// (see @mastra/core agent/durable resolveScope). It is a stable string key,
+// not exported through the public entry — define locally to avoid coupling to
+// an internal chunk.
+const MASTRA_RESOURCE_ID_KEY = 'mastra__resourceId';
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow, brainWorkflow },
@@ -39,6 +43,13 @@ export const mastra = new Mastra({
   // wins over the body copy, so a caller can't spoof a different tenant via the
   // body. (In-process CLI runs — run-brain.ts / run-portal.ts — don't traverse
   // this middleware, so they keep working with SD_MCP_API_KEY.)
+  //
+  // Tenant guardrail for Memory at rest: the parent app also sends
+  // `x-sd-tenant-id` (the clientId it minted the token for), which we map to
+  // Mastra's `mastra__resourceId` requestContext key. The agent runtime scopes
+  // all memory (threads, messages, working memory) by resourceId, so one
+  // tenant can never read another's memory even if a threadId collides.
+  // Only the app can pass the internal secret, so this header is trusted.
   server: {
     middleware: [
       {
@@ -60,6 +71,10 @@ export const mastra = new Mastra({
           if (tenantToken) {
             c.get('requestContext')?.set('token', tenantToken);
           }
+          const tenantId = c.req.header('x-sd-tenant-id');
+          if (tenantId) {
+            c.get('requestContext')?.set(MASTRA_RESOURCE_ID_KEY, tenantId);
+          }
           await next();
         },
       },
@@ -72,15 +87,15 @@ export const mastra = new Mastra({
     toolGroundingScorer,
     groundednessScorer,
   },
-  storage: new MastraCompositeStore({
-    id: 'composite-storage',
-    default: new LibSQLStore({
-      id: "mastra-storage",
-      url: "file:./mastra.db",
-    }),
-    domains: {
-      observability: await new DuckDBStore().getStore('observability'),
-    }
+  // Durable Postgres storage (ADR mastra-consolidate-separate-service, item 2):
+  // replaces the old LibSQL file + DuckDB combo so Memory + observability
+  // survive redeploys on Railway. Uses the same DATABASE_URL as the parent app
+  // (or MASTRA_DATABASE_URL to point at a dedicated DB). PostgresStore
+  // auto-creates its schema (mastra_* tables) on first use.
+  storage: new PostgresStore({
+    id: 'mastra-storage',
+    connectionString: process.env.MASTRA_DATABASE_URL ?? process.env.DATABASE_URL!,
+    ssl: process.env.MASTRA_DB_SSL ? { rejectUnauthorized: false } : undefined,
   }),
   logger: new PinoLogger({
     name: 'Mastra',

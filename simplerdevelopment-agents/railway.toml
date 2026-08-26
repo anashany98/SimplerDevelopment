@@ -11,6 +11,13 @@
 #                                     (x-sd-tenant-token) and the static
 #                                     SD_MCP_API_KEY is ignored.
 #   ANTHROPIC_API_KEY               — Anthropic API key (all Claude models route here)
+#   DATABASE_URL                    — Postgres connection string (same metro DB as
+#                                     the app, or a dedicated one). Mastra persists
+#                                     Memory + observability here; schema is
+#                                     auto-created on first start. Override with
+#                                     MASTRA_DATABASE_URL to point at a dedicated DB.
+#   MASTRA_DB_SSL=1                 — set when the Postgres requires TLS
+#                                     (Railway/Neon/Supabase public endpoints).
 #
 # Dev/CLI only — do NOT set on a multi-tenant deployment:
 #   SD_MCP_API_KEY                  — static portal key for local runs (run-brain.ts /
