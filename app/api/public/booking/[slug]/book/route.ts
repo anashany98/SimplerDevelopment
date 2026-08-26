@@ -35,13 +35,14 @@ function generateCheckinCode(): string {
 }
 
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   const { slug } = await params;
 
   // An approval reviewer is looking at an INACTIVE page (approving is what flips
   // active=true), so the active filter cannot be part of the lookup here.
-  const [page] = await db.select().from(bookingPages)
-    .where(eq(bookingPages.slug, slug))
-    .limit(1);
+  const [page] = await db.select().from(bookingPages).where(eq(bookingPages.slug, slug)).limit(1);
 
   if (!page) return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
 

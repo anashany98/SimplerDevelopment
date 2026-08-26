@@ -5,6 +5,9 @@ import { eq, and, ne } from 'drizzle-orm';
 import crypto from 'crypto';
 
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   try {
     const { slug } = await params;
 

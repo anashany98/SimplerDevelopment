@@ -14,6 +14,9 @@ function generateCertCode(): string {
 }
 
 export async function POST(req: Request) {
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   try {
     const body = await req.json();
     const {

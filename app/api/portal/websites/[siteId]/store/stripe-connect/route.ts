@@ -16,6 +16,10 @@ export async function POST(
   const authResult = await authorizePortal({ action: 'write', requireService: 'store' });
   if (isAuthError(authResult)) return authResult.response;
 
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
+
   const { siteId } = await params;
   const site = await resolveClientSite(parseInt(session.user.id, 10), parseInt(siteId));
   if (!site) return NextResponse.json({ success: false, message: 'Not found' }, { status: 404 });
@@ -80,6 +84,10 @@ export async function GET(
 
   const authResult = await authorizePortal({ action: 'read', requireService: 'store' });
   if (isAuthError(authResult)) return authResult.response;
+
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
 
   const { siteId } = await params;
   const site = await resolveClientSite(parseInt(session.user.id, 10), parseInt(siteId));

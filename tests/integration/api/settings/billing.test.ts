@@ -176,90 +176,22 @@ describe('GET /api/portal/settings/billing (subscription) @settings @billing @te
   });
 });
 
-describe('POST /api/portal/services/[id]/checkout (Stripe checkout-session) @settings @billing', () => {
+describe('POST /api/portal/services/[id]/checkout (payments disabled) @settings @billing', () => {
   let A: TenantCtx;
-  const ORIGINAL_KEY = process.env.STRIPE_SECRET_KEY;
 
   beforeEach(async () => {
     A = await sessionForNewClientUser('billing-checkout');
-    process.env.STRIPE_SECRET_KEY = 'sk_test_dummy';
-    stripeCheckoutCreate.mockResolvedValue({
-      id: 'cs_test_123',
-      url: 'https://checkout.stripe.test/cs_test_123',
-    });
   });
 
-  afterEach(() => {
-    if (ORIGINAL_KEY === undefined) delete process.env.STRIPE_SECRET_KEY;
-    else process.env.STRIPE_SECRET_KEY = ORIGINAL_KEY;
-  });
-
-  it('happy path (subscription): creates a session in subscription mode (200)', async () => {
+  it('returns 403 payments-disabled for any authenticated request', async () => {
     const svcId = await seedService({ billingCycle: 'monthly', price: 2500 });
     await asTenant(A);
     const route = await import('@/app/api/portal/services/[id]/checkout/route');
-    const res = await callHandler<{ success: boolean; data: { url: string } }>(
-      route as unknown as Record<string, unknown>, 'POST',
-      { params: { id: String(svcId) } },
-    );
-    expect(res.status).toBe(200);
-    expect(res.data?.data.url).toBe('https://checkout.stripe.test/cs_test_123');
-    expect(stripeCheckoutCreate).toHaveBeenCalledTimes(1);
-    const callArg = stripeCheckoutCreate.mock.calls[0][0];
-    expect(callArg.mode).toBe('subscription');
-    expect(callArg.line_items[0].price_data.recurring).toEqual({ interval: 'month' });
-    expect(callArg.metadata).toEqual({ serviceId: String(svcId), clientId: String(A.client.id) });
-  });
-
-  it('happy path (one-time): creates a session in payment mode', async () => {
-    const svcId = await seedService({ billingCycle: 'once', price: 9900 });
-    await asTenant(A);
-    const route = await import('@/app/api/portal/services/[id]/checkout/route');
     const res = await callHandler(
       route as unknown as Record<string, unknown>, 'POST',
       { params: { id: String(svcId) } },
     );
-    expect(res.status).toBe(200);
-    const callArg = stripeCheckoutCreate.mock.calls[0][0];
-    expect(callArg.mode).toBe('payment');
-    expect(callArg.customer_creation).toBe('always');
-  });
-
-  it('returns 404 for an inactive / unknown service', async () => {
-    const svcId = await seedService({ active: false });
-    await asTenant(A);
-    const route = await import('@/app/api/portal/services/[id]/checkout/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>, 'POST',
-      { params: { id: String(svcId) } },
-    );
-    expect(res.status).toBe(404);
-    expect(stripeCheckoutCreate).not.toHaveBeenCalled();
-  });
-
-  it('returns 409 when the caller already has the service active', async () => {
-    const svcId = await seedService({ billingCycle: 'monthly' });
-    await seedClientService(A.client.id, svcId);
-    await asTenant(A);
-    const route = await import('@/app/api/portal/services/[id]/checkout/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>, 'POST',
-      { params: { id: String(svcId) } },
-    );
-    expect(res.status).toBe(409);
-    expect(stripeCheckoutCreate).not.toHaveBeenCalled();
-  });
-
-  it('returns 500 when STRIPE_SECRET_KEY is missing (no Stripe call)', async () => {
-    delete process.env.STRIPE_SECRET_KEY;
-    const svcId = await seedService();
-    await asTenant(A);
-    const route = await import('@/app/api/portal/services/[id]/checkout/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>, 'POST',
-      { params: { id: String(svcId) } },
-    );
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(403);
     expect(stripeCheckoutCreate).not.toHaveBeenCalled();
   });
 
@@ -274,30 +206,14 @@ describe('POST /api/portal/services/[id]/checkout (Stripe checkout-session) @set
   });
 });
 
-describe('GET /api/portal/billing/payment-methods @settings @billing @tenancy', () => {
-  let A: TenantCtx;
-  let B: TenantCtx;
-
-  beforeEach(async () => {
-    [A, B] = await Promise.all([
-      sessionForNewClientUser('pm-list-a'),
-      sessionForNewClientUser('pm-list-b'),
-    ]);
-  });
-
-  it('returns only the caller\'s payment methods', async () => {
-    const aId = await seedPaymentMethod(A.client.id);
-    const bId = await seedPaymentMethod(B.client.id);
-
+describe('GET /api/portal/billing/payment-methods (payments disabled) @settings @billing', () => {
+  it('returns 403 payments-disabled for any authenticated request', async () => {
+    const A = await sessionForNewClientUser('pm-list-a');
+    await seedPaymentMethod(A.client.id);
     await asTenant(A);
     const route = await import('@/app/api/portal/billing/payment-methods/route');
-    const res = await callHandler<{ success: boolean; data: Array<{ id: number; clientId: number }> }>(
-      route as unknown as Record<string, unknown>, 'GET',
-    );
-    expect(res.status).toBe(200);
-    const ids = res.data!.data.map(m => m.id);
-    expect(ids).toContain(aId);
-    expect(ids).not.toContain(bId);
+    const res = await callHandler(route as unknown as Record<string, unknown>, 'GET');
+    expect(res.status).toBe(403);
   });
 
   it('rejects unauthenticated (401)', async () => {
@@ -308,18 +224,14 @@ describe('GET /api/portal/billing/payment-methods @settings @billing @tenancy', 
   });
 });
 
-describe('DELETE /api/portal/billing/payment-methods @settings @billing @tenancy', () => {
+describe('DELETE /api/portal/billing/payment-methods (payments disabled) @settings @billing', () => {
   let A: TenantCtx;
-  let B: TenantCtx;
 
   beforeEach(async () => {
-    [A, B] = await Promise.all([
-      sessionForNewClientUser('pm-del-a'),
-      sessionForNewClientUser('pm-del-b'),
-    ]);
+    A = await sessionForNewClientUser('pm-del-a');
   });
 
-  it('happy path: removes own payment method (200)', async () => {
+  it('returns 403 payments-disabled for any authenticated request', async () => {
     const id = await seedPaymentMethod(A.client.id);
     await asTenant(A);
     const route = await import('@/app/api/portal/billing/payment-methods/route');
@@ -327,40 +239,7 @@ describe('DELETE /api/portal/billing/payment-methods @settings @billing @tenancy
       route as unknown as Record<string, unknown>, 'DELETE',
       { body: { id: String(id) } },
     );
-    expect(res.status).toBe(200);
-
-    const sql = getTestSql();
-    const rows = await sql<{ id: number }[]>`
-      SELECT id FROM ${sql(TEST_SCHEMA)}.payment_methods WHERE id = ${id}
-    `;
-    expect(rows.length).toBe(0);
-  });
-
-  it('rejects missing id (400)', async () => {
-    await asTenant(A);
-    const route = await import('@/app/api/portal/billing/payment-methods/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>, 'DELETE',
-      { body: {} },
-    );
-    expect(res.status).toBe(400);
-  });
-
-  it('cross-tenant: A cannot delete B\'s payment method (404, row preserved)', async () => {
-    const id = await seedPaymentMethod(B.client.id);
-    await asTenant(A);
-    const route = await import('@/app/api/portal/billing/payment-methods/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>, 'DELETE',
-      { body: { id: String(id) } },
-    );
-    expect(res.status).toBe(404);
-
-    const sql = getTestSql();
-    const rows = await sql<{ id: number }[]>`
-      SELECT id FROM ${sql(TEST_SCHEMA)}.payment_methods WHERE id = ${id}
-    `;
-    expect(rows.length).toBe(1);
+    expect(res.status).toBe(403);
   });
 
   it('rejects unauthenticated (401)', async () => {

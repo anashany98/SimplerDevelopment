@@ -16,6 +16,10 @@ import { getStripeClient } from '@/lib/stripe';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  // Billing removed — payments are disabled. Acknowledge Stripe, process nothing.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(200);
+
   // `?siteId=N` is REQUIRED for BYOK (each tenant registers their own per-site URL)
   // and OPTIONAL for Connect (the platform webhook URL is shared across all connected
   // accounts and was registered before BYOK existed). When absent, we verify against

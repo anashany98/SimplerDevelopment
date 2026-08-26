@@ -21,6 +21,10 @@ export async function POST(
   const auth = await authorizePortal({ action: 'admin' });
   if (isAuthError(auth)) return auth.response;
 
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
+
   const { client } = auth;
   const { id: rawId } = await params;
   const clientServiceId = parseInt(rawId, 10);
