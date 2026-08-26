@@ -40,6 +40,7 @@ import { checkGroundedness } from '@/lib/ai/brain-tools/grounder';
 import { getAgentPreferences, trackIntentUsage } from '@/lib/brain/agent-preferences';
 import { formatPreferencesForPrompt } from '@/lib/brain/agent-preferences-api';
 import { withSpan } from '@/lib/ai/tracer';
+import { runBrainWorkflowOnService, agentsServiceConfigured, AgentsServiceError } from '@/lib/ai/agents-client';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -102,6 +103,137 @@ function jsonError(status: number, message: string): Response {
   return new Response(JSON.stringify({ success: false, message }), {
     status,
     headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+/**
+ * Shape of the Mastra `brainWorkflow` result (see
+ * simplerdevelopment-agents/src/mastra/workflows/brain-workflow.ts outputSchema).
+ */
+interface BrainWorkflowResult {
+  answer: string;
+  intent: { intent: string; complexity: 'simple' | 'complex'; reasoning: string };
+  plan: string[];
+  groundedness: { confidence: number; grounded: boolean; uncertain: boolean; sources: string[] };
+}
+
+/**
+ * Phase 2 (ADR mastra-consolidate-separate-service, item 3): run the brain
+ * workflow on the standalone agents service instead of looping in-process.
+ * The service runs the same classify → plan → tool-loop → ground pipeline
+ * against the portal MCP as this tenant, so we map its blocking result back to
+ * the route's SSE frame protocol. The service bills its own provider key, so no
+ * client credit deduction happens here — usage is still recorded for audit.
+ */
+async function runViaAgentsService(opts: {
+  clientId: number;
+  userId: number;
+  message: string;
+  conversationId: number;
+  signal?: AbortSignal;
+}): Promise<Response> {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const write = (frame: AgentFrame) =>
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(frame)}\n\n`));
+
+      try {
+        const result = await runBrainWorkflowOnService({
+          clientId: opts.clientId,
+          userId: opts.userId,
+          query: opts.message,
+          signal: opts.signal,
+        });
+
+        if (result.status !== 'completed' || result.error) {
+          const detail =
+            result.error instanceof Error
+              ? result.error.message
+              : typeof result.error === 'string'
+                ? result.error
+                : 'agents service workflow failed';
+          write({ type: 'error', message: detail });
+          controller.close();
+          return;
+        }
+
+        const wf = (result.result ?? {}) as Partial<BrainWorkflowResult>;
+        const answer = wf.answer ?? '';
+
+        // Map workflow stages to the SSE frames the UI already understands.
+        if (wf.intent) {
+          write({
+            type: 'intent',
+            intent: wf.intent.intent,
+            complexity: wf.intent.complexity,
+            reasoning: wf.intent.reasoning,
+          });
+        }
+        if (wf.plan?.length) {
+          write({
+            type: 'plan',
+            steps: wf.plan.map((action) => ({ action, tool: '', reasoning: '' })),
+          });
+        }
+        if (answer) {
+          write({ type: 'token', text: answer });
+        }
+        if (wf.groundedness) {
+          write({
+            type: 'confidence',
+            score: wf.groundedness.confidence,
+            grounded: wf.groundedness.grounded,
+            uncertain: wf.groundedness.uncertain,
+            sources: wf.groundedness.sources,
+          });
+        }
+        write({ type: 'done', conversationId: opts.conversationId, tokensUsed: 0 });
+
+        // Persist the assistant turn (best-effort) + audit usage, mirroring the
+        // in-process path. The service bills its own provider key, so no client
+        // credit deduction happens here.
+        try {
+          if (answer) {
+            await db.insert(aiMessages).values({
+              conversationId: opts.conversationId,
+              role: 'assistant',
+              content: answer,
+              inputTokens: 0,
+              outputTokens: 0,
+            });
+          }
+          await db
+            .update(aiConversations)
+            .set({ updatedAt: new Date() })
+            .where(eq(aiConversations.id, opts.conversationId));
+        } catch (persistErr) {
+          console.error('[brain/agent] agents-service persist error', persistErr);
+        }
+        void recordAiUsage({ clientId: opts.clientId, source: 'platform', tokens: 0 });
+        controller.close();
+      } catch (err) {
+        const msg =
+          err instanceof AgentsServiceError
+            ? err.message
+            : err instanceof Error
+              ? err.message
+              : 'agents service error';
+        console.error('[brain/agent] agents-service path failed', err);
+        write({ type: 'error', message: msg });
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no',
+    },
   });
 }
 
@@ -176,6 +308,55 @@ export async function POST(req: Request): Promise<Response> {
         { status: 402, headers: { 'Content-Type': 'application/json' } },
       );
     }
+  }
+
+  // ── 4b. Phase 2 (ADR mastra-consolidate-separate-service, item 3): when the
+  // standalone agents service is configured, run the brain workflow there
+  // instead of looping in-process. The service holds the dedicated long-running
+  // runtime (the whole reason for the offload) and mints a short-lived tenant
+  // token per call, so tenancy is preserved end-to-end. Falls back to the
+  // in-process loop below when the service is unconfigured.
+  if (agentsServiceConfigured()) {
+    // Get-or-create the conversation (same logic as step 5).
+    let svcConvId: number;
+    if (conversationId) {
+      const [conv] = await db
+        .select()
+        .from(aiConversations)
+        .where(eq(aiConversations.id, conversationId))
+        .limit(1);
+      if (!conv || conv.clientId !== client.id) {
+        return jsonError(404, 'Conversation not found');
+      }
+      svcConvId = conv.id;
+    } else {
+      const title = message.slice(0, 80);
+      const [conv] = await db
+        .insert(aiConversations)
+        .values({ clientId: client.id, title })
+        .returning();
+      svcConvId = conv.id;
+    }
+
+    // Persist the user message up-front (mirrors the in-process path).
+    await db.insert(aiMessages).values({
+      conversationId: svcConvId,
+      role: 'user',
+      content: message,
+      inputTokens: 0,
+      outputTokens: 0,
+    });
+    await db
+      .update(aiConversations)
+      .set({ updatedAt: new Date() })
+      .where(eq(aiConversations.id, svcConvId));
+
+    return runViaAgentsService({
+      clientId: client.id,
+      userId,
+      message,
+      conversationId: svcConvId,
+    });
   }
 
   // ── 5. Get-or-create conversation.
