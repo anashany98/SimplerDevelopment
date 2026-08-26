@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { priorityColor } from '../_lib/ui';
+import { priorityColor, priorityLabels } from '../_lib/ui';
 import { formatMoney } from '@/lib/utils/money';
 import type { Deal, Stage } from '../_lib/types';
 
@@ -100,7 +100,7 @@ export default function DealKanban({
             >
               {stageDeals.length === 0 && (
                 <p className="text-xs text-muted-foreground text-center py-6">
-                  {isOver ? 'Drop here' : 'No deals'}
+                  {isOver ? 'Suelta aquí' : 'Sin negocios'}
                 </p>
               )}
               {stageDeals.map((deal) => (
@@ -130,7 +130,7 @@ export default function DealKanban({
                         priorityColor[deal.priority] ?? 'bg-gray-100 text-gray-600'
                       }`}
                     >
-                      {deal.priority}
+                      {priorityLabels[deal.priority] ?? deal.priority}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -139,10 +139,10 @@ export default function DealKanban({
                       <span className="text-[10px] px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded font-medium">
                         {formatMoney(deal.recurringValue)}/
                         {deal.billingCycle === 'annual'
-                          ? 'yr'
+                          ? 'año'
                           : deal.billingCycle === 'quarterly'
-                            ? 'qtr'
-                            : 'mo'}
+                            ? 'trim.'
+                            : 'mes'}
                       </span>
                     )}
                   </div>

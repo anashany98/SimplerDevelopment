@@ -13,10 +13,16 @@ export const priorityColor: Record<string, string> = {
   high: 'bg-red-100 text-red-700',
 };
 
+export const priorityLabels: Record<string, string> = {
+  low: 'Baja',
+  medium: 'Media',
+  high: 'Alta',
+};
+
 export const statusFilters = [
-  { value: 'open', label: 'Open' },
-  { value: 'won', label: 'Won' },
-  { value: 'lost', label: 'Lost' },
+  { value: 'open', label: 'Abiertos' },
+  { value: 'won', label: 'Ganados' },
+  { value: 'lost', label: 'Perdidos' },
 ];
 
 export const ARTIFACT_ICONS: Record<string, string> = {
@@ -30,13 +36,13 @@ export const ARTIFACT_ICONS: Record<string, string> = {
 };
 
 export const ARTIFACT_LABELS: Record<string, string> = {
-  website: 'Website',
-  email_campaign: 'Email Campaign',
-  pitch_deck: 'Pitch Deck',
-  proposal: 'Proposal',
-  booking: 'Booking',
-  survey: 'Survey',
-  project: 'Project',
+  website: 'Sitio web',
+  email_campaign: 'Campaña de email',
+  pitch_deck: 'Pitch deck',
+  proposal: 'Propuesta',
+  booking: 'Reserva',
+  survey: 'Encuesta',
+  project: 'Proyecto',
 };
 
 export function artifactUrl(type: string, id: number): string | null {
