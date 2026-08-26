@@ -94,7 +94,7 @@ export default function LeadScoringTab() {
   }
 
   async function deleteScoringRule(id: number) {
-    if (!confirm('Delete this scoring rule?')) return;
+    if (!confirm('¿Eliminar esta regla de puntuación?')) return;
     const res = await fetch(`/api/portal/crm/scoring-rules/${id}`, { method: 'DELETE' });
     const d = await res.json();
     if (d.success) {
@@ -105,22 +105,22 @@ export default function LeadScoringTab() {
   return (
     <div className="bg-card border border-border rounded-xl p-6 space-y-6">
       <div>
-        <h3 className="font-semibold text-foreground text-lg">Lead Scoring</h3>
+        <h3 className="font-semibold text-foreground text-lg">Puntuación de leads</h3>
         {/* NOTE: "automatically" here is aspirational — see the comment on
             POST /api/portal/crm/contacts/[id]/score. No in-app event calls
             that endpoint today; applying a rule's points is manual/API-only. */}
         <p className="text-sm text-muted-foreground mt-1">
-          Assign point values to contact events (email opens, form submits, meetings booked, and more).
-          Whenever a contact triggers an event, the matching rule&rsquo;s points are added to that
-          contact&rsquo;s score automatically — higher scores surface your most engaged, sales-ready leads.
+          Asigna puntos a eventos de contacto (aperturas de email, envíos de formularios, reuniones reservadas y más).
+          Cuando un contacto dispara un evento, los puntos de la regla coincidente se añaden automáticamente
+          a su puntuación — las puntuaciones altas destacan a tus leads más comprometidos y listos para vender.
         </p>
         <div className="mt-3 rounded-lg border border-border bg-muted/40 px-4 py-3 text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">Example:</span> Email opened
-          <span className="font-semibold text-foreground"> +5</span>, Form submitted
-          <span className="font-semibold text-foreground"> +15</span>, Meeting booked
-          <span className="font-semibold text-foreground"> +25</span>. A contact who opens two emails,
-          submits a form, then books a meeting scores <span className="font-semibold text-foreground">50</span> —
-          flagging them as a hot lead to prioritize.
+          <span className="font-semibold text-foreground">Ejemplo:</span> Email abierto
+          <span className="font-semibold text-foreground"> +5</span>, Formulario enviado
+          <span className="font-semibold text-foreground"> +15</span>, Reunión reservada
+          <span className="font-semibold text-foreground"> +25</span>. Un contacto que abre dos emails,
+          envía un formulario y reserva una reunión alcanza <span className="font-semibold text-foreground">50</span> puntos —
+          lo marca como lead caliente para priorizar.
         </div>
       </div>
 
@@ -136,7 +136,7 @@ export default function LeadScoringTab() {
           <div className="space-y-2">
             {scoringRules.length === 0 && (
               <p className="text-sm text-muted-foreground py-4 text-center">
-                No scoring rules yet. Add one below to start scoring leads.
+                Aún no hay reglas de puntuación. Añade una abajo para empezar a puntuar leads.
               </p>
             )}
             {scoringRules.map(rule => (
@@ -150,7 +150,7 @@ export default function LeadScoringTab() {
                   <>
                     <div className="flex-1 grid grid-cols-3 gap-2">
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-1">Event Type</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de evento</label>
                         <input
                           value={editEventType}
                           onChange={e => setEditEventType(e.target.value)}
@@ -158,7 +158,7 @@ export default function LeadScoringTab() {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-1">Points</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">Puntos</label>
                         <input
                           type="number"
                           value={editPoints}
@@ -167,7 +167,7 @@ export default function LeadScoringTab() {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
                         <input
                           value={editDescription}
                           onChange={e => setEditDescription(e.target.value)}
@@ -180,13 +180,13 @@ export default function LeadScoringTab() {
                         onClick={() => saveScoringRule(rule.id)}
                         className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 transition-colors"
                       >
-                        Save
+                        Guardar
                       </button>
                       <button
                         onClick={() => setEditingRuleId(null)}
                         className="px-3 py-1 bg-muted text-foreground rounded text-xs font-medium hover:bg-accent transition-colors"
                       >
-                        Cancel
+                        Cancelar
                       </button>
                     </div>
                   </>
@@ -194,7 +194,7 @@ export default function LeadScoringTab() {
                   <>
                     <button
                       onClick={() => toggleScoringRule(rule)}
-                      title={rule.enabled ? 'Disable rule' : 'Enable rule'}
+                      title={rule.enabled ? 'Desactivar regla' : 'Activar regla'}
                       className={`shrink-0 w-9 h-5 rounded-full transition-colors relative ${
                         rule.enabled ? 'bg-primary' : 'bg-muted-foreground/30'
                       }`}
@@ -233,14 +233,14 @@ export default function LeadScoringTab() {
                           setEditDescription(rule.description ?? '');
                         }}
                         className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                        title="Edit rule"
+                        title="Editar regla"
                       >
                         <span className="material-icons text-base">edit</span>
                       </button>
                       <button
                         onClick={() => deleteScoringRule(rule.id)}
                         className="p-1 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                        title="Delete rule"
+                        title="Eliminar regla"
                       >
                         <span className="material-icons text-base">delete</span>
                       </button>
@@ -253,19 +253,19 @@ export default function LeadScoringTab() {
 
           {/* Create rule form */}
           <form onSubmit={createScoringRule} className="pt-4 border-t border-border space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Add Rule</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Añadir regla</p>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Event Type</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de evento</label>
                 <input
                   value={newEventType}
                   onChange={e => setNewEventType(e.target.value)}
-                  placeholder="e.g. form_submitted"
+                  placeholder="p. ej. form_submitted"
                   className="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Points</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Puntos</label>
                 <input
                   type="number"
                   value={newPoints}
@@ -274,11 +274,11 @@ export default function LeadScoringTab() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Description (optional)</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción (opcional)</label>
                 <input
                   value={newDescription}
                   onChange={e => setNewDescription(e.target.value)}
-                  placeholder="e.g. Contact submitted a form"
+                  placeholder="p. ej. El contacto envió un formulario"
                   className="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
@@ -291,7 +291,7 @@ export default function LeadScoringTab() {
               >
                 {scoringSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
                 <span className="material-icons text-sm">add</span>
-                Add Rule
+                Añadir regla
               </button>
             </div>
           </form>
