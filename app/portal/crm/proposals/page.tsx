@@ -217,7 +217,7 @@ export default function ProposalsPage() {
     const d = await res.json();
     setSaving(false);
     if (!d.success) {
-      setError(d.message ?? 'Failed to create proposal.');
+      setError(d.message ?? 'No se pudo crear la propuesta.');
       return;
     }
     setShowForm(false);
@@ -231,7 +231,7 @@ export default function ProposalsPage() {
 
   async function handleDuplicate(proposal: Proposal) {
     const body = {
-      title: `${proposal.title} (Copy)`,
+      title: `${proposal.title} (Copia)`,
       contactId: proposal.contactId,
       companyId: proposal.companyId,
       dealId: proposal.dealId,
@@ -277,15 +277,15 @@ export default function ProposalsPage() {
       {/* Header */}
       <PortalPageHeader
         eyebrow="CRM"
-        title="Proposals"
-        subtitle="Send proposals to clients"
+        title="Propuestas"
+        subtitle="Envía propuestas a tus clientes"
         actions={
           <button
             onClick={() => setShowForm(f => !f)}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'New Proposal'}
+            {showForm ? 'Cancelar' : 'Nueva propuesta'}
           </button>
         }
       />
@@ -302,21 +302,21 @@ export default function ProposalsPage() {
         <div className={`${pCard} p-4`}>
           <div className="flex items-center gap-2 text-blue-600 text-xs font-medium mb-1">
             <span className="material-icons text-base">send</span>
-            Sent
+            Enviadas
           </div>
           <p className="text-2xl font-bold text-foreground">{sentCount}</p>
         </div>
         <div className={`${pCard} p-4`}>
           <div className="flex items-center gap-2 text-green-600 text-xs font-medium mb-1">
             <span className="material-icons text-base">check_circle</span>
-            Accepted
+            Aceptadas
           </div>
           <p className="text-2xl font-bold text-foreground">{acceptedCount}</p>
         </div>
         <div className={`${pCard} p-4`}>
           <div className="flex items-center gap-2 text-red-600 text-xs font-medium mb-1">
             <span className="material-icons text-base">cancel</span>
-            Declined
+            Rechazadas
           </div>
           <p className="text-2xl font-bold text-foreground">{declinedCount}</p>
         </div>
@@ -325,7 +325,7 @@ export default function ProposalsPage() {
       {/* Inline Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className={`${pCardPad} space-y-4`}>
-          <h3 className={pSectionTitle}>New Proposal</h3>
+          <h3 className={pSectionTitle}>Nueva propuesta</h3>
           {error && (
             <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
               <span className="material-icons text-base">error</span>
@@ -334,30 +334,30 @@ export default function ProposalsPage() {
           )}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Title *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Título *</label>
               <input
                 required
                 value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                placeholder="Proposal title"
+                placeholder="Título de la propuesta"
                 className={pInput}
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Contact</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Contacto</label>
               <select
                 value={form.contactId}
                 onChange={e => setForm(f => ({ ...f, contactId: e.target.value }))}
                 className={pSelect}
               >
-                <option value="">Select contact...</option>
+                <option value="">Seleccionar contacto...</option>
                 {contacts.map(c => (
                   <option key={c.id} value={c.id}>{c.firstName} {c.lastName}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Company</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Empresa</label>
               <CrmCompanyTypeaheadPicker
                 value={form.companyId}
                 selectedLabel={formCompanyLabel}
@@ -365,30 +365,30 @@ export default function ProposalsPage() {
                   setForm(f => ({ ...f, companyId: opt ? String(opt.id) : '' }));
                   setFormCompanyLabel(opt ? opt.name : null);
                 }}
-                placeholder="Select company..."
+                placeholder="Seleccionar empresa..."
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Deal (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Negocio (opcional)</label>
               <select
                 value={form.dealId}
                 onChange={e => setForm(f => ({ ...f, dealId: e.target.value }))}
                 className={pSelect}
               >
-                <option value="">No deal linked</option>
+                <option value="">Sin negocio vinculado</option>
                 {deals.map(d => (
                   <option key={d.id} value={d.id}>{d.title}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Template (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Plantilla (opcional)</label>
               <select
                 value={form.templateId}
                 onChange={e => handleTemplateChange(e.target.value)}
                 className={pSelect}
               >
-                <option value="">Start from scratch</option>
+                <option value="">Empezar desde cero</option>
                 {templates.map(t => (
                   <option key={t.id} value={t.id}>{t.name}</option>
                 ))}
@@ -401,14 +401,14 @@ export default function ProposalsPage() {
               onClick={() => setShowForm(false)}
               className={pBtnGhost}
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
               disabled={saving}
               className={pBtnPrimary}
             >
-              {saving ? 'Creating...' : 'Create Proposal'}
+              {saving ? 'Creando...' : 'Crear propuesta'}
             </button>
           </div>
         </form>
@@ -420,7 +420,7 @@ export default function ProposalsPage() {
         <input
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
-          placeholder="Search proposals by title..."
+          placeholder="Buscar propuestas por título..."
           className="w-full rounded-xl border border-border bg-card pl-10 pr-4 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
         />
       </div>
@@ -429,12 +429,12 @@ export default function ProposalsPage() {
       {proposalsLoading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
           <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading proposals...
+          Cargando propuestas...
         </div>
       ) : proposals.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <span className="material-icons text-4xl mb-2 block">description</span>
-          <p>No proposals yet. Create your first proposal to get started.</p>
+          <p>Aún no hay propuestas. Crea tu primera propuesta para empezar.</p>
         </div>
       ) : (
         <div className={`${pCard} overflow-hidden`}>
@@ -442,14 +442,14 @@ export default function ProposalsPage() {
             <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-border bg-accent/30">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Title</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Contact</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Company</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Value</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Sent</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Last Viewed</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Título</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Contacto</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Empresa</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Importe</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Enviada</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Última vista</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -474,7 +474,7 @@ export default function ProposalsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${proposalStatusColor[p.status] ?? 'bg-gray-100 text-gray-600'}`}>
-                        {p.status}
+                        {({ draft: 'Borrador', sent: 'Enviada', viewed: 'Vista', accepted: 'Aceptada', declined: 'Rechazada', expired: 'Expirada' })[p.status] ?? p.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground text-xs">
@@ -495,7 +495,7 @@ export default function ProposalsPage() {
                         <button
                           onClick={() => router.push(`/portal/crm/proposals/${p.id}`)}
                           className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-                          title="Edit"
+                          title="Editar"
                         >
                           <span className="material-icons text-base">edit</span>
                         </button>
@@ -503,7 +503,7 @@ export default function ProposalsPage() {
                           <button
                             onClick={() => { setSendDialogId(p.id); setSendingUrl(''); }}
                             className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-blue-600 transition-colors"
-                            title="Send"
+                            title="Enviar"
                           >
                             <span className="material-icons text-base">send</span>
                           </button>
@@ -511,7 +511,7 @@ export default function ProposalsPage() {
                         <button
                           onClick={() => handleDuplicate(p)}
                           className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-                          title="Duplicate"
+                          title="Duplicar"
                         >
                           <span className="material-icons text-base">content_copy</span>
                         </button>
@@ -533,15 +533,15 @@ export default function ProposalsPage() {
               <>
                 <div className="flex items-center gap-2 text-green-600">
                   <span className="material-icons">check_circle</span>
-                  <h3 className={`${pSectionTitle} flex items-center gap-2`}>Proposal Sent</h3>
+                  <h3 className={`${pSectionTitle} flex items-center gap-2`}>Propuesta enviada</h3>
                 </div>
-                <p className="text-sm text-muted-foreground">Share this link with your client:</p>
+                <p className="text-sm text-muted-foreground">Comparte este enlace con tu cliente:</p>
                 <div className="flex items-center gap-2">
                   <input readOnly value={sendingUrl} className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground font-mono outline-none flex-1" />
                   <button
                     onClick={() => navigator.clipboard.writeText(sendingUrl)}
                     className="p-2 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-                    title="Copy link"
+                    title="Copiar enlace"
                   >
                     <span className="material-icons text-base">content_copy</span>
                   </button>
@@ -551,7 +551,7 @@ export default function ProposalsPage() {
                     onClick={() => { setSendDialogId(null); setSendingUrl(''); }}
                     className={pBtnPrimary}
                   >
-                    Done
+                    Hecho
                   </button>
                 </div>
               </>
@@ -559,10 +559,10 @@ export default function ProposalsPage() {
               <>
                 <h3 className={`${pSectionTitle} flex items-center gap-2`}>
                   <span className="material-icons text-blue-600">send</span>
-                  Send Proposal
+                  Enviar propuesta
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  This will mark the proposal as &quot;Sent&quot; and generate a unique link for your client.
+                  Esto marcará la propuesta como &quot;Enviada&quot; y generará un enlace único para tu cliente.
                 </p>
                 {(() => {
                   const p = proposals.find(pr => pr.id === sendDialogId);
@@ -571,7 +571,7 @@ export default function ProposalsPage() {
                     : null;
                   return contact ? (
                     <p className="text-sm text-muted-foreground">
-                      Sending to <strong className="text-foreground">{contact}</strong>
+                      Enviando a <strong className="text-foreground">{contact}</strong>
                       {p?.contactEmail ? ` (${p.contactEmail})` : ''}
                     </p>
                   ) : null;
@@ -581,14 +581,14 @@ export default function ProposalsPage() {
                     onClick={() => setSendDialogId(null)}
                     className={pBtnGhost}
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     onClick={() => handleSend(sendDialogId)}
                     disabled={sending}
                     className={pBtnPrimary}
                   >
-                    {sending ? 'Sending...' : 'Send Now'}
+                    {sending ? 'Enviando...' : 'Enviar ahora'}
                   </button>
                 </div>
               </>
