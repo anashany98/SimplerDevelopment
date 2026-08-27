@@ -7,12 +7,12 @@ import { generateOrganizationSchema } from "@/lib/utils/structured-data";
 import { headers } from "next/headers";
 import dynamic from "next/dynamic";
 
-// Code-split the app chrome (NextAuth SessionProvider + LayoutContent →
-// marketing Navigation/Footer/UserDropdown, which pull in next-auth/react and
-// a pile of icons). Statically importing them bundled all of that into the
-// client chunk loaded on EVERY page — including public client sites that never
-// render them. Dynamic (ssr:true) keeps them server-rendered where used but
-// keeps their chunk off pages (client sites) that don't render them.
+// Code-split the app chrome (NextAuth SessionProvider + LayoutContent, which
+// pull in next-auth/react and a pile of icons). Statically importing them
+// bundled all of that into the client chunk loaded on EVERY page — including
+// public client sites that never render them. Dynamic (ssr: true) keeps them
+// server-rendered where used but keeps their chunk off pages (client sites)
+// that don't render them.
 const SessionProvider = dynamic(() => import("@/components/SessionProvider"));
 const LayoutContent = dynamic(() =>
   import("@/components/LayoutContent").then((m) => m.LayoutContent),
@@ -57,9 +57,8 @@ const playfairDisplay = Playfair_Display({
 });
 
 // ─── Retro-future marketing type ────────────────────────────────────────────
-// Orbitron/Raleway (the retro-future marketing pair) now live in
-// app/(pages)/layout.tsx — see the comment there for why they cannot be
-// declared here.
+// Orbitron/Raleway (the retro-future marketing pair) lived in the deleted
+// app/(pages) route group; nothing in the app uses them anymore.
 
 export const metadata: Metadata = defaultSEO;
 
@@ -71,9 +70,9 @@ export default async function RootLayout({
   const headersList = await headers();
   const host = headersList.get("host") || "";
   // Detect client site requests — those supply their own nav/footer and skip
-  // the app marketing chrome. On a dedicated client host (e.g. a client's own domain)
+  // the app chrome. On a dedicated client host (e.g. a client's own domain)
   // the hostname check is enough. But `staging.simplerdevelopment.com` is an app
-  // host that multiplexes BOTH the marketing site (/) and client sites
+  // host that multiplexes BOTH the app (/) and client sites
   // (/sites/<domain>) on one host, so hostname alone can't tell them apart —
   // the middleware forwards `x-site-pathname` on /sites/* routes to mark them.
   const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com"];
@@ -94,10 +93,10 @@ export default async function RootLayout({
   // declaring module, not from whether the class is applied. Measured after
   // deploy — still 2 preloaded woff2 (53KB) on every client-site page.
   //
-  // The fix is where a font is DECLARED. Orbitron/Raleway moved to
-  // app/(pages)/layout.tsx, which client sites never enter. Everything left
-  // here is preload:false, so it costs a client site nothing: no preload link,
-  // and no fetch, because nothing on the page matches the face.
+  // The fix is where a font is DECLARED. The marketing pair shipped in the
+  // deleted app/(pages) route group, which client sites never enter. Everything
+  // left here is preload:false, so it costs a client site nothing: no preload
+  // link, and no fetch, because nothing on the page matches the face.
   //
   // The className gate below is still worth keeping — it stops client sites
   // inheriting unused custom properties — but it is a tidiness measure, not
@@ -182,10 +181,9 @@ gtag('config', '${gaId}');`,
         {isClientSite ? (
           // Public client sites supply their own nav/footer (app/sites/[domain]
           // layout) and have no authenticated UI, so they need neither the app
-          // marketing chrome (LayoutContent → Navigation/Footer) nor the
-          // NextAuth SessionProvider. Skipping both keeps a large amount of
-          // unused client JS off every public page. (Verified: no public-site
-          // component calls useSession.)
+          // chrome (LayoutContent) nor the NextAuth SessionProvider. Skipping
+          // both keeps a large amount of unused client JS off every public
+          // page. (Verified: no public-site component calls useSession.)
           children
         ) : (
           <SessionProvider>

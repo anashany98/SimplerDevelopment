@@ -303,11 +303,7 @@ function SignupForm() {
           </button>
         </form>
 
-        <p className="mt-5 text-center text-xs text-muted-foreground">
-          By creating an account you agree to our{' '}
-          <a href="/terms" className="underline hover:text-foreground">Terms</a> &amp;{' '}
-          <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a>.
-        </p>
+
         <p className="mt-4 text-sm text-muted-foreground">
           Already have an account?{' '}
           <a href="/portal/login" className="font-bold text-foreground hover:text-primary">
@@ -330,10 +326,6 @@ function SignupClosed() {
       </p>
 
       <div className="mt-7 flex flex-col gap-3">
-        <a href="/contact" className={authPrimaryBtn}>
-          Contact us for managed hosting
-          <span className="material-icons text-lg">arrow_forward</span>
-        </a>
         <BackToSignIn />
       </div>
     </AuthShell>

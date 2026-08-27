@@ -38,14 +38,6 @@ vi.mock('framer-motion', () => {
   return { motion, AnimatePresence: ({ children }: { children?: React.ReactNode }) => children };
 });
 
-// Animations pass through so we can find children without an IntersectionObserver
-vi.mock('@/components/animations/FadeIn', () => ({
-  FadeIn: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-anim': 'fade' }, children),
-}));
-vi.mock('@/components/animations/SlideIn', () => ({
-  SlideIn: ({ children }: { children?: React.ReactNode }) => React.createElement('div', { 'data-anim': 'slide' }, children),
-}));
-
 // Button mock — render a real <button> with passed props
 vi.mock('@/components/ui/Button', () => ({
   Button: ({ children, ...rest }: { children?: React.ReactNode; [key: string]: unknown }) =>
@@ -69,113 +61,9 @@ vi.mock('next/link', () => ({
 // ---------------------------------------------------------------------------
 // Imports under test
 // ---------------------------------------------------------------------------
-import { ContactForm } from '@/components/forms/ContactForm';
 import { SlideBlockWrapper } from '@/components/pitch-deck/SlideBlockWrapper';
 import MediaDetailModal from '@/components/admin/MediaDetailModal';
 import GraphHoverBacklinks from '@/components/brain/GraphHoverBacklinks';
-
-// ---------------------------------------------------------------------------
-// ContactForm
-// ---------------------------------------------------------------------------
-describe('ContactForm', () => {
-  beforeEach(() => {
-    // Provide a default fetch mock; individual tests override.
-    (global as Record<string, unknown>).fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({}),
-    });
-  });
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it('renders all required form fields with labels', () => {
-    render(<ContactForm />);
-    expect(screen.getByLabelText(/name \*/i)).toBeTruthy();
-    expect(screen.getByLabelText(/email \*/i)).toBeTruthy();
-    expect(screen.getByLabelText(/^subject$/i)).toBeTruthy();
-    expect(screen.getByLabelText(/message \*/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /send message/i })).toBeTruthy();
-  });
-
-  it('shows validation errors when submitting empty form', async () => {
-    render(<ContactForm />);
-    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
-    await waitFor(() => {
-      expect(screen.getByText(/name must be at least 2 characters/i)).toBeTruthy();
-    });
-    expect(screen.getByText(/valid email address/i)).toBeTruthy();
-    expect(screen.getByText(/message must be at least 10 characters/i)).toBeTruthy();
-  });
-
-  it('submits to /api/contact and shows success message on 2xx', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
-    (global as Record<string, unknown>).fetch = fetchMock;
-
-    render(<ContactForm />);
-    const nameInput = screen.getByLabelText(/name \*/i) as HTMLInputElement;
-    const emailInput = screen.getByLabelText(/email \*/i) as HTMLInputElement;
-    const messageInput = screen.getByLabelText(/message \*/i) as HTMLTextAreaElement;
-
-    const subjectInput = screen.getByLabelText(/^subject$/i) as HTMLInputElement;
-    await act(async () => {
-      fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-      fireEvent.change(emailInput, { target: { value: 'jane@example.com' } });
-      fireEvent.change(subjectInput, { target: { value: 'Project inquiry' } });
-      fireEvent.change(messageInput, {
-        target: { value: 'I have a project I want to discuss with you.' },
-      });
-    });
-
-    await act(async () => {
-      fireEvent.submit(nameInput.closest('form')!);
-    });
-
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-    }, { timeout: 3000 });
-    const [url, init] = fetchMock.mock.calls[0];
-    // Submission now goes through our own API route, not the n8n webhook directly.
-    expect(url).toBe('/api/contact');
-    expect(init.method).toBe('POST');
-    const body = JSON.parse(init.body);
-    expect(body.name).toBe('Jane Doe');
-    expect(body.email).toBe('jane@example.com');
-
-    await waitFor(() => {
-      expect(screen.getByText(/message has been sent successfully/i)).toBeTruthy();
-    });
-  });
-
-  it('shows error message when fetch responds non-ok', async () => {
-    (global as Record<string, unknown>).fetch = vi.fn().mockResolvedValue({ ok: false, json: async () => ({}) });
-    const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    render(<ContactForm />);
-    const nameInput = screen.getByLabelText(/name \*/i) as HTMLInputElement;
-    const emailInput = screen.getByLabelText(/email \*/i) as HTMLInputElement;
-    const messageInput = screen.getByLabelText(/message \*/i) as HTMLTextAreaElement;
-
-    const subjectInput = screen.getByLabelText(/^subject$/i) as HTMLInputElement;
-    await act(async () => {
-      fireEvent.change(nameInput, { target: { value: 'Janet' } });
-      fireEvent.change(emailInput, { target: { value: 'janet@example.com' } });
-      fireEvent.change(subjectInput, { target: { value: 'Help me' } });
-      fireEvent.change(messageInput, {
-        target: { value: 'A message that is long enough to pass validation.' },
-      });
-    });
-
-    await act(async () => {
-      fireEvent.submit(nameInput.closest('form')!);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(/sorry, there was an error/i)).toBeTruthy();
-    }, { timeout: 3000 });
-    errSpy.mockRestore();
-  });
-});
 
 // ---------------------------------------------------------------------------
 // SlideBlockWrapper

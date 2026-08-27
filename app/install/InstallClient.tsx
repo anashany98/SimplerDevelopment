@@ -194,11 +194,7 @@ export function InstallClient() {
         </section>
 
         <footer className="border-t border-border pt-8 text-xs text-muted-foreground">
-          Trouble installing? See{' '}
-          <a className="underline hover:text-foreground" href="/contact">
-            contact support
-          </a>{' '}
-          or open{' '}
+          Trouble installing? Open{' '}
           <code className="rounded bg-muted px-1 py-0.5">~/.claude/skills/CLIENT_QUICKSTART.md</code>{' '}
           after install for the full guide.
         </footer>

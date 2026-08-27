@@ -283,10 +283,7 @@ function LoginForm() {
 
         {isSignupDisabled ? (
           <p className="mt-6 text-sm text-muted-foreground">
-            New here?{' '}
-            <a href="/contact" className="font-bold text-foreground hover:text-primary">
-              Contact us for managed hosting
-            </a>
+            New here? Self-serve signup is disabled on this instance.
           </p>
         ) : (
           <p className="mt-6 text-sm text-muted-foreground">
@@ -296,12 +293,7 @@ function LoginForm() {
             </a>
           </p>
         )}
-        <p className="mt-2 text-xs text-muted-foreground">
-          Need access?{' '}
-          <a href="/contact" className="text-primary hover:underline">
-            Contact us
-          </a>
-        </p>
+
       </div>
     </AuthShell>
   );

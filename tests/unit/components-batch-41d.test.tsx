@@ -22,14 +22,6 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: routerPush }),
 }));
 
-// Mock Navigation / Footer used by LayoutContent so we can assert on them.
-vi.mock('@/components/ui/Navigation', () => ({
-  Navigation: () => React.createElement('nav', { 'data-testid': 'mock-nav' }, 'NAV'),
-}));
-vi.mock('@/components/ui/Footer', () => ({
-  Footer: () => React.createElement('footer', { 'data-testid': 'mock-footer' }, 'FOOT'),
-}));
-
 // SelfDestruct is lazy-loaded by LayoutContent — provide a stub module so
 // React.lazy can resolve without hitting animate.css.
 vi.mock('@/components/easter-eggs/SelfDestruct', () => ({
@@ -555,48 +547,43 @@ describe('LayoutContent', () => {
     );
   }
 
-  it('renders nav + footer for a normal marketing route', () => {
+  it('renders page body on a normal route', () => {
     renderAt('/about');
-    expect(screen.getByTestId('mock-nav')).toBeTruthy();
-    expect(screen.getByTestId('mock-footer')).toBeTruthy();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome when pathname starts with /admin', () => {
+  it('renders children as-is when pathname starts with /admin', () => {
     renderAt('/admin/dashboard');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
-    expect(screen.queryByTestId('mock-footer')).toBeNull();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /portal routes', () => {
+  it('renders children as-is on /portal routes', () => {
     renderAt('/portal/inbox');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /pitch-deck routes', () => {
+  it('renders children as-is on /pitch-deck routes', () => {
     renderAt('/pitch-deck/foo');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /book routes', () => {
+  it('renders children as-is on /book routes', () => {
     renderAt('/book/discovery');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /s/ survey routes', () => {
+  it('renders children as-is on /s/ survey routes', () => {
     renderAt('/s/abc');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /sites/ routes', () => {
+  it('renders children as-is on /sites/ routes', () => {
     renderAt('/sites/abc/edit');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome when isClientSite prop is true', () => {
+  it('renders children as-is when isClientSite prop is true', () => {
     renderAt('/some-public-page', { isClientSite: true });
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 });
