@@ -23,8 +23,8 @@ interface ReviewItem {
 }
 
 const TYPE_META: Record<ProposedType, { label: string; icon: string; tone: string }> = {
-  task: { label: 'Task', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
-  decision: { label: 'Decision', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
+  task: { label: 'Tarea', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
+  decision: { label: 'Decisión', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
   commitment: { label: 'Commitment', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
   relationship_update: { label: 'Relationship update', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
   follow_up: { label: 'Follow-up', icon: 'reply', tone: 'text-foreground bg-muted' },
@@ -164,7 +164,7 @@ export default function MeetingReviewPage() {
           Back to communication
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">reviews</span>
@@ -350,7 +350,7 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
       </div>
       {editing && (
         <div className="mt-3">
-          <label className="text-xs text-muted-foreground mb-1 block">Edit JSON before approving:</label>
+          <label className="text-xs text-muted-foreground mb-1 block">Edita el JSON antes de aprobar:</label>
           <textarea
             value={draftJson}
             onChange={(e) => setDraftJson(e.target.value)}

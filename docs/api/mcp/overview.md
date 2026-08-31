@@ -1,6 +1,6 @@
 # MCP Server — AI Agent API Overview
 
-The SimplerDevelopment portal exposes a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that lets any MCP-compatible AI client — Claude Code, Claude Desktop, a custom agent — drive your portal programmatically. You can create and publish content, manage projects and CRM records, send campaigns, and more, all from inside your AI environment of choice.
+The CRM AGENTS portal exposes a [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that lets any MCP-compatible AI client — Claude Code, Claude Desktop, a custom agent — drive your portal programmatically. You can create and publish content, manage projects and CRM records, send campaigns, and more, all from inside your AI environment of choice.
 
 **Authentication reminder:** See [authentication.md](../authentication.md) for how to issue portal API keys and OAuth tokens. This page covers the transport layer, credential types, scopes, and the approval workflow.
 
@@ -171,7 +171,7 @@ Add this to your `claude_desktop_config.json` or Claude Code MCP config:
 ```json
 {
   "mcpServers": {
-    "simplerdevelopment": {
+    "crm-agents": {
       "command": "npx",
       "args": ["-y", "mcp-remote", "https://simplerdevelopment.com/api/mcp"],
       "env": {

@@ -20,24 +20,24 @@ export default async function SettingsSupportPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground">Get help from our team.</p>
+        <p className="text-sm text-muted-foreground">Obtén ayuda de nuestro equipo.</p>
         <Link
           href="/portal/tickets/new"
           className={pBtnPrimary}
         >
           <span className="material-icons text-base">add</span>
-          New Ticket
+          Nuevo ticket
         </Link>
       </div>
 
       {tickets.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">support_agent</span>
-          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No tickets yet</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Need help? Open your first support ticket.</p>
+          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Todavía no hay tickets</h3>
+          <p className="mt-2 text-sm text-muted-foreground">¿Necesitas ayuda? Abre tu primer ticket de soporte.</p>
           <Link href="/portal/tickets/new" className={`mt-4 ${pBtnPrimary}`}>
             <span className="material-icons text-base">add</span>
-            Open Ticket
+            Abrir ticket
           </Link>
         </div>
       ) : (
@@ -47,10 +47,10 @@ export default async function SettingsSupportPage() {
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">#</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Subject</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Priority</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Asunto</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prioridad</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

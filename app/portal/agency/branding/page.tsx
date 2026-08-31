@@ -78,8 +78,8 @@ export default function AgencyBrandingPage() {
       </Link>
 
       <PortalPageHeader
-        eyebrow="Agency"
-        title="Agency Branding"
+        eyebrow="Agencia"
+        title="Marca de la agencia"
         subtitle="These overrides appear in the portal chrome — sidebar header, login wordmark, document title — when white-label mode is on."
       />
 
@@ -115,7 +115,7 @@ export default function AgencyBrandingPage() {
               className={`mt-1 ${pInput}`}
             />
             <span className="text-xs text-muted-foreground mt-1 block">
-              Replaces &quot;Simpler Development&quot; in the sidebar and login page.
+              Replaces &quot;CRM AGENTS&quot; in the sidebar and login page.
             </span>
           </label>
 
@@ -136,7 +136,7 @@ export default function AgencyBrandingPage() {
 
           {state.agencyLogoUrl && (
             <div className="rounded-xl border border-border bg-muted/30 p-3 flex items-center gap-3">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Preview</span>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">Vista previa</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={state.agencyLogoUrl} alt="Agency logo preview" className="h-8 w-auto object-contain" />
             </div>
@@ -164,9 +164,7 @@ export default function AgencyBrandingPage() {
                   type="button"
                   onClick={() => setState(s => ({ ...s, agencyPrimaryColor: '' }))}
                   className="text-xs text-muted-foreground hover:text-foreground"
-                >
-                  Clear
-                </button>
+                >Limpiar</button>
               )}
             </div>
           </label>

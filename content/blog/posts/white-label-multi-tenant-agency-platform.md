@@ -10,7 +10,7 @@ tags:
   - client-portal
   - security
   - mcp
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 ---
 

@@ -28,14 +28,14 @@ export function CreatePageIntroCard({
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <span className="material-icons text-5xl text-muted-foreground/30 mb-3 block">edit_note</span>
-          <h2 className="text-lg font-semibold text-foreground">Create New Page</h2>
-          <p className="text-sm text-muted-foreground mt-1">Fill in the details below to create the page and open the visual editor.</p>
+          <h2 className="text-lg font-semibold text-foreground">Crear página nueva</h2>
+          <p className="text-sm text-muted-foreground mt-1">Completa los detalles siguientes para crear la página y abrir el editor visual.</p>
         </div>
 
         <div className="space-y-4 bg-card border border-border rounded-xl p-6">
           {/* Title */}
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Title <span className="text-destructive">*</span></span>
+            <span className="text-sm font-medium text-foreground">Título<span className="text-destructive">*</span></span>
             <input
               type="text"
               value={formData.title}
@@ -59,12 +59,12 @@ export function CreatePageIntroCard({
                 className="block w-full bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none"
               />
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">Auto-generated from title. Edit to customize.</p>
+            <p className="mt-1 text-xs text-muted-foreground">Se genera automáticamente desde el título. Edítalo para personalizar.</p>
           </label>
 
           {/* Post Type */}
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Type</span>
+            <span className="text-sm font-medium text-foreground">Tipo</span>
             <ContentTypeSelect
               value={formData.postType}
               contentTypes={contentTypes}

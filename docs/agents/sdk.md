@@ -1,13 +1,13 @@
 # SDK Reference — `@simplerdevelopment/sdk`
 
-> **Audience:** developers building headless renderers, static-site generators, or any application that reads published content from a SimplerDevelopment-powered site.
+> **Audience:** developers building headless renderers, static-site generators, or any application that reads published content from a CRM AGENTS-powered site.
 > **Sibling docs:** [API Index](./api-index.md) · [Architecture](./architecture-for-agents.md) · [AI Overview](./ai-overview.md) · [Repository Map](./repository-map.md) · [Tool Reference](./tool-reference.md) · [Workflow Reference](./workflow-reference.md) · [Glossary](./glossary.md) · [/llms.txt](/llms.txt)
 
 ---
 
 ## Overview
 
-`@simplerdevelopment/sdk` (v0.1.0) is the official TypeScript client for the SimplerDevelopment **REST v1** surface. It wraps all 13 read-only endpoints under `/api/v1/sites/{siteId}/…` with typed methods, structured error classes, and a pluggable fetch interface.
+`@simplerdevelopment/sdk` (v0.1.0) is the official TypeScript client for the CRM AGENTS **REST v1** surface. It wraps all 13 read-only endpoints under `/api/v1/sites/{siteId}/…` with typed methods, structured error classes, and a pluggable fetch interface.
 
 Source: `packages/sdk/`  
 Package entry: `packages/sdk/src/index.ts`  
@@ -42,7 +42,7 @@ const client = new SimplerDevelopment(options);
 | `baseUrl` | `string` | No | `https://simplerdevelopment.com` | Override for self-hosted or preview deployments |
 | `fetch` | `typeof globalThis.fetch` | No | `globalThis.fetch` | Inject a custom fetch (Node < 18, edge runtimes, test mocks) |
 
-Each `SimplerDevelopment` instance is bound to one site. Instantiate separately for each site you need to query.
+Each `CRM AGENTS` instance is bound to one site. Instantiate separately for each site you need to query.
 
 ---
 

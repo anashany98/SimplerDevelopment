@@ -1,6 +1,6 @@
 # @simplerdevelopment/sdk
 
-TypeScript client for the SimplerDevelopment **REST v1** read surface. Use it to fetch published content, products, branding, and navigation from a SimplerDevelopment-powered site — suitable for headless renderers, static-site generators, and server-side data fetching.
+TypeScript client for the CRM AGENTS **REST v1** read surface. Use it to fetch published content, products, branding, and navigation from a CRM AGENTS-powered site — suitable for headless renderers, static-site generators, and server-side data fetching.
 
 ## Install
 
@@ -229,7 +229,7 @@ Other API surfaces — the Portal internal API, the Public (unauthenticated) API
 ## Limitations
 
 - **Read-only.** The REST v1 surface itself exposes no write operations; this SDK mirrors that constraint.
-- **Site-scoped.** One `SimplerDevelopment` instance is bound to one `siteId`. Instantiate multiple clients to query multiple sites.
+- **Site-scoped.** One `CRM AGENTS` instance is bound to one `siteId`. Instantiate multiple clients to query multiple sites.
 - **No streaming.** All methods resolve a single `Promise`; there is no streaming or SSE support.
 - **No caching.** Caching (ISR, SWR, etc.) is the responsibility of the calling application.
 

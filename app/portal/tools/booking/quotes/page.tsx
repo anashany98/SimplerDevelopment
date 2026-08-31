@@ -49,18 +49,14 @@ export default function BookingQuotesPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Link href="/portal/tools/booking" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-        <span className="material-icons text-lg">arrow_back</span>
-        Back
-      </Link>
+        <span className="material-icons text-lg">arrow_back</span>Volver</Link>
       <PortalPageHeader
-        eyebrow="Booking"
+        eyebrow="Reservas"
         title="Custom Quotes"
-        subtitle="Create payment links for custom bookings"
+        subtitle="Crea enlaces de pago para reservas personalizadas"
         actions={
           <Link href="/portal/tools/booking/quotes/new" className={pBtnPrimary}>
-            <span className="material-icons text-base">add</span>
-            New Quote
-          </Link>
+            <span className="material-icons text-base">add</span>Nueva cotización</Link>
         }
       />
 
@@ -71,12 +67,10 @@ export default function BookingQuotesPage() {
       ) : quotes.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-4xl text-muted-foreground mb-3 block">request_quote</span>
-          <h2 className="text-lg font-semibold text-foreground mb-1">No quotes yet</h2>
-          <p className="text-sm text-muted-foreground mb-4">Create a custom quote to send a payment link to a client</p>
+          <h2 className="text-lg font-semibold text-foreground mb-1">Aún no hay cotizaciones</h2>
+          <p className="text-sm text-muted-foreground mb-4">Crea un presupuesto personalizado para enviar un enlace de pago a un cliente</p>
           <Link href="/portal/tools/booking/quotes/new" className={pBtnPrimary}>
-            <span className="material-icons text-base">add</span>
-            Create First Quote
-          </Link>
+            <span className="material-icons text-base">add</span>Crear primera cotización</Link>
         </div>
       ) : (
         <div className={`${pCard} overflow-hidden`}>

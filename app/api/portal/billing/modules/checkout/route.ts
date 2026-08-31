@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       {
         success: false,
         message:
-          'Your plan is managed by SimplerDevelopment — contact us to make changes.',
+          'Your plan is managed by CRM AGENTS — contact us to make changes.',
       },
       { status: 403 },
     );
@@ -249,7 +249,7 @@ export async function POST(req: Request) {
     checkoutSession = await createSession(lineItems);
   } catch (err) {
     // The catalog's pre-provisioned product/price ids belong to the
-    // SimplerDevelopment Stripe account; a self-hoster's own key can't see
+    // CRM AGENTS Stripe account; a self-hoster's own key can't see
     // them ("No such product"). Rebuild the lines with INLINE product_data
     // (Stripe creates the products at session time) and retry once.
     const code = (err as Stripe.errors.StripeError)?.code;

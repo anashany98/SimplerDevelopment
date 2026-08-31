@@ -48,17 +48,17 @@ export default async function PortalServicesPage({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Catalog"
-        title="Add a Service"
-        subtitle="Extend your workspace with powerful add-ons managed by Simpler Development."
+        eyebrow="Catálogo"
+        title="Añadir un servicio"
+        subtitle="Amplía tu espacio de trabajo con potentes complementos gestionados por CRM AGENTS."
       />
 
       {purchased === '1' && (
         <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300">
           <span className="material-icons text-green-600">check_circle</span>
           <div>
-            <p className="font-medium text-sm">Payment successful!</p>
-            <p className="text-xs mt-0.5">Your service is being activated. It will appear as active shortly.</p>
+            <p className="font-medium text-sm">¡Pago realizado correctamente!</p>
+            <p className="text-xs mt-0.5">Tu servicio se está activando. Aparecerá como activo en breve.</p>
           </div>
         </div>
       )}
@@ -67,8 +67,8 @@ export default async function PortalServicesPage({
         <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300">
           <span className="material-icons text-blue-600">check_circle</span>
           <div>
-            <p className="font-medium text-sm">Request submitted!</p>
-            <p className="text-xs mt-0.5">We&apos;ve received your request and will be in touch shortly.</p>
+            <p className="font-medium text-sm">¡Solicitud enviada!</p>
+            <p className="text-xs mt-0.5">Hemos recibido tu solicitud y nos pondremos en contacto contigo en breve.</p>
           </div>
         </div>
       )}
@@ -76,8 +76,8 @@ export default async function PortalServicesPage({
       {allServices.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">storefront</span>
-          <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No services available</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Check back soon or contact us about custom services.</p>
+          <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No hay servicios disponibles</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Vuelve pronto o contacta con nosotros sobre servicios personalizados.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -111,7 +111,7 @@ export default async function PortalServicesPage({
                           {owned && (
                             <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                               <span className="material-icons text-xs">check_circle</span>
-                              Active
+                              Activo
                             </span>
                           )}
                         </div>
@@ -131,18 +131,18 @@ export default async function PortalServicesPage({
                         {owned ? (
                           <span className="text-xs text-primary flex items-center gap-0.5 font-medium">
                             <span className="material-icons text-xs">verified</span>
-                            Subscribed
+                            Suscrito
                           </span>
                         ) : hasSurvey ? (
                           <Link
                             href={`/portal/services/${svc.id}/request`}
                             className={pBtnPrimary}
                           >
-                            Get Started
+                            Empezar
                             <span className="material-icons text-base">arrow_forward</span>
                           </Link>
                         ) : (
-                          <BuyServiceButton serviceId={svc.id} label="Buy" />
+                          <BuyServiceButton serviceId={svc.id} label="Comprar" />
                         )}
                       </div>
                     </div>
@@ -194,12 +194,12 @@ export default async function PortalServicesPage({
 
       <div className="flex items-center gap-3 p-4 bg-muted/40 border border-border rounded-2xl">
         <span className="material-icons text-muted-foreground">help_outline</span>
-        <p className="text-sm text-muted-foreground flex-1">Need something not listed here?</p>
+        <p className="text-sm text-muted-foreground flex-1">¿Necesitas algo que no aparece aquí?</p>
         <Link
           href="/portal/tickets/new"
           className="flex items-center gap-1 text-sm text-primary hover:underline shrink-0"
         >
-          Contact us
+          Contacta con nosotros
           <span className="material-icons text-sm">arrow_forward</span>
         </Link>
       </div>

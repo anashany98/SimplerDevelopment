@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const LLMS_TXT = `# SimplerDevelopment
+const LLMS_TXT = `# CRM AGENTS
 
 > Multi-tenant agency SaaS: websites + CMS, CRM, AI Company Brain (RAG),
 > automations, commerce, bookings, email campaigns — all controllable via

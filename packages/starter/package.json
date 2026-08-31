@@ -2,7 +2,7 @@
   "name": "simplerdevelopment-starter",
   "version": "0.1.0",
   "private": true,
-  "description": "Starter for a headless site rendered from a SimplerDevelopment CMS site",
+  "description": "Starter for a headless site rendered from a CRM AGENTS CMS site",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

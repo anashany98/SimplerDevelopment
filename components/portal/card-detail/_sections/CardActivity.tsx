@@ -28,7 +28,7 @@ export function CardActivity({ activities, showActivity, setShowActivity }: Prop
       </button>
       {showActivity &&
         (activities.length === 0 ? (
-          <p className="text-xs text-muted-foreground italic">No activity yet.</p>
+          <p className="text-xs text-muted-foreground italic">Aún no hay actividad.</p>
         ) : (
           <ul className="space-y-2">
             {activities.map(a => (

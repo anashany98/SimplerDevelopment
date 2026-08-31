@@ -327,14 +327,14 @@ export default function AdminSubscriptionsPage() {
           <table className="w-full text-sm">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Service</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Categoría</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Precio</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Billing</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Renewal</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -368,7 +368,7 @@ export default function AdminSubscriptionsPage() {
                     <button
                       onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === sub.id ? null : sub.id); }}
                       className="inline-flex items-center gap-1 px-2 py-1 rounded-md hover:bg-accent text-muted-foreground"
-                      aria-label="Actions"
+                      aria-label="Acciones"
                     >
                       <span className="material-icons text-base">more_horiz</span>
                     </button>
@@ -388,17 +388,13 @@ export default function AdminSubscriptionsPage() {
                           onClick={() => openAction('refund', sub)}
                           className="w-full text-left px-3 py-2 text-sm hover:bg-accent flex items-center gap-2 text-foreground"
                         >
-                          <span className="material-icons text-base">undo</span>
-                          Refund
-                        </button>
+                          <span className="material-icons text-base">undo</span>Reembolso</button>
                         <button
                           onClick={() => openAction('cancel', sub)}
                           className="w-full text-left px-3 py-2 text-sm hover:bg-accent flex items-center gap-2 text-red-600"
                           disabled={sub.status === 'cancelled'}
                         >
-                          <span className="material-icons text-base">cancel</span>
-                          Cancel
-                        </button>
+                          <span className="material-icons text-base">cancel</span>Cancelar</button>
                       </div>
                     )}
                   </td>
@@ -427,7 +423,7 @@ export default function AdminSubscriptionsPage() {
               <button
                 onClick={closeAction}
                 className="p-2 rounded-md hover:bg-accent text-muted-foreground"
-                aria-label="Close"
+                aria-label="Cerrar"
                 disabled={submitting}
               >
                 <span className="material-icons text-base">close</span>
@@ -543,9 +539,7 @@ export default function AdminSubscriptionsPage() {
                 onClick={closeAction}
                 className="px-4 py-2 text-sm rounded-md hover:bg-accent text-muted-foreground"
                 disabled={submitting}
-              >
-                Close
-              </button>
+              >Cerrar</button>
               {activeAction.kind === 'cancel' && (
                 <button
                   onClick={submitCancel}

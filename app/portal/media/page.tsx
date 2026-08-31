@@ -90,7 +90,7 @@ export default function PortalMediaPage() {
       .then(res => {
         if (res.success) {
           setMedia(res.data);
-          setTotal(res.pagination.total);
+          setTotal(res.pagination?.total ?? 0);
           if (res.brandingProfiles) setBrandingProfiles(res.brandingProfiles);
         }
       })
@@ -146,10 +146,10 @@ export default function PortalMediaPage() {
         load();
       } else {
         const data = await res.json();
-        alert(data.message || 'Upload failed');
+        alert(data.message || 'La subida falló');
       }
     } catch {
-      alert('Upload failed');
+      alert('La subida falló');
     } finally {
       setUploading(false);
     }
@@ -205,10 +205,10 @@ export default function PortalMediaPage() {
 
   const handleRestoreVersion = async (versionId: number) => {
     if (!detail) return;
-    if (!confirm('Restore this version? The current file will be moved into history.')) return;
+    if (!confirm('¿Restaurar esta versión? El archivo actual se moverá al historial.')) return;
     const res = await fetch(`${base}/${detail.id}/versions/${versionId}/restore`, { method: 'POST' });
     if (!res.ok) {
-      alert('Restore failed');
+      alert('La restauración falló');
       return;
     }
     const json = await res.json();
@@ -245,7 +245,7 @@ export default function PortalMediaPage() {
   };
 
   const handleDeleteMedia = async () => {
-    if (!detail || !confirm('Delete this file?')) return;
+    if (!detail || !confirm('¿Eliminar este archivo?')) return;
     await fetch(`${base}/${detail.id}`, { method: 'DELETE' });
     setDetail(null);
     load();
@@ -259,16 +259,16 @@ export default function PortalMediaPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Media"
-        title="Media Library"
-        subtitle="Upload and manage images, videos, and documents across all services."
+        eyebrow="Medios"
+        title="Biblioteca de medios"
+        subtitle="Sube y gestiona imágenes, vídeos y documentos en todos tus servicios."
         actions={
           <button
             onClick={() => setShowUpload(true)}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">cloud_upload</span>
-            Upload
+            Subir
           </button>
         }
       />
@@ -277,7 +277,7 @@ export default function PortalMediaPage() {
       <div className="bg-card border border-border rounded-2xl p-4 space-y-3">
         <input
           type="text"
-          placeholder="Search by filename, alt text, or caption..."
+          placeholder="Buscar por nombre de archivo, texto alternativo o pie de foto..."
           value={search}
           onChange={e => { setSearch(e.target.value); setOffset(0); }}
           className={pInput}
@@ -302,11 +302,11 @@ export default function PortalMediaPage() {
               onChange={e => { setProfileFilter(e.target.value); setOffset(0); }}
               className={`ml-auto ${pSelect}`}
             >
-              <option value="">All Brands</option>
+              <option value="">Todas las marcas</option>
               {brandingProfiles.map(p => (
                 <option key={p.id} value={String(p.id)}>{p.name}</option>
               ))}
-              <option value="unassigned">Unassigned</option>
+              <option value="unassigned">Sin asignar</option>
             </select>
           )}
         </div>
@@ -321,7 +321,7 @@ export default function PortalMediaPage() {
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-4xl text-muted-foreground/40">perm_media</span>
           <p className="text-sm text-muted-foreground mt-2">
-            {search || filter !== 'all' || profileFilter ? 'No media matches your filters.' : 'No media yet. Upload your first file.'}
+            {search || filter !== 'all' || profileFilter ? 'Ningún medio coincide con tus filtros.' : 'Todavía no hay medios. Sube tu primer archivo.'}
           </p>
         </div>
       ) : (
@@ -368,7 +368,7 @@ export default function PortalMediaPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {total > limit && (
         <div className="flex justify-center items-center gap-3">
           <button
@@ -376,17 +376,17 @@ export default function PortalMediaPage() {
             onClick={() => setOffset(Math.max(0, offset - limit))}
             className={`${pBtnGhost} text-sm px-3 py-1.5`}
           >
-            Previous
+            Anterior
           </button>
           <span className="text-xs text-muted-foreground">
-            {offset + 1}–{Math.min(offset + limit, total)} of {total}
+            {offset + 1}–{Math.min(offset + limit, total)} de {total}
           </span>
           <button
             disabled={offset + limit >= total}
             onClick={() => setOffset(offset + limit)}
             className={`${pBtnGhost} text-sm px-3 py-1.5`}
           >
-            Next
+            Siguiente
           </button>
         </div>
       )}
@@ -397,7 +397,7 @@ export default function PortalMediaPage() {
           <div className="bg-card rounded-xl shadow-2xl max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-foreground">Upload Media</h2>
+                <h2 className="text-lg font-bold text-foreground">Subir medios</h2>
                 <button onClick={() => setShowUpload(false)} className="text-muted-foreground hover:text-foreground">
                   <span className="material-icons">close</span>
                 </button>
@@ -415,14 +415,14 @@ export default function PortalMediaPage() {
               >
                 <input ref={fileInputRef} type="file" className="hidden" onChange={e => e.target.files?.[0] && selectFile(e.target.files[0])} />
                 {preview ? (
-                  <img src={preview} alt="Preview" className="max-h-40 mx-auto rounded-lg" />
+                  <img src={preview} alt="Vista previa" className="max-h-40 mx-auto rounded-lg" />
                 ) : (
                   <>
                     <span className="material-icons text-4xl text-muted-foreground">cloud_upload</span>
                     <p className="text-sm font-medium text-foreground mt-2">
-                      {selectedFile ? selectedFile.name : 'Drop files here or click to browse'}
+                      {selectedFile ? selectedFile.name : 'Suelta los archivos aquí o haz clic para explorar'}
                     </p>
-                    {!selectedFile && <p className="text-xs text-muted-foreground mt-1">Images, videos, and documents</p>}
+                    {!selectedFile && <p className="text-xs text-muted-foreground mt-1">Imágenes, vídeos y documentos</p>}
                   </>
                 )}
               </div>
@@ -431,13 +431,13 @@ export default function PortalMediaPage() {
                 <>
                   {brandingProfiles.length > 0 && (
                     <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-foreground">Brand</label>
+                      <label className="text-sm font-medium text-foreground">Marca</label>
                       <select
                         value={uploadProfileId}
                         onChange={e => setUploadProfileId(e.target.value)}
                         className={pSelect}
                       >
-                        <option value="">No brand assigned</option>
+                        <option value="">Sin marca asignada</option>
                         {brandingProfiles.map(p => (
                           <option key={p.id} value={String(p.id)}>{p.name}</option>
                         ))}
@@ -445,21 +445,21 @@ export default function PortalMediaPage() {
                     </div>
                   )}
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Alt Text</label>
+                    <label className="text-sm font-medium text-foreground">Texto alternativo</label>
                     <input
                       value={uploadAlt}
                       onChange={e => setUploadAlt(e.target.value)}
-                      placeholder="Describe the image"
+                      placeholder="Describe la imagen"
                       className={pInput}
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Caption</label>
+                    <label className="text-sm font-medium text-foreground">Pie de foto</label>
                     <textarea
                       value={uploadCaption}
                       onChange={e => setUploadCaption(e.target.value)}
                       rows={2}
-                      placeholder="Optional caption"
+                      placeholder="Pie de foto opcional"
                       className={`${pInput} resize-none`}
                     />
                   </div>
@@ -470,13 +470,13 @@ export default function PortalMediaPage() {
                       className={`flex-1 ${pBtnPrimary}`}
                     >
                       {uploading && <span className="material-icons text-base animate-spin">refresh</span>}
-                      {uploading ? 'Uploading...' : 'Upload'}
+                      {uploading ? 'Subiendo...' : 'Subir'}
                     </button>
                     <button
                       onClick={() => setShowUpload(false)}
                       className={pBtnGhost}
                     >
-                      Cancel
+                      Cancelar
                     </button>
                   </div>
                 </>
@@ -492,7 +492,7 @@ export default function PortalMediaPage() {
           <div className="bg-card rounded-xl shadow-2xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-foreground">Media Details</h2>
+                <h2 className="text-lg font-bold text-foreground">Detalles del medio</h2>
                 <button onClick={() => setDetail(null)} className="text-muted-foreground hover:text-foreground">
                   <span className="material-icons">close</span>
                 </button>
@@ -509,18 +509,18 @@ export default function PortalMediaPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
-                <div><span className="font-medium">Filename:</span> {detail.filename}</div>
-                <div><span className="font-medium">Type:</span> {detail.mimeType}</div>
-                <div><span className="font-medium">Size:</span> {formatBytes(detail.fileSize)}</div>
-                {detail.width && detail.height && <div><span className="font-medium">Dimensions:</span> {detail.width} x {detail.height}</div>}
-                <div><span className="font-medium">Uploaded:</span> {new Date(detail.createdAt).toLocaleDateString()}</div>
-                {detail.brandingProfileName && <div><span className="font-medium">Brand:</span> {detail.brandingProfileName}</div>}
+                <div><span className="font-medium">Nombre de archivo:</span> {detail.filename}</div>
+                <div><span className="font-medium">Tipo:</span> {detail.mimeType}</div>
+                <div><span className="font-medium">Tamaño:</span> {formatBytes(detail.fileSize)}</div>
+                {detail.width && detail.height && <div><span className="font-medium">Dimensiones:</span> {detail.width} x {detail.height}</div>}
+                <div><span className="font-medium">Subido:</span> {new Date(detail.createdAt).toLocaleDateString()}</div>
+                {detail.brandingProfileName && <div><span className="font-medium">Marca:</span> {detail.brandingProfileName}</div>}
               </div>
 
               {editMode ? (
                 <div className="space-y-3 pt-2">
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Alt Text</label>
+                    <label className="text-sm font-medium text-foreground">Texto alternativo</label>
                     <input
                       value={editAlt}
                       onChange={e => setEditAlt(e.target.value)}
@@ -528,7 +528,7 @@ export default function PortalMediaPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Caption</label>
+                    <label className="text-sm font-medium text-foreground">Pie de foto</label>
                     <textarea
                       value={editCaption}
                       onChange={e => setEditCaption(e.target.value)}
@@ -542,20 +542,20 @@ export default function PortalMediaPage() {
                       disabled={savingDetail}
                       className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
                     >
-                      {savingDetail ? 'Saving...' : 'Save'}
+                      {savingDetail ? 'Guardando...' : 'Guardar'}
                     </button>
                     <button
                       onClick={() => setEditMode(false)}
                       className="px-4 py-2 text-sm text-foreground border border-border rounded-lg hover:bg-accent transition-colors"
                     >
-                      Cancel
+                      Cancelar
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1 text-sm">
                   {detail.alt && <p><span className="font-medium">Alt:</span> {detail.alt}</p>}
-                  {detail.caption && <p><span className="font-medium">Caption:</span> {detail.caption}</p>}
+                  {detail.caption && <p><span className="font-medium">Pie:</span> {detail.caption}</p>}
                 </div>
               )}
 
@@ -575,7 +575,7 @@ export default function PortalMediaPage() {
                   className={pBtnPrimary}
                 >
                   <span className="material-icons text-base">content_copy</span>
-                  Copy URL
+                  Copiar URL
                 </button>
                 <button
                   onClick={() => replaceInputRef.current?.click()}
@@ -583,21 +583,21 @@ export default function PortalMediaPage() {
                   className={pBtnGhost}
                 >
                   <span className="material-icons text-base">{replacing ? 'refresh' : 'upload_file'}</span>
-                  {replacing ? 'Replacing…' : 'Replace File'}
+                  {replacing ? 'Reemplazando…' : 'Reemplazar archivo'}
                 </button>
                 {!editMode && (
                   <button
                     onClick={() => setEditMode(true)}
                     className={pBtnGhost}
                   >
-                    Edit Metadata
+                    Editar metadatos
                   </button>
                 )}
                 <button
                   onClick={handleDeleteMedia}
                   className="ml-auto px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 transition-colors"
                 >
-                  Delete
+                  Eliminar
                 </button>
               </div>
 
@@ -611,12 +611,12 @@ export default function PortalMediaPage() {
                   className="flex items-center gap-1.5 text-sm text-foreground hover:text-primary transition-colors"
                 >
                   <span className="material-icons text-base">{versionsOpen ? 'expand_less' : 'expand_more'}</span>
-                  Version history{detail.version ? ` (current: v${detail.version})` : ''}
+                  Historial de versiones{detail.version ? ` (actual: v${detail.version})` : ''}
                 </button>
                 {versionsOpen && (
                   <div className="mt-3 space-y-2">
                     {versions.length === 0 ? (
-                      <p className="text-xs text-muted-foreground">No prior versions yet. Replace the file to start a history.</p>
+                      <p className="text-xs text-muted-foreground">Todavía no hay versiones anteriores. Reemplaza el archivo para empezar un historial.</p>
                     ) : (
                       versions.map((v) => (
                         <div key={v.id} className="flex items-center gap-3 px-3 py-2 rounded-xl border border-border bg-background">
@@ -633,13 +633,13 @@ export default function PortalMediaPage() {
                             rel="noopener"
                             className="text-xs text-muted-foreground hover:text-foreground"
                           >
-                            View
+                            Ver
                           </a>
                           <button
                             onClick={() => handleRestoreVersion(v.id)}
                             className={`${pBtnGhost} text-xs px-2 py-1`}
                           >
-                            Restore
+                            Restaurar
                           </button>
                         </div>
                       ))

@@ -159,7 +159,7 @@ export function AccordionBlockPreview({ block, isSelected, onChange }: Accordion
             <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
-            <span className="text-sm text-muted-foreground">Add Item</span>
+            <span className="text-sm text-muted-foreground">Añadir elemento</span>
           </button>
         )}
       </div>

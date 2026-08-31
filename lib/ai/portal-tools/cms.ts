@@ -5,9 +5,12 @@
 import type { PortalTool } from './types';
 import { db } from '@/lib/db';
 import {
-  clientWebsites, posts, postRevisions, categories, tags, media, hostedSites,
+  clients, clientWebsites, posts, postRevisions, categories, tags, media, hostedSites,
 } from '@/lib/db/schema';
 import { eq, and, desc, sql } from 'drizzle-orm';
+import { generateUniqueSubdomain } from '@/lib/subdomain';
+
+const MAX_WEBSITE_NAME_LENGTH = 255;
 
 export const cmsTools: PortalTool[] = [
   {
@@ -57,6 +60,18 @@ export const cmsTools: PortalTool[] = [
     input_schema: { type: 'object' as const, properties: {}, required: [] },
   },
   {
+    name: 'create_website',
+    description: 'Create a new draft website container in pending deployment status. Returns the new website ID to use with create_website_page when adding pages.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        name: { type: 'string', description: 'Website name' },
+        description: { type: 'string', description: 'Website description (optional)' },
+      },
+      required: ['name'],
+    },
+  },
+  {
     name: 'create_website_page',
     description: 'Create a new page/post on a client website with optional block content. Only call AFTER the client confirms the details. For blog posts, generate appropriate blocks (heading, text, image, etc.).',
     input_schema: {
@@ -67,7 +82,6 @@ export const cmsTools: PortalTool[] = [
         slug: { type: 'string', description: 'URL slug for the page' },
         post_type: { type: 'string', enum: ['page', 'blog', 'landing'], description: 'Type of page' },
         excerpt: { type: 'string', description: 'Short excerpt/summary (optional)' },
-        published: { type: 'boolean', description: 'Whether to publish immediately' },
         blocks: { type: 'string', description: 'Optional JSON string of block content array. If omitted, page starts empty.' },
       },
       required: ['website_id', 'title', 'slug', 'post_type'],
@@ -274,13 +288,87 @@ export const cmsHandlers: Record<string, CmsHandler> = {
     return rows;
   },
 
+  create_website: async (input, clientId, _userId) => {
+    void _userId;
+    if (typeof input.name !== 'string' || !input.name.trim()) {
+      return { error: 'Website name is required and must be a non-empty string.' };
+    }
+
+    const name = input.name.trim();
+    if (name.length > MAX_WEBSITE_NAME_LENGTH) {
+      return { error: `Website name must be ${MAX_WEBSITE_NAME_LENGTH} characters or fewer.` };
+    }
+
+    // Retried chat turns must not create duplicate containers. Keep the
+    // lookup tenant-scoped and compare names case-insensitively in code so the
+    // tool remains compatible with the lightweight Drizzle test adapter.
+    const activeSites = await db.select({
+      id: clientWebsites.id,
+      name: clientWebsites.name,
+      subdomain: clientWebsites.subdomain,
+      vercelDomain: clientWebsites.vercelDomain,
+      deploymentStatus: clientWebsites.deploymentStatus,
+    }).from(clientWebsites).where(and(
+      eq(clientWebsites.clientId, clientId),
+      eq(clientWebsites.active, true),
+    ));
+    const normalizedName = name.toLocaleLowerCase();
+    const existing = activeSites.find((site) => site.name.trim().toLocaleLowerCase() === normalizedName);
+    if (existing) {
+      const existingDomain = existing.vercelDomain
+        || (existing.subdomain ? `${existing.subdomain}.simplerdevelopment.com` : null);
+      return {
+        websiteId: existing.id,
+        name: existing.name,
+        subdomain: existing.subdomain,
+        url: existingDomain ? `https://${existingDomain}` : null,
+        deploymentStatus: existing.deploymentStatus,
+        created: false,
+      };
+    }
+
+    const [client] = await db.select({ company: clients.company }).from(clients)
+      .where(eq(clients.id, clientId)).limit(1);
+    const companyName = typeof client?.company === 'string' && client.company.trim()
+      ? client.company.trim()
+      : 'site';
+    const subdomain = await generateUniqueSubdomain(companyName, name);
+    const vercelDomain = `${subdomain}.simplerdevelopment.com`;
+    const description = typeof input.description === 'string' && input.description.trim()
+      ? input.description.trim()
+      : null;
+
+    const [site] = await db.insert(clientWebsites).values({
+      clientId,
+      name,
+      description,
+      subdomain,
+      vercelDomain,
+      deploymentStatus: 'pending',
+      active: true,
+    }).returning();
+
+    return {
+      websiteId: site.id,
+      name: site.name,
+      subdomain: site.subdomain,
+      url: `https://${vercelDomain}`,
+      deploymentStatus: site.deploymentStatus,
+      created: true,
+    };
+  },
+
   create_website_page: async (input, clientId, _userId) => {
     const websiteId = input.website_id as number;
+    if (!Number.isInteger(websiteId) || websiteId <= 0) {
+      return {
+        error: 'A positive integer website_id is required. Use get_my_websites to select an existing website or create_website to create one first.',
+      };
+    }
     const title = input.title as string;
     const slug = input.slug as string;
     const postType = (input.post_type as string) || 'page';
     const excerpt = input.excerpt as string | undefined;
-    const published = input.published as boolean | undefined;
     const blocksStr = input.blocks as string | undefined;
 
     const [site] = await db.select().from(clientWebsites)
@@ -302,15 +390,15 @@ export const cmsHandlers: Record<string, CmsHandler> = {
       postType,
       excerpt: excerpt ?? null,
       content,
-      published: published ?? false,
-      publishedAt: published ? new Date() : null,
+      published: false,
+      publishedAt: null,
       websiteId,
     }).returning();
 
     return {
       success: true,
       postId: post.id,
-      message: `Page "${title}" created${published ? ' and published' : ' as draft'}.`,
+      message: `Page "${title}" created as draft.`,
     };
   },
 

@@ -154,14 +154,14 @@ export default function BrainDocumentsQueuePage() {
       </nav>
 
       <PortalPageHeader
-        eyebrow="Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">assignment_late</span>
             My reading queue
           </span>
         }
-        subtitle="Documents you're required to read, plus your recent acknowledgments."
+        subtitle="Documentos que debes leer, además de tus confirmaciones recientes."
       />
 
       {hint && (
@@ -176,9 +176,7 @@ export default function BrainDocumentsQueuePage() {
 
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       )}
 
       {error && !loading && (
@@ -194,7 +192,7 @@ export default function BrainDocumentsQueuePage() {
       {!loading && !error && !hint && (
         <div className="space-y-5">
           <QueueSection
-            title="Overdue"
+            title="Atrasado"
             icon="warning"
             accent="red"
             rows={overdue}
@@ -212,7 +210,7 @@ export default function BrainDocumentsQueuePage() {
             disabled={personId === null}
           />
           <QueueSection
-            title="Open"
+            title="Abiertos"
             icon="task"
             accent="default"
             rows={open}
@@ -227,7 +225,7 @@ export default function BrainDocumentsQueuePage() {
               Recently acknowledged ({acks.length})
             </h2>
             {acks.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic">No acknowledgments yet.</p>
+              <p className="text-xs text-muted-foreground italic">Aún no hay confirmaciones.</p>
             ) : (
               <ul className="space-y-1.5">
                 {acks.map((a) => (
@@ -298,7 +296,7 @@ function QueueSection({
         {title} ({rows.length})
       </h2>
       {rows.length === 0 ? (
-        <p className="text-xs text-muted-foreground italic">Nothing here.</p>
+        <p className="text-xs text-muted-foreground italic">Nada aquí.</p>
       ) : (
         <ul className="space-y-1.5">
           {rows.map((r) => (

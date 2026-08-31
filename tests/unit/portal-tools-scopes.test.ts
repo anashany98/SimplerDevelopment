@@ -14,7 +14,9 @@ import { describe, it, expect, vi } from 'vitest';
 // Stub DB-touching imports so the handler modules can be loaded in isolation.
 vi.mock('@/lib/db', () => ({ db: {} }));
 vi.mock('@/lib/automation/event-bus', () => ({ emitEvent: vi.fn() }));
-vi.mock('@/lib/crm/default-pipeline', () => ({ ensureDefaultPipeline: vi.fn() }));
+vi.mock('@/lib/crm/default-pipeline', () => ({
+  ensureDefaultPipeline: vi.fn(),
+}));
 
 import { HANDLERS } from '@/lib/ai/portal-tools';
 import { PORTAL_TOOL_SCOPES, requiredScopeFor } from '@/lib/ai/portal-tools/scopes';
@@ -30,6 +32,8 @@ const VALID_SCOPES = new Set([
   'bookings:read',
   'bookings:write',
   'brain:write',
+  'chat:read',
+  'chat:write',
   'crm:read',
   'crm:write',
   'decks:read',
@@ -64,17 +68,11 @@ describe('PORTAL_TOOL_SCOPES — completeness', () => {
     const handlerKeys = Object.keys(HANDLERS).sort();
     const scopeKeys = Object.keys(PORTAL_TOOL_SCOPES).sort();
 
-    const missing = handlerKeys.filter(k => !(k in PORTAL_TOOL_SCOPES));
-    expect(
-      missing,
-      `These handler keys are missing from PORTAL_TOOL_SCOPES: ${missing.join(', ')}`,
-    ).toEqual([]);
+    const missing = handlerKeys.filter((k) => !(k in PORTAL_TOOL_SCOPES));
+    expect(missing, `These handler keys are missing from PORTAL_TOOL_SCOPES: ${missing.join(', ')}`).toEqual([]);
 
-    const extra = scopeKeys.filter(k => !(k in HANDLERS));
-    expect(
-      extra,
-      `These scope keys have no matching handler (stale entries): ${extra.join(', ')}`,
-    ).toEqual([]);
+    const extra = scopeKeys.filter((k) => !(k in HANDLERS));
+    expect(extra, `These scope keys have no matching handler (stale entries): ${extra.join(', ')}`).toEqual([]);
   });
 
   it('PORTAL_TOOL_SCOPES has exactly as many entries as HANDLERS', () => {
@@ -90,10 +88,7 @@ describe('PORTAL_TOOL_SCOPES — vocabulary', () => {
         invalid.push([tool, scope]);
       }
     }
-    expect(
-      invalid,
-      `Invalid scope values: ${invalid.map(([t, s]) => `${t}→"${s}"`).join(', ')}`,
-    ).toEqual([]);
+    expect(invalid, `Invalid scope values: ${invalid.map(([t, s]) => `${t}→"${s}"`).join(', ')}`).toEqual([]);
   });
 });
 

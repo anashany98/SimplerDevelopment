@@ -15,7 +15,7 @@ import { useAgencyChrome } from '@/components/portal/AgencyChromeProvider';
 export function AuthShell({
   children,
   panelTitle,
-  panelSubtitle = 'Sign in to your command center.',
+  panelSubtitle = 'Inicia sesión en tu centro de control.',
 }: {
   children: ReactNode;
   /** Overrides the big panel heading. Defaults to the tenant brand name. */
@@ -31,7 +31,7 @@ export function AuthShell({
     <div className="grid min-h-screen w-full lg:grid-cols-[46%_54%]">
       {/* LEFT — form */}
       <div className="relative flex flex-col justify-center bg-background px-6 py-16 sm:px-12 lg:px-[7vw]">
-        {/* wordmark — the main-site logo (icon + Simpler Development), from the
+        {/* wordmark — the main-site logo (icon + CRM AGENTS), from the
             top-nav. Note: this is the platform mark, not the tenant brand. */}
         <Link
           href="/"
@@ -58,7 +58,7 @@ export function AuthShell({
         <div className="relative z-10 max-w-[520px]">
           <div className="mb-5 flex items-center gap-2.5 font-mono text-[12px] uppercase tracking-[0.2em] text-white/55">
             <span className="auth-dot inline-block h-[7px] w-[7px] rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
-            Client Portal
+            Portal de cliente
           </div>
           <h2 className="font-display text-[clamp(2.5rem,4vw,3.4rem)] font-extrabold leading-[1.03] tracking-[-0.03em]">
             {panelTitle ?? brandName}
@@ -92,10 +92,8 @@ export function AuthField({ icon, children }: { icon: string; children: ReactNod
       {children}
     </div>
   );
-}
-
-/** "or with email" divider. */
-export function AuthDivider({ label = 'or with email' }: { label?: string }) {
+}  /** Separador entre proveedores de acceso. */
+export function AuthDivider({ label = 'o con email' }: { label?: string }) {
   return (
     <div className="my-5 flex items-center gap-3.5 text-[12.5px] text-muted-foreground/70">
       <span className="h-px flex-1 bg-border" />

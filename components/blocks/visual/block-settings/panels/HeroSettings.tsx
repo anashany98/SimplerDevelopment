@@ -17,19 +17,19 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
     <div className="space-y-4">
       {/* Content Fields */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Hero Title" className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Optional subtitle" className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Optional description" className="text-sm text-foreground" />
         </div>
@@ -37,7 +37,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">CTA Text</label>
-          <input type="text" value={block.ctaText || ''} onChange={(e) => onChange({ ctaText: e.target.value })} className={inputClass} placeholder="Button text" />
+          <input type="text" value={block.ctaText || ''} onChange={(e) => onChange({ ctaText: e.target.value })} className={inputClass} placeholder="Texto del botón" />
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">CTA Link</label>
@@ -47,11 +47,11 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">Secondary CTA Text</label>
-          <input type="text" value={block.secondaryCtaText || ''} onChange={(e) => onChange({ secondaryCtaText: e.target.value })} className={inputClass} placeholder="Optional" />
+          <input type="text" value={block.secondaryCtaText || ''} onChange={(e) => onChange({ secondaryCtaText: e.target.value })} className={inputClass} placeholder="Opcional" />
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">Secondary CTA Link</label>
-          <input type="text" value={block.secondaryCtaLink || ''} onChange={(e) => onChange({ secondaryCtaLink: e.target.value })} className={inputClass} placeholder="Optional" />
+          <input type="text" value={block.secondaryCtaLink || ''} onChange={(e) => onChange({ secondaryCtaLink: e.target.value })} className={inputClass} placeholder="Opcional" />
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
           <div className="space-y-2">
             <img
               src={block.backgroundImage}
-              alt="Background"
+              alt="Fondo"
               className="w-full h-32 object-cover rounded border border-border"
             />
             <div className="flex gap-2">
@@ -76,9 +76,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
                 type="button"
                 onClick={() => onChange({ backgroundImage: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -116,9 +114,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
                 type="button"
                 onClick={() => onChange({ backgroundVideo: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -136,7 +132,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Primary CTA</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.ctaText || ''}
@@ -146,7 +142,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.ctaLink || ''}
@@ -160,7 +156,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Secondary CTA (optional)</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.secondaryCtaText || ''}
@@ -170,7 +166,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.secondaryCtaLink || ''}

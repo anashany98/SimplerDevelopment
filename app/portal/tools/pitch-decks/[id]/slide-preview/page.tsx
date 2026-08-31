@@ -129,7 +129,7 @@ function SlidePreviewInner() {
   // Build a virtual slide from the current blocks for SlideBlockWrapper
   const virtualSlide: PitchDeckSlideV2 = {
     id: 'preview',
-    label: 'Preview',
+    label: 'Vista previa',
     blocks: isEditMode ? [] : previewBlocks,
     customCss: slideCustomCss,
     pageSettings: {

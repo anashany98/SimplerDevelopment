@@ -18,9 +18,7 @@ export default function BrainKnowledgeGraphPage() {
           href="/portal/brain/knowledge"
           className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-muted-foreground hover:bg-muted/60 hover:text-foreground"
         >
-          <span className="material-icons text-[16px]">arrow_back</span>
-          Back to knowledge
-        </Link>
+          <span className="material-icons text-[16px]">arrow_back</span>Volver al conocimiento</Link>
         <div className="h-4 w-px bg-border" aria-hidden />
         <h1 className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
           <span className="material-icons text-[18px] text-primary">hub</span>

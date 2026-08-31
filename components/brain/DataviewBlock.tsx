@@ -200,9 +200,7 @@ export function DataviewBlock({ source, endpoint = '/api/portal/brain/dataview' 
             onClick={() => setReloadKey((n) => n + 1)}
             className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-destructive hover:bg-destructive/10"
           >
-            <span className="material-icons text-xs">refresh</span>
-            Retry
-          </button>
+            <span className="material-icons text-xs">refresh</span>Reintentar</button>
         </div>
         <div className="mt-1 font-mono text-[11px] text-destructive/80">{state.message}</div>
       </div>

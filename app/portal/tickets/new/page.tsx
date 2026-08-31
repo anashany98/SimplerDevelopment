@@ -36,9 +36,9 @@ export default function NewTicketPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Support"
-        title="Open a Support Ticket"
-        subtitle="We'll get back to you as soon as possible."
+        eyebrow="Soporte"
+        title="Abrir un ticket de soporte"
+        subtitle="Te responderemos lo antes posible."
         actions={
           <Link href="/portal/tickets" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
@@ -57,20 +57,20 @@ export default function NewTicketPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Subject <span className="text-destructive">*</span></label>
+            <label className="block text-sm font-medium text-foreground mb-1">Asunto<span className="text-destructive">*</span></label>
             <input
               type="text"
               value={form.subject}
               onChange={(e) => setForm({ ...form, subject: e.target.value })}
               required
-              placeholder="Briefly describe your issue"
+              placeholder="Describe brevemente tu problema"
               className={pInput}
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="ticket-category" className="block text-sm font-medium text-foreground mb-1">Category</label>
+              <label htmlFor="ticket-category" className="block text-sm font-medium text-foreground mb-1">Categoría</label>
               <select
                 id="ticket-category"
                 value={form.category}
@@ -80,28 +80,28 @@ export default function NewTicketPage() {
                 <option value="general">General</option>
                 <option value="billing">Billing</option>
                 <option value="technical">Technical</option>
-                <option value="domain">Domain</option>
+                <option value="domain">Dominio</option>
                 <option value="hosting">Hosting</option>
               </select>
             </div>
             <div>
-              <label htmlFor="ticket-priority" className="block text-sm font-medium text-foreground mb-1">Priority</label>
+              <label htmlFor="ticket-priority" className="block text-sm font-medium text-foreground mb-1">Prioridad</label>
               <select
                 id="ticket-priority"
                 value={form.priority}
                 onChange={(e) => setForm({ ...form, priority: e.target.value })}
                 className={pSelect}
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
+                <option value="urgent">Urgente</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Description <span className="text-destructive">*</span></label>
+            <label className="block text-sm font-medium text-foreground mb-1">Descripción<span className="text-destructive">*</span></label>
             <textarea
               value={form.body}
               onChange={(e) => setForm({ ...form, body: e.target.value })}
@@ -113,9 +113,7 @@ export default function NewTicketPage() {
           </div>
 
           <div className="flex items-center justify-end gap-3">
-            <Link href="/portal/tickets" className={pBtnGhost}>
-              Cancel
-            </Link>
+            <Link href="/portal/tickets" className={pBtnGhost}>Cancelar</Link>
             <button
               type="submit"
               disabled={loading}

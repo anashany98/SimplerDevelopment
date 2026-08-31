@@ -6,7 +6,7 @@ alongside it:
 
 | Path | What it is | Toolchain |
 |---|---|---|
-| `/` (root) | SimplerDevelopment2026 — the main Next.js app, CRM, Company Brain, portal | Next 16 + Bun |
+| `/` (root) | CRM AGENTS — the main Next.js app, CRM, Company Brain, portal | Next 16 + Bun |
 | `simplerdevelopment-agents/` | Mastra AI agents (Company Brain + Portal assistant) that talk to the portal over MCP | Mastra v1 + Bun |
 | `sd-chat-mobile/` | Expo / React Native mobile chat client | Expo + Bun |
 

@@ -1,5 +1,5 @@
 /**
- * AI-driven page extraction for the SimplerDevelopment browser extension.
+ * AI-driven page extraction for the CRM AGENTS browser extension.
  *
  * Given the page text + URL + title, asks Claude Haiku for a cheap, fast
  * structured summary (summary, tags, entities, suggestedNote), then enriches

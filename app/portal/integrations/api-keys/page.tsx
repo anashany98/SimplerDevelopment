@@ -173,8 +173,8 @@ export default function ByokKeysPage() {
   return (
     <div className="space-y-6">
       <PortalPageHeader
-        eyebrow="Integrations"
-        title="Provider API Keys (BYOK)"
+        eyebrow="Integraciones"
+        title="Claves de API de proveedores (BYOK)"
         subtitle="Bring-your-own keys for Anthropic and OpenAI. When configured, the portal calls these providers directly with your key — usage and billing are between you and the provider. Without a key, AI falls back to bundled platform credits."
       />
 
@@ -274,7 +274,7 @@ export default function ByokKeysPage() {
             </label>
             <div className="text-xs text-muted-foreground flex items-start gap-1.5">
               <span className="material-icons text-base">lock</span>
-              <span>The raw key is encrypted on the server (AES-256-GCM) and never returned in API responses.</span>
+              <span>La clave sin cifrar se cifra en el servidor (AES-256-GCM) y nunca se devuelve en las respuestas de la API.</span>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -289,15 +289,13 @@ export default function ByokKeysPage() {
                 type="button"
                 onClick={() => { setCreating(false); setError(null); }}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
 
         {loading ? (
-          <div className="p-4 text-sm text-muted-foreground">Loading…</div>
+          <div className="p-4 text-sm text-muted-foreground">Cargando…</div>
         ) : keys.length === 0 ? (
           <div className="p-6 text-center text-sm text-muted-foreground">
             No BYOK keys yet. AI calls use bundled platform credits.
@@ -307,10 +305,10 @@ export default function ByokKeysPage() {
             <thead className="bg-muted/50">
               <tr className="text-left">
                 <th className="px-4 py-2 font-medium">Provider</th>
-                <th className="px-4 py-2 font-medium">Label</th>
+                <th className="px-4 py-2 font-medium">Etiqueta</th>
                 <th className="px-4 py-2 font-medium">Key</th>
                 <th className="px-4 py-2 font-medium">Last used</th>
-                <th className="px-4 py-2 font-medium text-right">Actions</th>
+                <th className="px-4 py-2 font-medium text-right">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -327,7 +325,7 @@ export default function ByokKeysPage() {
                         <button
                           type="button"
                           onClick={() => handleRename(k.id, k.label)}
-                          title="Rename"
+                          title="Renombrar"
                           className="p-1 rounded-lg hover:bg-muted"
                         >
                           <span className="material-icons text-base">edit</span>
@@ -337,7 +335,7 @@ export default function ByokKeysPage() {
                       <button
                         type="button"
                         onClick={() => handleDelete(k.id)}
-                        title="Remove"
+                        title="Quitar"
                         className="p-1 rounded hover:bg-red-500/10 text-red-700"
                       >
                         <span className="material-icons text-base">delete</span>
@@ -357,10 +355,10 @@ export default function ByokKeysPage() {
           How BYOK billing works
         </h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-          <li>When a key is configured for a provider, all portal AI calls for that provider use it.</li>
-          <li>Token usage is recorded on your provider invoice — not against platform AI credits.</li>
-          <li>Brain embeddings reuse the OpenAI key. Add an OpenAI key to enable BYOK embeddings.</li>
-          <li>Rotate by removing the old key and adding the new one. v1 keeps one active key per provider.</li>
+          <li>Cuando hay una clave configurada para un proveedor, todas las llamadas de IA del portal a ese proveedor la usan.</li>
+          <li>El uso de tokens se refleja en la factura de tu proveedor, no contra los créditos de IA de la plataforma.</li>
+          <li>Las incrustaciones del Brain reutilizan la clave de OpenAI. Añade una clave de OpenAI para activar incrustaciones BYOK.</li>
+          <li>Rota eliminando la clave antigua y añadiendo la nueva. v1 mantiene una clave activa por proveedor.</li>
         </ul>
       </section>
     </div>

@@ -1961,6 +1961,45 @@ describe('applyPendingChange — pitch_deck:upload_html', () => {
 // applyPendingChange — SITES
 // ─────────────────────────────────────────────────────────────────────────
 
+describe('applyPendingChange — site:create', () => {
+  it('creates the staged site under the approving client with deployment defaults', async () => {
+    let insertValues: Record<string, unknown> | null = null;
+    dbMock.insert.mockImplementation(() => {
+      const c: Record<string, unknown> = {};
+      Object.assign(c, {
+        values: vi.fn((values: Record<string, unknown>) => { insertValues = values; return c; }),
+        returning: vi.fn(async () => [{ id: 42, name: 'Muebles Oslo' }]),
+      });
+      return c;
+    });
+    const change = mkChange({
+      clientId: 999,
+      entityType: 'site',
+      operation: 'create',
+      payload: {
+        name: 'Muebles Oslo',
+        domain: null,
+        description: 'Tienda de muebles',
+        subdomain: 'muebles-oslo',
+      },
+    });
+
+    const result = await applyPendingChange(change as never, 10, 1);
+
+    expect(result).toEqual({ id: 42, name: 'Muebles Oslo' });
+    expect(insertValues).toMatchObject({
+      clientId: 10,
+      name: 'Muebles Oslo',
+      domain: null,
+      description: 'Tienda de muebles',
+      subdomain: 'muebles-oslo',
+      vercelDomain: 'muebles-oslo.simplerdevelopment.com',
+      deploymentStatus: 'pending',
+      active: true,
+    });
+  });
+});
+
 describe('applyPendingChange — site:update', () => {
   it('throws when site is not found or not owned', async () => {
     queueSelect([[]]);

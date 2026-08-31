@@ -1,6 +1,6 @@
 # @simplerdevelopment/cli
 
-`simpler` is a token-lean, JSON-first command-line client for the [SimplerDevelopment](https://github.com/SimplerDevelopment/SimplerDevelopment) portal's MCP tool surface — 450+ tools covering posts, CRM, kanban, the Company Brain, store, bookings, email, sites, and more. It's a manifest-driven generic dispatcher: every MCP tool `a_b_c_d` is reachable as `simpler a b-c-d` with no hand-written per-command code, so the CLI stays in lockstep with the server's tool list. It's built for both humans (a real terminal UX with `--help`, tab-shaped errors, dry-run) and coding agents (every command emits one `{success, data|error}` JSON envelope on stdout).
+`simpler` is a token-lean, JSON-first command-line client for the [CRM AGENTS](https://github.com/SimplerDevelopment/SimplerDevelopment) portal's MCP tool surface — 450+ tools covering posts, CRM, kanban, the Company Brain, store, bookings, email, sites, and more. It's a manifest-driven generic dispatcher: every MCP tool `a_b_c_d` is reachable as `simpler a b-c-d` with no hand-written per-command code, so the CLI stays in lockstep with the server's tool list. It's built for both humans (a real terminal UX with `--help`, tab-shaped errors, dry-run) and coding agents (every command emits one `{success, data|error}` JSON envelope on stdout).
 
 ## Install
 

@@ -82,14 +82,13 @@ export default function ProjectDescription({ projectId, title, description, canE
                   onClick={() => { setDraft(value); setEditing(true); }}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-foreground hover:bg-accent transition-colors shrink-0"
                 >
-                  <span className="material-icons text-sm">edit</span>Edit
-                </button>
+                  <span className="material-icons text-sm">edit</span>Editar</button>
               )}
               <button
                 onClick={() => { if (!editing) setOpen(false); }}
                 disabled={editing}
                 className="p-1.5 rounded-lg hover:bg-accent transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
-                aria-label="Close"
+                aria-label="Cerrar"
               >
                 <span className="material-icons text-xl text-muted-foreground">close</span>
               </button>
@@ -117,9 +116,7 @@ export default function ProjectDescription({ projectId, title, description, canE
                       onClick={() => { setEditing(false); setDraft(value); }}
                       disabled={saving}
                       className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                     <span className="ml-auto text-xs text-muted-foreground">Markdown supported</span>
                   </div>
                 </div>

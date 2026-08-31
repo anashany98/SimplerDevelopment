@@ -468,9 +468,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
             onClick={() => { setDeleteError(null); setConfirmingDelete(true); }}
             className="text-xs px-3 py-1 rounded border border-destructive/40 text-destructive hover:bg-destructive/10 inline-flex items-center gap-1"
           >
-            <span className="material-icons text-base">delete</span>
-            Delete
-          </button>
+            <span className="material-icons text-base">delete</span>Eliminar</button>
         </div>
       </header>
 
@@ -522,7 +520,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
           </label>
         </div>
         <p className="text-xs text-muted-foreground">
-          For <code>page_view</code>, the goal fires automatically on render. For clicks/submits, set a CSS selector matching the target element.
+          For <code>page_view</code>, the goal fires automátically on render. For clicks/submits, set a CSS selector matching the target element.
         </p>
       </section>
 
@@ -687,17 +685,16 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
             onClick={fetchResults}
             className="text-xs px-3 py-1 rounded border border-border hover:bg-accent"
           >
-            <span className="material-icons text-base align-middle">refresh</span> Refresh
-          </button>
+            <span className="material-icons text-base align-middle">refresh</span>Actualizar</button>
         </div>
         {!results ? (
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground">Cargando…</p>
         ) : (
           <div className="space-y-3">
             <table className="w-full text-sm">
               <thead className="text-xs uppercase text-muted-foreground">
                 <tr>
-                  <th className="text-left py-2">Variant</th>
+                  <th className="text-left py-2">Variante</th>
                   <th className="text-right py-2">Views</th>
                   <th className="text-right py-2">Goals</th>
                   <th className="text-right py-2">Conv.</th>
@@ -720,7 +717,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                 <table className="w-full text-sm">
                   <thead className="text-xs uppercase text-muted-foreground">
                     <tr>
-                      <th className="text-left py-2">Variant</th>
+                      <th className="text-left py-2">Variante</th>
                       <th className="text-right py-2">Lift</th>
                       <th className="text-right py-2">z</th>
                       <th className="text-right py-2">p</th>
@@ -795,9 +792,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                 onClick={() => { setConfirmingDelete(false); setDeleteError(null); }}
                 disabled={deleting}
                 className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 onClick={performDelete}
                 disabled={deleting}
@@ -810,9 +805,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                   </>
                 ) : (
                   <>
-                    <span className="material-icons text-base">delete</span>
-                    Delete
-                  </>
+                    <span className="material-icons text-base">delete</span>Eliminar</>
                 )}
               </button>
             </div>

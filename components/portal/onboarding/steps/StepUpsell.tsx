@@ -131,7 +131,7 @@ export function StepUpsell({ next }: StepProps) {
   }
 
   function handleAddBundle() {
-    if (!window.confirm('Switch to SimplerDev Complete? This will replace your individual modules with the bundle subscription.')) return;
+    if (!window.confirm('Switch to CRM AGENTS Complete? This will replace your individual modules with the bundle subscription.')) return;
     setBundleState('loading');
     void addModule(BUNDLE_SLUG, '__bundle__', setBundleState);
   }
@@ -215,9 +215,9 @@ export function StepUpsell({ next }: StepProps) {
           <span className="material-icons text-foreground shrink-0">star</span>
           <p className="flex-1 text-[13.5px] text-foreground">
             {bundleUpgradeCents > 0 ? (
-              <>You&apos;re <strong>{formatPrice(bundleUpgradeCents)}/mo</strong> away from everything</>
+              <>Estás a <strong>{formatPrice(bundleUpgradeCents)}/mes</strong> de tenerlo todo</>
             ) : (
-              <>Unlock everything for the same price</>
+              <>Desbloquea todo por el mismo precio</>
             )}
             {' '}—{' '}
             <button
@@ -254,9 +254,7 @@ export function StepUpsell({ next }: StepProps) {
           type="button"
           onClick={() => next()}
           className={obPrimaryBtn}
-        >
-          Continue
-          <span className="material-icons text-base">arrow_forward</span>
+        >Continuar<span className="material-icons text-base">arrow_forward</span>
         </button>
       </div>
     </div>

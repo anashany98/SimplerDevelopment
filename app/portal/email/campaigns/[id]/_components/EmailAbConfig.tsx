@@ -117,8 +117,8 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
 
   async function promoteWinner(force: boolean) {
     if (!confirm(force
-      ? 'Force-promote the winner now? This will dispatch the held-back recipients immediately.'
-      : 'Promote the winner and dispatch the held-back recipients?')) return;
+      ? '¿Promover al ganador ahora a la fuerza? Los destinatarios retenidos se enviarán de inmediato.'
+      : '¿Promover al ganador y enviar los destinatarios retenidos?')) return;
     setPromoting(true);
     try {
       const url = `/api/portal/email/campaigns/${campaign.id}/promote-winner${force ? '?force=1' : ''}`;
@@ -173,7 +173,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                 onChange={toggleEnabled}
                 className="h-4 w-4"
               />
-              <span className="text-foreground">Enable A/B test for this campaign</span>
+              <span className="text-foreground">Activa la prueba A/B para esta campaña</span>
               <span className="text-xs text-muted-foreground">
                 ({pct}% to test, {100 - pct}% gets winner)
               </span>
@@ -192,7 +192,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
           {isDraft && enabled && (
             <>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Subject B</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Asunto B</label>
                 <input
                   type="text"
                   value={subjectB}
@@ -202,7 +202,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                       patchAb({ abSubjectB: subjectB });
                     }
                   }}
-                  placeholder="Alternate subject line to test"
+                  placeholder="Linea de asunto alternativa para probar"
                   className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
@@ -271,8 +271,8 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="text-left text-muted-foreground">
-                    <th className="py-1">Variant</th>
-                    <th className="py-1">Sent</th>
+                    <th className="py-1">Variante</th>
+                    <th className="py-1">Enviado</th>
                     <th className="py-1">Opened</th>
                     <th className="py-1">Clicked</th>
                   </tr>
@@ -320,7 +320,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                         onClick={() => promoteWinner(true)}
                         disabled={promoting || isSent}
                         className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent disabled:opacity-50"
-                        title="Skip the 4-hour wait window"
+                        title="Omitir la ventana de espera de 4 horas"
                       >
                         Force-promote now
                       </button>

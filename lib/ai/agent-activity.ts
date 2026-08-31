@@ -12,7 +12,7 @@ import { db } from '@/lib/db';
 import { aiConversations, aiMessages } from '@/lib/db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { domainOfTool } from '@/lib/ai/portal-tools/domains';
-import { PORTAL_AGENT_PROFILES } from '@/lib/ai/portal-agents';
+import { getPortalAgent, PORTAL_AGENT_PROFILES } from '@/lib/ai/portal-agents';
 
 export interface AgentActivityStat {
   agentId: string;
@@ -50,8 +50,16 @@ for (const agent of PORTAL_AGENT_PROFILES) {
   }
 }
 
-/** Which agent should be credited for a tool call. */
-export function agentForTool(toolName: string): string {
+/**
+ * Which agent should be credited for a tool call.
+ *
+ * New chat turns persist the selected specialist beside each tool call. Older
+ * rows did not have that field, so they continue to use the deterministic
+ * domain fallback rather than being reinterpreted as a newer specialist.
+ */
+export function agentForTool(toolName: string, recordedAgentId?: unknown): string {
+  const recordedAgent = getPortalAgent(recordedAgentId);
+  if (recordedAgent) return recordedAgent.id;
   const domain = domainOfTool(toolName);
   return (domain && AGENT_FOR_DOMAIN[domain]) || 'general';
 }
@@ -115,7 +123,10 @@ export async function getAgentActivity(
 
     const calls = Array.isArray(row.toolCalls) ? row.toolCalls : [];
     for (const call of calls) {
-      const agentId = agentForTool(String(call?.name ?? ''));
+      const agentId = agentForTool(
+        String(call?.name ?? ''),
+        (call as { agentId?: unknown } | undefined)?.agentId,
+      );
       const stat = stats[agentId] ?? stats.general!;
       stat.toolCalls += 1;
       if (stat.lastActiveAt === null || row.createdAt > stat.lastActiveAt) {
@@ -140,7 +151,8 @@ export async function getAgentActivity(
     // token figures reflect real work instead of dumping everything on
     // `general`.
     if (calls.length > 0) {
-      const agentId = agentForTool(String(calls[0]?.name ?? ''));
+      const firstCall = calls[0] as { name?: unknown; agentId?: unknown } | undefined;
+      const agentId = agentForTool(String(firstCall?.name ?? ''), firstCall?.agentId);
       const stat = stats[agentId] ?? stats.general!;
       stat.inputTokens += row.inputTokens;
       stat.outputTokens += row.outputTokens;

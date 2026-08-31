@@ -170,6 +170,17 @@ export default function WorkflowEditorPage() {
   const [runSteps, setRunSteps] = useState<RunStepRow[]>([]);
   const [stepsLoading, setStepsLoading] = useState(false);
   const [retrying, setRetrying] = useState(false);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
+  const selectedNode = nodes.find((node) => node.id === selectedNodeId) ?? null;
+  const updatePayloadField = useCallback((field: string, value: string | number) => {
+    if (!selectedNodeId) return;
+    setNodes((current) => current.map((node) => {
+      if (node.id !== selectedNodeId) return node;
+      const payload = { ...(node.data.payload as Record<string, unknown>), [field]: value } as WorkflowTriggerConfig | WorkflowAction;
+      return { ...node, data: { ...node.data, payload, label: nodeLabel(payload) } };
+    }));
+  }, [selectedNodeId]);
 
   useEffect(() => {
     if (!Number.isFinite(id)) return;
@@ -200,6 +211,7 @@ export default function WorkflowEditorPage() {
   const onConnect = useCallback((conn: Connection) => {
     setEdges((eds) => addEdge({ ...conn, id: `e-${Math.random().toString(36).slice(2, 8)}`, animated: true }, eds));
   }, []);
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => setSelectedNodeId(node.id), []);
 
   const handleAdd = useCallback((entry: PaletteEntry) => {
     const nid = newNodeId(entry.type);
@@ -316,12 +328,12 @@ export default function WorkflowEditorPage() {
 
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col gap-3 p-3">
-      {/* Aviso Beta — la ejecución se procesa por el cron de fondo */}
+      {/* Aviso — la ejecución se procesa por el cron de fondo */}
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200 text-xs">
         <span className="material-icons text-base shrink-0">science</span>
         <span>
           <span className="font-semibold">Beta — la ejecución de flujos aún se está afinando.</span>{' '}
-          Los flujos activos se ejecutan desde eventos de CRM y formularios; los disparadores programados y de webhook se prueban con «Probar ejecución».
+          Los flujos activos se ejecutan desde eventos de CRM, formularios y programaciones (cron); los de webhook se prueban con «Probar ejecución».
         </span>
       </div>
 
@@ -407,6 +419,7 @@ export default function WorkflowEditorPage() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            onNodeClick={onNodeClick}
             onInit={setRfInstance}
             fitView
           >
@@ -415,6 +428,11 @@ export default function WorkflowEditorPage() {
             <MiniMap />
           </ReactFlow>
         </div>
+
+        {/* Inspector */}
+        {selectedNode && (
+          <NodeInspector node={selectedNode} onChange={updatePayloadField} onClose={() => setSelectedNodeId(null)} />
+        )}
 
         {/* Runs panel */}
         <div className="w-72 bg-card border border-border rounded-xl p-3 overflow-y-auto">
@@ -517,10 +535,17 @@ export default function WorkflowEditorPage() {
       {/* Footer hint */}
       <div className="text-xs text-muted-foreground">
         <span className="material-icons text-sm align-middle mr-1">info</span>
-        Haz clic en una entrada de la paleta para añadirla al lienzo. Arrastra los nodos para recolocarlos. Arrastra desde el conector de un nodo para conectarlo.
+        Haz clic en una entrada de la paleta para añadirla al lienzo. Haz clic en un nodo para abrir su inspector y configurar sus datos. Arrastra los nodos para recolocarlos y desde un conector para conectarlos.
       </div>
     </div>
   );
+}
+
+function NodeInspector({ node, onChange, onClose }: { node: Node; onChange: (field: string, value: string | number) => void; onClose: () => void }) {
+  const payload = node.data.payload as Record<string, unknown>;
+  const kind = String(payload.kind);
+  const fields = kind === 'schedule' ? [['cron', 'Expresión cron', String(payload.cron ?? '')]] : kind === 'send_email' ? [['templateId', 'ID de plantilla', String(payload.templateId ?? 0)], ['to', 'Destinatario', String(payload.to ?? 'contact')]] : kind === 'add_to_list' ? [['listId', 'ID de lista', String(payload.listId ?? 0)]] : kind === 'condition' ? [['expression', 'Expresión', String(payload.expression ?? '')]] : kind === 'create_task' ? [['title', 'Título', String(payload.title ?? '')]] : kind === 'webhook' ? [['url', 'URL', String(payload.url ?? '')]] : [];
+  return <aside className="w-64 bg-card border border-border rounded-xl p-3 overflow-y-auto" aria-label="Inspector del nodo"><div className="flex items-center justify-between mb-3"><h3 className="text-xs font-semibold uppercase tracking-wide">Configurar nodo</h3><button type="button" onClick={onClose} aria-label="Cerrar inspector" className="text-muted-foreground hover:text-foreground"><span className="material-icons text-sm">close</span></button></div><div className="text-xs text-muted-foreground mb-3">{nodeLabel(payload as WorkflowTriggerConfig | WorkflowAction)}</div>{fields.length === 0 ? <p className="text-xs text-muted-foreground">Este nodo no tiene opciones configurables.</p> : fields.map(([field, label, value]) => <label key={field} className="block text-xs mb-3"><span className="block mb-1 font-medium">{label}</span><input aria-label={label} value={value} type={field.endsWith('Id') ? 'number' : 'text'} onChange={(event) => onChange(field, field.endsWith('Id') ? Number(event.target.value) : event.target.value)} className="w-full px-2 py-1.5 border border-border rounded bg-background" /></label>)}</aside>;
 }
 
 function PaletteButton({ entry, onAdd }: { entry: PaletteEntry; onAdd: (e: PaletteEntry) => void }) {

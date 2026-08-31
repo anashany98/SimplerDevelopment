@@ -63,7 +63,7 @@ DEVL = [  # holds through the 0.54s pause, SNAPS on the punch 2.07 with overshoo
 ]
 
 HTML = r"""<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Simpler Development — voice-synced intro</title>
+<title>CRM AGENTS — voice-synced intro</title>
 <style>
  @font-face{ font-family:Geist; font-weight:100 900; font-display:block;
    src:url(data:font/woff2;base64,@@FONT@@) format("woff2"); }

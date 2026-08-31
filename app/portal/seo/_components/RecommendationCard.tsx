@@ -15,7 +15,7 @@ const btnDismiss =
 
 const STATUS_PILL: Partial<Record<RecommendationStatus, { label: string; icon: string; classes: string }>> = {
   done: {
-    label: 'Done',
+    label: 'Listo',
     icon: 'check_circle',
     classes: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   },

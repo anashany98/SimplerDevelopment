@@ -1,5 +1,5 @@
 /**
- * `simpler setup` — interactive local-dev bootstrap for the SimplerDevelopment
+ * `simpler setup` — interactive local-dev bootstrap for the CRM AGENTS
  * monorepo. Scaffolds `.env.local` (copying the annotated `.env.example` and
  * auto-generating every `openssl`-style secret), picks the Docker or
  * bring-your-own-Postgres path, runs migrate + seed, and validates the result.
@@ -25,7 +25,7 @@ import { CliError } from '../client.js';
 // ─── repo-root detection ──────────────────────────────────────────────────
 
 /**
- * Markers that identify the SimplerDevelopment monorepo root. All must be
+ * Markers that identify the CRM AGENTS monorepo root. All must be
  * present so a random project with a `.env.example` isn't mistaken for it.
  */
 const REPO_MARKERS = ['.env.example', 'docker-compose.yml', 'drizzle.config.ts'] as const;
@@ -550,14 +550,14 @@ export async function runSetup(opts: SetupOpts): Promise<SetupReport> {
   const root = findRepoRoot(opts.cwd);
   if (!root) {
     throw new CliError(
-      'simpler setup must run inside a SimplerDevelopment monorepo clone ' +
+      'simpler setup must run inside a CRM AGENTS monorepo clone ' +
         '(none of docker-compose.yml / .env.example / drizzle.config.ts found up the tree). ' +
         'Clone the repo, then run `bun run cli setup` from its root.',
       2,
       'usage_error',
     );
   }
-  log(`\nSimplerDevelopment local setup\nrepo: ${root}\n`);
+  log(`\nCRM AGENTS local setup\nrepo: ${root}\n`);
 
   // 2. Prerequisites.
   const bunV = versionOf('bun');

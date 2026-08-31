@@ -78,7 +78,7 @@ The voice assistant is built but is not currently mounted in the portal. Do not 
 
 | Field | Value |
 |---|---|
-| **Page title** | AI Knowledge Base for Teams \| SimplerDevelopment |
+| **Page title** | AI Knowledge Base for Teams \| CRM AGENTS |
 | **Meta description** | Per-tenant knowledge base with semantic search, decision logs, versioned documents, playbooks, and 156 AI tools — answers grounded in your team's actual context. |
 | **URL slug** | /features/company-brain |
 | **Primary keyword** | AI knowledge base for teams |
@@ -91,7 +91,7 @@ The voice assistant is built but is not currently mounted in the portal. Do not 
 Apply both types to this page:
 
 **SoftwareApplication**
-- `name`: "SimplerDevelopment – Company Brain"
+- `name`: "CRM AGENTS – Company Brain"
 - `applicationCategory`: "BusinessApplication"
 - `featureList`: ["Semantic search via OpenAI embeddings and pgvector", "Decision log with rationale and supersede history", "Versioned documents with required-read acknowledgments", "Playbooks with step run tracking", "Goals, initiatives, and org chart", "156 MCP tools for AI agents", "Inbound email review queue"]
 - `operatingSystem`: "Web"

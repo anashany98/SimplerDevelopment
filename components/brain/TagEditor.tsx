@@ -11,7 +11,7 @@ export default function TagEditor({ tags, onCommit }: Props): ReactNode {
   const [draft, setDraft] = useState('');
   return (
     <div className="flex items-start gap-2">
-      <span className="text-muted-foreground w-24 shrink-0 mt-1">Tags</span>
+      <span className="text-muted-foreground w-24 shrink-0 mt-1">Etiquetas</span>
       <div className="flex-1 flex flex-wrap items-center gap-1">
         {tags.map(t => (
           <span

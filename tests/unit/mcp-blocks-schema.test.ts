@@ -38,7 +38,7 @@ describe('BLOCKS_SCHEMA_REFERENCE', () => {
 
   it('opens with the canonical H1 title', () => {
     expect(BLOCKS_SCHEMA_REFERENCE.startsWith(
-      '# SimplerDevelopment Visual Editor — Block Schema',
+      '# CRM AGENTS Visual Editor — Block Schema',
     )).toBe(true);
   });
 

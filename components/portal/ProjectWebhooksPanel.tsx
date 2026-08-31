@@ -111,7 +111,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
 
       {justCreated && (
         <div className="p-4 border-b border-border bg-amber-50 dark:bg-amber-900/20">
-          <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">Copy this secret now — it will not be shown again.</p>
+          <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">Copia este secreto ahora: no se volverá a mostrar.</p>
           <code className="block mt-2 text-xs bg-card border border-border rounded p-2 break-all">{justCreated.secret}</code>
           <button onClick={() => setJustCreated(null)} className="mt-2 text-xs text-amber-900 dark:text-amber-200 underline">Dismiss</button>
         </div>
@@ -162,7 +162,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
                 <p className="text-sm text-foreground font-mono truncate">{h.url}</p>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                   {h.events.length === 0
-                    ? <span>All events</span>
+                    ? <span>Todos los eventos</span>
                     : h.events.map(ev => <span key={ev} className="bg-muted rounded px-1.5 py-0.5 font-mono">{ev}</span>)}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground flex gap-3">
@@ -176,7 +176,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
                     className="text-xs px-2 py-1 rounded border border-border hover:bg-accent text-foreground">
                     {h.active ? 'Pause' : 'Resume'}
                   </button>
-                  <button onClick={() => remove(h.id)} className="p-1 rounded text-muted-foreground hover:text-destructive" aria-label="Delete">
+                  <button onClick={() => remove(h.id)} className="p-1 rounded text-muted-foreground hover:text-destructive" aria-label="Eliminar">
                     <span className="material-icons text-base">delete_outline</span>
                   </button>
                 </div>

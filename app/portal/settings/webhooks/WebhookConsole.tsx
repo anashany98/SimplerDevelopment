@@ -237,7 +237,7 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
           <h3 className="font-semibold text-foreground mb-1">No webhooks configured</h3>
           <p className="text-sm text-muted-foreground max-w-md">
             Create webhooks from inside individual projects, surveys, or sites. They&apos;ll show up
-            here automatically.
+            here automátically.
           </p>
         </div>
       )}
@@ -255,11 +255,11 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
           <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-muted/40">
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-3 py-2 font-medium">Source</th>
+                <th className="px-3 py-2 font-medium">Fuente</th>
                 <th className="px-3 py-2 font-medium">URL</th>
                 <th className="px-3 py-2 font-medium">Events</th>
-                <th className="px-3 py-2 font-medium">Status</th>
-                <th className="px-3 py-2 font-medium">Last delivery</th>
+                <th className="px-3 py-2 font-medium">Estado</th>
+                <th className="px-3 py-2 font-medium">Última entrega</th>
                 <th className="px-3 py-2 font-medium" />
               </tr>
             </thead>
@@ -406,7 +406,7 @@ function FragmentRow({
               onClick={onRotate}
               disabled={rotating}
               className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded border border-border hover:bg-muted disabled:opacity-50 transition-colors"
-              title="Generate a new HMAC signing secret"
+              title="Generar un nuevo secreto de firma HMAC"
             >
               <span className="material-icons text-sm">key</span>
               {rotating ? 'Rotating…' : 'Rotate secret'}
@@ -478,19 +478,19 @@ function DeliveriesPanel({
     return <div className="text-xs text-muted-foreground">Loading deliveries…</div>;
   }
   if (deliveries === 'error') {
-    return <div className="text-xs text-destructive">Failed to load deliveries.</div>;
+    return <div className="text-xs text-destructive">No se pudieron cargar las entregas.</div>;
   }
   if (deliveries.length === 0) {
-    return <div className="text-xs text-muted-foreground">No delivery attempts recorded yet.</div>;
+    return <div className="text-xs text-muted-foreground">Aún no se han registrado intentos de entrega.</div>;
   }
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-xs">
         <thead>
           <tr className="text-left text-muted-foreground">
-            <th className="py-1 pr-3 font-medium">When</th>
+            <th className="py-1 pr-3 font-medium">Cuándo</th>
             <th className="py-1 pr-3 font-medium">Event</th>
-            <th className="py-1 pr-3 font-medium">Status</th>
+            <th className="py-1 pr-3 font-medium">Estado</th>
             <th className="py-1 font-medium">Error</th>
           </tr>
         </thead>

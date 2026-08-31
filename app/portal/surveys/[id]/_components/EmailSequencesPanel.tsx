@@ -45,7 +45,7 @@ interface DraftSequence {
 
 const EMPTY_DRAFT: DraftSequence = {
   subject: '',
-  bodyHtml: '<p>Thanks for your response!</p>',
+  bodyHtml: '<p>¡Gracias por tu respuesta!</p>',
   delayHours: '24',
   conditionField: '',
   conditionValue: '',
@@ -75,7 +75,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
     try {
       const res = await fetch(`/api/portal/surveys/${surveyId}/email-sequences`);
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to load sequences');
+      if (!json.success) throw new Error(json.message || 'No se pudieron cargar las secuencias');
       setSequences(json.data as EmailSequence[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -87,11 +87,11 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
   useEffect(() => { void refresh(); }, [refresh]);
 
   async function createSequence() {
-    if (!draft.subject.trim()) { setError('Subject is required'); return; }
-    if (!draft.bodyHtml.trim()) { setError('Body HTML is required'); return; }
+    if (!draft.subject.trim()) { setError('El asunto es obligatorio'); return; }
+    if (!draft.bodyHtml.trim()) { setError('El cuerpo HTML es obligatorio'); return; }
     const delayHours = parseInt(draft.delayHours, 10);
     if (!Number.isFinite(delayHours) || delayHours < 0) {
-      setError('Delay must be a non-negative integer (hours)');
+      setError('La demora debe ser un entero no negativo (horas)');
       return;
     }
 
@@ -111,7 +111,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to create sequence');
+      if (!json.success) throw new Error(json.message || 'No se pudo crear la secuencia');
       setDraft(EMPTY_DRAFT);
       await refresh();
     } catch (err) {
@@ -132,7 +132,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         body: JSON.stringify({ enabled: !seq.enabled }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to update sequence');
+      if (!json.success) throw new Error(json.message || 'No se pudo actualizar la secuencia');
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       await refresh();
@@ -140,7 +140,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
   }
 
   async function deleteSequence(seq: EmailSequence) {
-    if (!confirm(`Delete the sequence "${seq.subject}"? This stops any future sends but cannot recover already-sent emails.`)) return;
+    if (!confirm(`¿Eliminar la secuencia "${seq.subject}"? Esto detiene futuros envíos, pero no puede recuperar correos ya enviados.`)) return;
     // Optimistic remove.
     const before = sequences;
     setSequences(before.filter((s) => s.id !== seq.id));
@@ -149,7 +149,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         method: 'DELETE',
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to delete sequence');
+      if (!json.success) throw new Error(json.message || 'No se pudo eliminar la secuencia');
       if (editingId === seq.id) {
         setEditingId(null);
         setEditDraft(null);
@@ -176,7 +176,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
     if (!editDraft) return;
     const delayHours = parseInt(editDraft.delayHours, 10);
     if (!Number.isFinite(delayHours) || delayHours < 0) {
-      setError('Delay must be a non-negative integer (hours)');
+      setError('La demora debe ser un entero no negativo (horas)');
       return;
     }
     setSavingId(seq.id);
@@ -195,7 +195,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to save sequence');
+      if (!json.success) throw new Error(json.message || 'No se pudo guardar la secuencia');
       setEditingId(null);
       setEditDraft(null);
       await refresh();
@@ -212,12 +212,13 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         <div className="flex items-start gap-3">
           <span className="material-icons text-primary mt-0.5">forward_to_inbox</span>
           <div className="flex-1">
-            <h3 className="font-semibold text-foreground">Email Follow-up Sequences</h3>
+            <h3 className="font-semibold text-foreground">Secuencias de seguimiento por correo</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Send a follow-up email N hours after a respondent completes the survey. Sequences
-              only fire when the respondent provided an email and (if configured) consented in
-              the survey itself. Configure the consent field in <strong>Settings</strong>; the
-              cron worker runs every 15 minutes. Placeholders supported in the body:{' '}
+              Envía un correo de seguimiento N horas después de que un encuestado complete la encuesta.
+              Las secuencias solo se ejecutan cuando el encuestado proporcionó un correo y (si está
+              configurado) dio su consentimiento en la propia encuesta. Configura el campo de
+              consentimiento en <strong>Configuración</strong>; el cron worker se ejecuta cada 15
+              minutos. Marcadores admitidos en el cuerpo:{' '}
               <code className="text-xs bg-muted px-1 py-0.5 rounded">{'{respondentName}'}</code>,{' '}
               <code className="text-xs bg-muted px-1 py-0.5 rounded">{'{surveyTitle}'}</code>,{' '}
               <code className="text-xs bg-muted px-1 py-0.5 rounded">{'{unsubscribeUrl}'}</code>.
@@ -237,20 +238,20 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
 
         {/* Create form */}
         <div className="space-y-3 pt-2 border-t border-border">
-          <label className="block text-sm font-medium text-foreground">Add a sequence</label>
+          <label className="block text-sm font-medium text-foreground">Añadir una secuencia</label>
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Subject</label>
+              <label className="block text-xs text-muted-foreground mb-1">Asunto</label>
               <input
                 type="text"
                 value={draft.subject}
                 onChange={(e) => setDraft((d) => ({ ...d, subject: e.target.value }))}
-                placeholder="Thanks for your feedback"
+                placeholder="Gracias por tu opinión"
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Delay (hours after submission)</label>
+              <label className="block text-xs text-muted-foreground mb-1">Demora (horas tras el envío)</label>
               <input
                 type="number"
                 min={0}
@@ -263,7 +264,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
             </div>
           </div>
           <div>
-            <label className="block text-xs text-muted-foreground mb-1">Body HTML</label>
+            <label className="block text-xs text-muted-foreground mb-1">Cuerpo HTML</label>
             <textarea
               value={draft.bodyHtml}
               onChange={(e) => setDraft((d) => ({ ...d, bodyHtml: e.target.value }))}
@@ -273,25 +274,25 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Only send when (optional)</label>
+              <label className="block text-xs text-muted-foreground mb-1">Enviar solo cuando (opcional)</label>
               <select
                 value={draft.conditionField}
                 onChange={(e) => setDraft((d) => ({ ...d, conditionField: e.target.value }))}
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
               >
-                <option value="">(always send)</option>
+                <option value="">(enviar siempre)</option>
                 {fieldOptions.map((f) => (
                   <option key={f.id} value={f.id}>{f.label || f.id}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">…equals (case-sensitive)</label>
+              <label className="block text-xs text-muted-foreground mb-1">…es igual a (sensible a mayúsculas)</label>
               <input
                 type="text"
                 value={draft.conditionValue}
                 onChange={(e) => setDraft((d) => ({ ...d, conditionValue: e.target.value }))}
-                placeholder="e.g. Yes"
+                placeholder="ej. Sí"
                 disabled={!draft.conditionField}
                 className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
               />
@@ -303,7 +304,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
               checked={draft.enabled}
               onChange={(e) => setDraft((d) => ({ ...d, enabled: e.target.checked }))}
             />
-            Enabled
+            Activado
           </label>
           <div>
             <button
@@ -313,7 +314,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
               className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
             >
               <span className="material-icons text-base">add</span>
-              {creating ? 'Adding…' : 'Add sequence'}
+              {creating ? 'Añadiendo…' : 'Añadir secuencia'}
             </button>
           </div>
         </div>
@@ -324,11 +325,11 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
         {loading && (
           <div className="p-6 text-sm text-muted-foreground flex items-center gap-2">
             <span className="material-icons animate-spin text-base">progress_activity</span>
-            Loading…
+            Cargando…
           </div>
         )}
         {!loading && sequences.length === 0 && (
-          <div className="p-6 text-sm text-muted-foreground">No follow-up sequences configured yet.</div>
+          <div className="p-6 text-sm text-muted-foreground">Aún no hay secuencias de seguimiento configuradas.</div>
         )}
         {!loading && sequences.map((seq) => (
           <div key={seq.id} className="p-4 space-y-2">
@@ -350,7 +351,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                     </span>
                   )}
                   {!seq.enabled && (
-                    <span className="px-2 py-0.5 rounded bg-muted text-amber-700 dark:text-amber-400">Paused</span>
+                    <span className="px-2 py-0.5 rounded bg-muted text-amber-700 dark:text-amber-400">En pausa</span>
                   )}
                 </div>
               </div>
@@ -359,7 +360,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                   type="button"
                   onClick={() => (editingId === seq.id ? setEditingId(null) : startEditing(seq))}
                   className="px-2 py-1 text-xs rounded hover:bg-muted text-muted-foreground"
-                  title="Edit"
+                  title="Editar"
                 >
                   <span className="material-icons text-base">edit</span>
                 </button>
@@ -367,7 +368,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                   type="button"
                   onClick={() => toggleEnabled(seq)}
                   className="px-2 py-1 text-xs rounded hover:bg-muted text-muted-foreground"
-                  title={seq.enabled ? 'Pause' : 'Resume'}
+                  title={seq.enabled ? 'Pausar' : 'Reanudar'}
                 >
                   <span className="material-icons text-base">{seq.enabled ? 'pause' : 'play_arrow'}</span>
                 </button>
@@ -375,7 +376,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                   type="button"
                   onClick={() => deleteSequence(seq)}
                   className="px-2 py-1 text-xs rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600"
-                  title="Delete"
+                  title="Eliminar"
                 >
                   <span className="material-icons text-base">delete</span>
                 </button>
@@ -386,7 +387,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
               <div className="mt-3 ml-7 border border-border rounded-lg p-3 space-y-3">
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-muted-foreground mb-1">Subject</label>
+                    <label className="block text-xs text-muted-foreground mb-1">Asunto</label>
                     <input
                       type="text"
                       value={editDraft.subject}
@@ -407,7 +408,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs text-muted-foreground mb-1">Body HTML</label>
+                  <label className="block text-xs text-muted-foreground mb-1">Cuerpo HTML</label>
                   <textarea
                     value={editDraft.bodyHtml}
                     onChange={(e) => setEditDraft((d) => d ? { ...d, bodyHtml: e.target.value } : d)}
@@ -417,20 +418,20 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-muted-foreground mb-1">Only send when</label>
+                    <label className="block text-xs text-muted-foreground mb-1">Enviar solo cuando</label>
                     <select
                       value={editDraft.conditionField}
                       onChange={(e) => setEditDraft((d) => d ? { ...d, conditionField: e.target.value } : d)}
                       className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     >
-                      <option value="">(always send)</option>
+                      <option value="">(enviar siempre)</option>
                       {fieldOptions.map((f) => (
                         <option key={f.id} value={f.id}>{f.label || f.id}</option>
                       ))}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-muted-foreground mb-1">…equals</label>
+                    <label className="block text-xs text-muted-foreground mb-1">…es igual a</label>
                     <input
                       type="text"
                       value={editDraft.conditionValue}
@@ -446,7 +447,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                     checked={editDraft.enabled}
                     onChange={(e) => setEditDraft((d) => d ? { ...d, enabled: e.target.checked } : d)}
                   />
-                  Enabled
+                  Activado
                 </label>
                 <div className="flex items-center gap-2">
                   <button
@@ -456,15 +457,13 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                     className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
                   >
                     <span className="material-icons text-base">save</span>
-                    {savingId === seq.id ? 'Saving…' : 'Save'}
+                    {savingId === seq.id ? 'Guardando…' : 'Guardar'}
                   </button>
                   <button
                     type="button"
                     onClick={() => { setEditingId(null); setEditDraft(null); }}
                     className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg border border-border hover:bg-muted text-foreground"
-                  >
-                    Cancel
-                  </button>
+                  >Cancelar</button>
                 </div>
               </div>
             )}

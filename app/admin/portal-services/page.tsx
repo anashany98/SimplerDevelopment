@@ -168,7 +168,7 @@ export default function AdminPortalServicesPage() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Category <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-medium text-foreground mb-1">Categoría<span className="text-destructive">*</span></label>
         <select value={values.category} onChange={e => setValues({ ...values, category: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
           <option value="domain">Domain (White Label)</option>
@@ -179,7 +179,7 @@ export default function AdminPortalServicesPage() {
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <textarea rows={2} value={values.description} onChange={e => setValues({ ...values, description: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
       </div>
@@ -199,11 +199,11 @@ export default function AdminPortalServicesPage() {
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Stripe Price ID (optional — auto-created if blank)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">ID de precio de Stripe (opcional: se crea solo si se deja en blanco)</label>
         <input type="text" placeholder="price_xxx" value={values.stripePriceId}
           onChange={e => setValues({ ...values, stripePriceId: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary" />
-        <p className="text-xs text-muted-foreground mt-0.5">Leave blank to auto-create a Stripe product and price when Stripe is configured.</p>
+        <p className="text-xs text-muted-foreground mt-0.5">Déjalo en blanco para crear automáticamente un producto y precio de Stripe cuando Stripe esté configurado.</p>
       </div>
       <div className="sm:col-span-2">
         <label className="block text-sm font-medium text-foreground mb-1">Features (one per line)</label>
@@ -218,10 +218,10 @@ export default function AdminPortalServicesPage() {
       </div>
 
       <div className="sm:col-span-2 flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
         <button type="submit" disabled={saving}
           className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-          {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Saving...</> : submitLabel}
+          {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Guardando...</> : submitLabel}
         </button>
       </div>
     </form>
@@ -232,7 +232,7 @@ export default function AdminPortalServicesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Services Catalog</h1>
-          <p className="text-muted-foreground mt-1">Manage services and their intake surveys. Add a survey so clients fill out details when requesting a service.</p>
+          <p className="text-muted-foreground mt-1">Gestiona servicios y sus formularios de solicitud. Añade una encuesta para que los clientes completen los detalles al solicitar un servicio.</p>
         </div>
         <button onClick={() => { setShowCreateForm(!showCreateForm); setEditingId(null); }}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
@@ -255,7 +255,7 @@ export default function AdminPortalServicesPage() {
       )}
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando...</div>
       ) : services.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">No services yet. Create one above.</div>
       ) : (
@@ -330,12 +330,12 @@ export default function AdminPortalServicesPage() {
                       </button>
                       <button onClick={() => startEdit(svc)}
                         className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                        title="Edit">
+                        title="Editar">
                         <span className="material-icons text-base">edit</span>
                       </button>
                       <button onClick={() => deleteService(svc.id, svc.name)} disabled={deleting === svc.id}
                         className="p-1.5 rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors disabled:opacity-40"
-                        title="Delete">
+                        title="Eliminar">
                         <span className="material-icons text-base">{deleting === svc.id ? 'refresh' : 'delete_outline'}</span>
                       </button>
                     </div>

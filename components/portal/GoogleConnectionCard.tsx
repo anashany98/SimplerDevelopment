@@ -101,7 +101,7 @@ export default function GoogleConnectionCard({
       {!status?.connected ? (
         <>
           <p className="text-sm text-muted-foreground">
-            Connect your Google account to set up Search Console and Analytics for this website.
+            Conecta tu cuenta de Google para configurar Search Console y Analytics en esta web.
           </p>
           <a
             href={`/api/portal/websites/${siteId}/google/auth`}

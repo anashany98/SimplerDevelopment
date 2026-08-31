@@ -75,7 +75,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     setCampaign(prev => prev ? { ...prev, status: 'sent', sentAt: new Date().toISOString(), totalSent: data.data.sent } : prev);
   }
 
-  if (loading) return <div className="p-6 text-muted-foreground text-sm">Loading…</div>;
+  if (loading) return <div className="p-6 text-muted-foreground text-sm">Cargando…</div>;
   if (!campaign) return <div className="p-6 text-muted-foreground text-sm">Campaign not found.</div>;
 
   const openRate = campaign.totalSent > 0 ? Math.round(campaign.totalOpened / campaign.totalSent * 100) : 0;
@@ -158,7 +158,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             { label: 'Reply-To', value: campaign.replyTo ?? '—' },
             { label: 'List', value: campaign.listName ?? '—' },
             { label: 'Preview Text', value: campaign.previewText ?? '—' },
-            { label: 'Status', value: campaign.status },
+            { label: 'Estado', value: campaign.status },
             { label: 'Sent At', value: campaign.sentAt ? new Date(campaign.sentAt).toLocaleString() : '—' },
             { label: 'Scheduled At', value: campaign.scheduledAt ? new Date(campaign.scheduledAt).toLocaleString() : '—' },
           ].map(row => (
@@ -204,7 +204,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
               <thead>
                 <tr className="border-b border-border bg-muted/40">
                   <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Recipient</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Sent</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Enviado</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Opened</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clicked</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Bounced</th>

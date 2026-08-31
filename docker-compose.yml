@@ -3,8 +3,10 @@
 # - app: Next.js app at http://localhost:3000
 # - realtime: Yjs WebSocket server at http://localhost:3030/health
 # - agents: Mastra agents service at http://localhost:4111
+# - cron: fires the vercel.json cron jobs against the app (self-hosted
+#   replacement for Vercel's scheduler; needs CRON_SECRET in .env.local)
 # - mailpit: local email capture at http://localhost:8025
-# - minio: local S3-compatible object storage at :9000 (console :9001)
+# - minio: local S3-compatible object storage at :9000 (console :9011)
 #
 # Usage:
 #   cp .env.example .env.local
@@ -26,7 +28,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: simplerdev
     ports:
-      - "5432:5432"
+      # 5435 on the host: this machine runs other Postgres instances on
+      # 5432-5434. Container-to-container traffic still uses db:5432.
+      - "5435:5432"
     volumes:
       - simplerdev-pgdata:/var/lib/postgresql/data
       - ./docker/initdb:/docker-entrypoint-initdb.d:ro
@@ -35,6 +39,29 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  litellm:
+    # Anthropic-protocol → LM Studio gateway (see docker/litellm-config.yaml).
+    # The raw-Anthropic call sites (brain agent SSE, chat/stream, meeting
+    # processor, branding, pitch decks) reach local AI via ANTHROPIC_BASE_URL.
+    image: ghcr.io/berriai/litellm:main-stable
+    container_name: simplerdev-litellm
+    restart: unless-stopped
+    command: --config /app/config.yaml --port 4000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      LITELLM_LOCAL_MODEL_COST_MAP: "True" # skip startup fetch to api.litellm.ai (offline-friendly)
+    volumes:
+      - ./docker/litellm-config.yaml:/app/config.yaml:ro
+    ports:
+      - "127.0.0.1:4100:4000" # localhost-only, for debugging the gateway
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:4000/health/liveliness', timeout=5).status==200 else 1)\" || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
 
   mailpit:
     image: axllent/mailpit:latest
@@ -48,9 +75,13 @@ services:
     image: oven/bun:1.3.11
     container_name: simplerdev-app
     restart: unless-stopped
+    # Docker Desktop on this machine does not auto-inject host.docker.internal;
+    # without it the local-AI env vars (LM Studio base URLs) never resolve.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     working_dir: /workspace
     command: >
-      sh -lc "bun install --frozen-lockfile &&
+      sh -lc "bun install --frozen-lockfile --linker=hoisted &&
       bun scripts/verify-db-target.ts &&
       bunx drizzle-kit migrate &&
       bun scripts/apply-local-manual-migrations.ts &&
@@ -60,6 +91,8 @@ services:
         condition: service_healthy
       mailpit:
         condition: service_started
+      minio-init:
+        condition: service_completed_successfully
     env_file:
       - path: .env.local
         required: false
@@ -74,15 +107,85 @@ services:
       NEXTAUTH_URL: http://localhost:3000
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
-      NEXT_PUBLIC_REALTIME_URL: ws://localhost:3030
+      # Opt-in list for development-only asset/HMR requests through a tunnel.
+      # Example: a generated Cloudflare Quick Tunnel hostname, without scheme.
+      NEXT_ALLOWED_DEV_ORIGINS: ${NEXT_ALLOWED_DEV_ORIGINS:-}
+      NEXT_PUBLIC_REALTIME_URL: ws://localhost:3031
       REALTIME_INTERNAL_URL: http://realtime:3030
       REALTIME_JWT_SECRET: ${REALTIME_JWT_SECRET:-sd-local-dev-realtime-jwt-secret}
       REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
-      SD_AGENTS_URL: http://agents:4111
+      # Mastra agents service intentionally NOT wired for this local-AI
+      # deployment: its brainWorkflow classify step needs strict structured
+      # output (json_schema) that LM Studio cannot return, and
+      # @ai-sdk/anthropic ignores ANTHROPIC_BASE_URL so the service can't be
+      # pointed at the gateway. Without SD_AGENTS_URL the portal brain-agent
+      # route falls back to its in-app Anthropic-protocol SSE loop, which DOES
+      # go through the litellm gateway (verified: tools + streaming work).
+      # Re-enable by restoring SD_AGENTS_URL / SD_AGENTS_INTERNAL_SECRET here
+      # (see git history) once Mastra runs against a capable API provider.
       AUTH_TRUST_HOST: "true"
       EMAIL_TRANSPORT: mailpit
       MAILPIT_SMTP_HOST: mailpit
       MAILPIT_SMTP_PORT: "1025"
+      # ── Local AI (LM Studio) ──────────────────────────────────────────
+      # Chat/agents + embeddings all run against the host's LM Studio server
+      # (0.0.0.0:1234). qwen3-vl-8b-instruct is used (NOT qwen3-8b: the
+      # thinking variant spends max_tokens on reasoning and returns empty
+      # content). OPENAI_API_KEY is a dummy — LM Studio ignores auth; the code
+      # only needs it non-empty to pick the "platform" key path.
+      # host.docker.internal works because of the extra_hosts entry above.
+      OPENAI_BASE_URL: http://host.docker.internal:1234/v1
+      OPENAI_API_KEY: ${LMSTUDIO_API_KEY:-lmstudio-local}
+      # Raw-Anthropic surfaces (the models.ts carve-outs: brain agent SSE,
+      # chat/stream, meeting processor, branding, pitch decks) talk the
+      # Anthropic /v1/messages protocol, which LM Studio does not speak —
+      # the litellm service translates it to LM Studio's OpenAI endpoint.
+      ANTHROPIC_BASE_URL: http://litellm:4000
+      ANTHROPIC_API_KEY: ${ANTHROPIC_GATEWAY_KEY:-local-anthropic-gateway}
+      AI_MODEL__chat: openai:qwen3-vl-8b-instruct
+      AI_MODEL__omnichannelReply: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brainAgentSimple: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brainAgentComplex: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brainClassify: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brainPlan: openai:qwen3-vl-8b-instruct
+      AI_MODEL__nlpParse: openai:qwen3-vl-8b-instruct
+      AI_MODEL__classifyCrm: openai:qwen3-vl-8b-instruct
+      AI_MODEL__classifyNotes: openai:qwen3-vl-8b-instruct
+      AI_MODEL__meetingProcess: openai:qwen3-vl-8b-instruct
+      AI_MODEL__surveySummary: openai:qwen3-vl-8b-instruct
+      AI_MODEL__inboundEmail: openai:qwen3-vl-8b-instruct
+      AI_MODEL__extensionExtract: openai:qwen3-vl-8b-instruct
+      AI_MODEL__seoRecommendations: openai:qwen3-vl-8b-instruct
+      # Remaining seam tasks default to provider 'anthropic' in models.ts —
+      # @ai-sdk/anthropic expects ANTHROPIC_BASE_URL WITH a /v1 suffix while
+      # the raw SDK the brain route uses expects it WITHOUT one. Rather than
+      # pick a split-brain base URL, every seam task is remapped to the local
+      # OpenAI provider (LM Studio direct). The raw @anthropic-ai/sdk
+      # call sites (brain agent SSE loop, chat/stream) keep ANTHROPIC_BASE_URL
+      # → the litellm gateway.
+      AI_MODEL__brandingTheme: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brandingMessaging: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brandingRewrite: openai:qwen3-vl-8b-instruct
+      AI_MODEL__brandingBlockCopy: openai:qwen3-vl-8b-instruct
+      AI_MODEL__siteBrandingGen: openai:qwen3-vl-8b-instruct
+      AI_MODEL__blockRestyle: openai:qwen3-vl-8b-instruct
+      AI_MODEL__deckGen: openai:qwen3-vl-8b-instruct
+      AI_MODEL__slideGen: openai:qwen3-vl-8b-instruct
+      AI_MODEL__slideBatchEdit: openai:qwen3-vl-8b-instruct
+      # Embeddings via the same LM Studio server: nomic-embed-text (768-dim).
+      # EMBEDDINGS_DIM must match the brain_embeddings.vector column
+      # (drizzle/9028) and lib/db/schema/brain.ts.
+      EMBEDDINGS_MODEL: text-embedding-nomic-embed-text-v1.5@f32
+      EMBEDDINGS_DIM: "768"
+      # Local MinIO for media uploads (bucket created by minio-init). The
+      # public endpoint is browser-facing: presigned URLs signed for
+      # http://minio:9000 would fail when fetched from the host browser.
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: http://localhost:9000
+      S3_REGION: us-east-1
+      S3_BUCKET_NAME: simplerdev-media
+      S3_ACCESS_KEY_ID: minioadmin
+      S3_SECRET_ACCESS_KEY: minioadmin
       PORT: "3000"
     volumes:
       - .:/workspace
@@ -107,6 +210,30 @@ services:
       # never starts on first run.
       start_period: 1200s
 
+  cron:
+    image: oven/bun:1.3.11
+    container_name: simplerdev-cron
+    restart: unless-stopped
+    working_dir: /workspace
+    command: sh -lc "bun install --frozen-lockfile && bun scripts/cron-runner.ts"
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      CRON_BASE_URL: http://app:3000
+    volumes:
+      - .:/workspace
+      - simplerdev-cron-node-modules:/workspace/node_modules
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qa cron-runner /proc/[0-9]*/cmdline 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 1200s # cold bun install grace — see app service note
+
   minio:
     image: minio/minio:latest
     container_name: simplerdev-minio
@@ -117,7 +244,8 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
       - "9000:9000" # S3 API
-      - "9001:9001" # Console
+      # Console on 9011: the omnigraph-rag stack already owns 9001 on this box.
+      - "9011:9001" # Console
     volumes:
       - simplerdev-minio-data:/data
     healthcheck:
@@ -161,7 +289,9 @@ services:
       - simplerdev-realtime-root-node-modules:/workspace/node_modules
       - simplerdev-realtime-node-modules:/workspace/packages/realtime-server/node_modules
     ports:
-      - "3030:3030"
+      # 3031 on the host: the omnigraph-rag stack already owns 3030 on this
+      # box. Container-to-container traffic still uses realtime:3030.
+      - "3031:3030"
     healthcheck:
       test:
         [
@@ -177,6 +307,8 @@ services:
     image: oven/bun:1.3.11
     container_name: simplerdev-agents
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     working_dir: /workspace/simplerdevelopment-agents
     # `mastra dev` (the Studio/hot-reload server) exits 0 immediately in this
     # detached container and crash-loops under restart:unless-stopped. Use the
@@ -198,7 +330,25 @@ services:
       - path: .env.local
         required: false
     environment:
+      # Mastra storage connects via DATABASE_URL; without this override the
+      # .env.local value (host-local Postgres) is unreachable from the
+      # container and mastra start dies with ECONNREFUSED.
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
+      # Local AI for Mastra agents: the model strings use the `openai/`
+      # prefix because @ai-sdk/anthropic does NOT honor ANTHROPIC_BASE_URL
+      # (verified 2026-08-28: Mastra hit api.anthropic.com and got 404 while
+      # the litellm gateway saw zero traffic). @ai-sdk/openai DOES honor
+      # OPENAI_BASE_URL, so agents talk to LM Studio directly over the OpenAI
+      # protocol — same local model the rest of the seam uses.
+      OPENAI_API_KEY: ${LMSTUDIO_API_KEY:-lmstudio-local}
+      OPENAI_BASE_URL: http://host.docker.internal:1234/v1
+      SD_BRAIN_MODEL: openai/qwen3-vl-8b-instruct
+      SD_BRAIN_FAST_MODEL: openai/qwen3-vl-8b-instruct
+      SD_PORTAL_MODEL: openai/qwen3-vl-8b-instruct
+      SD_PORTAL_FAST_MODEL: openai/qwen3-vl-8b-instruct
+      SD_SCORER_MODEL: openai/qwen3-vl-8b-instruct
       SD_MCP_URL: http://app:3000/api/mcp
+      SD_AGENTS_INTERNAL_SECRET: ${SD_AGENTS_INTERNAL_SECRET:-sd-local-dev-agents-internal-secret}
       PORT: "4111"
     volumes:
       - .:/workspace
@@ -219,6 +369,7 @@ services:
 volumes:
   simplerdev-pgdata:
   simplerdev-app-node-modules:
+  simplerdev-cron-node-modules:
   simplerdev-app-next:
   simplerdev-realtime-root-node-modules:
   simplerdev-realtime-node-modules:

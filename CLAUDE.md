@@ -1,4 +1,4 @@
-# SimplerDevelopment 2026 — Agent Notes
+# CRM AGENTS — Agent Notes
 
 Multi-tenant SaaS platform: admin + client portal + per-tenant client websites + CRM + Company Brain (AI/RAG) + automations + Google Workspace + Stripe billing. `README.md` is the human developer-onboarding doc; this file is the agent operating guide.
 
@@ -75,7 +75,7 @@ Two **query** tools sit alongside. Neither is a place you *write*:
 > If you hit a merge conflict inside the vault repo, reconcile by hand against
 > the newest content — do not let the merge pick a side.
 
-**Project status lives in the SimplerDevelopment portal — always.** Track status in the portal's project/Kanban system via the `kanban_*` MCP tools (`kanban_list_board`, `kanban_create_card`, `kanban_move_card`, `kanban_update_card`) — **NOT** the vault markdown boards, which are now **frozen snapshots** (`vault/05 - Feature Specs/*Board.md` carry a MIGRATED banner; do not edit their lanes). Discover projects with `projects_list`, create with `projects_create`, read a board with `kanban_list_board({projectId})`. Lanes: Backlog → Planned → In Progress → Validating → Approved → Shipped. Starting a project/feature → create/move its card into the right lane; finishing → move it to Shipped. The card *is* the plan and the status — there is no companion spec note to keep in sync (see the knowledge policy above); put the context in the card description and link any relevant ADR.
+**Project status lives in the CRM AGENTS portal — always.** Track status in the portal's project/Kanban system via the `kanban_*` MCP tools (`kanban_list_board`, `kanban_create_card`, `kanban_move_card`, `kanban_update_card`) — **NOT** the vault markdown boards, which are now **frozen snapshots** (`vault/05 - Feature Specs/*Board.md` carry a MIGRATED banner; do not edit their lanes). Discover projects with `projects_list`, create with `projects_create`, read a board with `kanban_list_board({projectId})`. Lanes: Backlog → Planned → In Progress → Validating → Approved → Shipped. Starting a project/feature → create/move its card into the right lane; finishing → move it to Shipped. The card *is* the plan and the status — there is no companion spec note to keep in sync (see the knowledge policy above); put the context in the card description and link any relevant ADR.
 
 ### The master board is the ledger for code work in this repo (always)
 

@@ -47,6 +47,7 @@ import { registerLinkedinTools } from './linkedin';
 import { registerPathvizTools } from './pathviz';
 import { registerPathvizCoordinationTools } from './pathviz-coordination';
 import { registerAgentFlowTools } from './agent-flows';
+import { registerOmnichannelTools } from './omnichannel';
 
 export {
   registerProjectsTools,
@@ -87,6 +88,7 @@ export {
   registerPathvizTools,
   registerPathvizCoordinationTools,
   registerAgentFlowTools,
+  registerOmnichannelTools,
 };
 
 /**
@@ -132,6 +134,7 @@ export const allToolRegistrars: readonly McpToolRegistrar[] = [
   registerApprovalsTools,
   registerNotificationsTools,
   registerChatTools,
+  registerOmnichannelTools,
   registerLinkedinTools,
   registerAgentFlowTools,
 ];

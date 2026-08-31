@@ -40,9 +40,7 @@ export function ServicesGridBlockEdit({ block, onChange }: ServicesGridBlockEdit
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Section Title
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Título de la sección</label>
         <input
           type="text"
           value={block.title || ''}
@@ -53,9 +51,7 @@ export function ServicesGridBlockEdit({ block, onChange }: ServicesGridBlockEdit
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Section Description
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Descripción de la sección</label>
         <textarea
           value={block.description || ''}
           onChange={(e) => onChange({ ...block, description: e.target.value })}
@@ -66,9 +62,7 @@ export function ServicesGridBlockEdit({ block, onChange }: ServicesGridBlockEdit
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Columns
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ ...block, columns: parseInt(e.target.value) as ServicesGridBlock['columns'] })}
@@ -107,9 +101,7 @@ export function ServicesGridBlockEdit({ block, onChange }: ServicesGridBlockEdit
                   type="button"
                   onClick={() => removeService(index)}
                   className="text-red-500 hover:text-red-700 text-sm ml-2"
-                >
-                  Remove
-                </button>
+                >Quitar</button>
               </div>
 
               {expandedService === service.id && (

@@ -1,7 +1,7 @@
 /**
  * /portal/mobile-auth — mobile sign-in bridge
  *
- * Opened by the SimplerDev Chat mobile app via `expo-web-browser`'s
+ * Opened by the CRM AGENTS Chat mobile app via `expo-web-browser`'s
  * `WebBrowser.openAuthSessionAsync(url, 'sd-chat://callback')`. The portal's
  * normal NextAuth gate (in `lib/auth.ts → authorized`) handles the sign-in
  * round-trip: if the user has no session, they're bounced to `/portal/login`
@@ -25,7 +25,7 @@
  * - `redirect_uri` is whitelisted to `sd-chat://callback` only — no
  *   user-supplied callback URL is honored. (Phase 3 can broaden this if we
  *   add a desktop client.)
- * - The minted key is named "SimplerDev Chat (Mobile)" + a timestamp so users
+ * - The minted key is named "CRM AGENTS Chat (Mobile)" + a timestamp so users
  *   can see/revoke it from `/portal/settings/api-keys`.
  * - 90-day expiry. Sign-out from mobile revokes via `DELETE /api/portal/api-keys?id=…`.
  */
@@ -39,7 +39,7 @@ import { getPortalClient } from '@/lib/portal-client';
 import { generatePortalApiKey } from '@/lib/mcp-auth';
 
 const MOBILE_REDIRECT = 'sd-chat://callback';
-const KEY_NAME = 'SimplerDev Chat (Mobile)';
+const KEY_NAME = 'CRM AGENTS Chat (Mobile)';
 const KEY_TTL_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
 
 async function mintTokenAndRedirect() {
@@ -143,7 +143,7 @@ export default async function MobileAuthPage() {
           <span style={{ fontFamily: '"Material Icons"', fontSize: 32 }}>auto_awesome</span>
         </div>
         <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#0B0F19' }}>
-          Connect SimplerDev Chat
+          Connect CRM AGENTS Chat
         </h1>
         <p style={{ margin: '0 0 24px', fontSize: 14, lineHeight: 1.5, color: '#5E6473' }}>
           You&rsquo;re signed in as <strong>{session.user!.email}</strong>. Tap the button below to

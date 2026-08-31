@@ -17,7 +17,7 @@ const MOCK_BAR_DATA = [
 ];
 
 const MOCK_PIE_SEGMENTS = [
-  { label: 'Email', pct: 38, color: '#6366f1' },
+  { label: 'Correo', pct: 38, color: '#6366f1' },
   { label: 'Social Media', pct: 28, color: '#06b6d4' },
   { label: 'Word of Mouth', pct: 22, color: '#f59e0b' },
   { label: 'Other', pct: 12, color: '#94a3b8' },

@@ -27,7 +27,7 @@ export function DecisionSlideEditor({
         </div>
         <div>
           <h3 className="text-lg font-semibold text-foreground">Decision Slide</h3>
-          <p className="text-sm text-muted-foreground">Viewers must choose a path to continue</p>
+          <p className="text-sm text-muted-foreground">Los espectadores deben elegir un camino para continuar</p>
         </div>
       </div>
 
@@ -44,14 +44,12 @@ export function DecisionSlideEditor({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-medium text-muted-foreground">Options</label>
+          <label className="text-xs font-medium text-muted-foreground">Opciones</label>
           <button
             onClick={onAddOption}
             className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80"
           >
-            <span className="material-icons text-sm">add</span>
-            Add Option
-          </button>
+            <span className="material-icons text-sm">add</span>Agregar opción</button>
         </div>
         {(slide.decisionOptions || []).map((opt) => (
           <div key={opt.id} className="bg-accent/30 rounded-lg p-4 space-y-3">
@@ -111,9 +109,7 @@ export function DecisionSlideEditor({
           </span>
           <span className="material-icons text-base text-muted-foreground group-open:rotate-180 transition-transform">expand_more</span>
         </summary>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Renders a two-column intro layout (logo, eyebrow, headline + light punchline, body, image) with the decision options as CTA cards. Leave all fields blank to use the default centered grid.
-        </p>
+        <p className="mt-2 text-xs text-muted-foreground">Renderiza un diseño introductorio de dos columnas (logotipo, texto superior, titular + frase ligera, cuerpo, imagen) con las opciones de decisión como tarjetas CTA. Deja todos los campos en blanco para usar la cuadrícula centrada predeterminada.</p>
         <div className="mt-4 space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -145,7 +141,7 @@ export function DecisionSlideEditor({
               value={slide.decisionCover?.headline || ''}
               onChange={(e) => onUpdateCover({ headline: e.target.value })}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="Most companies don't have a marketing problem."
+              placeholder="La mayoría de las empresas no tienen un problema de marketing."
             />
           </div>
           <div>
@@ -155,7 +151,7 @@ export function DecisionSlideEditor({
               value={slide.decisionCover?.punchline || ''}
               onChange={(e) => onUpdateCover({ punchline: e.target.value })}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="They have a decision problem."
+              placeholder="Tienen un problema de decisión."
             />
           </div>
 
@@ -170,7 +166,7 @@ export function DecisionSlideEditor({
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Body</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Cuerpo</label>
             <textarea
               value={slide.decisionCover?.body || ''}
               onChange={(e) => onUpdateCover({ body: e.target.value })}
@@ -194,7 +190,7 @@ export function DecisionSlideEditor({
 
           <div className="grid grid-cols-[1fr_auto] gap-2">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Image URL (right column)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">URL de imagen (columna derecha)</label>
               <input
                 type="text"
                 value={slide.decisionCover?.image || ''}
@@ -253,9 +249,7 @@ export function DecisionSlideEditor({
           onClick={onRemoveSlide}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-border rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
         >
-          <span className="material-icons text-base">delete</span>
-          Remove
-        </button>
+          <span className="material-icons text-base">delete</span>Quitar</button>
       </div>
     </div>
   );

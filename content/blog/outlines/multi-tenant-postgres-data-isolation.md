@@ -128,7 +128,7 @@
 
 ## CTA
 
-**Primary:** "Try SimplerDevelopment — multi-tenant isolation built in from day one. No RLS configuration required."
+**Primary:** "Try CRM AGENTS — multi-tenant isolation built in from day one. No RLS configuration required."
 **Secondary:** Link to `/docs/agents/architecture-for-agents#4-tenancy-model` for the full tenancy invariants.
 
 ---

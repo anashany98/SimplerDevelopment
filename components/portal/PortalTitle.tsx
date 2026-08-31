@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useAgencyChrome } from './AgencyChromeProvider';
 import { buildPortalNavItems, type PortalNavItem } from '@/lib/portal-nav';
 
-const DEFAULT_APP = 'SimplerDevelopment';
+const DEFAULT_APP = 'CRM AGENTS';
 
 // Order matters: more-specific patterns must come before broader ones.
 const ROUTES: { match: RegExp; title: string }[] = [
@@ -17,28 +17,28 @@ const ROUTES: { match: RegExp; title: string }[] = [
   { match: /^\/portal\/brain\/relationships\/\d+$/,    title: 'Relationship' },
   { match: /^\/portal\/brain\/relationships$/,         title: 'Relationships' },
   { match: /^\/portal\/brain\/tasks$/,                 title: 'Brain Tasks' },
-  { match: /^\/portal\/brain\/prospects$/,             title: 'Prospects' },
+  { match: /^\/portal\/brain\/prospects$/,             title: 'Prospectos' },
   { match: /^\/portal\/brain\/ask$/,                   title: 'Connect AI' },
   { match: /^\/portal\/brain\/settings$/,              title: 'Brain Settings' },
   { match: /^\/portal\/brain$/,                        title: 'Company Brain' },
 
   // ─── Projects ────────────────────────────────────────────────────────────
   { match: /^\/portal\/projects\/automations$/,        title: 'Project Automations' },
-  { match: /^\/portal\/projects\/\d+$/,                title: 'Project' },
-  { match: /^\/portal\/projects$/,                     title: 'Projects' },
+  { match: /^\/portal\/projects\/\d+$/,                title: 'Proyecto' },
+  { match: /^\/portal\/projects$/,                     title: 'Proyectos' },
   { match: /^\/portal\/my-tasks$/,                     title: 'My Tasks' },
   { match: /^\/portal\/suggested-projects\/[^/]+\/request$/, title: 'Request Project' },
   { match: /^\/portal\/suggested-projects\/[^/]+$/,    title: 'Suggested Project' },
   { match: /^\/portal\/suggested-projects$/,           title: 'Suggested Projects' },
 
   // ─── CRM ─────────────────────────────────────────────────────────────────
-  { match: /^\/portal\/crm\/contacts\/\d+$/,           title: 'Contact' },
-  { match: /^\/portal\/crm\/contacts$/,                title: 'Contacts' },
-  { match: /^\/portal\/crm\/companies\/\d+$/,          title: 'Company' },
-  { match: /^\/portal\/crm\/companies$/,               title: 'Companies' },
-  { match: /^\/portal\/crm\/deals$/,                   title: 'Deals' },
-  { match: /^\/portal\/crm\/proposals\/\d+$/,          title: 'Proposal' },
-  { match: /^\/portal\/crm\/proposals$/,               title: 'Proposals' },
+  { match: /^\/portal\/crm\/contacts\/\d+$/,           title: 'Contacto' },
+  { match: /^\/portal\/crm\/contacts$/,                title: 'Contactos' },
+  { match: /^\/portal\/crm\/companies\/\d+$/,          title: 'Empresa' },
+  { match: /^\/portal\/crm\/companies$/,               title: 'Empresas' },
+  { match: /^\/portal\/crm\/deals$/,                   title: 'Negocios' },
+  { match: /^\/portal\/crm\/proposals\/\d+$/,          title: 'Propuesta' },
+  { match: /^\/portal\/crm\/proposals$/,               title: 'Propuestas' },
   { match: /^\/portal\/crm\/settings$/,                title: 'CRM Settings' },
   { match: /^\/portal\/crm$/,                          title: 'CRM' },
 
@@ -53,23 +53,23 @@ const ROUTES: { match: RegExp; title: string }[] = [
   { match: /^\/portal\/email\/automations$/,           title: 'Email Automations' },
   { match: /^\/portal\/email\/settings$/,              title: 'Email Settings' },
   { match: /^\/portal\/email\/editor-preview$/,        title: 'Email Editor Preview' },
-  { match: /^\/portal\/email$/,                        title: 'Email' },
+  { match: /^\/portal\/email$/,                        title: 'Correo' },
 
   // ─── Surveys ─────────────────────────────────────────────────────────────
   { match: /^\/portal\/surveys\/new$/,                 title: 'New Survey' },
-  { match: /^\/portal\/surveys\/\d+$/,                 title: 'Survey' },
+  { match: /^\/portal\/surveys\/\d+$/,                 title: 'Encuesta' },
   { match: /^\/portal\/surveys$/,                      title: 'Surveys' },
 
   // ─── Tickets / Invoices / Hosting ────────────────────────────────────────
   { match: /^\/portal\/tickets\/new$/,                 title: 'New Ticket' },
   { match: /^\/portal\/tickets\/\d+$/,                 title: 'Ticket' },
-  { match: /^\/portal\/invoices\/\d+$/,                title: 'Invoice' },
+  { match: /^\/portal\/invoices\/\d+$/,                title: 'Factura' },
   { match: /^\/portal\/hosting\/\d+$/,                 title: 'Hosting Plan' },
   { match: /^\/portal\/hosting$/,                      title: 'Hosting' },
 
   // ─── Services ────────────────────────────────────────────────────────────
   { match: /^\/portal\/services\/[^/]+\/request$/,     title: 'Service Request' },
-  { match: /^\/portal\/services$/,                     title: 'Services' },
+  { match: /^\/portal\/services$/,                     title: 'Servicios' },
 
   // ─── Settings ────────────────────────────────────────────────────────────
   { match: /^\/portal\/settings\/ai$/,                 title: 'AI Settings' },
@@ -77,17 +77,17 @@ const ROUTES: { match: RegExp; title: string }[] = [
   { match: /^\/portal\/settings\/billing$/,            title: 'Billing' },
   { match: /^\/portal\/settings\/profile$/,            title: 'Profile' },
   { match: /^\/portal\/settings\/support$/,            title: 'Support' },
-  { match: /^\/portal\/settings\/team$/,               title: 'Team' },
-  { match: /^\/portal\/settings$/,                     title: 'Settings' },
+  { match: /^\/portal\/settings\/team$/,               title: 'Equipo' },
+  { match: /^\/portal\/settings$/,                     title: 'Ajustes' },
 
   // ─── Tools / Booking ─────────────────────────────────────────────────────
   { match: /^\/portal\/tools\/booking\/calendar$/,     title: 'Booking Calendar' },
   { match: /^\/portal\/tools\/booking\/checkin$/,      title: 'Booking Check-In' },
   { match: /^\/portal\/tools\/booking\/analytics$/,    title: 'Booking Analytics' },
   { match: /^\/portal\/tools\/booking\/quotes\/new$/,  title: 'New Quote' },
-  { match: /^\/portal\/tools\/booking\/quotes$/,       title: 'Quotes' },
+  { match: /^\/portal\/tools\/booking\/quotes$/,       title: 'Cotizaciones' },
   { match: /^\/portal\/tools\/booking\/new$/,          title: 'New Booking' },
-  { match: /^\/portal\/tools\/booking\/\d+$/,          title: 'Booking' },
+  { match: /^\/portal\/tools\/booking\/\d+$/,          title: 'Reserva' },
   { match: /^\/portal\/tools\/booking$/,               title: 'Bookings' },
   { match: /^\/portal\/tools\/gift-certificates$/,     title: 'Gift Certificates' },
 
@@ -104,10 +104,10 @@ const ROUTES: { match: RegExp; title: string }[] = [
   { match: /^\/portal\/websites\/\d+\/posts\/new$/,                     title: 'New Post' },
   { match: /^\/portal\/websites\/\d+\/email\/\d+$/,                     title: 'Email Template' },
   { match: /^\/portal\/websites\/\d+\/email$/,                          title: 'Website Emails' },
-  { match: /^\/portal\/websites\/\d+\/store\/products\/\d+$/,           title: 'Product' },
-  { match: /^\/portal\/websites\/\d+\/store\/products$/,                title: 'Products' },
-  { match: /^\/portal\/websites\/\d+\/store\/orders\/\d+$/,             title: 'Order' },
-  { match: /^\/portal\/websites\/\d+\/store\/orders$/,                  title: 'Orders' },
+  { match: /^\/portal\/websites\/\d+\/store\/products\/\d+$/,           title: 'Producto' },
+  { match: /^\/portal\/websites\/\d+\/store\/products$/,                title: 'Productos' },
+  { match: /^\/portal\/websites\/\d+\/store\/orders\/\d+$/,             title: 'Pedido' },
+  { match: /^\/portal\/websites\/\d+\/store\/orders$/,                  title: 'Pedidos' },
   { match: /^\/portal\/websites\/\d+\/store\/categories$/,              title: 'Store Categories' },
   { match: /^\/portal\/websites\/\d+\/store\/discounts$/,               title: 'Discounts' },
   { match: /^\/portal\/websites\/\d+\/store\/shipping$/,                title: 'Shipping' },
@@ -115,16 +115,16 @@ const ROUTES: { match: RegExp; title: string }[] = [
   { match: /^\/portal\/websites\/\d+\/store$/,                          title: 'Store' },
   { match: /^\/portal\/websites\/\d+\/entries$/,                        title: 'Content Entries' },
   { match: /^\/portal\/websites\/\d+\/taxonomy$/,                       title: 'Taxonomies' },
-  { match: /^\/portal\/websites\/\d+\/tags$/,                           title: 'Tags' },
-  { match: /^\/portal\/websites\/\d+\/categories$/,                     title: 'Categories' },
+  { match: /^\/portal\/websites\/\d+\/tags$/,                           title: 'Etiquetas' },
+  { match: /^\/portal\/websites\/\d+\/categories$/,                     title: 'Categorías' },
   { match: /^\/portal\/websites\/\d+\/content-types$/,                  title: 'Content Types' },
   { match: /^\/portal\/websites\/\d+\/media$/,                          title: 'Media Library' },
-  { match: /^\/portal\/websites\/\d+\/calendar$/,                       title: 'Calendar' },
+  { match: /^\/portal\/websites\/\d+\/calendar$/,                       title: 'Calendario' },
   { match: /^\/portal\/websites\/\d+\/automations$/,                    title: 'Website Automations' },
   { match: /^\/portal\/websites\/\d+\/branding$/,                       title: 'Website Branding' },
-  { match: /^\/portal\/websites\/\d+\/navigation$/,                     title: 'Navigation' },
+  { match: /^\/portal\/websites\/\d+\/navigation$/,                     title: 'Navegación' },
   { match: /^\/portal\/websites\/\d+\/settings$/,                       title: 'Website Settings' },
-  { match: /^\/portal\/websites\/\d+$/,                                 title: 'Website' },
+  { match: /^\/portal\/websites\/\d+$/,                                 title: 'Sitio web' },
   { match: /^\/portal\/websites$/,                                      title: 'Websites' },
 
   // ─── Branding ────────────────────────────────────────────────────────────
@@ -140,8 +140,8 @@ const ROUTES: { match: RegExp; title: string }[] = [
   // ─── Top-level ───────────────────────────────────────────────────────────
   { match: /^\/portal\/dashboard$/,                title: 'Dashboard' },
   { match: /^\/portal\/approvals$/,                title: 'Approvals' },
-  { match: /^\/portal\/automations$/,               title: 'Automations' },
-  { match: /^\/portal\/media$/,                    title: 'Media' },
+  { match: /^\/portal\/automations$/,               title: 'Automatizaciones' },
+  { match: /^\/portal\/media$/,                    title: 'Medios' },
   { match: /^\/portal\/login$/,                    title: 'Sign In' },
   { match: /^\/portal\/forgot-password$/,          title: 'Forgot Password' },
   { match: /^\/portal\/reset-password$/,           title: 'Reset Password' },

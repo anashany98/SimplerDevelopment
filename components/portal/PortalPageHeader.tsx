@@ -22,8 +22,8 @@ import type { ReactNode } from 'react';
  * — the same rule applies there: their children must start at h2.
  *
  *   <PortalPageHeader
- *     eyebrow="Workspace"
- *     title="Dashboard"
+ *     eyebrow="Espacio de trabajo"
+ *     title="Panel"
  *     subtitle="Everything at a glance."
  *     actions={<button className={pBtnPrimary}>New project</button>}
  *   />

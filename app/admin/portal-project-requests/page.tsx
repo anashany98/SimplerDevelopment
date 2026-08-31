@@ -21,10 +21,10 @@ interface ProjectRequest {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: string }> = {
-  pending:  { label: 'Pending',  color: 'bg-amber-100 text-amber-700',  icon: 'hourglass_empty' },
+  pending:  { label: 'Pendiente',  color: 'bg-amber-100 text-amber-700',  icon: 'hourglass_empty' },
   reviewed: { label: 'Reviewed', color: 'bg-blue-100 text-blue-700',    icon: 'visibility' },
-  approved: { label: 'Approved', color: 'bg-green-100 text-green-700',  icon: 'check_circle' },
-  rejected: { label: 'Rejected', color: 'bg-red-100 text-red-700',      icon: 'cancel' },
+  approved: { label: 'Aprobado', color: 'bg-green-100 text-green-700',  icon: 'check_circle' },
+  rejected: { label: 'Rechazado', color: 'bg-red-100 text-red-700',      icon: 'cancel' },
 };
 
 const STATUSES = Object.keys(STATUS_CONFIG);
@@ -78,7 +78,7 @@ export default function AdminProjectRequestsPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">Project Requests</h1>
-        <p className="text-muted-foreground mt-1">Client intake submissions from suggested projects. Review answers and update status.</p>
+        <p className="text-muted-foreground mt-1">Solicitudes de clientes de proyectos sugeridos. Revisa las respuestas y actualiza el estado.</p>
       </div>
 
       {/* Summary stats */}
@@ -118,7 +118,7 @@ export default function AdminProjectRequestsPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando...</div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           {filterStatus === 'all' ? 'No project requests yet.' : `No ${filterStatus} requests.`}
@@ -178,7 +178,7 @@ export default function AdminProjectRequestsPage() {
                   <div className="border-t border-border px-5 pb-5 pt-4 bg-muted/20 space-y-4">
                     {req.message && (
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Message</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Mensaje</p>
                         <p className="text-sm text-foreground bg-card border border-border rounded-lg px-4 py-3 whitespace-pre-wrap">{req.message}</p>
                       </div>
                     )}
@@ -226,9 +226,7 @@ export default function AdminProjectRequestsPage() {
                               {savingId === req.id ? 'Saving...' : 'Save Notes'}
                             </button>
                             <button onClick={() => setEditingNotes(prev => { const n = { ...prev }; delete n[req.id]; return n; })}
-                              className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">
-                              Cancel
-                            </button>
+                              className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
                           </div>
                         </div>
                       ) : req.adminNotes ? (

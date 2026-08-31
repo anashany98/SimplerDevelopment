@@ -11,7 +11,7 @@ import { findBlockById, updateBlockById } from '@/lib/utils/blockHelpers';
 // Block type labels (matches the ones in VisualBlockEditorEnhanced)
 const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   text: 'Text',
-  heading: 'Heading',
+  heading: 'Encabezado',
   image: 'Image',
   video: 'Video',
   quote: 'Quote',
@@ -26,7 +26,7 @@ const BLOCK_TYPE_LABELS: Record<BlockType, string> = {
   'hero-slideshow': 'Hero Slideshow',
   marquee: 'Marquee',
   'services-grid': 'Services Grid',
-  cta: 'Call to Action',
+  cta: 'Llamada a la acción',
   'hero-cta': 'Hero CTA',
   testimonial: 'Testimonial',
   stats: 'Stats',
@@ -277,7 +277,7 @@ export default function SettingsPopupPage() {
       <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-solid border-primary border-r-transparent mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Cargando...</p>
         </div>
       </div>
     }>

@@ -44,7 +44,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
         <Counter
           icon="group_work"
           tone="text-cyan-600 dark:text-cyan-400"
-          label="Relationships"
+          label="Relaciones"
           value={data.counts.relationships}
           href="/portal/brain/relationships"
         />
@@ -56,9 +56,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
           icon="reviews"
           tone="text-blue-600 dark:text-blue-400"
           action={
-            <Link href="/portal/brain/communications" className="text-xs text-primary hover:underline">
-              View all
-            </Link>
+            <Link href="/portal/brain/communications" className="text-xs text-primary hover:underline">Ver todo</Link>
           }
           empty="Nothing waiting for review."
           items={data.needsReviewMeetings}
@@ -83,7 +81,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
         />
 
         <Tile
-          title="Overdue"
+          title="Atrasado"
           icon="event_busy"
           tone="text-red-600 dark:text-red-400"
           action={
@@ -104,9 +102,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
             <Link
               href="/portal/brain/relationships?view=stale"
               className="text-xs text-primary hover:underline"
-            >
-              All
-            </Link>
+            >Todos</Link>
           }
           empty="No stale prospects."
           items={data.staleProspects}
@@ -136,9 +132,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
             <Link
               href="/portal/brain/relationships?priority=high"
               className="text-xs text-primary hover:underline"
-            >
-              View all
-            </Link>
+            >Ver todo</Link>
           }
           empty="No high-priority relationships."
           items={data.priorityRelationships}
@@ -175,9 +169,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
             <Link
               href="/portal/brain/tasks?status=blocked"
               className="text-xs text-primary hover:underline"
-            >
-              View all
-            </Link>
+            >Ver todo</Link>
           }
           empty="Nothing blocked."
           items={data.blockedTasks}
@@ -189,9 +181,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
           icon="event"
           tone="text-foreground"
           action={
-            <Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">
-              View all
-            </Link>
+            <Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">Ver todo</Link>
           }
           empty="No upcoming due dates."
           items={data.upcomingTasks}

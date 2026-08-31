@@ -53,7 +53,7 @@ export default async function AbExperimentsWidget({
           <span className="ml-2 text-sm text-muted-foreground">experiments</span>
         </div>
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No experiments yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Aún no hay experimentos.</p>
           <Link
             href="/portal/experiments"
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"
@@ -110,7 +110,7 @@ export default async function AbExperimentsWidget({
       </div>
       {allExperiments.length === 0 ? (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No experiments yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Aún no hay experimentos.</p>
           <Link
             href="/portal/experiments"
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"

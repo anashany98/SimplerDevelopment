@@ -46,9 +46,7 @@ export default function GoalsListPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     }>
       <GoalsListContent />
     </Suspense>
@@ -169,9 +167,9 @@ function GoalsListContent() {
     <div className="space-y-4">
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={<span className="flex items-center gap-2"><span className="material-icons text-primary">track_changes</span>Goals</span>}
-          subtitle="Every goal across every initiative. Click into an initiative to check in or edit."
+          subtitle="Todos los objetivos de cada iniciativa. Entra en una iniciativa para revisar o editar."
           actions={
             <Link href="/portal/brain/initiatives" className={pBtnGhost}>
               <span className="material-icons text-base">flag</span>
@@ -209,7 +207,7 @@ function GoalsListContent() {
 
         <div className="mt-2 flex items-center gap-2 flex-wrap text-xs">
           <select
-            aria-label="Filter by owner"
+            aria-label="Filtrar por responsable"
             value={ownerIdParam ?? ''}
             onChange={(e) => setParam({ ownerId: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
@@ -231,9 +229,7 @@ function GoalsListContent() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       ) : visibleGoals.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-2xl">
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">track_changes</span>
@@ -255,10 +251,10 @@ function GoalsListContent() {
             <thead className="bg-muted/40 text-xs text-muted-foreground">
               <tr>
                 <th className="text-left px-3 py-2 font-medium">Goal</th>
-                <th className="text-left px-3 py-2 font-medium">Status</th>
+                <th className="text-left px-3 py-2 font-medium">Estado</th>
                 <th className="text-left px-3 py-2 font-medium">Progress</th>
-                <th className="text-left px-3 py-2 font-medium">Owner</th>
-                <th className="text-left px-3 py-2 font-medium">Target</th>
+                <th className="text-left px-3 py-2 font-medium">Propietario</th>
+                <th className="text-left px-3 py-2 font-medium">Objetivo</th>
                 <th className="text-left px-3 py-2 font-medium">Initiative</th>
               </tr>
             </thead>

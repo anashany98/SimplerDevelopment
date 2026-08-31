@@ -208,9 +208,7 @@ export function PostSettingsModal({
                     }
                     className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
-                  <label htmlFor="modal-published" className="ml-2 block text-sm text-foreground">
-                    Published
-                  </label>
+                  <label htmlFor="modal-published" className="ml-2 block text-sm text-foreground">Publicado</label>
                 </div>
               </div>
             )}
@@ -232,7 +230,7 @@ export function PostSettingsModal({
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <p>No custom fields defined for this post type.</p>
-                    <p className="text-sm mt-2">You can add custom fields in the Post Types section.</p>
+                    <p className="text-sm mt-2">Puedes añadir campos personalizados en la sección Tipos de contenido.</p>
                   </div>
                 )}
               </div>
@@ -245,9 +243,7 @@ export function PostSettingsModal({
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-            >
-              Close
-            </button>
+            >Cerrar</button>
           </div>
         </div>
       </div>

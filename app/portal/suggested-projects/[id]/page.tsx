@@ -31,24 +31,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-blue-50 dark:bg-blue-950/40',
     accentBorder: 'border-blue-200 dark:border-blue-800/50',
     iconBg: 'bg-blue-100 dark:bg-blue-900/40',
-    tagline: 'A Website That Works as Hard as You Do',
-    subtagline: 'Most business websites lose 70% of visitors in the first 10 seconds. Ours don\'t — because every element is built around converting visitors into customers.',
+    tagline: 'Un sitio web que trabaja tan duro como tú',
+    subtagline: 'La mayoría de los sitios web de negocios pierden al 70% de los visitantes en los primeros 10 segundos. Los nuestros no — porque cada elemento está diseñado para convertir visitantes en clientes.',
     valueProps: [
-      { icon: 'trending_up', title: 'Rank Higher on Google', body: 'Built with structured data, fast load times, and clean code that search engines reward.' },
-      { icon: 'devices', title: 'Flawless on Every Device', body: 'Mobile-first design that looks perfect whether someone finds you on a phone, tablet, or desktop.' },
-      { icon: 'bolt', title: 'Speed That Converts', body: 'Sites that load in under 2 seconds see 15% higher conversions. We optimize every asset.' },
+      { icon: 'trending_up', title: 'Posiciónate mejor en Google', body: 'Construido con datos estructurados, tiempos de carga rápidos y código limpio que los buscadores premian.' },
+      { icon: 'devices', title: 'Impecable en cada dispositivo', body: 'Diseño mobile-first que se ve perfecto ya sea que te encuentren en un teléfono, tablet o escritorio.' },
+      { icon: 'bolt', title: 'Velocidad que convierte', body: 'Los sitios que cargan en menos de 2 segundos ven conversiones 15% más altas. Optimizamos cada recurso.' },
     ],
     process: [
-      { icon: 'forum', label: 'Discovery', desc: 'We learn your goals, audience, and competitive landscape before designing a single pixel.' },
-      { icon: 'draw', label: 'Design & Build', desc: 'You review and approve the design before development begins. No surprises.' },
-      { icon: 'rocket_launch', label: 'Launch & Grow', desc: 'Go live with full training, SEO setup, and a 30-day support window.' },
+      { icon: 'forum', label: 'Descubrimiento', desc: 'Conocemos tus objetivos, tu audiencia y el panorama competitivo antes de diseñar un solo píxel.' },
+      { icon: 'draw', label: 'Diseño y desarrollo', desc: 'Revisas y apruebas el diseño antes de que comience el desarrollo. Sin sorpresas.' },
+      { icon: 'rocket_launch', label: 'Lanzamiento y crecimiento', desc: 'Lanza con capacitación completa, configuración SEO y un período de soporte de 30 días.' },
     ],
     faqs: [
-      { q: 'How long does a website project typically take?', a: 'Most website projects are complete in 3–6 weeks depending on scope and how quickly feedback rounds go.' },
-      { q: 'Will I be able to update the content myself?', a: 'Yes — we build on platforms you can manage, and provide training so you\'re never dependent on us for basic updates.' },
-      { q: 'Do you handle hosting and domain setup?', a: 'We can manage everything — hosting, domain, SSL, DNS — or work within your existing setup. Your choice.' },
+      { q: '¿Cuánto tarda normalmente un proyecto de sitio web?', a: 'La mayoría de los proyectos de sitios web se completan en 3–6 semanas, según el alcance y la rapidez de las rondas de retroalimentación.' },
+      { q: '¿Podré actualizar el contenido yo mismo?', a: 'Sí — construimos sobre plataformas que puedes gestionar y ofrecemos capacitación para que nunca dependas de nosotros para actualizaciones básicas.' },
+      { q: '¿Gestionan el alojamiento y la configuración del dominio?', a: 'Podemos gestionar todo — alojamiento, dominio, SSL, DNS — o trabajar con tu configuración actual. Tú eliges.' },
     ],
-    statLabel: 'Average increase in leads after launch',
+    statLabel: 'Aumento promedio de prospectos después del lanzamiento',
     statValue: '3×',
     statIcon: 'show_chart',
   },
@@ -58,24 +58,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-emerald-50 dark:bg-emerald-950/40',
     accentBorder: 'border-emerald-200 dark:border-emerald-800/50',
     iconBg: 'bg-emerald-100 dark:bg-emerald-900/40',
-    tagline: 'Your Store, Open 24/7 and Built to Sell',
-    subtagline: 'A complete e-commerce experience — designed to reduce cart abandonment, build trust at checkout, and turn browsers into buyers from day one.',
+    tagline: 'Tu tienda, abierta 24/7 y hecha para vender',
+    subtagline: 'Una experiencia de comercio electrónico completa — diseñada para reducir el abandono del carrito, generar confianza al pagar y convertir visitantes en compradores desde el primer día.',
     valueProps: [
-      { icon: 'payments', title: 'Frictionless Checkout', body: 'Streamlined payment flows with Stripe, Apple Pay, and more. Fewer steps means more completed purchases.' },
-      { icon: 'inventory_2', title: 'Easy Product Management', body: 'Add products, manage inventory, and fulfill orders without needing technical knowledge.' },
-      { icon: 'insights', title: 'Built-In Analytics', body: 'Know exactly which products are driving revenue, where customers drop off, and how to improve.' },
+      { icon: 'payments', title: 'Pago sin fricción', body: 'Flujos de pago simplificados con Stripe, Apple Pay y más. Menos pasos significa más compras completadas.' },
+      { icon: 'inventory_2', title: 'Gestión fácil de productos', body: 'Agrega productos, gestiona el inventario y cumple pedidos sin necesitar conocimientos técnicos.' },
+      { icon: 'insights', title: 'Analíticas integradas', body: 'Sabrás exactamente qué productos generan ingresos, dónde abandonan los clientes y cómo mejorar.' },
     ],
     process: [
-      { icon: 'category', label: 'Catalog Setup', desc: 'Products, categories, variants, and pricing configured and imported.' },
-      { icon: 'palette', label: 'Brand & Design', desc: 'Your brand identity applied to every page — from homepage to confirmation email.' },
-      { icon: 'local_shipping', label: 'Go Live', desc: 'Shipping zones, tax rules, and payment gateways tested and ready to process orders.' },
+      { icon: 'category', label: 'Configuración del catálogo', desc: 'Productos, categorías, variantes y precios configurados e importados.' },
+      { icon: 'palette', label: 'Marca y diseño', desc: 'Tu identidad de marca aplicada a cada página — desde la portada hasta el correo de confirmación.' },
+      { icon: 'local_shipping', label: 'Publicar', desc: 'Zonas de envío, reglas de impuestos y pasarelas de pago probados y listos para procesar pedidos.' },
     ],
     faqs: [
-      { q: 'What payment processors do you support?', a: 'Stripe, PayPal, Apple Pay, Google Pay, and most major processors. We set them all up and test before launch.' },
-      { q: 'Can I manage the store myself after launch?', a: 'Absolutely. We build on platforms designed for non-technical owners and provide a walkthrough before handoff.' },
-      { q: 'What about shipping and taxes?', a: 'We configure shipping zones, carrier rates, and automatic tax calculation based on your locations and products.' },
+      { q: '¿Qué procesadores de pago soportan?', a: 'Stripe, PayPal, Apple Pay, Google Pay y la mayoría de los procesadores principales. Los configuramos y probamos todos antes del lanzamiento.' },
+      { q: '¿Puedo gestionar la tienda yo mismo después del lanzamiento?', a: 'Por supuesto. Construimos en plataformas diseñadas para propietarios no técnicos y ofrecemos una guía completa antes de la entrega.' },
+      { q: '¿Qué hay de los envíos y los impuestos?', a: 'Configuramos zonas de envío, tarifas de transportistas y cálculo automático de impuestos según tus ubicaciones y productos.' },
     ],
-    statLabel: 'Average revenue recovered via cart optimization',
+    statLabel: 'Ingresos promedio recuperados mediante la optimización del carrito',
     statValue: '18%',
     statIcon: 'shopping_cart',
   },
@@ -85,24 +85,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-violet-50 dark:bg-violet-950/40',
     accentBorder: 'border-violet-200 dark:border-violet-800/50',
     iconBg: 'bg-violet-100 dark:bg-violet-900/40',
-    tagline: 'Put Your Business in Every Pocket',
-    subtagline: 'Mobile apps have 3× higher engagement than websites. Give your customers an experience they\'ll use daily — on iOS and Android, built to feel native on both.',
+    tagline: 'Pon tu negocio en cada bolsillo',
+    subtagline: 'Las apps móviles tienen 3× más interacción que los sitios web. Ofrece a tus clientes una experiencia que usarán a diario — en iOS y Android, con sensación nativa en ambos.',
     valueProps: [
-      { icon: 'notifications_active', title: 'Re-Engage Instantly', body: 'Push notifications bring customers back at exactly the right moment — promotions, reminders, or updates.' },
-      { icon: 'offline_bolt', title: 'Works Without Wi-Fi', body: 'Core features stay available offline. No more frustrated users when the signal drops.' },
-      { icon: 'star_rate', title: 'App Store Presence', body: 'We handle submission to both the Apple App Store and Google Play, including review compliance.' },
+      { icon: 'notifications_active', title: 'Reactiva la interacción al instante', body: 'Las notificaciones push traen clientes de vuelta en el momento preciso — promociones, recordatorios o novedades.' },
+      { icon: 'offline_bolt', title: 'Funciona sin Wi-Fi', body: 'Las funciones principales siguen disponibles sin conexión. Nada de usuarios frustrados cuando se pierde la señal.' },
+      { icon: 'star_rate', title: 'Presencia en la App Store', body: 'Gestionamos el envío tanto a la App Store de Apple como a Google Play, incluyendo el cumplimiento de la revisión.' },
     ],
     process: [
-      { icon: 'lightbulb', label: 'Strategy & UX', desc: 'Map out every user flow and screen before a line of code is written.' },
-      { icon: 'phone_iphone', label: 'Design & Build', desc: 'Native-feeling UI built with React Native, reviewed on real devices throughout.' },
-      { icon: 'publish', label: 'Submit & Support', desc: 'App Store and Play Store submissions handled — plus a support window post-launch.' },
+      { icon: 'lightbulb', label: 'Estrategia y UX', desc: 'Planificamos cada flujo de usuario y pantalla antes de escribir una línea de código.' },
+      { icon: 'phone_iphone', label: 'Diseño y desarrollo', desc: 'Interfaz con sensación nativa construida con React Native, revisada en dispositivos reales durante todo el proceso.' },
+      { icon: 'publish', label: 'Envío y soporte', desc: 'Gestionamos los envíos a la App Store y a Google Play — además de un período de soporte después del lanzamiento.' },
     ],
     faqs: [
-      { q: 'Does it work on both iPhone and Android?', a: 'Yes. We build with React Native which delivers native performance on both platforms from a single codebase.' },
-      { q: 'How do app store submissions work?', a: 'We manage the entire process — developer accounts, review guidelines compliance, screenshots, and release notes.' },
-      { q: 'Can the app connect to my existing website or backend?', a: 'Absolutely. We integrate with your existing APIs, databases, or third-party services during the build.' },
+      { q: '¿Funciona tanto en iPhone como en Android?', a: 'Sí. Construimos con React Native, que ofrece rendimiento nativo en ambas plataformas desde una sola base de código.' },
+      { q: '¿Cómo funcionan los envíos a las tiendas de aplicaciones?', a: 'Gestionamos todo el proceso — cuentas de desarrollador, cumplimiento de las guías de revisión, capturas y notas de la versión.' },
+      { q: '¿Puede la app conectarse a mi sitio web o backend existente?', a: 'Por supuesto. Nos integramos con tus APIs, bases de datos o servicios de terceros existentes durante el desarrollo.' },
     ],
-    statLabel: 'Higher engagement vs. mobile web',
+    statLabel: 'Mayor interacción frente a la web móvil',
     statValue: '3×',
     statIcon: 'phone_iphone',
   },
@@ -112,24 +112,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-amber-50 dark:bg-amber-950/40',
     accentBorder: 'border-amber-200 dark:border-amber-800/50',
     iconBg: 'bg-amber-100 dark:bg-amber-900/40',
-    tagline: 'Your Website, Always Online. Never a Worry.',
-    subtagline: 'A hacked or broken website costs an average of $200/hour in lost business. Our maintenance plan catches problems before they happen — so you never find out the hard way.',
+    tagline: 'Tu sitio web, siempre en línea. Sin preocupaciones.',
+    subtagline: 'Un sitio web hackeado o descompuesto cuesta en promedio $200/hora en negocios perdidos. Nuestro plan de mantenimiento detecta los problemas antes de que ocurran — para que nunca te enteres de la peor manera.',
     valueProps: [
-      { icon: 'security', title: 'Security Before It\'s a Problem', body: 'Plugin updates, vulnerability patches, and malware scans run on a strict schedule — not after an incident.' },
-      { icon: 'backup', title: 'Daily Backups, Instant Restore', body: 'Full-site backups every 24 hours. If anything ever goes wrong, we restore in minutes, not days.' },
-      { icon: 'monitor_heart', title: 'Uptime Monitoring 24/7', body: 'We\'re alerted the second your site goes down — often resolving issues before you or your customers notice.' },
+      { icon: 'security', title: 'Seguridad antes de que sea un problema', body: 'Las actualizaciones de plugins, parches de vulnerabilidad y escaneos de malware se ejecutan en un horario estricto — no después de un incidente.' },
+      { icon: 'backup', title: 'Copias diarias, restauración instantánea', body: 'Copias de seguridad completas cada 24 horas. Si algo sale mal, restauramos en minutos, no en días.' },
+      { icon: 'monitor_heart', title: 'Monitoreo de disponibilidad 24/7', body: 'Nos alertan en el segundo en que tu sitio cae — a menudo resolvemos los problemas antes de que tú o tus clientes lo noten.' },
     ],
     process: [
-      { icon: 'link', label: 'Onboard in Minutes', desc: 'We connect to your hosting, set up monitoring tools, and baseline your site\'s current health.' },
-      { icon: 'autorenew', label: 'Ongoing Maintenance', desc: 'Automated and manual updates, security scans, and performance checks run continuously.' },
-      { icon: 'summarize', label: 'Monthly Reports', desc: 'A plain-language summary of everything done, any issues caught, and your site\'s health score.' },
+      { icon: 'link', label: 'Date de alta en minutos', desc: 'Nos conectamos a tu alojamiento, configuramos herramientas de monitoreo y establecemos la línea base del estado actual de tu sitio.' },
+      { icon: 'autorenew', label: 'Mantenimiento continuo', desc: 'Actualizaciones automáticas y manuales, escaneos de seguridad y verificaciones de rendimiento se ejecutan de forma continua.' },
+      { icon: 'summarize', label: 'Informes mensuales', desc: 'Un resumen en lenguaje sencillo de todo lo realizado, cualquier problema detectado y la calificación de salud de tu sitio.' },
     ],
     faqs: [
-      { q: 'What happens if my site gets hacked?', a: 'Malware removal and full restoration is included at no extra charge. We handle it completely — you just get notified when it\'s done.' },
-      { q: 'Do I need to do anything once I sign up?', a: 'Nothing. We handle everything in the background. You\'ll hear from us monthly, and only urgently if something needs your input.' },
-      { q: 'Does this work with any hosting provider?', a: 'Yes — we work with all major hosts including GoDaddy, Bluehost, WP Engine, Cloudflare, and custom setups.' },
+      { q: '¿Qué pasa si hackean mi sitio?', a: 'La eliminación de malware y la restauración completa están incluidas sin costo adicional. Nos encargamos de todo — solo recibes una notificación cuando termine.' },
+      { q: '¿Necesito hacer algo después de registrarme?', a: 'Nada. Nos encargamos de todo en segundo plano. Recibirás noticias nuestras cada mes, y solo con urgencia si algo requiere tu opinión.' },
+      { q: '¿Esto funciona con cualquier proveedor de alojamiento?', a: 'Sí — trabajamos con todos los principales alojamientos, incluidos GoDaddy, Bluehost, WP Engine, Cloudflare y configuraciones personalizadas.' },
     ],
-    statLabel: 'Sites protected without a single incident this year',
+    statLabel: 'Sitios protegidos sin un solo incidente este año',
     statValue: '100%',
     statIcon: 'verified_user',
   },
@@ -139,24 +139,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-rose-50 dark:bg-rose-950/40',
     accentBorder: 'border-rose-200 dark:border-rose-800/50',
     iconBg: 'bg-rose-100 dark:bg-rose-900/40',
-    tagline: 'A Brand That Gets You Remembered',
-    subtagline: 'It takes 7 seconds to form a first impression. Professional branding ensures yours says exactly what you want — before you\'ve spoken a single word.',
+    tagline: 'Una marca que se queda en la memoria',
+    subtagline: 'Se necesitan 7 segundos para formar una primera impresión. Un branding profesional asegura que la tuya diga exactamente lo que quieres — antes de decir una sola palabra.',
     valueProps: [
-      { icon: 'visibility', title: 'Stand Out Instantly', body: 'A distinctive logo and visual identity that sets you apart in a crowded market and sticks in memory.' },
-      { icon: 'verified', title: 'Build Instant Credibility', body: 'Consistent, polished branding signals professionalism and builds the trust new customers need to buy.' },
-      { icon: 'style', title: 'Consistent Everywhere', body: 'Brand guidelines covering all touchpoints — social, print, web — so you always look cohesive and intentional.' },
+      { icon: 'visibility', title: 'Destaca al instante', body: 'Un logotipo distintivo y una identidad visual que te diferencian en un mercado competitivo y se quedan en la memoria.' },
+      { icon: 'verified', title: 'Genera credibilidad al instante', body: 'Una marca consistente y pulida transmite profesionalismo y construye la confianza que los clientes nuevos necesitan para comprar.' },
+      { icon: 'style', title: 'Coherente en todas partes', body: 'Guías de marca que cubren todos los puntos de contacto — redes, impresión, web — para que siempre luzcas coherente y deliberado.' },
     ],
     process: [
-      { icon: 'search', label: 'Discovery', desc: 'We research your industry, competitors, and ideal audience to ground every design decision in strategy.' },
-      { icon: 'brush', label: 'Design & Refine', desc: 'Multiple concepts presented, refined through collaborative feedback rounds until it\'s exactly right.' },
-      { icon: 'folder_zip', label: 'Brand Kit Delivery', desc: 'Every file you\'ll ever need — logos in all formats, color codes, typography specs, and usage guidelines.' },
+      { icon: 'search', label: 'Descubrimiento', desc: 'Investigamos tu industria, tus competidores y tu audiencia ideal para fundamentar cada decisión de diseño en la estrategia.' },
+      { icon: 'brush', label: 'Diseño y refinamiento', desc: 'Se presentan varios conceptos, refinados mediante rondas de retroalimentación colaborativa hasta que queda exactamente bien.' },
+      { icon: 'folder_zip', label: 'Entrega del kit de marca', desc: 'Todos los archivos que necesitarás — logotipos en todos los formatos, códigos de color, especificaciones tipográficas y guías de uso.' },
     ],
     faqs: [
-      { q: 'What\'s included in the brand kit?', a: 'Full logo suite (primary, secondary, icon-only), color palette, typography system, brand guidelines PDF, and all source files.' },
-      { q: 'How many logo concepts will I see?', a: 'We present 3 distinct directions to start. Once you choose a direction, we refine through up to 3 revision rounds.' },
-      { q: 'Can you match branding to an existing website or product?', a: 'Absolutely — we audit your existing materials and build a brand identity that evolves rather than replaces what you have.' },
+      { q: '¿Qué incluye el kit de marca?', a: 'Conjunto completo de logotipos (principal, secundario, solo icono), paleta de colores, sistema tipográfico, guía de marca en PDF y todos los archivos fuente.' },
+      { q: '¿Cuántos conceptos de logotipo veré?', a: 'Presentamos 3 direcciones distintas al inicio. Una vez que eliges una, la refinamos con hasta 3 rondas de revisión.' },
+      { q: '¿Pueden adaptar la marca a un sitio web o producto existente?', a: 'Por supuesto — auditamos tus materiales actuales y creamos una identidad de marca que evoluciona en lugar de reemplazar lo que ya tienes.' },
     ],
-    statLabel: 'Increase in perceived value after rebrand',
+    statLabel: 'Aumento del valor percibido tras el rediseño de marca',
     statValue: '2.5×',
     statIcon: 'trending_up',
   },
@@ -166,24 +166,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-indigo-50 dark:bg-indigo-950/40',
     accentBorder: 'border-indigo-200 dark:border-indigo-800/50',
     iconBg: 'bg-indigo-100 dark:bg-indigo-900/40',
-    tagline: 'Custom Software Built for Your Exact Workflow',
-    subtagline: 'Off-the-shelf tools cost you time in workarounds and money in unused features. A custom solution does exactly what you need — nothing more, nothing less.',
+    tagline: 'Software personalizado para tu flujo de trabajo exacto',
+    subtagline: 'Las herramientas comerciales te cuestan tiempo en parches y dinero en funciones sin usar. Una solución personalizada hace exactamente lo que necesitas — ni más, ni menos.',
     valueProps: [
-      { icon: 'extension', title: 'Fits Like a Glove', body: 'Every feature maps to a real workflow step in your business. No bloat, no compromises, no workarounds.' },
-      { icon: 'lock', title: 'Secure & Well-Tested', body: 'Full test coverage, security review, and code written to standards you can hand off to any developer.' },
-      { icon: 'open_in_new', title: 'Scales With Your Growth', body: 'Architecture designed for growth — built to handle 10× the load without a rewrite.' },
+      { icon: 'extension', title: 'A la medida perfecta', body: 'Cada función corresponde a un paso real del flujo de trabajo de tu negocio. Sin relleno, sin compromisos, sin parches.' },
+      { icon: 'lock', title: 'Seguro y bien probado', body: 'Cobertura de pruebas completa, revisión de seguridad y código con estándares que puedes entregar a cualquier desarrollador.' },
+      { icon: 'open_in_new', title: 'Escala con tu crecimiento', body: 'Arquitectura diseñada para crecer — construida para soportar 10× la carga sin reescribir nada.' },
     ],
     process: [
-      { icon: 'description', label: 'Spec & Scope', desc: 'Requirements documented in detail before a line of code is written. No scope creep surprises.' },
-      { icon: 'code', label: 'Build & Review', desc: 'Agile development with demo check-ins so you see progress and give feedback throughout.' },
-      { icon: 'deployed_code', label: 'Deploy & Handoff', desc: 'Production deployment with full documentation, code ownership, and a training session.' },
+      { icon: 'description', label: 'Especificación y alcance', desc: 'Requisitos documentados en detalle antes de escribir una línea de código. Sin sorpresas de alcance.' },
+      { icon: 'code', label: 'Desarrollo y revisión', desc: 'Desarrollo ágil con demos periódicas para que veas el progreso y des retroalimentación durante todo el proceso.' },
+      { icon: 'deployed_code', label: 'Despliegue y entrega', desc: 'Despliegue en producción con documentación completa, propiedad del código y una sesión de capacitación.' },
     ],
     faqs: [
-      { q: 'Will I own the code?', a: 'Yes, completely. You receive full ownership of all source code, documentation, and deployment scripts.' },
-      { q: 'What tech stack do you use?', a: 'We primarily build with Next.js, React, TypeScript, and PostgreSQL — proven, battle-tested tools with a large support ecosystem.' },
-      { q: 'What happens if something breaks after launch?', a: 'All projects include a post-launch support window. We also offer ongoing maintenance retainers for long-term peace of mind.' },
+      { q: '¿Seré dueño del código?', a: 'Sí, por completo. Recibes la propiedad total de todo el código fuente, la documentación y los scripts de despliegue.' },
+      { q: '¿Qué stack tecnológico usan?', a: 'Construimos principalmente con Next.js, React, TypeScript y PostgreSQL — herramientas probadas y confiables con un amplio ecosistema de soporte.' },
+      { q: '¿Qué pasa si algo falla después del lanzamiento?', a: 'Todos los proyectos incluyen un período de soporte después del lanzamiento. También ofrecemos planes de mantenimiento continuo para tu tranquilidad a largo plazo.' },
     ],
-    statLabel: 'Average manual hours saved per week via automation',
+    statLabel: 'Promedio de horas manuales ahorradas por semana mediante automatización',
     statValue: '12h',
     statIcon: 'timer',
   },
@@ -193,24 +193,24 @@ const configs: Record<string, CategoryConfig> = {
     accentBg: 'bg-primary/5',
     accentBorder: 'border-primary/20',
     iconBg: 'bg-primary/10',
-    tagline: 'Let\'s Build Something Great Together',
-    subtagline: 'Every great business has unique needs. This is a tailored solution designed specifically around your goals — not a template, not a workaround.',
+    tagline: 'Construyamos algo grande juntos',
+    subtagline: 'Todo gran negocio tiene necesidades únicas. Esta es una solución a medida diseñada específicamente en torno a tus objetivos — ni una plantilla, ni un parche.',
     valueProps: [
-      { icon: 'handshake', title: 'Built Around You', body: 'We adapt our process, technology, and approach to fit your specific situation — not the other way around.' },
-      { icon: 'support_agent', title: 'Direct Access', body: 'Work directly with the people building your project. No account managers, no relay of information.' },
-      { icon: 'verified_user', title: 'Satisfaction Guaranteed', body: 'We don\'t consider a project done until you\'re genuinely happy with the result.' },
+      { icon: 'handshake', title: 'Construido alrededor de ti', body: 'Adaptamos nuestro proceso, tecnología y enfoque a tu situación específica — no al revés.' },
+      { icon: 'support_agent', title: 'Acceso directo', body: 'Trabaja directamente con las personas que construyen tu proyecto. Sin gestores de cuenta, sin retransmisión de información.' },
+      { icon: 'verified_user', title: 'Satisfacción garantizada', body: 'No consideramos un proyecto terminado hasta que estés genuinamente satisfecho con el resultado.' },
     ],
     process: [
-      { icon: 'forum', label: 'Discovery', desc: 'A focused conversation to understand your goals, constraints, and definition of success.' },
-      { icon: 'build', label: 'Execute', desc: 'Build and iterate with transparent progress updates throughout.' },
-      { icon: 'check_circle', label: 'Deliver & Support', desc: 'Launch with documentation and a support window so you\'re never left hanging.' },
+      { icon: 'forum', label: 'Descubrimiento', desc: 'Una conversación enfocada para entender tus objetivos, restricciones y definición de éxito.' },
+      { icon: 'build', label: 'Execute', desc: 'Construye e itera con actualizaciones de progreso transparentes durante todo el proceso.' },
+      { icon: 'check_circle', label: 'Entrega y soporte', desc: 'Lanzamos con documentación y un período de soporte para que nunca te quedes colgado.' },
     ],
     faqs: [
-      { q: 'How do we get started?', a: 'Open a ticket below — we\'ll schedule a discovery call to understand your needs and put together a detailed proposal.' },
-      { q: 'How are projects priced?', a: 'We offer fixed-price quotes for well-defined scope, and time-and-materials for exploratory or evolving projects.' },
-      { q: 'What if I\'m not sure what I need?', a: 'That\'s exactly what the discovery call is for. Come with a problem to solve — we\'ll help figure out the right solution.' },
+      { q: '¿Cómo empezamos?', a: 'Abre un ticket abajo — programaremos una llamada de descubrimiento para entender tus necesidades y preparar una propuesta detallada.' },
+      { q: '¿Cómo se presupuestan los proyectos?', a: 'Ofrecemos cotizaciones de precio fijo para alcances bien definidos, y por tiempo y materiales para proyectos exploratorios o en evolución.' },
+      { q: '¿Qué pasa si no estoy seguro de lo que necesito?', a: 'Para eso es exactamente la llamada de descubrimiento. Ven con un problema que resolver — te ayudamos a encontrar la solución adecuada.' },
     ],
-    statLabel: 'Client satisfaction rate',
+    statLabel: 'Tasa de satisfacción del cliente',
     statValue: '100%',
     statIcon: 'star',
   },
@@ -221,13 +221,13 @@ function formatCents(cents: number) {
 }
 
 const categoryLabel: Record<string, string> = {
-  website: 'Website',
-  ecommerce: 'E-Commerce',
-  mobile: 'Mobile App',
-  maintenance: 'Maintenance',
+  website: 'Sitio web',
+  ecommerce: 'Comercio electrónico',
+  mobile: 'App móvil',
+  maintenance: 'Mantenimiento',
   branding: 'Branding',
-  development: 'Development',
-  other: 'Other',
+  development: 'Desarrollo',
+  other: 'Otro',
 };
 
 export default async function SuggestedProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -300,15 +300,15 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
           {/* Price + Timeline + CTA */}
           <div className="mt-8 flex items-end gap-8 flex-wrap">
             <div>
-              <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Estimated cost</p>
+              <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Costo estimado</p>
               <p className="text-4xl font-bold">
-                {item.estimatedPrice ? formatCents(item.estimatedPrice) : 'Quote on request'}
+                {item.estimatedPrice ? formatCents(item.estimatedPrice) : 'Cotización a solicitud'}
               </p>
-              <p className="text-white/60 text-xs mt-1">Billed hourly — final cost depends on scope</p>
+              <p className="text-white/60 text-xs mt-1">Facturación por hora — el costo final depende del alcance</p>
             </div>
             {item.estimatedTimeline && (
               <div>
-                <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Timeline</p>
+                <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Cronología</p>
                 <p className="text-2xl font-semibold flex items-center gap-2">
                   <span className="material-icons text-xl text-white/80">schedule</span>
                   {item.estimatedTimeline}
@@ -321,7 +321,7 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground rounded-xl font-bold text-sm hover:bg-white/90 transition-colors shadow-lg"
               >
                 <span className="material-icons text-base">{hasSurvey ? 'assignment' : 'chat'}</span>
-                {hasSurvey ? 'Get started' : 'Request this project'}
+                {hasSurvey ? 'Comenzar' : 'Solicitar este proyecto'}
               </Link>
             </div>
           </div>
@@ -330,7 +330,7 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
 
       {/* ── Why this matters ── */}
       <div>
-        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">Why this matters</p>
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">Por qué importa esto</p>
         <p className={`text-lg text-foreground leading-relaxed border-l-4 ${cfg.accentBorder} pl-4`}>
           {cfg.subtagline}
         </p>
@@ -354,7 +354,7 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
         <div className="bg-background border border-border rounded-2xl overflow-hidden">
           <div className="px-6 py-4 border-b border-border flex items-center gap-2">
             <span className={`material-icons text-lg ${cfg.accentColor}`}>checklist</span>
-            <h2 className={pSectionTitle}>What&apos;s included</h2>
+            <h2 className={pSectionTitle}>Qué incluye</h2>
             <span className="ml-auto text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
               {features.length} deliverable{features.length !== 1 ? 's' : ''}
             </span>
@@ -383,7 +383,7 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
 
       {/* ── How it works ── */}
       <div>
-        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-6">How it works</p>
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-6">Cómo funciona</p>
         <div className="relative">
           {/* Connecting line */}
           <div className="hidden sm:block absolute top-7 left-7 right-7 h-0.5 bg-border z-0" />
@@ -408,7 +408,7 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
 
       {/* ── FAQ ── */}
       <div>
-        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">Common questions</p>
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">Preguntas frecuentes</p>
         <div className="space-y-3">
           {cfg.faqs.map((faq, i) => (
             <div key={i} className="bg-background border border-border rounded-xl p-5">
@@ -427,11 +427,11 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
         <div className={`h-1.5 bg-gradient-to-r ${cfg.heroGradient}`} />
         <div className="p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
-            <h2 className={pSectionTitle}>Ready to move forward?</h2>
+            <h2 className={pSectionTitle}>¿Listo para avanzar?</h2>
             <p className="text-muted-foreground mt-1 text-sm">
               {hasSurvey
-                ? 'Fill out a quick intake form and we\'ll put together a detailed proposal.'
-                : 'Send us a message and we\'ll schedule a free discovery call — no commitment, just a conversation.'}
+                ? 'Completa un formulario rápido de admisión y prepararemos una propuesta detallada.'
+                : 'Envíanos un mensaje y programaremos una llamada de descubrimiento gratuita — sin compromiso, solo una conversación.'}
             </p>
             <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
               <span className="flex items-center gap-1">
@@ -454,15 +454,13 @@ export default async function SuggestedProjectDetailPage({ params }: { params: P
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">{hasSurvey ? 'assignment' : 'chat'}</span>
-              {hasSurvey ? 'Start intake form' : 'Start a conversation'}
+              {hasSurvey ? 'Iniciar formulario de admisión' : 'Iniciar una conversación'}
             </Link>
             <Link
               href="/portal/suggested-projects"
               className={pBtnGhost}
             >
-              <span className="material-icons text-sm">arrow_back</span>
-              Browse other suggestions
-            </Link>
+              <span className="material-icons text-sm">arrow_back</span>Explorar otras sugerencias</Link>
           </div>
         </div>
       </div>

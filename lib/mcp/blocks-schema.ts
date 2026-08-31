@@ -2,7 +2,7 @@
 // the MCP server as a resource and embedded in tool descriptions so that AI
 // clients can author valid `blocks` arrays for posts_create / posts_update.
 
-export const BLOCKS_SCHEMA_REFERENCE = `# SimplerDevelopment Visual Editor — Block Schema
+export const BLOCKS_SCHEMA_REFERENCE = `# CRM AGENTS Visual Editor — Block Schema
 
 Pages are stored as a JSON-serialized \`BlockEditorData\`:
 

@@ -94,7 +94,7 @@ export function BlockEditor({ blocks, onChange, brandDefaults }: BlockEditorProp
         <div className="overflow-y-auto h-[calc(100%-57px)]">
           {blocks.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
-              <p className="mb-4">No blocks yet. Click &quot;Add Block&quot; to get started.</p>
+              <p className="mb-4">Aún no hay bloques. Haz clic en &quot;Añadir bloque&quot; para empezar.</p>
             </div>
           ) : (
             <div className="p-2 space-y-2">
@@ -156,7 +156,7 @@ export function BlockEditor({ blocks, onChange, brandDefaults }: BlockEditorProp
                           duplicateBlock(block.id);
                         }}
                         className="p-1 text-muted-foreground hover:text-foreground"
-                        title="Duplicate"
+                        title="Duplicar"
                       >
                         📋
                       </button>
@@ -167,7 +167,7 @@ export function BlockEditor({ blocks, onChange, brandDefaults }: BlockEditorProp
                           deleteBlock(block.id);
                         }}
                         className="p-1 text-red-500 hover:text-red-700"
-                        title="Delete"
+                        title="Eliminar"
                       >
                         🗑️
                       </button>
@@ -195,7 +195,7 @@ export function BlockEditor({ blocks, onChange, brandDefaults }: BlockEditorProp
             </div>
           ) : (
             <div className="text-center text-muted-foreground py-8">
-              <p>Select a block to edit its settings</p>
+              <p>Selecciona un bloque para editar sus ajustes</p>
             </div>
           )}
         </div>

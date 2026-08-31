@@ -18,7 +18,7 @@ async function seedSDTesting() {
     const [user] = existing.length > 0
       ? existing
       : await db.insert(users).values({
-          name: 'SimplerDevelopment Testing',
+          name: 'CRM AGENTS Testing',
           email: clientEmail,
           password: hashedPassword,
           role: 'client',
@@ -32,7 +32,7 @@ async function seedSDTesting() {
       ? existingClient
       : await db.insert(clients).values({
           userId: user.id,
-          company: 'SimplerDevelopment Testing',
+          company: 'CRM AGENTS Testing',
           website: 'https://sd-testing.simplerdevelopment.com',
           notes: 'Internal testing client for CMS block rendering and npm package validation',
         }).returning();
@@ -45,7 +45,7 @@ async function seedSDTesting() {
     } else {
       const [website] = await db.insert(clientWebsites).values({
         clientId: client.id,
-        name: 'SimplerDevelopment Testing',
+        name: 'CRM AGENTS Testing',
         subdomain: 'sd-testing',
         description: 'Testing website for validating @simplerdevelopment/cms-blocks npm package and CMS rendering',
         deploymentStatus: 'pending',
@@ -55,7 +55,7 @@ async function seedSDTesting() {
     }
 
     console.log('\n------------------------------------');
-    console.log('  SimplerDevelopment Testing Client');
+    console.log('  CRM AGENTS Testing Client');
     console.log('------------------------------------');
     console.log('  Portal URL:  /portal/login');
     console.log('  Email:       testing@simplerdevelopment.com');

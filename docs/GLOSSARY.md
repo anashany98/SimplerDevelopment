@@ -2,7 +2,7 @@
 
 Platform terminology, alphabetical. Each term links to where it lives in the code so an agent (or a human) can go straight to the source.
 
-**Admin panel** — The internal, global route tree at `app/admin/**`. Used by SimplerDevelopment staff for cross-tenant operations and system health; not visible to tenant clients.
+**Admin panel** — The internal, global route tree at `app/admin/**`. Used by CRM AGENTS staff for cross-tenant operations and system health; not visible to tenant clients.
 
 **Agents service** — `simplerdevelopment-agents/`, a separate Mastra-based service with example agents (a Company Brain workflow, a portal AI assistant) that connect to the main app's MCP server as a client rather than re-implementing tools.
 

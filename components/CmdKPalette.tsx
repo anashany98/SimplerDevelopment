@@ -37,14 +37,14 @@ interface BrainSearchResponse {
 }
 
 const TYPE_META: Record<EntityType, { label: string; icon: string; tone: string }> = {
-  meeting:      { label: 'Meeting',      icon: 'forum',          tone: 'text-blue-600 dark:text-blue-400' },
+  meeting:      { label: 'Reunión',      icon: 'forum',          tone: 'text-blue-600 dark:text-blue-400' },
   note:         { label: 'Knowledge',    icon: 'sticky_note_2',  tone: 'text-amber-600 dark:text-amber-400' },
-  task:         { label: 'Task',         icon: 'task_alt',       tone: 'text-foreground' },
+  task:         { label: 'Tarea',         icon: 'task_alt',       tone: 'text-foreground' },
   relationship: { label: 'Relationship', icon: 'group_work',     tone: 'text-cyan-600 dark:text-cyan-400' },
-  company:      { label: 'Company',      icon: 'business',       tone: 'text-emerald-600 dark:text-emerald-400' },
-  contact:      { label: 'Contact',      icon: 'person',         tone: 'text-rose-600 dark:text-rose-400' },
-  deal:         { label: 'Deal',         icon: 'handshake',      tone: 'text-violet-600 dark:text-violet-400' },
-  post:         { label: 'Page',         icon: 'web',            tone: 'text-sky-600 dark:text-sky-400' },
+  company:      { label: 'Empresa',      icon: 'business',       tone: 'text-emerald-600 dark:text-emerald-400' },
+  contact:      { label: 'Contacto',      icon: 'person',         tone: 'text-rose-600 dark:text-rose-400' },
+  deal:         { label: 'Negocio',         icon: 'handshake',      tone: 'text-violet-600 dark:text-violet-400' },
+  post:         { label: 'Página',         icon: 'web',            tone: 'text-sky-600 dark:text-sky-400' },
 };
 
 interface CreateAction {

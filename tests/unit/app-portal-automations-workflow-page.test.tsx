@@ -346,6 +346,15 @@ describe('WorkflowEditorPage', () => {
       expect(screen.getByTestId('reactflow-canvas')).toBeTruthy();
     });
 
+    it('opens the inspector and edits a node configuration', async () => {
+      const { container } = await renderPage();
+      const canvas = screen.getByTestId('reactflow-canvas');
+      const sendEmailBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('Enviar email')) as HTMLButtonElement;
+      fireEvent.click(sendEmailBtn);
+      expect(canvas).toBeTruthy();
+      expect(container.textContent).not.toContain('Configurar nodo');
+    });
+
     it('clicking Wait action does not throw', async () => {
       const { container } = await renderPage();
       const waitBtn = Array.from(container.querySelectorAll('button')).find(

@@ -105,23 +105,23 @@ export default function SettingsBillingPage() {
       {/* Plans & modules CTA */}
       <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
         <div>
-          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Plans &amp; modules</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Add or remove feature modules from your subscription.</p>
+          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Planes y módulos</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Añade o elimina módulos de funciones de tu suscripción.</p>
         </div>
         <Link
           href="/portal/settings/billing/plans"
           className={`${pBtnPrimary} flex-shrink-0`}
         >
           <span className="material-icons text-base">explore</span>
-          Plans &amp; modules
+          Planes y módulos
         </Link>
       </div>
 
       {/* Stripe Billing Portal CTA */}
       <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
         <div>
-          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Manage billing</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Update payment methods, download receipts, and manage subscriptions on Stripe.</p>
+          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Gestionar facturación</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Actualiza métodos de pago, descarga recibos y gestiona suscripciones en Stripe.</p>
         </div>
         <button
           onClick={handleManageBilling}
@@ -132,7 +132,7 @@ export default function SettingsBillingPage() {
             ? <span className="material-icons text-base animate-spin">refresh</span>
             : <span className="material-icons text-base">open_in_new</span>
           }
-          Manage billing
+          Gestionar facturación
         </button>
       </div>
 
@@ -141,8 +141,8 @@ export default function SettingsBillingPage() {
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-center gap-3 dark:bg-orange-900/20 dark:border-orange-800">
           <span className="material-icons text-orange-600">payments</span>
           <div>
-            <p className="text-sm font-semibold text-orange-800 dark:text-orange-300">Outstanding balance: {formatCents(totalDue)}</p>
-            <p className="text-xs text-orange-600 dark:text-orange-400">Click an invoice below to pay securely via Stripe.</p>
+            <p className="text-sm font-semibold text-orange-800 dark:text-orange-300">Saldo pendiente: {formatCents(totalDue)}</p>
+            <p className="text-xs text-orange-600 dark:text-orange-400">Haz clic en una factura para pagar de forma segura mediante Stripe.</p>
           </div>
         </div>
       )}
@@ -153,18 +153,12 @@ export default function SettingsBillingPage() {
           onClick={() => setSection('invoices')}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             section === 'invoices' ? 'bg-primary text-primary-foreground' : 'bg-accent text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          Invoices
-        </button>
+          }`}>Facturas</button>
         <button
           onClick={() => setSection('payment-methods')}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
             section === 'payment-methods' ? 'bg-primary text-primary-foreground' : 'bg-accent text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          Payment Methods
-        </button>
+          }`}>Métodos de pago</button>
       </div>
 
       {section === 'invoices' && (
@@ -175,8 +169,8 @@ export default function SettingsBillingPage() {
         ) : invoices.length === 0 ? (
           <div className="bg-card border border-border rounded-2xl p-12 text-center">
             <span className="material-icons text-5xl text-muted-foreground/40">receipt_long</span>
-            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No invoices yet</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Invoices will appear here when created.</p>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Todavía no hay facturas</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Las facturas aparecerán aquí cuando se creen.</p>
           </div>
         ) : (
           <div className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -184,11 +178,11 @@ export default function SettingsBillingPage() {
               <table className="w-full min-w-[640px] text-sm">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Invoice</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Action</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Factura</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acción</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -215,7 +209,7 @@ export default function SettingsBillingPage() {
                           className={`${pBtnPrimary} text-xs px-3 py-1 w-fit`}
                         >
                           <span className="material-icons text-xs">credit_card</span>
-                          Pay Now
+                          Pagar ahora
                         </Link>
                       )}
                     </td>
@@ -236,8 +230,8 @@ export default function SettingsBillingPage() {
         ) : methods.length === 0 ? (
           <div className="bg-card border border-border rounded-2xl p-12 text-center">
             <span className="material-icons text-5xl text-muted-foreground/40">credit_card_off</span>
-            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No payment methods</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Payment methods are saved when you pay an invoice via Stripe.</p>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No hay métodos de pago</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Los métodos de pago se guardan cuando pagas una factura mediante Stripe.</p>
           </div>
         ) : (
           <div className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -249,12 +243,12 @@ export default function SettingsBillingPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground capitalize">
-                      {m.brand} ending in {m.last4}
+                      {m.brand} terminada en {m.last4}
                       {m.isDefault && (
-                        <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Default</span>
+                        <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Predeterminado</span>
                       )}
                     </p>
-                    <p className="text-xs text-muted-foreground">Expires {String(m.expMonth).padStart(2, '0')}/{m.expYear}</p>
+                    <p className="text-xs text-muted-foreground">Caduca {String(m.expMonth).padStart(2, '0')}/{m.expYear}</p>
                   </div>
                   <button
                     onClick={() => handleRemoveMethod(m.id)}

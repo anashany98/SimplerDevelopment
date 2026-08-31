@@ -20,11 +20,11 @@ interface TypeMeta {
 export const QUESTION_TYPES: TypeMeta[] = [
   { type: 'text', label: 'Short Text', icon: 'short_text' },
   { type: 'textarea', label: 'Long Text', icon: 'notes' },
-  { type: 'number', label: 'Number', icon: 'tag' },
-  { type: 'email', label: 'Email', icon: 'email' },
-  { type: 'phone', label: 'Phone', icon: 'phone' },
+  { type: 'number', label: 'Número', icon: 'tag' },
+  { type: 'email', label: 'Correo', icon: 'email' },
+  { type: 'phone', label: 'Teléfono', icon: 'phone' },
   { type: 'url', label: 'URL / Website', icon: 'link' },
-  { type: 'date', label: 'Date', icon: 'calendar_today' },
+  { type: 'date', label: 'Fecha', icon: 'calendar_today' },
   { type: 'select', label: 'Dropdown', icon: 'arrow_drop_down_circle' },
   { type: 'radio', label: 'Multiple Choice', icon: 'radio_button_checked' },
   { type: 'checkbox', label: 'Checkboxes', icon: 'check_box' },
@@ -44,9 +44,9 @@ interface Props {
 export default function QuestionTypePicker({ value, onChange }: Props) {
   return (
     <div>
-      <label className="block text-xs font-medium text-foreground mb-1">Field Type</label>
+      <label className="block text-xs font-medium text-foreground mb-1">Tipo de campo</label>
       <select
-        aria-label="Question type"
+        aria-label="Tipo de pregunta"
         value={value}
         onChange={(e) => onChange(e.target.value as FieldType)}
         className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"

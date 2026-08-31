@@ -22,12 +22,13 @@ if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = vi.fn();
 }
 
-// The component calls postParent() which checks `window.parent && window.parent !== window`.
-// In jsdom, window.parent === window, so postMessage is never called. Override parent so
-// tests that care about postMessage can spy on it.
+// The component receives a session from the host-page loader over postMessage.
+// In jsdom, window.parent === window, so install one stable parent object for
+// both outgoing messages and incoming-event source validation.
 const postMessageMock = vi.fn();
+const parentWindow = { postMessage: postMessageMock } as unknown as Window;
 Object.defineProperty(window, 'parent', {
-  get: () => ({ postMessage: postMessageMock }),
+  get: () => parentWindow,
   configurable: true,
 });
 
@@ -74,31 +75,6 @@ class MockEventSource {
 globalThis.EventSource = MockEventSource as unknown as typeof EventSource;
 
 // ---------------------------------------------------------------------------
-// localStorage mock
-// ---------------------------------------------------------------------------
-
-const localStorageStore: Record<string, string> = {};
-let localStorageThrows = false;
-const localStorageMock = {
-  getItem: vi.fn((key: string) => {
-    if (localStorageThrows) throw new Error('storage blocked');
-    return localStorageStore[key] ?? null;
-  }),
-  setItem: vi.fn((key: string, val: string) => {
-    if (localStorageThrows) throw new Error('storage blocked');
-    localStorageStore[key] = val;
-  }),
-  removeItem: vi.fn((key: string) => { delete localStorageStore[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(localStorageStore)) delete localStorageStore[k]; }),
-  length: 0,
-  key: vi.fn(() => null),
-};
-Object.defineProperty(globalThis, 'localStorage', {
-  value: localStorageMock,
-  writable: true,
-});
-
-// ---------------------------------------------------------------------------
 // Component under test (imported after mocks)
 // ---------------------------------------------------------------------------
 
@@ -139,9 +115,6 @@ const sessionData = {
 };
 
 function defaultFetch(url: string): unknown {
-  if (url === '/api/public/chat/start') {
-    return { success: true, data: sessionData };
-  }
   if (url === '/api/public/chat/messages') {
     return {
       success: true,
@@ -157,14 +130,25 @@ function defaultFetch(url: string): unknown {
   return {};
 }
 
-function renderWidget(widgetId = '7') {
-  return render(<ChatBootstrap widgetId={widgetId} />);
+const HOST_ORIGIN = 'https://customer.example';
+
+function renderWidget() {
+  return render(<ChatBootstrap parentOrigin={HOST_ORIGIN} />);
 }
 
-// Open the widget and flush session establishment
-async function openAndFlush(widgetId = '7') {
-  const result = renderWidget(widgetId);
+function deliverSession(session: typeof sessionData = sessionData) {
+  window.dispatchEvent(new MessageEvent('message', {
+    origin: HOST_ORIGIN,
+    source: parentWindow,
+    data: { type: 'sd-chat:session', session },
+  }));
+}
+
+// Open the widget and deliver the session a verified host loader would send.
+async function openAndFlush() {
+  const result = renderWidget();
   await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+  await act(async () => { deliverSession(); });
   await flush();
   return result;
 }
@@ -177,11 +161,6 @@ describe('ChatBootstrap', () => {
   beforeEach(() => {
     MockEventSource.instances = [];
     postMessageMock.mockClear();
-    localStorageMock.getItem.mockClear();
-    localStorageMock.setItem.mockClear();
-    localStorageThrows = false;
-    for (const k of Object.keys(localStorageStore)) delete localStorageStore[k];
-    localStorageStore['sd-chat-visitor-id'] = 'v_existing123';
     installFetchMock(defaultFetch);
     // Reset scrollIntoView stub
     Element.prototype.scrollIntoView = vi.fn();
@@ -205,7 +184,7 @@ describe('ChatBootstrap', () => {
 
   it('does not render the chat panel when closed', () => {
     renderWidget();
-    expect(screen.queryByText('Live chat')).toBeNull();
+    expect(screen.queryByText('Chat en vivo')).toBeNull();
   });
 
   it('chat bubble contains a chat_bubble icon', () => {
@@ -225,69 +204,60 @@ describe('ChatBootstrap', () => {
 
   it('clicking the bubble opens the chat panel', async () => {
     await openAndFlush();
-    expect(screen.getByText('Live chat')).toBeTruthy();
+    expect(screen.getByText('Chat en vivo')).toBeTruthy();
   });
 
-  it('open state renders a Close chat button', async () => {
+  it('open state renders a close-chat button', async () => {
     await openAndFlush();
-    expect(screen.getByLabelText('Close chat')).toBeTruthy();
+    expect(screen.getByLabelText('Cerrar chat')).toBeTruthy();
   });
 
   it('sends sd-chat:resize postMessage with expanded=true when opened', async () => {
     await openAndFlush();
     expect(postMessageMock).toHaveBeenCalledWith(
       expect.objectContaining({ type: 'sd-chat:resize', expanded: true }),
-      '*',
+      HOST_ORIGIN,
     );
   });
 
   it('sends sd-chat:resize with expanded=false when closed', async () => {
     await openAndFlush();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Close chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
     expect(postMessageMock).toHaveBeenCalledWith(
       expect.objectContaining({ type: 'sd-chat:resize', expanded: false }),
-      '*',
+      HOST_ORIGIN,
     );
   });
 
   it('sends sd-chat:close postMessage when close button is clicked', async () => {
     await openAndFlush();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Close chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
     expect(postMessageMock).toHaveBeenCalledWith(
       expect.objectContaining({ type: 'sd-chat:close' }),
-      '*',
+      HOST_ORIGIN,
     );
   });
 
   it('closing the chat returns to bubble view', async () => {
     await openAndFlush();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Close chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
     expect(screen.getByLabelText('Open chat')).toBeTruthy();
-    expect(screen.queryByText('Live chat')).toBeNull();
+    expect(screen.queryByText('Chat en vivo')).toBeNull();
   });
 
-  // ── Session start ──────────────────────────────────────────────────────────
+  // ── Host-verified session handoff ──────────────────────────────────────────
 
-  it('calls /api/public/chat/start on first open', async () => {
+  it('asks the host loader to start a session and never calls start itself', async () => {
     const fetchMock = installFetchMock(defaultFetch);
     await openAndFlush();
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/api/public/chat/start',
-      expect.objectContaining({ method: 'POST' }),
+    expect(postMessageMock).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'sd-chat:start' }),
+      HOST_ORIGIN,
     );
-  });
-
-  it('includes widgetId and visitorId in start request body', async () => {
-    const fetchMock = installFetchMock(defaultFetch);
-    await openAndFlush('7');
-    const startCall = fetchMock.mock.calls.find(([url]) => url === '/api/public/chat/start');
-    const body = JSON.parse((startCall![1] as RequestInit).body as string);
-    expect(body.widgetId).toBe(7);
-    expect(typeof body.visitorId).toBe('string');
-    expect(body.visitorId.length).toBeGreaterThan(0);
+    expect(fetchMock).not.toHaveBeenCalledWith('/api/public/chat/start', expect.anything());
   });
 
   it('shows greeting message from session after open', async () => {
@@ -296,13 +266,9 @@ describe('ChatBootstrap', () => {
   });
 
   it('does not show greeting message when greetingMessage is null', async () => {
-    installFetchMock((url) => {
-      if (url === '/api/public/chat/start') {
-        return { success: true, data: { ...sessionData, greetingMessage: null } };
-      }
-      return defaultFetch(url);
-    });
-    await openAndFlush();
+    renderWidget();
+    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { deliverSession({ ...sessionData, greetingMessage: null }); });
     expect(screen.queryByText('Hello! How can I help you?')).toBeNull();
   });
 
@@ -313,41 +279,42 @@ describe('ChatBootstrap', () => {
     expect(header.style.background).toMatch(/ff6600|255, 102, 0/);
   });
 
-  it('shows error message when /api/public/chat/start returns ok=false', async () => {
-    globalThis.fetch = vi.fn(async (url: string) => {
-      if (url === '/api/public/chat/start') {
-        return {
-          ok: false,
-          json: async () => ({ success: false, message: 'Widget not found' }),
-        } as unknown as Response;
-      }
-      return { ok: true, json: async () => defaultFetch(url) } as unknown as Response;
-    }) as unknown as typeof fetch;
-    await openAndFlush();
+  it('shows an error sent by the verified host loader', async () => {
+    renderWidget();
+    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => {
+      window.dispatchEvent(new MessageEvent('message', {
+        origin: HOST_ORIGIN,
+        source: parentWindow,
+        data: { type: 'sd-chat:error', message: 'Widget not found' },
+      }));
+    });
     expect(screen.getByText('Widget not found')).toBeTruthy();
   });
 
-  it('shows fetch error message when start fetch throws', async () => {
-    // Component: `e instanceof Error ? e.message : 'Could not connect'`
-    // Throwing an Error object → error state shows e.message.
-    globalThis.fetch = vi.fn(async () => { throw new Error('Could not connect'); }) as unknown as typeof fetch;
+  it('rejects a session message from another origin', async () => {
     renderWidget();
     await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => {
+      window.dispatchEvent(new MessageEvent('message', {
+        origin: 'https://attacker.example',
+        source: parentWindow,
+        data: { type: 'sd-chat:session', session: sessionData },
+      }));
+    });
     await flush();
-    expect(screen.getByText('Could not connect')).toBeTruthy();
+    expect(screen.queryByText('Hello! How can I help you?')).toBeNull();
   });
 
-  it('does not call start again if session already established', async () => {
-    const fetchMock = installFetchMock(defaultFetch);
+  it('does not request another session once one is established', async () => {
     await openAndFlush();
-    const callsAfterFirst = fetchMock.mock.calls.filter(([url]) => url === '/api/public/chat/start').length;
-    // Close then reopen — session is already set, should not call start again
-    await act(async () => { fireEvent.click(screen.getByLabelText('Close chat')); });
+    const startsAfterFirst = postMessageMock.mock.calls.filter(([message]) => message.type === 'sd-chat:start').length;
+    await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
     await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
     await flush();
-    const callsAfterSecond = fetchMock.mock.calls.filter(([url]) => url === '/api/public/chat/start').length;
-    expect(callsAfterSecond).toBe(callsAfterFirst);
+    const startsAfterSecond = postMessageMock.mock.calls.filter(([message]) => message.type === 'sd-chat:start').length;
+    expect(startsAfterSecond).toBe(startsAfterFirst);
   });
 
   // ── SSE subscription ───────────────────────────────────────────────────────
@@ -426,7 +393,7 @@ describe('ChatBootstrap', () => {
 
   it('renders the message input when chat is open and session active', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     expect(input).toBeTruthy();
   });
 
@@ -435,13 +402,13 @@ describe('ChatBootstrap', () => {
     renderWidget();
     await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
     // Deliberately no flush — session never resolves
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     expect(input.disabled).toBe(true);
   });
 
   it('typing into the input updates draft value', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'Hello there!' } });
     });
@@ -451,7 +418,7 @@ describe('ChatBootstrap', () => {
   it('submitting the form with a draft sends a message to API', async () => {
     const fetchMock = installFetchMock(defaultFetch);
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'Hi agent!' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -465,7 +432,7 @@ describe('ChatBootstrap', () => {
 
   it('clears draft input after sending', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'Test draft' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -475,7 +442,7 @@ describe('ChatBootstrap', () => {
 
   it('optimistically adds sent message to the list from API response', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'My question here' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -486,22 +453,22 @@ describe('ChatBootstrap', () => {
 
   it('send button is disabled when draft is empty', async () => {
     await openAndFlush();
-    const sendBtn = screen.getByLabelText('Send message') as HTMLButtonElement;
+    const sendBtn = screen.getByLabelText('Enviar mensaje') as HTMLButtonElement;
     expect(sendBtn.disabled).toBe(true);
   });
 
   it('send button is enabled when draft has text and session is active', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'some text' } }); });
-    const sendBtn = screen.getByLabelText('Send message') as HTMLButtonElement;
+    const sendBtn = screen.getByLabelText('Enviar mensaje') as HTMLButtonElement;
     expect(sendBtn.disabled).toBe(false);
   });
 
   it('does not send when draft is only whitespace', async () => {
     const fetchMock = installFetchMock(defaultFetch);
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: '   ' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -518,7 +485,7 @@ describe('ChatBootstrap', () => {
       return { ok: true, json: async () => defaultFetch(url, init) } as unknown as Response;
     }) as unknown as typeof fetch;
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'hello' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -532,7 +499,7 @@ describe('ChatBootstrap', () => {
       return { ok: true, json: async () => defaultFetch(url, init) } as unknown as Response;
     }) as unknown as typeof fetch;
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'hello' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -558,61 +525,11 @@ describe('ChatBootstrap', () => {
     expect(styles.length).toBe(1);
   });
 
-  // ── widgetId parsing ───────────────────────────────────────────────────────
-
-  it('parses widgetId string to integer for API call', async () => {
-    const fetchMock = installFetchMock(defaultFetch);
-    await openAndFlush('42');
-    const startCall = fetchMock.mock.calls.find(([url]) => url === '/api/public/chat/start');
-    const body = JSON.parse((startCall![1] as RequestInit).body as string);
-    expect(body.widgetId).toBe(42);
-    expect(typeof body.widgetId).toBe('number');
-  });
-
-  it('does not call start when widgetId is NaN (empty string)', async () => {
-    const fetchMock = installFetchMock(defaultFetch);
-    renderWidget('');
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
-    await flush();
-    const startCalls = fetchMock.mock.calls.filter(([url]) => url === '/api/public/chat/start');
-    expect(startCalls.length).toBe(0);
-  });
-
-  // ── visitorId from localStorage ────────────────────────────────────────────
-
-  it('uses existing visitorId from localStorage', async () => {
-    localStorageStore['sd-chat-visitor-id'] = 'v_preexisting';
-    const fetchMock = installFetchMock(defaultFetch);
-    await openAndFlush();
-    const startCall = fetchMock.mock.calls.find(([url]) => url === '/api/public/chat/start');
-    const body = JSON.parse((startCall![1] as RequestInit).body as string);
-    expect(body.visitorId).toBe('v_preexisting');
-  });
-
-  it('generates and stores a new visitorId when localStorage has no entry', async () => {
-    delete localStorageStore['sd-chat-visitor-id'];
-    localStorageMock.getItem.mockImplementationOnce(() => null);
-    const fetchMock = installFetchMock(defaultFetch);
-    await openAndFlush();
-    const startCall = fetchMock.mock.calls.find(([url]) => url === '/api/public/chat/start');
-    const body = JSON.parse((startCall![1] as RequestInit).body as string);
-    expect(body.visitorId).toMatch(/^v_/);
-  });
-
-  it('falls back to vt_ prefix when localStorage.getItem throws', async () => {
-    localStorageThrows = true;
-    const fetchMock = installFetchMock(defaultFetch);
-    await openAndFlush();
-    const startCall = fetchMock.mock.calls.find(([url]) => url === '/api/public/chat/start');
-    const body = JSON.parse((startCall![1] as RequestInit).body as string);
-    expect(body.visitorId).toMatch(/^vt_/);
-  });
-
   // ── Message list rendering / alignment ────────────────────────────────────
 
   it('renders visitor messages aligned to flex-end', async () => {
     await openAndFlush();
-    const input = screen.getByPlaceholderText('Type a message…') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'Visitor msg' } }); });
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -660,6 +577,7 @@ describe('ChatBootstrap', () => {
   it('greeting message appears after opening (waitFor variant)', async () => {
     renderWidget();
     fireEvent.click(screen.getByLabelText('Open chat'));
+    await act(async () => { deliverSession(); });
     await waitFor(() => {
       expect(screen.getByText('Hello! How can I help you?')).toBeTruthy();
     });

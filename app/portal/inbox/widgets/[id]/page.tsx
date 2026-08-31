@@ -7,12 +7,20 @@ import { pBtnPrimary, pBtnGhost, pCard, pSelect, pSectionTitle } from '@/compone
 
 interface Widget {
   id: number;
+  publicKey: string | null;
   siteId: number;
   enabled: boolean;
   greetingMessage: string | null;
   position: string;
   primaryColor: string;
   awayMessage: string | null;
+  displayName: string | null;
+  language: string;
+  aiMode: string;
+  allowAttachments: boolean;
+  showBranding: boolean;
+  privacyLink: string | null;
+  allowedOrigins: string[];
 }
 
 const POSITIONS = ['bottom-right', 'bottom-left', 'top-right', 'top-left'];
@@ -51,6 +59,13 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
           position: widget.position,
           primaryColor: widget.primaryColor,
           awayMessage: widget.awayMessage,
+          displayName: widget.displayName,
+          language: widget.language,
+          aiMode: widget.aiMode,
+          allowAttachments: widget.allowAttachments,
+          showBranding: widget.showBranding,
+          privacyLink: widget.privacyLink,
+          allowedOrigins: widget.allowedOrigins,
         }),
       });
       const json = await res.json();
@@ -66,7 +81,10 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
   const embed = useMemo(() => {
     if (!widget) return '';
     const origin = typeof window === 'undefined' ? 'https://your-portal' : window.location.origin;
-    return `<script src="${origin}/widget/chat.js" data-widget-id="${widget.id}" async></script>`;
+    const reference = widget.publicKey
+      ? `data-widget-key="${widget.publicKey}"`
+      : `data-widget-id="${widget.id}"`;
+    return `<script src="${origin}/widget/chat.js" ${reference} async></script>`;
   }, [widget]);
 
   // Site Custom Code's JS field wraps its value in a <script> body (see
@@ -77,7 +95,9 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
   const embedJs = useMemo(() => {
     if (!widget) return '';
     const origin = typeof window === 'undefined' ? 'https://your-portal' : window.location.origin;
-    return `var s=document.createElement('script');s.src='${origin}/widget/chat.js';s.setAttribute('data-widget-id','${widget.id}');s.async=true;document.head.appendChild(s);`;
+    const attribute = widget.publicKey ? 'data-widget-key' : 'data-widget-id';
+    const value = widget.publicKey ?? String(widget.id);
+    return `var s=document.createElement('script');s.src='${origin}/widget/chat.js';s.setAttribute('${attribute}','${value}');s.async=true;document.head.appendChild(s);`;
   }, [widget]);
 
   if (!widget) {
@@ -92,7 +112,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
           Inbox
         </Link>
       </div>
-      <PortalPageHeader eyebrow="Inbox" title="Chat Widget Settings" />
+      <PortalPageHeader eyebrow="Bandeja" title="Ajustes del widget de chat" />
 
       {error && <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">{error}</div>}
 
@@ -112,6 +132,11 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
         </div>
 
         <div>
+          <label htmlFor="widget-display-name" className="text-sm font-medium">Display name</label>
+          <input id="widget-display-name" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" value={widget.displayName ?? ''} onChange={(e) => setWidget({ ...widget, displayName: e.target.value })} maxLength={120} />
+        </div>
+
+        <div>
           <label htmlFor="widget-greeting-message" className="text-sm font-medium">Greeting message</label>
           <textarea
             id="widget-greeting-message"
@@ -120,6 +145,30 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
             value={widget.greetingMessage ?? ''}
             onChange={(e) => setWidget({ ...widget, greetingMessage: e.target.value })}
           />
+        </div>
+
+        <div>
+          <label htmlFor="widget-origins" className="text-sm font-medium">Allowed domains</label>
+          <textarea id="widget-origins" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" rows={3} value={widget.allowedOrigins.join('\n')} onChange={(e) => setWidget({ ...widget, allowedOrigins: e.target.value.split(/\r?\n/).map((value) => value.trim()).filter(Boolean) })} placeholder={'example.com\n*.example.org'} />
+          <p className="mt-1 text-xs text-muted-foreground">Un nombre de host por linea. Los comodines deben usar la forma explicita *.example.com.</p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="widget-ai-mode" className="text-sm font-medium">Default AI mode</label>
+            <select id="widget-ai-mode" className={`${pSelect} mt-1`} value={widget.aiMode} onChange={(e) => setWidget({ ...widget, aiMode: e.target.value })}>
+              <option value="hybrid">Hybrid</option><option value="ai">AI</option><option value="human">Human</option><option value="paused">Paused</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="widget-language" className="text-sm font-medium">Language</label>
+            <input id="widget-language" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" value={widget.language} onChange={(e) => setWidget({ ...widget, language: e.target.value })} />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-5 text-sm">
+          <label className="flex items-center gap-2"><input type="checkbox" checked={widget.allowAttachments} onChange={(e) => setWidget({ ...widget, allowAttachments: e.target.checked })} />Allow attachments</label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={widget.showBranding} onChange={(e) => setWidget({ ...widget, showBranding: e.target.checked })} />Mostrar marca de la plataforma</label>
         </div>
 
         <div>
@@ -135,7 +184,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="widget-position" className="text-sm font-medium">Position</label>
+            <label htmlFor="widget-position" className="text-sm font-medium">Posición</label>
             <select
               id="widget-position"
               className={`${pSelect} mt-1`}

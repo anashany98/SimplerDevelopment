@@ -71,7 +71,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const signingUrl = `${baseUrl}/contract/${signer.token}`;
     try {
       await resend.emails.send({
-        from: `${client.company || 'Simpler Development'} <${fromEmail}>`,
+        from: `${client.company || 'CRM AGENTS'} <${fromEmail}>`,
         to: signer.email,
         subject: `Contract for your signature: ${contract.title}`,
         html: `

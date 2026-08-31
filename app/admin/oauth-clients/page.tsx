@@ -159,12 +159,12 @@ export default function AdminOAuthClientsPage() {
             <dt className="text-muted-foreground">client_id</dt>
             <dd className="font-mono flex items-center gap-2">
               <code className="bg-muted px-2 py-1 rounded">{createdSecret.client_id}</code>
-              <button onClick={() => copyToClipboard(createdSecret.client_id)} className="text-xs underline">Copy</button>
+              <button onClick={() => copyToClipboard(createdSecret.client_id)} className="text-xs underline">Copiar</button>
             </dd>
             <dt className="text-muted-foreground">client_secret</dt>
             <dd className="font-mono flex items-center gap-2">
               <code className="bg-muted px-2 py-1 rounded break-all">{createdSecret.client_secret}</code>
-              <button onClick={() => copyToClipboard(createdSecret.client_secret)} className="text-xs underline whitespace-nowrap">Copy</button>
+              <button onClick={() => copyToClipboard(createdSecret.client_secret)} className="text-xs underline whitespace-nowrap">Copiar</button>
             </dd>
           </dl>
         </div>
@@ -190,7 +190,7 @@ export default function AdminOAuthClientsPage() {
             <dt className="text-muted-foreground">client_secret</dt>
             <dd className="font-mono flex items-center gap-2">
               <code className="bg-muted px-2 py-1 rounded break-all">{rotatedSecret.client_secret}</code>
-              <button onClick={() => copyToClipboard(rotatedSecret.client_secret)} className="text-xs underline whitespace-nowrap">Copy</button>
+              <button onClick={() => copyToClipboard(rotatedSecret.client_secret)} className="text-xs underline whitespace-nowrap">Copiar</button>
             </dd>
           </dl>
         </div>
@@ -219,7 +219,7 @@ export default function AdminOAuthClientsPage() {
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-mono"
               placeholder="https://your-integration.example.com/oauth/callback"
             />
-            <p className="text-xs text-muted-foreground mt-1">One per line. Must use https, http://localhost, or a native scheme.</p>
+            <p className="text-xs text-muted-foreground mt-1">Uno por línea. Debe usar https, http://localhost o un esquema nativo.</p>
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Token endpoint auth method</label>
@@ -255,9 +255,7 @@ export default function AdminOAuthClientsPage() {
               type="button"
               onClick={() => setShowForm(false)}
               className="rounded-md border border-border px-4 py-2 text-sm hover:bg-muted"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </form>
       )}
@@ -266,18 +264,18 @@ export default function AdminOAuthClientsPage() {
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left">
             <tr>
-              <th className="px-4 py-2 font-medium">Name</th>
+              <th className="px-4 py-2 font-medium">Nombre</th>
               <th className="px-4 py-2 font-medium">client_id</th>
               <th className="px-4 py-2 font-medium">Auth method</th>
               <th className="px-4 py-2 font-medium">Secret</th>
               <th className="px-4 py-2 font-medium">Redirect URIs</th>
-              <th className="px-4 py-2 font-medium">Created</th>
-              <th className="px-4 py-2 font-medium text-right">Actions</th>
+              <th className="px-4 py-2 font-medium">Creado</th>
+              <th className="px-4 py-2 font-medium text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">Loading…</td></tr>
+              <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && clients.length === 0 && (
               <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">No OAuth clients yet.</td></tr>
@@ -312,9 +310,7 @@ export default function AdminOAuthClientsPage() {
                     <button
                       onClick={() => deleteClient(c)}
                       className="text-xs rounded border border-destructive text-destructive px-2 py-1 hover:bg-destructive/10"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </div>
                 </td>
               </tr>

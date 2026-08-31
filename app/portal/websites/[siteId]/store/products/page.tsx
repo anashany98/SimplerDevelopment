@@ -60,7 +60,7 @@ export default function ProductsListPage() {
       const data = await res.json();
       if (data.success) {
         setProducts(data.data || []);
-        setTotalPages(data.pagination?.totalPages || 1);
+        setTotalPages(data.págination?.totalPages || 1);
       }
     } catch {
       // fail silently
@@ -136,18 +136,18 @@ export default function ProductsListPage() {
   };
 
   const tabs = [
-    { label: 'All', value: 'all' },
-    { label: 'Active', value: 'active' },
-    { label: 'Draft', value: 'draft' },
-    { label: 'Archived', value: 'archived' },
+    { label: 'Todos', value: 'all' },
+    { label: 'Activo', value: 'active' },
+    { label: 'Borrador', value: 'draft' },
+    { label: 'Archivado', value: 'archived' },
   ];
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Store"
-        title="Products"
-        subtitle="Manage your store products and inventory."
+        eyebrow="Tienda"
+        title="Productos"
+        subtitle="Gestiona los productos y el inventario de tu tienda."
         actions={
           <Link
             href={`/portal/websites/${siteId}/store/products/new`}
@@ -187,17 +187,17 @@ export default function ProductsListPage() {
             <input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              placeholder="Search products..."
+              placeholder="Buscar productos…"
               className={`${pInput} pl-10`}
             />
           </div>
           <select
-            aria-label="Filter by category"
+            aria-label="Filtrar por categoría"
             value={categoryFilter}
             onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">All Categories</option>
+            <option value="">Todas las categorías</option>
             {categories.map((cat) => (
               <option key={cat.id} value={String(cat.id)}>
                 {cat.name}
@@ -229,22 +229,16 @@ export default function ProductsListPage() {
             onClick={() => bulkChangeStatus('archived')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-400 transition-colors disabled:opacity-50"
-          >
-            Archive
-          </button>
+          >Archivar</button>
           <button
             onClick={bulkDelete}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 transition-colors disabled:opacity-50"
-          >
-            Delete
-          </button>
+          >Eliminar</button>
           <button
             onClick={() => setSelected(new Set())}
             className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Clear
-          </button>
+          >Limpiar</button>
         </div>
       )}
 
@@ -256,11 +250,11 @@ export default function ProductsListPage() {
       ) : products.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-10 flex flex-col items-center text-center">
           <span className="material-icons text-4xl text-muted-foreground/40 mb-2">inventory_2</span>
-          <h2 className="font-semibold text-foreground mb-1">No products found</h2>
+          <h2 className="font-semibold text-foreground mb-1">No se encontraron productos</h2>
           <p className="text-sm text-muted-foreground mb-4">
             {search || statusFilter !== 'all' || categoryFilter
-              ? 'Try adjusting your filters.'
-              : 'Add your first product to start selling.'}
+              ? 'Prueba a ajustar tus filtros.'
+              : 'Agrega tu primer producto para empezar a vender.'}
           </p>
           {!search && statusFilter === 'all' && !categoryFilter && (
             <Link
@@ -281,18 +275,18 @@ export default function ProductsListPage() {
                   <th className="px-4 py-3 w-10">
                     <input
                       type="checkbox"
-                      aria-label="Select all products"
+                      aria-label="Seleccionar todos los productos"
                       checked={selected.size === products.length && products.length > 0}
                       onChange={toggleAll}
                       className="rounded border-border"
                     />
                   </th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground w-14">Image</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Name</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Price</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Inventory</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Category</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground w-14">Imagen</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Nombre</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Estado</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Precio</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Inventario</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Categoría</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -346,7 +340,7 @@ export default function ProductsListPage() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {product.trackInventory ? product.quantity : <span className="text-xs">Not tracked</span>}
+                      {product.trackInventory ? product.quantity : <span className="text-xs">Sin seguimiento</span>}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {product.category?.name || <span className="text-muted-foreground/50">--</span>}
@@ -359,7 +353,7 @@ export default function ProductsListPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <button

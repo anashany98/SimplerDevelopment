@@ -137,13 +137,11 @@ export default function CombinedCalendarPage() {
         href="/portal/tools/booking"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <span className="material-icons text-lg">arrow_back</span>
-        Back to Booking Pages
-      </Link>
+        <span className="material-icons text-lg">arrow_back</span>Volver a las páginas de reservas</Link>
       <PortalPageHeader
-        eyebrow="Booking"
+        eyebrow="Reservas"
         title="Combined Calendar"
-        subtitle="View all bookings across staff members"
+        subtitle="Ver todas las reservas de todo el personal"
       />
 
       {/* Controls */}
@@ -152,9 +150,7 @@ export default function CombinedCalendarPage() {
           <button onClick={() => navigate(-1)} className="p-1.5 hover:bg-muted rounded-lg transition-colors">
             <span className="material-icons">chevron_left</span>
           </button>
-          <button onClick={goToday} className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary transition hover:bg-primary/15">
-            Today
-          </button>
+          <button onClick={goToday} className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary transition hover:bg-primary/15">Hoy</button>
           <button onClick={() => navigate(1)} className="p-1.5 hover:bg-muted rounded-lg transition-colors">
             <span className="material-icons">chevron_right</span>
           </button>
@@ -174,7 +170,7 @@ export default function CombinedCalendarPage() {
               onChange={e => setSelectedMember(e.target.value ? parseInt(e.target.value) : null)}
               className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
             >
-              <option value="">All Members</option>
+              <option value="">Todos los miembros</option>
               {members.map(m => (
                 <option key={m.userId} value={m.userId}>{m.name}</option>
               ))}
@@ -222,9 +218,7 @@ export default function CombinedCalendarPage() {
             <button
               onClick={() => setSelectedMember(null)}
               className="text-xs text-muted-foreground hover:text-foreground underline"
-            >
-              Clear filter
-            </button>
+            >Borrar filtro</button>
           )}
         </div>
       )}
@@ -357,7 +351,7 @@ export default function CombinedCalendarPage() {
               </div>
 
               <div>
-                <span className="text-xs text-muted-foreground">Time</span>
+                <span className="text-xs text-muted-foreground">Hora</span>
                 <p className="text-sm text-foreground">
                   {new Date(selectedBooking.startTime).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
@@ -368,7 +362,7 @@ export default function CombinedCalendarPage() {
 
               {selectedBooking.assignedMember && (
                 <div>
-                  <span className="text-xs text-muted-foreground">Assigned To</span>
+                  <span className="text-xs text-muted-foreground">Asignado a</span>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="w-3 h-3 rounded-full" style={{ backgroundColor: selectedBooking.assignedMember.color }} />
                     <span className="text-sm font-medium text-foreground">{selectedBooking.assignedMember.name}</span>
@@ -404,9 +398,7 @@ export default function CombinedCalendarPage() {
                 href={`/portal/tools/booking/${selectedBooking.bookingPageId}`}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm disabled:opacity-50 w-full"
               >
-                <span className="material-icons text-lg">open_in_new</span>
-                View Booking Page
-              </Link>
+                <span className="material-icons text-lg">open_in_new</span>Ver página de reservas</Link>
             </div>
           </div>
         </div>

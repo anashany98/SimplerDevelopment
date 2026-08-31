@@ -290,9 +290,7 @@ function PortalPostFormInner({
           type="button"
           onClick={() => router.push(`/portal/websites/${siteId}`)}
           className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
       </div>
     </form>
   );

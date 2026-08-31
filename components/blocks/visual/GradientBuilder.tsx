@@ -323,7 +323,7 @@ export function GradientBuilder({ backgroundColor, backgroundGradient, onChange 
             <>
               {/* Type */}
               <div>
-                <label className="block text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Type</label>
+                <label className="block text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Tipo</label>
                 <div className="grid grid-cols-3 gap-1">
                   {(['linear', 'radial', 'conic'] as GradientType[]).map((t) => (
                     <button
@@ -386,17 +386,17 @@ export function GradientBuilder({ backgroundColor, backgroundGradient, onChange 
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Position</label>
+                    <label className="block text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Posición</label>
                     <select
                       value={state.radialPosition}
                       onChange={(e) => emit({ ...state, radialPosition: e.target.value })}
                       className="w-full px-2 py-1 text-xs border border-border rounded bg-background"
                     >
-                      <option value="center">Center</option>
-                      <option value="top">Top</option>
-                      <option value="bottom">Bottom</option>
-                      <option value="left">Left</option>
-                      <option value="right">Right</option>
+                      <option value="center">Centrado</option>
+                      <option value="top">Arriba</option>
+                      <option value="bottom">Abajo</option>
+                      <option value="left">Izquierda</option>
+                      <option value="right">Derecha</option>
                       <option value="top left">Top Left</option>
                       <option value="top right">Top Right</option>
                       <option value="bottom left">Bottom Left</option>

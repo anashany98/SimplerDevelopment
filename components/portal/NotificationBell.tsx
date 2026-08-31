@@ -549,7 +549,7 @@ export default function NotificationBell() {
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="relative p-2 rounded-lg hover:bg-muted transition-colors"
-        aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+        aria-label={unreadCount > 0 ? `Notificaciones, ${unreadCount} sin leer` : 'Notificaciones'}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -573,7 +573,7 @@ export default function NotificationBell() {
         <div className="absolute right-0 top-full mt-2 w-96 max-w-[calc(100vw-2rem)] bg-card border border-border rounded-lg shadow-lg z-50 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-foreground">Notifications</span>
+              <span className="text-sm font-semibold text-foreground">Notificaciones</span>
               <button
                 type="button"
                 onClick={() => setFilterUnread((prev) => !prev)}
@@ -614,7 +614,7 @@ export default function NotificationBell() {
                 disabled={desktop.blocked && !desktop.enabled}
                 title={
                   desktop.blocked && !desktop.enabled
-                    ? 'Notifications are blocked for this site in your browser settings.'
+                    ? 'Las notificaciones están bloqueadas para este sitio en la configuración de tu navegador.'
                     : 'Mentions and assignments will pop up on your desktop.'
                 }
                 className={`text-[11px] px-2 py-0.5 rounded-full border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
@@ -630,7 +630,7 @@ export default function NotificationBell() {
 
           <div className="max-h-96 overflow-y-auto">
             {!listLoaded ? (
-              <div className="px-4 py-10 text-center text-sm text-muted-foreground">Loading…</div>
+              <div className="px-4 py-10 text-center text-sm text-muted-foreground">Cargando…</div>
             ) : notifications.length === 0 ? (
               <div className="px-4 py-10 text-center text-sm text-muted-foreground">
                 <span className="material-icons text-3xl text-muted-foreground/40 mb-2 block">
@@ -679,9 +679,7 @@ export default function NotificationBell() {
                           <span className="text-[11px] text-muted-foreground">{relativeTime(n.createdAt)}</span>
                           {n.url && (
                             <span className="text-[11px] text-primary inline-flex items-center gap-0.5">
-                              <span className="material-icons text-[12px] leading-none">arrow_outward</span>
-                              Open
-                            </span>
+                              <span className="material-icons text-[12px] leading-none">arrow_outward</span>Abierto</span>
                           )}
                           {!n.read && (
                             <button

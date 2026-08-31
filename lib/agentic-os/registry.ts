@@ -12,7 +12,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-feature-scaffold',
     domain: 'developer-workflow',
-    name: 'SimplerDev Feature Scaffold',
+    name: 'CRM AGENTS Feature Scaffold',
     description:
       'Scaffold a portal-scoped or admin-global CRUD feature: Drizzle schema + REST routes (auth + site resolver + envelope) + e2e helper + Playwright spec.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-feature-scaffold/SKILL.md' },
@@ -32,7 +32,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-ui-scaffold',
     domain: 'developer-workflow',
-    name: 'SimplerDev UI Scaffold',
+    name: 'CRM AGENTS UI Scaffold',
     description:
       'Generate the admin + portal page.tsx layer for an existing CRUD resource — table, inline form, loading state — matching the canonical categories pages.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-ui-scaffold/SKILL.md' },
@@ -53,14 +53,14 @@ export const SKILLS: readonly AgenticOsSkill[] = [
     domain: 'developer-workflow',
     name: 'Feature Integrator',
     description:
-      'Compare an external codebase against SimplerDevelopment, produce a gap report, and translate (not copy) missing features into block/API/DB extensions.',
+      'Compare an external codebase against CRM AGENTS, produce a gap report, and translate (not copy) missing features into block/API/DB extensions.',
     source: { kind: 'repo-skill', path: '.claude/skills/feature-integrator/SKILL.md' },
     icon: 'compare_arrows',
     estimatedRuntime: '30+ min',
     appliesRules: ['blocks-universal', 'tenancy-test'],
     trigger: 'on-demand',
     promptTemplate:
-      'Use feature-integrator to compare the external app at "{{sourcePath}}" against SimplerDevelopment2026. Focus area: {{focusArea}}. Produce a gap report, wait for my approval, then implement {{implementScope}}.',
+      'Use feature-integrator to compare the external app at "{{sourcePath}}" against CRM AGENTS. Focus area: {{focusArea}}. Produce a gap report, wait for my approval, then implement {{implementScope}}.',
     variables: [
       { key: 'sourcePath', label: 'Absolute path to the external app source', required: true, placeholder: '../booking-app' },
       { key: 'focusArea', label: 'Domain to compare (booking, chat, content, all)', required: true, placeholder: 'booking' },
@@ -106,7 +106,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-block-type',
     domain: 'cms-blocks',
-    name: 'SimplerDev Block Type Scaffold',
+    name: 'CRM AGENTS Block Type Scaffold',
     description:
       'Scaffold a new block type in lockstep across all 5 integration points: types, render component, registry, BlockRenderer switch, /api/blocks metadata. Enforces the "blocks are universal" rule.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-block-type/SKILL.md' },
@@ -203,7 +203,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-visual-editor',
     domain: 'visual-editor',
-    name: 'SimplerDev Visual Editor',
+    name: 'CRM AGENTS Visual Editor',
     description:
       'Research/audit/debug/implement against the iframe page builder. Knows the postMessage protocol, the selection overlay, and the parent↔iframe invariants.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-visual-editor/SKILL.md' },
@@ -225,18 +225,18 @@ export const SKILLS: readonly AgenticOsSkill[] = [
     domain: 'site-migration',
     name: 'Site Migration',
     description:
-      'Migrate an external website into a SimplerDevelopment tenant: scrape source, map sections to universal blocks, create client + site + pages, seed branding.',
+      'Migrate an external website into a CRM AGENTS tenant: scrape source, map sections to universal blocks, create client + site + pages, seed branding.',
     source: { kind: 'repo-skill', path: '.claude/skills/site-migration/SKILL.md' },
     icon: 'cloud_upload',
     estimatedRuntime: '30+ min',
     appliesRules: ['blocks-universal', 'tenancy-test', 'migration-email-pattern'],
     trigger: 'on-demand',
     promptTemplate:
-      'Use site-migration to migrate "{{sourceUrl}}" into a SimplerDevelopment tenant. Client name: {{clientName}}. Subdomain: {{subdomain}}. Use the domain-derived email pattern ({{sitename}}@simplerdevelopment.com). Map sections to universal blocks; flag anything client-specific with the placeholder pattern.',
+      'Use site-migration to migrate "{{sourceUrl}}" into a CRM AGENTS tenant. Client name: {{clientName}}. Subdomain: {{subdomain}}. Use the domain-derived email pattern ({{sitename}}@simplerdevelopment.com). Map sections to universal blocks; flag anything client-specific with the placeholder pattern.',
     variables: [
       { key: 'sourceUrl', label: 'Source URL to migrate', required: true, type: 'url', placeholder: 'https://www.example.com' },
       { key: 'clientName', label: 'Client display name', required: true, placeholder: 'Example Co.' },
-      { key: 'subdomain', label: 'Target subdomain on simplerdevelopment.com', required: true, placeholder: 'exampleco' },
+      { key: 'subdomain', label: 'Target subdomain managed by CRM AGENTS', required: true, placeholder: 'exampleco' },
     ],
   },
 
@@ -317,7 +317,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-mcp-tool',
     domain: 'mcp-server',
-    name: 'SimplerDev MCP Tool',
+    name: 'CRM AGENTS MCP Tool',
     description:
       'Register a new MCP tool in lib/mcp/server.ts (or an adapter file) with handler + Zod schema + scope guard, slim-by-default.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-mcp-tool/SKILL.md' },
@@ -338,7 +338,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
   {
     id: 'simplerdev-mcp-token-budget',
     domain: 'mcp-server',
-    name: 'SimplerDev MCP Token Budget Audit',
+    name: 'CRM AGENTS MCP Token Budget Audit',
     description:
       'Audit MCP tool payloads — enforce slim projections, opt-in heavy fields, compact write-echoes. Run after any tool that touches a body/HTML/blocks column.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-mcp-token-budget/SKILL.md' },

@@ -1,6 +1,6 @@
 # Browser Extension API
 
-These endpoints power the SimplerDevelopment browser extension. They let the extension save Brain notes, look up CRM records, create tasks, and run AI extraction — all scoped to the authenticated tenant. Authentication uses the same portal API key infrastructure as the MCP server, so the same credential works across both surfaces.
+These endpoints power the CRM AGENTS browser extension. They let the extension save Brain notes, look up CRM records, create tasks, and run AI extraction — all scoped to the authenticated tenant. Authentication uses the same portal API key infrastructure as the MCP server, so the same credential works across both surfaces.
 
 **Base URL:** `https://<your-portal-domain>/api/extension/v1`
 

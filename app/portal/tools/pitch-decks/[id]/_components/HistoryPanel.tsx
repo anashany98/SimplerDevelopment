@@ -7,7 +7,7 @@ const triggerLabel: Record<string, string> = {
   manual: 'Checkpoint',
   ai_generate: 'Before AI generate',
   ai_regenerate: 'Before AI regenerate',
-  ai_slide_edit: 'Before AI slide edit',
+  ai_slide_edit: 'Antes de la edición de diapositiva con IA',
 };
 const triggerIcon: Record<string, string> = {
   manual: 'save',
@@ -50,9 +50,7 @@ export function HistoryPanel({ versions, savingVersion, restoring, slideCount, o
         </div>
       </div>
       {versions.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-4 text-center">
-          No versions yet. Versions are auto-saved before each AI edit.
-        </p>
+        <p className="text-sm text-muted-foreground py-4 text-center">Aún no hay versiones. Las versiones se autoguardan antes de cada edición de IA.</p>
       ) : (
         <div className="max-h-60 overflow-y-auto space-y-1.5">
           {versions.map((v) => (
@@ -73,9 +71,7 @@ export function HistoryPanel({ versions, savingVersion, restoring, slideCount, o
                 // hover-to-reveal preserved on md+ where pointer:fine is the norm.
                 className="md:opacity-0 md:group-hover:opacity-100 inline-flex items-center gap-1 px-2 py-1 text-xs border border-border rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-all disabled:opacity-50"
               >
-                <span className="material-icons text-xs">restore</span>
-                Restore
-              </button>
+                <span className="material-icons text-xs">restore</span>Restaurar</button>
             </div>
           ))}
         </div>

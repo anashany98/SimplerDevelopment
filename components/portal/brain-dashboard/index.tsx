@@ -29,7 +29,7 @@ export function BrainDashboardWidgetsServer({ clientId }: Props) {
             <CountersSkeleton />
             <div className="grid md:grid-cols-2 gap-4">
               <TileSkeleton title="Needs review" />
-              <TileSkeleton title="Overdue" />
+              <TileSkeleton title="Atrasado" />
               <TileSkeleton title="Stale prospects" />
               <TileSkeleton title="Priority relationships" />
               <TileSkeleton title="Blocked" />

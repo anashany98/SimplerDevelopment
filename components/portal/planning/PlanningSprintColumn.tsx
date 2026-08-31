@@ -12,8 +12,8 @@ import type { PlanningSprint } from './types';
 
 const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
   planning: { label: 'Planning', color: 'bg-blue-100 text-blue-700', icon: 'edit_calendar' },
-  active:   { label: 'Active',   color: 'bg-green-100 text-green-700', icon: 'play_circle' },
-  completed:{ label: 'Completed',color: 'bg-gray-100 text-gray-500',  icon: 'check_circle' },
+  active:   { label: 'Activo',   color: 'bg-green-100 text-green-700', icon: 'play_circle' },
+  completed:{ label: 'Completado',color: 'bg-gray-100 text-gray-500',  icon: 'check_circle' },
 };
 
 function formatDate(d: string | null) {
@@ -134,7 +134,7 @@ export default function PlanningSprintColumn({
               <button
                 onClick={() => onDeleteSprint(sprint.id)}
                 className="p-1.5 text-muted-foreground hover:text-destructive transition-colors rounded"
-                title="Delete sprint"
+                title="Eliminar sprint"
               >
                 <span className="material-icons text-base">delete_outline</span>
               </button>

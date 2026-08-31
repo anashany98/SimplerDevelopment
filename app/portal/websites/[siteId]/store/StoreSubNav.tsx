@@ -7,13 +7,13 @@ import { useParams, usePathname } from 'next/navigation';
 // Mirrors the quick-links that previously lived only on the dashboard, but
 // persistent across all /store/* routes with an active-section indicator.
 const ITEMS: Array<{ label: string; icon: string; seg: string }> = [
-  { label: 'Dashboard', icon: 'dashboard', seg: '' },
-  { label: 'Products', icon: 'inventory_2', seg: 'products' },
-  { label: 'Orders', icon: 'receipt_long', seg: 'orders' },
-  { label: 'Shipping', icon: 'local_shipping', seg: 'shipping' },
+  { label: 'Panel', icon: 'dashboard', seg: '' },
+  { label: 'Productos', icon: 'inventory_2', seg: 'products' },
+  { label: 'Pedidos', icon: 'receipt_long', seg: 'orders' },
+  { label: 'Envío', icon: 'local_shipping', seg: 'shipping' },
   { label: 'Discounts', icon: 'sell', seg: 'discounts' },
-  { label: 'Categories', icon: 'category', seg: 'categories' },
-  { label: 'Settings', icon: 'settings', seg: 'settings' },
+  { label: 'Categorías', icon: 'category', seg: 'categories' },
+  { label: 'Ajustes', icon: 'settings', seg: 'settings' },
 ];
 
 export default function StoreSubNav() {

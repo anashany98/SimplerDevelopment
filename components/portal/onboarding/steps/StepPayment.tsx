@@ -33,7 +33,7 @@ export function StepPayment({
   const [checkoutCancelled] = useState(() => checkoutParam === 'cancelled');
   const [checkoutSuccess, setCheckoutSuccess] = useState(() => checkoutParam === 'success');
   // Escape hatch: the success screen is supposed to auto-advance in ~1.8s, but
-  // a slow persist left users staring at "Setting up your workspace…" for
+  // a slow persist left users staring at "Configurando tu espacio de trabajo…" for
   // minutes right after being charged (OBQA-015). Offer a manual Continue.
   const [showEscape, setShowEscape] = useState(false);
   useEffect(() => {
@@ -142,8 +142,9 @@ export function StepPayment({
     }
   }
 
-  const formatPrice = (cents: number) =>
-    `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`;
+  const formatPrice = (cents: number) => stripeEnabled
+    ? `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`
+    : 'Included';
 
   if (checkoutSuccess) {
     return (
@@ -152,16 +153,14 @@ export function StepPayment({
           <span className="material-icons text-4xl text-emerald-600">check_circle</span>
         </div>
         <h2 className="text-xl font-bold">Trial started!</h2>
-        <p className="text-sm text-muted-foreground">Setting up your workspace…</p>
+        <p className="text-sm text-muted-foreground">Configurando tu espacio de trabajo…</p>
         {showEscape && (
           <button
             type="button"
             onClick={() => next({ checkoutCompletedAt: new Date().toISOString() })}
             data-testid="onboarding-payment-escape"
             className={obPrimaryBtn}
-          >
-            Continue
-            <span className="material-icons text-lg">arrow_forward</span>
+          >Continuar<span className="material-icons text-lg">arrow_forward</span>
           </button>
         )}
       </div>
@@ -180,7 +179,7 @@ export function StepPayment({
       {/* Order summary */}
       <div className="rounded-2xl border border-border bg-card divide-y divide-border overflow-hidden">
         {lineItems.length === 0 ? (
-          <div className="px-4 py-4 text-sm text-muted-foreground">No modules selected.</div>
+          <div className="px-4 py-4 text-sm text-muted-foreground">No hay módulos seleccionados.</div>
         ) : (
           lineItems.map((li) => (
             <div key={li.name} className="flex items-center gap-3 px-4 py-3.5">
@@ -190,7 +189,7 @@ export function StepPayment({
             </div>
           ))
         )}
-        {discountPercent > 0 && (
+        {stripeEnabled && discountPercent > 0 && (
           <>
             <div className="flex items-center justify-between px-4 py-2.5 text-[13px] text-muted-foreground">
               <span>Subtotal</span>
@@ -203,7 +202,7 @@ export function StepPayment({
           </>
         )}
         <div className="flex items-center justify-between px-4 py-3.5 bg-[var(--portal-surface-2)]">
-          <span className="text-[14px] font-bold">Total</span>
+          <span className="text-[14px] font-bold">{stripeEnabled ? 'Total' : 'Access'}</span>
           <span className="text-[14px] font-bold">{formatPrice(totalCents)}</span>
         </div>
       </div>
@@ -225,7 +224,7 @@ export function StepPayment({
         >
           <span className="material-icons text-base mt-0.5 shrink-0">warning_amber</span>
           <div>
-            <span className="font-semibold">Payments aren&apos;t set up on this instance.</span>{' '}
+            <span className="font-semibold">Los pagos no están habilitados en esta instancia.</span>{' '}
             You can continue — your selected modules will be activated without a charge. Billing
             starts working once the operator configures Stripe.
           </div>

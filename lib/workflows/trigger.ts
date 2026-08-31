@@ -20,6 +20,11 @@ import type {
 
 interface EnqueueOptions {
   triggeredBy?: string;
+  // Restrict matching to specific workflow ids. Used by the schedule cron,
+  // which has already decided WHICH workflow should fire and only needs the
+  // enqueue mechanics — without this it would fire every schedule workflow
+  // on the tenant.
+  workflowIds?: number[];
 }
 
 export async function enqueueWorkflowRunsForTrigger(
@@ -32,8 +37,9 @@ export async function enqueueWorkflowRunsForTrigger(
   // processEvent() calls this for every `crm.contact.created`,
   // `crm.deal.updated` (stage-change), and `form.submitted` event. The
   // `/[id]/test-run` endpoint also still calls this directly with a
-  // synthetic context. Remaining gap: no cron/source maps events onto the
-  // `schedule`-kind trigger yet.
+  // synthetic context. The schedule cron
+  // (app/api/cron/process-workflow-schedules) calls it with `workflowIds`
+  // set to the specific workflow(s) whose slot has come due.
 
   const active = await db
     .select()
@@ -41,6 +47,7 @@ export async function enqueueWorkflowRunsForTrigger(
     .where(and(eq(workflows.clientId, clientId), eq(workflows.status, 'active')));
 
   const matched = active.filter((w) =>
+    (!opts.workflowIds || opts.workflowIds.includes(w.id)) &&
     triggerMatches(w.trigger as WorkflowTriggerConfig, trigger),
   );
 

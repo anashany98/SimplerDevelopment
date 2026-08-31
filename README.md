@@ -1,17 +1,17 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.png" />
-    <img src=".github/assets/logo-light.png" alt="SimplerDevelopment" width="440" />
+    <img src=".github/assets/logo-light.png" alt="CRM AGENTS" width="440" />
   </picture>
 </p>
 
-# SimplerDevelopment
+# CRM AGENTS
 
 [![CI](https://github.com/SimplerDevelopment/SimplerDevelopment/actions/workflows/ci.yml/badge.svg)](https://github.com/SimplerDevelopment/SimplerDevelopment/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md) [![Built with Bun](https://img.shields.io/badge/built%20with-Bun-14151a.svg)](https://bun.sh) [![Tenancy gate](https://img.shields.io/badge/tenancy-required-blue)](tests/CI-GATES.md)
 
 <p align="center">
   <a href="https://www.simplerdevelopment.com/api/media/proxy/media/1a9075a0-ac5e-4480-a11d-edae25fe5030.mp4">
-    <img src="public/screenshots/marketing/portal-onboarding-desktop.webp" alt="SimplerDevelopment portal onboarding screen" width="800" />
+    <img src="public/screenshots/marketing/portal-onboarding-desktop.webp" alt="CRM AGENTS portal onboarding screen" width="800" />
   </a>
 </p>
 
@@ -19,7 +19,7 @@
 
 ## Overview
 
-SimplerDevelopment is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **Stripe billing** all live in a single multi-tenant portal.
+CRM AGENTS is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **Stripe billing** all live in a single multi-tenant portal.
 
 Here's the part that makes it different: every one of those modules is driveable by an AI agent. The platform ships **450+ Model Context Protocol (MCP) tools**, so Claude, Cursor, or any MCP client can build a page, move a deal, or send a campaign the same way you would by clicking. Apache-2.0, no per-seat pricing, no rug-pull — bring your own Postgres and API keys and run it yourself.
 
@@ -137,4 +137,4 @@ Found a vulnerability? Please **don't** open a public issue — see **[`SECURITY
 
 ## License
 
-[Apache License 2.0](LICENSE) © SimplerDevelopment.
+[Apache License 2.0](LICENSE) © CRM AGENTS.

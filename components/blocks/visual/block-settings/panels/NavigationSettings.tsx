@@ -90,11 +90,11 @@ export function NavigationBlockSettings({ block, onChange }: { block: Navigation
 
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Background</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Fondo</label>
           <TokenColorPicker value={block.backgroundColor || ''} onChange={(color) => onChange({ backgroundColor: color || undefined })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Link</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Enlace</label>
           <TokenColorPicker value={block.linkColor || ''} onChange={(color) => onChange({ linkColor: color || undefined })} />
         </div>
         <div>
@@ -116,7 +116,7 @@ export function NavigationBlockSettings({ block, onChange }: { block: Navigation
       <div className="border-t border-border pt-4 space-y-3">
         <label className="block text-sm font-medium text-foreground">
           Link Typography
-          <span className="block text-xs font-normal text-muted-foreground mt-0.5">Applies to top-level menu link labels only — not the CTA button.</span>
+          <span className="block text-xs font-normal text-muted-foreground mt-0.5">Se aplica solo a las etiquetas de enlaces de menú de nivel superior, no al botón CTA.</span>
         </label>
         <div className="grid grid-cols-3 gap-3">
           <div>
@@ -155,11 +155,11 @@ export function NavigationBlockSettings({ block, onChange }: { block: Navigation
       <div className="border-t border-border pt-4 space-y-3">
         <label className="block text-sm font-medium text-foreground">
           CTA Button
-          <span className="block text-xs font-normal text-muted-foreground mt-0.5">Renders for any top-level menu item marked as a button in the Navigation manager.</span>
+          <span className="block text-xs font-normal text-muted-foreground mt-0.5">Se muestra para cualquier elemento de menú de nivel superior marcado como botón en el gestor de navegación.</span>
         </label>
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Background</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Fondo</label>
             <TokenColorPicker value={block.ctaBackgroundColor || ''} onChange={(color) => onChange({ ctaBackgroundColor: color || undefined })} />
           </div>
           <div>
@@ -187,11 +187,11 @@ export function NavigationBlockSettings({ block, onChange }: { block: Navigation
         <label className="block text-sm font-medium text-foreground">Dropdown Panel</label>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Background</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Fondo</label>
             <TokenColorPicker value={block.dropdownBackgroundColor || ''} onChange={(color) => onChange({ dropdownBackgroundColor: color || undefined })} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Link</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Enlace</label>
             <TokenColorPicker value={block.dropdownLinkColor || ''} onChange={(color) => onChange({ dropdownLinkColor: color || undefined })} />
           </div>
         </div>

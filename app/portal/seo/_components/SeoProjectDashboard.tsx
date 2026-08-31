@@ -24,8 +24,8 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'recommendations', label: 'Do next', icon: 'checklist' },
   { id: 'overview', label: 'Overview', icon: 'dashboard' },
   { id: 'issues', label: 'Issues', icon: 'fact_check' },
-  { id: 'pages', label: 'Pages', icon: 'description' },
-  { id: 'search', label: 'Search', icon: 'query_stats' },
+  { id: 'pages', label: 'Páginas', icon: 'description' },
+  { id: 'search', label: 'Buscar', icon: 'query_stats' },
   { id: 'history', label: 'History', icon: 'history' },
 ];
 
@@ -113,7 +113,7 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
     return (
       <div className="max-w-5xl mx-auto py-16 text-center">
         <span className="material-icons text-4xl text-muted-foreground mb-2">search_off</span>
-        <h1 className="font-display text-lg font-extrabold text-foreground mb-2">Project not found</h1>
+        <h1 className="font-display text-lg font-extrabold text-foreground mb-2">Proyecto no encontrado</h1>
         <Link href="/portal/seo" className="text-primary hover:underline text-sm">
           Back to SEO Intelligence
         </Link>

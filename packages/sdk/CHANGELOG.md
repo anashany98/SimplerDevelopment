@@ -21,7 +21,7 @@ Driven by building a real marketing site on the SDK — each item below is a gap
 Initial published release.
 
 ### Added
-- TypeScript client for the SimplerDevelopment REST v1 read surface (`/api/v1/sites/{siteId}/…`).
+- TypeScript client for the CRM AGENTS REST v1 read surface (`/api/v1/sites/{siteId}/…`).
 - Resources: `config`, `branding`, `navigation`, `posts`, `pages`, `categories`, `tags`, `media`, `products`, `productCategories`, `blocks`.
 - Typed error hierarchy (`SDKError`, `NotFoundError`, `UnauthorizedError`, `RateLimitError`) with `retryAfter` support on 429 responses.
 - Dual CJS/ESM build with bundled type declarations (`tsup`).

@@ -59,7 +59,7 @@ export function ProductSlugPicker({ siteId, value, onChange }: { siteId?: number
           value={open ? search : value || ''}
           onChange={(e) => { setSearch(e.target.value); if (!open) { onChange(e.target.value); } }}
           onFocus={() => setOpen(true)}
-          placeholder={loading ? 'Loading products...' : 'Search products...'}
+          placeholder={loading ? 'Cargando productos...' : 'Buscar productos...'}
           className="mt-1 block w-full rounded border border-border px-2.5 py-1.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
         />
       )}
@@ -71,14 +71,14 @@ export function ProductSlugPicker({ siteId, value, onChange }: { siteId?: number
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products..."
+              placeholder="Buscar productos..."
               autoFocus
               className="sticky top-0 w-full border-b border-border px-3 py-2 text-sm bg-card focus:outline-none"
             />
           )}
           {filtered.length === 0 ? (
             <div className="px-3 py-4 text-xs text-muted-foreground text-center">
-              {loading ? 'Loading...' : products.length === 0 ? 'No products in store' : 'No matches'}
+              {loading ? 'Cargando...' : products.length === 0 ? 'No products in store' : 'No matches'}
             </div>
           ) : (
             filtered.map(p => (

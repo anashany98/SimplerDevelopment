@@ -126,9 +126,9 @@ export default function CustomDomainPage() {
       </Link>
 
       <PortalPageHeader
-        eyebrow="Agency"
-        title="Custom Portal Domain"
-        subtitle="Map your own apex or subdomain to this portal so clients see your brand instead of simplerdevelopment.com."
+        eyebrow="Agencia"
+        title="Dominio personalizado del portal"
+        subtitle="Map your own apex or subdomain to this portal so clients see your brand instead of the default CRM AGENTS address."
       />
 
       {message && (
@@ -159,7 +159,7 @@ export default function CustomDomainPage() {
       ) : !state.customDomain ? (
         <form onSubmit={submitDomain} className="bg-card border border-border rounded-2xl p-6 space-y-4">
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Domain</span>
+            <span className="text-sm font-medium text-foreground">Dominio</span>
             <input
               type="text"
               value={domainInput}
@@ -204,9 +204,7 @@ export default function CustomDomainPage() {
                 onClick={removeDomain}
                 disabled={removing}
                 className="text-sm text-destructive hover:underline disabled:opacity-50"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
 
@@ -221,13 +219,13 @@ export default function CustomDomainPage() {
               </p>
 
               <div className="grid grid-cols-[80px_1fr] gap-x-4 gap-y-2 text-sm font-mono">
-                <span className="text-muted-foreground">Type</span>
+                <span className="text-muted-foreground">Tipo</span>
                 <span className="text-foreground">{state.verificationRecord.type}</span>
 
                 <span className="text-muted-foreground">Host</span>
                 <span className="text-foreground break-all">{state.verificationRecord.host}</span>
 
-                <span className="text-muted-foreground">Value</span>
+                <span className="text-muted-foreground">Valor</span>
                 <span className="text-foreground break-all flex items-start gap-2">
                   <code className="flex-1">{state.verificationRecord.value}</code>
                   <button

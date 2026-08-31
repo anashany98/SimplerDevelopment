@@ -1,4 +1,4 @@
 interface:
-  display_name: "SimplerDev Test Gate Picker"
+  display_name: "CRM AGENTS Test Gate Picker"
   short_description: "Choose validation gates for repo changes."
-  default_prompt: "Use $simplerdev-test-gate-picker to pick the correct checks for this SimplerDevelopment diff."
+  default_prompt: "Use $simplerdev-test-gate-picker to pick the correct checks for this CRM AGENTS diff."

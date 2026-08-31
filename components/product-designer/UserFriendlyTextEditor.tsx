@@ -356,8 +356,7 @@ export const UserFriendlyTextEditor: React.FC<UserFriendlyTextEditorProps> = ({
       {textData.text && (
         <div>
           <label className="block text-sm font-semibold mb-2 flex items-center gap-2">
-            <span>👁️</span> Preview
-          </label>
+            <span>👁️</span>Vista previa</label>
           <div 
             className="bg-white border border-gray-200 rounded-lg p-4 min-h-[60px]"
             style={{ 
@@ -381,7 +380,7 @@ export const UserFriendlyTextEditor: React.FC<UserFriendlyTextEditorProps> = ({
       {/* Basic Controls */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Size</label>
+          <label className="block text-sm font-medium mb-1">Tamaño</label>
           <input
             type="range"
             min="10"
@@ -440,7 +439,7 @@ export const UserFriendlyTextEditor: React.FC<UserFriendlyTextEditorProps> = ({
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">Position</label>
+              <label className="block text-sm font-medium mb-2">Posición</label>
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">X</label>

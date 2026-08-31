@@ -66,7 +66,7 @@ function AssigneePicker({
         })}
 
         {assigneeIds.length === 0 && (
-          <p className="text-xs text-muted-foreground italic">No one assigned</p>
+          <p className="text-xs text-muted-foreground italic">Sin asignar</p>
         )}
 
         {canEdit && (
@@ -125,7 +125,7 @@ export function NodeInspector({
   return (
     <div className="space-y-3">
       <div>
-        <label htmlFor="node-label" className="block text-[11px] text-muted-foreground mb-1">Label</label>
+        <label htmlFor="node-label" className="block text-[11px] text-muted-foreground mb-1">Etiqueta</label>
         <input
           id="node-label"
           value={data.label}
@@ -171,7 +171,7 @@ export function NodeInspector({
         </>
       ) : (
         <div>
-          <label htmlFor="node-description" className="block text-[11px] text-muted-foreground mb-1">Description</label>
+          <label htmlFor="node-description" className="block text-[11px] text-muted-foreground mb-1">Descripción</label>
           <input
             id="node-description"
             value={data.description ?? ''}
@@ -275,7 +275,7 @@ export function EdgeInspector({
   return (
     <div className="space-y-3">
       <div>
-        <label htmlFor="edge-label" className="block text-[11px] text-muted-foreground mb-1">Label</label>
+        <label htmlFor="edge-label" className="block text-[11px] text-muted-foreground mb-1">Etiqueta</label>
         <input
           id="edge-label"
           value={label}

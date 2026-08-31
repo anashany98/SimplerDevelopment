@@ -254,9 +254,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                   </div>
                   {/* order */}
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      Order
-                    </label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Pedido</label>
                     <input
                       type="number"
                       value={editOrder}
@@ -328,9 +326,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                     type="button"
                     onClick={() => setExpanded(false)}
                     className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Cancel
-                  </button>
+                  >Cancelar</button>
                 </div>
               </form>
             ) : (
@@ -342,7 +338,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                     <div className="text-xs font-mono text-foreground">{c.caseKey}</div>
                   </div>
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Order</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Pedido</div>
                     <div className="text-xs text-foreground">{c.order}</div>
                   </div>
                 </div>
@@ -530,9 +526,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Order
-            </label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Pedido</label>
             <input
               type="number"
               value={orderStr}
@@ -601,9 +595,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
             type="button"
             onClick={() => { setOpen(false); setSaveError(null); }}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         </div>
       </form>
     </div>
@@ -966,9 +958,7 @@ export default function PromptCasesPage() {
                       >
                         <span className={`material-icons text-sm leading-none ${datasetActionBusy ? 'animate-spin' : ''}`}>
                           {datasetActionBusy ? 'refresh' : 'check'}
-                        </span>
-                        Create
-                      </button>
+                        </span>Crear</button>
                       <button
                         onClick={() => { setNewDatasetOpen(false); setNewDatasetName(''); setDatasetActionError(null); }}
                         className="text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -986,9 +976,7 @@ export default function PromptCasesPage() {
                       }}
                       className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
                     >
-                      <span className="material-icons text-sm leading-none">add</span>
-                      New
-                    </button>
+                      <span className="material-icons text-sm leading-none">add</span>Nuevo</button>
                   )}
 
                   {/* Rename selected dataset */}
@@ -1011,9 +999,7 @@ export default function PromptCasesPage() {
                         >
                           <span className={`material-icons text-sm leading-none ${datasetActionBusy ? 'animate-spin' : ''}`}>
                             {datasetActionBusy ? 'refresh' : 'check'}
-                          </span>
-                          Save
-                        </button>
+                          </span>Guardar</button>
                         <button
                           onClick={() => { setRenameOpen(false); setRenameName(''); setDatasetActionError(null); }}
                           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -1032,9 +1018,7 @@ export default function PromptCasesPage() {
                         }}
                         className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
                       >
-                        <span className="material-icons text-sm leading-none">edit</span>
-                        Rename
-                      </button>
+                        <span className="material-icons text-sm leading-none">edit</span>Renombrar</button>
                     )
                   )}
 
@@ -1055,9 +1039,7 @@ export default function PromptCasesPage() {
                         <button
                           onClick={() => { setDeleteConfirm(false); setDatasetActionError(null); }}
                           className="px-1.5 py-0.5 text-red-700 hover:text-red-900 transition-colors"
-                        >
-                          Cancel
-                        </button>
+                        >Cancelar</button>
                       </div>
                     ) : (
                       <button
@@ -1069,9 +1051,7 @@ export default function PromptCasesPage() {
                         }}
                         className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-border bg-background text-muted-foreground hover:text-red-700 hover:border-red-300 hover:bg-red-50 transition-colors"
                       >
-                        <span className="material-icons text-sm leading-none">delete</span>
-                        Delete
-                      </button>
+                        <span className="material-icons text-sm leading-none">delete</span>Eliminar</button>
                     )
                   )}
                 </div>
@@ -1122,26 +1102,18 @@ export default function PromptCasesPage() {
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
                       <th className="px-3 py-2 w-6"></th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Order
-                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pedido</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Case key
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Enabled
-                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Activado</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Input preview
                       </th>
                       {isAdmin && (
-                        <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                          Edit
-                        </th>
+                        <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Editar</th>
                       )}
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Updated
-                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actualizado</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">

@@ -32,7 +32,7 @@ const FIELD_TYPES: { value: FieldType; label: string; icon: string; supportsOpti
   { value: 'select', label: 'Selección', icon: 'arrow_drop_down_circle', supportsOptions: true },
   { value: 'multiselect', label: 'Selección múltiple', icon: 'checklist', supportsOptions: true },
   { value: 'url', label: 'URL', icon: 'link', supportsOptions: false },
-  { value: 'email', label: 'Email', icon: 'mail', supportsOptions: false },
+  { value: 'email', label: 'Correo', icon: 'mail', supportsOptions: false },
   { value: 'phone', label: 'Teléfono', icon: 'phone', supportsOptions: false },
   { value: 'boolean', label: 'Sí / No', icon: 'toggle_on', supportsOptions: false },
 ];

@@ -11,7 +11,7 @@ sources:
   - marketing/feature-pages/
 ---
 
-# SimplerDevelopment — Enterprise & Agency Tier Overview
+# CRM AGENTS — Enterprise & Agency Tier Overview
 
 This document covers the concerns most relevant to larger buyers, platform administrators, and technical evaluators: multi-tenancy architecture, white-label configuration, access control, integrations, deployment topology, security posture, and support.
 
@@ -19,7 +19,7 @@ This document covers the concerns most relevant to larger buyers, platform admin
 
 ## Multi-Tenancy Architecture
 
-SimplerDevelopment is designed from the ground up as a multi-tenant system, not a single-tenant product with client switching bolted on.
+CRM AGENTS is designed from the ground up as a multi-tenant system, not a single-tenant product with client switching bolted on.
 
 **Tenant isolation is enforced at the data layer.** Every row in every tenant-scoped table carries a `clientId` foreign key. Every API handler and every MCP tool validates the active `clientId` before executing. A dedicated regression test suite (`bun test:tenancy`) specifically hunts for cross-tenant data leaks and runs on every push — a passing tenancy gate is a required status check.
 

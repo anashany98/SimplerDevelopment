@@ -92,9 +92,7 @@ export const UploadScreen = () => {
         <label
           htmlFor="name"
           className="block text-sm font-medium text-gray-700"
-        >
-          Name
-        </label>
+        >Nombre</label>
         <input
           type="text"
           id="name"

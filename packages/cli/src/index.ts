@@ -404,7 +404,7 @@ export function renderHelpText(data: unknown): string {
 
   // global help: { usage, globalFlags, builtins, discovery }
   if (Array.isArray(d.builtins)) {
-    lines.push(`simpler ${getCliVersion()} — SimplerDevelopment portal CLI`, '');
+    lines.push(`simpler ${getCliVersion()} — CRM AGENTS portal CLI`, '');
     lines.push(`Usage: ${d.usage}`, '');
     lines.push('Built-in commands:');
     for (const b of d.builtins as Array<{ name: string; usage: string; desc: string }>) {

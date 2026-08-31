@@ -74,7 +74,7 @@ function PluginUpsell({
         </h1>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">
           This app is gated behind an entitlement you don&rsquo;t currently
-          have. Contact your account manager at Simpler Development to enable
+          have. Contact your account manager at CRM AGENTS to enable
           it for your account.
         </p>
 

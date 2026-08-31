@@ -23,12 +23,12 @@ function firstH1(md: string): string | null {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const doc = await resolveDoc(slug ?? []);
-  if (!doc) return { title: 'Documentation – SimplerDevelopment' };
+  if (!doc) return { title: 'Documentation – CRM AGENTS' };
   const md = await fs.readFile(doc.filePath, 'utf-8');
   const h1 = firstH1(md);
   return {
-    title: h1 ? `${h1} – SimplerDevelopment Docs` : 'Documentation – SimplerDevelopment',
-    description: `SimplerDevelopment developer documentation${h1 ? `: ${h1}` : ''}.`,
+    title: h1 ? `${h1} – CRM AGENTS Docs` : 'Documentation – CRM AGENTS',
+    description: `CRM AGENTS developer documentation${h1 ? `: ${h1}` : ''}.`,
   };
 }
 

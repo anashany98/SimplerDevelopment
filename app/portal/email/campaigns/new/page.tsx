@@ -105,16 +105,14 @@ export default function NewPortalCampaignPage() {
             <span className="material-icons">arrow_back</span>
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-foreground">New Campaign</h1>
+            <h1 className="text-xl font-bold text-foreground">Nueva campaña</h1>
             <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
               <span className="inline-flex items-center gap-1">
-                <span className="material-icons text-xs">edit_note</span>
-                Draft
-              </span>
+                <span className="material-icons text-xs">edit_note</span>Borrador</span>
               {blocks.length > 0 && (
                 <>
                   <span>·</span>
-                  <span>{blocks.length} block{blocks.length !== 1 ? 's' : ''}</span>
+                  <span>{blocks.length} {blocks.length !== 1 ? 'bloques' : 'bloque'}</span>
                 </>
               )}
             </div>
@@ -150,9 +148,7 @@ export default function NewPortalCampaignPage() {
                 showEmailPreview ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
               }`}
             >
-              <span className="material-icons text-base">email</span>
-              Email Preview
-            </button>
+              <span className="material-icons text-base">email</span>Vista previa del correo</button>
           )}
 
           <button
@@ -188,24 +184,24 @@ export default function NewPortalCampaignPage() {
                 <button
                   onClick={() => setSettingsCollapsed(false)}
                   className="w-full p-2 border-b border-border text-muted-foreground hover:text-foreground transition-colors"
-                  title="Expand settings"
+                  title="Expandir ajustes"
                 >
                   <span className="material-icons text-base">chevron_right</span>
                 </button>
                 <div className="flex flex-col items-center gap-2 py-3">
-                  <span className="material-icons text-sm text-muted-foreground" title="Campaign details">campaign</span>
-                  <span className="material-icons text-sm text-muted-foreground" title="Sender">person</span>
-                  <span className="material-icons text-sm text-muted-foreground" title="Recipients">group</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Detalles de la campaña">campaign</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Remitente">person</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Destinatarios">group</span>
                 </div>
               </>
             ) : (
               <>
                 <div className="p-3 border-b border-border flex items-center justify-between">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Settings</span>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Ajustes</span>
                   <button
                     onClick={() => setSettingsCollapsed(true)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
-                    title="Collapse settings"
+                    title="Contraer ajustes"
                   >
                     <span className="material-icons text-base">chevron_left</span>
                   </button>
@@ -214,20 +210,18 @@ export default function NewPortalCampaignPage() {
                   {/* Campaign Details */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">campaign</span>
-                      Campaign
-                    </div>
+                      <span className="material-icons text-sm">campaign</span>Campaña</div>
                     <div>
-                      <label className={labelClass}>Name *</label>
+                      <label className={labelClass}>Nombre *</label>
                       <input value={form.name} onChange={set('name')} className={inputClass} placeholder="e.g. March Newsletter" />
                     </div>
                     <div>
-                      <label className={labelClass}>Subject Line *</label>
-                      <input value={form.subject} onChange={set('subject')} className={inputClass} placeholder="What's your email about?" />
+                      <label className={labelClass}>Línea de asunto *</label>
+                      <input value={form.subject} onChange={set('subject')} className={inputClass} placeholder="¿De qué trata tu correo?" />
                     </div>
                     <div>
-                      <label className={labelClass}>Preview Text</label>
-                      <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Short summary in inbox" />
+                      <label className={labelClass}>Texto de vista previa</label>
+                      <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Resumen breve en la bandeja de entrada" />
                     </div>
                   </div>
 
@@ -236,20 +230,18 @@ export default function NewPortalCampaignPage() {
                   {/* Sender */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">person</span>
-                      Sender
+                      <span className="material-icons text-sm">person</span>Remitente</div>
+                    <div>
+                      <label className={labelClass}>Nombre del remitente *</label>
+                      <input value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="Tu nombre o empresa" />
                     </div>
                     <div>
-                      <label className={labelClass}>From Name *</label>
-                      <input value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="Your Name or Company" />
-                    </div>
-                    <div>
-                      <label className={labelClass}>From Email *</label>
+                      <label className={labelClass}>Email del remitente *</label>
                       <input type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hello@yourdomain.com" />
                     </div>
                     <div>
-                      <label className={labelClass}>Reply-To</label>
-                      <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Optional" />
+                      <label className={labelClass}>Correo de respuesta</label>
+                      <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Opcional" />
                     </div>
                   </div>
 
@@ -258,20 +250,18 @@ export default function NewPortalCampaignPage() {
                   {/* Recipients */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">group</span>
-                      Recipients
-                    </div>
+                      <span className="material-icons text-sm">group</span>Destinatarios</div>
                     <div>
-                      <label htmlFor="campaign-list" className={labelClass}>Subscriber List *</label>
+                      <label htmlFor="campaign-list" className={labelClass}>Lista de suscriptores *</label>
                       <select id="campaign-list" value={form.listId} onChange={set('listId')} className={inputClass}>
-                        <option value="">Select a list...</option>
+                        <option value="">Selecciona una lista...</option>
                         {lists.map(l => (
                           <option key={l.id} value={l.id}>{l.name} ({l.subscriberCount})</option>
                         ))}
                       </select>
                       {lists.length === 0 && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          <Link href="/portal/email/lists" className="text-primary hover:underline">Create a list first</Link>
+                          <Link href="/portal/email/lists" className="text-primary hover:underline">Crea una lista primero</Link>
                         </p>
                       )}
                     </div>
@@ -327,7 +317,7 @@ export default function NewPortalCampaignPage() {
           ) : (
             <div className={`${pCard} overflow-hidden`}>
               <div className="px-5 py-3 border-b border-border">
-                <h3 className="text-sm font-semibold text-foreground">Raw HTML Content</h3>
+                <h3 className="text-sm font-semibold text-foreground">Contenido HTML sin procesar</h3>
               </div>
               <div className="p-5 space-y-3">
                 <textarea
@@ -335,11 +325,9 @@ export default function NewPortalCampaignPage() {
                   onChange={set('htmlContent')}
                   rows={24}
                   className={`${inputClass} font-mono text-xs`}
-                  placeholder={`<h1>Hello,</h1>\n<p>Your email content here...</p>`}
+                  placeholder={`<h1>Hola,</h1>\n<p>El contenido de tu correo aquí...</p>`}
                 />
-                <p className="text-xs text-muted-foreground">
-                  Write HTML directly. An unsubscribe footer is added automatically on send.
-                </p>
+                <p className="text-xs text-muted-foreground">Escribe el HTML directamente. Se agrega un pie de cancelación de suscripción automáticamente al enviar.</p>
               </div>
             </div>
           )}

@@ -87,7 +87,7 @@ Company Brain is a per-tenant AI knowledge base with notes, decisions, versioned
 ## 4. The visual block editor: iframe preview + postMessage + Yjs CRDT
 
 **Hook:**
-The block editor in SimplerDevelopment is not a custom renderer. It loads your actual production site renderer in a sandboxed iframe and applies selection/resize overlays on top of it. Two editors can work on the same page simultaneously. Here's how the architecture works and what tradeoffs we made.
+The block editor in CRM AGENTS is not a custom renderer. It loads your actual production site renderer in a sandboxed iframe and applies selection/resize overlays on top of it. Two editors can work on the same page simultaneously. Here's how the architecture works and what tradeoffs we made.
 
 **Key points:**
 
@@ -113,7 +113,7 @@ The block editor in SimplerDevelopment is not a custom renderer. It loads your a
 ## 5. Event-driven automations with a durable Postgres queue
 
 **Hook:**
-SimplerDevelopment ships two automation engines: event-driven rules (trigger → conditions → actions) and a durable workflow queue. Both run inside the same Next.js deployment. No separate BullMQ instance, no Redis queue for the automation engine. Here's how Postgres as a job queue holds up at agency scale — and where it doesn't.
+CRM AGENTS ships two automation engines: event-driven rules (trigger → conditions → actions) and a durable workflow queue. Both run inside the same Next.js deployment. No separate BullMQ instance, no Redis queue for the automation engine. Here's how Postgres as a job queue holds up at agency scale — and where it doesn't.
 
 **Key points:**
 

@@ -189,9 +189,7 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
                     disabled={updating === item.id}
                     aria-label="Remove item"
                     className="text-xs text-muted-foreground hover:text-destructive transition-colors mt-0.5"
-                  >
-                    Remove
-                  </button>
+                  >Quitar</button>
                 </div>
               </div>
             ))}

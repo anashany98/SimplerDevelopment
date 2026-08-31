@@ -448,7 +448,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
           {/* Quantity + Add to Cart */}
           <div className="border-t border-border pt-6 space-y-4">
             <div className="flex items-center gap-4">
-              <label className="text-sm font-semibold">Quantity</label>
+              <label className="text-sm font-semibold">Cantidad</label>
               <div className="flex items-center border border-border rounded-lg overflow-hidden">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -561,7 +561,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
       {/* Full Description */}
       {product.description && (
         <div className="mt-16 border-t border-border pt-12">
-          <h2 className="text-2xl font-bold mb-6">Description</h2>
+          <h2 className="text-2xl font-bold mb-6">Descripción</h2>
           <div
             className="prose prose-lg dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: product.description }}

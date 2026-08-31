@@ -225,9 +225,7 @@ export default function PlaybookDetailPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -274,7 +272,7 @@ export default function PlaybookDetailPage({
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={playbook.name}
         subtitle={
           <span className="inline-flex items-center gap-3 flex-wrap text-xs text-muted-foreground">
@@ -297,9 +295,7 @@ export default function PlaybookDetailPage({
               href={`/portal/brain/playbooks/${playbookId}/edit`}
               className={pBtnGhost}
             >
-              <span className="material-icons text-sm">edit</span>
-              Edit
-            </Link>
+              <span className="material-icons text-sm">edit</span>Editar</Link>
             {isDraft && (
               <button
                 type="button"
@@ -330,9 +326,7 @@ export default function PlaybookDetailPage({
                 disabled={busy}
                 className={`${pBtnGhost} disabled:opacity-50`}
               >
-                <span className="material-icons text-sm">archive</span>
-                Archive
-              </button>
+                <span className="material-icons text-sm">archive</span>Archivar</button>
             )}
             <button
               type="button"
@@ -340,9 +334,7 @@ export default function PlaybookDetailPage({
               disabled={busy}
               className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 disabled:opacity-50"
             >
-              <span className="material-icons text-sm">delete</span>
-              Delete
-            </button>
+              <span className="material-icons text-sm">delete</span>Eliminar</button>
           </div>
         }
       />
@@ -474,7 +466,7 @@ export default function PlaybookDetailPage({
 
         {isDraft && steps.length > 0 && (
           <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Ready to go live?</span>
+            <span>¿Listo para publicarse?</span>
             <button
               type="button"
               onClick={onActivate}
@@ -601,7 +593,7 @@ function StartRunDialog({
             type="button"
             onClick={onClose}
             disabled={submitting}
-            aria-label="Close"
+            aria-label="Cerrar"
             className="p-1 text-muted-foreground hover:text-foreground rounded disabled:opacity-50"
           >
             <span className="material-icons text-base">close</span>
@@ -610,8 +602,7 @@ function StartRunDialog({
 
         <form onSubmit={submit} className="px-5 py-4 overflow-y-auto space-y-4">
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Label <span className="text-destructive">*</span>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Etiqueta<span className="text-destructive">*</span>
             </label>
             <input
               type="text"
@@ -707,7 +698,7 @@ function StartRunDialog({
                       type="button"
                       onClick={() => removeLink(l.key)}
                       disabled={submitting}
-                      aria-label="Remove this link"
+                      aria-label="Quitar este vínculo"
                       className="col-span-1 p-1 text-muted-foreground hover:text-destructive rounded justify-self-end disabled:opacity-50"
                     >
                       <span className="material-icons text-sm">close</span>
@@ -730,9 +721,7 @@ function StartRunDialog({
               onClick={onClose}
               disabled={submitting}
               className={`${pBtnGhost} disabled:opacity-50`}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={submitting}

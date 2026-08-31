@@ -356,7 +356,7 @@ export default function DecisionDetailPage() {
     return (
       <div className="max-w-3xl mx-auto py-8 px-4 space-y-6">
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">edit</span>
@@ -400,7 +400,7 @@ export default function DecisionDetailPage() {
             selectedTopicIds={topicIdsDraft}
             onChange={setTopicIdsDraft}
             allowCreate
-            placeholder="Search or create…"
+            placeholder="Buscar o crear…"
           />
         </div>
 
@@ -433,7 +433,7 @@ export default function DecisionDetailPage() {
 
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">gavel</span>
@@ -475,9 +475,7 @@ export default function DecisionDetailPage() {
               onClick={() => setEditing(true)}
               className={pBtnGhost}
             >
-              <span className="material-icons text-base">edit</span>
-              Edit
-            </button>
+              <span className="material-icons text-base">edit</span>Editar</button>
             {d.status === 'accepted' && (
               <button
                 type="button"
@@ -539,9 +537,7 @@ export default function DecisionDetailPage() {
               type="button"
               onClick={() => { setRejectOpen(false); setRejectError(null); setRejectReason(''); }}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -657,14 +653,10 @@ function Section({
           >
             {collapsed ? (
               <>
-                <span className="material-icons text-base">expand_more</span>
-                Show
-              </>
+                <span className="material-icons text-base">expand_more</span>Mostrar</>
             ) : (
               <>
-                <span className="material-icons text-base">expand_less</span>
-                Hide
-              </>
+                <span className="material-icons text-base">expand_less</span>Ocultar</>
             )}
           </button>
         )}

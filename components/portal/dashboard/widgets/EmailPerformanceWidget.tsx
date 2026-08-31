@@ -82,7 +82,7 @@ export default async function EmailPerformanceWidget({
 
       {recentCampaigns.length === 0 ? (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No campaigns sent yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Aún no se han enviado campañas.</p>
           <Link
             href="/portal/email"
             className="text-xs text-primary hover:underline"

@@ -105,7 +105,7 @@ export default function PublishingCampaignsList({
       {campaigns.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-8 text-center">
           <span className="material-icons text-4xl text-gray-400">campaign</span>
-          <h3 className="mt-2 text-base font-medium">No campaigns yet</h3>
+          <h3 className="mt-2 text-base font-medium">Aún no hay campañas</h3>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {canManage
               ? 'Click "New campaign" to create your first cross-channel grouping.'
@@ -117,11 +117,11 @@ export default function PublishingCampaignsList({
           <table className="w-full text-sm">
             <thead className="bg-gray-50 dark:bg-gray-900/50 text-xs uppercase text-gray-500">
               <tr>
-                <th className="px-3 py-2 text-left">Name</th>
-                <th className="px-3 py-2 text-left">Status</th>
+                <th className="px-3 py-2 text-left">Nombre</th>
+                <th className="px-3 py-2 text-left">Estado</th>
                 <th className="px-3 py-2 text-left">Cards</th>
                 <th className="px-3 py-2 text-left">Range</th>
-                {canManage && <th className="px-3 py-2 text-right">Actions</th>}
+                {canManage && <th className="px-3 py-2 text-right">Acciones</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -157,17 +157,13 @@ export default function PublishingCampaignsList({
                         onClick={() => setEditing(c)}
                         className="mr-2 inline-flex items-center gap-1 text-blue-600 hover:underline text-xs"
                       >
-                        <span className="material-icons text-sm">edit</span>
-                        Edit
-                      </button>
+                        <span className="material-icons text-sm">edit</span>Editar</button>
                       <button
                         type="button"
                         onClick={() => onDelete(c.id)}
                         className="inline-flex items-center gap-1 text-red-600 hover:underline text-xs"
                       >
-                        <span className="material-icons text-sm">delete</span>
-                        Delete
-                      </button>
+                        <span className="material-icons text-sm">delete</span>Eliminar</button>
                     </td>
                   )}
                 </tr>

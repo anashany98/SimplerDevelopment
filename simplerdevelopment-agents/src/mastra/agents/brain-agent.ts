@@ -9,7 +9,7 @@ import { toolGroundingScorer, groundednessScorer } from '../scorers/brain-scorer
  *
  * Where the parent drove the Anthropic SDK directly, this is a plain Mastra
  * `Agent`: instructions + model + tools + memory. The tools are pulled live from
- * the SimplerDevelopment portal MCP server (see ../mcp/sd-mcp.ts), so the agent
+ * the CRM AGENTS portal MCP server (see ../mcp/sd-mcp.ts), so the agent
  * inherits the portal's scoped tool catalogue instead of re-declaring it.
  */
 const MAIN_MODEL = process.env.SD_BRAIN_MODEL ?? 'anthropic/claude-sonnet-4-6';
@@ -17,7 +17,7 @@ const MAIN_MODEL = process.env.SD_BRAIN_MODEL ?? 'anthropic/claude-sonnet-4-6';
 export const brainAgent = new Agent({
   id: 'brain-agent',
   name: 'Company Brain Agent',
-  instructions: `You are the Company Brain assistant for SimplerDevelopment — an agency's
+  instructions: `You are the Company Brain assistant for CRM AGENTS — an agency's
 internal knowledge base (notes, decisions, people/expertise, glossary, initiatives, tasks).
 
 How to work:

@@ -445,42 +445,34 @@ describe('POST — paid booking with discount code (free books too)', () => {
   });
 });
 
-describe('POST — paid booking Stripe Connect store fallback', () => {
-  it('falls back to platform defaults when storeSettings query returns no row', async () => {
+describe('POST — paid booking Stripe Connect store fallback (payments disabled)', () => {
+  // Billing removed: any booking that would charge is rejected with 403 before
+  // any write, so Stripe Connect resolution is moot. Free bookings (total 0)
+  // are unaffected and covered elsewhere.
+  it('rejects a paid booking with 403 and never consults Stripe Connect', async () => {
     selectQueue.push([basePage({ price: 2000, websiteId: 99 })]);
     selectQueue.push([]); // conflict
-    insertReturns.push([{ id: 1 }]);
-    selectQueue.push([]); // storeSettings → empty
 
     const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
       makeParams(),
     );
-    expect(res.status).toBe(200);
-    // Should be called without application_fee_amount
-    const stripeCall = paymentIntentsCreate.mock.calls[0][0];
-    expect(stripeCall.application_fee_amount).toBeUndefined();
+    expect(res.status).toBe(403);
+    expect((await res.json()).message).toBe('Payments are disabled.');
+    expect(insertCalls.length).toBe(0);
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
   });
 
-  it('uses default platform fee of 5% when platformFeePercent not set on store', async () => {
+  it('rejects a paid booking with a platform fee scenario too', async () => {
     selectQueue.push([basePage({ price: 10000, websiteId: 88 })]);
     selectQueue.push([]);
-    insertReturns.push([{ id: 1 }]);
-    selectQueue.push([{
-      stripeAccountId: 'acct_default',
-      stripeOnboardingComplete: true,
-      platformFeePercent: null, // triggers the || 5 fallback
-      currency: 'usd',
-      enabled: true,
-      websiteId: 88,
-    }]);
 
-    await POST(
+    const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
       makeParams(),
     );
-    const stripeCall = paymentIntentsCreate.mock.calls[0][0];
-    expect(stripeCall.application_fee_amount).toBe(500); // 10000 * 5%
+    expect(res.status).toBe(403);
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
   });
 });
 
@@ -709,28 +701,27 @@ describe('POST — assignmentMode fewest_upcoming (non-fixed)', () => {
   });
 });
 
-describe('POST — paid booking: core path', () => {
-  it('creates Stripe PI and returns clientSecret with paymentStatus pending', async () => {
+describe('POST — paid booking: core path (payments disabled)', () => {
+  it('rejects a paid booking with 403 — no booking row, no Stripe intent', async () => {
     selectQueue.push([basePage({ price: 5000 })]);
     selectQueue.push([]); // conflict
-    insertReturns.push([{ id: 77 }]); // booking
 
     const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
       makeParams(),
     );
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.data.clientSecret).toBe('pi_test_secret');
-    expect(body.data.paymentStatus).toBe('pending');
-    expect(paymentIntentsCreate).toHaveBeenCalled();
-    // Booking updated with stripePaymentIntentId
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Payments are disabled.');
+    expect(insertCalls.length).toBe(0);
     expect(updateCalls.some(
       (u) =>
         typeof u.values === 'object' &&
         u.values !== null &&
         (u.values as Record<string, unknown>).stripePaymentIntentId === 'pi_test',
-    )).toBe(true);
+    )).toBe(false);
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
   });
 });
 

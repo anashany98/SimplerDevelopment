@@ -50,7 +50,7 @@ export function MenuTree({
     if (draftCount === 0) return;
     if (
       !confirm(
-        `Publish ${draftCount} draft nav change${draftCount === 1 ? '' : 's'}? This will make them live on the public site.`,
+        `¿Publicar ${draftCount} ${draftCount === 1 ? 'cambio de navegación en borrador' : 'cambios de navegación en borrador'}? Estarán visibles en el sitio público.`,
       )
     ) {
       return;
@@ -71,7 +71,7 @@ export function MenuTree({
           <button
             onClick={handlePublishAll}
             className="px-3 py-1 text-xs font-medium rounded-md bg-amber-600 text-white hover:bg-amber-700 transition-colors flex items-center gap-1"
-            title="Publish every nav draft for this site"
+            title="Publicar todos los borradores de navegación de este sitio"
           >
             <span className="material-icons text-sm">publish</span>
             Publish all drafts

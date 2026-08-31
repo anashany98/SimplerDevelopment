@@ -67,10 +67,10 @@ export function OrdersPageClient({ siteId, domain }: { siteId: number; domain: s
             <div className="border border-gray-200 rounded-xl overflow-hidden">
               {/* Header */}
               <div className="hidden sm:grid grid-cols-12 gap-4 px-5 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
-                <div className="col-span-3">Order</div>
-                <div className="col-span-3">Date</div>
-                <div className="col-span-2">Status</div>
-                <div className="col-span-2">Items</div>
+                <div className="col-span-3">Pedido</div>
+                <div className="col-span-3">Fecha</div>
+                <div className="col-span-2">Estado</div>
+                <div className="col-span-2">Elementos</div>
                 <div className="col-span-2 text-right">Total</div>
               </div>
               <div className="divide-y divide-gray-200">

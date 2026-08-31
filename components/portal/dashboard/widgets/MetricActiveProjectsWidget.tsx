@@ -19,7 +19,7 @@ export default async function MetricActiveProjectsWidget({
       icon="view_kanban"
       color="text-blue-600"
       value={result?.count ?? 0}
-      label="Active Projects"
+      label="Proyectos activos"
     />
   );
 }

@@ -1,5 +1,5 @@
 /**
- * Seeds SimplerDevelopment's own marketing blog — global published posts
+ * Seeds CRM AGENTS's own marketing blog — global published posts
  * (posts.website_id IS NULL, post_type='blog', published=true) so the homepage
  * "From the Blog" section and /blog stop showing the empty "coming soon" state.
  *

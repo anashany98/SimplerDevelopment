@@ -36,8 +36,8 @@ interface BlockTemplateDraft {
 }
 
 const SCOPE_LABELS: Record<string, { label: string; color: string }> = {
-  block: { label: 'Block', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
-  section: { label: 'Section', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' },
+  block: { label: 'Bloque', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
+  section: { label: 'Sección', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' },
   global: { label: 'Global', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
 };
 
@@ -255,7 +255,7 @@ export default function TemplatesPage() {
             </h2>
             <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Name</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Nombre</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -282,7 +282,7 @@ export default function TemplatesPage() {
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -303,7 +303,7 @@ export default function TemplatesPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Category</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Categoría</label>
                 <input
                   type="text"
                   value={formData.category}
@@ -336,9 +336,7 @@ export default function TemplatesPage() {
                     setEditingTemplate(null);
                   }}
                   className="px-4 py-2 border border-border text-foreground rounded-md hover:bg-accent text-sm"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </form>
           </div>
@@ -428,9 +426,7 @@ export default function TemplatesPage() {
                           className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 leading-none flex items-center gap-0.5"
                           title={draftTooltip}
                         >
-                          <span className="material-icons text-[12px]">edit_note</span>
-                          Draft
-                        </span>
+                          <span className="material-icons text-[12px]">edit_note</span>Borrador</span>
                       )}
                       {pendingDelete && (
                         <span
@@ -472,9 +468,7 @@ export default function TemplatesPage() {
                           className="inline-flex items-center gap-0.5 text-amber-700 dark:text-amber-300 hover:underline font-medium"
                           title={`Publish this template — ${draftTooltip}`}
                         >
-                          <span className="material-icons text-sm">publish</span>
-                          Publish
-                        </button>
+                          <span className="material-icons text-sm">publish</span>Publicar</button>
                       )}
                       {pendingDelete && (
                         <button
@@ -490,16 +484,12 @@ export default function TemplatesPage() {
                         <button
                           onClick={() => handleEdit(template)}
                           className="text-primary hover:text-primary/80"
-                        >
-                          Edit
-                        </button>
+                        >Editar</button>
                         {!pendingDelete && (
                           <button
                             onClick={() => handleDelete(template.id)}
                             className="text-red-500 hover:text-red-700"
-                          >
-                            Delete
-                          </button>
+                          >Eliminar</button>
                         )}
                       </div>
                     </div>

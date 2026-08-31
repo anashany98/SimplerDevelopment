@@ -56,7 +56,7 @@ export function SeoSection({ siteId, formData, setFormData }: SeoSectionProps) {
           onChange={e => setFormData(prev => ({ ...prev, noIndex: e.target.checked }))}
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
         />
-        <span className="text-sm text-foreground">Hide from search engines (noindex)</span>
+        <span className="text-sm text-foreground">Ocultar de los buscadores (noindex)</span>
       </label>
     </div>
   );

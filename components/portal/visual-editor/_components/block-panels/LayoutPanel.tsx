@@ -25,15 +25,15 @@ export function LayoutPanel({ block, onUpdate }: PanelProps) {
               the legacy top-level props, so existing sections still render).
               HTML Tag stays here — it's structural (which element the section
               renders as), not a CSS style. */}
-          <SelectField label="HTML Tag" value={(b.htmlTag as string) || 'section'} options={['section','div','article','aside','header','footer']} onChange={(v) => onUpdate({ htmlTag: v } as Partial<Block>)} />
+          <SelectField label="Etiqueta HTML" value={(b.htmlTag as string) || 'section'} options={['section','div','article','aside','header','footer']} onChange={(v) => onUpdate({ htmlTag: v } as Partial<Block>)} />
           <details className="pt-2 border-t border-border mt-2">
             <summary className="flex items-center gap-1.5 cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground select-none py-1">
               <span className="material-icons text-sm">call_split</span>
               Diagonal Split (advanced)
             </summary>
             <div className="pt-3 space-y-3">
-              <p className="text-xs text-muted-foreground">Optional second-color overlay rendered with a clip-path. Leave blank to disable.</p>
-              <ColorField label="Split Color" value={(b.splitColor as string) || ''} onChange={(v) => onUpdate({ splitColor: v || undefined } as Partial<Block>)} />
+              <p className="text-xs text-muted-foreground">Superposición opcional de un segundo color renderizada con clip-path. Déjala en blanco para desactivarla.</p>
+              <ColorField label="Color dividido" value={(b.splitColor as string) || ''} onChange={(v) => onUpdate({ splitColor: v || undefined } as Partial<Block>)} />
               <div>
                 <span className="text-xs font-medium text-muted-foreground">Clip Path</span>
                 <input
@@ -43,7 +43,7 @@ export function LayoutPanel({ block, onUpdate }: PanelProps) {
                   placeholder="polygon(55% 0, 100% 0, 100% 100%, 45% 100%)"
                   className="w-full text-xs font-mono rounded border border-border bg-background px-2 py-1.5 text-foreground mt-1"
                 />
-                <p className="text-xs text-muted-foreground mt-0.5">Defaults to a right-side diagonal when Split Color is set.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Por defecto usa una diagonal hacia la derecha cuando se establece Split Color.</p>
               </div>
             </div>
           </details>

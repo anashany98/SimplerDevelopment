@@ -40,7 +40,7 @@ function nodeHeight(page: FlowPage): number {
 }
 
 function truncateLabel(s: string, max = 48): string {
-  if (!s) return '(untitled)';
+  if (!s) return '(sin título)';
   if (s.length <= max) return s;
   return s.slice(0, max - 1) + '…';
 }
@@ -53,11 +53,11 @@ export default function FlowDiagramTab({ fields }: Props) {
     return (
       <div className="bg-card border border-border rounded-xl p-8 text-center space-y-3">
         <span className="material-icons text-4xl text-muted-foreground/50">account_tree</span>
-        <h3 className="font-semibold text-foreground">No flow to diagram</h3>
+        <h3 className="font-semibold text-foreground">No hay flujo que diagramar</h3>
         <p className="text-sm text-muted-foreground max-w-md mx-auto">
-          This survey has only one page — no flow to diagram. Add a{' '}
-          <span className="font-medium text-foreground">Page Break</span> on the Edit tab to split
-          questions across multiple pages and unlock skip-logic between them.
+          Esta encuesta tiene solo una página: no hay flujo que diagramar. Añade un{' '}
+          <span className="font-medium text-foreground">Salto de página</span> en la pestaña Editar
+          para dividir las preguntas en varias páginas y habilitar la lógica de salto entre ellas.
         </p>
       </div>
     );
@@ -167,16 +167,15 @@ export default function FlowDiagramTab({ fields }: Props) {
             </span>
             <div className="text-sm text-red-700 dark:text-red-300">
               <p className="font-medium">
-                {graph.orphans.size} unreachable page{graph.orphans.size === 1 ? '' : 's'}
+                {graph.orphans.size} página{graph.orphans.size === 1 ? '' : 's'} inaccesible{graph.orphans.size === 1 ? '' : 's'}
               </p>
               <p className="mt-1 text-xs">
                 {Array.from(graph.orphans)
-                  .map((i) => `Page ${i + 1}`)
+                  .map((i) => `Página ${i + 1}`)
                   .join(', ')}{' '}
-                {graph.orphans.size === 1 ? 'has' : 'have'} no incoming edge — no respondent will
-                ever land on{' '}
-                {graph.orphans.size === 1 ? 'this page' : 'these pages'}. Check the goToPage rules
-                on the preceding page&apos;s select/radio fields.
+                {graph.orphans.size === 1 ? 'no tiene' : 'no tienen'} entradas — ningún encuestado llegará a{' '}
+                {graph.orphans.size === 1 ? 'esta página' : 'estas páginas'}. Revisa las reglas
+                goToPage de los campos select/radio de la página anterior.
               </p>
             </div>
           </div>
@@ -335,7 +334,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
           className="fill-muted-foreground italic"
           style={{ fontSize: '12px' }}
         >
-          (no questions on this page)
+          (sin preguntas en esta página)
         </text>
       )}
     </g>

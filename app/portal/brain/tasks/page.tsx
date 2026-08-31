@@ -53,10 +53,10 @@ interface PromotionTarget {
 }
 
 const STATUS_COLUMNS: { key: TaskStatus; label: string; color: string }[] = [
-  { key: 'open',        label: 'Open',         color: '#94a3b8' },
-  { key: 'in_progress', label: 'In Progress',  color: '#3b82f6' },
+  { key: 'open',        label: 'Abiertos',         color: '#94a3b8' },
+  { key: 'in_progress', label: 'En progreso',  color: '#3b82f6' },
   { key: 'blocked',     label: 'Blocked',      color: '#ef4444' },
-  { key: 'done',        label: 'Done',         color: '#10b981' },
+  { key: 'done',        label: 'Listo',         color: '#10b981' },
 ];
 
 // ─── Review types ────────────────────────────────────────────────────────────
@@ -94,8 +94,8 @@ interface MeetingShape {
 }
 
 const TYPE_META: Record<ProposedType, { label: string; icon: string; tone: string }> = {
-  task: { label: 'Task', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
-  decision: { label: 'Decision', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
+  task: { label: 'Tarea', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
+  decision: { label: 'Decisión', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
   commitment: { label: 'Commitment', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
   relationship_update: { label: 'Relationship update', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
   follow_up: { label: 'Follow-up', icon: 'reply', tone: 'text-foreground bg-muted' },
@@ -109,10 +109,10 @@ const TYPE_META: Record<ProposedType, { label: string; icon: string; tone: strin
 };
 
 const REVIEW_STATUS_TABS: { key: 'pending' | 'approved' | 'rejected' | 'all'; label: string }[] = [
-  { key: 'pending', label: 'Pending' },
-  { key: 'approved', label: 'Approved' },
-  { key: 'rejected', label: 'Rejected' },
-  { key: 'all', label: 'All' },
+  { key: 'pending', label: 'Pendiente' },
+  { key: 'approved', label: 'Aprobado' },
+  { key: 'rejected', label: 'Rechazado' },
+  { key: 'all', label: 'Todos' },
 ];
 
 // ─── Outer page (tab shell) ──────────────────────────────────────────────────
@@ -152,7 +152,7 @@ export default function BrainTasksAndReviewPage() {
   return (
     <div className="space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">{tab === 'review' ? 'reviews' : 'checklist'}</span>
@@ -335,9 +335,7 @@ function TasksTab() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       ) : (
         <DndContext
           sensors={sensors}
@@ -511,7 +509,7 @@ function TaskCard({
             onClick={(e) => { e.stopPropagation(); onPromote(task); }}
             onPointerDown={(e) => e.stopPropagation()}
             className={`${pBtnGhost} !py-1 !px-2 !text-xs`}
-            title="Promote to project board"
+            title="Promover al tablero de proyecto"
           >
             <span className="material-icons text-sm">view_kanban</span>
             Promote
@@ -596,7 +594,7 @@ function PromoteModal({
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-card border border-border rounded-2xl shadow-xl max-w-md w-full p-5 space-y-4">
         <div>
-          <h3 className="text-base font-semibold text-foreground">Promote to project board</h3>
+          <h3 className="text-base font-semibold text-foreground">Promover al tablero de proyecto</h3>
           <p className="text-xs text-muted-foreground mt-0.5 truncate">{task.title}</p>
         </div>
 
@@ -613,7 +611,7 @@ function PromoteModal({
           </div>
         ) : targets.length === 0 ? (
           <div className="bg-muted/30 border border-border rounded-xl p-3 text-xs text-muted-foreground">
-            No active projects to promote into. <Link href="/portal/projects" className="text-primary hover:underline">Create a project first</Link>.
+            No active projects to promote into. <Link href="/portal/projects" className="text-primary hover:underline">Primero crea un proyecto</Link>.
           </div>
         ) : (
           <>
@@ -651,9 +649,7 @@ function PromoteModal({
             onClick={onClose}
             disabled={submitting}
             className={pBtnGhost}
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             onClick={submit}
             disabled={submitting || !projectId || !targets || targets.length === 0}
@@ -892,7 +888,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
               ref={(el) => { if (el) el.indeterminate = !allPendingSelected && selected.size > 0; }}
               onChange={toggleAllPending}
               disabled={bulkBusy}
-              aria-label="Select all pending items"
+              aria-label="Seleccionar todos los elementos pendientes"
             />
             <span>
               {selected.size > 0
@@ -932,9 +928,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       ) : items.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">inbox</span>
@@ -963,7 +957,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                       ref={(el) => { if (el) el.indeterminate = someGroupSelected; }}
                       onChange={() => toggleGroupPending(groupPendingIds)}
                       disabled={bulkBusy}
-                      aria-label="Select all pending items in this section"
+                      aria-label="Seleccionar todos los elementos pendientes de esta sección"
                     />
                   )}
                   <div className="min-w-0 flex-1">
@@ -1049,7 +1043,7 @@ function ReviewCard({ item, busy, onApprove, onReject, meetingHref, selectable, 
             checked={selected}
             onChange={onToggleSelect}
             disabled={busy}
-            aria-label="Select item"
+            aria-label="Seleccionar elemento"
           />
         )}
         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${meta.tone} flex items-center gap-1 flex-shrink-0`}>
@@ -1068,7 +1062,7 @@ function ReviewCard({ item, busy, onApprove, onReject, meetingHref, selectable, 
                 <Link
                   href={meetingHref}
                   className={`${pBtnGhost} !py-1 !px-2 !text-xs`}
-                  title="Edit in detail review"
+                  title="Editar en revisión detallada"
                 >
                   <span className="material-icons text-sm">edit</span>
                 </Link>

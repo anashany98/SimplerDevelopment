@@ -45,7 +45,7 @@ export function CardDependencies({
               className="flex items-center gap-1 text-xs text-primary hover:text-primary/80"
             >
               <span className="material-icons text-sm">{showDepMenu ? 'close' : 'add_link'}</span>
-              {showDepMenu ? 'Close' : 'Add blocker'}
+              {showDepMenu ? 'Cerrar' : 'Add blocker'}
             </button>
             {showDepMenu && (
               <div className="absolute right-0 top-full mt-1 z-20 bg-popover border border-border rounded-lg shadow-lg w-72 max-h-64 overflow-y-auto">
@@ -130,7 +130,7 @@ export function CardDependencies({
         </>
       )}
       {blockers.length === 0 && blocking.length === 0 && !showDepMenu && (
-        <p className="text-xs text-muted-foreground italic">No dependencies.</p>
+        <p className="text-xs text-muted-foreground italic">Sin dependencias.</p>
       )}
     </div>
   );

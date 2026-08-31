@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment Automations & Workflows",
+  "name": "CRM AGENTS Automations & Workflows",
   "applicationCategory": "BusinessApplication",
   "featureList": [
     "Event-driven automation rules",
@@ -56,7 +56,7 @@ Agencies spend hours on repetitive cross-system tasks: moving a CRM contact to t
 
 ## Solution
 
-SimplerDevelopment includes two complementary automation engines inside every client portal. Automation Rules handle the common case — describe the trigger, conditions, and action in plain language and the rule is created. The Visual Workflow Builder handles multi-step, branching processes on a node canvas with durable execution that survives server restarts and retries on failure.
+CRM AGENTS includes two complementary automation engines inside every client portal. Automation Rules handle the common case — describe the trigger, conditions, and action in plain language and the rule is created. The Visual Workflow Builder handles multi-step, branching processes on a node canvas with durable execution that survives server restarts and retries on failure.
 
 ---
 

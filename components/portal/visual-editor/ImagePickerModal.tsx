@@ -22,7 +22,7 @@ export function ImagePickerModal({
   return (
     <div
       role="dialog"
-      aria-label="Select image"
+      aria-label="Seleccionar imagen"
       className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6"
       onClick={onClose}
       onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
@@ -34,18 +34,16 @@ export function ImagePickerModal({
         <header className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border bg-muted/30">
           <div className="flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">image</span>
-            <h2 className="text-sm font-semibold text-foreground">Replace image</h2>
+            <h2 className="text-sm font-semibold text-foreground">Reemplazar imagen</h2>
             <code className="text-[11px] text-muted-foreground hidden md:inline">{target.field}</code>
           </div>
           <button
             type="button"
             onClick={onClose}
             className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground px-2 py-1 rounded hover:bg-accent"
-            title="Close (Esc)"
+            title="Cerrar (Esc)"
           >
-            <span className="material-icons text-sm">close</span>
-            Close
-          </button>
+            <span className="material-icons text-sm">close</span>Cerrar</button>
         </header>
         <div className="p-4">
           <MediaPicker

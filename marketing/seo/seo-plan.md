@@ -1,4 +1,4 @@
-# SEO Plan — SimplerDevelopment Marketing Site
+# SEO Plan — CRM AGENTS Marketing Site
 
 > **Phase 11 — Site-Wide SEO.** Spec only; no app code changes.
 > Sources: `vault/05 - Feature Specs/FEATURE-INVENTORY-domains.md`, `docs/agents/ai-overview.md`, `lib/data/solutions.ts`, `app/sitemap.ts`, `app/robots.ts`.
@@ -15,15 +15,15 @@ The marketing site's public route tree lives under `app/(pages)/`. The `/solutio
 
 | Page | URL Slug | `<title>` (≤60 chars) | Meta Description (≤155 chars) | Canonical | Primary Keyword |
 |---|---|---|---|---|---|
-| Home | `/` | `SimplerDevelopment — Agency SaaS Platform` | `All-in-one platform for software agencies: website builder, CRM, Company Brain AI, email campaigns, bookings, and MCP automation in one portal.` | `https://example.com/` | agency SaaS platform |
-| Solutions Hub | `/solutions` | `Features & Solutions — SimplerDevelopment` | `Explore every module: website builder, CRM, AI knowledge base, email, bookings, project management, and more — all in one client portal.` | `https://example.com/solutions` | agency software features |
-| Pricing | `/pricing` | `Pricing — SimplerDevelopment` | `Per-module pricing for agencies and their clients. Subscribe to only the tools you need: CRM, Brain, email, storefront, bookings, and more.` | `https://example.com/pricing` | agency SaaS pricing |
-| Blog | `/blog` | `Blog — SimplerDevelopment` | `Guides, product updates, and best practices for agencies running client portals with AI, CRM, and web publishing tools.` | `https://example.com/blog` | agency SaaS blog |
-| Docs | `/docs` | `Developer Docs — SimplerDevelopment` | `API reference, MCP tool index, integration guides, and architecture notes for building on the SimplerDevelopment platform.` | `https://example.com/docs` | SimplerDevelopment API docs |
-| About | `/about` | `About — SimplerDevelopment` | `SimplerDevelopment lets software agencies deliver white-label digital infrastructure to clients — one platform, one portal, every tool included.` | `https://example.com/about` | about SimplerDevelopment |
-| Contact | `/contact` | `Contact — SimplerDevelopment` | `Get in touch with the SimplerDevelopment team. Questions about pricing, onboarding, or the platform — we answer quickly.` | `https://example.com/contact` | contact SimplerDevelopment |
-| Privacy | `/privacy` | `Privacy Policy — SimplerDevelopment` | `How SimplerDevelopment collects, uses, and protects your data.` | `https://example.com/privacy` | *(noindex — legal page)* |
-| Terms | `/terms` | `Terms of Service — SimplerDevelopment` | `Terms and conditions governing use of the SimplerDevelopment platform.` | `https://example.com/terms` | *(noindex — legal page)* |
+| Home | `/` | `CRM AGENTS — Agency SaaS Platform` | `All-in-one platform for software agencies: website builder, CRM, Company Brain AI, email campaigns, bookings, and MCP automation in one portal.` | `https://example.com/` | agency SaaS platform |
+| Solutions Hub | `/solutions` | `Features & Solutions — CRM AGENTS` | `Explore every module: website builder, CRM, AI knowledge base, email, bookings, project management, and more — all in one client portal.` | `https://example.com/solutions` | agency software features |
+| Pricing | `/pricing` | `Pricing — CRM AGENTS` | `Per-module pricing for agencies and their clients. Subscribe to only the tools you need: CRM, Brain, email, storefront, bookings, and more.` | `https://example.com/pricing` | agency SaaS pricing |
+| Blog | `/blog` | `Blog — CRM AGENTS` | `Guides, product updates, and best practices for agencies running client portals with AI, CRM, and web publishing tools.` | `https://example.com/blog` | agency SaaS blog |
+| Docs | `/docs` | `Developer Docs — CRM AGENTS` | `API reference, MCP tool index, integration guides, and architecture notes for building on the CRM AGENTS platform.` | `https://example.com/docs` | CRM AGENTS API docs |
+| About | `/about` | `About — CRM AGENTS` | `CRM AGENTS lets software agencies deliver white-label digital infrastructure to clients — one platform, one portal, every tool included.` | `https://example.com/about` | about CRM AGENTS |
+| Contact | `/contact` | `Contact — CRM AGENTS` | `Get in touch with the CRM AGENTS team. Questions about pricing, onboarding, or the platform — we answer quickly.` | `https://example.com/contact` | contact CRM AGENTS |
+| Privacy | `/privacy` | `Privacy Policy — CRM AGENTS` | `How CRM AGENTS collects, uses, and protects your data.` | `https://example.com/privacy` | *(noindex — legal page)* |
+| Terms | `/terms` | `Terms of Service — CRM AGENTS` | `Terms and conditions governing use of the CRM AGENTS platform.` | `https://example.com/terms` | *(noindex — legal page)* |
 
 > **Note:** `/privacy` and `/terms` should carry `<meta name="robots" content="noindex, follow">`. They should NOT appear in `sitemap.xml`.
 
@@ -35,24 +35,24 @@ Cross-references: each slug maps to a feature spec in `../feature-pages/` (e.g.,
 
 | Slug | `<title>` (≤60 chars) | Meta Description (≤155 chars) | Canonical | Primary Keyword |
 |---|---|---|---|---|
-| `ai-connect` | `AI Connect — MCP Integration \| SimplerDev` | `Connect Claude, ChatGPT, and other AI clients to your portal via the Model Context Protocol. Scoped permissions, BYOK keys, approval workflow.` | `https://example.com/solutions/ai-connect` | MCP server integration |
-| `websites` | `Website Builder \| SimplerDevelopment` | `Build and publish professional websites with a 48-block visual editor, built-in blog, revision history, and custom domain support.` | `https://example.com/solutions/websites` | website builder for agencies |
-| `ecommerce` | `Online Store & Ecommerce \| SimplerDev` | `White-label e-commerce: product catalog with variants, Stripe payments, shipping zones, discount codes, and customer accounts.` | `https://example.com/solutions/ecommerce` | white-label ecommerce platform |
-| `publishing` | `Publishing Calendar \| SimplerDevelopment` | `Run your editorial pipeline with a kanban board, month-view content calendar, campaign grouping, and per-user publishing permissions.` | `https://example.com/solutions/publishing` | content calendar tool for agencies |
-| `email-marketing` | `Email Marketing \| SimplerDevelopment` | `Send branded email campaigns with a visual builder, subscriber list management, A/B subject-line testing, and open/click analytics.` | `https://example.com/solutions/email-marketing` | email marketing platform |
+| `ai-connect` | `AI Connect — MCP Integration \| CRM AGENTS` | `Connect Claude, ChatGPT, and other AI clients to your portal via the Model Context Protocol. Scoped permissions, BYOK keys, approval workflow.` | `https://example.com/solutions/ai-connect` | MCP server integration |
+| `websites` | `Website Builder \| CRM AGENTS` | `Build and publish professional websites with a 48-block visual editor, built-in blog, revision history, and custom domain support.` | `https://example.com/solutions/websites` | website builder for agencies |
+| `ecommerce` | `Online Store & Ecommerce \| CRM AGENTS` | `White-label e-commerce: product catalog with variants, Stripe payments, shipping zones, discount codes, and customer accounts.` | `https://example.com/solutions/ecommerce` | white-label ecommerce platform |
+| `publishing` | `Publishing Calendar \| CRM AGENTS` | `Run your editorial pipeline with a kanban board, month-view content calendar, campaign grouping, and per-user publishing permissions.` | `https://example.com/solutions/publishing` | content calendar tool for agencies |
+| `email-marketing` | `Email Marketing \| CRM AGENTS` | `Send branded email campaigns with a visual builder, subscriber list management, A/B subject-line testing, and open/click analytics.` | `https://example.com/solutions/email-marketing` | email marketing platform |
 | `crm` | `CRM — Contacts, Deals & Pipeline \| SD` | `Full CRM: contacts, companies, deal pipeline kanban, proposals with e-signature, custom fields, saved views, and activity timelines.` | `https://example.com/solutions/crm` | CRM software for agencies |
-| `contracts` | `Proposals & E-Signature \| SimplerDev` | `Build branded proposals with line items and collect legally binding e-signatures — every document tied to its CRM deal with a full audit trail.` | `https://example.com/solutions/contracts` | proposal and e-signature software |
-| `booking` | `Online Booking & Scheduling \| SimplerDev` | `White-label scheduling with group and individual appointments, Stripe payment at booking, waivers, gift certificates, and Zoom integration.` | `https://example.com/solutions/booking` | online booking software |
-| `surveys` | `Surveys & Forms \| SimplerDevelopment` | `Smart forms with 15+ field types, conditional branching, scoring, A/B variants, and automatic CRM routing for captured leads.` | `https://example.com/solutions/surveys` | survey and form builder |
-| `experiments` | `A/B Testing & Experiments \| SimplerDev` | `Split-test website pages with stable visitor bucketing, custom traffic weights, built-in significance testing, and conversion tracking.` | `https://example.com/solutions/experiments` | A/B testing for websites |
-| `project-management` | `Project Management & Kanban \| SimplerDev` | `Kanban boards, sprint planning, WIP limits, burndown analytics, and a My-Tasks inbox — all inside the same client portal.` | `https://example.com/solutions/project-management` | project management software |
-| `help-desk` | `Help Desk & Support Tickets \| SimplerDev` | `Shared team inbox and structured support tickets with SLA deadlines, internal notes, priority, and assignment tracking.` | `https://example.com/solutions/help-desk` | help desk ticketing software |
+| `contracts` | `Proposals & E-Signature \| CRM AGENTS` | `Build branded proposals with line items and collect legally binding e-signatures — every document tied to its CRM deal with a full audit trail.` | `https://example.com/solutions/contracts` | proposal and e-signature software |
+| `booking` | `Online Booking & Scheduling \| CRM AGENTS` | `White-label scheduling with group and individual appointments, Stripe payment at booking, waivers, gift certificates, and Zoom integration.` | `https://example.com/solutions/booking` | online booking software |
+| `surveys` | `Surveys & Forms \| CRM AGENTS` | `Smart forms with 15+ field types, conditional branching, scoring, A/B variants, and automatic CRM routing for captured leads.` | `https://example.com/solutions/surveys` | survey and form builder |
+| `experiments` | `A/B Testing & Experiments \| CRM AGENTS` | `Split-test website pages with stable visitor bucketing, custom traffic weights, built-in significance testing, and conversion tracking.` | `https://example.com/solutions/experiments` | A/B testing for websites |
+| `project-management` | `Project Management & Kanban \| CRM AGENTS` | `Kanban boards, sprint planning, WIP limits, burndown analytics, and a My-Tasks inbox — all inside the same client portal.` | `https://example.com/solutions/project-management` | project management software |
+| `help-desk` | `Help Desk & Support Tickets \| CRM AGENTS` | `Shared team inbox and structured support tickets with SLA deadlines, internal notes, priority, and assignment tracking.` | `https://example.com/solutions/help-desk` | help desk ticketing software |
 | `company-brain` | `Company Brain — AI Knowledge Base \| SD` | `Per-tenant AI knowledge base: notes, decisions, playbooks, and semantic search via pgvector. AI proposes entries; humans approve.` | `https://example.com/solutions/company-brain` | AI knowledge base software |
-| `ai-chatbot` | `Live Chat Widget \| SimplerDevelopment` | `Deploy a branded live-chat widget on your website and manage every conversation from a shared team inbox in real time.` | `https://example.com/solutions/ai-chatbot` | live chat widget for websites |
-| `automations` | `Automations & Workflows \| SimplerDev` | `No-code rule engine wired to bookings, CRM, email, and tickets. Describe a rule in plain language; the AI parses it automatically.` | `https://example.com/solutions/automations` | workflow automation software |
-| `pitch-decks` | `AI Pitch Decks \| SimplerDevelopment` | `Generate brand-aware pitch decks from a prompt. The AI extracts brand context and produces structured slides with per-slide version history.` | `https://example.com/solutions/pitch-decks` | AI pitch deck generator |
-| `agency` | `White-Label Agency Platform \| SimplerDev` | `Run the entire portal under your own brand: custom domain, your logo, white-label login, and multi-client management in one login.` | `https://example.com/solutions/agency` | white-label agency platform |
-| `hosting` | `Managed Hosting & DNS \| SimplerDev` | `Live environment status, DNS management, and guided domain verification — visible to clients, fully managed by admins.` | `https://example.com/solutions/hosting` | managed hosting for agencies |
+| `ai-chatbot` | `Live Chat Widget \| CRM AGENTS` | `Deploy a branded live-chat widget on your website and manage every conversation from a shared team inbox in real time.` | `https://example.com/solutions/ai-chatbot` | live chat widget for websites |
+| `automations` | `Automations & Workflows \| CRM AGENTS` | `No-code rule engine wired to bookings, CRM, email, and tickets. Describe a rule in plain language; the AI parses it automatically.` | `https://example.com/solutions/automations` | workflow automation software |
+| `pitch-decks` | `AI Pitch Decks \| CRM AGENTS` | `Generate brand-aware pitch decks from a prompt. The AI extracts brand context and produces structured slides with per-slide version history.` | `https://example.com/solutions/pitch-decks` | AI pitch deck generator |
+| `agency` | `White-Label Agency Platform \| CRM AGENTS` | `Run the entire portal under your own brand: custom domain, your logo, white-label login, and multi-client management in one login.` | `https://example.com/solutions/agency` | white-label agency platform |
+| `hosting` | `Managed Hosting & DNS \| CRM AGENTS` | `Live environment status, DNS management, and guided domain verification — visible to clients, fully managed by admins.` | `https://example.com/solutions/hosting` | managed hosting for agencies |
 
 > **Excluded from SEO targeting:** `invoicing` slug — hidden in `lib/data/solutions.ts` via `HIDDEN_SLUGS`. Do not target until `getSolutionBySlug('invoicing')` returns a result.
 
@@ -69,27 +69,27 @@ Apply these defaults in the root `app/layout.tsx` via Next.js `metadata` export.
 export const metadata: Metadata = {
   metadataBase: new URL('https://example.com'),
   title: {
-    default: 'SimplerDevelopment — Agency SaaS Platform',
-    template: '%s | SimplerDevelopment',
+    default: 'CRM AGENTS — Agency SaaS Platform',
+    template: '%s | CRM AGENTS',
   },
   description: 'All-in-one platform for software agencies: website builder, CRM, Company Brain AI, email, bookings, and MCP automation in one portal.',
   openGraph: {
     type: 'website',
-    siteName: 'SimplerDevelopment',
+    siteName: 'CRM AGENTS',
     locale: 'en_US',
     images: [
       {
         url: '/og/default.png',   // 1200×630, ≤8MB
         width: 1200,
         height: 630,
-        alt: 'SimplerDevelopment — Agency SaaS Platform',
+        alt: 'CRM AGENTS — Agency SaaS Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@SimplerDev',          // replace with real handle when live
-    creator: '@SimplerDev',
+    site: '@CRM_AGENTS',          // replace with real handle when live
+    creator: '@CRM_AGENTS',
     images: ['/og/default.png'],
   },
   robots: {
@@ -111,11 +111,11 @@ export const metadata: Metadata = {
 
 | Page | OG `type` | Custom OG Image | Notes |
 |---|---|---|---|
-| Home | `website` | `/og/home.png` — hero visual | Override title to remove template suffix: `"SimplerDevelopment — Agency SaaS Platform"` |
+| Home | `website` | `/og/home.png` — hero visual | Override title to remove template suffix: `"CRM AGENTS — Agency SaaS Platform"` |
 | Pricing | `website` | `/og/pricing.png` — pricing grid | Add `openGraph.description` with price-range copy |
 | Blog post (individual) | `article` | Dynamic via `/api/og?title=...` | Set `article.publishedTime`, `article.modifiedTime`, `article.authors` |
 | Docs page | `article` | `/og/docs.png` — consistent docs brand | Set `article.section` = `"Documentation"` |
-| `/solutions/[slug]` | `website` | `/og/solutions/[slug].png` — one per feature | Title should drop template suffix: `"<Feature Name> — SimplerDevelopment"` |
+| `/solutions/[slug]` | `website` | `/og/solutions/[slug].png` — one per feature | Title should drop template suffix: `"<Feature Name> — CRM AGENTS"` |
 | About | `website` | `/og/about.png` | — |
 | Contact | `website` | Default | No custom image needed |
 
@@ -154,7 +154,7 @@ Replace `example.com`, `Your Agency Name`, and logo/image URLs before deploying.
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "SimplerDevelopment",
+    "name": "CRM AGENTS",
     "url": "https://example.com",
     "logo": {
       "@type": "ImageObject",
@@ -172,7 +172,7 @@ Replace `example.com`, `Your Agency Name`, and logo/image URLs before deploying.
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "SimplerDevelopment",
+    "name": "CRM AGENTS",
     "url": "https://example.com",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
@@ -200,7 +200,7 @@ Replace `example.com`, `Your Agency Name`, and logo/image URLs before deploying.
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "SimplerDevelopment",
+    "name": "CRM AGENTS",
     "url": "https://example.com",
     "potentialAction": {
       "@type": "SearchAction",
@@ -239,12 +239,12 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "SimplerDevelopment CRM",
+    "name": "CRM AGENTS CRM",
     "applicationCategory": "BusinessApplication",
     "featureList": solution.features,   // from SolutionData
     "isPartOf": {
       "@type": "SoftwareApplication",
-      "name": "SimplerDevelopment",
+      "name": "CRM AGENTS",
       "url": "https://example.com"
     }
   },
@@ -359,7 +359,7 @@ This is the most critical duplicate-content risk.
 - Every `<img>` and `next/image` on a marketing page must have a non-empty `alt` attribute.
 - Decorative images (dividers, background textures): use `alt=""` (empty string, not omitted) so screen readers skip them.
 - Product screenshots: describe the UI visible in the image. Example: `alt="CRM deal pipeline view showing three kanban columns with drag-and-drop cards"`.
-- Logo: `alt="SimplerDevelopment logo"`.
+- Logo: `alt="CRM AGENTS logo"`.
 - Blog post featured images: derive `alt` from the post title; the CMS should expose an `altText` field and make it required in the post editor.
 - `next/image` lints: configure `eslint-plugin-jsx-a11y` (or `@next/eslint-plugin-next`) to error on missing `alt` — this is already enforced in most Next.js setups.
 
@@ -450,9 +450,9 @@ Grounded in the feature set described in `FEATURE-INVENTORY-domains.md` and `doc
 | Home | agency SaaS platform | white-label client portal, all-in-one agency software, agency management platform |
 | Pricing | agency SaaS pricing | per-module pricing, agency software cost, client portal pricing |
 | Blog | agency SaaS blog | agency software tips, MCP automation guides, client portal best practices |
-| Docs | SimplerDevelopment API | MCP tool reference, agency platform docs, REST API agency |
-| About | agency software platform | agency tools company, SimplerDevelopment |
-| Contact | contact SimplerDevelopment | agency software support, get a demo |
+| Docs | CRM AGENTS API | MCP tool reference, agency platform docs, REST API agency |
+| About | agency software platform | agency tools company, CRM AGENTS |
+| Contact | contact CRM AGENTS | agency software support, get a demo |
 | Solutions Hub | agency software features | agency platform features, client portal features |
 
 ### 6b. Feature / Solution Pages

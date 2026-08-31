@@ -12,7 +12,7 @@ interface AccountLayoutProps {
 
 const NAV_ITEMS = [
   { href: '/account', label: 'Dashboard', icon: 'dashboard', exact: true },
-  { href: '/account/orders', label: 'Orders', icon: 'receipt_long' },
+  { href: '/account/orders', label: 'Pedidos', icon: 'receipt_long' },
   { href: '/account/designs', label: 'My Designs', icon: 'brush' },
   { href: '/account/wishlist', label: 'Wishlist', icon: 'favorite' },
   { href: '/account/support', label: 'Support', icon: 'support_agent' },

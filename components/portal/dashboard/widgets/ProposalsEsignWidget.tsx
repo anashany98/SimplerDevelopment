@@ -69,7 +69,7 @@ export default async function ProposalsEsignWidget({
 
       {recentProposals.length === 0 ? (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No proposals yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Aún no hay propuestas.</p>
           <Link
             href="/portal/crm/proposals"
             className="text-xs text-primary hover:underline"

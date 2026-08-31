@@ -123,9 +123,7 @@ function Gallery({
             onClick={onRetry}
             className="text-xs font-mono px-3 py-1.5 rounded border"
             style={{ borderColor: THEME.lineBright, color: THEME.ink2 }}
-          >
-            Retry
-          </button>
+          >Reintentar</button>
         </div>
       )}
 

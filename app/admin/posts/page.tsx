@@ -26,21 +26,11 @@ export default async function PostsPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Created
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Título</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Tipo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Estado</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Creado</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -75,9 +65,7 @@ export default async function PostsPage() {
                     <Link
                       href={`/admin/posts/${post.id}/edit`}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </Link>
+                    >Editar</Link>
                     <DeletePostButton postId={post.id} />
                   </td>
                 </tr>

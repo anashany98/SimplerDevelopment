@@ -10,8 +10,8 @@ import type { PitchDeckSlideV2, PitchDeckTheme } from '@/lib/db/schema';
 import { buildSlidePreviewSrc } from '../_lib/api';
 
 const PITCH_DECK_EXTRA_BLOCKS = [
-  { type: 'deck-next-slide' as const, label: 'Next Slide', icon: 'arrow_forward', category: 'Pitch Deck', description: 'Button that advances to the next slide' },
-  { type: 'deck-jump-to' as const, label: 'Jump To Slide', icon: 'shortcut', category: 'Pitch Deck', description: 'Button that jumps to a specific slide' },
+  { type: 'deck-next-slide' as const, label: 'Siguiente diapositiva', icon: 'arrow_forward', category: 'Pitch Deck', description: 'Botón que avanza a la siguiente diapositiva' },
+  { type: 'deck-jump-to' as const, label: 'Saltar a diapositiva', icon: 'shortcut', category: 'Pitch Deck', description: 'Botón que salta a una diapositiva específica' },
 ];
 
 export interface SlideContentEditorProps {
@@ -53,7 +53,7 @@ export function SlideContentEditor({
             type="text"
             value={slidePrompt}
             onChange={(e) => onSlidePromptChange(e.target.value)}
-            placeholder="Edit this slide with AI... e.g. 'Make it more concise' or 'Add competitor comparison'"
+            placeholder="Edit this slide with AI... e.g. 'Hazlo más conciso' or 'Agregar comparación de competidores'"
             className="w-full pl-10 pr-3 py-2.5 bg-card border border-border rounded-lg text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             disabled={slideGenerating}
           />
@@ -66,7 +66,7 @@ export function SlideContentEditor({
           {slideGenerating ? (
             <span className="material-icons animate-spin text-base">autorenew</span>
           ) : (
-            'Edit'
+            'Editar'
           )}
         </button>
       </form>
@@ -81,7 +81,7 @@ export function SlideContentEditor({
         <textarea
           value={slide.notes || ''}
           onChange={(e) => onChangeNotes(e.target.value)}
-          placeholder="Add speaker notes for this slide..."
+          placeholder="Agrega notas del presentador para esta diapositiva…"
           className="mt-2 w-full h-24 px-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground resize-y focus:outline-none focus:ring-2 focus:ring-primary/50"
         />
       </details>
@@ -114,10 +114,10 @@ export function SlideContentEditor({
               id: uid,
               type: type as BlockType,
               order: slide.blocks.length + 1,
-              ...(type === 'text' && { content: 'New text...' }),
-              ...(type === 'heading' && { content: 'New heading', level: 2 }),
+              ...(type === 'text' && { content: 'Nuevo texto…' }),
+              ...(type === 'heading' && { content: 'Nuevo encabezado', level: 2 }),
               ...(type === 'hero' && { title: 'Hero Title' }),
-              ...(type === 'cta' && { title: 'Call to Action', primaryButtonText: 'Learn More', primaryButtonUrl: '#' }),
+              ...(type === 'cta' && { title: 'Llamada a la acción', primaryButtonText: 'Learn More', primaryButtonUrl: '#' }),
               ...(type === 'columns' && { columns: [
                 { id: `col-${Date.now()}-1`, width: 50, blocks: [] },
                 { id: `col-${Date.now()}-2`, width: 50, blocks: [] },
@@ -128,8 +128,8 @@ export function SlideContentEditor({
               ] }),
               ...(type === 'section' && { blocks: [] }),
               ...(type === 'accordion' && { items: [{ id: `item-${Date.now()}-1`, title: 'Item 1', content: '' }] }),
-              ...(type === 'deck-next-slide' && { text: 'Next Slide', variant: 'primary', size: 'md', alignment: 'center' }),
-              ...(type === 'deck-jump-to' && { text: 'Jump To', targetSlide: 1, variant: 'secondary', size: 'md', alignment: 'center' }),
+              ...(type === 'deck-next-slide' && { text: 'Siguiente diapositiva', variant: 'primary', size: 'md', alignment: 'center' }),
+              ...(type === 'deck-jump-to' && { text: 'Saltar a', targetSlide: 1, variant: 'secondary', size: 'md', alignment: 'center' }),
             } as Block;
             if (brandDefaults) newBlock = applyBrandDefaults(newBlock, brandDefaults);
             onBlocksChange([...slide.blocks, newBlock]);

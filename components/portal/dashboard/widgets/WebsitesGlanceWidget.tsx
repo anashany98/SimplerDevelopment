@@ -25,7 +25,7 @@ export default async function WebsitesGlanceWidget({
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">0</span>
           <span className="ml-2 text-sm text-muted-foreground">active websites</span>
         </div>
-        <p className="text-sm text-muted-foreground py-2 text-center">No websites yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Aún no hay sitios web.</p>
         <div className="mt-3 text-center">
           <Link
             href="/portal/websites"
@@ -83,7 +83,7 @@ export default async function WebsitesGlanceWidget({
       </div>
 
       {recentDrafts.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No draft posts.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Sin borradores.</p>
       ) : (
         <ul className="space-y-2">
           {recentDrafts.map((p) => (

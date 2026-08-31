@@ -103,7 +103,7 @@ function renderDigestEmail(params: {
       </div>
       <div style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center;">
         <p style="margin:0;font-size:12px;color:#94a3b8;">
-          Simpler Development &middot; Set <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> to disable
+          CRM AGENTS &middot; Set <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> to disable
         </p>
       </div>
     </div>
@@ -190,7 +190,7 @@ async function _GET(req: Request) {
       const html = renderDigestEmail({ clientName, items, reviewUrl });
 
       await resend.emails.send({
-        from: `Simpler Development <${FROM_EMAIL}>`,
+        from: `CRM AGENTS <${FROM_EMAIL}>`,
         to: user.email,
         subject,
         html,

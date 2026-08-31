@@ -237,7 +237,7 @@ describe('AgencyChromeProvider', () => {
         <Probe />
       </AgencyChromeProvider>,
     );
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('brandLogoUrl').textContent).toBe('/iconLogo.png');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
@@ -260,7 +260,7 @@ describe('AgencyChromeProvider', () => {
     await waitFor(() => {
       expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
     });
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
   });
 
   it('applies an agency override when white-label is enabled', async () => {
@@ -307,13 +307,13 @@ describe('AgencyChromeProvider', () => {
     await act(async () => {
       await Promise.resolve();
     });
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
 
   it('returns the default value when useAgencyChrome is called outside the provider', () => {
     render(<Probe />);
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
 });

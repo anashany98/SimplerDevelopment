@@ -9,11 +9,11 @@ tags:
   - multi-tenant
   - api
   - developer-platform
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 ---
 
-When we started wiring AI agents into SimplerDevelopment, we faced a decision that any platform team eventually hits: do you build a thin REST wrapper for your AI clients, or do you build a proper tool surface that understands your domain?
+When we started wiring AI agents into CRM AGENTS, we faced a decision that any platform team eventually hits: do you build a thin REST wrapper for your AI clients, or do you build a proper tool surface that understands your domain?
 
 We chose the latter. Twelve months and 450 tools later, here is what we learned.
 
@@ -45,7 +45,7 @@ import { registerEmailTools }   from './tools/email'
 // ... ~20 more registrars
 
 export function buildMcpServer() {
-  const server = new McpServer({ name: 'SimplerDevelopment', version: '1.0.0' })
+  const server = new McpServer({ name: 'CRM AGENTS', version: '1.0.0' })
   registerBrainTools(server)
   registerKanbanTools(server)
   registerCrmTools(server)
@@ -129,7 +129,7 @@ Notice the return value: `{ id, slug, status }` — not the full note row. That 
 
 ## Scope guards and the tenancy invariant
 
-SimplerDevelopment is multi-tenant. Every record in the database carries a `clientId`. An agent authenticated with client A's credentials must never be able to read or write client B's data. The scope guard is the last line of defense at the tool boundary.
+CRM AGENTS is multi-tenant. Every record in the database carries a `clientId`. An agent authenticated with client A's credentials must never be able to read or write client B's data. The scope guard is the last line of defense at the tool boundary.
 
 Two credential types are accepted as `Authorization: Bearer <credential>`:
 
@@ -293,7 +293,7 @@ A practical note for contributors: several tool files have grown large enough to
 
 ## Connect your agent
 
-The MCP server is live for all SimplerDevelopment tenants. To connect your AI agent:
+The MCP server is live for all CRM AGENTS tenants. To connect your AI agent:
 
 1. Generate a portal API key under **Settings → API Keys** in the portal. Keys start with `sd_mcp_` and can be scoped to only the domains your integration needs.
 2. Point your MCP client at `POST https://app.simplerdevelopment.com/api/mcp` with `Authorization: Bearer <your-key>`.

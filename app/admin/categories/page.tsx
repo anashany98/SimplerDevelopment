@@ -108,7 +108,7 @@ export default function CategoriesPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground">Description</label>
+              <label className="block text-sm font-medium text-foreground">Descripción</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -131,9 +131,7 @@ export default function CategoriesPage() {
                   setFormData({ name: '', slug: '', description: '' });
                 }}
                 className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
@@ -142,18 +140,12 @@ export default function CategoriesPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Description
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Descripción</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -172,15 +164,11 @@ export default function CategoriesPage() {
                     <button
                       onClick={() => handleEdit(category)}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
+                    >Editar</button>
                     <button
                       onClick={() => handleDelete(category.id)}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </td>
                 </tr>
               ))}

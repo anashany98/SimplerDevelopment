@@ -95,7 +95,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
       <div className="bg-card border border-border rounded-xl p-10 text-center">
         <span className="material-icons text-5xl text-muted-foreground">forum</span>
         <h3 className="mt-3 font-semibold text-foreground">Retro for {sprintName}</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Capture what went well, what went poorly, and the action items the team commits to.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Registra qué salió bien, qué salió mal y los puntos de acción que asume el equipo.</p>
         <button
           onClick={onCreateRetro}
           disabled={creatingRetro}
@@ -141,9 +141,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
                   type="submit"
                   disabled={!drafts[kind].trim()}
                   className="w-full px-2 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-30"
-                >
-                  Add
-                </button>
+                >Añadir</button>
               </form>
 
               <div className="space-y-1.5 pt-2 border-t border-border">
@@ -169,7 +167,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
                           <button
                             onClick={() => onDelete(it.id)}
                             className="text-[10px] text-muted-foreground hover:text-destructive"
-                            title="Delete"
+                            title="Eliminar"
                           >
                             <span className="material-icons text-xs">close</span>
                           </button>

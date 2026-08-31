@@ -60,8 +60,7 @@ export default function DeleteWebsiteButton({
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-sm text-foreground">
-            Type <span className="font-mono font-semibold text-red-500">{siteName}</span> to confirm deletion.
+          <p className="text-sm text-foreground">Tipo<span className="font-mono font-semibold text-red-500">{siteName}</span> to confirm deletion.
           </p>
           <input
             value={confirmText}
@@ -81,9 +80,7 @@ export default function DeleteWebsiteButton({
             <button
               onClick={() => { setConfirming(false); setConfirmText(''); setError(''); }}
               className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}

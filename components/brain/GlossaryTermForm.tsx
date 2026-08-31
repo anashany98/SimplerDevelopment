@@ -343,7 +343,7 @@ export default function GlossaryTermForm({
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <span className="block text-xs font-medium text-muted-foreground mb-1">Status</span>
+          <span className="block text-xs font-medium text-muted-foreground mb-1">Estado</span>
           <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
             {(['active', 'deprecated'] as const).map(s => (
               <button
@@ -363,9 +363,7 @@ export default function GlossaryTermForm({
         </div>
 
         <div>
-          <label htmlFor="gl-category" className="block text-xs font-medium text-muted-foreground mb-1">
-            Category
-          </label>
+          <label htmlFor="gl-category" className="block text-xs font-medium text-muted-foreground mb-1">Categoría</label>
           <input
             id="gl-category"
             type="text"
@@ -383,8 +381,7 @@ export default function GlossaryTermForm({
       </div>
 
       <div>
-        <label htmlFor="gl-owner" className="block text-xs font-medium text-muted-foreground mb-1">
-          Owner <span className="text-[10px] text-muted-foreground/70 font-normal">(canonical contact)</span>
+        <label htmlFor="gl-owner" className="block text-xs font-medium text-muted-foreground mb-1">Propietario<span className="text-[10px] text-muted-foreground/70 font-normal">(canonical contact)</span>
         </label>
         {users.length > 0 ? (
           <select
@@ -479,9 +476,7 @@ export default function GlossaryTermForm({
             type="button"
             onClick={onCancel}
             className="px-4 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         )}
         <button
           type="submit"

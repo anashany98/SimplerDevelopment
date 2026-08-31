@@ -64,7 +64,7 @@ export function platformSlide(): any {
             type: 'text',
             order: 3,
             content:
-              'No more stitching together Calendly, Mailchimp, a separate CRM and a forms tool with five logins. SimplerDevelopment replaces the stack with one connected system &mdash; and Claude can drive all of it.',
+              'No more stitching together Calendly, Mailchimp, a separate CRM and a forms tool with five logins. CRM AGENTS replaces the stack with one connected system &mdash; and Claude can drive all of it.',
             style: {
               color: '#475569',
               fontFamily: 'Plus Jakarta Sans, sans-serif',

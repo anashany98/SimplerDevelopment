@@ -183,9 +183,7 @@ export default function PlaybookRunDetailPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -232,7 +230,7 @@ export default function PlaybookRunDetailPage({
 
       <div className="bg-card border border-border rounded-2xl p-5">
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               {run.label}
@@ -278,7 +276,7 @@ export default function PlaybookRunDetailPage({
                   type="button"
                   onClick={onAdvance}
                   disabled={busy}
-                  title="Resolve any branch / completed steps and chain forward"
+                  title="Resuelve las ramas o pasos completados y continúa"
                   className={pBtnGhost}
                 >
                   <span className="material-icons text-sm">play_arrow</span>
@@ -303,9 +301,7 @@ export default function PlaybookRunDetailPage({
                   disabled={busy}
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-500/20 disabled:opacity-50"
                 >
-                  <span className="material-icons text-sm">restart_alt</span>
-                  Retry
-                </button>
+                  <span className="material-icons text-sm">restart_alt</span>Reintentar</button>
               )}
             </div>
           }

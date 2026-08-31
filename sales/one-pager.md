@@ -11,11 +11,11 @@ sources:
   - marketing/feature-pages/
 ---
 
-# SimplerDevelopment — Platform One-Pager
+# CRM AGENTS — Platform One-Pager
 
 ## What It Is
 
-SimplerDevelopment is a multi-tenant agency SaaS platform that lets a software agency run its own back office and deliver complete white-label digital infrastructure to every client — from one deployment, one codebase, and one Postgres database.
+CRM AGENTS is a multi-tenant agency SaaS platform that lets a software agency run its own back office and deliver complete white-label digital infrastructure to every client — from one deployment, one codebase, and one Postgres database.
 
 A single platform install serves three audiences simultaneously: an internal agency-admin panel, a per-tenant client portal, and per-tenant public-facing websites. Clients get their own isolated workspace with no overlap and no shared data.
 
@@ -50,7 +50,7 @@ Instead of paying for and integrating separate products for each concern, the en
 | **Auth & Security** | NextAuth v5 sessions, TOTP multi-factor authentication, OAuth 2.1 authorization server (PKCE), AES-256-GCM BYOK AI key encryption, per-tenant isolation |
 | **AI Agent Surface** | 450 MCP tools across all domains, accessible via a single endpoint with scoped OAuth 2.1 tokens |
 
-This is a consolidation story: where an agency previously subscribed to a website builder, a CRM, an email platform, a project management tool, a scheduling tool, and an AI workspace separately, SimplerDevelopment delivers all of them under one white-label roof.
+This is a consolidation story: where an agency previously subscribed to a website builder, a CRM, an email platform, a project management tool, a scheduling tool, and an AI workspace separately, CRM AGENTS delivers all of them under one white-label roof.
 
 ---
 
@@ -75,7 +75,7 @@ The platform runs on any Next.js host (Vercel or equivalent) with a Postgres dat
 
 ## Pricing Model
 
-SimplerDevelopment uses a modular billing model:
+CRM AGENTS uses a modular billing model:
 
 - **À-la-carte module subscriptions** — tenants activate only the modules they use; inactive domains carry no subscription cost.
 - **Volume discounts** — pricing adjusts as usage or seat counts scale.

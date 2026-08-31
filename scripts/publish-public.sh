@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Publish a snapshot of a commit to the PUBLIC repo.
 #
-# The public repo (SimplerDevelopment/SimplerDevelopment) is where Vercel and
+# The public GitHub repository is where Vercel and
 # the Railway `agents` / `realtime` services deploy from.
 #
 # EXCLUDE is empty as of 2026-08-18: vault/ was merged back into this repo and

@@ -183,9 +183,7 @@ export default function EmailDomainsPage() {
               {adding ? 'Adding…' : 'Add Domain'}
             </button>
             <button type="button" onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">
-              Cancel
-            </button>
+              className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
           </div>
         </form>
       )}
@@ -197,7 +195,7 @@ export default function EmailDomainsPage() {
             <h2 className="font-semibold text-foreground">Domains</h2>
           </div>
           {loading ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+            <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : domains.length === 0 ? (
             <div className="p-10 text-center">
               <span className="material-icons text-3xl text-muted-foreground mb-2 block">domain</span>
@@ -239,11 +237,11 @@ export default function EmailDomainsPage() {
           {!selected ? (
             <div className="bg-card border border-border rounded-lg p-10 text-center">
               <span className="material-icons text-3xl text-muted-foreground mb-2 block">dns</span>
-              <p className="text-sm text-muted-foreground">Select a domain to view DNS records and settings.</p>
+              <p className="text-sm text-muted-foreground">Selecciona un dominio para ver registros DNS y ajustes.</p>
             </div>
           ) : detailLoading ? (
             <div className="bg-card border border-border rounded-lg p-8 text-center">
-              <p className="text-sm text-muted-foreground">Loading…</p>
+              <p className="text-sm text-muted-foreground">Cargando…</p>
             </div>
           ) : (
             <>
@@ -278,7 +276,7 @@ export default function EmailDomainsPage() {
                   <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-foreground">DNS Records</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">Add these to your domain registrar, then click Verify Now.</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Añádelos a tu registrador de dominio y haz clic en Verificar ahora.</p>
                     </div>
                     {selected.status !== 'verified' && (
                       <div className="flex items-center gap-1.5 text-xs text-yellow-600 bg-yellow-50 px-2.5 py-1.5 rounded-md">
@@ -291,10 +289,10 @@ export default function EmailDomainsPage() {
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="border-b border-border bg-muted/40">
-                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Type</th>
-                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Name</th>
-                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Value</th>
-                          <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Status</th>
+                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Tipo</th>
+                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Nombre</th>
+                          <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Valor</th>
+                          <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Estado</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
@@ -309,7 +307,7 @@ export default function EmailDomainsPage() {
                                 <code className="font-mono text-foreground break-all">{record.name}</code>
                                 <button onClick={() => copyToClipboard(record.name)}
                                   className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors"
-                                  title="Copy">
+                                  title="Copiar">
                                   <span className="material-icons text-sm">content_copy</span>
                                 </button>
                               </div>
@@ -319,7 +317,7 @@ export default function EmailDomainsPage() {
                                 <code className="font-mono text-foreground break-all line-clamp-2">{record.value}</code>
                                 <button onClick={() => copyToClipboard(record.value)}
                                   className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground transition-colors"
-                                  title="Copy">
+                                  title="Copiar">
                                   <span className="material-icons text-sm">content_copy</span>
                                 </button>
                               </div>
@@ -387,7 +385,7 @@ export default function EmailDomainsPage() {
                   </div>
                   <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
                     <li>Copy each DNS record above and add it to your domain registrar (GoDaddy, Namecheap, Cloudflare, etc.)</li>
-                    <li>Wait for DNS to propagate — usually a few minutes, up to 72 hours</li>
+                    <li>Espera a que se propague el DNS: suele tardar unos minutos, hasta 72 horas</li>
                     <li>Click <strong>Verify Now</strong> to check if the records are live</li>
                     <li>Once verified, enable open/click tracking and set this domain as your From address in campaigns</li>
                   </ol>

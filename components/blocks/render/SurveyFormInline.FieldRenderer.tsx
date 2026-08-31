@@ -96,7 +96,7 @@ export function renderField(
           className={inputCls}
           style={ringStyle}
         >
-          <option value="">Select...</option>
+          <option value="">Seleccionar...</option>
           {field.options.map((rawOpt, i) => {
             const { value, label } = normalizeOption(rawOpt);
             return <option key={value || `opt-${i}`} value={value}>{label}</option>;

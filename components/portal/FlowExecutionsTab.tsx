@@ -26,12 +26,12 @@ import {
 } from '@/lib/agent-flows/types';
 
 const STATUS_META: Record<AgentFlowRunStatus, { label: string; cls: string; icon: string }> = {
-  running:   { label: 'Running',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'progress_activity' },
+  running:   { label: 'En ejecución',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'progress_activity' },
   // Amber matches the human-node colour on the canvas — the same "a person is
   // needed here" signal in both places.
   waiting:   { label: 'Waiting',   cls: 'text-amber-600 dark:text-amber-400',   icon: 'how_to_reg' },
-  succeeded: { label: 'Succeeded', cls: 'text-emerald-600 dark:text-emerald-400', icon: 'check_circle' },
-  failed:    { label: 'Failed',    cls: 'text-red-600 dark:text-red-400',       icon: 'error' },
+  succeeded: { label: 'Exitoso', cls: 'text-emerald-600 dark:text-emerald-400', icon: 'check_circle' },
+  failed:    { label: 'Fallido',    cls: 'text-red-600 dark:text-red-400',       icon: 'error' },
   // Deliberately not styled as a failure: the run didn't break, its session
   // went away.
   abandoned: { label: 'Abandoned', cls: 'text-muted-foreground',                icon: 'cloud_off' },

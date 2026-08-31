@@ -378,14 +378,14 @@ describe('GET /api/contracts/[token]', () => {
     expect(state.signers[0].viewedAt).toBe(alreadyViewedAt);
   });
 
-  it('falls back to "Simpler Development" when client row has no company', async () => {
+  it('falls back to "CRM AGENTS" when client row has no company', async () => {
     state.contracts.push(defaultContract());
     state.signers.push(defaultSigner());
     // No clients row pushed
     const res = await GET(new Request('http://x'), makeParams(VALID_TOKEN));
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.companyName).toBe('Simpler Development');
+    expect(body.data.companyName).toBe('CRM AGENTS');
   });
 
   it('falls back to default company name when client.company is null', async () => {
@@ -395,7 +395,7 @@ describe('GET /api/contracts/[token]', () => {
     const res = await GET(new Request('http://x'), makeParams(VALID_TOKEN));
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.companyName).toBe('Simpler Development');
+    expect(body.data.companyName).toBe('CRM AGENTS');
   });
 
   it('returns 200 when validUntil is in the future', async () => {

@@ -139,9 +139,9 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
           value={statusFilter}
           onChange={setStatusFilter}
           options={[
-            { value: 'all', label: 'All', count: clients.length },
-            { value: 'active', label: 'Active', count: activeCount },
-            { value: 'inactive', label: 'Inactive', count: clients.length - activeCount },
+            { value: 'all', label: 'Todos', count: clients.length },
+            { value: 'active', label: 'Activo', count: activeCount },
+            { value: 'inactive', label: 'Inactivo', count: clients.length - activeCount },
           ]}
         />
         <SearchField value={search} onChange={setSearch} placeholder="Filter clients…" className="min-w-[220px]" />
@@ -158,18 +158,18 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
                 </div>
               )}
               <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Name" required><input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} /></Field>
-                <Field label="Email" required><input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls} /></Field>
+                <Field label="Nombre" required><input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} /></Field>
+                <Field label="Correo" required><input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls} /></Field>
                 <Field label="Password" required><input type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className={inputCls} /></Field>
-                <Field label="Company"><input type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputCls} /></Field>
-                <Field label="Phone"><input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputCls} /></Field>
-                <Field label="Website"><input type="url" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} className={inputCls} /></Field>
+                <Field label="Empresa"><input type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputCls} /></Field>
+                <Field label="Teléfono"><input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputCls} /></Field>
+                <Field label="Sitio web"><input type="url" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} className={inputCls} /></Field>
                 <div className="sm:col-span-2">
                   <Field label="Internal notes"><textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className={`${inputCls} resize-none`} /></Field>
                 </div>
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                <Button onClick={() => setShowForm(false)}>Cancel</Button>
+                <Button onClick={() => setShowForm(false)}>Cancelar</Button>
                 <Button type="submit" variant="primary" icon={saving ? 'hourglass_empty' : 'check'} disabled={saving}>{saving ? 'Saving…' : 'Create client'}</Button>
               </div>
             </form>

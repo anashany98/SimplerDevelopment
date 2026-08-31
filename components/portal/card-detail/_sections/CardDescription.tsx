@@ -29,9 +29,7 @@ export function CardDescription({
 }: Props) {
   return (
     <div>
-      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-        Description
-      </h3>
+      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Descripción</h3>
       {editingDesc ? (
         <div>
           <textarea
@@ -53,9 +51,7 @@ export function CardDescription({
             <button
               onClick={() => setEditingDesc(false)}
               className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <span className="ml-auto text-xs text-muted-foreground">Markdown supported</span>
           </div>
         </div>

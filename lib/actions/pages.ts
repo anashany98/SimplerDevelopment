@@ -5,7 +5,7 @@ import { posts } from '@/lib/db/schema';
 import { eq, and, isNull } from 'drizzle-orm';
 
 // These helpers back main-domain page routes and
-// must ONLY return SimplerDevelopment's own "global" content — rows where
+// must ONLY return CRM AGENTS's own "global" content — rows where
 // posts.websiteId IS NULL per the schema convention. Tenant content lives
 // in rows with a non-null websiteId and is served through
 // /sites/[domain]/[[...slug]] on the owning tenant's subdomain. Without

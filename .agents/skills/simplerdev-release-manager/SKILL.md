@@ -1,9 +1,9 @@
 ---
 name: simplerdev-release-manager
-description: Prepare SimplerDevelopment changes for commit, push, PR, staging, or main release. Use for release readiness, pre-push checks, Fallow gate guidance, changelog/release notes, dependency upgrades, docs sync, "ship this", "prepare release", "before I push", "make this PR-ready", "dependency update", "release checklist", or when changes are headed to `staging` or `main`.
+description: Prepare CRM AGENTS changes for commit, push, PR, staging, or main release. Use for release readiness, pre-push checks, Fallow gate guidance, changelog/release notes, dependency upgrades, docs sync, "ship this", "prepare release", "before I push", "make this PR-ready", "dependency update", "release checklist", or when changes are headed to `staging` or `main`.
 ---
 
-# SimplerDev Release Manager
+# CRM AGENTS Release Manager
 
 Use this for the final mile: make a change understandable, validated, documented, and safe to push. It does not replace code review; run `simplerdev-code-review` first for risky diffs.
 

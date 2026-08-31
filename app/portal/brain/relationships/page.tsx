@@ -40,8 +40,8 @@ const PRIORITY_TONE: Record<RelationshipListRow['overlay']['priority'], string> 
 
 type View = 'all' | 'prospects' | 'stale';
 const VIEWS: { key: View; label: string; icon: string }[] = [
-  { key: 'all', label: 'All', icon: 'group_work' },
-  { key: 'prospects', label: 'Prospects', icon: 'person_search' },
+  { key: 'all', label: 'Todos', icon: 'group_work' },
+  { key: 'prospects', label: 'Prospectos', icon: 'person_search' },
   { key: 'stale', label: 'Stale', icon: 'schedule' },
 ];
 
@@ -52,7 +52,7 @@ const VIEW_HEADER: Record<View, { title: string; icon: string; subtitle: string 
     subtitle: 'Brain-tracked relationships layered over your CRM companies and deals.',
   },
   prospects: {
-    title: 'Prospects',
+    title: 'Prospectos',
     icon: 'person_search',
     subtitle: 'Relationships flagged as prospects — early-stage opportunities you’re cultivating.',
   },
@@ -139,7 +139,7 @@ export default function BrainRelationshipsPage() {
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={<span className="flex items-center gap-2"><span className="material-icons text-primary">{header.icon}</span>{header.title}</span>}
         subtitle={header.subtitle}
         actions={
@@ -147,9 +147,7 @@ export default function BrainRelationshipsPage() {
             onClick={() => setShowCreate(true)}
             className={pBtnPrimary}
           >
-            <span className="material-icons text-base">add</span>
-            New relationship
-          </button>
+            <span className="material-icons text-base">add</span>Nueva relación</button>
         }
       />
 
@@ -177,25 +175,25 @@ export default function BrainRelationshipsPage() {
       </div>
 
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-xs text-muted-foreground">Filter:</span>
+        <span className="text-xs text-muted-foreground">Filtrar:</span>
         <select
-          aria-label="Filter by priority" value={priorityFilter}
+          aria-label="Filtrar por prioridad" value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
           className={pSelect}
         >
-          <option value="">All priorities</option>
+          <option value="">Todas las prioridades</option>
           <option value="critical">Critical</option>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option value="high">Alta</option>
+          <option value="medium">Media</option>
+          <option value="low">Baja</option>
         </select>
         {types.length > 0 && (
           <select
-            aria-label="Filter by type" value={typeFilter}
+            aria-label="Filtrar por tipo" value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             className={pSelect}
           >
-            <option value="">All types</option>
+            <option value="">Todos los tipos</option>
             {types.map((t) => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
           </select>
         )}
@@ -203,9 +201,7 @@ export default function BrainRelationshipsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       ) : sorted.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">{emptyCopy.icon}</span>
@@ -216,9 +212,7 @@ export default function BrainRelationshipsPage() {
               onClick={() => setShowCreate(true)}
               className={pBtnPrimary}
             >
-              <span className="material-icons text-base">add</span>
-              New relationship
-            </button>
+              <span className="material-icons text-base">add</span>Nueva relación</button>
           )}
         </div>
       ) : view === 'all' ? (
@@ -398,7 +392,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-card border border-border rounded-2xl shadow-xl max-w-lg w-full p-5 space-y-4 max-h-[90vh] overflow-auto">
         <div>
-          <h3 className="text-base font-semibold text-foreground">New relationship</h3>
+          <h3 className="text-base font-semibold text-foreground">Nueva relación</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             Choose an existing CRM company or deal to track as a Brain relationship.
           </p>
@@ -414,7 +408,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search CRM companies or deals…"
+              placeholder="Buscar empresas u oportunidades del CRM…"
               className={pInput}
               autoFocus
             />
@@ -488,7 +482,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
               <button onClick={() => setPicked(null)} className="text-xs text-muted-foreground hover:text-foreground">Change</button>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Relationship type</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de relación</label>
               <input
                 type="text"
                 value={relationshipType}
@@ -498,15 +492,15 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
               />
             </div>
             <div>
-              <label htmlFor="new-relationship-priority" className="block text-xs font-medium text-muted-foreground mb-1">Priority</label>
+              <label htmlFor="new-relationship-priority" className="block text-xs font-medium text-muted-foreground mb-1">Prioridad</label>
               <select
                 id="new-relationship-priority" value={priority}
                 onChange={(e) => setPriority(e.target.value as typeof priority)}
                 className={pSelect}
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
                 <option value="critical">Critical</option>
               </select>
             </div>
@@ -514,7 +508,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
         )}
 
         <div className="flex items-center justify-end gap-2 pt-2">
-          <button onClick={onClose} className={pBtnGhost}>Cancel</button>
+          <button onClick={onClose} className={pBtnGhost}>Cancelar</button>
           <button
             onClick={submit}
             disabled={!picked || submitting}
@@ -522,7 +516,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
           >
             {submitting
               ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creating…</>
-              : <>Create relationship</>
+              : <>Crear relación</>
             }
           </button>
         </div>

@@ -37,7 +37,7 @@ function wrapInShell(headline: string, bodyHtml: string): string {
     </p>
   </div>
   <div style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center;">
-    <p style="margin:0;font-size:12px;color:#94a3b8;">Simpler Development &middot; Design, Dev &amp; Automation</p>
+    <p style="margin:0;font-size:12px;color:#94a3b8;">CRM AGENTS &middot; Design, Dev &amp; Automation</p>
   </div>
 </div>`;
 }
@@ -60,7 +60,7 @@ export async function sendPaymentFailedEmail(opts: {
     'Action required: payment failed',
     `<p style="font-size:15px;color:#334155;line-height:1.6;">${greeting}</p>
      <p style="font-size:15px;color:#334155;line-height:1.6;">
-       A payment for your Simpler Development subscription could not be processed.
+       A payment for your CRM AGENTS subscription could not be processed.
        Stripe will retry automatically — but to avoid any interruption to your
        service please update your payment method as soon as possible.
      </p>
@@ -68,9 +68,9 @@ export async function sendPaymentFailedEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `Simpler Development Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
     to: opts.toEmail,
-    subject: 'Action required: your Simpler Development payment failed',
+    subject: 'Action required: your CRM AGENTS payment failed',
     html,
   });
 }
@@ -97,7 +97,7 @@ export async function sendTrialWillEndEmail(opts: {
     'Your free trial ends in 3 days',
     `<p style="font-size:15px;color:#334155;line-height:1.6;">${greeting}</p>
      <p style="font-size:15px;color:#334155;line-height:1.6;">
-       Your Simpler Development free trial ends on <strong>${formatted}</strong>.
+       Your CRM AGENTS free trial ends on <strong>${formatted}</strong>.
        After that, you'll be billed at your plan's regular rate.
      </p>
      <p style="font-size:15px;color:#334155;line-height:1.6;">
@@ -107,9 +107,9 @@ export async function sendTrialWillEndEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `Simpler Development Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
     to: opts.toEmail,
-    subject: 'Your Simpler Development trial ends in 3 days',
+    subject: 'Your CRM AGENTS trial ends in 3 days',
     html,
   });
 }
@@ -131,7 +131,7 @@ export async function sendSubscriptionSuspendedEmail(opts: {
   };
 
   const html = wrapInShell(
-    'Your Simpler Development access has been suspended',
+    'Your CRM AGENTS access has been suspended',
     `<p style="font-size:15px;color:#334155;line-height:1.6;">${greeting}</p>
      <p style="font-size:15px;color:#334155;line-height:1.6;">
        Unfortunately, ${reasonCopy[opts.reason]}.
@@ -143,9 +143,9 @@ export async function sendSubscriptionSuspendedEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `Simpler Development Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
     to: opts.toEmail,
-    subject: 'Your Simpler Development access has been suspended',
+    subject: 'Your CRM AGENTS access has been suspended',
     html,
   });
 }

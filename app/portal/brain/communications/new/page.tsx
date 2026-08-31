@@ -135,8 +135,8 @@ export default function NewBrainMeetingPage() {
           Back to communications
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
-          title="New note"
+          eyebrow="Cerebro de empresa"
+          title="Nueva nota"
         />
       </div>
 
@@ -147,7 +147,7 @@ export default function NewBrainMeetingPage() {
       )}
 
       {/* Source picker (Phase 2: paste only; Phase 2b/c add upload + Google Doc) */}
-      <Section title="Source" icon="input">
+      <Section title="Fuente" icon="input">
         <div className="grid sm:grid-cols-3 gap-2">
           {adapters.map((a) => (
             <button
@@ -173,7 +173,7 @@ export default function NewBrainMeetingPage() {
       </Section>
 
       {/* Title + date */}
-      <Section title="Details" icon="info">
+      <Section title="Detalles" icon="info">
         <div className="grid sm:grid-cols-2 gap-3">
           <Field label="Title (optional)" help="Defaults to a timestamped title if blank.">
             <input
@@ -213,7 +213,7 @@ export default function NewBrainMeetingPage() {
                 type="text"
                 value={p.name}
                 onChange={(e) => updateParticipant(i, { name: e.target.value })}
-                placeholder="Name"
+                placeholder="Nombre"
                 className="rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
               />
               <input
@@ -290,7 +290,7 @@ export default function NewBrainMeetingPage() {
             ? <><span className="material-icons animate-spin text-base">progress_activity</span>Processing…</>
             : creating
               ? <><span className="material-icons animate-spin text-base">progress_activity</span>Saving…</>
-              : <><span className="material-icons text-base">auto_awesome</span>Save and process with AI</>
+              : <><span className="material-icons text-base">auto_awesome</span>Guardar y procesar con IA</>
           }
         </button>
       </div>
@@ -371,9 +371,7 @@ function RelationshipPicker({
           onClick={() => onChange(null)}
           className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-0.5"
         >
-          <span className="material-icons text-sm">close</span>
-          Clear
-        </button>
+          <span className="material-icons text-sm">close</span>Limpiar</button>
       </div>
     );
   }
@@ -396,7 +394,7 @@ function RelationshipPicker({
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search companies or deals…"
+        placeholder="Buscar empresas u oportunidades…"
         className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
         autoFocus
       />
@@ -427,7 +425,7 @@ function RelationshipPicker({
           <p className="text-xs text-muted-foreground py-3 text-center">No matches.</p>
         )}
       </div>
-      <button onClick={() => setOpen(false)} className="text-xs text-muted-foreground hover:text-foreground">Cancel</button>
+      <button onClick={() => setOpen(false)} className="text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
     </div>
   );
 }
@@ -483,9 +481,7 @@ function FilePicker({
           onClick={onClear}
           className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-0.5"
         >
-          <span className="material-icons text-sm">close</span>
-          Clear
-        </button>
+          <span className="material-icons text-sm">close</span>Limpiar</button>
       </div>
     );
   }
@@ -494,7 +490,7 @@ function FilePicker({
     <div className="mb-3">
       <label className="flex flex-col items-center justify-center gap-1 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:bg-accent/30 transition-colors">
         <span className="material-icons text-3xl text-muted-foreground">cloud_upload</span>
-        <span className="text-sm text-foreground font-medium">Choose a file</span>
+        <span className="text-sm text-foreground font-medium">Elegir un archivo</span>
         <span className="text-xs text-muted-foreground">{ACCEPTED_EXTENSIONS.join(', ')} · up to 5MB</span>
         <input
           type="file"

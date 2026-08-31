@@ -152,9 +152,7 @@ export default function BrainGlossaryDetailPage({
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -227,9 +225,7 @@ export default function BrainGlossaryDetailPage({
         {!editing && (
           <div className="flex items-center gap-2 shrink-0">
             <button type="button" onClick={() => setEditing(true)} className={pBtnGhost}>
-              <span className="material-icons text-base">edit</span>
-              Edit
-            </button>
+              <span className="material-icons text-base">edit</span>Editar</button>
             <button
               type="button"
               onClick={handleDelete}

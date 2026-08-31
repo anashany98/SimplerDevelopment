@@ -147,7 +147,7 @@ export function SettingsSlideOver({
                 handleTitleChange={handleTitleChange}
               />
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Type</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo</label>
                 <ContentTypeSelect
                   value={formData.postType}
                   contentTypes={contentTypes}

@@ -603,9 +603,7 @@ export function ColumnsBlockPreview({ block, isSelected, onChange, selectedBlock
                       type="button"
                       onClick={() => updateColumnSettings(column.id, { backgroundColor: undefined })}
                       className="mt-1 text-xs text-muted-foreground hover:text-foreground"
-                    >
-                      Clear
-                    </button>
+                    >Limpiar</button>
                   )}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -616,10 +614,10 @@ export function ColumnsBlockPreview({ block, isSelected, onChange, selectedBlock
                       onChange={(e) => updateColumnSettings(column.id, { padding: e.target.value as 'none' | 'sm' | 'md' | 'lg' })}
                       className="w-full text-sm rounded border border-border bg-background px-2 py-1 text-foreground"
                     >
-                      <option value="none">None</option>
-                      <option value="sm">Small</option>
-                      <option value="md">Medium</option>
-                      <option value="lg">Large</option>
+                      <option value="none">Ninguno</option>
+                      <option value="sm">Pequeño</option>
+                      <option value="md">Media</option>
+                      <option value="lg">Grande</option>
                     </select>
                   </div>
                   <div>
@@ -629,9 +627,9 @@ export function ColumnsBlockPreview({ block, isSelected, onChange, selectedBlock
                       onChange={(e) => updateColumnSettings(column.id, { verticalAlign: e.target.value as 'top' | 'center' | 'bottom' })}
                       className="w-full text-sm rounded border border-border bg-background px-2 py-1 text-foreground"
                     >
-                      <option value="top">Top</option>
-                      <option value="center">Center</option>
-                      <option value="bottom">Bottom</option>
+                      <option value="top">Arriba</option>
+                      <option value="center">Centrado</option>
+                      <option value="bottom">Abajo</option>
                     </select>
                   </div>
                 </div>

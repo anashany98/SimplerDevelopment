@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# SimplerDevelopment skills — macOS installer
+# CRM AGENTS skills — macOS installer
 #
-# Double-click this file in Finder to install the SimplerDevelopment Claude
+# Double-click this file in Finder to install the CRM AGENTS Claude
 # skills (sd-init, sd-create-page, sd-create-deck, etc.) into
 # ~/.claude/skills/. Works with Claude Desktop and Claude Code.
 #
@@ -26,7 +26,7 @@ warn() { printf '\033[33m⚠\033[0m %s\n' "$*"; }
 err()  { printf '\033[31m✗\033[0m %s\n' "$*" >&2; }
 
 echo
-bold "SimplerDevelopment skills — macOS installer"
+bold "CRM AGENTS skills — macOS installer"
 echo
 
 # Sanity checks
@@ -105,7 +105,7 @@ cat <<'EOF'
 
        {
          "mcpServers": {
-           "simplerdevelopment": {
+           "crm-agents": {
              "command": "npx",
              "args": [
                "-y", "mcp-remote",

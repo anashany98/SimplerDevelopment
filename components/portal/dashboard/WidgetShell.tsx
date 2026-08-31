@@ -62,7 +62,7 @@ export default function WidgetShell({
             'w-6 h-6 flex items-center justify-center rounded',
             isCustomizing ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
           ].join(' ')}
-          aria-label="Drag to reorder"
+          aria-label="Arrastra para reordenar"
           {...dragHandleAttributes}
           {...dragHandleListeners}
         >

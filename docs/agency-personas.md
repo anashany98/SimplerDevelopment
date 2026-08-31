@@ -1,6 +1,6 @@
 # Agency Personas — the role-based agent system
 
-> The operating guide for SimplerDevelopment's Claude Code agent "firm." Personas are organized by **professional role and mindset**, not by technology. A React agent and a Node agent optimize the same objective (make the code work); a *Security Engineer* and a *Product Manager* optimize **different** objectives, and that difference is what produces better decisions.
+> The operating guide for CRM AGENTS's Claude Code agent "firm." Personas are organized by **professional role and mindset**, not by technology. A React agent and a Node agent optimize the same objective (make the code work); a *Security Engineer* and a *Product Manager* optimize **different** objectives, and that difference is what produces better decisions.
 
 Related: initiative tracked on **portal project 207** ("Agent Personas & Workflow Designer", SKU `APWD-###`). This doc is the durable spec; live status lives on the kanban board, not here.
 

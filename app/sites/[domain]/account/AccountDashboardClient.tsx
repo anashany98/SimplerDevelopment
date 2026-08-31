@@ -45,7 +45,7 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
             <h1 className="text-2xl font-bold text-gray-900">
               Welcome back{customer?.firstName ? `, ${customer.firstName}` : ''}
             </h1>
-            <p className="text-gray-500 text-sm mt-1">Manage your orders, wishlist, and account settings.</p>
+            <p className="text-gray-500 text-sm mt-1">Gestiona tus pedidos, lista de deseos y ajustes de cuenta.</p>
           </div>
 
           {/* Stats */}
@@ -89,7 +89,7 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
           <div className="border border-gray-200 rounded-xl overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
               <h2 className="font-semibold text-gray-900">Recent Orders</h2>
-              <Link href="/account/orders" className="text-xs text-gray-500 hover:text-gray-900">View all</Link>
+              <Link href="/account/orders" className="text-xs text-gray-500 hover:text-gray-900">Ver todo</Link>
             </div>
             {recentOrders.length === 0 ? (
               <div className="p-8 text-center">

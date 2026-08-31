@@ -47,7 +47,7 @@ export function TaxonomySection({
         }}
       />
       <TaxonomySearchSelect
-        label="Tags"
+        label="Etiquetas"
         items={availableTags}
         selectedIds={formData.tagIds || []}
         onToggle={(id) => setFormData(prev => ({
@@ -145,8 +145,7 @@ function TaxonomySearchSelect({
                 else if (filtered.length === 1) { onToggle(filtered[0].id); setQuery(''); }
               }
               if (e.key === 'Escape') { setOpen(false); inputRef.current?.blur(); }
-            }}
-            placeholder={`Search or add ${label.toLowerCase()}...`}
+            }}              placeholder={`Buscar o añadir ${label.toLowerCase()}...`}
             className="w-full pl-8 pr-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
           />
         </div>

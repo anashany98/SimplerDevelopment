@@ -55,7 +55,7 @@ export default function CardDetailModal({
             <span className="material-icons text-4xl text-muted-foreground animate-spin">refresh</span>
           </div>
         ) : !s.card ? (
-          <div className="flex items-center justify-center h-64 text-muted-foreground">Card not found.</div>
+          <div className="flex items-center justify-center h-64 text-muted-foreground">Tarjeta no encontrada.</div>
         ) : (
           <>
             <CardHeader
@@ -75,13 +75,13 @@ export default function CardDetailModal({
               <div className="absolute inset-0 z-30 flex items-start justify-center pt-24 px-4" onClick={() => setShowParentPicker(false)}>
                 <div className="bg-popover border border-border rounded-xl shadow-2xl w-full max-w-md max-h-[60vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                   <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-                    <p className="text-sm font-semibold text-foreground">Pick a parent card</p>
-                    <button onClick={() => setShowParentPicker(false)} aria-label="Close">
+                    <p className="text-sm font-semibold text-foreground">Elige una tarjeta principal</p>
+                    <button onClick={() => setShowParentPicker(false)} aria-label="Cerrar">
                       <span className="material-icons text-muted-foreground hover:text-foreground">close</span>
                     </button>
                   </div>
                   {parentCandidates.length === 0 ? (
-                    <p className="text-xs text-muted-foreground italic p-4">No other cards in this project.</p>
+                    <p className="text-xs text-muted-foreground italic p-4">No hay otras tarjetas en este proyecto.</p>
                   ) : (
                     parentCandidates.map(c => (
                       <button

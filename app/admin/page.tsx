@@ -95,7 +95,7 @@ export default function AdminDashboard() {
             message={fetchError ?? 'The request failed. Retry, or check system health if it persists.'}
             action={
               <div className="flex items-center gap-2">
-                <Button variant="primary" icon="refresh" onClick={() => void loadDashboard()}>Retry</Button>
+                <Button variant="primary" icon="refresh" onClick={() => void loadDashboard()}>Reintentar</Button>
                 <Button href="/admin/system-health">System health</Button>
               </div>
             }
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
     })),
     ...data.recent.orders.map((o): Act => ({
       id: `o${o.id}`, ts: +new Date(o.createdAt), iso: o.createdAt, icon: 'shopping_bag',
-      node: <>Order <b className="text-foreground font-mono">{o.orderNumber}</b> · <span className="font-mono">{formatCents(o.total)}</span></>,
+      node: <>Pedido<b className="text-foreground font-mono">{o.orderNumber}</b> · <span className="font-mono">{formatCents(o.total)}</span></>,
     })),
   ].sort((a, b) => b.ts - a.ts).slice(0, 8);
 
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Dashboard" subtitle={`${data.clients.active} active clients · ${data.tickets.open} open tickets`}>
+      <PageHeader title="Panel" subtitle={`${data.clients.active} active clients · ${data.tickets.open} open tickets`}>
         <Button href="/admin/clients" variant="primary" icon="add">New client</Button>
       </PageHeader>
 
@@ -153,7 +153,7 @@ export default function AdminDashboard() {
 
       {/* Revenue chart */}
       <div className="mt-3">
-        <Panel title="Revenue" icon="bar_chart" action={{ label: 'Invoices', href: '/admin/portal-invoices' }}>
+        <Panel title="Revenue" icon="bar_chart" action={{ label: 'Facturas', href: '/admin/portal-invoices' }}>
           <div className="px-4 pt-3 text-xs text-muted-foreground">Paid invoices · last 12 months</div>
           <BarChart values={data.trends.revenue} labels={data.trends.months} format={formatCents} />
         </Panel>
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
       {/* Operations */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-3">
         <Stat size="sm" icon="business" label="Clients" value={data.clients.active} trend={data.trends.clients} sub={<><Delta series={data.trends.clients} /> · {data.clients.total} total</>} href="/admin/clients" />
-        <Stat size="sm" icon="language" label="Websites" value={data.websites.active} sub={`${data.websites.total} total`} href="/admin/portal-websites" />
+        <Stat size="sm" icon="language" label="Sitios web" value={data.websites.active} sub={`${data.websites.total} total`} href="/admin/portal-websites" />
         <Stat size="sm" icon="support_agent" label="Open tickets" value={data.tickets.open} tone={data.tickets.open > 0 ? 'bad' : undefined} trend={data.trends.tickets} sub={<><Delta series={data.trends.tickets} goodUp={false} /> · new/mo</>} href="/admin/portal-tickets" />
         <Stat size="sm" icon="view_kanban" label="Active projects" value={data.projects.active} href="/admin/portal-projects" />
         <Stat size="sm" icon="contacts" label="CRM contacts" value={data.contacts} href="/admin/crm/contacts" />
@@ -171,11 +171,11 @@ export default function AdminDashboard() {
 
       {/* Services */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-3">
-        <Stat size="sm" icon="campaign" label="Campaigns" value={data.campaigns} href="/admin/email" />
+        <Stat size="sm" icon="campaign" label="Campañas" value={data.campaigns} href="/admin/email" />
         <Stat size="sm" icon="calendar_month" label="Upcoming bookings" value={data.bookings.upcoming} sub={`${data.bookings.pages} pages`} href="/admin/booking" />
-        <Stat size="sm" icon="bolt" label="Automations" value={data.automations} sub="active rules" href="/admin/automations" />
+        <Stat size="sm" icon="bolt" label="Automatizaciones" value={data.automations} sub="active rules" href="/admin/automations" />
         <Stat size="sm" icon="token" label="AI credits" value={data.aiCredits.totalBalance.toLocaleString()} sub="pool balance" href="/admin/ai-credits" />
-        <Stat size="sm" icon="description" label="Proposals" value={data.proposals.sent} sub={`${data.proposals.accepted} accepted`} href="/admin/crm/proposals" />
+        <Stat size="sm" icon="description" label="Propuestas" value={data.proposals.sent} sub={`${data.proposals.accepted} accepted`} href="/admin/crm/proposals" />
         <Stat size="sm" icon="shopping_cart" label="Won deals" value={data.deals.won} sub={formatCents(data.deals.wonValue)} href="/admin/portal-ecommerce" />
       </div>
 
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
         <Panel
           title="System health"
           icon="monitor_heart"
-          action={{ label: 'Details', href: '/admin/system-health' }}
+          action={{ label: 'Detalles', href: '/admin/system-health' }}
         >
           {health === null ? (
             <div className="px-4 py-8 text-center text-xs text-muted-foreground">Health unavailable</div>

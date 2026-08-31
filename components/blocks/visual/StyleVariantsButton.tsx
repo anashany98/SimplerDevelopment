@@ -164,7 +164,7 @@ function StyleVariantsModal({ block, siteId, onClose, onApply }: ModalProps) {
               type="button"
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground"
-              aria-label="Close"
+              aria-label="Cerrar"
             >
               <span className="material-icons">close</span>
             </button>

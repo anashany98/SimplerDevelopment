@@ -166,9 +166,7 @@ function SignatureCanvas({ onSave, accentColor }: { onSave: (dataUrl: string) =>
           type="button"
           onClick={clearCanvas}
           className="px-3 py-1.5 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Clear
-        </button>
+        >Limpiar</button>
         {hasDrawn && (
           <button
             type="button"
@@ -247,7 +245,7 @@ export default function PublicProposalPage() {
             </svg>
           </div>
           <h1 className="text-xl font-semibold text-gray-900 mb-2">Proposal Not Found</h1>
-          <p className="text-gray-500 text-sm">This proposal may have been removed or the link is invalid.</p>
+          <p className="text-gray-500 text-sm">Esta propuesta puede haberse eliminado o el enlace no es válido.</p>
         </div>
       </div>
     );
@@ -449,7 +447,7 @@ export default function PublicProposalPage() {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-gray-200 bg-gray-50">
-                          <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+                          <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Descripción</th>
                           <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Qty</th>
                           <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Unit Price</th>
                           <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
@@ -567,7 +565,7 @@ export default function PublicProposalPage() {
                       )}
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre completo</label>
                         <input
                           value={signatureName}
                           onChange={e => setSignatureName(e.target.value)}
@@ -650,7 +648,7 @@ export default function PublicProposalPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre completo</label>
               <input
                 value={signatureName}
                 onChange={e => setSignatureName(e.target.value)}
@@ -739,9 +737,7 @@ export default function PublicProposalPage() {
               <button
                 onClick={() => setShowDeclineModal(false)}
                 className="px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 onClick={handleDecline}
                 disabled={declining}

@@ -9,7 +9,7 @@ tags:
   - cms
   - visual-editor
   - agency-workflow
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 canonical: "https://example.com/blog/launch-client-website-end-to-end"
 ---

@@ -111,7 +111,7 @@ export function TestimonialBlockPreview({ block, isSelected, onChange }: Testimo
                       onChange={(e) => onChange({ company: e.target.value })}
                       onClick={(e) => e.stopPropagation()}
                       className="w-auto bg-transparent border-none focus:outline-none focus:border-b border-border text-muted-foreground text-center"
-                      placeholder="Company"
+                      placeholder="Empresa"
                     />
                   )}
                 </div>

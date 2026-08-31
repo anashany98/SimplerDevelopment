@@ -15,35 +15,35 @@ interface PreviewData {
 
 const FIELD_OPTIONS: Record<string, { value: string; label: string }[]> = {
   contact: [
-    { value: '', label: 'Skip' },
+    { value: '', label: 'Omitir' },
     { value: 'firstName', label: 'First Name' },
     { value: 'lastName', label: 'Last Name' },
-    { value: 'email', label: 'Email' },
-    { value: 'phone', label: 'Phone' },
+    { value: 'email', label: 'Correo' },
+    { value: 'phone', label: 'Teléfono' },
     { value: 'title', label: 'Job Title' },
     { value: 'source', label: 'Source' },
-    { value: 'status', label: 'Status' },
+    { value: 'status', label: 'Estado' },
     { value: 'address', label: 'Address' },
-    { value: 'notes', label: 'Notes' },
+    { value: 'notes', label: 'Notas' },
   ],
   company: [
-    { value: '', label: 'Skip' },
-    { value: 'name', label: 'Name' },
+    { value: '', label: 'Omitir' },
+    { value: 'name', label: 'Nombre' },
     { value: 'domain', label: 'Domain' },
     { value: 'industry', label: 'Industry' },
-    { value: 'size', label: 'Size' },
-    { value: 'phone', label: 'Phone' },
-    { value: 'website', label: 'Website' },
+    { value: 'size', label: 'Tamaño' },
+    { value: 'phone', label: 'Teléfono' },
+    { value: 'website', label: 'Sitio web' },
     { value: 'address', label: 'Address' },
-    { value: 'notes', label: 'Notes' },
+    { value: 'notes', label: 'Notas' },
   ],
   deal: [
-    { value: '', label: 'Skip' },
-    { value: 'title', label: 'Title' },
-    { value: 'value', label: 'Value' },
-    { value: 'status', label: 'Status' },
-    { value: 'priority', label: 'Priority' },
-    { value: 'notes', label: 'Notes' },
+    { value: '', label: 'Omitir' },
+    { value: 'title', label: 'Título' },
+    { value: 'value', label: 'Valor' },
+    { value: 'status', label: 'Estado' },
+    { value: 'priority', label: 'Prioridad' },
+    { value: 'notes', label: 'Notas' },
     { value: 'expectedCloseDate', label: 'Expected Close Date' },
   ],
 };
@@ -178,9 +178,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
           onClick={() => setShowImport(true)}
           className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
         >
-          <span className="material-icons text-base">upload</span>
-          Import
-        </button>
+          <span className="material-icons text-base">upload</span>Importar</button>
       </div>
 
       {/* Import Modal */}
@@ -288,16 +286,12 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                     <button
                       onClick={reset}
                       className="px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                     <button
                       onClick={handleImport}
                       className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
                     >
-                      <span className="material-icons text-sm">upload</span>
-                      Import
-                    </button>
+                      <span className="material-icons text-sm">upload</span>Importar</button>
                   </div>
                 </div>
               )}
@@ -329,9 +323,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                     <button
                       onClick={reset}
                       className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                    >
-                      Done
-                    </button>
+                    >Listo</button>
                   </div>
                 </div>
               )}

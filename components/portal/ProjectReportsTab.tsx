@@ -358,7 +358,7 @@ function VelocityChart({ payload }: { payload: VelocityPayload }) {
       </svg>
       <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-2">
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-current opacity-25 rounded-sm"></span>Committed</span>
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Completed</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Completado</span>
       </div>
     </div>
   );
@@ -529,11 +529,11 @@ function CycleTable({ payload, projectKey }: { payload: CyclePayload; projectKey
         <thead className="bg-muted/50 border-b border-border">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Key</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Title</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-16">Pts</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Lead</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Cycle</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-28">Done</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-28">Listo</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">

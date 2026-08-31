@@ -27,7 +27,7 @@ const SOURCE_CONFIG: Record<ApprovalSource, { label: string; color: string; icon
   mcp:     { label: 'MCP',     color: 'bg-purple-100 text-purple-700', icon: 'smart_toy' },
   brain:   { label: 'Brain',   color: 'bg-indigo-100 text-indigo-700', icon: 'psychology' },
   service: { label: 'Service', color: 'bg-blue-100 text-blue-700',    icon: 'storefront' },
-  project: { label: 'Project', color: 'bg-amber-100 text-amber-700',  icon: 'rocket_launch' },
+  project: { label: 'Proyecto', color: 'bg-amber-100 text-amber-700',  icon: 'rocket_launch' },
 };
 
 function timeAgo(iso: string): string {
@@ -112,9 +112,7 @@ export default function AdminApprovalsPage() {
           disabled={loading}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-card text-sm font-medium text-foreground hover:bg-accent disabled:opacity-50"
         >
-          <span className="material-icons text-base">refresh</span>
-          Refresh
-        </button>
+          <span className="material-icons text-base">refresh</span>Actualizar</button>
       </div>
 
       {/* Summary tiles */}

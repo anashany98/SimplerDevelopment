@@ -142,7 +142,7 @@ export function ProductDetailBlockRender({ block, siteId }: ProductDetailBlockRe
     return (
       <div className="py-16 text-center">
         <span className="material-icons text-5xl text-muted-foreground/30 mb-3 block">inventory_2</span>
-        <p className="text-muted-foreground">Select a product slug in the block settings.</p>
+        <p className="text-muted-foreground">Selecciona el slug de un producto en los ajustes del bloque.</p>
       </div>
     );
   }
@@ -325,7 +325,7 @@ export function ProductDetailBlockRender({ block, siteId }: ProductDetailBlockRe
             {showAddToCart && (
               <div className="border-t border-border pt-6 space-y-4">
                 <div className="flex items-center gap-4">
-                  <label className="text-sm font-semibold">Quantity</label>
+                  <label className="text-sm font-semibold">Cantidad</label>
                   <div className="flex items-center border border-border rounded-lg overflow-hidden">
                     <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2 hover:bg-muted/50 transition-colors" disabled={quantity <= 1}>
                       <span className="material-icons text-sm">remove</span>
@@ -382,7 +382,7 @@ export function ProductDetailBlockRender({ block, siteId }: ProductDetailBlockRe
         {/* Full Description */}
         {showDescription && product.description && (
           <div className="mt-16 border-t border-border pt-12">
-            <h3 className="text-2xl font-bold mb-6" style={getElementCSS(block.elementStyles, 'sectionTitle')}>Description</h3>
+            <h3 className="text-2xl font-bold mb-6" style={getElementCSS(block.elementStyles, 'sectionTitle')}>Descripción</h3>
             <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
         )}

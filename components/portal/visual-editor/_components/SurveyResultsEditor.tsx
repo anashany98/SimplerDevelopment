@@ -64,14 +64,14 @@ export function SurveyResultsEditor({ block, onUpdate }: { block: Block; onUpdat
           <input type="text" value={open ? search : surveySlug || ''}
             onChange={(e) => { setSearch(e.target.value); if (!open) onUpdate({ surveySlug: e.target.value } as Partial<Block>); }}
             onFocus={() => setOpen(true)}
-            placeholder={loading ? 'Loading...' : 'Search surveys...'}
+            placeholder={loading ? 'Cargando...' : 'Buscar encuestas...'}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary" />
         )}
         {open && (
           <div className="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-border bg-card shadow-lg">
             {filtered.length === 0 ? (
               <div className="px-3 py-4 text-xs text-muted-foreground text-center">
-                {loading ? 'Loading...' : surveys.length === 0 ? 'No surveys found' : 'No matches'}
+                {loading ? 'Cargando...' : surveys.length === 0 ? 'No surveys found' : 'No matches'}
               </div>
             ) : filtered.map(s => (
               <button key={s.slug} type="button"
@@ -91,9 +91,9 @@ export function SurveyResultsEditor({ block, onUpdate }: { block: Block; onUpdat
 
       {/* Chart Type */}
       <div>
-        <span className="text-xs font-medium text-muted-foreground block mb-1">Chart Type</span>
+        <span className="text-xs font-medium text-muted-foreground block mb-1">Tipo de gráfico</span>
         <div className="grid grid-cols-3 gap-1.5">
-          {([{ value: 'bar', label: 'Bar Chart', icon: 'bar_chart' }, { value: 'donut', label: 'Donut Chart', icon: 'donut_large' }, { value: 'list', label: 'Ranked List', icon: 'format_list_numbered' }] as const).map(opt => (
+          {([{ value: 'bar', label: 'Bar Chart', icon: 'bar_chart' }, { value: 'donut', label: 'Donut Chart', icon: 'donut_large' }, { value: 'list', label: 'Lista clasificada', icon: 'format_list_numbered' }] as const).map(opt => (
             <button key={opt.value} type="button"
               onClick={() => onUpdate({ chartType: opt.value } as Partial<Block>)}
               className={`flex flex-col items-center gap-1 px-2 py-2 rounded-md border text-xs transition-colors ${((b.chartType as string) || 'bar') === opt.value ? 'border-primary bg-primary/5 text-primary' : 'border-border text-muted-foreground hover:border-primary/50'}`}>
@@ -104,18 +104,18 @@ export function SurveyResultsEditor({ block, onUpdate }: { block: Block; onUpdat
         </div>
       </div>
 
-      <SelectField label="Layout" value={(b.layout as string) || 'stacked'} options={['stacked','tabbed']} onChange={(v) => onUpdate({ layout: v } as Partial<Block>)} />
-      <Field label="Title" value={(b.title as string) || ''} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} />
-      <Field label="Description" value={(b.description as string) || ''} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} />
+      <SelectField label="Diseño" value={(b.layout as string) || 'stacked'} options={['stacked','tabbed']} onChange={(v) => onUpdate({ layout: v } as Partial<Block>)} />
+      <Field label="Título" value={(b.title as string) || ''} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} />
+      <Field label="Descripción" value={(b.description as string) || ''} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} />
 
       <div className="space-y-2">
-        <CheckboxField label="Show response count" checked={(b.showResponseCount as boolean) !== false} onChange={(v) => onUpdate({ showResponseCount: v } as Partial<Block>)} />
-        <CheckboxField label="Show text responses" checked={showTextResponses} onChange={(v) => onUpdate({ showTextResponses: v } as Partial<Block>)} />
+        <CheckboxField label="Mostrar contador de respuestas" checked={(b.showResponseCount as boolean) !== false} onChange={(v) => onUpdate({ showResponseCount: v } as Partial<Block>)} />
+        <CheckboxField label="Mostrar respuestas de texto" checked={showTextResponses} onChange={(v) => onUpdate({ showTextResponses: v } as Partial<Block>)} />
       </div>
 
       {showTextResponses && (
         <div>
-          <span className="text-xs font-medium text-muted-foreground block mb-1">Text responses per question</span>
+          <span className="text-xs font-medium text-muted-foreground block mb-1">Respuestas de texto por pregunta</span>
           <input type="number" min={1} max={50} value={(b.textResponseLimit as number) || 5}
             onChange={(e) => onUpdate({ textResponseLimit: parseInt(e.target.value) || 5 } as Partial<Block>)}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" />
@@ -126,8 +126,8 @@ export function SurveyResultsEditor({ block, onUpdate }: { block: Block; onUpdat
       {selected && selected.fields && selected.fields.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs font-medium text-muted-foreground block">Questions to display</span>
-            <button type="button" onClick={() => onUpdate({ fieldIds: undefined } as Partial<Block>)} className="text-xs text-primary hover:underline">All</button>
+            <span className="text-xs font-medium text-muted-foreground block">Preguntas para mostrar</span>
+            <button type="button" onClick={() => onUpdate({ fieldIds: undefined } as Partial<Block>)} className="text-xs text-primary hover:underline">Todos</button>
           </div>
           <ul className="space-y-1 rounded border border-border bg-background px-3 py-2 max-h-48 overflow-y-auto">
             {selected.fields.map((field) => {
@@ -152,7 +152,7 @@ export function SurveyResultsEditor({ block, onUpdate }: { block: Block; onUpdat
         </div>
       )}
 
-      <ColorField label="Accent Color" value={(b.accentColor as string) || ''} onChange={(v) => onUpdate({ accentColor: v } as Partial<Block>)} />
+      <ColorField label="Color de énfasis" value={(b.accentColor as string) || ''} onChange={(v) => onUpdate({ accentColor: v } as Partial<Block>)} />
     </>
   );
 }

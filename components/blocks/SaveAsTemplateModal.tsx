@@ -133,7 +133,7 @@ export function SaveAsTemplateModal({ blocks, onClose, onSaved, endpoint = '/api
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -145,7 +145,7 @@ export function SaveAsTemplateModal({ blocks, onClose, onSaved, endpoint = '/api
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Type</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Tipo</label>
               <select
                 value={scope}
                 onChange={(e) => setScope(e.target.value as 'block' | 'section' | 'global')}
@@ -157,7 +157,7 @@ export function SaveAsTemplateModal({ blocks, onClose, onSaved, endpoint = '/api
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Category</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Categoría</label>
               <input
                 type="text"
                 value={category}
@@ -197,9 +197,7 @@ export function SaveAsTemplateModal({ blocks, onClose, onSaved, endpoint = '/api
               type="button"
               onClick={onClose}
               className="px-4 py-2 border border-border text-foreground rounded-md hover:bg-accent text-sm"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </form>
       </div>

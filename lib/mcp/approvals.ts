@@ -420,6 +420,20 @@ export async function applyPendingChange(change: typeof mcpPendingChanges.$infer
     }
 
     // ── SITES ────────────────────────────────────────────────────────────
+    case 'site:create': {
+      const subdomain = payload.subdomain as string;
+      const [row] = await db.insert(clientWebsites).values({
+        clientId,
+        name: payload.name as string,
+        domain: (payload.domain as string | null | undefined) ?? null,
+        description: (payload.description as string | null | undefined) ?? null,
+        subdomain,
+        vercelDomain: `${subdomain}.simplerdevelopment.com`,
+        deploymentStatus: 'pending',
+        active: true,
+      }).returning();
+      return row;
+    }
     case 'site:update': {
       const id = (payload.id as number | undefined) ?? change.entityId!;
       const [existing] = await db.select().from(clientWebsites)

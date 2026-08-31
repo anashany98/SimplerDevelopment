@@ -392,7 +392,7 @@ describe('sendTransactionalEmail', () => {
     expect(payload.from).toMatch(/^Acme <[^>]+>$/);
     expect(payload.html).toContain('<!DOCTYPE html>');
     expect(payload.html).toContain('<rendered>heading</rendered>');
-    expect(payload.html).toContain('Powered by SimplerDevelopment');
+    expect(payload.html).toContain('Powered by CRM AGENTS');
   });
 
   it('falls back to a generic subject when event has no definition', async () => {

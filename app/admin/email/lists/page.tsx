@@ -142,12 +142,12 @@ export default function EmailListsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
               <input
                 value={form.description}
                 onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
                 className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Optional"
+                placeholder="Opcional"
               />
             </div>
           </div>
@@ -155,9 +155,7 @@ export default function EmailListsPage() {
             <button type="submit" disabled={saving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
               {saving ? 'Creating…' : 'Create List'}
             </button>
-            <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">
-              Cancel
-            </button>
+            <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
           </div>
         </form>
       )}
@@ -169,7 +167,7 @@ export default function EmailListsPage() {
             <h2 className="font-semibold text-foreground">Lists</h2>
           </div>
           {loading ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+            <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : lists.length === 0 ? (
             <p className="p-6 text-sm text-muted-foreground">No lists yet.</p>
           ) : (
@@ -204,7 +202,7 @@ export default function EmailListsPage() {
             </h2>
           </div>
           {!selectedList ? (
-            <p className="p-6 text-sm text-muted-foreground">Click a list to view subscribers.</p>
+            <p className="p-6 text-sm text-muted-foreground">Haz clic en una lista para ver suscriptores.</p>
           ) : (
             <div>
               <form onSubmit={addSubscriber} className="flex gap-2 p-4 border-b border-border">
@@ -213,7 +211,7 @@ export default function EmailListsPage() {
                   type="email"
                   value={subForm.email}
                   onChange={e => setSubForm(p => ({ ...p, email: e.target.value }))}
-                  placeholder="Email address"
+                  placeholder="Dirección de email"
                   className="flex-1 border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <input
@@ -228,7 +226,7 @@ export default function EmailListsPage() {
               </form>
               {subError && <p className="px-4 py-2 text-sm text-red-600">{subError}</p>}
               {subLoading ? (
-                <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+                <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
               ) : subscribers.length === 0 ? (
                 <p className="p-6 text-sm text-muted-foreground">No subscribers yet.</p>
               ) : (

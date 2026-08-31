@@ -60,14 +60,12 @@ export default async function BookingPagesListPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Booking"
-        title="Booking Pages"
-        subtitle="Create scheduling pages so clients can book time with you"
+        eyebrow="Reservas"
+        title="Páginas de reservas"
+        subtitle="Crea páginas de agenda para que tus clientes reserven tiempo contigo"
         actions={
           <Link href="/portal/tools/booking/new" className={pBtnPrimary}>
-            <span className="material-icons text-lg">add</span>
-            New Booking Page
-          </Link>
+            <span className="material-icons text-lg">add</span>Nueva página de reservas</Link>
         }
       />
 
@@ -81,24 +79,20 @@ export default async function BookingPagesListPage() {
             <p className="text-sm font-medium text-foreground">Google Calendar</p>
             <p className="text-xs text-muted-foreground">
               {isCalendarConnected
-                ? 'Connected — new bookings sync to your calendar automatically'
-                : 'Connect to sync bookings and check for conflicts'}
+                ? 'Conectado: las nuevas reservas se sincronizan con tu calendario'
+                : 'Conectar para sincronizar reservas y comprobar conflictos'}
             </p>
           </div>
         </div>
         {isCalendarConnected ? (
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-              <span className="material-icons text-sm">check_circle</span>
-              Connected
-            </span>
+              <span className="material-icons text-sm">check_circle</span>Conectado</span>
             <form action="/api/portal/tools/booking/google/disconnect" method="POST">
               <button
                 type="submit"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
-              >
-                Disconnect
-              </button>
+              >Desconectar</button>
             </form>
           </div>
         ) : (
@@ -107,9 +101,7 @@ export default async function BookingPagesListPage() {
             href="/api/portal/tools/booking/google/auth"
             className={pBtnGhost}
           >
-            <span className="material-icons text-lg">link</span>
-            Connect
-          </a>
+            <span className="material-icons text-lg">link</span>Conectar</a>
         )}
       </div>
 
@@ -121,24 +113,20 @@ export default async function BookingPagesListPage() {
             <p className="text-sm font-medium text-foreground">Zoom</p>
             <p className="text-xs text-muted-foreground">
               {isZoomConnected
-                ? 'Connected — Zoom meetings are auto-created for bookings'
-                : 'Connect to automatically create Zoom meetings for bookings'}
+                ? 'Conectado: las reuniones de Zoom se crean automáticamente'
+                : 'Conecta para crear reuniones de Zoom automáticamente'}
             </p>
           </div>
         </div>
         {isZoomConnected ? (
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-              <span className="material-icons text-sm">check_circle</span>
-              Connected
-            </span>
+              <span className="material-icons text-sm">check_circle</span>Conectado</span>
             <form action="/api/portal/tools/booking/zoom/disconnect" method="POST">
               <button
                 type="submit"
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
-              >
-                Disconnect
-              </button>
+              >Desconectar</button>
             </form>
           </div>
         ) : (
@@ -147,20 +135,18 @@ export default async function BookingPagesListPage() {
             href="/api/portal/tools/booking/zoom/auth"
             className={pBtnGhost}
           >
-            <span className="material-icons text-lg">link</span>
-            Connect
-          </a>
+            <span className="material-icons text-lg">link</span>Conectar</a>
         )}
       </div>
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {[
-          { href: '/portal/tools/booking/calendar', icon: 'calendar_month', label: 'Calendar', desc: 'Combined view' },
-          { href: '/portal/tools/booking/analytics', icon: 'bar_chart', label: 'Analytics', desc: 'Revenue & insights' },
-          { href: '/portal/tools/booking/checkin', icon: 'qr_code_scanner', label: 'Check-in', desc: 'Scan & manage' },
-          { href: '/portal/tools/booking/quotes', icon: 'request_quote', label: 'Quotes', desc: 'Custom pricing' },
-          { href: '/portal/tools/gift-certificates', icon: 'card_giftcard', label: 'Gift Certs', desc: 'Manage certificates' },
+          { href: '/portal/tools/booking/calendar', icon: 'calendar_month', label: 'Calendario', desc: 'Vista combinada' },
+          { href: '/portal/tools/booking/analytics', icon: 'bar_chart', label: 'Analíticas', desc: 'Ingresos y análisis' },
+          { href: '/portal/tools/booking/checkin', icon: 'qr_code_scanner', label: 'Registro de llegada', desc: 'Escanea y gestiona' },
+          { href: '/portal/tools/booking/quotes', icon: 'request_quote', label: 'Cotizaciones', desc: 'Precios personalizados' },
+          { href: '/portal/tools/gift-certificates', icon: 'card_giftcard', label: 'Certificados de regalo', desc: 'Gestionar certificados' },
         ].map((action) => (
           <Link
             key={action.href}
@@ -178,18 +164,14 @@ export default async function BookingPagesListPage() {
       {pages.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-10 text-center space-y-4">
           <span className="material-icons text-5xl text-muted-foreground/50">calendar_month</span>
-          <h2 className="text-lg font-semibold text-foreground">No booking pages yet</h2>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Create your first booking page to let clients schedule meetings with you.
-            Set your availability, duration, and custom questions.
-          </p>
+          <h2 className="text-lg font-semibold text-foreground">Aún no hay páginas de reservas</h2>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">Crea tu primera página de reservas para que tus clientes agenden reuniones contigo.
+            Define tu disponibilidad, duración y preguntas personalizadas.</p>
           <Link
             href="/portal/tools/booking/new"
             className={pBtnPrimary}
           >
-            <span className="material-icons text-lg">add_circle</span>
-            Create Your First Booking Page
-          </Link>
+            <span className="material-icons text-lg">add_circle</span>Crear tu primera página de reservas</Link>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -224,9 +206,7 @@ export default async function BookingPagesListPage() {
                       {page.active ? 'active' : 'inactive'}
                     </span>
                     {!page.active && (
-                      <span className="text-xs text-muted-foreground text-right leading-tight max-w-[14rem]">
-                        New booking pages are reviewed before going live — usually within a few hours
-                      </span>
+                      <span className="text-xs text-muted-foreground text-right leading-tight max-w-[14rem]">Las nuevas páginas de reservas se revisan antes de publicarse, normalmente en unas horas</span>
                     )}
                   </div>
                 </div>
@@ -258,10 +238,8 @@ export default async function BookingPagesListPage() {
         <span className="material-icons text-primary mt-0.5">tips_and_updates</span>
         <div className="text-sm text-muted-foreground">
           <p className="font-medium text-foreground">Tips</p>
-          <p>
-            Connect Google Calendar to automatically check for conflicts and add new bookings to your calendar.
-            Share your booking link with clients or embed it on your website.
-          </p>
+          <p>Conecta Google Calendar para comprobar conflictos automáticamente y añadir nuevas reservas a tu calendario.
+            Comparte tu enlace de reservas con clientes o insértalo en tu sitio web.</p>
         </div>
       </div>
     </div>

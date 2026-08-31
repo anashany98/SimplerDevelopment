@@ -1,7 +1,7 @@
 /**
  * SD Chat — Brain API types
  *
- * Mirrors the response shapes returned by the SimplerDevelopment portal at
+ * Mirrors the response shapes returned by the CRM AGENTS portal at
  * `/api/portal/brain/*`. These types match what the routes actually return
  * (Drizzle `$inferSelect` rows, slim list projections, search hits) — not
  * the mobile UI's pre-existing mock shapes (those live in `lib/mock/brain.ts`

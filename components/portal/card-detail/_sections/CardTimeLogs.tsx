@@ -103,9 +103,7 @@ export function CardTimeLogs({
             <button
               onClick={() => setShowTimeForm(false)}
               className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -131,7 +129,7 @@ export function CardTimeLogs({
           ))}
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground italic">No time logged yet.</p>
+        <p className="text-xs text-muted-foreground italic">Aún no hay tiempo registrado.</p>
       )}
     </div>
   );

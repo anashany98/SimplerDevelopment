@@ -47,7 +47,7 @@ export default async function ProjectsOverviewWidget({
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{activeCount}</span>
         <span className="ml-2 text-sm text-muted-foreground">
-          active project{activeCount !== 1 ? 's' : ''}
+          proyecto activo{activeCount !== 1 ? 's' : ''}
         </span>
       </div>
       {recent.length === 0 ? (
@@ -84,7 +84,7 @@ export default async function ProjectsOverviewWidget({
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
         >
           <span className="material-icons text-sm">folder_open</span>
-          View all projects
+          Ver todos los proyectos
         </Link>
       </div>
     </div>

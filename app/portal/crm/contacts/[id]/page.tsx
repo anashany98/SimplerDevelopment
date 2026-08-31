@@ -63,7 +63,7 @@ interface Deal {
 
 const activityTypes = [
   { value: 'call', label: 'Llamada', icon: 'phone' },
-  { value: 'email', label: 'Email', icon: 'mail' },
+  { value: 'email', label: 'Correo', icon: 'mail' },
   { value: 'meeting', label: 'Reunión', icon: 'groups' },
   { value: 'note', label: 'Nota', icon: 'sticky_note_2' },
   { value: 'task', label: 'Tarea', icon: 'task_alt' },
@@ -482,7 +482,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Correo</label>
               <input
                 type="email"
                 value={editForm.email}
@@ -491,7 +491,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Phone</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Teléfono</label>
               <input
                 value={editForm.phone}
                 onChange={e => setEditForm(f => ({ ...f, phone: e.target.value }))}
@@ -517,7 +517,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Company</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Empresa</label>
               <CrmCompanyTypeaheadPicker
                 value={editForm.companyId}
                 selectedLabel={editCompanyLabel}
@@ -529,7 +529,7 @@ export default function CrmContactDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
               <select
                 value={editForm.status}
                 onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
@@ -542,7 +542,7 @@ export default function CrmContactDetailPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Source</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Fuente</label>
               <select
                 value={editForm.source}
                 onChange={e => setEditForm(f => ({ ...f, source: e.target.value }))}
@@ -555,7 +555,7 @@ export default function CrmContactDetailPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Address</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Dirección</label>
               <input
                 value={editForm.address}
                 onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))}
@@ -630,9 +630,7 @@ export default function CrmContactDetailPage() {
               type="button"
               onClick={() => setShowEmailForm(false)}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={emailSending}

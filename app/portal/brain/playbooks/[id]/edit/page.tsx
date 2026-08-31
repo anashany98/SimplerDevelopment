@@ -335,9 +335,7 @@ export default function PlaybookEditPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -374,7 +372,7 @@ export default function PlaybookEditPage({
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">edit_note</span>
@@ -401,7 +399,7 @@ export default function PlaybookEditPage({
 
       {/* Metadata */}
       <section className={pCardPad}>
-        <h2 className={`${pSectionTitle} mb-3`}>Details</h2>
+        <h2 className={`${pSectionTitle} mb-3`}>Detalles</h2>
         <PlaybookForm
           key={playbook.id}
           mode="edit"
@@ -423,7 +421,7 @@ export default function PlaybookEditPage({
             </span>
           </h2>
           <p className="text-[11px] text-muted-foreground">
-            Drag to reorder. Changes save automatically.
+            Drag to reorder. Changes save automátically.
           </p>
         </div>
 

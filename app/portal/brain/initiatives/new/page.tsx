@@ -163,7 +163,7 @@ export default function NewInitiativePage() {
           Initiatives
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">flag</span>
@@ -222,7 +222,7 @@ export default function NewInitiativePage() {
                     type="button"
                     onClick={() => removeGoal(g.key)}
                     className="p-1 text-muted-foreground hover:text-destructive rounded"
-                    aria-label="Remove this goal"
+                    aria-label="Quitar este objetivo"
                   >
                     <span className="material-icons text-sm">close</span>
                   </button>
@@ -232,7 +232,7 @@ export default function NewInitiativePage() {
                 type="text"
                 value={g.title}
                 onChange={(e) => updateGoal(g.key, { title: e.target.value })}
-                placeholder="Goal title (e.g. Reduce time-to-onboard by 30%)"
+                placeholder="Título del objetivo (p. ej., reducir el tiempo de incorporación en un 30 %)"
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
               />
               <textarea
@@ -258,7 +258,7 @@ export default function NewInitiativePage() {
                   </select>
                 </label>
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Target</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Objetivo</span>
                   <input
                     type="number"
                     step="any"
@@ -268,7 +268,7 @@ export default function NewInitiativePage() {
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Current</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Actual</span>
                   <input
                     type="number"
                     step="any"

@@ -68,7 +68,7 @@ export function CardChecklist({
                   <button
                     onClick={() => removeChecklistItem(item.id)}
                     className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
-                    aria-label="Delete item"
+                    aria-label="Eliminar elemento"
                   >
                     <span className="material-icons text-sm">close</span>
                   </button>
@@ -87,7 +87,7 @@ export function CardChecklist({
             onKeyDown={e => {
               if (e.key === 'Enter') addChecklist();
             }}
-            placeholder="Add an item…"
+            placeholder="Añade un elemento…"
             maxLength={500}
             className="flex-1 px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
@@ -95,9 +95,7 @@ export function CardChecklist({
             onClick={addChecklist}
             disabled={!newChecklistText.trim()}
             className="px-3 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
-          >
-            Add
-          </button>
+          >Añadir</button>
         </div>
       )}
     </div>

@@ -53,12 +53,12 @@ export default function ProjectAutomationsPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <PortalPageHeader
-        eyebrow="Projects"
-        title="Automations"
+        eyebrow="Proyectos"
+        title="Automatizaciones"
         actions={
           <Link href="/portal/projects" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
-            Back to Projects
+            Volver a Proyectos
           </Link>
         }
       />
@@ -66,8 +66,8 @@ export default function ProjectAutomationsPage() {
       <ProductAutomationSettings
         productScope="projects"
         presets={PROJECT_AUTOMATION_PRESETS}
-        title="Project Automations"
-        description="Automate notifications and workflows for your projects and tasks"
+        title="Automatizaciones de proyectos"
+        description="Automatiza notificaciones y flujos de trabajo para tus proyectos y tareas"
       />
     </div>
   );

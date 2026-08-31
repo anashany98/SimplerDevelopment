@@ -21,7 +21,7 @@ const stateConfig: Record<string, { icon: string; color: string; label: string }
   BUILDING: { icon: 'pending', color: 'text-blue-500', label: 'Building' },
   QUEUED: { icon: 'schedule', color: 'text-muted-foreground', label: 'Queued' },
   ERROR: { icon: 'error', color: 'text-red-500', label: 'Error' },
-  CANCELED: { icon: 'cancel', color: 'text-muted-foreground', label: 'Canceled' },
+  CANCELED: { icon: 'cancel', color: 'text-muted-foreground', label: 'Cancelado' },
 };
 
 function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId: string }) {
@@ -44,7 +44,7 @@ function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId
     return (
       <div className="px-5 py-3 flex items-center gap-2 text-muted-foreground">
         <span className="material-icons text-sm animate-spin">refresh</span>
-        <span className="text-xs">Loading logs...</span>
+        <span className="text-xs">Cargando registros...</span>
       </div>
     );
   }
@@ -54,7 +54,7 @@ function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId
   }
 
   if (logs.length === 0) {
-    return <p className="px-5 py-3 text-xs text-muted-foreground">No logs available.</p>;
+    return <p className="px-5 py-3 text-xs text-muted-foreground">No hay registros disponibles.</p>;
   }
 
   return (
@@ -97,7 +97,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
       <div className="bg-card border border-border rounded-xl p-5">
         <div className="flex items-center gap-2 text-muted-foreground">
           <span className="material-icons animate-spin text-lg">refresh</span>
-          <span className="text-sm">Loading deployments...</span>
+          <span className="text-sm">Cargando despliegues...</span>
         </div>
       </div>
     );
@@ -107,7 +107,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
     return (
       <div className="bg-card border border-border rounded-xl px-5 py-8 text-center">
         <span className="material-icons text-3xl text-muted-foreground/50">rocket_launch</span>
-        <p className="mt-2 text-sm text-muted-foreground">No deployments yet — deploy your website to see its history here.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Todavía no hay despliegues. Publica tu web para ver su historial aquí.</p>
       </div>
     );
   }
@@ -153,7 +153,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-muted-foreground hover:text-primary transition-colors"
-                      title="Visit"
+                      title="Visitar"
                     >
                       <span className="material-icons text-base">open_in_new</span>
                     </a>

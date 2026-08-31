@@ -173,7 +173,21 @@ export async function resolveClientApiKey(opts: ResolveOptions): Promise<Resolve
   }
 
   if (!resolved) {
-    const platform = getPlatformKey(provider);
+    let platform = getPlatformKey(provider);
+    if (!platform && provider === 'anthropic') {
+      // Local-AI deployment (solo operator, no Claude key): every AI task is
+      // remapped to an OpenAI-compatible local server via AI_MODEL__<task>
+      // (lib/ai/models.ts). Seam call sites that resolve an 'anthropic' key
+      // purely for BYOK-vs-platform attribution (nlp-parser, branding routes,
+      // chat/stream preflight, …) must not hard-fail before they hand off to
+      // the seam, which resolves the *chosen* provider itself. Serve the
+      // local key instead; the value is never used against api.anthropic.com
+      // on a fully-remapped deployment. Gated on OPENAI_BASE_URL so classic
+      // Anthropic deployments keep the loud error.
+      if (process.env.OPENAI_BASE_URL) {
+        platform = getPlatformKey('openai');
+      }
+    }
     if (!platform) {
       const envVar =
         provider === 'anthropic' ? 'ANTHROPIC_API_KEY'

@@ -33,7 +33,7 @@ const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
     settings: [
       {
         key: 'reportDelay',
-        label: 'Check results after',
+        label: 'Revisar resultados después de',
         type: 'select',
         options: [
           { value: '86400', label: '1 day' },
@@ -63,7 +63,7 @@ const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
     settings: [
       {
         key: 'reEngageDelay',
-        label: 'Remind after',
+        label: 'Recordar después de',
         type: 'select',
         options: [
           { value: '259200', label: '3 days' },
@@ -91,36 +91,32 @@ export default function EmailSettingsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <PortalPageHeader
-        eyebrow="Email"
-        title="Settings"
-        subtitle="Configure defaults and automations for your email marketing"
+        eyebrow="Correo"
+        title="Ajustes"
+        subtitle="Configura valores predeterminados y automatizaciones para tu email marketing"
       />
 
       {/* Sender Defaults */}
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className="font-semibold flex items-center gap-2">
-          <span className="material-icons text-lg text-primary">alternate_email</span>
-          Default Sender
-        </h2>
-        <p className="text-sm text-muted-foreground">Set default sender details for new campaigns</p>
+          <span className="material-icons text-lg text-primary">alternate_email</span>Remitente predeterminado</h2>
+        <p className="text-sm text-muted-foreground">Define los datos del remitente por defecto para nuevas campañas</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-medium text-muted-foreground">From Name</label>
-            <input value={defaultFromName} onChange={e => setDefaultFromName(e.target.value)} placeholder="Your Company Name" className={`mt-1 ${pInput}`} />
+            <label className="text-xs font-medium text-muted-foreground">Nombre del remitente</label>
+            <input value={defaultFromName} onChange={e => setDefaultFromName(e.target.value)} placeholder="El nombre de tu empresa" className={`mt-1 ${pInput}`} />
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">From Email</label>
+            <label className="text-xs font-medium text-muted-foreground">Email del remitente</label>
             <input value={defaultFromEmail} onChange={e => setDefaultFromEmail(e.target.value)} placeholder="hello@yourdomain.com" className={`mt-1 ${pInput}`} />
           </div>
         </div>
         <div>
-          <label className="text-xs font-medium text-muted-foreground">Reply-To Email</label>
+          <label className="text-xs font-medium text-muted-foreground">Email de respuesta (Reply-To)</label>
           <input value={defaultReplyTo} onChange={e => setDefaultReplyTo(e.target.value)} placeholder="replies@yourdomain.com" className={`mt-1 ${pInput}`} />
         </div>
         <p className="text-xs text-muted-foreground flex items-center gap-1">
-          <span className="material-icons text-xs">info</span>
-          From email must use a verified sending domain
-        </p>
+          <span className="material-icons text-xs">info</span>El correo del remitente debe usar un dominio de envío verificado</p>
       </div>
 
       {/* Automations */}
@@ -128,7 +124,7 @@ export default function EmailSettingsPage() {
         <ProductAutomationSettings
           productScope="email"
           presets={EMAIL_AUTOMATION_PRESETS}
-          title="Email Automations"
+          title="Automatizaciones de email"
           description="Automate subscriber engagement and campaign follow-ups"
         />
       </div>

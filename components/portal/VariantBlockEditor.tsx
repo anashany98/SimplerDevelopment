@@ -74,8 +74,8 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
   text:    [{ key: 'content', label: 'Text content', kind: 'textarea' }],
   heading: [{ key: 'content', label: 'Heading text', kind: 'text' }],
   quote:   [
-    { key: 'content', label: 'Quote', kind: 'textarea' },
-    { key: 'author',  label: 'Author', kind: 'text' },
+    { key: 'content', label: 'Cita', kind: 'textarea' },
+    { key: 'author',  label: 'Autor', kind: 'text' },
     { key: 'citation', label: 'Citation', kind: 'text' },
   ],
   button: [
@@ -83,71 +83,71 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
     { key: 'url',  label: 'Button URL', kind: 'url' },
   ],
   image: [
-    { key: 'url', label: 'Image URL', kind: 'url' },
+    { key: 'url', label: 'URL de imagen', kind: 'url' },
     { key: 'alt', label: 'Alt text', kind: 'text' },
   ],
   video: [
     { key: 'url',     label: 'Video URL', kind: 'url' },
-    { key: 'caption', label: 'Caption', kind: 'text' },
+    { key: 'caption', label: 'Leyenda', kind: 'text' },
   ],
   youtube: [
     { key: 'url',     label: 'YouTube URL', kind: 'url' },
-    { key: 'caption', label: 'Caption', kind: 'text' },
+    { key: 'caption', label: 'Leyenda', kind: 'text' },
   ],
   hero: [
-    { key: 'title',              label: 'Title', kind: 'text' },
-    { key: 'subtitle',           label: 'Subtitle', kind: 'text' },
-    { key: 'description',        label: 'Description', kind: 'textarea' },
+    { key: 'title',              label: 'Título', kind: 'text' },
+    { key: 'subtitle',           label: 'Subtítulo', kind: 'text' },
+    { key: 'description',        label: 'Descripción', kind: 'textarea' },
     { key: 'ctaText',            label: 'CTA button text', kind: 'text' },
     { key: 'ctaLink',            label: 'CTA button URL', kind: 'url' },
     { key: 'secondaryCtaText',   label: 'Secondary CTA text', kind: 'text' },
     { key: 'secondaryCtaLink',   label: 'Secondary CTA URL', kind: 'url' },
   ],
   cta: [
-    { key: 'title',              label: 'Title', kind: 'text' },
-    { key: 'description',        label: 'Description', kind: 'textarea' },
+    { key: 'title',              label: 'Título', kind: 'text' },
+    { key: 'description',        label: 'Descripción', kind: 'textarea' },
     { key: 'primaryButtonText',  label: 'Primary button text', kind: 'text' },
     { key: 'primaryButtonUrl',   label: 'Primary button URL', kind: 'url' },
     { key: 'secondaryButtonText', label: 'Secondary button text', kind: 'text' },
     { key: 'secondaryButtonUrl', label: 'Secondary button URL', kind: 'url' },
   ],
   'services-grid': [
-    { key: 'overline',    label: 'Overline', kind: 'text' },
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Section description', kind: 'textarea' },
+    { key: 'overline',    label: 'Antetítulo', kind: 'text' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción de sección', kind: 'textarea' },
   ],
   testimonial: [
     { key: 'content', label: 'Quote text', kind: 'textarea' },
     { key: 'quote',   label: 'Quote text (alt field)', kind: 'textarea' },
     { key: 'author',  label: 'Author name', kind: 'text' },
     { key: 'role',    label: 'Author role', kind: 'text' },
-    { key: 'company', label: 'Company', kind: 'text' },
+    { key: 'company', label: 'Empresa', kind: 'text' },
   ],
   'featured-content': [
-    { key: 'title',       label: 'Title', kind: 'text' },
-    { key: 'description', label: 'Description', kind: 'textarea' },
+    { key: 'title',       label: 'Título', kind: 'text' },
+    { key: 'description', label: 'Descripción', kind: 'textarea' },
     { key: 'ctaText',     label: 'CTA text', kind: 'text' },
     { key: 'ctaLink',     label: 'CTA URL', kind: 'url' },
   ],
   'card-grid': [
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Section description', kind: 'textarea' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción de sección', kind: 'textarea' },
   ],
   'bento-grid': [
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Section description', kind: 'textarea' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción de sección', kind: 'textarea' },
   ],
   'metric-cards': [
-    { key: 'title',    label: 'Section title', kind: 'text' },
-    { key: 'subtitle', label: 'Subtitle', kind: 'text' },
+    { key: 'title',    label: 'Título de sección', kind: 'text' },
+    { key: 'subtitle', label: 'Subtítulo', kind: 'text' },
   ],
   'team-showcase': [
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Description', kind: 'textarea' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción', kind: 'textarea' },
   ],
   'team-flip-grid': [
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Description', kind: 'textarea' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción', kind: 'textarea' },
   ],
   'store-banner': [
     { key: 'title',       label: 'Banner headline', kind: 'text' },
@@ -156,8 +156,8 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
     { key: 'ctaLink',     label: 'CTA URL', kind: 'url' },
   ],
   timeline: [
-    { key: 'title',       label: 'Section title', kind: 'text' },
-    { key: 'description', label: 'Section description', kind: 'textarea' },
+    { key: 'title',       label: 'Título de sección', kind: 'text' },
+    { key: 'description', label: 'Descripción de sección', kind: 'textarea' },
   ],
 };
 
@@ -168,9 +168,9 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     listKey: 'slides',
     label: 'Slides',
     fields: [
-      { key: 'title',            label: 'Title', kind: 'text' },
-      { key: 'subtitle',         label: 'Subtitle', kind: 'text' },
-      { key: 'description',      label: 'Description', kind: 'textarea' },
+      { key: 'title',            label: 'Título', kind: 'text' },
+      { key: 'subtitle',         label: 'Subtítulo', kind: 'text' },
+      { key: 'description',      label: 'Descripción', kind: 'textarea' },
       { key: 'ctaText',          label: 'CTA text', kind: 'text' },
       { key: 'ctaLink',          label: 'CTA URL', kind: 'url' },
       { key: 'secondaryCtaText', label: 'Secondary CTA text', kind: 'text' },
@@ -179,19 +179,19 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
   },
   'services-grid': {
     listKey: 'services',
-    label: 'Services',
+    label: 'Servicios',
     fields: [
-      { key: 'title',       label: 'Title', kind: 'text' },
-      { key: 'description', label: 'Description', kind: 'textarea' },
+      { key: 'title',       label: 'Título', kind: 'text' },
+      { key: 'description', label: 'Descripción', kind: 'textarea' },
       { key: 'link',        label: 'Link URL', kind: 'url' },
       { key: 'linkText',    label: 'Link text', kind: 'text' },
     ],
   },
   stats: {
     listKey: 'stats',
-    label: 'Stats',
+    label: 'Estadísticas',
     fields: [
-      { key: 'value', label: 'Value', kind: 'text' },
+      { key: 'value', label: 'Valor', kind: 'text' },
       { key: 'label', label: 'Label', kind: 'text' },
     ],
   },
@@ -199,8 +199,8 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     listKey: 'cards',
     label: 'Cards',
     fields: [
-      { key: 'title',       label: 'Title', kind: 'text' },
-      { key: 'description', label: 'Description', kind: 'textarea' },
+      { key: 'title',       label: 'Título', kind: 'text' },
+      { key: 'description', label: 'Descripción', kind: 'textarea' },
     ],
   },
   'flip-card-grid': {
@@ -216,7 +216,7 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     listKey: 'metrics',
     label: 'Metrics',
     fields: [
-      { key: 'value',  label: 'Value', kind: 'text' },
+      { key: 'value',  label: 'Valor', kind: 'text' },
       { key: 'label',  label: 'Label', kind: 'text' },
       { key: 'change', label: 'Change / note', kind: 'text' },
     ],
@@ -225,8 +225,8 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     listKey: 'items',
     label: 'Testimonials',
     fields: [
-      { key: 'content', label: 'Quote', kind: 'textarea' },
-      { key: 'author',  label: 'Author', kind: 'text' },
+      { key: 'content', label: 'Cita', kind: 'textarea' },
+      { key: 'author',  label: 'Autor', kind: 'text' },
       { key: 'role',    label: 'Role', kind: 'text' },
     ],
   },
@@ -235,7 +235,7 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     label: 'Steps',
     fields: [
       { key: 'title',       label: 'Step title', kind: 'text' },
-      { key: 'description', label: 'Description', kind: 'textarea' },
+      { key: 'description', label: 'Descripción', kind: 'textarea' },
     ],
   },
   'logo-strip': {
@@ -243,7 +243,7 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     label: 'Logos',
     fields: [
       { key: 'alt',      label: 'Alt text / name', kind: 'text' },
-      { key: 'imageUrl', label: 'Image URL', kind: 'url' },
+      { key: 'imageUrl', label: 'URL de imagen', kind: 'url' },
     ],
   },
 };

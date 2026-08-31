@@ -26,9 +26,9 @@ export default async function WebsiteAutomationsPage({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Automations & Notifications"
-        subtitle="Configure automated workflows and notification alerts."
+        eyebrow="Sitio web"
+        title="Automatizaciones y notificaciones"
+        subtitle="Configura flujos automatizados y alertas de notificación."
       />
 
       {/* Notifications */}

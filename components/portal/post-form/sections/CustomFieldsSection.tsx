@@ -7,16 +7,16 @@ import type { CustomFieldDef, ManagedField } from '../_lib/types';
 import { generateCustomFieldSlug } from '../_lib/validation';
 
 const FIELD_TYPES = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Textarea' },
-  { value: 'number', label: 'Number' },
-  { value: 'date', label: 'Date' },
-  { value: 'select', label: 'Select' },
-  { value: 'checkbox', label: 'Checkbox' },
+  { value: 'text', label: 'Texto' },
+  { value: 'textarea', label: 'Área de texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'select', label: 'Campo de selección' },
+  { value: 'checkbox', label: 'Casilla' },
   { value: 'url', label: 'URL' },
-  { value: 'email', label: 'Email' },
-  { value: 'image', label: 'Image' },
-  { value: 'user_select', label: 'User Select' },
+  { value: 'email', label: 'Correo' },
+  { value: 'image', label: 'Imagen' },
+  { value: 'user_select', label: 'Selector de usuario' },
   { value: 'repeater', label: 'Repeater' },
   { value: 'group', label: 'Field Group' },
 ];
@@ -118,7 +118,7 @@ export function CustomFieldsSection({
       case 'select':
         return (
           <select value={value} onChange={(e) => onChange(e.target.value)} className={inputClass}>
-            <option value="">Select...</option>
+            <option value="">Seleccionar...</option>
             {(field.options || []).map((opt) => <option key={opt} value={opt}>{opt}</option>)}
           </select>
         );
@@ -164,7 +164,7 @@ export function CustomFieldsSection({
           {!isCollapsed && (
             <div className="p-3 space-y-4 border-t border-border">
               {children.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No sub-fields in this group yet.</p>
+                <p className="text-xs text-muted-foreground">Aún no hay subcampos en este grupo.</p>
               ) : (
                 children.map((child) => (
                   <div key={child.id}>
@@ -206,7 +206,7 @@ export function CustomFieldsSection({
           {!isCollapsed && (
             <div className="p-3 space-y-3 border-t border-border">
               {subFields.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No sub-fields defined for this repeater yet.</p>
+                <p className="text-xs text-muted-foreground">Aún no hay subcampos definidos para este repetidor.</p>
               ) : (
                 <>
                   {rows.map((row, rowIdx) => (
@@ -274,9 +274,7 @@ export function CustomFieldsSection({
         onClick={() => setShowManageFieldsModal(true)}
         className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
       >
-        <span className="material-icons text-base">settings</span>
-        Manage Fields
-      </button>
+        <span className="material-icons text-base">settings</span>Gestionar campos</button>
 
       {showManageFieldsModal && (
         <ManageCustomFieldsModal
@@ -289,8 +287,8 @@ export function CustomFieldsSection({
       {topLevelDefs.length === 0 ? (
         <div className="text-center py-8">
           <span className="material-icons text-3xl text-muted-foreground mb-2 block">input</span>
-          <p className="text-sm text-muted-foreground">No custom fields defined yet.</p>
-          <p className="text-xs text-muted-foreground mt-1">Click &quot;Manage Fields&quot; above to add fields for this post type.</p>
+          <p className="text-sm text-muted-foreground">Aún no hay campos personalizados definidos.</p>
+          <p className="text-xs text-muted-foreground mt-1">Haz clic en &quot;Gestionar campos&quot; arriba para añadir campos a este tipo de contenido.</p>
         </div>
       ) : (
         topLevelDefs.map((field) => renderField(field))
@@ -476,7 +474,7 @@ function ManageCustomFieldsModal({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
           <div>
-            <h3 className="text-base font-semibold text-foreground">Manage Custom Fields</h3>
+            <h3 className="text-base font-semibold text-foreground">Gestionar campos personalizados</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
               Post type: <span className="font-medium capitalize">{postTypeSlug}</span>
             </p>
@@ -508,9 +506,7 @@ function ManageCustomFieldsModal({
                     <h4 className="text-sm font-semibold text-foreground">
                       {editingField ? 'Edit Field' : formData.parentId ? 'New Sub-field' : 'New Field'}
                     </h4>
-                    <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">
-                      Cancel
-                    </button>
+                    <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
                   </div>
 
                   {error && (
@@ -551,7 +547,7 @@ function ManageCustomFieldsModal({
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Field Type *</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de campo *</label>
                       <select
                         value={formData.fieldType}
                         onChange={(e) => setFormData((prev) => ({ ...prev, fieldType: e.target.value }))}
@@ -565,7 +561,7 @@ function ManageCustomFieldsModal({
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Order</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Pedido</label>
                       <input
                         type="number"
                         value={formData.order}
@@ -602,7 +598,7 @@ function ManageCustomFieldsModal({
                       <input
                         value={formData.helpText}
                         onChange={(e) => setFormData((prev) => ({ ...prev, helpText: e.target.value }))}
-                        placeholder="Description for editors"
+                        placeholder="Descripción para los editores"
                         className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
                       />
                     </div>
@@ -616,7 +612,7 @@ function ManageCustomFieldsModal({
                         onChange={(e) => setFormData((prev) => ({ ...prev, required: e.target.checked }))}
                         className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                       />
-                      <span className="text-sm text-foreground">Required</span>
+                      <span className="text-sm text-foreground">Obligatorio</span>
                     </label>
                     <button
                       type="submit"
@@ -636,16 +632,14 @@ function ManageCustomFieldsModal({
                   }}
                   className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
                 >
-                  <span className="material-icons text-base">add</span>
-                  Add Field
-                </button>
+                  <span className="material-icons text-base">add</span>Añadir campo</button>
               )}
 
               {/* Fields list */}
               {topLevelFields.length === 0 && !showForm ? (
                 <div className="text-center py-8">
                   <span className="material-icons text-3xl text-muted-foreground mb-2 block">input</span>
-                  <p className="text-sm text-muted-foreground">No fields defined for this post type yet.</p>
+                  <p className="text-sm text-muted-foreground">Aún no hay campos definidos para este tipo de contenido.</p>
                 </div>
               ) : (
                 <div className="space-y-1">
@@ -699,7 +693,7 @@ function ManageCustomFieldsModal({
                                 type="button"
                                 onClick={() => { toggleGroup(field.id); startAddSubField(field.id); }}
                                 className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary"
-                                title="Add sub-field"
+                                title="Añadir subcampo"
                               >
                                 <span className="material-icons text-base">add</span>
                               </button>
@@ -708,7 +702,7 @@ function ManageCustomFieldsModal({
                               type="button"
                               onClick={() => handleEdit(field)}
                               className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                              title="Edit"
+                              title="Editar"
                             >
                               <span className="material-icons text-base">edit</span>
                             </button>
@@ -716,7 +710,7 @@ function ManageCustomFieldsModal({
                               type="button"
                               onClick={() => handleDelete(field.id)}
                               className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                              title="Delete"
+                              title="Eliminar"
                             >
                               <span className="material-icons text-base">delete</span>
                             </button>
@@ -752,7 +746,7 @@ function ManageCustomFieldsModal({
                                     type="button"
                                     onClick={() => handleEdit(child)}
                                     className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                                    title="Edit"
+                                    title="Editar"
                                   >
                                     <span className="material-icons text-base">edit</span>
                                   </button>
@@ -760,7 +754,7 @@ function ManageCustomFieldsModal({
                                     type="button"
                                     onClick={() => handleDelete(child.id)}
                                     className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                                    title="Delete"
+                                    title="Eliminar"
                                   >
                                     <span className="material-icons text-base">delete</span>
                                   </button>
@@ -784,9 +778,7 @@ function ManageCustomFieldsModal({
             type="button"
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-lg hover:bg-accent"
-          >
-            Done
-          </button>
+          >Listo</button>
         </div>
       </div>
     </div>

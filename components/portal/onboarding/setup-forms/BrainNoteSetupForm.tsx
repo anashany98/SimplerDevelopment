@@ -51,7 +51,7 @@ export function BrainNoteSetupForm({ onCreated }: Props) {
   return (
     <div className="rounded-[13px] border border-primary/30 bg-primary/[0.04] px-[15px] py-[13px] space-y-3">
       <div>
-        <p className="text-[14px] font-semibold leading-snug">Add your first knowledge</p>
+        <p className="text-[14px] font-semibold leading-snug">Añade tu primer conocimiento</p>
         <p className="text-[12.5px] text-muted-foreground mt-0.5">
           Created right here — you can add the details later from Company Brain.
         </p>

@@ -12,9 +12,9 @@ interface PublishingTab {
 
 const TABS: readonly PublishingTab[] = [
   { href: '/portal/publishing/board',       label: 'Board',       icon: 'view_kanban' },
-  { href: '/portal/publishing/calendar',    label: 'Calendar',    icon: 'calendar_month' },
+  { href: '/portal/publishing/calendar',    label: 'Calendario',    icon: 'calendar_month' },
   { href: '/portal/publishing/campaigns',   label: 'Campaigns',   icon: 'campaign' },
-  { href: '/portal/publishing/tags',        label: 'Tags',        icon: 'sell' },
+  { href: '/portal/publishing/tags',        label: 'Etiquetas',        icon: 'sell' },
   { href: '/portal/publishing/permissions', label: 'Permissions', icon: 'lock', adminOnly: true },
 ];
 

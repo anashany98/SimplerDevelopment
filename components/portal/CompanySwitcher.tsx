@@ -10,6 +10,18 @@ interface ClientEntry {
   website: string | null;
 }
 
+const ROLE_LABELS: Record<string, string> = {
+  owner: 'Propietario',
+  admin: 'Administrador',
+  member: 'Miembro',
+  employee: 'Empleado',
+  viewer: 'Espectador',
+};
+
+function roleLabel(role: string): string {
+  return ROLE_LABELS[role] ?? role.charAt(0).toUpperCase() + role.slice(1);
+}
+
 export default function CompanySwitcher() {
   const router = useRouter();
   const [clients, setClients] = useState<ClientEntry[]>([]);
@@ -102,7 +114,7 @@ export default function CompanySwitcher() {
               {open ? 'expand_less' : 'expand_more'}
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground leading-tight capitalize">{activeClient?.role || 'member'}</p>
+          <p className="text-[10px] text-muted-foreground leading-tight">{roleLabel(activeClient?.role || 'member')}</p>
         </div>
       </button>
 
@@ -149,7 +161,7 @@ function DropdownContent({
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-foreground truncate">{active.company}</p>
-                <p className="text-[10px] text-muted-foreground capitalize">{active.role}</p>
+                <p className="text-[10px] text-muted-foreground">{roleLabel(active.role)}</p>
               </div>
               <span className="material-icons text-green-500 text-base shrink-0">check_circle</span>
             </div>
@@ -162,7 +174,7 @@ function DropdownContent({
         <>
           <div className="px-3 pt-2 pb-1">
             <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
-              Switch to
+              Cambiar a
             </p>
           </div>
           <div className="max-h-48 overflow-y-auto pb-1">
@@ -178,7 +190,7 @@ function DropdownContent({
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm text-foreground truncate">{c.company}</p>
-                  <p className="text-[10px] text-muted-foreground capitalize">{c.role}</p>
+                  <p className="text-[10px] text-muted-foreground">{roleLabel(c.role)}</p>
                 </div>
               </button>
             ))}
@@ -194,7 +206,7 @@ function DropdownContent({
           className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
         >
           <span className="material-icons text-sm">group_add</span>
-          Invite people
+          Invitar personas
         </a>
       </div>
     </>

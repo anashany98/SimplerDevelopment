@@ -157,6 +157,17 @@ export const AUTOMATION_EVENTS = {
   'proposal.viewed': 'A proposal is viewed',
   'proposal.accepted': 'A proposal is accepted',
   'proposal.declined': 'A proposal is declined',
+
+  // Omnichannel inbox
+  'conversation.created': 'A new channel conversation is created',
+  'conversation.message_received': 'A normalized inbound message is received',
+  'conversation.message_sent': 'An outbound channel message is sent',
+  'conversation.assigned': 'A conversation is assigned to a user or team',
+  'conversation.closed': 'A conversation is closed',
+  'conversation.ai_handoff': 'AI escalates a conversation to a human',
+  'channel.connected': 'A communication channel is connected',
+  'channel.disconnected': 'A communication channel is disconnected',
+  'channel.error': 'A communication channel enters an error state',
 } as const;
 
 export type AutomationEventType = keyof typeof AUTOMATION_EVENTS;

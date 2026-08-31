@@ -498,7 +498,7 @@ export default function NoteGraphView() {
           <span className="text-muted-foreground">Orphans only</span>
         </label>
 
-        <label className="inline-flex items-center gap-1.5 cursor-pointer select-none" title="Show CRM companies, contacts, deals, and meetings linked to your notes.">
+        <label className="inline-flex items-center gap-1.5 cursor-pointer select-none" title="Muestra empresas, contactos, negocios y reuniones del CRM vinculados a tus notas.">
           <input
             type="checkbox"
             checked={includeCrm}

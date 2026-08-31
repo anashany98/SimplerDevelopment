@@ -1,4 +1,4 @@
-# SimplerDevelopment agents on Mastra — examples wired to the portal MCP
+# CRM AGENTS agents on Mastra — examples wired to the portal MCP
 
 Worked examples of building agents in **Mastra** and connecting them to the
 existing **SimplerDevelopment2026** platform. They rebuild the parent app's
@@ -49,7 +49,7 @@ query → classify (intent + complexity)
 
 ## The key idea: connect, don't re-implement
 
-The SimplerDevelopment portal already exposes ~400 tools over MCP. The agent's
+The CRM AGENTS portal already exposes ~400 tools over MCP. The agent's
 tools are loaded live from that server:
 
 ```ts

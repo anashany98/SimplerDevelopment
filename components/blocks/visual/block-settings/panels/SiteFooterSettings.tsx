@@ -48,9 +48,9 @@ export function SiteFooterBlockSettings({ block, onChange }: { block: SiteFooter
             onChange={(e) => onChange({ brandSize: e.target.value as SiteFooterBlock['brandSize'] })}
             className={inputClass}
           >
-            <option value="sm">Small</option>
+            <option value="sm">Pequeño</option>
             <option value="md">Medium (default)</option>
-            <option value="lg">Large</option>
+            <option value="lg">Grande</option>
           </select>
         </div>
       </div>
@@ -88,7 +88,7 @@ export function SiteFooterBlockSettings({ block, onChange }: { block: SiteFooter
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Background</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Fondo</label>
           <TokenColorPicker value={block.backgroundColor || ''} onChange={(color) => onChange({ backgroundColor: color || undefined })} />
         </div>
         <div>
@@ -107,21 +107,21 @@ export function SiteFooterBlockSettings({ block, onChange }: { block: SiteFooter
           value={block.contactInfo?.address || ''}
           onChange={(e) => onChange({ contactInfo: { ...(block.contactInfo || {}), address: e.target.value || undefined } })}
           className={inputClass}
-          placeholder="Address"
+          placeholder="Dirección"
         />
         <input
           type="text"
           value={block.contactInfo?.phone || ''}
           onChange={(e) => onChange({ contactInfo: { ...(block.contactInfo || {}), phone: e.target.value || undefined } })}
           className={inputClass}
-          placeholder="Phone"
+          placeholder="Teléfono"
         />
         <input
           type="email"
           value={block.contactInfo?.email || ''}
           onChange={(e) => onChange({ contactInfo: { ...(block.contactInfo || {}), email: e.target.value || undefined } })}
           className={inputClass}
-          placeholder="Email"
+          placeholder="Correo"
         />
       </div>
       <div className="border-t border-border pt-4 space-y-2">

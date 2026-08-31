@@ -69,7 +69,7 @@ export default async function HostingStatusWidget({
           {websites.map((site) => {
             const displayDomain =
               site.domain ??
-              (site.subdomain ? `${site.subdomain}.simplerdevelopment.com` : site.name);
+              (site.subdomain ? `${site.subdomain} · CRM AGENTS` : site.name);
             const status = site.deploymentStatus ?? 'pending';
             return (
               <li key={`cw-${site.id}`}>

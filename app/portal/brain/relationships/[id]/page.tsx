@@ -100,9 +100,7 @@ export default function RelationshipDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
   if (!data) {
@@ -123,7 +121,7 @@ export default function RelationshipDetailPage() {
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">{underlying.type === 'company' ? 'business' : 'handshake'}</span>
@@ -165,39 +163,39 @@ export default function RelationshipDetailPage() {
       )}
 
       <div className="grid md:grid-cols-3 gap-4">
-        <Stat label="Open tasks" value={tasks.filter((t) => t.status !== 'done').length} icon="checklist" />
-        <Stat label="Notes" value={meetings.length} icon="forum" />
+        <Stat label="Tareas abiertas" value={tasks.filter((t) => t.status !== 'done').length} icon="checklist" />
+        <Stat label="Notas" value={meetings.length} icon="forum" />
         <Stat label="Linked contacts" value={contacts.length} icon="people" />
       </div>
 
       <Section title="Snapshot" icon="dashboard">
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Priority" htmlFor="relationship-priority">
+          <Field label="Prioridad" htmlFor="relationship-priority">
             <select
               id="relationship-priority"
               value={overlay.priority}
               onChange={(e) => save({ priority: e.target.value })}
               className={pSelect}
             >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="low">Baja</option>
+              <option value="medium">Media</option>
+              <option value="high">Alta</option>
               <option value="critical">Critical</option>
             </select>
           </Field>
-          <Field label="Status" htmlFor="relationship-status">
+          <Field label="Estado" htmlFor="relationship-status">
             <select
               id="relationship-status"
               value={overlay.status}
               onChange={(e) => save({ status: e.target.value })}
               className={pSelect}
             >
-              <option value="active">Active</option>
+              <option value="active">Activo</option>
               <option value="paused">Paused</option>
-              <option value="archived">Archived</option>
+              <option value="archived">Archivado</option>
             </select>
           </Field>
-          <Field label="Next review" htmlFor="relationship-next-review">
+          <Field label="Próxima revisión" htmlFor="relationship-next-review">
             <input
               id="relationship-next-review"
               type="date"
@@ -213,46 +211,46 @@ export default function RelationshipDetailPage() {
               value={overlay.staleAfterDays ?? ''}
               onChange={(e) => save({ staleAfterDays: e.target.value ? parseInt(e.target.value, 10) : null })}
               className={pInput}
-              placeholder="Optional"
+              placeholder="Opcional"
             />
           </Field>
         </div>
       </Section>
 
-      <Section title="Summary" icon="notes">
+      <Section title="Resumen" icon="notes">
         <EditableTextarea
           value={overlay.summary}
           onSave={(v) => save({ summary: v })}
-          placeholder="What is this relationship about?"
+          placeholder="¿De qué trata esta relación?"
           rows={3}
         />
       </Section>
 
-      <Section title="Current priorities" icon="flag">
+      <Section title="Prioridades actuales" icon="flag">
         <EditableTextarea
           value={overlay.currentPriorities}
           onSave={(v) => save({ currentPriorities: v })}
-          placeholder="What's the focus right now?"
+          placeholder="¿Cuál es el enfoque ahora?"
           rows={3}
         />
       </Section>
 
-      <Section title="Open loops" icon="hourglass_empty">
+      <Section title="Temas abiertos" icon="hourglass_empty">
         <EditableTextarea
           value={overlay.openLoops}
           onSave={(v) => save({ openLoops: v })}
-          placeholder="What's still hanging? Outstanding questions, awaited info, etc."
+          placeholder="¿Qué falta por resolver? Preguntas abiertas, información pendiente, etc."
           rows={3}
         />
       </Section>
 
       <Section
-        title="Open tasks"
+        title="Tareas abiertas"
         icon="checklist"
-        action={<Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">All tasks</Link>}
+        action={<Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">Todas las tareas</Link>}
       >
         {tasks.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No tasks linked to this relationship yet.</p>
+          <p className="text-xs text-muted-foreground">Aún no hay tareas vinculadas a esta relación.</p>
         ) : (
           <ul className="divide-y divide-border">
             {tasks.slice(0, 10).map((t) => (
@@ -274,10 +272,10 @@ export default function RelationshipDetailPage() {
       <Section
         title="Recent notes"
         icon="forum"
-        action={<Link href="/portal/brain/communications/new" className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"><span className="material-icons text-sm">add</span>New</Link>}
+        action={<Link href="/portal/brain/communications/new" className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"><span className="material-icons text-sm">add</span>Nuevo</Link>}
       >
         {meetings.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No notes linked to this relationship yet.</p>
+          <p className="text-xs text-muted-foreground">Aún no hay notas vinculadas a esta relación.</p>
         ) : (
           <ul className="divide-y divide-border">
             {meetings.slice(0, 10).map((m) => (
@@ -296,7 +294,7 @@ export default function RelationshipDetailPage() {
       </Section>
 
       {contacts.length > 0 && (
-        <Section title="People" icon="people">
+        <Section title="Personas" icon="people">
           <ul className="space-y-1.5">
             {contacts.map((c) => (
               <li key={c.id}>
@@ -388,15 +386,11 @@ function EditableTextarea({ value, onSave, placeholder, rows = 4 }: {
           <button
             onClick={() => onSave(draft.trim() || null)}
             className={pBtnSoft}
-          >
-            Save
-          </button>
+          >Guardar</button>
           <button
             onClick={() => setDraft(value ?? '')}
             className={pBtnGhost}
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         </div>
       )}
     </div>

@@ -2,7 +2,7 @@
   "name": "sd-brain-extension",
   "private": true,
   "version": "0.1.0",
-  "description": "SimplerDevelopment Brain — Chrome extension for capturing pages, running AI extraction, and searching the Company Brain + CRM.",
+  "description": "CRM AGENTS Brain — Chrome extension for capturing pages, running AI extraction, and searching the Company Brain + CRM.",
   "type": "module",
   "scripts": {
     "prepare": "node scripts/gen-icons.mjs",

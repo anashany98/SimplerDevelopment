@@ -31,14 +31,14 @@ const NAV: NavItem[] = [
   { path: 'entries',         label: 'Entries',       icon: 'article', matches: ['posts'] },
   { path: 'content-types',   label: 'Content Types', icon: 'description' },
   { path: 'taxonomy',        label: 'Taxonomy',      icon: 'account_tree', matches: ['categories', 'tags'] },
-  { path: 'navigation',      label: 'Navigation',    icon: 'menu' },
+  { path: 'navigation',      label: 'Navegación',    icon: 'menu' },
   { path: 'branding',        label: 'Branding',      icon: 'palette' },
   { path: 'code',            label: 'Code',          icon: 'code' },
-  { path: 'calendar',        label: 'Calendar',      icon: 'calendar_month' },
-  { path: 'automations',     label: 'Automations',   icon: 'bolt' },
-  { path: 'email',           label: 'Email',         icon: 'mail' },
+  { path: 'calendar',        label: 'Calendario',      icon: 'calendar_month' },
+  { path: 'automations',     label: 'Automatizaciones',   icon: 'bolt' },
+  { path: 'email',           label: 'Correo',         icon: 'mail' },
   { path: 'store',           label: 'Store',         icon: 'shopping_cart' },
-  { path: 'settings',        label: 'Settings',      icon: 'settings' },
+  { path: 'settings',        label: 'Ajustes',      icon: 'settings' },
 ];
 
 // Routes that take over the full viewport (their own toolbar + iframe). The
@@ -87,7 +87,7 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
       : site.subdomain
         ? `https://${site.subdomain}.simplerdevelopment.com`
         : null;
-  const subtitle = site.domain || site.vercelDomain || (site.subdomain ? `${site.subdomain}.simplerdevelopment.com` : '');
+  const subtitle = site.domain || site.vercelDomain || (site.subdomain ? `${site.subdomain} · CRM AGENTS` : '');
 
   return (
     <div className="-mx-6 -mt-6 mb-6 sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
@@ -97,7 +97,7 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
           <Link
             href="/portal/websites"
             className="flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
-            title="All websites"
+            title="Todos los sitios"
           >
             <span className="material-icons text-base">arrow_back</span>
           </Link>

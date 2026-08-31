@@ -290,9 +290,7 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
                 onClick={onCancel}
                 disabled={submitting}
                 className="px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             ) : null}
             <button
               type="button"

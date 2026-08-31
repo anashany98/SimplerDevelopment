@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     let verificationSent = false;
     try {
       await sendEmail({
-        from: process.env.RESEND_FROM_EMAIL ?? 'SimplerDevelopment <noreply@simplerdevelopment.com>',
+        from: process.env.RESEND_FROM_EMAIL ?? 'CRM AGENTS <noreply@simplerdevelopment.com>',
         to: body.email.trim().toLowerCase(),
         subject: 'Verify your email to get started',
         html: [

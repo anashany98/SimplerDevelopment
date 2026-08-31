@@ -140,7 +140,7 @@ export default function UsageMeters() {
     return (
       <div className="bg-card border border-border rounded-xl p-12 text-center">
         <span className="material-icons text-5xl text-muted-foreground/40">data_usage</span>
-        <h2 className="mt-4 font-semibold text-foreground">No metered usage yet</h2>
+        <h2 className="mt-4 font-semibold text-foreground">Aún no hay uso medido</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Usage meters appear here once you have active modules with included allowances.
         </p>
@@ -188,7 +188,7 @@ export default function UsageMeters() {
         {/* Credit balance */}
         <div className="flex items-center justify-between mb-4 p-3 bg-muted/50 rounded-lg">
           <div>
-            <p className="text-xs text-muted-foreground">Current balance</p>
+            <p className="text-xs text-muted-foreground">Saldo actual</p>
             <p className="text-lg font-semibold text-foreground tabular-nums">
               {formatNumber(creditBalance.balance)}
               <span className="text-sm font-normal text-muted-foreground ml-1">tokens</span>

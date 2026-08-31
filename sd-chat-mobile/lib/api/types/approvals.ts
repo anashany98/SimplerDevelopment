@@ -1,7 +1,7 @@
 /**
  * SD Chat — Approvals API types
  *
- * Mirrors the response shape returned by the SimplerDevelopment portal at
+ * Mirrors the response shape returned by the CRM AGENTS portal at
  *  - GET   /api/portal/approvals               → list, with `?status=pending|applied|rejected|failed`
  *  - GET   /api/portal/approvals/[id]          → single change w/ submitter info
  *  - POST  /api/portal/approvals/[id]/approve  → apply + mark applied

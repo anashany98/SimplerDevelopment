@@ -188,7 +188,7 @@ touch app/\(pages\)/new-page/page.tsx
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'New Page | SimplerDevelopment',
+  title: 'New Page | CRM AGENTS',
   description: 'Page description',
 };
 
@@ -368,7 +368,7 @@ vercel --prod
 
 1. Go to https://builder.io
 2. Sign up for free account
-3. Create new space for "SimplerDevelopment"
+3. Create new space for "CRM AGENTS"
 
 ### 2. Create Content Models
 

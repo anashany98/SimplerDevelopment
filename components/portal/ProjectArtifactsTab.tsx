@@ -248,7 +248,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                   type="text"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="Search artifacts…"
+                  placeholder="Buscar artefactos…"
                   className="w-full px-3 py-1.5 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                   autoFocus
                 />
@@ -258,9 +258,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                     type="button"
                     onClick={() => setTypeFilter('')}
                     className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!typeFilter ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
-                  >
-                    All
-                  </button>
+                  >Todos</button>
                   {availableTypes.map(type => (
                     <button
                       key={type}
@@ -276,9 +274,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                 <div className="max-h-72 overflow-y-auto space-y-1 -mx-1 px-1">
                   {!availableLoaded ? (
                     <p className="text-xs text-muted-foreground text-center py-4 flex items-center justify-center gap-1">
-                      <span className="material-icons animate-spin text-sm">refresh</span>
-                      Loading…
-                    </p>
+                      <span className="material-icons animate-spin text-sm">refresh</span>Cargando…</p>
                   ) : filteredAvailable.length === 0 ? (
                     <p className="text-xs text-muted-foreground text-center py-4">
                       No available artifacts
@@ -377,7 +373,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1.5 rounded text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
-                    title="Open in new tab"
+                    title="Abrir en pestaña nueva"
                   >
                     <span className="material-icons text-base">open_in_new</span>
                   </a>

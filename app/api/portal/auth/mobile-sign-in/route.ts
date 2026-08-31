@@ -1,7 +1,7 @@
 /**
  * POST /api/portal/auth/mobile-sign-in
  *
- * Native credentials sign-in for the SimplerDev Chat mobile app. Skips the
+ * Native credentials sign-in for the CRM AGENTS Chat mobile app. Skips the
  * in-app browser bounce + workspace picker that `/portal/mobile-auth` requires:
  * accepts `{ email, password }`, validates against `users` using the same
  * bcrypt compare as the NextAuth credentials provider in `lib/auth.ts`, then
@@ -17,7 +17,7 @@
  *     to the NextAuth provider's behavior.
  *   - Generic `invalid_credentials` on email-or-password mismatch (no user
  *     enumeration).
- *   - Mints a key named "SimplerDev Chat (Mobile)" + ISO date, scopes `['*']`,
+ *   - Mints a key named "CRM AGENTS Chat (Mobile)" + ISO date, scopes `['*']`,
  *     `requireCmsApproval: false` (mobile is first-party). Identical to what
  *     `/portal/mobile-auth/page.tsx` produces — users can revoke it from
  *     `/portal/settings/api-keys`.
@@ -34,7 +34,7 @@ import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const KEY_NAME = 'SimplerDev Chat (Mobile)';
+const KEY_NAME = 'CRM AGENTS Chat (Mobile)';
 const KEY_TTL_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

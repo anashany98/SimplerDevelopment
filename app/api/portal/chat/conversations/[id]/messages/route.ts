@@ -12,6 +12,7 @@ import { chatConversations, chatMessages, users } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { and, eq } from 'drizzle-orm';
 import { publishMessage } from '@/lib/chat/realtime';
+import { processOutboxItem, queueOutboundMessage } from '@/lib/channels/service';
 
 const MAX_BODY = 8_000;
 
@@ -42,6 +43,31 @@ export async function POST(req: Request, { params }: Ctx) {
   if (!text) return NextResponse.json({ success: false, message: 'Message body is required' }, { status: 400 });
   if (text.length > MAX_BODY) return NextResponse.json({ success: false, message: 'Message too long' }, { status: 413 });
 
+  // Rows created before the omnichannel migration (and older API clients)
+  // have no explicit channel; they are legacy webchat conversations.
+  if (conversation.channel && conversation.channel !== 'webchat') {
+    try {
+      const queued = await queueOutboundMessage({
+        clientId: conversation.clientId,
+        conversationId: conversation.id,
+        actorUserId: userId,
+        text,
+        purpose: body.purpose === 'marketing' ? 'marketing' : body.purpose === 'transactional' ? 'transactional' : 'support',
+        template: body.template,
+        idempotencyKey: typeof body.idempotencyKey === 'string' ? body.idempotencyKey : undefined,
+      });
+      // Fast path. The durable outbox cron remains the recovery path if this
+      // process ends before or during provider dispatch.
+      void processOutboxItem(conversation.clientId, queued.outboxId).catch(() => {});
+      return NextResponse.json({ success: true, data: queued }, { status: 202 });
+    } catch (error) {
+      return NextResponse.json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Message could not be queued',
+      }, { status: 409 });
+    }
+  }
+
   const [author] = await db.select({ name: users.name }).from(users).where(eq(users.id, userId)).limit(1);
 
   const now = new Date();
@@ -53,7 +79,12 @@ export async function POST(req: Request, { params }: Ctx) {
       authorKind: 'agent',
       authorUserId: userId,
       authorName: author?.name ?? 'Agent',
+      direction: 'outbound',
+      channel: 'webchat',
+      provider: 'native',
       body: text,
+      status: 'sent',
+      sentAt: now,
       occurredAt: now,
     })
     .returning();

@@ -54,7 +54,7 @@ interface FormState {
 const TRIGGERS: Array<{ value: Trigger; label: string; icon: string; hint: string }> = [
   { value: 'manual', label: 'Manual', icon: 'touch_app', hint: 'Pick from the templates menu when creating a note.' },
   { value: 'daily', label: 'Daily', icon: 'today', hint: 'Auto-materialized once per day by the daily-note cron.' },
-  { value: 'meeting', label: 'Meeting', icon: 'groups', hint: 'Auto-attached when a new meeting is created.' },
+  { value: 'meeting', label: 'Reunión', icon: 'groups', hint: 'Auto-attached when a new meeting is created.' },
   { value: 'slash', label: 'Slash', icon: 'keyboard', hint: 'Available as a /slash command inside the note editor.' },
 ];
 
@@ -259,7 +259,7 @@ export default function BrainTemplatesPage() {
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">description</span>
@@ -280,9 +280,7 @@ export default function BrainTemplatesPage() {
               Knowledge
             </Link>
             <button type="button" onClick={handleNew} className={pBtnPrimary}>
-              <span className="material-icons text-base">add</span>
-              New template
-            </button>
+              <span className="material-icons text-base">add</span>Nueva plantilla</button>
           </>
         }
       />
@@ -367,9 +365,9 @@ export default function BrainTemplatesPage() {
           {!showForm && (
             <div className={`${pCard} p-10 text-center`}>
               <span className="material-icons text-5xl text-muted-foreground">description</span>
-              <h2 className={`mt-3 ${pSectionTitle}`}>Select a template to edit</h2>
+              <h2 className={`mt-3 ${pSectionTitle}`}>Selecciona una plantilla para editar</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                Pick one from the list, or click <span className="font-medium text-foreground">New template</span> to start fresh.
+                Pick one from the list, or click <span className="font-medium text-foreground">Nueva plantilla</span> to start fresh.
               </p>
               {items !== null && items.length === 0 && (
                 <button type="button" onClick={handleNew} className={`mt-4 ${pBtnPrimary}`}>
@@ -384,7 +382,7 @@ export default function BrainTemplatesPage() {
             <div className={`${pCard} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className={pSectionTitle}>
-                  {isNewMode ? 'New template' : 'Edit template'}
+                  {isNewMode ? 'Nueva plantilla' : 'Editar plantilla'}
                 </h2>
                 {selectedTemplate && (
                   <span className="text-xs text-muted-foreground">
@@ -396,9 +394,7 @@ export default function BrainTemplatesPage() {
               <div className="space-y-5">
                 {/* Name */}
                 <div>
-                  <label htmlFor="tpl-name" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                    Name
-                  </label>
+                  <label htmlFor="tpl-name" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">Nombre</label>
                   <input
                     id="tpl-name"
                     type="text"
@@ -451,7 +447,7 @@ export default function BrainTemplatesPage() {
                       onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
                       className="h-4 w-4 rounded border-border accent-primary"
                     />
-                    <span className="text-sm">Enabled</span>
+                    <span className="text-sm">Activado</span>
                   </label>
 
                   <div>
@@ -475,9 +471,7 @@ export default function BrainTemplatesPage() {
                 {/* Body + variable hints */}
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-4">
                   <div>
-                    <label htmlFor="tpl-body" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                      Body
-                    </label>
+                    <label htmlFor="tpl-body" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">Cuerpo</label>
                     <textarea
                       id="tpl-body"
                       value={form.body}
@@ -545,7 +539,7 @@ export default function BrainTemplatesPage() {
                         type="button"
                         onClick={handleTryIt}
                         disabled={tryingId !== null}
-                        title="Create a new note from this template and open it"
+                        title="Crea una nueva nota a partir de esta plantilla y ábrela"
                         className={pBtnGhost}
                       >
                         {tryingId === selectedTemplate.id ? (
@@ -570,9 +564,7 @@ export default function BrainTemplatesPage() {
                       disabled={saving}
                       className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors disabled:opacity-50"
                     >
-                      <span className="material-icons text-base">delete_outline</span>
-                      Delete
-                    </button>
+                      <span className="material-icons text-base">delete_outline</span>Eliminar</button>
                   )}
                 </div>
               </div>

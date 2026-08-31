@@ -42,15 +42,13 @@ export default async function PortalCmsEntriesPage({
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Entries"
+        eyebrow="Sitio web"
+        title="Entradas"
         subtitle={<>{sitePosts.length} total &middot; {sitePosts.filter(p => p.published).length} published &middot; {sitePosts.filter(p => !p.published).length} drafts</>}
         actions={
           <div className="flex items-center gap-2">
             <Link href={`/portal/websites/${site.id}/calendar`} className={pBtnGhost}>
-              <span className="material-icons text-base">calendar_month</span>
-              Calendar
-            </Link>
+              <span className="material-icons text-base">calendar_month</span>Calendario</Link>
             <UploadHtmlPageButton siteId={site.id} />
             <Link href={`/portal/websites/${site.id}/posts/new`} className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>

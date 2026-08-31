@@ -50,7 +50,7 @@ export default function OrdersListPage() {
       const data = await res.json();
       if (data.success) {
         setOrders(data.data || []);
-        setTotalPages(data.pagination?.totalPages || 1);
+        setTotalPages(data.págination?.totalPages || 1);
       }
     } catch {
       // fail silently
@@ -65,22 +65,22 @@ export default function OrdersListPage() {
   }, [load]);
 
   const tabs = [
-    { label: 'All', value: 'all' },
-    { label: 'Pending', value: 'pending' },
-    { label: 'Confirmed', value: 'confirmed' },
-    { label: 'Processing', value: 'processing' },
-    { label: 'Shipped', value: 'shipped' },
-    { label: 'Delivered', value: 'delivered' },
-    { label: 'Cancelled', value: 'cancelled' },
+    { label: 'Todos', value: 'all' },
+    { label: 'Pendiente', value: 'pending' },
+    { label: 'Confirmado', value: 'confirmed' },
+    { label: 'Procesando', value: 'processing' },
+    { label: 'Enviado', value: 'shipped' },
+    { label: 'Entregado', value: 'delivered' },
+    { label: 'Cancelado', value: 'cancelled' },
   ];
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Store"
-        title="Orders"
-        subtitle="View and manage customer orders."
+        eyebrow="Tienda"
+        title="Pedidos"
+        subtitle="Consulta y gestiona los pedidos de tus clientes."
       />
 
       {/* Status Tabs */}
@@ -108,7 +108,7 @@ export default function OrdersListPage() {
         <input
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          placeholder="Search by order number, customer name or email..."
+          placeholder="Buscar por número de pedido, nombre del cliente o email…"
           className={`${pInput} pl-10`}
         />
       </div>
@@ -121,11 +121,11 @@ export default function OrdersListPage() {
       ) : orders.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-10 flex flex-col items-center text-center">
           <span className="material-icons text-4xl text-muted-foreground/40 mb-2">receipt_long</span>
-          <h2 className="font-semibold text-foreground mb-1">No orders found</h2>
+          <h2 className="font-semibold text-foreground mb-1">No se encontraron pedidos</h2>
           <p className="text-sm text-muted-foreground">
             {search || statusFilter !== 'all'
-              ? 'Try adjusting your filters.'
-              : 'Orders will appear here when customers make purchases.'}
+              ? 'Prueba a ajustar tus filtros.'
+              : 'Los pedidos aparecerán aquí cuando los clientes compren.'}
           </p>
         </div>
       ) : (
@@ -134,12 +134,12 @@ export default function OrdersListPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Order #</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Customer</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Items</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Pedido #</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Cliente</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Artículos</th>
                   <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Total</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Estado</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Fecha</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -178,7 +178,7 @@ export default function OrdersListPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <button

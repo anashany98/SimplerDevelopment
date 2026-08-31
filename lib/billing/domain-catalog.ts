@@ -62,7 +62,7 @@ export interface FeatureDomain {
   icon: string;
   /** seed default + display fallback; live price = services.price */
   monthlyPriceCents: number;
-  /** Live Stripe IDs (created 2026-06-11 in acct SimplerDevelopment.com via
+  /** Live Stripe IDs (created 2026-06-11 in the CRM AGENTS Stripe account via
    * Stripe MCP) — copied onto the services row by scripts/seed-domain-modules.ts.
    * Repricing: create a new Stripe Price, update services.stripePriceId. */
   stripeProductId?: string;
@@ -456,7 +456,7 @@ export function sumOfModulePricesCents(): number {
 
 export const BUNDLE: BundleDef = {
   slug: BUNDLE_SLUG,
-  name: 'SimplerDev Complete',
+  name: 'CRM AGENTS Complete',
   tagline: 'Every module, one subscription — about 40% off buying them separately.',
   icon: 'all_inclusive',
   monthlyPriceCents: 15_900, // vs $261 sum of the 12 module prices
@@ -477,7 +477,7 @@ export const BUNDLE: BundleDef = {
 // also drives the per-seat cap. This keeps invoices showing exact per-line
 // amounts and lets the seat charge stay undiscounted (see the seat model below).
 //
-// The bundle ("SimplerDev Complete") is NOT volume-discounted — its flat price
+// The bundle ("CRM AGENTS Complete") is NOT volume-discounted — its flat price
 // already bakes in a ~39% discount. Tier SKUs (legacy) are likewise excluded.
 
 export interface VolumeTier {

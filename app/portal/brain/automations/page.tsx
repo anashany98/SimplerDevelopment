@@ -661,8 +661,8 @@ export default function BrainAutomationsPage() {
   return (
     <div className="max-w-5xl mx-auto py-8">
       <PortalPageHeader
-        eyebrow="Company Brain"
-        title="Brain Automations"
+        eyebrow="Cerebro de empresa"
+        title="Automatizaciones del cerebro"
         subtitle="Cross-product rules that fire when something happens — booking, survey, deal, task — and act on your behalf."
         actions={
           <>
@@ -718,9 +718,7 @@ export default function BrainAutomationsPage() {
             )}
             {t === 'create' && (
               <>
-                <span className="material-icons text-base align-text-bottom mr-1.5">auto_awesome</span>
-                Create
-              </>
+                <span className="material-icons text-base align-text-bottom mr-1.5">auto_awesome</span>Crear</>
             )}
           </button>
         ))}
@@ -732,7 +730,7 @@ export default function BrainAutomationsPage() {
           {rules.length === 0 ? (
             <div className="text-center py-16 bg-muted/30 rounded-xl border border-border">
               <span className="material-icons text-5xl text-muted-foreground">bolt</span>
-              <h2 className="mt-3 font-semibold text-lg">No automations yet</h2>
+              <h2 className="mt-3 font-semibold text-lg">Aún no hay automatizaciones</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
                 Install a one-click template, or describe your own automation in plain English.
               </p>
@@ -887,7 +885,7 @@ export default function BrainAutomationsPage() {
           {logs.length === 0 ? (
             <div className="text-center py-16 bg-muted/30 rounded-xl border border-border">
               <span className="material-icons text-5xl text-muted-foreground">history</span>
-              <h3 className="mt-3 font-semibold text-lg">No activity yet</h3>
+              <h3 className="mt-3 font-semibold text-lg">Aún no hay actividad</h3>
               <p className="text-sm text-muted-foreground mt-1">
                 Execution logs will appear here once automations start running.
               </p>
@@ -939,7 +937,7 @@ export default function BrainAutomationsPage() {
           <div className={`${pCard} p-6`}>
             <div className="flex items-center justify-between mb-1">
               <h2 className={pSectionTitle}>Quick start templates</h2>
-              <span className="text-xs text-muted-foreground">One-click install</span>
+              <span className="text-xs text-muted-foreground">Instalación con un clic</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
               Pre-built rules for common workflows. They use your default CRM pipeline — no setup required.
@@ -1006,7 +1004,7 @@ export default function BrainAutomationsPage() {
 
           {/* NLP Input */}
           <div className={`${pCard} p-6`}>
-            <h2 className={`${pSectionTitle} mb-1`}>Describe your automation</h2>
+            <h2 className={`${pSectionTitle} mb-1`}>Describe tu automatización</h2>
             <p className="text-sm text-muted-foreground mb-4">
               Tell us what you want to happen in plain English. AI will parse it into a structured rule.
             </p>
@@ -1079,7 +1077,7 @@ export default function BrainAutomationsPage() {
           {parsed && (
             <div className="rounded-2xl border border-primary/30 bg-card p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className={pSectionTitle}>Review Automation</h3>
+                <h3 className={pSectionTitle}>Revisar automatización</h3>
                 <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full font-medium">
                   AI Generated
                 </span>
@@ -1087,7 +1085,7 @@ export default function BrainAutomationsPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</label>
+                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre</label>
                   <p className="text-sm font-medium mt-0.5">{parsed.name}</p>
                 </div>
 
@@ -1164,7 +1162,7 @@ export default function BrainAutomationsPage() {
                 )}
 
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</label>
+                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</label>
                   <div className="space-y-2 mt-1">
                     {parsed.actions.map((action, i) => (
                       <div key={i} className="flex items-start gap-2 bg-muted/40 rounded-lg px-3 py-2">
@@ -1210,9 +1208,7 @@ export default function BrainAutomationsPage() {
                 <button
                   onClick={() => setParsed(null)}
                   className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </div>
           )}
@@ -1224,7 +1220,7 @@ export default function BrainAutomationsPage() {
             <div className={`${pCard} p-6`}>
               <div className="flex items-center gap-2 mb-1">
                 <span className="material-icons text-sky-500">schedule</span>
-                <h2 className={pSectionTitle}>Schedule a rule</h2>
+                <h2 className={pSectionTitle}>Programar una regla</h2>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
                 Run an action on a fixed cadence — daily, weekly, monthly, or a custom cron expression. All times are UTC.
@@ -1249,7 +1245,7 @@ export default function BrainAutomationsPage() {
                     className={pSelect}
                   >
                     <option value="">— pick one —</option>
-                    <optgroup label="Built-in templates">
+                    <optgroup label="Plantillas integradas">
                       {TEMPLATES.map((t) => (
                         <option key={t.id} value={t.id}>{t.title}</option>
                       ))}
@@ -1438,7 +1434,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
 
         {cadence === 'weekly' && (
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Day of week</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Día de la semana</span>
             <select
               value={dayOfWeek}
               onChange={(e) => props.onDayOfWeek(Number(e.target.value))}
@@ -1453,7 +1449,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
 
         {cadence === 'monthly' && (
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Day of month</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Día del mes</span>
             <input
               type="number"
               min={1}
@@ -1462,7 +1458,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
               onChange={(e) => props.onDayOfMonth(Math.min(31, Math.max(1, Number(e.target.value) || 1)))}
               className={pInput}
             />
-            <span className="text-[11px] text-muted-foreground">If the month has fewer days, fires on the last day.</span>
+            <span className="text-[11px] text-muted-foreground">Si el mes tiene menos días, se ejecuta el último día.</span>
           </label>
         )}
 
@@ -1476,7 +1472,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
               placeholder="*/15 * * * *"
               className={`${pInput} font-mono`}
             />
-            <span className="text-[11px] text-muted-foreground">Five-field UTC cron (minute hour day-of-month month day-of-week).</span>
+            <span className="text-[11px] text-muted-foreground">Cron UTC de cinco campos (minuto hora día-del-mes mes día-de-la-semana).</span>
           </label>
         )}
       </div>
@@ -1498,7 +1494,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
             </span>
           </>
         ) : (
-          <span className="text-muted-foreground">Computing next run…</span>
+          <span className="text-muted-foreground">Calculando la próxima ejecución…</span>
         )}
       </div>
     </div>

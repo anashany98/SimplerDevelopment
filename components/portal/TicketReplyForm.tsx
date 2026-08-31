@@ -58,7 +58,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
           onChange={(e) => setBody(e.target.value)}
           required
           rows={4}
-          placeholder="Write your reply..."
+          placeholder="Escribe tu respuesta…"
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-y"
         />
 

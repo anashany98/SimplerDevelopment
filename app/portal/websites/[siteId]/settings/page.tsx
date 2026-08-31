@@ -72,9 +72,9 @@ export default async function WebsiteSettingsPage({
       {/* Header — site identity + back lives in WebsiteSubNav, this is just the
           page title. */}
       <PortalPageHeader
-        eyebrow="Website"
-        title="Settings"
-        subtitle="Manage deployment, domain, repository access, and general settings."
+        eyebrow="Sitio web"
+        title="Ajustes"
+        subtitle="Gestiona el despliegue, el dominio, el acceso al repositorio y la configuración general."
       />
 
       {/* Site ID */}
@@ -126,7 +126,7 @@ export default async function WebsiteSettingsPage({
       )}
 
       {/* Tracking & Analytics — QAD-034: editable BEFORE deploy. Config saves now
-          and the public renderer applies it automatically when the site goes live. */}
+          and the public renderer applies it automátically when the site goes live. */}
       <TrackingSettingsCard
         siteId={site.id}
         initialConfig={trackingInitial}
@@ -142,8 +142,8 @@ export default async function WebsiteSettingsPage({
           <div className="flex items-center gap-3">
             <span className="material-icons text-muted-foreground text-lg group-hover:text-primary transition-colors">bolt</span>
             <div>
-              <h2 className="font-semibold text-sm text-foreground">Automations & Notifications</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Configure automated workflows and event alerts</p>
+              <h2 className="font-semibold text-sm text-foreground">Automatizaciones y notificaciones</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Configura flujos automatizados y alertas de eventos</p>
             </div>
           </div>
           <span className="material-icons text-muted-foreground text-base group-hover:text-foreground transition-colors">chevron_right</span>

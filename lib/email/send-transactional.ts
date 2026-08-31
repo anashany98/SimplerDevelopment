@@ -75,7 +75,7 @@ function wrapEmailHtml(innerHtml: string, previewText?: string): string {
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                Powered by SimplerDevelopment
+                Powered by CRM AGENTS
               </p>
             </td>
           </tr>

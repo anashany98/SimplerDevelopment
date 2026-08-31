@@ -156,6 +156,8 @@ evals-out/
 .idea/
 /dist/
 /fallow-baselines/
+/.fallow/
+/.freebuff/
 
 # Published-package build output — built by `tsup` (packages/*/package.json
 # "build" script) at publish time; never commit compiled dist artifacts.
@@ -175,3 +177,7 @@ public/agile-after-ai/_*
 
 # Lighthouse sweep output (scripts/lighthouse-audit.sh)
 /.lighthouse
+
+# Generated local reports and tunnel diagnostics
+/output/
+/tmp/

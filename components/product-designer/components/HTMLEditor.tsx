@@ -141,9 +141,7 @@ export const HTMLEditor: React.FC<HTMLEditorProps> = ({
             }}
             className="px-2 py-1 text-xs hover:bg-gray-200 dark:hover:bg-gray-700 rounded text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600"
             title="Add Link"
-          >
-            Link
-          </button>
+          >Enlace</button>
         </div>
       </div>
 

@@ -118,7 +118,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
             type="button"
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Close"
+            title="Cerrar"
           >
             <span className="material-icons text-base">close</span>
           </button>
@@ -148,7 +148,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
               id="seo-project-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Defaults to the domain"
+              placeholder="De forma predeterminada, el dominio"
               className={pInput}
             />
           </div>
@@ -230,9 +230,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button type="submit" disabled={submitting} className={pBtnPrimary}>
               {submitting ? (
                 <>

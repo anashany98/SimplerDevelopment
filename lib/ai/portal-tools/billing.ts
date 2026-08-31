@@ -1,5 +1,5 @@
 /**
- * Billing AI tools — invoices and services. Payments are disabled on this
+ * Billing AI tools — invoices and manual settlement guidance. Payments are disabled on this
  * instance, so `pay_invoice` only reports status and never opens a checkout.
  */
 import type { PortalTool } from './types';

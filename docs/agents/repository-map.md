@@ -1,6 +1,6 @@
 # Repository Map
 
-Annotated directory tree for the SimplerDevelopment monorepo (~357k LOC). Written for human developers and AI agents. Use this file to orient yourself before diving into code.
+Annotated directory tree for the CRM AGENTS monorepo (~357k LOC). Written for human developers and AI agents. Use this file to orient yourself before diving into code.
 
 **Siblings:** [project-map.md](./project-map.md) · [architecture-for-agents.md](./architecture-for-agents.md) · [ai-overview.md](./ai-overview.md) · [api-index.md](./api-index.md) · [tool-reference.md](./tool-reference.md) · [glossary.md](./glossary.md) · [/llms.txt](/llms.txt)
 

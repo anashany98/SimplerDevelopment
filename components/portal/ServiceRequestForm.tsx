@@ -183,7 +183,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
           )}
           {field.type === 'select' && (
             <select value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)} className={inputCls}>
-              <option value="">Select an option...</option>
+              <option value="">Selecciona una opción...</option>
               {opts.filter(Boolean).map((opt, i) => (
                 <option key={i} value={opt}>{opt}</option>
               ))}
@@ -377,8 +377,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
               surveyFields.map((f, i) => renderField(f, i))
             ) : (
               <div className="group">
-                <label className="block text-sm font-semibold text-foreground mb-2">
-                  Message <span className="text-primary">*</span>
+                <label className="block text-sm font-semibold text-foreground mb-2">Mensaje<span className="text-primary">*</span>
                 </label>
                 <p className="text-sm text-muted-foreground mb-3">
                   Tell us about your project and we&apos;ll get back to you with next steps.
@@ -388,7 +387,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
                   required
                   value={message}
                   onChange={e => setMessage(e.target.value)}
-                  placeholder="Describe what you need, your timeline, any specific requirements..."
+                  placeholder="Describe qué necesitas, tu plazo y cualquier requisito específico..."
                   className={`${inputCls} resize-y`}
                 />
               </div>
@@ -398,9 +397,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
           {/* Footer */}
           <div className="border-t border-border px-6 py-4 bg-muted/30 flex items-center justify-between gap-4">
             <Link href="/portal/services" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              <span className="material-icons text-base">arrow_back</span>
-              Back
-            </Link>
+              <span className="material-icons text-base">arrow_back</span>Atrás</Link>
             <button
               type="submit"
               disabled={loading}

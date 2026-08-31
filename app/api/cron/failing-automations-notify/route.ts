@@ -17,7 +17,7 @@ export const runtime = 'nodejs';
  *
  * Track B sibling of `simplerdevelopment-routines/.github/workflows/
  * sd2026-failing-automations-digest.yml` (which mails the same signal to
- * SimplerDevelopment via Resend). This route routes the SAME signal to the
+ * CRM AGENTS via Resend). This route routes the SAME signal to the
  * tenant's CRM inbox instead.
  *
  * SQL approach: ports the CTE/window-function query from

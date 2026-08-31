@@ -532,9 +532,7 @@ export function BookingFormInline({
       onClick={() => setStep(targetStep)}
       className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
     >
-      <span className="material-icons text-lg">arrow_back</span>
-      Back
-    </button>
+      <span className="material-icons text-lg">arrow_back</span>Atrás</button>
   );
 
   return (
@@ -812,9 +810,7 @@ export function BookingFormInline({
               onClick={() => setStep('info')}
               className="w-full py-3 rounded-xl font-medium transition-all hover:shadow-md"
               style={{ backgroundColor: btnBg, color: btnText, ...(btnRadius ? { borderRadius: btnRadius } : {}) }}
-            >
-              Continue
-            </button>
+            >Continuar</button>
           </div>
         )}
 
@@ -843,7 +839,7 @@ export function BookingFormInline({
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre<span className="text-red-500">*</span></label>
                 <input type="text" required value={guestName} onChange={(e) => setGuestName(e.target.value)}
                   placeholder="Your full name"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -852,7 +848,7 @@ export function BookingFormInline({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo<span className="text-red-500">*</span></label>
                 <input type="email" required value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)}
                   placeholder="you@example.com"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -861,7 +857,7 @@ export function BookingFormInline({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone <span className="text-gray-400 font-normal">(optional)</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono<span className="text-gray-400 font-normal">(optional)</span></label>
                 <input type="tel" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)}
                   placeholder="(555) 123-4567"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
@@ -889,7 +885,7 @@ export function BookingFormInline({
                     <select required={q.required} value={answers[q.id] || ''} onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
                       className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:border-transparent"
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} disabled={submitting}>
-                      <option value="">Select...</option>
+                      <option value="">Seleccionar...</option>
                       {(q.options || []).map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
                   )}
@@ -907,15 +903,11 @@ export function BookingFormInline({
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} />
                     {discountResult ? (
                       <button type="button" onClick={() => { setDiscountResult(null); setDiscountCode(''); }}
-                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
-                        Clear
-                      </button>
+                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">Limpiar</button>
                     ) : (
                       <button type="button" onClick={validateDiscount} disabled={!discountCode.trim()}
                         className="px-4 py-2 rounded-xl text-sm font-medium text-white disabled:opacity-50"
-                        style={{ backgroundColor: accent }}>
-                        Apply
-                      </button>
+                        style={{ backgroundColor: accent }}>Aplicar</button>
                     )}
                   </div>
                   {discountError && <p className="text-xs text-red-500 mt-1">{discountError}</p>}
@@ -939,15 +931,11 @@ export function BookingFormInline({
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} />
                     {giftCertResult ? (
                       <button type="button" onClick={() => { setGiftCertResult(null); setGiftCertCode(''); }}
-                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
-                        Clear
-                      </button>
+                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">Limpiar</button>
                     ) : (
                       <button type="button" onClick={validateGiftCert} disabled={!giftCertCode.trim()}
                         className="px-4 py-2 rounded-xl text-sm font-medium text-white disabled:opacity-50"
-                        style={{ backgroundColor: accent }}>
-                        Apply
-                      </button>
+                        style={{ backgroundColor: accent }}>Aplicar</button>
                     )}
                   </div>
                   {giftCertError && <p className="text-xs text-red-500 mt-1">{giftCertError}</p>}
@@ -975,7 +963,7 @@ export function BookingFormInline({
                   )}
                   {pricing.discount > 0 && (
                     <div className="flex justify-between" style={{ color: accent }}>
-                      <span>Discount</span>
+                      <span>Descuento</span>
                       <span>-{formatCents(pricing.discount)}</span>
                     </div>
                   )}

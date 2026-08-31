@@ -31,27 +31,37 @@ const SECOND_APP_FIXTURE: UserAppNavMeta = {
 };
 
 describe('buildPortalNavItems — no apps arg (legacy callers)', () => {
+  it('includes a direct Chat entry for the AI assistant', () => {
+    const items = buildPortalNavItems(null, null);
+    expect(items).toContainEqual(expect.objectContaining({
+      href: '/portal/chat',
+      label: 'Chat',
+      icon: 'chat',
+      exact: true,
+    }));
+  });
+
   it('returns the existing nav tree unmodified when called with 2 args', () => {
     const items = buildPortalNavItems(null, null);
-    expect(items.some((i) => i.label === 'Apps')).toBe(false);
+    expect(items.some((i) => i.label === 'Aplicaciones')).toBe(false);
     expect(items.at(-1)?.href).toBe('/portal/settings');
   });
 
   it('returns the existing nav tree unmodified when apps is undefined', () => {
     const items = buildPortalNavItems(null, null, undefined);
-    expect(items.some((i) => i.label === 'Apps')).toBe(false);
+    expect(items.some((i) => i.label === 'Aplicaciones')).toBe(false);
   });
 
   it('returns the existing nav tree unmodified when apps is an empty array', () => {
     const items = buildPortalNavItems(null, null, []);
-    expect(items.some((i) => i.label === 'Apps')).toBe(false);
+    expect(items.some((i) => i.label === 'Aplicaciones')).toBe(false);
   });
 });
 
 describe('buildPortalNavItems — apps injection', () => {
   it('inserts an "Apps" top-level item when apps are supplied', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const appsItem = items.find((i) => i.label === 'Apps');
+    const appsItem = items.find((i) => i.label === 'Aplicaciones');
     expect(appsItem).toBeDefined();
     expect(appsItem!.href).toBe('/portal/apps');
     expect(appsItem!.icon).toBe('apps');
@@ -59,7 +69,7 @@ describe('buildPortalNavItems — apps injection', () => {
 
   it('places "Apps" directly before "Settings"', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const appsIdx = items.findIndex((i) => i.label === 'Apps');
+    const appsIdx = items.findIndex((i) => i.label === 'Aplicaciones');
     const settingsIdx = items.findIndex((i) => i.href === '/portal/settings');
     expect(appsIdx).toBeGreaterThan(-1);
     expect(settingsIdx).toBeGreaterThan(-1);
@@ -71,9 +81,9 @@ describe('buildPortalNavItems — apps injection', () => {
     expect(items.at(-1)?.href).toBe('/portal/settings');
   });
 
-  it("each app appears as a child of 'Apps' with the slug-root href", () => {
+  it("each app appears as a child of 'Aplicaciones' with the slug-root href", () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE, SECOND_APP_FIXTURE]);
-    const apps = items.find((i) => i.label === 'Apps');
+    const apps = items.find((i) => i.label === 'Aplicaciones');
     expect(apps?.children).toHaveLength(2);
     const slugs = apps!.children!.map((c) => c.href);
     expect(slugs).toContain('/portal/apps/content-tools');
@@ -82,7 +92,7 @@ describe('buildPortalNavItems — apps injection', () => {
 
   it("each app's children include the slug-root AND the manifest nav items as grandchildren", () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const apps = items.find((i) => i.label === 'Apps');
+    const apps = items.find((i) => i.label === 'Aplicaciones');
     const pc = apps!.children!.find((c) => c.href === '/portal/apps/content-tools');
     expect(pc).toBeDefined();
     expect(pc!.label).toBe('Content Tools');
@@ -100,7 +110,7 @@ describe('buildPortalNavItems — apps injection', () => {
 
   it('preserves manifest icons + keywords on the grandchildren', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const apps = items.find((i) => i.label === 'Apps');
+    const apps = items.find((i) => i.label === 'Aplicaciones');
     const pc = apps!.children!.find((c) => c.href === '/portal/apps/content-tools');
     const briefs = pc!.children!.find((g) => g.href === '/portal/apps/content-tools/briefs');
     expect(briefs?.icon).toBe('biotech');
@@ -124,14 +134,14 @@ describe('buildPortalNavItems — apps injection', () => {
 
   it('uses the app slug as a cmd-K keyword on the app-level child', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const apps = items.find((i) => i.label === 'Apps');
+    const apps = items.find((i) => i.label === 'Aplicaciones');
     const pc = apps!.children!.find((c) => c.href === '/portal/apps/content-tools');
     expect(pc?.keywords).toContain('content-tools');
   });
 
-  it('"Apps" top-level entry carries cmd-K keywords for discoverability', () => {
+  it('"Aplicaciones" top-level entry carries cmd-K keywords for discoverability', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
-    const apps = items.find((i) => i.label === 'Apps');
+    const apps = items.find((i) => i.label === 'Aplicaciones');
     expect(apps?.keywords).toEqual(expect.arrayContaining(['plugins', 'integrations']));
   });
 });

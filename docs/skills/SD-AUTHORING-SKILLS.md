@@ -1,4 +1,4 @@
-# SimplerDevelopment Authoring Skills
+# CRM AGENTS Authoring Skills
 
 Skills an agent uses to produce platform content *as if it were a user*: CMS pages, decks, emails, surveys, booking pages, HTML embeds, full websites. They drive the portal **via the in-repo MCP server** and respect the active client, brand profile, and approval workflow.
 
@@ -33,7 +33,7 @@ Every `sd-create-*` skill reads `.sd/config.json` and applies the active brand p
 
 **Purpose.** One-shot setup before any `sd-create-*` skill can run. Verifies portal-MCP auth, picks the active client, snapshots the brand profile (logo, fonts, colors, voice rules), lists existing `block_templates` and `email_templates` (so sibling skills can compose rather than reinvent), and writes `.sd/config.json` to the repo. Idempotent — re-run any time to refresh.
 
-**Trigger phrases.** `sd init`, `set up SD`, `bootstrap SimplerDev`, `connect to SimplerDevelopment`, `configure my SD workspace`.
+**Trigger phrases.** `sd init`, `set up SD`, `bootstrap CRM AGENTS`, `connect to CRM AGENTS`, `configure my CRM AGENTS workspace`.
 
 **Produces.** `.sd/config.json` with `defaultBrandProfileId`, `defaultSiteId`, brand snapshot, template inventory.
 

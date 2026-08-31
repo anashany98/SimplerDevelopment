@@ -131,9 +131,7 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
                   checked={form.required}
                   onChange={e => setForm(p => ({ ...p, required: e.target.checked }))}
                   className="accent-primary"
-                />
-                Required
-              </label>
+                />Obligatorio</label>
             </div>
           </div>
           <div className="flex justify-end">
@@ -145,7 +143,7 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
       )}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
         <p className="text-sm text-muted-foreground italic">No custom fields yet.</p>
       ) : (
@@ -163,7 +161,7 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
                 </p>
               </div>
               {canEdit && (
-                <button onClick={() => onDelete(f.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Delete">
+                <button onClick={() => onDelete(f.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Eliminar">
                   <span className="material-icons text-sm">delete_outline</span>
                 </button>
               )}

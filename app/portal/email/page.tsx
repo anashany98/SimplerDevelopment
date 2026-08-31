@@ -58,8 +58,8 @@ export default function PortalEmailPage() {
   const totalSubscribers = lists.reduce((sum, l) => sum + (l.subscriberCount ?? 0), 0);
 
   async function deleteCampaign(id: number, status: string) {
-    if (status === 'sending') { alert('Cannot delete a campaign that is currently sending.'); return; }
-    if (!confirm('Delete this campaign?')) return;
+    if (status === 'sending') { alert('No se puede eliminar una campaña que se está enviando.'); return; }
+    if (!confirm('¿Eliminar esta campaña?')) return;
     await fetch(`/api/portal/email/campaigns/${id}`, { method: 'DELETE' });
     setCampaigns(prev => prev.filter(c => c.id !== id));
   }
@@ -68,16 +68,14 @@ export default function PortalEmailPage() {
     <div className="max-w-5xl mx-auto space-y-8">
       <PortalPageHeader
         eyebrow="Marketing"
-        title="Email Marketing"
-        subtitle="Manage your campaigns and subscriber lists."
+        title="Email marketing"
+        subtitle="Gestiona tus campañas y listas de suscriptores."
         actions={
           <Link
             href="/portal/email/campaigns/new"
             className={pBtnPrimary}
           >
-            <span className="material-icons text-base">add</span>
-            New Campaign
-          </Link>
+            <span className="material-icons text-base">add</span>Nueva campaña</Link>
         }
       />
 
@@ -86,10 +84,10 @@ export default function PortalEmailPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Lists', value: lists.length, icon: 'list_alt', href: '/portal/email/lists' },
-          { label: 'Subscribers', value: totalSubscribers, icon: 'group', href: '/portal/email/lists' },
-          { label: 'Campaigns Sent', value: sentCampaigns.length, icon: 'send', href: '/portal/email/campaigns' },
-          { label: 'Avg Open Rate', value: `${avgOpenRate}%`, icon: 'drafts', href: null },
+          { label: 'Listas', value: lists.length, icon: 'list_alt', href: '/portal/email/lists' },
+          { label: 'Suscriptores', value: totalSubscribers, icon: 'group', href: '/portal/email/lists' },
+          { label: 'Campañas enviadas', value: sentCampaigns.length, icon: 'send', href: '/portal/email/campaigns' },
+          { label: 'Tasa media de apertura', value: `${avgOpenRate}%`, icon: 'drafts', href: null },
         ].map(stat => (
           <div key={stat.label} className="bg-card border border-border rounded-2xl p-4">
             <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
@@ -107,8 +105,8 @@ export default function PortalEmailPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">add_circle</span>
             <div>
-              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">New Campaign</p>
-              <p className="text-sm text-muted-foreground">Create and send</p>
+              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Nueva campaña</p>
+              <p className="text-sm text-muted-foreground">Crea y envía</p>
             </div>
           </div>
         </Link>
@@ -116,8 +114,8 @@ export default function PortalEmailPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">dynamic_feed</span>
             <div>
-              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Templates</p>
-              <p className="text-sm text-muted-foreground">Reusable email designs</p>
+              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Plantillas</p>
+              <p className="text-sm text-muted-foreground">Diseños de correo reutilizables</p>
             </div>
           </div>
         </Link>
@@ -125,7 +123,7 @@ export default function PortalEmailPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">filter_alt</span>
             <div>
-              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Segments</p>
+              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Segmentos</p>
               <p className="text-sm text-muted-foreground">Target specific audiences</p>
             </div>
           </div>
@@ -134,7 +132,7 @@ export default function PortalEmailPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">analytics</span>
             <div>
-              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Analytics</p>
+              <p className="font-display font-extrabold tracking-[-0.01em] text-foreground group-hover:text-primary transition-colors">Analíticas</p>
               <p className="text-sm text-muted-foreground">Performance insights</p>
             </div>
           </div>
@@ -144,16 +142,16 @@ export default function PortalEmailPage() {
       {/* Recent campaigns */}
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Recent Campaigns</h2>
-          <Link href="/portal/email/campaigns" className="text-sm text-primary hover:underline">View all</Link>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Campañas recientes</h2>
+          <Link href="/portal/email/campaigns" className="text-sm text-primary hover:underline">Ver todas</Link>
         </div>
         {loading ? (
-          <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+          <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-10 text-center">
             <span className="material-icons text-3xl text-muted-foreground mb-2 block">campaign</span>
-            <p className="text-muted-foreground text-sm mb-3">No campaigns yet.</p>
-            <Link href="/portal/email/campaigns/new" className="text-sm text-primary hover:underline">Create your first campaign</Link>
+            <p className="text-muted-foreground text-sm mb-3">Aún no hay campañas.</p>
+            <Link href="/portal/email/campaigns/new" className="text-sm text-primary hover:underline">Crea tu primera campaña</Link>
           </div>
         ) : (
           <div className="divide-y divide-border">

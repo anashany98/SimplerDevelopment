@@ -26,7 +26,7 @@ interface ColumnData {
 const ARRAY_BLOCK_TYPES: Record<string, { field: string; label: string }> = {
   'card-grid': { field: 'cards', label: 'Card' },
   'stats': { field: 'stats', label: 'Stat' },
-  'gallery': { field: 'images', label: 'Image' },
+  'gallery': { field: 'images', label: 'Imagen' },
   'services-grid': { field: 'services', label: 'Service' },
   'accordion': { field: 'items', label: 'Item' },
 };

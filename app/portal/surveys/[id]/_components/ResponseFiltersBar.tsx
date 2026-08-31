@@ -49,7 +49,7 @@ export default function ResponseFiltersBar({ filters, onChange, sourcesPresent, 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex flex-col gap-3">
       <div className="flex flex-wrap items-end gap-3">
-        <Field label="From">
+        <Field label="De">
           <input
             type="date"
             value={filters.from ?? ''}
@@ -67,19 +67,19 @@ export default function ResponseFiltersBar({ filters, onChange, sourcesPresent, 
             className="px-3 py-1.5 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </Field>
-        <Field label="Source">
+        <Field label="Fuente">
           <select
             value={filters.source ?? ''}
             onChange={(e) => set({ source: e.target.value || null })}
             className="px-3 py-1.5 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/40 min-w-[120px]"
           >
-            <option value="">All sources</option>
+            <option value="">Todas las fuentes</option>
             {sourceOptions.map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
         </Field>
-        <Field label="Search answers" grow>
+        <Field label="Buscar respuestas" grow>
           <div className="relative">
             <span className="material-icons absolute left-2 top-1/2 -translate-y-1/2 text-base text-muted-foreground pointer-events-none">search</span>
             <input
@@ -104,9 +104,7 @@ export default function ResponseFiltersBar({ filters, onChange, sourcesPresent, 
             onClick={clear}
             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground border border-border rounded-md hover:bg-muted/40 transition-colors"
           >
-            <span className="material-icons text-base">clear</span>
-            Clear
-          </button>
+            <span className="material-icons text-base">clear</span>Limpiar</button>
         )}
       </div>
       {hasAny && (

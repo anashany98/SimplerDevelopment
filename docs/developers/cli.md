@@ -1,6 +1,6 @@
 # `simpler` CLI
 
-Token-lean, JSON-first command-line client for the SimplerDevelopment portal's MCP tool surface. It wraps `POST /api/mcp` (JSON-RPC 2.0 over streamable HTTP, stateless) with one generic dispatch path; per-tool commands are generated from a build-time manifest, not hand-written, so the CLI has 451-tool parity with the portal's MCP server **by construction**. It introduces **zero new API endpoints** — every write still goes through the same tool handlers, scope checks, and CMS-approval staging as an MCP client would hit.
+Token-lean, JSON-first command-line client for the CRM AGENTS portal's MCP tool surface. It wraps `POST /api/mcp` (JSON-RPC 2.0 over streamable HTTP, stateless) with one generic dispatch path; per-tool commands are generated from a build-time manifest, not hand-written, so the CLI has 451-tool parity with the portal's MCP server **by construction**. It introduces **zero new API endpoints** — every write still goes through the same tool handlers, scope checks, and CMS-approval staging as an MCP client would hit.
 
 For how AI agents should use this CLI (vs. connecting the MCP server directly) and the full parity matrix, see [`ai-agent-usage.md`](./ai-agent-usage.md).
 

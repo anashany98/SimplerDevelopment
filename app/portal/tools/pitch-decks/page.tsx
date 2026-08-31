@@ -93,7 +93,7 @@ export default function PitchDecksPage() {
       const res = await fetch(`/api/portal/tools/pitch-decks/${deckId}`, { method: 'DELETE' });
       const d = await res.json();
       if (!d.success) {
-        setDeleteError(d.message ?? 'Failed to delete deck.');
+        setDeleteError(d.message ?? 'No se pudo eliminar la presentación.');
         return;
       }
       setDecks(prev => prev.filter(deck => deck.id !== deckId));
@@ -110,16 +110,14 @@ export default function PitchDecksPage() {
       {/* Header */}
       <PortalPageHeader
         eyebrow="CRM"
-        title="Pitch Decks"
-        subtitle="Create and send AI-powered pitch decks to clients"
+        title="Presentaciones"
+        subtitle="Crea y envía presentaciones impulsadas por IA a tus clientes"
         actions={
           <button
             onClick={() => router.push('/portal/tools/pitch-decks/new')}
             className={pBtnPrimary}
           >
-            <span className="material-icons text-base">add</span>
-            New Deck
-          </button>
+            <span className="material-icons text-base">add</span>Nueva presentación</button>
         }
       />
 
@@ -135,14 +133,14 @@ export default function PitchDecksPage() {
             <input
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
-              placeholder="Search decks by title or description..."
+              placeholder="Busca presentaciones por título o descripción…"
               className="w-full rounded-xl border border-border bg-card pl-10 pr-9 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
             />
             {searchInput && (
               <button
                 onClick={() => setSearchInput('')}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground"
-                title="Clear search"
+                title="Borrar búsqueda"
               >
                 <span className="material-icons text-base">close</span>
               </button>
@@ -176,15 +174,15 @@ export default function PitchDecksPage() {
 
           {/* Sort dropdown */}
           <select
-            aria-label="Sort decks by"
+            aria-label="Ordenar presentaciones por"
             value={sort}
             onChange={e => setSort(e.target.value as typeof sort)}
             className={`${pSelect} w-auto`}
           >
-            <option value="updated-desc">Last updated (newest)</option>
-            <option value="updated-asc">Last updated (oldest)</option>
-            <option value="title-asc">Title A → Z</option>
-            <option value="title-desc">Title Z → A</option>
+            <option value="updated-desc">Última actualización (recientes primero)</option>
+            <option value="updated-asc">Última actualización (antiguas primero)</option>
+            <option value="title-asc">Título A → Z</option>
+            <option value="title-desc">Título Z → A</option>
           </select>
 
           {/* Create */}
@@ -192,9 +190,7 @@ export default function PitchDecksPage() {
             onClick={() => router.push('/portal/tools/pitch-decks/new')}
             className={`${pBtnPrimary} shrink-0`}
           >
-            <span className="material-icons text-base">add</span>
-            New Deck
-          </button>
+            <span className="material-icons text-base">add</span>Nueva presentación</button>
         </div>
       )}
 
@@ -206,25 +202,21 @@ export default function PitchDecksPage() {
       ) : decks.length === 0 ? (
         <div className={`${pCard} p-10 text-center space-y-4`}>
           <span className="material-icons text-5xl text-muted-foreground/50">slideshow</span>
-          <h2 className={pSectionTitle}>No pitch decks yet</h2>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Create your first AI-powered pitch deck. Enter a prompt describing what you need and optionally
-            provide your website URL to automatically brand the deck.
-          </p>
+          <h2 className={pSectionTitle}>Aún no hay presentaciones</h2>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">Crea tu primera presentación impulsada por IA. Ingresa un aviso describiendo lo que necesitas y opcionalmente
+            proporciona la URL de tu sitio web para aplicar tu marca automáticamente a la presentación.</p>
           <button
             onClick={() => router.push('/portal/tools/pitch-decks/new')}
             className={pBtnPrimary}
           >
-            <span className="material-icons text-lg">auto_awesome</span>
-            Create Your First Deck
-          </button>
+            <span className="material-icons text-lg">auto_awesome</span>Crea tu primera presentación</button>
         </div>
       ) : filteredDecks.length === 0 ? (
         <div className={`${pCard} p-10 text-center space-y-3`}>
           <span className="material-icons text-4xl text-muted-foreground/50">search_off</span>
-          <h2 className={pSectionTitle}>No decks match your filters</h2>
+          <h2 className={pSectionTitle}>Ninguna presentación coincide con tus filtros</h2>
           <p className="text-muted-foreground text-sm">
-            {search && <>No deck titles or descriptions contain &ldquo;<span className="font-medium">{search}</span>&rdquo;. </>}
+            {search && <>Ningún título o descripción de presentaciones contiene &ldquo;<span className="font-medium">{search}</span>&rdquo;. </>}
             {statusFilter !== 'all' && <>No <span className="font-medium">{statusFilter}</span> decks. </>}
             Adjust your search or filters above.
           </p>
@@ -272,7 +264,7 @@ export default function PitchDecksPage() {
                       <button
                         onClick={(e) => { e.stopPropagation(); setDeleteError(''); setDeletingId(deck.id); }}
                         className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
-                        title="Delete deck"
+                        title="Eliminar presentación"
                       >
                         <span className="material-icons text-base">delete</span>
                       </button>
@@ -305,9 +297,7 @@ export default function PitchDecksPage() {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className={`${pCardPad} max-w-md w-full space-y-4`}>
               <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-                <span className="material-icons text-destructive">delete_forever</span>
-                Delete Pitch Deck
-              </h2>
+                <span className="material-icons text-destructive">delete_forever</span>Eliminar presentación</h2>
               <p className="text-sm text-muted-foreground">
                 Are you sure you want to delete{' '}
                 <strong className="text-foreground">{deck?.title ?? 'this deck'}</strong>? This cannot be undone.
@@ -322,15 +312,11 @@ export default function PitchDecksPage() {
                 <button
                   onClick={() => { setDeletingId(null); setDeleteError(''); }}
                   className={pBtnGhost}
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
                 <button
                   onClick={() => handleDelete(deletingId)}
                   className="px-4 py-2.5 bg-destructive text-destructive-foreground rounded-xl text-sm font-medium hover:bg-destructive/90 transition-colors"
-                >
-                  Delete
-                </button>
+                >Eliminar</button>
               </div>
             </div>
           </div>

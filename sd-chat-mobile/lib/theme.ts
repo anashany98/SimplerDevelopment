@@ -47,7 +47,7 @@ export type ThemeColors = {
 // Palette matched to simplerdevelopment.com (portal globals.css :root):
 // warm stone neutrals + a blue-600 primary, with amber/emerald accents.
 // The `ai*` tokens are the app's accent surface — repointed from the old
-// indigo/violet to the brand blue so the AI accent reads as "SimplerDev blue"
+// indigo/violet to the brand blue so the AI accent reads as "CRM AGENTS blue"
 // app-wide.
 export const lightColors: ThemeColors = {
   bgApp: '#F5F5F4', // stone-100 (warm app bg)

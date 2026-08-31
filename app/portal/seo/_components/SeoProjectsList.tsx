@@ -85,7 +85,7 @@ export default function SeoProjectsList() {
       <PortalPageHeader
         eyebrow="Optimization"
         title="SEO Intelligence"
-        subtitle="Crawl your sites, find technical issues, and track health over time."
+        subtitle="Rastrea tus sitios, encuentra problemas técnicos y supervisa la salud con el tiempo."
         actions={
           <button type="button" onClick={() => setDialogOpen(true)} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>

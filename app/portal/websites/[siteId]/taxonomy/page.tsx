@@ -178,7 +178,7 @@ export default function TaxonomyPage() {
   };
 
   const handleDeleteTerm = async (termId: number) => {
-    if (!selectedTaxonomy || !confirm('Delete this term? Content will be unlinked.')) return;
+    if (!selectedTaxonomy || !confirm('¿Eliminar este término? El contenido quedará desvinculado.')) return;
     await fetch(`${base}/taxonomies/${selectedTaxonomy.id}/terms/${termId}`, { method: 'DELETE' });
     loadTerms(selectedTaxonomy.id);
   };
@@ -199,9 +199,9 @@ export default function TaxonomyPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Taxonomy"
-        subtitle="Manage how your content is organized and classified."
+        eyebrow="Sitio web"
+        title="Taxonomía"
+        subtitle="Gestiona cómo se organiza y clasifica tu contenido."
       />
 
       {/* ═══ TAXONOMIES ═══ */}
@@ -223,7 +223,7 @@ export default function TaxonomyPage() {
                 <div className="flex-1 min-w-0">
                   <span className="font-medium block truncate">{tax.name}</span>
                   <span className={`text-xs ${selectedTaxonomy?.id === tax.id ? 'opacity-70' : 'text-muted-foreground'}`}>
-                    {tax.hierarchical ? 'Hierarchical' : 'Flat'}
+                    {tax.hierarchical ? 'Jerárquica' : 'Fija'}
                     {tax.builtIn && ' (built-in)'}
                   </span>
                 </div>
@@ -236,19 +236,19 @@ export default function TaxonomyPage() {
               className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-primary hover:bg-accent/50 transition-colors border-2 border-dashed border-border"
             >
               <span className="material-icons text-base">{showTaxForm ? 'close' : 'add'}</span>
-              {showTaxForm ? 'Cancel' : 'New Taxonomy'}
+              {showTaxForm ? 'Cancelar' : 'Nueva taxonomía'}
             </button>
 
             {/* New taxonomy form */}
             {showTaxForm && (
               <form onSubmit={handleCreateTaxonomy} className="bg-card border border-border rounded-2xl p-4 space-y-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-muted-foreground">Name</label>
+                  <label className="text-xs font-medium text-muted-foreground">Nombre</label>
                   <input
                     value={taxForm.name}
                     onChange={e => setTaxForm(prev => ({ ...prev, name: e.target.value, slug: slugify(e.target.value) }))}
                     required
-                    placeholder="e.g. Genre"
+                    placeholder="p. ej., Género"
                     className="w-full px-3 py-2 rounded-xl border border-border bg-background text-sm"
                   />
                 </div>
@@ -262,7 +262,7 @@ export default function TaxonomyPage() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-muted-foreground">Icon</label>
+                  <label className="text-xs font-medium text-muted-foreground">Icono</label>
                   <div className="flex flex-wrap gap-1">
                     {ICONS.map(icon => (
                       <button
@@ -293,7 +293,7 @@ export default function TaxonomyPage() {
                   disabled={saving}
                   className="w-full py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
                 >
-                  {saving ? 'Creating...' : 'Create Taxonomy'}
+                  {saving ? 'Creando…' : 'Crear taxonomía'}
                 </button>
               </form>
             )}
@@ -316,7 +316,7 @@ export default function TaxonomyPage() {
                     className={`${pBtnPrimary}`}
                   >
                     <span className="material-icons text-base">{showTermForm && !editingTerm ? 'close' : 'add'}</span>
-                    {showTermForm && !editingTerm ? 'Cancel' : `Add ${selectedTaxonomy.name.replace(/s$/, '')}`}
+                    {showTermForm && !editingTerm ? 'Cancelar' : `Add ${selectedTaxonomy.name.replace(/s$/, '')}`}
                   </button>
                 </div>
 
@@ -324,11 +324,11 @@ export default function TaxonomyPage() {
                 {showTermForm && (
                   <form onSubmit={handleSubmitTerm} className="bg-card border border-border rounded-2xl p-5 space-y-4">
                     <h3 className="font-medium text-foreground text-sm">
-                      {editingTerm ? 'Edit' : 'New'} {selectedTaxonomy.name.replace(/s$/, '')}
+                      {editingTerm ? 'Editar' : 'Nueva'} {selectedTaxonomy.name.replace(/s$/, '')}
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-foreground">Name</label>
+                        <label className="text-sm font-medium text-foreground">Nombre</label>
                         <input
                           value={termForm.name}
                           onChange={e => setTermForm(prev => ({
@@ -352,11 +352,11 @@ export default function TaxonomyPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-foreground">Description</label>
+                        <label className="text-sm font-medium text-foreground">Descripción</label>
                         <input
                           value={termForm.description}
                           onChange={e => setTermForm(prev => ({ ...prev, description: e.target.value }))}
-                          placeholder="Optional"
+                          placeholder="Opcional"
                           className="w-full px-3 py-2 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                         />
                       </div>
@@ -372,13 +372,13 @@ export default function TaxonomyPage() {
                     </div>
                     {selectedTaxonomy.hierarchical && (
                       <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-foreground">Parent</label>
+                        <label className="text-sm font-medium text-foreground">Principal</label>
                         <select
                           value={termForm.parentId}
                           onChange={e => setTermForm(prev => ({ ...prev, parentId: e.target.value }))}
                           className="w-full px-3 py-2 rounded-xl border border-border bg-background text-sm"
                         >
-                          <option value="">None (top-level)</option>
+                          <option value="">Ninguno (nivel superior)</option>
                           {topLevelTerms
                             .filter(t => t.id !== editingTerm?.id)
                             .map(t => (
@@ -397,16 +397,14 @@ export default function TaxonomyPage() {
                         type="button"
                         onClick={() => { setShowTermForm(false); setEditingTerm(null); }}
                         className={pBtnGhost}
-                      >
-                        Cancel
-                      </button>
+                      >Cancelar</button>
                       <button
                         type="submit"
                         disabled={saving}
                         className={`${pBtnPrimary} disabled:opacity-50`}
                       >
                         {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                        {editingTerm ? 'Update' : 'Create'}
+                        {editingTerm ? 'Actualizar' : 'Crear'}
                       </button>
                     </div>
                   </form>
@@ -466,7 +464,7 @@ export default function TaxonomyPage() {
               </div>
             ) : (
               <div className="flex items-center justify-center py-16 text-muted-foreground">
-                <p className="text-sm">Select a taxonomy or create a new one</p>
+                <p className="text-sm">Selecciona una taxonomía o crea una nueva</p>
               </div>
             )}
           </div>

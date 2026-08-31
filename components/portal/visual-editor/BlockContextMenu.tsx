@@ -46,27 +46,21 @@ export function BlockContextMenu({
           onClick={() => { onDuplicate(); onClose(); }}
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-accent text-left"
         >
-          <span className="material-icons text-base text-muted-foreground">content_copy</span>
-          Duplicate
-          <span className="ml-auto text-[10px] text-muted-foreground/70">⌘D</span>
+          <span className="material-icons text-base text-muted-foreground">content_copy</span>Duplicar<span className="ml-auto text-[10px] text-muted-foreground/70">⌘D</span>
         </button>
         <button
           type="button"
           onClick={() => { onCopy(); onClose(); }}
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-accent text-left"
         >
-          <span className="material-icons text-base text-muted-foreground">file_copy</span>
-          Copy
-          <span className="ml-auto text-[10px] text-muted-foreground/70">⌘C</span>
+          <span className="material-icons text-base text-muted-foreground">file_copy</span>Copiar<span className="ml-auto text-[10px] text-muted-foreground/70">⌘C</span>
         </button>
         <button
           type="button"
           onClick={() => { onPaste(); onClose(); }}
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-accent text-left"
         >
-          <span className="material-icons text-base text-muted-foreground">content_paste</span>
-          Paste
-          <span className="ml-auto text-[10px] text-muted-foreground/70">⌘V</span>
+          <span className="material-icons text-base text-muted-foreground">content_paste</span>Pegar<span className="ml-auto text-[10px] text-muted-foreground/70">⌘V</span>
         </button>
         <button
           type="button"
@@ -75,26 +69,20 @@ export function BlockContextMenu({
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-accent text-left disabled:opacity-40 disabled:cursor-not-allowed"
           title={selectedCount < 2 ? 'Select 2 or more blocks to group' : ''}
         >
-          <span className="material-icons text-base text-muted-foreground">crop_free</span>
-          Group into Section
-        </button>
+          <span className="material-icons text-base text-muted-foreground">crop_free</span>Agrupar en sección</button>
         <button
           type="button"
           onClick={() => { onSaveAsTemplate(); onClose(); }}
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-accent text-left"
         >
-          <span className="material-icons text-base text-muted-foreground">bookmark_add</span>
-          Save as Template
-        </button>
+          <span className="material-icons text-base text-muted-foreground">bookmark_add</span>Guardar como plantilla</button>
         <div className="border-t border-border my-1" />
         <button
           type="button"
           onClick={() => { onDelete(); onClose(); }}
           className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-destructive/10 text-destructive text-left"
         >
-          <span className="material-icons text-base">delete</span>
-          Delete
-        </button>
+          <span className="material-icons text-base">delete</span>Eliminar</button>
       </div>
     </>
   );

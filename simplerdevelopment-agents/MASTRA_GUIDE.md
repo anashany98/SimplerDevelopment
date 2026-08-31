@@ -61,7 +61,7 @@ export const weatherTool = createTool({
 `description` and each `.describe()` are **prompt engineering, not docs** — they're how the
 model decides what to pass and when to call. `execute` is plain TypeScript (here: two
 open-meteo HTTP calls). Tools are where the agent reaches the real world (APIs, DBs, MCP
-servers — note the SimplerDevelopment portal exposes ~400 MCP tools an agent could use).
+servers — note the CRM AGENTS portal exposes ~400 MCP tools an agent could use).
 
 ### 3. Workflow — `src/mastra/workflows/weather-workflow.ts`
 Agents are non-deterministic; **workflows are deterministic** — explicit steps, branching,

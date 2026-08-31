@@ -147,7 +147,7 @@ export function PrintableAreaEditor({
             <div
               role="presentation"
               onPointerDown={start('resize')}
-              title="Drag to resize"
+              title="Arrastra para redimensionar"
               className="absolute -bottom-1.5 -right-1.5 h-3.5 w-3.5 cursor-nwse-resize rounded-sm border-2 border-background bg-primary"
             />
           </div>

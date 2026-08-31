@@ -41,9 +41,9 @@ function LoginForm() {
   const callbackUrl = safeCallbackUrl(searchParams.get('callbackUrl'));
   const verified = searchParams.get('verified') === '1';
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setContraseña] = useState('');
   const [totpCode, setTotpCode] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [showContraseña, setShowContraseña] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   // Portal chooser state
@@ -66,7 +66,7 @@ function LoginForm() {
       });
     } catch {
       setLoading(false);
-      setError('Unable to connect — please check your internet connection and try again.');
+      setError('No se puede conectar. Comprueba tu conexión a Internet e inténtalo de nuevo.');
       return;
     }
 
@@ -75,7 +75,7 @@ function LoginForm() {
     if (result?.error) {
       // We can't tell password-vs-2FA apart (NextAuth hides the reason), so guide
       // the user to the code if they have 2FA on.
-      setError('Invalid email or password — if you have two-factor enabled, include your authenticator code.');
+      setError('El email o la contraseña no son válidos. Si tienes activada la autenticación de dos factores, incluye el código de tu aplicación.');
     } else {
       // Check if the user's client has a subdomain portal
       try {
@@ -140,10 +140,10 @@ function LoginForm() {
 
   if (choosingPortal) {
     return (
-      <AuthShell panelSubtitle="Pick up right where you left off.">
-        <div className={authEyebrow}>{'// Choose portal'}</div>
-        <h1 className={authHeading}>Choose your portal.</h1>
-        <p className={authSubtext}>You have access to multiple portals. Select one to continue.</p>
+      <AuthShell panelSubtitle="Continúa justo donde lo dejaste.">
+        <div className={authEyebrow}>{'// Elegir portal'}</div>
+        <h1 className={authHeading}>Elige tu portal.</h1>
+        <p className={authSubtext}>Tienes acceso a varios portales. Selecciona uno para continuar.</p>
 
         <div className="mt-7 space-y-2.5">
           {portals.map((portal) => (
@@ -159,7 +159,7 @@ function LoginForm() {
               <div className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-foreground">{portal.company}</span>
                 {portal.subdomain && (
-                  <span className="text-xs text-muted-foreground">{portal.subdomain}.simplerdevelopment.com</span>
+                  <span className="text-xs text-muted-foreground">{portal.subdomain} · CRM AGENTS</span>
                 )}
               </div>
               <span className="material-icons text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary">arrow_forward</span>
@@ -168,24 +168,24 @@ function LoginForm() {
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          This will be set as your default. You can change it in Settings.
+          Se establecerá como tu portal predeterminado. Puedes cambiarlo en Ajustes.
         </p>
       </AuthShell>
     );
   }
 
   return (
-    <AuthShell panelSubtitle="Welcome back — sign in to your command center.">
-      <div className={authEyebrow}>{'// Welcome back'}</div>
-      <h1 className={authHeading}>Sign in to your portal.</h1>
-      <p className={authSubtext}>One login for your sites, CRM, content, and everything in between.</p>
+    <AuthShell panelSubtitle="Bienvenido de nuevo. Inicia sesión en tu centro de control.">
+      <div className={authEyebrow}>{'// Bienvenido de nuevo'}</div>
+      <h1 className={authHeading}>Inicia sesión en tu portal.</h1>
+      <p className={authSubtext}>Un solo acceso para tus webs, CRM, contenido y todo lo demás.</p>
 
       <div className="mt-7">
         {/* Email-verified success banner */}
         {verified && (
           <div className="mb-4 flex items-center gap-2 rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-400">
             <span className="material-icons text-base">check_circle</span>
-            Email verified — sign in to continue.
+            Email verificado. Inicia sesión para continuar.
           </div>
         )}
 
@@ -194,7 +194,7 @@ function LoginForm() {
           <>
             <button type="button" onClick={() => signIn('google', { callbackUrl })} className={authGhostBtn}>
               <GoogleMark />
-              Continue with Google
+              Continuar con Google
             </button>
             <AuthDivider />
           </>
@@ -209,7 +209,7 @@ function LoginForm() {
 
         <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={authLabel}>Email</label>
+            <label className={authLabel}>Correo</label>
             <AuthField icon="mail_outline">
               <input
                 type="email"
@@ -223,12 +223,12 @@ function LoginForm() {
             </AuthField>
           </div>
           <div>
-            <label className={authLabel}>Password</label>
+            <label className={authLabel}>Contraseña</label>
             <AuthField icon="lock_outline">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showContraseña ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setContraseña(e.target.value)}
                 required
                 autoComplete="current-password"
                 className={`${authInput} pr-11`}
@@ -236,22 +236,22 @@ function LoginForm() {
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowContraseña(!showContraseña)}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground transition-colors hover:text-foreground"
                 tabIndex={-1}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showContraseña ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
-                <span className="material-icons text-lg">{showPassword ? 'visibility_off' : 'visibility'}</span>
+                <span className="material-icons text-lg">{showContraseña ? 'visibility_off' : 'visibility'}</span>
               </button>
             </AuthField>
             <div className="mt-2 flex justify-end">
               <a href="/portal/forgot-password" className="text-[13.5px] font-semibold text-primary hover:underline">
-                Forgot your password?
+                ¿Has olvidado tu contraseña?
               </a>
             </div>
           </div>
           <div>
-            <label className={authLabel}>Two-factor code <span className="font-normal text-muted-foreground">(only if enabled)</span></label>
+            <label className={authLabel}>Código de dos factores <span className="font-normal text-muted-foreground">(solo si está activado)</span></label>
             <AuthField icon="pin">
               <input
                 type="text"
@@ -270,11 +270,11 @@ function LoginForm() {
             {loading ? (
               <>
                 <span className="material-icons animate-spin text-base">refresh</span>
-                Signing in…
+                Iniciando sesión…
               </>
             ) : (
               <>
-                Sign in
+                Iniciar sesión
                 <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">arrow_forward</span>
               </>
             )}
@@ -283,13 +283,13 @@ function LoginForm() {
 
         {isSignupDisabled ? (
           <p className="mt-6 text-sm text-muted-foreground">
-            New here? Self-serve signup is disabled on this instance.
+            ¿Es tu primera vez? El registro automático está desactivado en esta instancia.
           </p>
         ) : (
           <p className="mt-6 text-sm text-muted-foreground">
-            New here?{' '}
+            ¿Es tu primera vez?{' '}
             <a href="/portal/signup" className="font-bold text-foreground hover:text-primary">
-              Create an account
+              Crear una cuenta
             </a>
           </p>
         )}

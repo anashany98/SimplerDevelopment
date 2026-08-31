@@ -46,7 +46,7 @@ export function IssuesTab({ runId, runStatus }: { runId: number | null; runStatu
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">fact_check</span>
-        <p className="text-sm text-muted-foreground">No crawls yet. Run an audit to see issues here.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay rastreos. Ejecuta una auditoría para ver aquí los problemas.</p>
       </div>
     );
   }
@@ -111,7 +111,7 @@ export function IssuesTab({ runId, runStatus }: { runId: number | null; runStatu
                 )}
                 {group.howToFix && (
                   <div>
-                    <p className="text-xs font-semibold text-foreground mb-0.5">How to fix</p>
+                    <p className="text-xs font-semibold text-foreground mb-0.5">Cómo solucionarlo</p>
                     <p className="text-sm text-muted-foreground">{group.howToFix}</p>
                   </div>
                 )}

@@ -136,7 +136,7 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
       {loading && logs.length === 0 ? (
         <div className="px-5 py-8 flex items-center justify-center text-muted-foreground">
           <span className="material-icons animate-spin text-lg mr-2">refresh</span>
-          <span className="text-sm">Loading...</span>
+          <span className="text-sm">Cargando...</span>
         </div>
       ) : filteredLogs.length === 0 ? (
         <p className="px-5 py-8 text-center text-sm text-muted-foreground">
@@ -147,12 +147,12 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
           <table className="w-full text-xs font-mono">
             <thead className="sticky top-0 bg-[#161b22] text-[#8b949e]">
               <tr>
-                <th className="px-3 py-2 text-left">Time</th>
+                <th className="px-3 py-2 text-left">Hora</th>
                 <th className="px-3 py-2 text-left">Method</th>
                 <th className="px-3 py-2 text-left">Path</th>
-                <th className="px-3 py-2 text-right">Status</th>
-                <th className="px-3 py-2 text-right">Duration</th>
-                <th className="px-3 py-2 text-left">Country</th>
+                <th className="px-3 py-2 text-right">Estado</th>
+                <th className="px-3 py-2 text-right">Duración</th>
+                <th className="px-3 py-2 text-left">País</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#21262d]">

@@ -90,7 +90,7 @@ export default function AdminEcommercePage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">eCommerce</h1>
-        <p className="text-muted-foreground mt-1">Platform-wide store management and order oversight.</p>
+        <p className="text-muted-foreground mt-1">Gestión de la tienda en toda la plataforma y supervisión de pedidos.</p>
       </div>
 
       {/* Tabs */}
@@ -134,8 +134,8 @@ export default function AdminEcommercePage() {
                   <thead>
                     <tr className="border-b border-border text-left">
                       <th className="px-6 py-3 font-medium text-muted-foreground">Store</th>
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Client</th>
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Status</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Cliente</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Estado</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground">Stripe</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground text-right">Revenue</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground text-right">Platform Fees</th>
@@ -204,14 +204,14 @@ export default function AdminEcommercePage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border text-left">
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Order</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Pedido</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground">Store</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground">Customer</th>
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Status</th>
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Payment</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Estado</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Pago</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground text-right">Total</th>
                       <th className="px-6 py-3 font-medium text-muted-foreground text-right">Fee</th>
-                      <th className="px-6 py-3 font-medium text-muted-foreground">Date</th>
+                      <th className="px-6 py-3 font-medium text-muted-foreground">Fecha</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -247,17 +247,13 @@ export default function AdminEcommercePage() {
                     onClick={() => setOrdersPage(p => Math.max(1, p - 1))}
                     disabled={ordersPage === 1}
                     className="px-3 py-1.5 text-sm border border-border rounded-lg hover:bg-accent disabled:opacity-50 transition-colors"
-                  >
-                    Previous
-                  </button>
+                  >Anterior</button>
                   <span className="text-sm text-muted-foreground">Page {ordersPage} of {Math.ceil(ordersTotal / 50)}</span>
                   <button
                     onClick={() => setOrdersPage(p => p + 1)}
                     disabled={ordersPage >= Math.ceil(ordersTotal / 50)}
                     className="px-3 py-1.5 text-sm border border-border rounded-lg hover:bg-accent disabled:opacity-50 transition-colors"
-                  >
-                    Next
-                  </button>
+                  >Siguiente</button>
                 </div>
               )}
             </>

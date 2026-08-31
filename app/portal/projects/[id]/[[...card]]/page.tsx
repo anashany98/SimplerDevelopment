@@ -310,7 +310,7 @@ export default async function ProjectKanbanPage({ params, searchParams }: { para
           Projects
         </Link>
         <PortalPageHeader
-          eyebrow="Projects"
+          eyebrow="Proyectos"
           title={project.name}
           subtitle={
             (project.description || canEdit) ? (
@@ -350,8 +350,8 @@ export default async function ProjectKanbanPage({ params, searchParams }: { para
           { key: 'flow',     href: `/portal/projects/${projectId}?tab=flow`,        label: 'Workflow Designer', icon: 'account_tree' },
           { key: 'runs',     href: `/portal/projects/${projectId}?tab=runs`,        label: 'Executions', icon: 'history' },
           { key: 'visualizations', href: `/portal/projects/${projectId}?tab=visualizations`, label: 'Visualizations', icon: 'device_hub' },
-          { key: 'members',  href: `/portal/projects/${projectId}?tab=members`,     label: 'Members',  icon: 'group' },
-          { key: 'settings', href: `/portal/projects/${projectId}?tab=settings`,    label: 'Settings', icon: 'settings' },
+          { key: 'members',  href: `/portal/projects/${projectId}?tab=members`,     label: 'Miembros',  icon: 'group' },
+          { key: 'settings', href: `/portal/projects/${projectId}?tab=settings`,    label: 'Ajustes', icon: 'settings' },
         ] as const).map(t => (
           <Link key={t.key} href={t.href}
             aria-label={t.label}

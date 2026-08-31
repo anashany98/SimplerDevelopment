@@ -1,6 +1,6 @@
 # Blocks API
 
-Page content in SimplerDevelopment is composed of **typed JSON blocks** — structured data units like headings, hero sections, galleries, and eCommerce grids that are assembled into pages in the visual editor. This endpoint lets you fetch the platform's full block catalog so you can discover available block types, their categories, and the input fields each one accepts. Use it to drive a custom block picker, validate content payloads, or understand what `type` values are valid when constructing page content programmatically.
+Page content in CRM AGENTS is composed of **typed JSON blocks** — structured data units like headings, hero sections, galleries, and eCommerce grids that are assembled into pages in the visual editor. This endpoint lets you fetch the platform's full block catalog so you can discover available block types, their categories, and the input fields each one accepts. Use it to drive a custom block picker, validate content payloads, or understand what `type` values are valid when constructing page content programmatically.
 
 **Base URL:** `https://app.simplerdevelopment.com/api/v1`
 

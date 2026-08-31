@@ -110,18 +110,16 @@ export function HtmlEmbedEditor({ block, onUpdate, siteId }: { block: Block; onU
             </div>
           ) : (
             <div className="text-muted-foreground">
-              <span className="material-icons text-2xl block mb-1">upload_file</span>
-              Drop an .html file or click to browse
-            </div>
+              <span className="material-icons text-2xl block mb-1">upload_file</span>Suelta un archivo .html o haz clic para explorar</div>
           )}
         </div>
         {error && <p className="text-xs text-destructive mt-1">{error}</p>}
       </div>
 
       <Field label="URL" value={url} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} />
-      <Field label="Height" value={(b.height as string) || '600px'} onChange={(v) => onUpdate({ height: v } as Partial<Block>)} />
+      <Field label="Alto" value={(b.height as string) || '600px'} onChange={(v) => onUpdate({ height: v } as Partial<Block>)} />
       <SelectField
-        label="Width"
+        label="Ancho"
         value={(b.width as string) || 'full'}
         options={['full', 'contained']}
         onChange={(v) => onUpdate({ width: v } as Partial<Block>)}
@@ -132,8 +130,8 @@ export function HtmlEmbedEditor({ block, onUpdate, siteId }: { block: Block; onU
         options={['strict', 'scripts', 'scripts-forms']}
         onChange={(v) => onUpdate({ sandbox: v } as Partial<Block>)}
       />
-      <Field label="Iframe Title" value={(b.iframeTitle as string) || ''} onChange={(v) => onUpdate({ iframeTitle: v || undefined } as Partial<Block>)} />
-      <Field label="Caption" value={(b.caption as string) || ''} onChange={(v) => onUpdate({ caption: v || undefined } as Partial<Block>)} />
+      <Field label="Título del iframe" value={(b.iframeTitle as string) || ''} onChange={(v) => onUpdate({ iframeTitle: v || undefined } as Partial<Block>)} />
+      <Field label="Leyenda" value={(b.caption as string) || ''} onChange={(v) => onUpdate({ caption: v || undefined } as Partial<Block>)} />
     </>
   );
 }

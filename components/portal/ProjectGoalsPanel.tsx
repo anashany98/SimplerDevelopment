@@ -124,7 +124,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
         <form onSubmit={onSubmit} className="space-y-3 border border-border rounded-lg p-4 bg-background">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5 sm:col-span-2">
-              <label className="text-xs font-medium text-foreground">Title <span className="text-destructive">*</span></label>
+              <label className="text-xs font-medium text-foreground">Título<span className="text-destructive">*</span></label>
               <input
                 value={form.title}
                 onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
@@ -134,7 +134,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
               />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <label className="text-xs font-medium text-foreground">Description</label>
+              <label className="text-xs font-medium text-foreground">Descripción</label>
               <textarea
                 rows={2}
                 value={form.description}
@@ -152,7 +152,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Target</label>
+              <label className="text-xs font-medium text-foreground">Objetivo</label>
               <input
                 type="number" min={1}
                 value={form.targetValue}
@@ -179,7 +179,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Status</label>
+              <label className="text-xs font-medium text-foreground">Estado</label>
               <select
                 value={form.status}
                 onChange={e => setForm(p => ({ ...p, status: e.target.value as GoalStatus }))}
@@ -198,7 +198,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
       )}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
         <p className="text-sm text-muted-foreground italic">No goals yet.</p>
       ) : (
@@ -230,7 +230,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
                       >
                         {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
-                      <button onClick={() => onDelete(g.id)} className="text-muted-foreground hover:text-destructive" title="Delete">
+                      <button onClick={() => onDelete(g.id)} className="text-muted-foreground hover:text-destructive" title="Eliminar">
                         <span className="material-icons text-sm">delete_outline</span>
                       </button>
                     </div>

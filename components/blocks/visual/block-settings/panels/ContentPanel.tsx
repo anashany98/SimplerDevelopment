@@ -73,15 +73,15 @@ function TextBlockSettings({ block, onChange, currentViewport }: { block: TextBl
           onChange={(e) => onChange({ size: e.target.value as TextBlock['size'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="sm">Small</option>
+          <option value="sm">Pequeño</option>
           <option value="base">Base</option>
-          <option value="lg">Large</option>
+          <option value="lg">Grande</option>
           <option value="xl">Extra Large</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <div className="flex gap-2">
           {(['left', 'center', 'right'] as const).map((align) => (
             <button
@@ -126,7 +126,7 @@ function HeadingBlockSettings({ block, onChange, currentViewport }: { block: Hea
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <div className="flex gap-2">
           {(['left', 'center', 'right'] as const).map((align) => (
             <button

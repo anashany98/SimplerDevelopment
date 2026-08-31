@@ -1,6 +1,6 @@
 # lib/mcp — Agent Notes
 
-The portal-side MCP server: tool catalogue exposed to AI clients (Claude Code, Claude Desktop, custom agents) so they can drive the SimplerDevelopment portal.
+The portal-side MCP server: tool catalogue exposed to AI clients (Claude Code, Claude Desktop, custom agents) so they can drive the CRM AGENTS portal.
 
 > Token budget: keep this file <80 lines.
 

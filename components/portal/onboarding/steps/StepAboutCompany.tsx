@@ -24,7 +24,7 @@ export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
   return (
     <div className="space-y-6">
       <div>
-        <label className={obLabel}>How big is your team?</label>
+        <label className={obLabel}>¿Qué tan grande es tu equipo?</label>
         <div className="flex flex-wrap gap-2">
           {COMPANY_SIZES.map((opt) => {
             const active = size === opt.id;
@@ -51,7 +51,7 @@ export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
           data-testid="onboarding-industry"
           className={obSelect}
         >
-          <option value="">Pick one…</option>
+          <option value="">Elige uno…</option>
           {INDUSTRY_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       </div>
@@ -75,9 +75,7 @@ export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
           disabled={!canContinue}
           data-testid="onboarding-company-next"
           className={obPrimaryBtn}
-        >
-          Continue
-          <span className="material-icons text-base">arrow_forward</span>
+        >Continuar<span className="material-icons text-base">arrow_forward</span>
         </button>
       </div>
     </div>

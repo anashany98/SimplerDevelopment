@@ -230,7 +230,7 @@ Embeddings are wired but **off by default**. The flow:
 A full Obsidian-vault import (~5–10 MB of markdown) costs roughly $0.05–$0.10
 in OpenAI charges (text-embedding-3-small). Budget that against the customer
 contract — embeddings cost is **separate from `ai_credits`** today and is
-billed on the SimplerDevelopment OpenAI account.
+billed on the CRM AGENTS OpenAI account.
 
 ### Ask Brain credit cost
 

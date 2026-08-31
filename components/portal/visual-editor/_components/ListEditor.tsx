@@ -146,7 +146,7 @@ export function SortableListItem({
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => { e.stopPropagation(); onDuplicate(item.id); }}
             className="p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
-            title="Duplicate"
+            title="Duplicar"
           >
             <span className="material-icons text-sm">content_copy</span>
           </button>
@@ -156,7 +156,7 @@ export function SortableListItem({
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => { e.stopPropagation(); onRemove(item.id); }}
           className="p-0.5 rounded text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors shrink-0"
-          title="Remove"
+          title="Quitar"
         >
           <span className="material-icons text-sm">close</span>
         </button>

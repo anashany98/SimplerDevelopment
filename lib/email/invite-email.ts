@@ -26,7 +26,7 @@ export async function sendInviteEmail(data: InviteEmailData) {
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
       <div style="padding:40px 32px;text-align:center;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
         <h1 style="margin:0;font-size:24px;font-weight:700;color:#0f172a;">You've been invited</h1>
-        <p style="margin:8px 0 0;font-size:15px;color:#64748b;">to join <strong>${data.companyName}</strong> on Simpler Development</p>
+        <p style="margin:8px 0 0;font-size:15px;color:#64748b;">to join <strong>${data.companyName}</strong> on CRM AGENTS</p>
       </div>
       <div style="padding:32px;">
         <p style="font-size:15px;color:#334155;line-height:1.6;">
@@ -52,14 +52,14 @@ export async function sendInviteEmail(data: InviteEmailData) {
       </div>
       <div style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center;">
         <p style="margin:0;font-size:12px;color:#94a3b8;">
-          Simpler Development &middot; Design, Dev & Automation
+          CRM AGENTS &middot; Design, Dev & Automation
         </p>
       </div>
     </div>
   `;
 
   return resend.emails.send({
-    from: `Simpler Development <${FROM_EMAIL}>`,
+    from: `CRM AGENTS <${FROM_EMAIL}>`,
     to: data.recipientEmail,
     subject: `${data.inviterName} invited you to ${data.companyName}`,
     html,

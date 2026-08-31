@@ -1,6 +1,6 @@
-# Deploying SimplerDevelopment on Railway
+# Deploying CRM AGENTS on Railway
 
-This guide covers the two-service topology needed to run SimplerDevelopment on [Railway](https://railway.com).
+This guide covers the two-service topology needed to run CRM AGENTS on [Railway](https://railway.com).
 
 > The "Deploy on Railway" button in the README links to a published one-click template at `https://railway.com/new/template/simpler-development` — it provisions the **app** + **db** services below in one step.
 

@@ -79,7 +79,7 @@ export default function AdminAiCreditsPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">AI Credits</h1>
-        <p className="text-muted-foreground mt-1">Monitor AI credit balances and usage across all clients.</p>
+        <p className="text-muted-foreground mt-1">Supervisa los saldos de créditos de IA y el uso de todos los clientes.</p>
       </div>
 
       {/* Summary cards */}
@@ -105,9 +105,7 @@ export default function AdminAiCreditsPage() {
           className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
             tab === 'overview' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
           }`}
-        >
-          Overview
-        </button>
+        >Resumen general</button>
         <button
           onClick={() => setTab('ledger')}
           className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
@@ -140,11 +138,11 @@ export default function AdminAiCreditsPage() {
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Balance</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Saldo</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Monthly Grant</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pay-as-you-go</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -155,7 +153,7 @@ export default function AdminAiCreditsPage() {
                       <td className="px-4 py-3 text-muted-foreground">{formatNumber(b.monthlyGrant)}</td>
                       <td className="px-4 py-3">
                         {b.payAsYouGo ? (
-                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-purple-100 text-purple-700">Enabled</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-purple-100 text-purple-700">Activado</span>
                         ) : (
                           <span className="text-xs text-muted-foreground">--</span>
                         )}
@@ -211,11 +209,11 @@ export default function AdminAiCreditsPage() {
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Type</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tipo</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Descripción</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">

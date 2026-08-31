@@ -48,6 +48,9 @@ vi.mock('@/lib/db/schema', () => {
     crmDeals: wrap('crmDeals'),
     crmContactTags: wrap('crmContactTags'),
     crmCustomFieldValues: wrap('crmCustomFieldValues'),
+    channelIdentities: wrap('channelIdentities'),
+    chatConversations: wrap('chatConversations'),
+    conversationAuditLogs: wrap('conversationAuditLogs'),
   }, { has: (t, p) => (p in t) || !(p === "then" || p === "__esModule" || p === "default" || typeof p !== "string"), get: (t, p) => (p in t) ? t[p] : ((p === "then" || p === "__esModule" || p === "default" || typeof p !== "string") ? undefined : new Proxy({ __table: String(p) }, { get: (_x, c) => c === "__table" ? String(p) : (typeof c === "string" ? { __col: c, __table: String(p) } : undefined) })) });
 });
 
@@ -413,27 +416,31 @@ describe('POST /api/portal/crm/contacts/merge', () => {
   it('reassigns activities from secondary to primary', async () => {
     seedContact({ id: 1, firstName: 'A' });
     seedContact({ id: 2, firstName: 'B' });
-    state.activities.push({ id: 100, contactId: 2 });
-    state.activities.push({ id: 101, contactId: 2 });
-    state.activities.push({ id: 102, contactId: 99 });
+    state.activities.push({ id: 100, clientId: 10, contactId: 2 });
+    state.activities.push({ id: 101, clientId: 10, contactId: 2 });
+    state.activities.push({ id: 102, clientId: 10, contactId: 99 });
+    state.activities.push({ id: 103, clientId: 999, contactId: 2 });
 
     const res = await POST(makePost({ primaryId: 1, secondaryId: 2 }));
     expect(res.status).toBe(200);
     expect(state.activities.find((a) => a.id === 100)?.contactId).toBe(1);
     expect(state.activities.find((a) => a.id === 101)?.contactId).toBe(1);
     expect(state.activities.find((a) => a.id === 102)?.contactId).toBe(99);
+    expect(state.activities.find((a) => a.id === 103)?.contactId).toBe(2);
   });
 
   it('reassigns deals from secondary to primary', async () => {
     seedContact({ id: 1, firstName: 'A' });
     seedContact({ id: 2, firstName: 'B' });
-    state.deals.push({ id: 200, contactId: 2 });
-    state.deals.push({ id: 201, contactId: 99 });
+    state.deals.push({ id: 200, clientId: 10, contactId: 2 });
+    state.deals.push({ id: 201, clientId: 10, contactId: 99 });
+    state.deals.push({ id: 202, clientId: 999, contactId: 2 });
 
     const res = await POST(makePost({ primaryId: 1, secondaryId: 2 }));
     expect(res.status).toBe(200);
     expect(state.deals.find((d) => d.id === 200)?.contactId).toBe(1);
     expect(state.deals.find((d) => d.id === 201)?.contactId).toBe(99);
+    expect(state.deals.find((d) => d.id === 202)?.contactId).toBe(2);
   });
 
   it('moves new tags to primary and skips duplicates, then strips secondary tags', async () => {

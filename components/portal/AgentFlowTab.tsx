@@ -584,9 +584,9 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
               aria-label="Flow status"
               className="text-xs px-2 py-1 border border-border rounded bg-background disabled:opacity-70"
             >
-              <option value="draft">Draft</option>
-              <option value="active">Active</option>
-              <option value="archived">Archived</option>
+              <option value="draft">Borrador</option>
+              <option value="active">Activo</option>
+              <option value="archived">Archivado</option>
             </select>
             {canEdit && (
               <>
@@ -605,9 +605,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
                   disabled={deleting}
                   className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/20 disabled:opacity-60"
                 >
-                  <span className="material-icons text-sm">delete</span>
-                  Delete
-                </button>
+                  <span className="material-icons text-sm">delete</span>Eliminar</button>
               </>
             )}
           </>
@@ -625,7 +623,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           rows={2}
           maxLength={5000}
           aria-label="Flow description"
-          placeholder="What this flow is for — when to run it, what it produces (optional)"
+          placeholder="Para qué es este flujo: cuándo ejecutarlo, qué produce (opcional)"
           className="w-full text-xs px-2 py-1.5 border border-border rounded-lg bg-background text-muted-foreground disabled:opacity-70 resize-y"
         />
       )}

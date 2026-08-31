@@ -29,10 +29,10 @@ export default async function SupportTicketsWidget({
     <div>
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{openCount}</span>
-        <span className="ml-2 text-sm text-muted-foreground">open ticket{openCount !== 1 ? 's' : ''}</span>
+        <span className="ml-2 text-sm text-muted-foreground">ticket abierto{openCount !== 1 ? 's' : ''}</span>
       </div>
       {recent.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No tickets yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Todavía no hay tickets.</p>
       ) : (
         <ul className="space-y-2">
           {recent.map((t) => (

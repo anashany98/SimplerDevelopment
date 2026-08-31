@@ -38,10 +38,10 @@ const statusIcon: Record<string, string> = {
 };
 
 const roleLabel: Record<ProjectRole, string> = {
-  owner: 'Owner',
+  owner: 'Propietario',
   editor: 'Editor',
-  commenter: 'Commenter',
-  viewer: 'Viewer',
+  commenter: 'Comentarista',
+  viewer: 'Lector',
 };
 
 // ─── Project Grid ────────────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ export function ProjectGrid({
             <span className="material-icons text-2xl text-primary group-hover:scale-110 transition-transform">view_kanban</span>
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1 ${statusColor[project.status] ?? 'bg-muted text-muted-foreground'}`}>
               <span className="material-icons text-xs">{statusIcon[project.status] ?? 'circle'}</span>
-              {project.status}
+              {({ active: 'Activo', paused: 'En pausa', completed: 'Completado', archived: 'Archivado' } as Record<string, string>)[project.status] ?? project.status}
             </span>
           </div>
           <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground truncate">{project.name}</h2>
@@ -88,13 +88,13 @@ export function ProjectGrid({
             {project.startDate && (
               <span className="flex items-center gap-1">
                 <span className="material-icons text-xs">calendar_today</span>
-                {new Date(project.startDate).toLocaleDateString('en-US')}
+                {new Date(project.startDate).toLocaleDateString('es-ES')}
               </span>
             )}
             {project.dueDate && (
               <span className="flex items-center gap-1">
                 <span className="material-icons text-xs">event</span>
-                Due {new Date(project.dueDate).toLocaleDateString('en-US')}
+                Vence el {new Date(project.dueDate).toLocaleDateString('es-ES')}
               </span>
             )}
           </div>
@@ -125,11 +125,11 @@ export function ProjectTable({
           <table className="w-full text-sm">
             <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
               <tr>
-                <th className="px-4 py-3 font-medium">Project</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Role</th>
-                <th className="px-4 py-3 font-medium">Start</th>
-                <th className="px-4 py-3 font-medium">Due</th>
+                <th className="px-4 py-3 font-medium">Proyecto</th>
+                <th className="px-4 py-3 font-medium">Estado</th>
+                <th className="px-4 py-3 font-medium">Rol</th>
+                <th className="px-4 py-3 font-medium">Inicio</th>
+                <th className="px-4 py-3 font-medium">Vence</th>
               </tr>
             </thead>
             <tbody>
@@ -157,11 +157,11 @@ export function ProjectTable({
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium inline-flex items-center gap-1 ${statusColor[project.status] ?? 'bg-muted text-muted-foreground'}`}>
                         <span className="material-icons text-xs">{statusIcon[project.status] ?? 'circle'}</span>
-                        {project.status}
+                        {({ active: 'Activo', paused: 'En pausa', completed: 'Completado', archived: 'Archivado' } as Record<string, string>)[project.status] ?? project.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">{project.myRole ? roleLabel[project.myRole] : '—'}</td>
-                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.startDate ? new Date(project.startDate).toLocaleDateString('en-US') : '—'}</td>
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.startDate ? new Date(project.startDate).toLocaleDateString('es-ES') : '—'}</td>
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.dueDate ? new Date(project.dueDate).toLocaleDateString('en-US') : '—'}</td>
                   </tr>
                 );
@@ -181,7 +181,7 @@ function EmptyProjects({ message }: { message: string }) {
   return (
     <div className="bg-card border border-border rounded-2xl p-12 text-center">
       <span className="material-icons text-5xl text-muted-foreground">view_kanban</span>
-      <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No projects yet</h2>
+      <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Aún no hay proyectos</h2>
       <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">{message}</p>
     </div>
   );

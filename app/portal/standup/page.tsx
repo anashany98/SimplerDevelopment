@@ -114,7 +114,7 @@ export default function StandupPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Team"
+        eyebrow="Equipo"
         title="Standup"
         subtitle="What you did, what you're doing, and what's blocking you. Use this on the daily."
       />
@@ -126,13 +126,13 @@ export default function StandupPage() {
       ) : (
         <div className="space-y-8">
           <Section
-            title="Yesterday"
+            title="Ayer"
             icon="history"
             cards={data.yesterday}
             emptyText="No card activity in the last 24 hours."
           />
           <Section
-            title="Today"
+            title="Hoy"
             icon="today"
             cards={data.today}
             emptyText="Nothing assigned to you right now. Pull a card from the backlog."

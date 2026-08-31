@@ -193,7 +193,7 @@ function ScheduleModal({
               onChange={(e) => setPublish(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-sm text-foreground">Published</span>
+            <span className="text-sm text-foreground">Publicado</span>
           </label>
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -206,9 +206,7 @@ function ScheduleModal({
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm rounded-md border border-border text-foreground hover:bg-accent"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           {dateVal && (
             <button
               onClick={async () => {
@@ -328,7 +326,7 @@ function CreatePostModal({
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Título</label>
             <input
               type="text"
               value={title}
@@ -380,9 +378,7 @@ function CreatePostModal({
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm rounded-md border border-border text-foreground hover:bg-accent"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               onClick={handleCreate}
               disabled={saving || !title.trim()}
@@ -458,7 +454,7 @@ function PostCard({
           href={editHref}
           onClick={(e) => e.stopPropagation()}
           className="p-0.5 rounded hover:bg-accent"
-          title="Edit"
+          title="Editar"
         >
           <span className="material-icons text-sm text-muted-foreground">edit</span>
         </Link>
@@ -588,7 +584,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
         {[
           { label: 'Total', value: totalPosts, icon: 'library_books', color: 'text-foreground' },
           { label: 'Published', value: publishedCount, icon: 'check_circle', color: 'text-green-500' },
-          { label: 'Scheduled', value: scheduledCount, icon: 'schedule', color: 'text-blue-500' },
+          { label: 'Programado', value: scheduledCount, icon: 'schedule', color: 'text-blue-500' },
           { label: 'Drafts', value: draftCount, icon: 'edit_note', color: 'text-yellow-500' },
         ].map((stat) => (
           <div key={stat.label} className="bg-card border border-border rounded-lg p-3 flex items-center gap-3">
@@ -622,9 +618,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
           <button
             onClick={goToday}
             className="ml-2 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-accent text-foreground"
-          >
-            Today
-          </button>
+          >Hoy</button>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -634,9 +628,9 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
             className="px-2 py-1.5 text-xs rounded-md border border-border bg-background text-foreground"
           >
             <option value="all">All Statuses</option>
-            <option value="published">Published</option>
+            <option value="published">Publicado</option>
             <option value="scheduled">Scheduled</option>
-            <option value="draft">Draft</option>
+            <option value="draft">Borrador</option>
           </select>
           <select
             aria-label="Filter by post type" value={filterType}

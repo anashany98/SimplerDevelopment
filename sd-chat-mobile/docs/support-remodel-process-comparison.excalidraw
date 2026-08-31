@@ -42,8 +42,8 @@
     },
     {
       "type": "text", "id": "left_sub", "x": 80, "y": 174, "width": 1100, "height": 20,
-      "text": "Email · Google Doc · manual tickets · page mocked up on SimplerDevelopment, then hand-ported into WordPress",
-      "originalText": "Email · Google Doc · manual tickets · page mocked up on SimplerDevelopment, then hand-ported into WordPress",
+      "text": "Email · Google Doc · manual tickets · page mocked up on CRM AGENTS, then hand-ported into WordPress",
+      "originalText": "Email · Google Doc · manual tickets · page mocked up on CRM AGENTS, then hand-ported into WordPress",
       "fontSize": 14, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
       "strokeColor": "#64748b", "backgroundColor": "transparent", "fillStyle": "solid",
       "strokeWidth": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
@@ -52,8 +52,8 @@
     },
     {
       "type": "text", "id": "right_header", "x": 1280, "y": 140, "width": 1140, "height": 32,
-      "text": "WITH the SimplerDevelopment MCP  —  the same page",
-      "originalText": "WITH the SimplerDevelopment MCP  —  the same page",
+      "text": "WITH the CRM AGENTS MCP  —  the same page",
+      "originalText": "WITH the CRM AGENTS MCP  —  the same page",
       "fontSize": 24, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
       "strokeColor": "#047857", "backgroundColor": "transparent", "fillStyle": "solid",
       "strokeWidth": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
@@ -248,7 +248,7 @@
     },
     {
       "type": "text", "id": "lt6", "x": 250, "y": 772, "width": 540, "height": 20,
-      "text": "6 · Dan builds the page ON SimplerDevelopment", "originalText": "6 · Dan builds the page ON SimplerDevelopment",
+      "text": "6 · Dan builds the page ON CRM AGENTS", "originalText": "6 · Dan builds the page ON CRM AGENTS",
       "fontSize": 16, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
       "strokeColor": "#6d28d9", "backgroundColor": "transparent", "fillStyle": "solid",
       "strokeWidth": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,
@@ -531,8 +531,8 @@
     },
     {
       "type": "text", "id": "sum_left_t", "x": 140, "y": 1446, "width": 944, "height": 98,
-      "text": "THE COST OF ONE PAGE  —  ~3 weeks, 5 people\n• 3 email threads + scheduling ping-pong + a Teams call\n• copy in a Google Doc; images re-emailed to keep quality\n• built TWICE: mocked on SimplerDevelopment, then hand-ported to WordPress",
-      "originalText": "THE COST OF ONE PAGE  —  ~3 weeks, 5 people\n• 3 email threads + scheduling ping-pong + a Teams call\n• copy in a Google Doc; images re-emailed to keep quality\n• built TWICE: mocked on SimplerDevelopment, then hand-ported to WordPress",
+      "text": "THE COST OF ONE PAGE  —  ~3 weeks, 5 people\n• 3 email threads + scheduling ping-pong + a Teams call\n• copy in a Google Doc; images re-emailed to keep quality\n• built TWICE: mocked on CRM AGENTS, then hand-ported to WordPress",
+      "originalText": "THE COST OF ONE PAGE  —  ~3 weeks, 5 people\n• 3 email threads + scheduling ping-pong + a Teams call\n• copy in a Google Doc; images re-emailed to keep quality\n• built TWICE: mocked on CRM AGENTS, then hand-ported to WordPress",
       "fontSize": 14, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
       "strokeColor": "#b91c1c", "backgroundColor": "transparent", "fillStyle": "solid",
       "strokeWidth": 1, "strokeStyle": "solid", "roughness": 0, "opacity": 100, "angle": 0,

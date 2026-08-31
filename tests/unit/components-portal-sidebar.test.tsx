@@ -47,7 +47,7 @@ vi.mock('@/components/portal/CreditBalance', () => ({
 }));
 
 // AgencyChromeProvider hook — return controllable values
-const mockBrandName = { value: 'Simpler Development' };
+const mockBrandName = { value: 'CRM AGENTS' };
 const mockBrandLogoUrl = { value: 'https://example.com/logo.png' };
 
 vi.mock('@/components/portal/AgencyChromeProvider', () => ({
@@ -130,7 +130,7 @@ function setupFetch() {
 beforeEach(() => {
   vi.clearAllMocks();
   mockPathname.mockReturnValue('/portal/dashboard');
-  mockBrandName.value = 'Simpler Development';
+  mockBrandName.value = 'CRM AGENTS';
   mockBrandLogoUrl.value = 'https://example.com/logo.png';
   mockSessionRole.value = 'client';
   localStorage.clear();
@@ -174,17 +174,17 @@ describe('PortalSidebar — initial render (closed state)', () => {
   });
 
   it('renders the default brand name on the brand-mark link', async () => {
-    // Default brandName ('Simpler Development') is consumed by useAgencyChrome and
+    // Default brandName ('CRM AGENTS') is consumed by useAgencyChrome and
     // passed to the brand-mark link's title attr — the same render path the custom
     // brand test below checks. Asserts the brand identity actually renders, not just
     // that the (always-present, mocked) CompanySwitcher stub mounted.
     render(<PortalSidebar />);
     await waitFor(() => {
-      expect(document.querySelector('a[title="Simpler Development"]')).toBeTruthy();
+      expect(document.querySelector('a[title="CRM AGENTS"]')).toBeTruthy();
     });
   });
 
-  it('renders a custom (non-Simpler Development) brand name as plain text', async () => {
+  it('renders a custom (non-CRM AGENTS) brand name as plain text', async () => {
     mockBrandName.value = 'Acme Corp';
     // The brand name is consumed by useAgencyChrome and passed to the collapsed
     // brand mark link's title attribute.

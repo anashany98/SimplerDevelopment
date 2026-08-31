@@ -10,6 +10,7 @@ import { db } from '@/lib/db';
 import { chatWidgets } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { and, eq } from 'drizzle-orm';
+import { randomBytes } from 'node:crypto';
 
 async function loadWidget(userId: number, widgetId: number) {
   const client = await getPortalClient(userId);
@@ -45,11 +46,28 @@ export async function PATCH(req: Request, { params }: Ctx) {
 
   const body = await req.json().catch(() => ({}));
   const patch: Partial<typeof chatWidgets.$inferInsert> = { updatedAt: new Date() };
+  // Lazily upgrade pre-omnichannel widgets without exposing a key-rotation
+  // surface or mutating on GET. The returned row lets the settings UI switch
+  // its embed code to the non-enumerable reference immediately after save.
+  if (!result.widget.publicKey) patch.publicKey = randomBytes(24).toString('base64url');
   if (typeof body.enabled === 'boolean') patch.enabled = body.enabled;
   if (typeof body.greetingMessage === 'string') patch.greetingMessage = body.greetingMessage;
   if (typeof body.position === 'string') patch.position = body.position;
   if (typeof body.primaryColor === 'string') patch.primaryColor = body.primaryColor;
   if (typeof body.awayMessage === 'string' || body.awayMessage === null) patch.awayMessage = body.awayMessage;
+  if (typeof body.welcomeMessage === 'string' || body.welcomeMessage === null) patch.welcomeMessage = body.welcomeMessage;
+  if (typeof body.displayName === 'string' || body.displayName === null) patch.displayName = body.displayName?.slice(0, 120) ?? null;
+  if (typeof body.logoUrl === 'string' || body.logoUrl === null) patch.logoUrl = body.logoUrl;
+  if (typeof body.avatarUrl === 'string' || body.avatarUrl === null) patch.avatarUrl = body.avatarUrl;
+  if (typeof body.language === 'string' && /^[a-z]{2,3}(-[A-Z]{2})?$/.test(body.language)) patch.language = body.language;
+  if (typeof body.aiMode === 'string' && ['ai', 'human', 'paused', 'hybrid'].includes(body.aiMode)) patch.aiMode = body.aiMode;
+  if (typeof body.allowAttachments === 'boolean') patch.allowAttachments = body.allowAttachments;
+  if (typeof body.showBranding === 'boolean') patch.showBranding = body.showBranding;
+  if (typeof body.privacyLink === 'string' || body.privacyLink === null) patch.privacyLink = body.privacyLink;
+  if (Array.isArray(body.allowedOrigins)) {
+    patch.allowedOrigins = body.allowedOrigins.filter((value: unknown): value is string => typeof value === 'string' && value.trim().length > 0)
+      .map((value: string) => value.trim().toLowerCase()).slice(0, 50);
+  }
 
   // Scope the mutation itself by clientId — not just the preceding loadWidget()
   // read — so the authorization check is atomic with the write (no TOCTOU, and

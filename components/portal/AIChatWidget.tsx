@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
+import { AgentHeader, AgentWelcome } from './AIChatAgentChrome';
+import { PORTAL_AGENT_PROFILES, getPortalAgent, getPortalAgentForPathname, type PortalAgentId } from '@/lib/ai/portal-agents';
 
 interface Message {
   id?: number;
   role: 'user' | 'assistant';
   content: string;
-  toolCalls?: { name: string; input: Record<string, unknown> }[] | null;
+  toolCalls?: { name: string; input: Record<string, unknown>; success?: boolean }[] | null;
   injectedBy?: number | null;
   createdAt?: string;
 }
@@ -22,57 +24,83 @@ interface Conversation {
 
 const TOOL_LABELS: Record<string, string> = {
   // Read tools
-  get_dashboard_summary: 'Checked dashboard',
-  get_my_projects: 'Looked up projects',
-  get_project_board: 'Looked up board',
-  get_project_cards: 'Looked up cards',
-  get_sprint_progress: 'Checked sprint progress',
-  get_project_files: 'Looked up files',
-  get_my_invoices: 'Looked up invoices',
-  get_invoice_details: 'Looked up invoice details',
-  get_payment_methods: 'Checked payment methods',
-  get_my_tickets: 'Looked up tickets',
-  get_ticket_details: 'Looked up ticket details',
-  get_services_catalog: 'Browsed services',
-  get_my_services: 'Checked subscriptions',
-  get_my_websites: 'Looked up websites',
-  get_website_pages: 'Looked up pages',
-  get_website_categories: 'Looked up categories',
-  get_website_tags: 'Looked up tags',
-  get_website_media: 'Looked up media',
-  get_my_hosted_sites: 'Checked hosting',
-  get_my_email_campaigns: 'Looked up campaigns',
-  get_my_email_lists: 'Looked up email lists',
-  get_my_pitch_decks: 'Looked up pitch decks',
-  get_my_booking_pages: 'Looked up booking pages',
-  get_bookings_for_page: 'Looked up bookings',
-  get_suggested_projects: 'Browsed suggested projects',
-  get_my_team: 'Looked up team',
-  get_my_profile: 'Looked up profile',
+  get_dashboard_summary: 'Consultó el panel',
+  get_my_projects: 'Buscó proyectos',
+  get_project_board: 'Consultó el tablero',
+  get_project_cards: 'Consultó las tarjetas',
+  get_sprint_progress: 'Consultó el progreso del sprint',
+  get_project_files: 'Buscó archivos',
+  get_my_invoices: 'Consultó las facturas',
+  get_invoice_details: 'Consultó el detalle de la factura',
+  get_payment_methods: 'Consultó los métodos de pago',
+  get_my_tickets: 'Consultó los tickets',
+  get_ticket_details: 'Consultó el detalle del ticket',
+  get_services_catalog: 'Exploró los servicios',
+  get_my_services: 'Consultó las suscripciones',
+  get_my_websites: 'Consultó las webs',
+  get_website_pages: 'Consultó las páginas',
+  get_website_categories: 'Consultó las categorías',
+  get_website_tags: 'Consultó las etiquetas',
+  get_website_media: 'Consultó los medios',
+  get_my_hosted_sites: 'Consultó el alojamiento',
+  get_my_email_campaigns: 'Consultó las campañas',
+  get_my_email_lists: 'Consultó las listas de email',
+  get_my_pitch_decks: 'Consultó los pitch decks',
+  get_my_booking_pages: 'Consultó las páginas de reservas',
+  get_bookings_for_page: 'Consultó las reservas',
+  get_suggested_projects: 'Exploró los proyectos sugeridos',
+  get_my_team: 'Consultó el equipo',
+  get_my_profile: 'Consultó el perfil',
+  get_inbox_channels: 'Consultó los canales',
+  get_inbox_conversations: 'Consultó las conversaciones',
+  get_inbox_conversation: 'Leyó la conversación',
   // Write tools
-  create_support_ticket: 'Created ticket',
-  reply_to_ticket: 'Replied to ticket',
-  add_card_comment: 'Added comment',
-  create_website_page: 'Created page',
-  publish_page: 'Updated page',
-  create_website_category: 'Created category',
-  create_website_tag: 'Created tag',
-  request_service: 'Requested service',
-  request_suggested_project: 'Requested project',
-  update_profile: 'Updated profile',
-  invite_team_member: 'Invited member',
+  create_support_ticket: 'Creó el ticket',
+  reply_to_ticket: 'Respondió al ticket',
+  add_card_comment: 'Añadió un comentario',
+  create_website: 'Creó la web',
+  create_website_page: 'Creó la página',
+  publish_page: 'Actualizó la página',
+  create_website_category: 'Creó la categoría',
+  create_website_tag: 'Creó la etiqueta',
+  request_service: 'Solicitó el servicio',
+  request_suggested_project: 'Solicitó el proyecto',
+  update_profile: 'Actualizó el perfil',
+  invite_team_member: 'Invitó a un miembro',
+  send_inbox_message: 'Respuesta en cola para aprobación',
+  assign_inbox_conversation: 'Asignó la conversación',
+  take_over_inbox_conversation: 'Asumió la conversación',
+  pause_inbox_ai: 'Pausó la IA',
+  return_inbox_conversation_to_ai: 'Reanudación de IA en cola para aprobación',
+  close_inbox_conversation: 'Cerró la conversación',
   // Navigation
-  navigate_to: 'Opening page',
-  pay_invoice: 'Opening invoice',
+  navigate_to: 'Abriendo página',
+  pay_invoice: 'Abriendo factura',
 };
 
-function ToolChips({ toolCalls }: { toolCalls: { name: string }[] }) {
+const TOOL_FAILURE_LABELS: Record<string, string> = {
+  create_website: 'No se creó la web',
+  create_website_page: 'No se creó la página',
+};
+
+function ToolChips({ toolCalls }: { toolCalls: { name: string; success?: boolean }[] }) {
   return (
     <div className="flex flex-wrap gap-1 mt-1 mb-2">
       {toolCalls.map((tc, i) => (
-        <span key={i} className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-          <span className="material-icons text-xs">search</span>
-          {TOOL_LABELS[tc.name] ?? tc.name}
+        <span
+          key={i}
+          className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
+            tc.success === false
+              ? 'bg-destructive/10 text-destructive'
+              : 'bg-primary/10 text-primary'
+          }`}
+        >
+          <span className="material-icons text-xs">
+            {tc.success === false ? 'error_outline' : 'check_circle'}
+          </span>
+          {tc.success === false
+            ? TOOL_FAILURE_LABELS[tc.name] ?? 'Acción fallida'
+            : TOOL_LABELS[tc.name] ?? tc.name}
         </span>
       ))}
     </div>
@@ -85,22 +113,16 @@ function MessageBubble({ msg }: { msg: Message }) {
 
   return (
     <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} gap-1`}>
-      {!isUser && msg.toolCalls && msg.toolCalls.length > 0 && (
-        <ToolChips toolCalls={msg.toolCalls} />
-      )}
+      {!isUser && msg.toolCalls && msg.toolCalls.length > 0 && <ToolChips toolCalls={msg.toolCalls} />}
       <div
         className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm break-words ${
-          isUser
-            ? 'bg-primary text-primary-foreground rounded-tr-sm'
-            : isInjected
-            ? 'bg-amber-50 border border-amber-200 text-foreground rounded-tl-sm dark:bg-amber-950/30 dark:border-amber-800'
-            : 'bg-muted text-foreground rounded-tl-sm'
+          isUser ? 'bg-primary text-primary-foreground rounded-tr-sm' : isInjected ? 'bg-amber-50 border border-amber-200 text-foreground rounded-tl-sm dark:bg-amber-950/30 dark:border-amber-800' : 'bg-muted text-foreground rounded-tl-sm'
         }`}
       >
         {isInjected && (
           <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1 flex items-center gap-1">
             <span className="material-icons text-xs">support_agent</span>
-            Simpler Development Team
+            CRM AGENTS Team
           </p>
         )}
         {isUser ? (
@@ -119,15 +141,16 @@ function MessageBubble({ msg }: { msg: Message }) {
                 const isInternal = href?.startsWith('/');
                 if (isInternal) {
                   return (
-                    <Link
-                      href={href!}
-                      className="underline font-medium text-primary hover:opacity-80 transition-opacity"
-                    >
+                    <Link href={href!} className="underline font-medium text-primary hover:opacity-80 transition-opacity">
                       {children}
                     </Link>
                   );
                 }
-                return <a href={href} className="underline opacity-80 hover:opacity-100" target="_blank" rel="noopener noreferrer">{children}</a>;
+                return (
+                  <a href={href} className="underline opacity-80 hover:opacity-100" target="_blank" rel="noopener noreferrer">
+                    {children}
+                  </a>
+                );
               },
             }}
           >
@@ -139,19 +162,40 @@ function MessageBubble({ msg }: { msg: Message }) {
   );
 }
 
-export default function AIChatWidget() {
+export interface AIChatWidgetProps {
+  /** `page` mounts the existing conversation experience as a full portal page. */
+  mode?: 'floating' | 'page';
+}
+
+export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const contextualAgent = getPortalAgentForPathname(pathname);
+  const [open, setOpen] = useState(() => mode === 'page');
   const [view, setView] = useState<'chat' | 'history'>('chat');
   const [messages, setMessages] = useState<Message[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [backgroundLoading, setBackgroundLoading] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(true);
+  const [selectedAgentId, setSelectedAgentId] = useState<PortalAgentId | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const activeAgent = getPortalAgent(selectedAgentId) ?? contextualAgent;
+
+  useEffect(() => {
+    // Route changes deliberately hand control to the section specialist and
+    // start a fresh context, so CRM history cannot bleed into Billing, Inbox,
+    // or another narrower tool boundary.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset transient chat scope on navigation
+    setSelectedAgentId(null);
+    setMessages([]);
+    setConversationId(null);
+    setView('chat');
+  }, [pathname]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -171,13 +215,6 @@ export default function AIChatWidget() {
       }));
       setMessages(fresh);
     }
-  }
-
-  async function loadConversations() {
-    const res = await fetch('/api/portal/ai/conversations');
-    const data = await res.json();
-    if (data.success) setConversations(data.data);
-    setLoadingHistory(false);
   }
 
   useEffect(() => {
@@ -218,6 +255,11 @@ export default function AIChatWidget() {
     setView('chat');
   }
 
+  function selectAgent(id: PortalAgentId) {
+    setSelectedAgentId(id);
+    startNewConversation();
+  }
+
   async function sendMessage() {
     const text = input.trim();
     if (!text || loading) return;
@@ -226,19 +268,23 @@ export default function AIChatWidget() {
     setLoading(true);
 
     // Optimistically add user message
-    setMessages(prev => [...prev, { role: 'user', content: text }]);
+    setMessages((prev) => [...prev, { role: 'user', content: text }]);
 
     try {
       const res = await fetch('/api/portal/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, conversationId }),
+        body: JSON.stringify({
+          message: text,
+          conversationId,
+          agentId: activeAgent.id,
+        }),
       });
       const data = await res.json();
 
       if (data.success) {
         if (!conversationId) setConversationId(data.data.conversationId);
-        setMessages(prev => [
+        setMessages((prev) => [
           ...prev,
           {
             role: 'assistant',
@@ -248,10 +294,7 @@ export default function AIChatWidget() {
         ]);
 
         // Handle navigation tool calls
-        const navCall = data.data.toolCalls?.find(
-          (tc: { name: string; input: Record<string, unknown> }) =>
-            tc.name === 'navigate_to' || tc.name === 'pay_invoice'
-        );
+        const navCall = data.data.toolCalls?.find((tc: { name: string; input: Record<string, unknown> }) => tc.name === 'navigate_to' || tc.name === 'pay_invoice');
         if (navCall?.input?.path) {
           setTimeout(() => {
             router.push(navCall.input.path as string);
@@ -269,18 +312,64 @@ export default function AIChatWidget() {
           }, 300);
         }
       } else {
-        setMessages(prev => [
+        setMessages((prev) => [
           ...prev,
-          { role: 'assistant', content: 'Something went wrong. Please try again.' },
+          {
+            role: 'assistant',
+            content: data.message || 'Algo salió mal. Inténtalo de nuevo.',
+          },
         ]);
       }
     } catch {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
-        { role: 'assistant', content: 'Unable to reach the assistant. Please check your connection.' },
+        {
+          role: 'assistant',
+          content: 'No se pudo contactar con el asistente. Comprueba tu conexión.',
+        },
       ]);
     } finally {
       setLoading(false);
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }
+
+  async function runCeoInBackground() {
+    const task = input.trim();
+    if (!task || loading || backgroundLoading || activeAgent.id !== 'ceo') return;
+
+    setInput('');
+    setBackgroundLoading(true);
+    try {
+      const res = await fetch('/api/portal/ai/ceo/runs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: data.message || 'No se pudo iniciar el análisis en segundo plano.' },
+        ]);
+        return;
+      }
+
+      setConversationId(data.data.conversationId);
+      setMessages([
+        { role: 'user', content: task },
+        {
+          role: 'assistant',
+          content: 'El Agente CEO está realizando el análisis en segundo plano. Puedes seguir trabajando: publicaré aquí el diagnóstico cuando termine.',
+        },
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: 'No se pudo iniciar el análisis en segundo plano. Comprueba tu conexión.' },
+      ]);
+    } finally {
+      setBackgroundLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }
@@ -294,67 +383,42 @@ export default function AIChatWidget() {
 
   return (
     <>
-      {/* Floating button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center"
-        title="AI Assistant"
-      >
-        <span className="material-icons text-2xl">{open ? 'close' : 'smart_toy'}</span>
-      </button>
+      {/* The dedicated Chat route owns the visible panel, so it does not need a second floating launcher. */}
+      {mode === 'floating' && (
+        <button
+          onClick={() => setOpen(!open)}
+          className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-50 min-w-14 h-14 px-4 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+          title={activeAgent.name}
+          aria-label={open ? 'Cerrar agente de IA' : `Abrir ${activeAgent.name}`}
+        >
+          <span className="material-icons text-2xl">{open ? 'close' : activeAgent.icon}</span>
+          {!open && <span className="hidden sm:inline text-xs font-semibold max-w-32 truncate">{activeAgent.shortName}</span>}
+        </button>
+      )}
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-[380px] max-w-[380px] max-h-[600px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="material-icons text-primary text-base">smart_toy</span>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">AI Assistant</p>
-                <p className="text-xs text-muted-foreground">Powered by Claude</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setView(view === 'history' ? 'chat' : 'history')}
-                className="p-1.5 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                title={view === 'history' ? 'Back to chat' : 'Conversation history'}
-              >
-                <span className="material-icons text-base">{view === 'history' ? 'arrow_back' : 'history'}</span>
-              </button>
-              <button
-                onClick={startNewConversation}
-                className="p-1.5 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                title="New conversation"
-              >
-                <span className="material-icons text-base">add_comment</span>
-              </button>
-            </div>
-          </div>
+        <div
+          data-testid="portal-ai-chat-panel"
+          className={mode === 'page'
+            ? 'relative flex-1 min-h-[32rem] w-full bg-card border border-border rounded-2xl shadow-sm flex flex-col overflow-hidden'
+            : 'fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-[380px] max-w-[380px] max-h-[600px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden'}
+        >
+          <AgentHeader agent={activeAgent} profiles={PORTAL_AGENT_PROFILES} view={view} onSelectAgent={selectAgent} onToggleHistory={() => setView(view === 'history' ? 'chat' : 'history')} onNewConversation={startNewConversation} />
 
           {/* History view */}
           {view === 'history' ? (
             <div className="flex-1 overflow-y-auto p-3 space-y-1">
-              <p className="text-xs font-medium text-muted-foreground px-2 pb-1">Recent Conversations</p>
+              <p className="text-xs font-medium text-muted-foreground px-2 pb-1">Conversaciones recientes</p>
               {loadingHistory ? (
-                <p className="text-xs text-muted-foreground text-center py-4">Loading…</p>
+                <p className="text-xs text-muted-foreground text-center py-4">Cargando…</p>
               ) : conversations.length === 0 ? (
-                <p className="text-xs text-muted-foreground text-center py-4">No conversations yet.</p>
+                <p className="text-xs text-muted-foreground text-center py-4">Todavía no hay conversaciones.</p>
               ) : (
-                conversations.map(conv => (
-                  <button
-                    key={conv.id}
-                    onClick={() => loadConversation(conv.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-accent transition-colors ${conv.id === conversationId ? 'bg-accent' : ''}`}
-                  >
+                conversations.map((conv) => (
+                  <button key={conv.id} onClick={() => loadConversation(conv.id)} className={`w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-accent transition-colors ${conv.id === conversationId ? 'bg-accent' : ''}`}>
                     <p className="font-medium text-foreground truncate">{conv.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {new Date(conv.updatedAt).toLocaleDateString()}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{new Date(conv.updatedAt).toLocaleDateString()}</p>
                   </button>
                 ))
               )}
@@ -364,31 +428,13 @@ export default function AIChatWidget() {
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
                 {messages.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-center py-8 gap-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="material-icons text-primary text-2xl">smart_toy</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">How can I help you?</p>
-                      <p className="text-xs text-muted-foreground mt-1">I can help with anything in your portal.</p>
-                    </div>
-                    <div className="flex flex-col gap-1.5 w-full mt-2">
-                      {[
-                        'Give me an overview of my account',
-                        'Do I have any outstanding invoices?',
-                        'Take me to my website editor',
-                        'What can you help me with?',
-                      ].map(suggestion => (
-                        <button
-                          key={suggestion}
-                          onClick={() => { setInput(suggestion); inputRef.current?.focus(); }}
-                          className="text-xs text-left px-3 py-2 rounded-lg bg-muted hover:bg-accent transition-colors text-foreground"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  <AgentWelcome
+                    agent={activeAgent}
+                    onSuggestion={(suggestion) => {
+                      setInput(suggestion);
+                      inputRef.current?.focus();
+                    }}
+                  />
                 ) : (
                   messages.map((msg, i) => <MessageBubble key={i} msg={msg} />)
                 )}
@@ -409,34 +455,49 @@ export default function AIChatWidget() {
               </div>
 
               {/* Input */}
-              <div className="border-t border-border p-3">
-                <div className="flex items-end gap-2">
-                  <textarea
-                    ref={inputRef}
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Ask me anything…"
-                    rows={1}
-                    disabled={loading}
-                    className="flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 max-h-28 overflow-y-auto"
-                    style={{ height: 'auto' }}
-                    onInput={e => {
-                      const el = e.currentTarget;
-                      el.style.height = 'auto';
-                      el.style.height = `${Math.min(el.scrollHeight, 112)}px`;
-                    }}
-                  />
-                  <button
-                    onClick={sendMessage}
-                    disabled={loading || !input.trim()}
-                    className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-50 transition-colors shrink-0"
-                  >
-                    <span className="material-icons text-base">send</span>
-                  </button>
+              {!activeAgent.handoffPath && (
+                <div className="border-t border-border p-3">
+                  <div className="flex items-end gap-2">
+                    <textarea
+                      ref={inputRef}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder={`Pregunta a ${activeAgent.shortName}…`}
+                      rows={1}
+                      disabled={loading || backgroundLoading}
+                      className="flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 max-h-28 overflow-y-auto"
+                      style={{ height: 'auto' }}
+                      onInput={(e) => {
+                        const el = e.currentTarget;
+                        el.style.height = 'auto';
+                        el.style.height = `${Math.min(el.scrollHeight, 112)}px`;
+                      }}
+                    />
+                    <button
+                      onClick={sendMessage}
+                      disabled={loading || backgroundLoading || !input.trim()}
+                      className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-50 transition-colors shrink-0"
+                      aria-label="Enviar mensaje"
+                    >
+                      <span className="material-icons text-base">send</span>
+                    </button>
+                  </div>
+                  {activeAgent.id === 'ceo' && (
+                    <button
+                      onClick={runCeoInBackground}
+                      disabled={loading || backgroundLoading || !input.trim()}
+                      className="mt-2 w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-primary/30 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
+                    >
+                      <span className={`material-icons text-sm ${backgroundLoading ? 'animate-spin' : ''}`}>
+                        {backgroundLoading ? 'progress_activity' : 'schedule'}
+                      </span>
+                      {backgroundLoading ? 'Encolando análisis…' : 'Ejecutar análisis en segundo plano'}
+                    </button>
+                  )}
+                  <p className="text-xs text-muted-foreground text-center mt-2">Enter para enviar · Shift+Enter para nueva línea</p>
                 </div>
-                <p className="text-xs text-muted-foreground text-center mt-2">Enter to send · Shift+Enter for new line</p>
-              </div>
+              )}
             </>
           )}
         </div>

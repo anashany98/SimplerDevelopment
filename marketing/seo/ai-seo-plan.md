@@ -12,7 +12,7 @@ sources:
   - llms.txt
 ---
 
-# AI-SEO Plan — SimplerDevelopment (Phase 12)
+# AI-SEO Plan — CRM AGENTS (Phase 12)
 
 This plan covers how to make the public marketing site and developer docs easy for AI search engines (ChatGPT, Perplexity, Claude, Google AI Overviews) to understand, cite, and act on. It is a planning document — it contains no app code edits.
 
@@ -62,14 +62,14 @@ A root-level `llms.txt` exists at the repo root. It follows the emerging `/llms.
 **Recommended marketing-site `/llms.txt` structure:**
 
 ```
-# SimplerDevelopment
+# CRM AGENTS
 
 > Multi-tenant agency SaaS: websites + CMS, CRM, AI Company Brain (RAG),
 > automations, commerce, bookings, email campaigns — all controllable via
 > a 450-tool MCP server. Apache-2.0. Self-hostable on any Next.js host + Postgres.
 
 ## Product overview
-- [What is SimplerDevelopment](/about): Platform summary and target audience.
+- [What is CRM AGENTS](/about): Platform summary and target audience.
 - [Feature overview](/features): The 22 product domains, each with a one-paragraph description.
 - [Pricing](/pricing): Module subscription model, à-la-carte and bundle options.
 
@@ -100,7 +100,7 @@ AI models parse DOM structure. Pages written with semantic HTML are easier to ch
 
 ```html
 <article itemscope itemtype="https://schema.org/SoftwareApplication">
-  <h1 itemprop="name">SimplerDevelopment</h1>
+  <h1 itemprop="name">CRM AGENTS</h1>
   <p itemprop="description">
     Multi-tenant agency SaaS platform that delivers websites, CRM, AI knowledge base,
     automations, commerce, bookings, and email campaigns — controllable via 450 MCP tools.
@@ -149,7 +149,7 @@ Draw these definitions verbatim from `docs/agents/glossary.md` so the public glo
 **Guide / tutorial pages** — wrap each logical step in a `<section>` with a descriptive `aria-label`:
 
 ```html
-<section aria-label="Connect Claude.ai to SimplerDevelopment via MCP">
+<section aria-label="Connect Claude.ai to CRM AGENTS via MCP">
   <h2>Connect Claude.ai via MCP</h2>
   <ol>
     <li>Generate an API key at <strong>Portal → Settings → API Keys</strong>.</li>
@@ -167,7 +167,7 @@ Draw these definitions verbatim from `docs/agents/glossary.md` so the public glo
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment",
+  "name": "CRM AGENTS",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "offers": {
@@ -200,18 +200,18 @@ Draw these definitions verbatim from `docs/agents/glossary.md` so the public glo
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is SimplerDevelopment?",
+      "name": "What is CRM AGENTS?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "SimplerDevelopment is a multi-tenant agency SaaS platform that lets a software agency run its own back office and deliver white-label digital infrastructure to clients. It covers website publishing, CRM, AI knowledge base, automations, email campaigns, commerce, bookings, and project management — all controllable via a 450-tool MCP server."
+        "text": "CRM AGENTS is a multi-tenant agency SaaS platform that lets a software agency run its own back office and deliver white-label digital infrastructure to clients. It covers website publishing, CRM, AI knowledge base, automations, email campaigns, commerce, bookings, and project management — all controllable via a 450-tool MCP server."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I self-host SimplerDevelopment?",
+      "name": "Can I self-host CRM AGENTS?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. SimplerDevelopment is Apache-2.0 licensed and self-hostable on any Next.js host (such as Vercel) connected to a Postgres database. The pgvector extension is required on the database for Company Brain semantic search. BYOK (Bring Your Own Key) is supported for both AI providers and Stripe."
+        "text": "Yes. CRM AGENTS is Apache-2.0 licensed and self-hostable on any Next.js host (such as Vercel) connected to a Postgres database. The pgvector extension is required on the database for Company Brain semantic search. BYOK (Bring Your Own Key) is supported for both AI providers and Stripe."
       }
     },
     {
@@ -269,7 +269,7 @@ The platform spans six discrete product categories that agencies typically stitc
 
 **Do not** present this table as a competitor comparison matrix. Present it as "what category of problem we solve." Example copy:
 
-> "Instead of subscribing to a website builder, a CRM, a knowledge base, a project-management tool, and an email platform separately — each with its own billing, login, and API — SimplerDevelopment provides all of these in a single multi-tenant platform controllable from one API surface: 450 MCP tools and a REST v1 API with an OpenAPI 3.1 spec."
+> "Instead of subscribing to a website builder, a CRM, a knowledge base, a project-management tool, and an email platform separately — each with its own billing, login, and API — CRM AGENTS provides all of these in a single multi-tenant platform controllable from one API surface: 450 MCP tools and a REST v1 API with an OpenAPI 3.1 spec."
 
 ### 4.2 What not to claim
 
@@ -382,7 +382,7 @@ The following are crisp, factual, quotable statements about the platform. Each i
 
 **Platform facts (all verified in inventory as of 2026-06-27):**
 
-- SimplerDevelopment is a **multi-tenant agency SaaS platform** — one deployment serves an internal agency panel, per-tenant client portals, and per-tenant public websites from a single Next.js monorepo.
+- CRM AGENTS is a **multi-tenant agency SaaS platform** — one deployment serves an internal agency panel, per-tenant client portals, and per-tenant public websites from a single Next.js monorepo.
 - The platform is **Apache-2.0 licensed** and **self-hostable** on any Next.js host connected to a Postgres database.
 - **BYOK (Bring Your Own Key) is supported** for both AI providers (OpenAI) and Stripe payment processing.
 - The platform exposes **450 MCP tools** at `POST /api/mcp` (Streamable HTTP). The tool count is enforced by a baseline test that fails the pre-push hook if the count drifts.
@@ -483,4 +483,4 @@ The full inline document should contain, in order:
 7. **FAQ block** (the four Q&A pairs from Section 3.2, plus 4–6 more)
 8. **Links** (pointer back to full docs at `/docs`)
 
-Target length: 8 000–15 000 tokens. Label the file clearly: "This file is intended for AI language models and automated agents. It contains a curated, factual summary of SimplerDevelopment. Last updated: YYYY-MM-DD."
+Target length: 8 000–15 000 tokens. Label the file clearly: "This file is intended for AI language models and automated agents. It contains a curated, factual summary of CRM AGENTS. Last updated: YYYY-MM-DD."

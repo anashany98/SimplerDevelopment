@@ -31,7 +31,7 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">travel_explore</span>
-        <p className="text-sm text-muted-foreground">No crawls yet. Run an audit to see results here.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay rastreos. Ejecuta una auditoría para ver aquí los resultados.</p>
       </div>
     );
   }
@@ -41,7 +41,7 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
       <div className={`${pCard} p-6 flex items-start gap-3`}>
         <span className="material-icons text-destructive">error</span>
         <div>
-          <p className="font-semibold text-foreground text-sm">The last crawl failed</p>
+          <p className="font-semibold text-foreground text-sm">El último rastreo falló</p>
           <p className="text-sm text-muted-foreground mt-1">{run.error || 'Unknown error.'}</p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons animate-spin text-3xl text-primary mb-2">progress_activity</span>
-        <p className="text-sm text-muted-foreground">Crawl in progress — results will appear as pages are fetched.</p>
+        <p className="text-sm text-muted-foreground">Rastreo en curso — los resultados aparecerán a medida que se obtengan las páginas.</p>
       </div>
     );
   }

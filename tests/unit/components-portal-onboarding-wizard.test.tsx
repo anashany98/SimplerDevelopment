@@ -46,13 +46,17 @@ type StepProps = {
   next?: (patch?: Partial<OnboardingAnswers>) => void;
   back?: () => void;
   finish?: () => Promise<void>;
+  stripeEnabled?: boolean;
 };
 
 function makeStepStub(name: string) {
-  return function StepStub({ next, back, finish }: StepProps) {
+  return function StepStub({ next, back, finish, stripeEnabled }: StepProps) {
     return React.createElement(
       'div',
-      { 'data-testid': `stub-step-${name}` },
+      {
+        'data-testid': `stub-step-${name}`,
+        ...(stripeEnabled === undefined ? {} : { 'data-stripe-enabled': String(stripeEnabled) }),
+      },
       next &&
         React.createElement(
           'button',
@@ -149,6 +153,7 @@ function makeState(step: OnboardingStep = 'welcome', answers: Partial<Onboarding
       company: 'Acme',
       website: 'https://acme.com',
     },
+    showBillingSteps: false,
   };
 }
 
@@ -205,6 +210,20 @@ describe('OnboardingWizard', () => {
     global.fetch = makeFetchMock('about-company');
     render(<OnboardingWizard initialState={makeState('about-company')} />);
     expect(screen.getByTestId('onboarding-step-title').textContent).toBe('About your company');
+  });
+
+  it('uses activation language and passes self-hosted mode to billing steps', () => {
+    global.fetch = makeFetchMock('payment');
+    render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled={false} />);
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Activate your tools');
+    expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('false');
+  });
+
+  it('keeps trial language when Stripe is configured', () => {
+    global.fetch = makeFetchMock('payment');
+    render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled />);
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Start your free trial');
+    expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('true');
   });
 
   it('shows correct title for brand-vibe step', () => {

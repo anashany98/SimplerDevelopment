@@ -132,7 +132,7 @@ const CHANNEL_STYLES: Record<string, ChannelStyle> = {
     bg: 'bg-purple-100 dark:bg-purple-900/30',
     text: 'text-purple-800 dark:text-purple-300',
     dot: 'bg-purple-500',
-    label: 'Email',
+    label: 'Correo',
   },
   linkedin: {
     icon: 'share',
@@ -162,21 +162,21 @@ const CHANNEL_STYLES: Record<string, ChannelStyle> = {
     bg: 'bg-teal-100 dark:bg-teal-900/30',
     text: 'text-teal-800 dark:text-teal-300',
     dot: 'bg-teal-500',
-    label: 'Survey',
+    label: 'Encuesta',
   },
   booking: {
     icon: 'event_available',
     bg: 'bg-cyan-100 dark:bg-cyan-900/30',
     text: 'text-cyan-800 dark:text-cyan-300',
     dot: 'bg-cyan-500',
-    label: 'Booking',
+    label: 'Reserva',
   },
   proposal: {
     icon: 'description',
     bg: 'bg-slate-100 dark:bg-slate-800',
     text: 'text-slate-700 dark:text-slate-300',
     dot: 'bg-slate-500',
-    label: 'Proposal',
+    label: 'Propuesta',
   },
 };
 
@@ -371,7 +371,7 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
           <button
             onClick={() => navigate(-1)}
             className="p-1.5 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
-            aria-label="Previous"
+            aria-label="Anterior"
           >
             <span className="material-icons">chevron_left</span>
           </button>
@@ -381,16 +381,14 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
           <button
             onClick={() => navigate(1)}
             className="p-1.5 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
-            aria-label="Next"
+            aria-label="Siguiente"
           >
             <span className="material-icons">chevron_right</span>
           </button>
           <button
             onClick={goToday}
             className="ml-2 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-accent text-foreground"
-          >
-            Today
-          </button>
+          >Hoy</button>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -398,9 +396,9 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
             value={filterChannel}
             onChange={(e) => setFilterChannel(e.target.value)}
             className="px-2 py-1.5 text-xs rounded-md border border-border bg-background text-foreground"
-            aria-label="Channel filter"
+            aria-label="Filtrar por canal"
           >
-            <option value="all">All Channels</option>
+            <option value="all">Todos los canales</option>
             {channelOptions.map((c) => (
               <option key={c} value={c}>
                 {styleForArtifact(c === 'none' ? null : c).label}
@@ -411,9 +409,9 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
             value={filterStage}
             onChange={(e) => setFilterStage(e.target.value)}
             className="px-2 py-1.5 text-xs rounded-md border border-border bg-background text-foreground"
-            aria-label="Stage filter"
+            aria-label="Filtrar por etapa"
           >
-            <option value="all">All Stages</option>
+            <option value="all">Todas las etapas</option>
             {stageOptions.map((s) => (
               <option key={s} value={s}>
                 {s}

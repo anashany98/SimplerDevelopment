@@ -49,6 +49,6 @@ Classify each card first; it tells you where to spend effort.
 
 The rubric is the user's call, not a default. Capture it durably:
 
-1. Build a short SimplerDevelopment survey (`surveys_create`) with one question per rubric knob: definition of "approved" (literal vs intent vs polished), ambiguity handling, verification surface (editor vs +prod), required viewports, themes, evidence type, taste-card handling, regression scope, PASS authority (auto-ship vs approved-lane), fail handling, cadence, priority ticket-types, confidence threshold. Activate it, share the `/s/<slug>` link.
+1. Build a short CRM AGENTS survey (`surveys_create`) with one question per rubric knob: definition of "approved" (literal vs intent vs polished), ambiguity handling, verification surface (editor vs +prod), required viewports, themes, evidence type, taste-card handling, regression scope, PASS authority (auto-ship vs approved-lane), fail handling, cadence, priority ticket-types, confidence threshold. Activate it, share the `/s/<slug>` link.
 2. On submission (`surveys_list_responses`), compile answers into `.sd/qa-rubric-learnings.md`: the gate definitions above (adjusted to the answers), an on-paper pre-screen of the current Validating cards (type + current evidence + gate-gap each), and an empty **Learnings Log**.
 3. Only then start verifying cards.

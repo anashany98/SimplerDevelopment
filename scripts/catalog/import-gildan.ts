@@ -1,6 +1,6 @@
 /**
  * Import the Gildan subset of the legacy InkSoft `catalog_db` into the shared
- * global POD catalog tables (lib/db/schema/catalog.ts) in the SimplerDevelopment
+ * global POD catalog tables (lib/db/schema/catalog.ts) in the CRM AGENTS
  * main DB.
  *
  * Source : catalog_db  (CATALOG_DATABASE_URL, default postgresql://127.0.0.1/catalog_db)

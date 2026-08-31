@@ -29,7 +29,7 @@ export default function EditTab(props: Props) {
     <div className="space-y-6">
       <div className="bg-card border border-border rounded-xl p-6 space-y-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Título</label>
           <input
             type="text"
             value={editTitle}
@@ -38,7 +38,7 @@ export default function EditTab(props: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
@@ -64,11 +64,10 @@ export default function EditTab(props: Props) {
         >
           {saving ? (
             <>
-              <span className="material-icons text-lg animate-spin">progress_activity</span>Saving...
-            </>
+              <span className="material-icons text-lg animate-spin">progress_activity</span>Guardando...</>
           ) : (
             <>
-              <span className="material-icons text-lg">save</span>Save Changes
+              <span className="material-icons text-lg">save</span>Guardar cambios
             </>
           )}
         </button>

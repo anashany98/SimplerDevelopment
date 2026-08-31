@@ -229,7 +229,7 @@ export default function DecisionForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Title */}
-      <Field label="Title" required>
+      <Field label="Título" required>
         <input
           type="text"
           value={title}
@@ -272,7 +272,7 @@ export default function DecisionForm({
               onChange={(e) => setRationale(e.target.value)}
               rows={4}
               required
-              placeholder="The reasoning, key trade-offs, evidence considered."
+              placeholder="El razonamiento, los intercambios clave y la evidencia considerada."
               className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </Field>
@@ -396,7 +396,7 @@ export default function DecisionForm({
             searchPlaceholder="Search notes…"
           />
           <EntityPicker
-            label="Company"
+            label="Empresa"
             icon="business"
             value={companyId}
             onChange={setCompanyId}
@@ -420,7 +420,7 @@ export default function DecisionForm({
 
       {/* Topic picker (create + supersede only) */}
       {showTopics && (
-        <Field label="Topics" hint="Tag this decision with one or more topics from your taxonomy.">
+        <Field label="Temas" hint="Tag this decision with one or more topics from your taxonomy.">
           {flatTopics.length === 0 ? (
             <p className="text-xs text-muted-foreground italic">
               No topics yet. Create some in{' '}
@@ -470,9 +470,7 @@ export default function DecisionForm({
             <a
               href={cancelHref}
               className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent"
-            >
-              Cancel
-            </a>
+            >Cancelar</a>
           )}
           <button
             type="submit"

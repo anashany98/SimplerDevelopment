@@ -188,10 +188,10 @@ describe('BrainConnectPage — claudeConfig section', () => {
     });
   });
 
-  it('renders simplerdevelopment-brain in the config', async () => {
+  it('renders crm-agents-brain in the config', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('simplerdevelopment-brain');
+      expect(container.textContent).toContain('crm-agents-brain');
     });
   });
 
@@ -977,7 +977,7 @@ describe('BrainConnectPage — copy config button', () => {
 
     expect(clipboardMock.writeText).toHaveBeenCalled();
     const written = clipboardMock.writeText.mock.calls[0][0] as string;
-    expect(written).toContain('simplerdevelopment-brain');
+    expect(written).toContain('crm-agents-brain');
   });
 
   it('does not throw when config clipboard write fails', async () => {

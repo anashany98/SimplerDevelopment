@@ -96,7 +96,7 @@ export default function AdminSidebar() {
           {!isCollapsed && (
             <Link href="/admin" className="flex items-center gap-2.5 min-w-0">
               <span className="rounded-md bg-foreground text-background grid place-items-center font-mono font-bold text-[15px] leading-none shrink-0" style={{ width: 26, height: 26 }}>S</span>
-              <span className="font-semibold text-foreground text-sm tracking-tight truncate">SimplerDev</span>
+              <span className="font-semibold text-foreground text-sm tracking-tight truncate">CRM AGENTS</span>
             </Link>
           )}
           <button

@@ -118,7 +118,7 @@ export async function runCreate(opts: CreateOpts): Promise<CreateReport> {
     throw new CliError('git is required to clone the repo — install it first.', 2, 'usage_error');
   }
 
-  log(`\nCreate a SimplerDevelopment dev environment\n  repo: ${repo}\n  into: ${dir}\n`);
+  log(`\nCreate a CRM AGENTS dev environment\n  repo: ${repo}\n  into: ${dir}\n`);
 
   if (opts.dryRun) {
     add('clone (dry-run)', true, `git ${buildCloneArgs(repo, opts.flags.branch, dir).join(' ')}`);

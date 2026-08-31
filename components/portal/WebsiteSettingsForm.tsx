@@ -104,7 +104,7 @@ export default function WebsiteSettingsForm({
         </div>
 
         <div>
-          <label htmlFor="website-settings-description" className="block text-sm font-medium text-foreground mb-1.5">Description</label>
+          <label htmlFor="website-settings-description" className="block text-sm font-medium text-foreground mb-1.5">Descripción</label>
           <textarea
             id="website-settings-description"
             value={description}
@@ -126,10 +126,10 @@ export default function WebsiteSettingsForm({
               />
             </div>
             <div className="px-3 py-2.5 bg-muted/50 border border-l-0 border-border rounded-r-lg text-sm text-muted-foreground font-mono shrink-0">
-              .simplerdevelopment.com
+              · CRM AGENTS
             </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-1">Lowercase letters, numbers, and hyphens only. 3-63 characters.</p>
+          <p className="text-xs text-muted-foreground mt-1">Solo minúsculas, números y guiones. 3-63 caracteres.</p>
         </div>
       </div>
 
@@ -162,7 +162,7 @@ export default function WebsiteSettingsForm({
             <label className="block text-sm font-medium text-foreground">Preview access code</label>
             <p className="text-xs text-muted-foreground mt-0.5">
               Optional. Share this code with stakeholders so they can preview the site at{' '}
-              <span className="font-mono">simplerdevelopment.com</span> while it&apos;s still gated.
+              <span className="font-mono">tu portal de CRM AGENTS</span> mientras siga protegido.
             </p>
           </div>
           <button

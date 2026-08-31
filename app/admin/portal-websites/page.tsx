@@ -185,12 +185,12 @@ export default function AdminPortalWebsitesPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Website</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Client</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Domain</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Sitio web</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Cliente</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Dominio</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Stripe BYOK</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Created</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Creado</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -236,7 +236,7 @@ export default function AdminPortalWebsitesPage() {
                             <span className="material-icons text-xs">{pillIcon}</span>
                             {pillLabel}
                           </span>
-                          <label className="inline-flex items-center gap-1 text-xs text-muted-foreground cursor-pointer select-none" title="Allow this tenant to configure their own Stripe API keys (BYOK)">
+                          <label className="inline-flex items-center gap-1 text-xs text-muted-foreground cursor-pointer select-none" title="Permite a este cliente configurar sus propias claves API de Stripe (BYOK)">
                             <input
                               type="checkbox"
                               checked={allowed}
@@ -254,10 +254,10 @@ export default function AdminPortalWebsitesPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
-                      <button onClick={() => openEdit(site)} className="p-1.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" title="Edit">
+                      <button onClick={() => openEdit(site)} className="p-1.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" title="Editar">
                         <span className="material-icons text-base">edit</span>
                       </button>
-                      <button onClick={() => setDeleteId(site.id)} className="p-1.5 rounded hover:bg-red-50 transition-colors text-muted-foreground hover:text-red-600" title="Delete">
+                      <button onClick={() => setDeleteId(site.id)} className="p-1.5 rounded hover:bg-red-50 transition-colors text-muted-foreground hover:text-red-600" title="Eliminar">
                         <span className="material-icons text-base">delete</span>
                       </button>
                     </div>
@@ -308,7 +308,7 @@ export default function AdminPortalWebsitesPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Domain</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Dominio</label>
                 <input
                   value={form.domain}
                   onChange={e => setForm(f => ({ ...f, domain: e.target.value }))}
@@ -317,7 +317,7 @@ export default function AdminPortalWebsitesPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
                 <textarea
                   value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
@@ -327,7 +327,7 @@ export default function AdminPortalWebsitesPage() {
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 p-4 border-t border-border">
-              <button onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">Cancel</button>
+              <button onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
               <button
                 onClick={handleSave}
                 disabled={saving}
@@ -351,8 +351,8 @@ export default function AdminPortalWebsitesPage() {
             </div>
             <p className="text-sm text-muted-foreground">This will delete the website record. All posts belonging to this website will lose their website association.</p>
             <div className="flex justify-end gap-3">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</button>
-              <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Delete</button>
+              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
+              <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Eliminar</button>
             </div>
           </div>
         </div>

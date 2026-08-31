@@ -49,7 +49,7 @@ export function CardArtifacts({
             className="flex items-center gap-1 text-xs text-primary hover:text-primary/80"
           >
             <span className="material-icons text-sm">{showArtifactPicker ? 'close' : 'add'}</span>
-            {showArtifactPicker ? 'Close' : 'Link Artifact'}
+            {showArtifactPicker ? 'Cerrar' : 'Link Artifact'}
           </button>
         )}
       </div>
@@ -60,9 +60,7 @@ export function CardArtifacts({
             <button
               onClick={() => setArtifactTypeFilter('')}
               className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!artifactTypeFilter ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
-            >
-              All
-            </button>
+            >Todos</button>
             {Object.entries(ARTIFACT_LABELS)
               .filter(([type]) => !AGENT_LINKED_ARTIFACT_TYPES.has(type))
               .map(([type, label]) => (
@@ -102,7 +100,7 @@ export function CardArtifacts({
       )}
 
       {artifactsLoaded && artifacts.length === 0 && !showArtifactPicker && (
-        <p className="text-xs text-muted-foreground italic">No artifacts linked.</p>
+        <p className="text-xs text-muted-foreground italic">Sin artefactos vinculados.</p>
       )}
 
       {artifacts.length > 0 && (
@@ -123,7 +121,7 @@ export function CardArtifacts({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 min-w-0 group"
-                    title="Open artifact"
+                    title="Abrir artefacto"
                   >
                     <p className="text-sm font-medium text-foreground truncate group-hover:text-primary group-hover:underline">
                       {a.displayTitle}
@@ -142,7 +140,7 @@ export function CardArtifacts({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1 rounded text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
-                    title="Open in new tab"
+                    title="Abrir en pestaña nueva"
                   >
                     <span className="material-icons text-sm">open_in_new</span>
                   </a>
@@ -159,7 +157,7 @@ export function CardArtifacts({
                     <button
                       onClick={() => removeArtifact(a.id)}
                       className="p-1 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                      title="Remove"
+                      title="Quitar"
                     >
                       <span className="material-icons text-sm">close</span>
                     </button>

@@ -233,7 +233,7 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
 
     const inst = resendInstances[0];
     const sendCall = inst.emails.send.mock.calls[0][0];
-    expect(sendCall.from).toBe('Simpler Development <sender@example.test>');
+    expect(sendCall.from).toBe('CRM AGENTS <sender@example.test>');
     expect(sendCall.to).toBe('new@example.test');
     expect(sendCall.subject).toBe('Alice invited you to Acme Co');
     expect(sendCall.html).toContain('Newbie');
@@ -324,7 +324,7 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
       inviteToken: 'tok_default',
     });
     const call = resendInstances[0].emails.send.mock.calls[0][0];
-    expect(call.from).toBe('Simpler Development <portal@simplerdevelopment.com>');
+    expect(call.from).toBe('CRM AGENTS <portal@simplerdevelopment.com>');
     expect(call.html).toContain('https://simplerdevelopment.com/portal/invite/tok_default');
   });
 });

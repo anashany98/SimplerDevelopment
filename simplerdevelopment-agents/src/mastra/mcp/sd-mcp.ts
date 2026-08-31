@@ -1,7 +1,7 @@
 import { MCPClient } from '@mastra/mcp';
 
 /**
- * Client for the SimplerDevelopment portal MCP server.
+ * Client for the CRM AGENTS portal MCP server.
  *
  * The SD MCP is a stateless Streamable-HTTP endpoint (`POST /api/mcp`) in the
  * parent Next app, guarded by a Bearer portal API key (`sd_mcp_...`). The set of

@@ -151,7 +151,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
                   </div>
                   <div>
                     <p className="text-sm font-medium text-foreground">{msg.authorName}</p>
-                    {isStaffMsg && <p className="text-xs text-muted-foreground">Simpler Development</p>}
+                    {isStaffMsg && <p className="text-xs text-muted-foreground">CRM AGENTS</p>}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
 
       {ticket.status === 'closed' && (
         <div className="bg-muted/50 border border-border rounded-2xl p-4 text-center text-sm text-muted-foreground">
-          This ticket is closed. <Link href="/portal/tickets/new" className="text-primary hover:underline">Open a new ticket</Link> if you need further help.
+          This ticket is closed. <Link href="/portal/tickets/new" className="text-primary hover:underline">Abrir un ticket nuevo</Link> if you need further help.
         </div>
       )}
     </div>

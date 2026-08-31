@@ -86,7 +86,7 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
       <div className="bg-card border border-border rounded-xl p-12 text-center">
         <span className="material-icons text-5xl text-muted-foreground">timeline</span>
         <h3 className="mt-3 font-semibold text-foreground">No dated sprints yet</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Set a startDate and endDate on sprints to plot them on the roadmap.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Define startDate y endDate en los sprints para verlos en la hoja de ruta.</p>
       </div>
     );
   }
@@ -181,8 +181,8 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
       {/* Legend + sprint links */}
       <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-amber-300/70 rounded-sm"></span>Planning</span>
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Active</span>
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-emerald-300/70 rounded-sm"></span>Completed</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Activo</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-emerald-300/70 rounded-sm"></span>Completado</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-rose-500 rounded-full"></span>Open card due</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-emerald-500 rounded-full"></span>Done card</span>
       </div>

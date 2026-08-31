@@ -65,13 +65,13 @@ function CtaBlockSettings({ block, onChange, currentViewport }: { block: CtaBloc
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="CTA Title" className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Optional description" className="text-sm text-foreground" />
         </div>
@@ -84,15 +84,15 @@ function CtaBlockSettings({ block, onChange, currentViewport }: { block: CtaBloc
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
           <option value="gradient">Gradient</option>
-          <option value="solid">Solid</option>
-          <option value="none">None</option>
+          <option value="solid">Sólido</option>
+          <option value="none">Ninguno</option>
         </select>
       </div>
 
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Primary Button</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.primaryButtonText}
@@ -101,7 +101,7 @@ function CtaBlockSettings({ block, onChange, currentViewport }: { block: CtaBloc
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.primaryButtonUrl}
@@ -114,23 +114,23 @@ function CtaBlockSettings({ block, onChange, currentViewport }: { block: CtaBloc
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Secondary Button (optional)</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.secondaryButtonText || ''}
             onChange={(e) => onChange({ secondaryButtonText: e.target.value })}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-            placeholder="Optional"
+            placeholder="Opcional"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.secondaryButtonUrl || ''}
             onChange={(e) => onChange({ secondaryButtonUrl: e.target.value })}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-            placeholder="Optional"
+            placeholder="Opcional"
           />
         </div>
       </div>
@@ -142,19 +142,19 @@ function ServicesGridBlockSettings({ block, onChange, currentViewport }: { block
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.overline || ''} onChange={(html) => onChange({ overline: html || undefined })} singleLine placeholder="OUR SERVICES" className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" />
         </div>
@@ -256,9 +256,7 @@ function ServicesGridBlockSettings({ block, onChange, currentViewport }: { block
               type="button"
               onClick={() => onChange({ services: (block.services || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -278,7 +276,7 @@ function StatsBlockSettings({ block, onChange, currentViewport }: { block: Stats
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
@@ -329,7 +327,7 @@ function TestimonialBlockSettings({ block, onChange, currentViewport }: { block:
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Company</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Empresa</label>
         <input
           type="text"
           value={block.company || ''}
@@ -360,9 +358,7 @@ function TestimonialBlockSettings({ block, onChange, currentViewport }: { block:
                 type="button"
                 onClick={() => onChange({ avatar: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -413,15 +409,15 @@ function SocialLinksBlockSettings({ block, onChange }: { block: SocialLinksBlock
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <select
           value={block.alignment ?? 'center'}
           onChange={(e) => onChange({ alignment: e.target.value as SocialLinksBlock['alignment'] })}
           className={inputClass}
         >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
+          <option value="left">Izquierda</option>
+          <option value="center">Centrado</option>
+          <option value="right">Derecha</option>
         </select>
       </div>
       <div className="border-t border-border pt-4 space-y-2">
@@ -488,7 +484,7 @@ function LogoStripBlockSettings({ block, onChange }: { block: LogoStripBlock; on
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 6}
             onChange={(e) => onChange({ columns: Number(e.target.value) as LogoStripBlock['columns'] })}
@@ -504,23 +500,23 @@ function LogoStripBlockSettings({ block, onChange }: { block: LogoStripBlock; on
             onChange={(e) => onChange({ gap: e.target.value as LogoStripBlock['gap'] })}
             className={inputClass}
           >
-            <option value="sm">Small</option>
-            <option value="md">Medium</option>
-            <option value="lg">Large</option>
+            <option value="sm">Pequeño</option>
+            <option value="md">Media</option>
+            <option value="lg">Grande</option>
           </select>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
           <select
             value={block.alignment || 'center'}
             onChange={(e) => onChange({ alignment: e.target.value as LogoStripBlock['alignment'] })}
             className={inputClass}
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
         <div>
@@ -584,9 +580,7 @@ function LogoStripBlockSettings({ block, onChange }: { block: LogoStripBlock; on
               type="button"
               onClick={() => onChange({ logos: (block.logos || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -607,7 +601,7 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -617,20 +611,20 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Description..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 4}
             onChange={(e) => onChange({ columns: Number(e.target.value) as MetricCardsBlock['columns'] })}
@@ -656,7 +650,7 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
             className={inputClass}
             placeholder="auto, 240px, 16rem…"
           />
-          <p className="text-xs text-muted-foreground mt-1">CSS width for the footer-logo column. Leave blank for default.</p>
+          <p className="text-xs text-muted-foreground mt-1">Ancho CSS de la columna del logo del pie. Déjalo en blanco para el predeterminado.</p>
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">Label Max Width</label>
@@ -667,7 +661,7 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
             className={inputClass}
             placeholder="32rem, 480px…"
           />
-          <p className="text-xs text-muted-foreground mt-1">Caps the metric label width. Leave blank for default.</p>
+          <p className="text-xs text-muted-foreground mt-1">Limita el ancho de la etiqueta de métrica. Déjalo en blanco para el predeterminado.</p>
         </div>
       </div>
       <div className="border-t border-border pt-4 space-y-2">
@@ -727,9 +721,7 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
                     onChange({ metrics: next });
                   }}
                   className="px-2 py-1.5 text-xs rounded border border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                >
-                  Remove
-                </button>
+                >Quitar</button>
               )}
             </div>
             {logoPickerFor === String(metric.id ?? i) && (
@@ -774,9 +766,7 @@ function MetricCardsBlockSettings({ block, onChange }: { block: MetricCardsBlock
               type="button"
               onClick={() => onChange({ metrics: (block.metrics || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -796,7 +786,7 @@ function FlipCardGridBlockSettings({ block, onChange }: { block: FlipCardGridBlo
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -806,20 +796,20 @@ function FlipCardGridBlockSettings({ block, onChange }: { block: FlipCardGridBlo
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Description..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 3}
             onChange={(e) => onChange({ columns: Number(e.target.value) as FlipCardGridBlock['columns'] })}
@@ -966,9 +956,7 @@ function FlipCardGridBlockSettings({ block, onChange }: { block: FlipCardGridBlo
               type="button"
               onClick={() => onChange({ cards: (block.cards || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -988,7 +976,7 @@ function TimelineBlockSettings({ block, onChange }: { block: TimelineBlock; onCh
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -998,19 +986,19 @@ function TimelineBlockSettings({ block, onChange }: { block: TimelineBlock; onCh
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'alternating'}
           onChange={(e) => onChange({ layout: e.target.value as TimelineBlock['layout'] })}
@@ -1086,9 +1074,7 @@ function TimelineBlockSettings({ block, onChange }: { block: TimelineBlock; onCh
               type="button"
               onClick={() => onChange({ steps: (block.steps || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -1108,7 +1094,7 @@ function BentoGridBlockSettings({ block, onChange }: { block: BentoGridBlock; on
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -1118,20 +1104,20 @@ function BentoGridBlockSettings({ block, onChange }: { block: BentoGridBlock; on
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 2}
             onChange={(e) => onChange({ columns: Number(e.target.value) })}
@@ -1168,7 +1154,7 @@ function BentoGridBlockSettings({ block, onChange }: { block: BentoGridBlock; on
                 onChange({ cards: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground font-bold"
-              placeholder="Title"
+              placeholder="Título"
             />
             <input
               type="text"
@@ -1245,9 +1231,7 @@ function BentoGridBlockSettings({ block, onChange }: { block: BentoGridBlock; on
               type="button"
               onClick={() => onChange({ cards: (block.cards || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button

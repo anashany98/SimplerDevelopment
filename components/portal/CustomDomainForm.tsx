@@ -182,9 +182,7 @@ export default function CustomDomainForm({
                     </span>
                   ) : (
                     <span className="shrink-0 flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded">
-                      <span className="material-icons text-[10px]">schedule</span>
-                      Pending
-                    </span>
+                      <span className="material-icons text-[10px]">schedule</span>Pendiente</span>
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -241,9 +239,9 @@ export default function CustomDomainForm({
                     <table className="w-full text-sm">
                       <thead className="bg-muted/30">
                         <tr>
-                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Type</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Tipo</th>
                           <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Host</th>
-                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Value</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Valor</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
@@ -283,9 +281,9 @@ export default function CustomDomainForm({
                         <table className="w-full text-sm">
                           <thead className="bg-muted/30">
                             <tr>
-                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Type</th>
+                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Tipo</th>
                               <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Host</th>
-                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Value</th>
+                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Valor</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-border">

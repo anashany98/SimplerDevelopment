@@ -88,9 +88,7 @@ export const LayerListScreen = () => {
                   <button
                     onClick={() => handleDeleteClick(layer)}
                     className="text-red-500 underline bg-none border-none cursor-pointer"
-                  >
-                    Delete
-                  </button>
+                  >Eliminar</button>
                 </div>
               </div>
             ))

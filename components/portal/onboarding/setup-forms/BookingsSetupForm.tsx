@@ -53,7 +53,7 @@ export function BookingsSetupForm({ onCreated }: Props) {
   return (
     <div className="rounded-[13px] border border-primary/30 bg-primary/[0.04] px-[15px] py-[13px] space-y-3">
       <div>
-        <p className="text-[14px] font-semibold leading-snug">Create a booking page</p>
+        <p className="text-[14px] font-semibold leading-snug">Crear una página de reservas</p>
         <p className="text-[12.5px] text-muted-foreground mt-0.5">
           Optional — you can skip this and set it up later.
         </p>
@@ -76,7 +76,7 @@ export function BookingsSetupForm({ onCreated }: Props) {
             value={duration}
             onChange={(e) => setDuration(Number(e.target.value))}
             className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-primary"
-            aria-label="Duration"
+            aria-label="Duración"
           >
             <option value={15}>15 minutes</option>
             <option value={30}>30 minutes</option>

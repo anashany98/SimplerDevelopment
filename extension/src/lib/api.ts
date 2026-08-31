@@ -1,4 +1,4 @@
-// Typed client for the SimplerDevelopment portal /api/extension/v1 endpoints.
+// Typed client for the CRM AGENTS portal /api/extension/v1 endpoints.
 // Reads creds from chrome.storage.local on every call so the user can update
 // them in the options page without reloading the popup.
 

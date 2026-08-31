@@ -3,7 +3,7 @@
 # Required env (set in the Railway service):
 #   PORT                            — set automatically by Railway; Mastra
 #                                     production server binds to this port.
-#   SD_MCP_URL                      — URL of the SimplerDevelopment MCP server
+#   SD_MCP_URL                      — URL of the CRM AGENTS MCP server
 #                                     (e.g. https://your-app.railway.app/api/mcp)
 #   SD_AGENTS_INTERNAL_SECRET       — shared secret for internal agent→portal calls.
 #                                     Setting it enables multi-tenant mode: every

@@ -151,7 +151,7 @@ export default function AdminAIConversationsPage() {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground">AI Conversations</h1>
-        <p className="text-muted-foreground mt-1">Monitor client AI chat sessions, flag for review, and inject responses.</p>
+        <p className="text-muted-foreground mt-1">Supervisa las sesiones de chat de IA de los clientes, márcalas para revisión e inyecta respuestas.</p>
       </div>
 
       <div className="flex gap-6 h-[calc(100vh-12rem)]">
@@ -177,7 +177,7 @@ export default function AdminAIConversationsPage() {
           {/* List */}
           <div className="flex-1 overflow-y-auto space-y-1 pr-1">
             {loading ? (
-              <p className="text-sm text-muted-foreground text-center py-8">Loading…</p>
+              <p className="text-sm text-muted-foreground text-center py-8">Cargando…</p>
             ) : filtered.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">No conversations.</p>
             ) : (
@@ -215,7 +215,7 @@ export default function AdminAIConversationsPage() {
             <div className="flex-1 flex items-center justify-center text-center">
               <div>
                 <span className="material-icons text-5xl text-muted-foreground">smart_toy</span>
-                <p className="mt-3 text-muted-foreground text-sm">Select a conversation to review</p>
+                <p className="mt-3 text-muted-foreground text-sm">Selecciona una conversación para revisar</p>
               </div>
             </div>
           ) : (
@@ -315,7 +315,7 @@ export default function AdminAIConversationsPage() {
               </button>
             </div>
             <p className="text-sm text-muted-foreground">
-              This message will appear in the client&apos;s chat as a reply from the Simpler Development team.
+              This message will appear in the client&apos;s chat as a reply from the CRM AGENTS team.
             </p>
             <textarea
               autoFocus
@@ -326,9 +326,7 @@ export default function AdminAIConversationsPage() {
               className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             />
             <div className="flex justify-end gap-3">
-              <button onClick={() => setShowInjectModal(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
-                Cancel
-              </button>
+              <button onClick={() => setShowInjectModal(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
               <button
                 onClick={injectReply}
                 disabled={injecting || !injectMessage.trim()}

@@ -83,10 +83,10 @@ export default function DocumentComplianceCard({ report }: Props) {
       </button>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
-        <Stat label="Assigned" value={summary.totalAssigned} tone="default" icon="groups" />
+        <Stat label="Asignado" value={summary.totalAssigned} tone="default" icon="groups" />
         <Stat label="Acknowledged" value={summary.acknowledged} tone="emerald" icon="check_circle" />
-        <Stat label="Pending" value={summary.pending} tone="amber" icon="schedule" />
-        <Stat label="Overdue" value={summary.overdue} tone="red" icon="warning" />
+        <Stat label="Pendiente" value={summary.pending} tone="amber" icon="schedule" />
+        <Stat label="Atrasado" value={summary.overdue} tone="red" icon="warning" />
       </div>
 
       {expanded && (

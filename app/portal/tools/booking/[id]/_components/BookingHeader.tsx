@@ -26,9 +26,7 @@ export function BookingHeader({ title, slug, publicUrl, saving, saved, onSave }:
           href="/portal/tools/booking"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
         >
-          <span className="material-icons text-lg">arrow_back</span>
-          Back to Booking Pages
-        </Link>
+          <span className="material-icons text-lg">arrow_back</span>Volver a las páginas de reservas</Link>
         <h1 className="text-2xl font-bold text-foreground">{title}</h1>
         <p className="text-muted-foreground mt-1 text-sm">/book/{slug}</p>
       </div>
@@ -39,9 +37,7 @@ export function BookingHeader({ title, slug, publicUrl, saving, saved, onSave }:
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground hover:bg-muted transition-colors"
         >
-          <span className="material-icons text-lg">open_in_new</span>
-          Preview
-        </a>
+          <span className="material-icons text-lg">open_in_new</span>Vista previa</a>
         <button
           onClick={onSave}
           disabled={saving}
@@ -49,9 +45,7 @@ export function BookingHeader({ title, slug, publicUrl, saving, saved, onSave }:
         >
           {saving ? (
             <>
-              <span className="material-icons animate-spin text-lg">autorenew</span>
-              Saving...
-            </>
+              <span className="material-icons animate-spin text-lg">autorenew</span>Guardando...</>
           ) : saved ? (
             <>
               <span className="material-icons text-lg">check</span>
@@ -59,9 +53,7 @@ export function BookingHeader({ title, slug, publicUrl, saving, saved, onSave }:
             </>
           ) : (
             <>
-              <span className="material-icons text-lg">save</span>
-              Save Changes
-            </>
+              <span className="material-icons text-lg">save</span>Guardar cambios</>
           )}
         </button>
       </div>

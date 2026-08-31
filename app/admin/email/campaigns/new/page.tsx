@@ -84,7 +84,7 @@ export default function NewCampaignPage() {
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Preview Text</label>
-              <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Short summary shown in email clients after subject" />
+              <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Resumen breve que los clientes de correo muestran tras el asunto" />
             </div>
           </div>
         </div>
@@ -95,16 +95,16 @@ export default function NewCampaignPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>From Name *</label>
-              <input required value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="e.g. Simpler Development" />
+              <input required value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="e.g. CRM AGENTS" />
             </div>
             <div>
               <label className={labelClass}>From Email *</label>
               <input required type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hello@yourdomain.com" />
-              <p className="text-xs text-muted-foreground mt-1">Must be a verified Resend domain.</p>
+              <p className="text-xs text-muted-foreground mt-1">Debe ser un dominio Resend verificado.</p>
             </div>
             <div>
               <label className={labelClass}>Reply-To</label>
-              <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Optional" />
+              <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Opcional" />
             </div>
           </div>
         </div>
@@ -169,9 +169,7 @@ export default function NewCampaignPage() {
           >
             {saving ? 'Saving…' : 'Save Campaign'}
           </button>
-          <Link href="/admin/email/campaigns" className="px-5 py-2.5 border border-border rounded-lg text-sm text-muted-foreground hover:bg-accent">
-            Cancel
-          </Link>
+          <Link href="/admin/email/campaigns" className="px-5 py-2.5 border border-border rounded-lg text-sm text-muted-foreground hover:bg-accent">Cancelar</Link>
         </div>
       </form>
     </div>

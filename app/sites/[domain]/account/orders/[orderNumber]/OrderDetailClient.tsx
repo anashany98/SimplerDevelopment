@@ -324,7 +324,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                 {/* Items table */}
                 <div className="border border-gray-200 rounded-xl overflow-hidden">
                   <div className="px-5 py-3 bg-gray-50 border-b border-gray-200">
-                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Items</h2>
+                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Elementos</h2>
                   </div>
                   <div className="divide-y divide-gray-200">
                     {items.map(item => {
@@ -370,11 +370,11 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                       <span>{formatMoney(order.subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-500">
-                      <span>Shipping</span>
+                      <span>Envío</span>
                       <span>{formatMoney(order.shipping)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-500">
-                      <span>Tax</span>
+                      <span>Impuesto</span>
                       <span>{formatMoney(order.tax)}</span>
                     </div>
                     <div className="flex justify-between text-sm font-semibold text-gray-900 pt-2 border-t border-gray-200">

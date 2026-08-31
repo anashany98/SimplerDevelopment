@@ -26,6 +26,14 @@ export const LEASE_MS = 10 * 60_000;
 /** Cap per tick so one backlog can't run the function past its time limit. */
 export const DRAIN_BATCH = 50;
 
+/** Execution facts that a handler needs without giving it control of job state. */
+export interface JobExecutionContext {
+  /** One-based: 1 is the first execution attempt. */
+  attempt: number;
+  /** The current failure would move the job to dead_letter. */
+  isFinalAttempt: boolean;
+}
+
 // ─── handlers ────────────────────────────────────────────────────────────────
 
 /**
@@ -45,7 +53,7 @@ export const DRAIN_BATCH = 50;
  */
 export const JOB_HANDLERS: Record<
   InternalJobType,
-  (payload: Record<string, unknown>, db: Db) => Promise<void>
+  (payload: Record<string, unknown>, db: Db, context: JobExecutionContext) => Promise<void>
 > = {
   'pod.submit': async (payload, db) => {
     const orderId = payload.orderId;
@@ -66,6 +74,16 @@ export const JOB_HANDLERS: Record<
   'automation.delayed_action': async (payload, db) => {
     const { runDelayedAutomationAction } = await import('@/lib/automation/delayed-action-job');
     await runDelayedAutomationAction(payload, db);
+  },
+
+  'ceo.background_analysis': async (payload, db, context) => {
+    const { runCeoBackgroundAnalysis } = await import('@/lib/ai/ceo-background-job');
+    await runCeoBackgroundAnalysis(payload, db, context);
+  },
+
+  'agent.background_analysis': async (payload, db, context) => {
+    const { runBackgroundPortalAnalysis } = await import('@/lib/ai/ceo-background-job');
+    await runBackgroundPortalAnalysis(payload, db, context);
   },
 };
 
@@ -170,7 +188,10 @@ export async function drainInternalJobs(db: Db = defaultDb): Promise<DrainResult
     try {
       const handler = JOB_HANDLERS[job.type];
       if (!handler) throw new Error(`No handler registered for job type '${job.type}'`);
-      await handler((job.payload ?? {}) as Record<string, unknown>, db);
+      await handler((job.payload ?? {}) as Record<string, unknown>, db, {
+        attempt: job.attemptCount + 1,
+        isFinalAttempt: job.attemptCount + 1 >= MAX_ATTEMPTS,
+      });
 
       await db
         .update(internalJobs)

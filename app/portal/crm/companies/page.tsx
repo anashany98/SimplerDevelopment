@@ -504,7 +504,7 @@ export default function CrmCompaniesPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
           <p className="text-xs text-muted-foreground">

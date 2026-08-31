@@ -248,7 +248,7 @@ export function registerKanbanArtifactsTools(server: McpServer, ctx: PortalMcpCo
   );
 
   // ── SPRINT PLANNER (read-only proposal) ─────────────────────────────────
-  // Differentiates SimplerDevelopment from competitors: an AI agent can grab
+  // Differentiates CRM AGENTS from competitors: an AI agent can grab
   // a fully-formed sprint proposal in one tool call (capacity + dependencies +
   // sizing checks) and then commit individual cards via kanban_update_card.
   hasScope(ctx.scopes, 'projects:read') && server.registerTool(

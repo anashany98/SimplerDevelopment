@@ -16,7 +16,7 @@ import { checkAiPlanGate } from '@/lib/ai/plan-gate';
 // env var set in the build environment.
 const INBOUND_SECRET = process.env.INBOUND_EMAIL_SECRET;
 
-const SYSTEM_PROMPT = `You are a helpful AI assistant for Simpler Development. A client is contacting you via email. You have access to tools that query and modify their portal data — projects, invoices, tickets, websites, email campaigns, booking pages, pitch decks, CRM, and more.
+const SYSTEM_PROMPT = `You are a helpful AI assistant for CRM AGENTS. A client is contacting you via email. You have access to tools that query and modify their portal data — projects, invoices, tickets, websites, email campaigns, booking pages, pitch decks, CRM, and more.
 
 Always use the appropriate tool before answering — never guess or make up data.
 
@@ -147,7 +147,7 @@ export async function POST(req: Request) {
     const gate = await checkAiPlanGate({ clientId: client.id, provider: 'anthropic' });
     if (!gate.allowed) {
       await resend.emails.send({
-        from: `Simpler Development <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+        from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
         to: senderEmail,
         subject: `Re: ${subject}`,
         text: gate.message ?? 'AI access is not available on the current plan.',
@@ -165,7 +165,7 @@ export async function POST(req: Request) {
       if (!canProceed) {
         // Send a reply saying they're out of credits
         await resend.emails.send({
-          from: `Simpler Development <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+          from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
           to: senderEmail,
           subject: `Re: ${subject}`,
           text: `Your AI credits are depleted. Please purchase more credits or enable pay-as-you-go at https://simplerdevelopment.com/portal/dashboard, or add a BYOK key at https://simplerdevelopment.com/portal/integrations/api-keys, to continue using the email assistant.`,
@@ -260,7 +260,7 @@ export async function POST(req: Request) {
     void recordAiUsage({ clientId: client.id, source: resolved.source, tokens: totalTokens });
 
     // Send reply via Resend
-    const replyFrom = `${client.company || 'Simpler Development'} AI <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`;
+    const replyFrom = `${client.company || 'CRM AGENTS'} AI <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`;
 
     await resend.emails.send({
       from: replyFrom,

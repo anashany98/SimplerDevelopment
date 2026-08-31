@@ -61,11 +61,15 @@ export async function POST(req: Request) {
     const role = (session.user as { role?: string })?.role;
     const isStaff = role === 'admin' || role === 'employee';
 
-    // Staff can't use the client chat widget
-    if (isStaff) return NextResponse.json({ success: false, message: 'Staff do not have a client portal chat.' }, { status: 403 });
-
     const client = await getPortalClient(userId);
     if (!client) return NextResponse.json({ success: false, message: 'Client not found' }, { status: 404 });
+
+    // Staff can't use the client chat widget — EXCEPT when the staff user IS
+    // the owner of the resolved client (solo-operator deployments seed their
+    // one account as role='admin' and still need the assistant).
+    if (isStaff && client.userId !== userId) {
+      return NextResponse.json({ success: false, message: 'Staff do not have a client portal chat.' }, { status: 403 });
+    }
 
     const { message, conversationId, agentId } = await req.json();
     if (!message?.trim()) return NextResponse.json({ success: false, message: 'message is required' }, { status: 400 });
@@ -374,12 +378,17 @@ export async function POST(req: Request) {
       outputTokens: 0,
     });
 
+    // Persist the selected specialist with every tool call. Agent profiles can
+    // intentionally share domains (for example, sales and retention both use
+    // CRM), so inferring activity from a tool name would misattribute it.
+    const loggedToolCalls = allToolCalls.map((toolCall) => ({ ...toolCall, agentId: agent.id }));
+
     // Save assistant message (with tool calls logged)
     await db.insert(aiMessages).values({
       conversationId: convId,
       role: 'assistant',
       content: finalText,
-      toolCalls: allToolCalls.length > 0 ? allToolCalls : null,
+      toolCalls: loggedToolCalls.length > 0 ? loggedToolCalls : null,
       inputTokens: totalInputTokens,
       outputTokens: totalOutputTokens,
     });

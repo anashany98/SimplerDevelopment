@@ -84,12 +84,12 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
             <span className="material-icons text-base">verified_user</span>
             Two-factor authentication is on.
           </div>
-          <p className="text-sm text-muted-foreground">To turn it off, confirm your password.</p>
+          <p className="text-sm text-muted-foreground">Para desactivarlo, confirma tu contraseña.</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
+            placeholder="Tu contraseña"
             autoComplete="current-password"
             className="w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
@@ -152,9 +152,7 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
               onClick={() => { setStage('idle'); setCode(''); setError(''); }}
               disabled={busy}
               className="rounded-md border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}

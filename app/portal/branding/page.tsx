@@ -102,9 +102,7 @@ export default function PortalBrandingPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading...
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando...</div>
     );
   }
 
@@ -116,7 +114,7 @@ export default function PortalBrandingPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Brand"
+        eyebrow="Marca"
         title="Branding & Messaging"
         subtitle="Create and manage brand profiles with visual identity and company messaging. Assign them to websites, pitch decks, and proposals."
         actions={
@@ -174,17 +172,15 @@ export default function PortalBrandingPage() {
               <button
                 onClick={() => { setShowCreate(false); setNewName(''); }}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           )}
 
           {profiles.length === 0 ? (
             <div className="text-center py-12 bg-card border border-border rounded-2xl">
               <span className="material-icons text-4xl text-muted-foreground mb-2 block">palette</span>
-              <p className="text-muted-foreground text-sm">No brand profiles yet.</p>
-              <p className="text-muted-foreground text-xs mt-1">Create your first profile to get started.</p>
+              <p className="text-muted-foreground text-sm">Aún no hay perfiles de marca.</p>
+              <p className="text-muted-foreground text-xs mt-1">Crea tu primer perfil para empezar.</p>
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
@@ -213,9 +209,7 @@ export default function PortalBrandingPage() {
                           )}
                         </div>
                         {profile.isDefault && (
-                          <span className="shrink-0 ml-2 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">
-                            Default
-                          </span>
+                          <span className="shrink-0 ml-2 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">Predeterminado</span>
                         )}
                       </div>
 
@@ -241,9 +235,7 @@ export default function PortalBrandingPage() {
                           href={`/portal/branding/profiles/${profile.id}`}
                           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
                         >
-                          <span className="material-icons text-sm">edit</span>
-                          Edit
-                        </Link>
+                          <span className="material-icons text-sm">edit</span>Editar</Link>
                         <Link
                           href={`/portal/branding/profiles/${profile.id}?tab=messaging`}
                           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
@@ -255,7 +247,7 @@ export default function PortalBrandingPage() {
                           <button
                             onClick={() => setDefault(profile.id)}
                             className="px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
-                            title="Set as default"
+                            title="Establecer como predeterminado"
                           >
                             <span className="material-icons text-sm">star_outline</span>
                           </button>
@@ -263,7 +255,7 @@ export default function PortalBrandingPage() {
                         <button
                           onClick={() => deleteProfile(profile.id)}
                           className="px-3 py-2 text-xs font-medium rounded-md border border-border text-destructive hover:bg-destructive/10 transition-colors"
-                          title="Delete"
+                          title="Eliminar"
                         >
                           <span className="material-icons text-sm">delete</span>
                         </button>

@@ -10,7 +10,7 @@
  *   - search box (debounced 300ms, hits `?search=`)
  *
  * URL-param sync via useSearchParams + router.replace so filters survive
- * reload and are shareable. Pagination 25/page (offset/limit — the list
+ * reload and are shareable. Págination 25/page (offset/limit — the list
  * endpoint doesn't return a total, so we infer hasNext from `items.length`).
  *
  * Layout: sticky header (title + "New document" CTA + "My reading queue"
@@ -178,7 +178,7 @@ export default function BrainDocumentsListPage() {
   return (
     <div className="max-w-5xl mx-auto py-6 px-4 space-y-5">
       <PortalPageHeader
-        eyebrow="Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">description</span>
@@ -203,7 +203,7 @@ export default function BrainDocumentsListPage() {
       {/* Filters */}
       <div className="grid sm:grid-cols-4 gap-3 items-end">
         <div className="sm:col-span-1">
-          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Status</span>
+          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Estado</span>
           <div className="flex items-center gap-1 bg-background border border-border rounded-md p-0.5">
             {(['all', 'draft', 'published', 'archived'] as const).map((s) => (
               <button
@@ -223,39 +223,33 @@ export default function BrainDocumentsListPage() {
         </div>
 
         <div>
-          <label htmlFor="doc-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Category
-          </label>
+          <label htmlFor="doc-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Categoría</label>
           <select
             id="doc-cat-f"
             value={categoryParam}
             onChange={(e) => updateParams({ category: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All categories</option>
+            <option value="">Todas las categorías</option>
             {CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="doc-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Owner
-          </label>
+          <label htmlFor="doc-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Propietario</label>
           <select
             id="doc-owner-f"
             value={ownerParam}
             onChange={(e) => updateParams({ ownerId: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All owners</option>
+            <option value="">Todos los propietarios</option>
             {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="doc-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Search
-          </label>
+          <label htmlFor="doc-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Buscar</label>
           <div className="relative">
             <span className="material-icons absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-base pointer-events-none">search</span>
             <input
@@ -263,7 +257,7 @@ export default function BrainDocumentsListPage() {
               type="text"
               value={searchDraft}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search title or body…"
+              placeholder="Buscar título o contenido…"
               className={`${pInput} pl-8`}
             />
           </div>
@@ -273,9 +267,7 @@ export default function BrainDocumentsListPage() {
       {/* Body */}
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
       )}
 
       {error && !loading && (
@@ -358,9 +350,7 @@ export default function BrainDocumentsListPage() {
                   disabled={!hasNextPage}
                   onClick={() => updateParams({ page: String(pageParam + 1) })}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                  <span className="material-icons text-base">chevron_right</span>
+                >Siguiente<span className="material-icons text-base">chevron_right</span>
                 </button>
               </div>
             </div>

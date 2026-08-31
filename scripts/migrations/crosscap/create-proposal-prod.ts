@@ -1,5 +1,5 @@
 /**
- * Create / maintain the SimplerDevelopment engagement PROPOSAL for Crossover
+ * Create / maintain the CRM AGENTS engagement PROPOSAL for Crossover
  * Capital Advisors (client 103) on the PROD metro DB. Content mirrors the
  * "An Agentic OS for Crossover Capital" deck (deck 365); pricing is at $150/hr.
  *
@@ -22,10 +22,10 @@ import postgres from 'postgres';
 import { randomBytes } from 'crypto';
 
 const CLIENT_ID = 103;
-const TITLE = 'SimplerDevelopment × Crossover Capital — Agentic OS Engagement';
+const TITLE = 'CRM AGENTS × Crossover Capital — Agentic OS Engagement';
 const RATE = 15000; // $150/hr in cents
 const ACCENT = '#cfa122';
-const FOOTER = 'SimplerDevelopment LLC · prepared with Cody York (CY Strategies). Estimates at $150/hr; final scope confirmed on kickoff.';
+const FOOTER = 'CRM AGENTS LLC · prepared with Cody York (CY Strategies). Estimates at $150/hr; final scope confirmed on kickoff.';
 
 const SUMMARY =
   'A dedicated agentic operating system for Crossover Capital — a custom AI dashboard built on the platform foundation already live in your portal, followed by a fractional-CTO retainer. Spun up in a single-tenant instance of your own. Engagement billed at $150/hr.';
@@ -35,7 +35,7 @@ const SUMMARY =
 const sections = [
   { id: 'ov-h', type: 'heading', content: 'Engagement Overview' },
   { id: 'ov', type: 'text', content:
-    '<p>SimplerDevelopment will stand up a dedicated &ldquo;agentic operating system&rdquo; for Crossover Capital: one connected platform &mdash; website, CRM, Company Brain, content, booking and more &mdash; with a custom AI dashboard on top that lets Alex run the business by simply asking. Everything runs in a single-tenant instance spun up for your firm alone.</p>' +
+    '<p>CRM AGENTS will stand up a dedicated &ldquo;agentic operating system&rdquo; for Crossover Capital: one connected platform &mdash; website, CRM, Company Brain, content, booking and more &mdash; with a custom AI dashboard on top that lets Alex run the business by simply asking. Everything runs in a single-tenant instance spun up for your firm alone.</p>' +
     '<p>We start with a scoped build (Phase&nbsp;1) and continue as your fractional CTO on a month-to-month retainer (Phase&nbsp;2). All work is billed at $150/hr; good-faith estimates are below.</p>' },
 
   { id: 'built-h', type: 'heading', content: "What's Already Built" },
@@ -51,7 +51,7 @@ const sections = [
 
   { id: 'opp-h', type: 'heading', content: 'The Opportunity' },
   { id: 'opp', type: 'text', content:
-    '<p>Today the stack is fragmented &mdash; Hazel, Wealthbox, Orion, QuickBooks and Study don&rsquo;t talk, so work lands on Alex and leads go cold. The agentic OS makes SimplerDevelopment the single source of truth (the &ldquo;warehouse&rdquo;), Claude the driver that reasons over it, and MCP the wiring that connects ~20 domains &mdash; so the whole business answers a single question.</p>' },
+    '<p>Today the stack is fragmented &mdash; Hazel, Wealthbox, Orion, QuickBooks and Study don&rsquo;t talk, so work lands on Alex and leads go cold. The agentic OS makes CRM AGENTS the single source of truth (the &ldquo;warehouse&rdquo;), Claude the driver that reasons over it, and MCP the wiring that connects ~20 domains &mdash; so the whole business answers a single question.</p>' },
 
   { id: 'plat-h', type: 'heading', content: 'The Platform — Everything in One Place' },
   { id: 'plat', type: 'text', content:
@@ -94,7 +94,7 @@ const sections = [
     '<p>The one-time build is itemized below; all development is billed at <strong>$150/hr</strong>, and the optional integrations block is only added if you select it.</p>' +
     '<p><strong>Ongoing (monthly):</strong></p>' +
     '<ul>' +
-    '<li><strong>Platform fee</strong> &mdash; ~$300/mo for your dedicated instance and the SimplerDevelopment platform, plus ~$30/mo per additional user seat.</li>' +
+    '<li><strong>Platform fee</strong> &mdash; ~$300/mo for your dedicated instance and the CRM AGENTS platform, plus ~$30/mo per additional user seat.</li>' +
     '<li><strong>Fractional-CTO retainer</strong> &mdash; roughly 15 hours/month (&asymp; $2,250/mo) at $150/hr, month-to-month, to run, extend and advise. Hours scale up or down with need.</li>' +
     '</ul>' +
     '<p>These are good-faith estimates; final scope is confirmed at kickoff.</p>' },

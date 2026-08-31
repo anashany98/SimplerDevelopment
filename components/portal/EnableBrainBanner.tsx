@@ -21,7 +21,7 @@ export function EnableBrainBanner() {
       });
       const json: { success: boolean; message?: string } = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to enable Company Brain.');
+        setError(json.message || 'No se ha podido activar el Cerebro de empresa.');
         return;
       }
       // Re-render the dashboard with the brain widgets now visible.
@@ -39,9 +39,9 @@ export function EnableBrainBanner() {
         <div className="flex items-start gap-3 min-w-0">
           <span className="material-icons text-primary text-3xl shrink-0">psychology</span>
           <div className="min-w-0">
-            <h3 className="font-display text-base font-extrabold tracking-[-0.01em] text-foreground">Turn this dashboard into a command center</h3>
+            <h3 className="font-display text-base font-extrabold tracking-[-0.01em] text-foreground">Convierte este panel en un centro de mando</h3>
             <p className="text-sm text-muted-foreground mt-0.5 max-w-xl">
-              Enable Company Brain to surface pending reviews, overdue tasks, stale prospects, and recent automation runs right here.
+              Activa el Cerebro de empresa para ver aquí las revisiones pendientes, las tareas atrasadas, los prospectos inactivos y las ejecuciones recientes de automatizaciones.
               AI proposes — you approve. <Link href="/portal/brain" className="text-primary hover:underline">Learn more</Link>.
             </p>
             {error && (
@@ -59,7 +59,7 @@ export function EnableBrainBanner() {
         >
           {enabling
             ? <><span className="material-icons animate-spin text-base">progress_activity</span>Enabling…</>
-            : <><span className="material-icons text-base">power_settings_new</span>Enable Company Brain</>
+            : <><span className="material-icons text-base">power_settings_new</span>Activar Cerebro de empresa</>
           }
         </button>
       </div>

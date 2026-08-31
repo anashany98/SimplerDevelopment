@@ -121,8 +121,8 @@ export function CardHeader({
               ? 'bg-primary/10 border-primary text-primary'
               : 'border-border text-muted-foreground hover:bg-accent hover:text-foreground'
           }`}
-          title="Copy a shareable link to this card"
-          aria-label="Copy link to this card"
+          title="Copiar un enlace compartible de esta tarjeta"
+          aria-label="Copiar enlace a esta tarjeta"
         >
           <span className="material-icons text-base">{copied ? 'check' : 'link'}</span>
           <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy link'}</span>

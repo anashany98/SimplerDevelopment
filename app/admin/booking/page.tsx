@@ -86,8 +86,8 @@ export default function AdminBookingPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Booking</h1>
-          <p className="text-muted-foreground mt-1">Manage booking pages and view upcoming appointments.</p>
+          <h1 className="text-2xl font-bold text-foreground">Reservas</h1>
+          <p className="text-muted-foreground mt-1">Gestiona páginas de reservas y ve citas próximas.</p>
         </div>
         <div className="flex items-center gap-2">
           {(['pages', 'upcoming'] as const).map(t => (
@@ -131,18 +131,18 @@ export default function AdminBookingPage() {
                 <div className="bg-card border border-border rounded-xl p-12 text-center">
                   <span className="material-icons text-5xl text-muted-foreground">calendar_month</span>
                   <h3 className="mt-4 font-semibold text-foreground">No booking pages</h3>
-                  <p className="text-muted-foreground mt-1 text-sm">Booking pages will appear here once clients create them.</p>
+                  <p className="text-muted-foreground mt-1 text-sm">Las páginas de reservas aparecerán aquí una vez que los clientes las creen.</p>
                 </div>
               ) : (
                 <div className="bg-card border border-border rounded-xl overflow-hidden">
                   <table className="w-full text-sm">
                     <thead className="bg-muted/50 border-b border-border">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Title</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duration</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Calendar Sync</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Bookings</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Upcoming</th>
                       </tr>
@@ -189,7 +189,7 @@ export default function AdminBookingPage() {
                 <div className="bg-card border border-border rounded-xl p-12 text-center">
                   <span className="material-icons text-5xl text-muted-foreground">event_busy</span>
                   <h3 className="mt-4 font-semibold text-foreground">No upcoming bookings</h3>
-                  <p className="text-muted-foreground mt-1 text-sm">Upcoming bookings for the next 30 days will appear here.</p>
+                  <p className="text-muted-foreground mt-1 text-sm">Las próximas reservas de los siguientes 30 días aparecerán aquí.</p>
                 </div>
               ) : (
                 <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -200,9 +200,9 @@ export default function AdminBookingPage() {
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Guest Name</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Guest Email</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Booking Page</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Phone</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Teléfono</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">

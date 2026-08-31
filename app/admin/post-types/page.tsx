@@ -193,7 +193,7 @@ export default function PostTypesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground">Description</label>
+                  <label className="block text-sm font-medium text-foreground">Descripción</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -230,9 +230,7 @@ export default function PostTypesPage() {
                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                     className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
-                  <label htmlFor="active" className="ml-2 block text-sm text-foreground">
-                    Active
-                  </label>
+                  <label htmlFor="active" className="ml-2 block text-sm text-foreground">Activo</label>
                 </div>
 
                 <div className="flex gap-2 pt-4">
@@ -246,9 +244,7 @@ export default function PostTypesPage() {
                     type="button"
                     onClick={handleCancel}
                     className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-                  >
-                    Cancel
-                  </button>
+                  >Cancelar</button>
                 </div>
               </form>
             </div>
@@ -259,21 +255,13 @@ export default function PostTypesPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Icon
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Icono</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Estado</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -312,15 +300,11 @@ export default function PostTypesPage() {
                     <button
                       onClick={() => handleEdit(postType)}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
+                    >Editar</button>
                     <button
                       onClick={() => handleDelete(postType.id)}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </td>
                 </tr>
               ))}

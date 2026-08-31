@@ -107,7 +107,7 @@ export default function App() {
               required
             />
             <p className="text-xs text-slate-500">
-              The base URL of your SimplerDevelopment portal (no trailing slash needed).
+              The base URL of your CRM AGENTS portal (no trailing slash needed).
             </p>
           </div>
 

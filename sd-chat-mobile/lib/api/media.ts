@@ -1,7 +1,7 @@
 /**
  * SD Chat — Tanstack Query hooks for the shared media library
  *
- * Backed by the SimplerDevelopment portal endpoints
+ * Backed by the CRM AGENTS portal endpoints
  *  - GET    /api/portal/media          → list (paginated, with branding profiles)
  *  - DELETE /api/portal/media/[id]     → hard delete (tenant-scoped)
  *

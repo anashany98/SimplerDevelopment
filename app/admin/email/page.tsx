@@ -58,7 +58,7 @@ export default function EmailDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Email Marketing</h1>
-          <p className="text-muted-foreground mt-1">Manage campaigns, subscriber lists, and analytics.</p>
+          <p className="text-muted-foreground mt-1">Gestiona campañas, listas de suscriptores y analíticas.</p>
         </div>
         <Link
           href="/admin/email/campaigns/new"
@@ -122,10 +122,10 @@ export default function EmailDashboardPage() {
       <div className="bg-card border border-border rounded-lg overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2 className="font-semibold text-foreground">Recent Campaigns</h2>
-          <Link href="/admin/email/campaigns" className="text-sm text-primary hover:underline">View all</Link>
+          <Link href="/admin/email/campaigns" className="text-sm text-primary hover:underline">Ver todo</Link>
         </div>
         {loading ? (
-          <p className="p-6 text-muted-foreground text-sm">Loading…</p>
+          <p className="p-6 text-muted-foreground text-sm">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-10 text-center">
             <span className="material-icons text-3xl text-muted-foreground mb-2 block">campaign</span>

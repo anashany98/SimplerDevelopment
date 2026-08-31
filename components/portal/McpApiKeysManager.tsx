@@ -28,7 +28,7 @@ interface ScopeGroup {
 
 const SCOPE_GROUPS: ScopeGroup[] = [
   {
-    label: 'Content',
+    label: 'Contenido',
     scopes: [
       { value: 'sites:read', label: 'Read websites & pages' },
       { value: 'sites:write', label: 'Write websites & pages' },
@@ -113,7 +113,7 @@ interface McpApiKeysManagerProps {
 
 export default function McpApiKeysManager({
   heading = 'API Keys',
-  subheading = 'Use these keys to authenticate the SimplerDevelopment MCP server. Connect from Claude Desktop, Claude Code, ChatGPT, or any MCP-compatible client to control your portal programmatically.',
+  subheading = 'Use these keys to authenticate the CRM AGENTS MCP server. Connect from Claude Desktop, Claude Code, ChatGPT, or any MCP-compatible client to control your portal programmatically.',
 }: McpApiKeysManagerProps) {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);
@@ -208,9 +208,7 @@ export default function McpApiKeysManager({
             <button
               onClick={() => navigator.clipboard.writeText(newKey)}
               className="text-xs px-2 py-1 border border-border rounded hover:bg-muted"
-            >
-              Copy
-            </button>
+            >Copiar</button>
             <button
               onClick={() => setNewKey(null)}
               className="text-xs px-2 py-1 border border-border rounded hover:bg-muted"
@@ -224,7 +222,7 @@ export default function McpApiKeysManager({
       {showCreate && (
         <div className="rounded-md border border-border p-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className="block text-sm font-medium mb-1">Nombre</label>
             <input
               value={name}
               onChange={e => setName(e.target.value)}
@@ -319,9 +317,7 @@ export default function McpApiKeysManager({
             <button
               onClick={() => setShowCreate(false)}
               className="px-3 py-2 border border-border rounded-md text-sm"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -331,18 +327,18 @@ export default function McpApiKeysManager({
         <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-muted/50">
             <tr className="text-left">
-              <th className="px-3 py-2 font-medium">Name</th>
+              <th className="px-3 py-2 font-medium">Nombre</th>
               <th className="px-3 py-2 font-medium">Key</th>
               <th className="px-3 py-2 font-medium">Scopes</th>
               <th className="px-3 py-2 font-medium">Mode</th>
               <th className="px-3 py-2 font-medium">Last used</th>
-              <th className="px-3 py-2 font-medium">Status</th>
+              <th className="px-3 py-2 font-medium">Estado</th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">Loading…</td></tr>
+              <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && keys.length === 0 && (
               <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">No API keys yet</td></tr>
@@ -380,9 +376,9 @@ export default function McpApiKeysManager({
                   {k.revokedAt ? (
                     <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revoked</span>
                   ) : k.active ? (
-                    <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Active</span>
+                    <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Activo</span>
                   ) : (
-                    <span className="text-xs px-2 py-0.5 bg-muted rounded">Inactive</span>
+                    <span className="text-xs px-2 py-0.5 bg-muted rounded">Inactivo</span>
                   )}
                 </td>
                 <td className="px-3 py-2 text-right">

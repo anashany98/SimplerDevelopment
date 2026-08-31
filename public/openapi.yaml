@@ -1,10 +1,10 @@
 openapi: 3.1.0
 
 info:
-  title: SimplerDevelopment REST v1 API
+  title: CRM AGENTS REST v1 API
   version: 1.0.0
   description: >
-    Authenticated headless CMS / commerce surface for SimplerDevelopment sites.
+    Authenticated headless CMS / commerce surface for CRM AGENTS sites.
     Every request is site-scoped, rate-limited, and returns a consistent
     { success, data | message } JSON envelope.
   contact:
@@ -12,7 +12,7 @@ info:
 
 servers:
   - url: https://{tenantDomain}/api/v1
-    description: SimplerDevelopment tenant domain
+    description: CRM AGENTS tenant domain
     variables:
       tenantDomain:
         default: simplerdevelopment.com

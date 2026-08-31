@@ -164,9 +164,7 @@ export default function MediaDetailModal({
                 <button
                   onClick={() => setEditing(false)}
                   className="px-4 py-2 text-sm bg-card border border-border rounded-md hover:bg-accent"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </div>
           ) : (
@@ -204,9 +202,7 @@ export default function MediaDetailModal({
             <button
               onClick={handleDelete}
               className="ml-auto px-4 py-2 text-sm bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90"
-            >
-              Delete
-            </button>
+            >Eliminar</button>
           </div>
         </div>
       </div>

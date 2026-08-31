@@ -172,7 +172,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
             type="button"
             onClick={onClose}
             className="p-1 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground"
-            title="Close"
+            title="Cerrar"
           >
             <span className="material-icons text-base">close</span>
           </button>
@@ -187,7 +187,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
                   <li>One per line: <code className="bg-muted px-1 rounded text-[10px]">term: definition</code> (optional <code className="bg-muted px-1 rounded text-[10px]">[Category]</code> prefix)</li>
                   <li>JSON array: <code className="bg-muted px-1 rounded text-[10px]">{`[{"term": "...", "definition": "...", "category": "...", "aliases": ["..."]}]`}</code></li>
                 </ul>
-                <p>Existing terms (matched by slug) are updated. Bulk import caps at 200 terms per call.</p>
+                <p>Los términos existentes (coincidentes por slug) se actualizan. La importación masiva admite hasta 200 términos por llamada.</p>
               </div>
 
               <textarea
@@ -228,7 +228,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
                       <tr>
                         <th className="text-left px-2 py-1.5 font-medium">Term</th>
                         <th className="text-left px-2 py-1.5 font-medium">Definition</th>
-                        <th className="text-left px-2 py-1.5 font-medium">Category</th>
+                        <th className="text-left px-2 py-1.5 font-medium">Categoría</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border max-h-48 overflow-y-auto">
@@ -295,9 +295,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
                 type="button"
                 onClick={onClose}
                 className="px-4 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 disabled={submitting || parsed.rows.length === 0}
@@ -316,9 +314,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
               onClick={handleDone}
               className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              <span className="material-icons text-base">done</span>
-              Done
-            </button>
+              <span className="material-icons text-base">done</span>Listo</button>
           )}
         </div>
       </div>

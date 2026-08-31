@@ -159,9 +159,7 @@ function ModuleCard({
   } else if (isActive && mod.selfServe) {
     stateLabel = (
       <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
-        <span className="material-icons text-sm">check_circle</span>
-        Active
-      </span>
+        <span className="material-icons text-sm">check_circle</span>Activo</span>
     );
     if (!isAgency) {
       actionButton = (
@@ -195,11 +193,9 @@ function ModuleCard({
     actionButton = (
       <p
         className="text-xs text-amber-600 dark:text-amber-500 mt-3 flex items-center gap-1"
-        title="Not available for self-serve checkout yet — contact us"
+        title="Aún no está disponible para la contratación autónoma: contáctanos"
       >
-        <span className="material-icons text-sm">info</span>
-        Not available for self-serve checkout yet — contact us
-      </p>
+        <span className="material-icons text-sm">info</span>Aún no está disponible para la contratación autónoma: contáctanos</p>
     );
   }
 
@@ -406,7 +402,7 @@ function BillingPlansInner() {
         </Link>
         <div>
           <h1 className="text-2xl font-display font-extrabold tracking-[-0.01em] text-foreground">Plans &amp; Modules</h1>
-          <p className="text-sm text-muted-foreground">Subscribe to individual modules or get everything at once.</p>
+          <p className="text-sm text-muted-foreground">Suscríbete a módulos individuales o consigue todo de una vez.</p>
         </div>
       </div>
 
@@ -435,9 +431,9 @@ function BillingPlansInner() {
         <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl px-5 py-4">
           <span className="material-icons text-2xl text-primary">verified</span>
           <div>
-            <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Everything is included in your managed plan</p>
+            <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Todo está incluido en tu plan gestionado</p>
             <p className="text-sm text-muted-foreground">
-              Your plan is managed by SimplerDevelopment. Contact us to make changes.
+              Your plan is managed by CRM AGENTS. Contact us to make changes.
             </p>
           </div>
         </div>
@@ -448,7 +444,7 @@ function BillingPlansInner() {
         <div className="rounded-2xl border border-border bg-muted/30 px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="material-icons text-base text-primary">savings</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Volume pricing — pay only for what you use</h2>
+            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Precios por volumen — paga solo por lo que usas</h2>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap text-xs">
             {VOLUME_TIERS.slice().reverse().map((t) => {
@@ -533,9 +529,7 @@ function BillingPlansInner() {
                 <h2 className="text-xl font-display font-extrabold tracking-[-0.01em] text-foreground">{bundle.name}</h2>
                 {bundleActive && (
                   <span className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
-                    <span className="material-icons text-sm">check</span>
-                    Active
-                  </span>
+                    <span className="material-icons text-sm">check</span>Activo</span>
                 )}
                 {bundleSavings > 0 && !bundleActive && (
                   <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
@@ -583,11 +577,9 @@ function BillingPlansInner() {
               ) : (
                 <p
                   className="text-xs text-amber-600 dark:text-amber-500 flex items-center gap-1"
-                  title="Not available for self-serve checkout yet — contact us"
+                  title="Aún no está disponible para la contratación autónoma: contáctanos"
                 >
-                  <span className="material-icons text-sm">info</span>
-                  Not available for self-serve checkout yet — contact us
-                </p>
+                  <span className="material-icons text-sm">info</span>Aún no está disponible para la contratación autónoma: contáctanos</p>
               )
             )}
           </div>
@@ -631,7 +623,7 @@ function BillingPlansInner() {
           <span className="material-icons text-2xl text-primary">vpn_key</span>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-base font-semibold text-foreground">Bring your own AI key (BYOK)</h3>
+              <h3 className="text-base font-semibold text-foreground">Usa tu propia clave de IA (BYOK)</h3>
               <span className="text-xs font-medium text-primary">Contact sales →</span>
             </div>
             <p className="text-sm text-muted-foreground mt-0.5">

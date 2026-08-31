@@ -201,7 +201,7 @@ describe('sendHostNotification', () => {
     const payload = sendMock.mock.calls[0][0];
     expect(payload.to).toBe('host@example.test');
     expect(payload.subject).toBe('New Booking: Alice Example — Discovery Call');
-    expect(payload.from).toMatch(/^SimplerDevelopment </);
+    expect(payload.from).toMatch(/^CRM AGENTS </);
   });
 
   it('renders the guest name, email, page title, and a portal link', async () => {
@@ -373,12 +373,12 @@ describe('sendCancellationEmail', () => {
 // ---------------------------------------------------------------------------
 
 describe('booking email HTML wrapper', () => {
-  it('emits a full HTML document with the SimplerDevelopment footer', async () => {
+  it('emits a full HTML document with the CRM AGENTS footer', async () => {
     await sendGuestConfirmation(baseData());
     const html = sendMock.mock.calls[0][0].html as string;
     expect(html.startsWith('<!DOCTYPE html>')).toBe(true);
     expect(html).toContain('<html lang="en">');
-    expect(html).toContain('Powered by SimplerDevelopment');
+    expect(html).toContain('Powered by CRM AGENTS');
     expect(html.trim().endsWith('</html>')).toBe(true);
   });
 

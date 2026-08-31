@@ -35,7 +35,7 @@ export default async function BrainTasksWidget({
             <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-red-600 dark:text-red-400">
               {overdueCount}
             </span>
-            <span className="ml-1.5 text-sm text-muted-foreground">overdue</span>
+            <span className="ml-1.5 text-sm text-muted-foreground">vencidas</span>
           </div>
         )}
         <div>
@@ -76,7 +76,7 @@ export default async function BrainTasksWidget({
                               : 'text-muted-foreground'
                           }`}
                         >
-                          {isOverdue ? 'Overdue · ' : 'Due '}
+                          {isOverdue ? 'Vencida · ' : 'Para el '}
                           {new Date(t.dueDate).toLocaleDateString()}
                         </p>
                       )}

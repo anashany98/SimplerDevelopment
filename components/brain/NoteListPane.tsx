@@ -689,9 +689,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
               : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
           }`}
         >
-          <span className="material-icons text-sm">notes</span>
-          Notes
-        </button>
+          <span className="material-icons text-sm">notes</span>Notas</button>
         <button
           type="button"
           onClick={() => setTrashed(true)}
@@ -736,14 +734,14 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
               ref={sortBtnRef}
               type="button"
               onClick={() => setSortOpen(o => !o)}
-              title="Sort"
-              aria-label="Sort"
+              title="Ordenar"
+              aria-label="Ordenar"
               className="h-8 w-8 inline-flex items-center justify-center rounded-md border border-border text-foreground hover:bg-accent"
             >
               <span className="material-icons text-base">tune</span>
             </button>
             <PortalPopover open={sortOpen} onClose={() => setSortOpen(false)} triggerRef={sortBtnRef} width={176}>
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">Sort by</div>
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">Ordenar por</div>
               {(['updated', 'created', 'title'] as SortField[]).map(f => (
                 <label key={f} className="flex items-center gap-2 px-1 py-1 rounded hover:bg-accent cursor-pointer">
                   <input
@@ -801,7 +799,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                     className="w-full px-2 py-1 rounded border border-border bg-background"
                   />
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Icon</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Icono</div>
                     <div className="flex items-center gap-1">
                       {SAVED_SEARCH_ICONS.map(ic => (
                         <button
@@ -892,9 +890,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
               }`}
               title="Group by tags"
             >
-              <span className="material-icons text-sm">sell</span>
-              Tags
-            </button>
+              <span className="material-icons text-sm">sell</span>Etiquetas</button>
             <button
               type="button"
               role="tab"
@@ -1094,8 +1090,8 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); restoreOne(n.id); }}
-                  title="Restore"
-                  aria-label="Restore"
+                  title="Restaurar"
+                  aria-label="Restaurar"
                   className="h-6 w-6 inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-accent"
                 >
                   <span className="material-icons text-sm">restore</span>
@@ -1213,17 +1209,13 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                           disabled={!bulkTagInput.trim() || bulkBusy}
                           onClick={() => runBulk({ kind: 'add_tags', tags: [bulkTagInput.trim()] })}
                           className="flex-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
-                        >
-                          Add
-                        </button>
+                        >Añadir</button>
                         <button
                           type="button"
                           disabled={!bulkTagInput.trim() || bulkBusy}
                           onClick={() => runBulk({ kind: 'remove_tags', tags: [bulkTagInput.trim()] })}
                           className="flex-1 px-2 py-1 rounded border border-border hover:bg-accent disabled:opacity-50"
-                        >
-                          Remove
-                        </button>
+                        >Quitar</button>
                       </div>
                       {allTags.length > 0 && (
                         <div className="flex flex-wrap gap-1 pt-1 border-t border-border max-h-24 overflow-y-auto">
@@ -1251,9 +1243,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                   disabled={bulkBusy || movablePaths.length === 0}
                   className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded border border-border hover:bg-accent disabled:opacity-50"
                 >
-                  <span className="material-icons text-sm">drive_file_move</span>
-                  Move
-                </button>
+                  <span className="material-icons text-sm">drive_file_move</span>Mover</button>
                 {bulkPopover === 'move' && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setBulkPopover(null)} />
@@ -1286,9 +1276,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                           runBulk({ kind: 'replace_tag_prefix', from: '', to });
                         }}
                         className="w-full px-2 py-1 rounded bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
-                      >
-                        Move
-                      </button>
+                      >Mover</button>
                     </div>
                   </>
                 )}
@@ -1300,9 +1288,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                 disabled={bulkBusy}
                 className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded border border-border text-destructive hover:bg-destructive/10 disabled:opacity-50"
               >
-                <span className="material-icons text-sm">delete</span>
-                Delete
-              </button>
+                <span className="material-icons text-sm">delete</span>Eliminar</button>
             </>
           )}
 
@@ -1310,9 +1296,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
             type="button"
             onClick={() => { setSelectedIds(new Set()); setBulkPopover(null); }}
             className="ml-auto inline-flex items-center gap-1 px-2 py-1 text-xs rounded text-muted-foreground hover:text-foreground hover:bg-accent"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         </div>
       )}
 
@@ -1352,9 +1336,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                   onClick={() => setEmptyTrashConfirm(false)}
                   disabled={emptyTrashBusy}
                   className="px-3 py-1.5 text-xs rounded border border-border text-foreground hover:bg-accent disabled:opacity-50"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
                 <button
                   type="button"
                   onClick={runEmptyTrash}
@@ -1654,7 +1636,7 @@ function TagIndexView({
     <div className="py-1">
       <div className="px-3 py-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
         <span className="material-icons text-sm">sell</span>
-        <span>Tags</span>
+        <span>Etiquetas</span>
         <span className="ml-auto text-[10px] font-normal normal-case tracking-normal text-muted-foreground/70">
           {totalCount} {totalCount === 1 ? 'note' : 'notes'}
         </span>
@@ -2067,16 +2049,12 @@ function SavedSearchesSection({
                             setOpenMenuId(null);
                           }}
                           className="w-full text-left px-3 py-1 hover:bg-accent"
-                        >
-                          Rename
-                        </button>
+                        >Renombrar</button>
                         <button
                           type="button"
                           onClick={(e) => { e.stopPropagation(); onDelete(s.id); }}
                           className="w-full text-left px-3 py-1 text-destructive hover:bg-destructive/10"
-                        >
-                          Delete
-                        </button>
+                        >Eliminar</button>
                       </div>
                     </>
                   )}

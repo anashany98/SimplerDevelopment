@@ -47,7 +47,7 @@ function QueryStatTable({ rows }: { rows: QueryStat[] }) {
           <Th align="right">Clicks</Th>
           <Th align="right">Impressions</Th>
           <Th align="right">CTR</Th>
-          <Th align="right">Position</Th>
+          <Th align="right">Posición</Th>
         </tr>
       </thead>
       <tbody>
@@ -84,7 +84,7 @@ function QueryDeltaTable({ rows }: { rows: QueryDelta[] }) {
           <Th align="right">Clicks</Th>
           <Th align="right">Δ Clicks</Th>
           <Th align="right">Prev clicks</Th>
-          <Th align="right">Position</Th>
+          <Th align="right">Posición</Th>
           <Th align="right">Prev position</Th>
         </tr>
       </thead>
@@ -177,7 +177,7 @@ function ReportSection({
       <div className={`${pCard} p-4 flex items-center gap-3`}>
         <span className="material-icons text-muted-foreground/50 text-lg shrink-0">{icon}</span>
         <span className="flex-1 min-w-0 font-medium text-sm text-foreground">{title}</span>
-        <span className="text-xs text-muted-foreground shrink-0">Nothing here</span>
+        <span className="text-xs text-muted-foreground shrink-0">Nada por aquí</span>
       </div>
     );
   }

@@ -69,15 +69,15 @@ export default function AdminPortalTicketsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Support Tickets</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">Manage all client support requests across the platform.</p>
+          <p className="text-muted-foreground text-sm mt-0.5">Gestiona todas las solicitudes de soporte de clientes en la plataforma.</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon="inbox" label="Open" value={openCount} color={openCount > 0 ? 'text-blue-600' : undefined} />
-        <StatCard icon="pending" label="In Progress" value={inProgressCount} color="text-yellow-600" />
-        <StatCard icon="priority_high" label="Urgent" value={urgentCount} color={urgentCount > 0 ? 'text-red-600' : undefined} urgent={urgentCount > 0} />
+        <StatCard icon="inbox" label="Abierto" value={openCount} color={openCount > 0 ? 'text-blue-600' : undefined} />
+        <StatCard icon="pending" label="En progreso" value={inProgressCount} color="text-yellow-600" />
+        <StatCard icon="priority_high" label="Urgente" value={urgentCount} color={urgentCount > 0 ? 'text-red-600' : undefined} urgent={urgentCount > 0} />
         <StatCard icon="confirmation_number" label="Total Tickets" value={tickets.length} />
       </div>
 
@@ -139,13 +139,13 @@ export default function AdminPortalTicketsPage() {
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Subject</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Priority</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Updated</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Asunto</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prioridad</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Categoría</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actualizado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -186,11 +186,11 @@ export default function AdminPortalTicketsPage() {
                           onChange={e => updateStatus(t.id, e.target.value)}
                           className="text-xs px-2 py-1 rounded border border-border bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                         >
-                          <option value="open">Open</option>
-                          <option value="in_progress">In Progress</option>
+                          <option value="open">Abierto</option>
+                          <option value="in_progress">En progreso</option>
                           <option value="waiting">Waiting</option>
-                          <option value="resolved">Resolved</option>
-                          <option value="closed">Closed</option>
+                          <option value="resolved">Resuelto</option>
+                          <option value="closed">Cerrado</option>
                         </select>
                         <Link href={`/portal/tickets/${t.id}`} className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
                           <span className="material-icons text-sm">open_in_new</span>

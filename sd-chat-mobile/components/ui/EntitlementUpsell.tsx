@@ -91,7 +91,7 @@ function joinUrl(base: string, pathOrUrl: string): string {
  * Friendly upsell card used wherever the portal returns a 402 / 403
  * entitlement error. Avoids leaking raw server messages and instead leads
  * with a clear value prop + a tappable "Open in portal" CTA that opens the
- * SimplerDev portal in the in-app browser (or default web browser).
+ * CRM AGENTS portal in the in-app browser (or default web browser).
  *
  * Three preset variants cover the common cases (brain, ai_credits,
  * service_required). Generic falls back to a neutral lock icon for

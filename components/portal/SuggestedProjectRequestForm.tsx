@@ -189,7 +189,7 @@ export default function SuggestedProjectRequestForm({
           )}
           {field.type === 'select' && (
             <select value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)} className={inputCls}>
-              <option value="">Select an option...</option>
+              <option value="">Selecciona una opción...</option>
               {opts.filter(Boolean).map((opt, i) => (
                 <option key={i} value={opt}>{opt}</option>
               ))}
@@ -382,15 +382,14 @@ export default function SuggestedProjectRequestForm({
                 <p className="text-sm text-muted-foreground mb-4">
                   Tell us about your project goals and we&apos;ll schedule a free discovery call.
                 </p>
-                <label className="block text-sm font-semibold text-foreground mb-2">
-                  Message <span className="text-primary">*</span>
+                <label className="block text-sm font-semibold text-foreground mb-2">Mensaje<span className="text-primary">*</span>
                 </label>
                 <textarea
                   rows={6}
                   required
                   value={message}
                   onChange={e => setMessage(e.target.value)}
-                  placeholder="Describe your goals, timeline, and any specific requirements..."
+                  placeholder="Describe tus objetivos, tu plazo y cualquier requisito específico..."
                   className={`${inputCls} resize-y`}
                 />
               </div>
@@ -401,9 +400,7 @@ export default function SuggestedProjectRequestForm({
           <div className="border-t border-border px-6 py-4 bg-muted/30 flex items-center justify-between gap-4">
             <Link href={`/portal/suggested-projects/${projectId}`}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              <span className="material-icons text-base">arrow_back</span>
-              Back
-            </Link>
+              <span className="material-icons text-base">arrow_back</span>Atrás</Link>
             <button
               type="submit"
               disabled={loading}

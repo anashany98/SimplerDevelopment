@@ -224,9 +224,7 @@ export default function BrainDocumentEditPage({
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -263,17 +261,15 @@ export default function BrainDocumentEditPage({
           {data.document.title}
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
-        <span>Edit draft</span>
+        <span>Editar borrador</span>
       </nav>
 
       <header className="flex items-start justify-between gap-3 flex-wrap">
         <div className="min-w-0">
           <h1 className={`${pSectionTitle} flex items-center gap-2`}>
-            <span className="material-icons text-primary">edit_note</span>
-            Edit draft
-          </h1>
+            <span className="material-icons text-primary">edit_note</span>Editar borrador</h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Changes save automatically. Publish when ready — the document becomes the canonical answer.
+            Changes save automátically. Publish when ready — the document becomes the canonical answer.
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -281,9 +277,7 @@ export default function BrainDocumentEditPage({
             href={`/portal/brain/documents/${documentId}`}
             className={pBtnGhost}
           >
-            <span className="material-icons text-base">visibility</span>
-            View
-          </Link>
+            <span className="material-icons text-base">visibility</span>Ver</Link>
           <button
             type="button"
             onClick={publish}
@@ -292,7 +286,7 @@ export default function BrainDocumentEditPage({
           >
             {publishing
               ? <><span className="material-icons text-base animate-spin">progress_activity</span>Publishing…</>
-              : <><span className="material-icons text-base">publish</span>Publish</>}
+              : <><span className="material-icons text-base">publish</span>Publicar</>}
           </button>
         </div>
       </header>
@@ -308,7 +302,7 @@ export default function BrainDocumentEditPage({
         <div className="grid sm:grid-cols-[1fr_220px] gap-3">
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label htmlFor="doc-edit-title" className="text-xs font-medium text-foreground">Title</label>
+              <label htmlFor="doc-edit-title" className="text-xs font-medium text-foreground">Título</label>
               {titleSavedHint && (
                 <span className="text-[11px] text-muted-foreground inline-flex items-center gap-0.5">
                   <span className="material-icons text-[12px]">cloud_done</span>
@@ -325,7 +319,7 @@ export default function BrainDocumentEditPage({
             />
           </div>
           <div>
-            <label htmlFor="doc-edit-cat" className="block text-xs font-medium text-foreground mb-1">Category</label>
+            <label htmlFor="doc-edit-cat" className="block text-xs font-medium text-foreground mb-1">Categoría</label>
             <select
               id="doc-edit-cat"
               value={category}
@@ -344,7 +338,7 @@ export default function BrainDocumentEditPage({
             type="text"
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
-            placeholder="One-line description that shows above the body."
+            placeholder="Descripción de una línea que se muestra sobre el cuerpo."
             className={pInput}
           />
         </div>
@@ -355,7 +349,7 @@ export default function BrainDocumentEditPage({
             id="doc-edit-notes"
             value={changeNotes}
             onChange={(e) => setChangeNotes(e.target.value)}
-            placeholder="What changed in this draft? Shown in version history."
+            placeholder="¿Qué cambió en este borrador? Se muestra en el historial de versiones."
             rows={2}
             className={`${pInput} resize-y`}
           />

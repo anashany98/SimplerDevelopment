@@ -24,15 +24,12 @@ import { pitchDeckTools, pitchDeckHandlers } from './pitch-decks';
 import { bookingTools, bookingHandlers } from './booking';
 import { teamTools, teamHandlers } from './team';
 import { navigationTools, navigationHandlers } from './navigation';
+import { inboxTools, inboxHandlers } from './inbox';
 import { crmTools, crmHandlers } from './crm';
 import { surveyTools, surveyHandlers } from './surveys';
 import { automationTools, automationHandlers } from './automations';
 
-type Handler = (
-  input: Record<string, unknown>,
-  clientId: number,
-  userId: number,
-) => Promise<unknown>;
+type Handler = (input: Record<string, unknown>, clientId: number, userId: number) => Promise<unknown>;
 
 // Tool definitions, in the same domain order as the original monolith so that
 // the order seen by the LLM is preserved (dashboard → projects → billing →
@@ -42,43 +39,37 @@ type Handler = (
 // in email).
 const ALL_TOOLS_WITH_META: PortalTool[] = [
   ...dashboardTools,
-  ...projectTools.filter(t => !['create_project_card', 'update_project_card', 'move_project_card', 'add_card_comment'].includes(t.name)),
-  ...billingTools.filter(t => t.name !== 'pay_invoice'),
-  ...supportTools.filter(t => !['create_support_ticket', 'reply_to_ticket'].includes(t.name)),
-  ...servicesTools.filter(t => t.name !== 'request_service'),
-  ...cmsTools.filter(t => ![
-    'create_website_page', 'publish_page', 'create_website_category', 'create_website_tag',
-    'get_page_content', 'update_page_blocks', 'update_block_by_id', 'update_page_metadata',
-  ].includes(t.name)),
-  ...emailTools.filter(t => ![
-    'create_email_campaign', 'update_email_campaign', 'get_email_campaign_details',
-    'add_email_subscriber', 'get_email_segments', 'create_email_segment',
-  ].includes(t.name)),
-  ...pitchDeckTools.filter(t => !['create_pitch_deck', 'get_pitch_deck_slides', 'update_pitch_deck_slide'].includes(t.name)),
-  ...bookingTools.filter(t => !['create_booking_page', 'update_booking_page'].includes(t.name)),
-  ...teamTools.filter(t => !['request_suggested_project', 'update_profile', 'invite_team_member'].includes(t.name)),
+  ...projectTools.filter((t) => !['create_project_card', 'update_project_card', 'move_project_card', 'add_card_comment'].includes(t.name)),
+  ...billingTools.filter((t) => t.name !== 'pay_invoice'),
+  ...supportTools.filter((t) => !['create_support_ticket', 'reply_to_ticket'].includes(t.name)),
+  ...servicesTools.filter((t) => t.name !== 'request_service'),
+  ...cmsTools.filter((t) => !['create_website', 'create_website_page', 'publish_page', 'create_website_category', 'create_website_tag', 'get_page_content', 'update_page_blocks', 'update_block_by_id', 'update_page_metadata'].includes(t.name)),
+  ...emailTools.filter((t) => !['create_email_campaign', 'update_email_campaign', 'get_email_campaign_details', 'add_email_subscriber', 'get_email_segments', 'create_email_segment'].includes(t.name)),
+  ...pitchDeckTools.filter((t) => !['create_pitch_deck', 'get_pitch_deck_slides', 'update_pitch_deck_slide'].includes(t.name)),
+  ...bookingTools.filter((t) => !['create_booking_page', 'update_booking_page'].includes(t.name)),
+  ...teamTools.filter((t) => !['request_suggested_project', 'update_profile', 'invite_team_member'].includes(t.name)),
   // ── WRITE block (mirrors original layout) ──
-  ...supportTools.filter(t => ['create_support_ticket', 'reply_to_ticket'].includes(t.name)),
-  ...projectTools.filter(t => t.name === 'add_card_comment'),
-  ...cmsTools.filter(t => ['create_website_page', 'publish_page', 'create_website_category', 'create_website_tag'].includes(t.name)),
-  ...servicesTools.filter(t => t.name === 'request_service'),
-  ...teamTools.filter(t => t.name === 'request_suggested_project'),
-  ...teamTools.filter(t => t.name === 'update_profile'),
-  ...teamTools.filter(t => t.name === 'invite_team_member'),
-  ...cmsTools.filter(t => ['get_page_content', 'update_page_blocks', 'update_block_by_id', 'update_page_metadata'].includes(t.name)),
-  ...emailTools.filter(t => ['create_email_campaign', 'update_email_campaign', 'get_email_campaign_details'].includes(t.name)),
-  ...pitchDeckTools.filter(t => ['create_pitch_deck', 'get_pitch_deck_slides', 'update_pitch_deck_slide'].includes(t.name)),
-  ...bookingTools.filter(t => ['create_booking_page', 'update_booking_page'].includes(t.name)),
+  ...supportTools.filter((t) => ['create_support_ticket', 'reply_to_ticket'].includes(t.name)),
+  ...projectTools.filter((t) => t.name === 'add_card_comment'),
+  ...cmsTools.filter((t) => ['create_website', 'create_website_page', 'publish_page', 'create_website_category', 'create_website_tag'].includes(t.name)),
+  ...servicesTools.filter((t) => t.name === 'request_service'),
+  ...teamTools.filter((t) => t.name === 'request_suggested_project'),
+  ...teamTools.filter((t) => t.name === 'update_profile'),
+  ...teamTools.filter((t) => t.name === 'invite_team_member'),
+  ...cmsTools.filter((t) => ['get_page_content', 'update_page_blocks', 'update_block_by_id', 'update_page_metadata'].includes(t.name)),
+  ...emailTools.filter((t) => ['create_email_campaign', 'update_email_campaign', 'get_email_campaign_details'].includes(t.name)),
+  ...pitchDeckTools.filter((t) => ['create_pitch_deck', 'get_pitch_deck_slides', 'update_pitch_deck_slide'].includes(t.name)),
+  ...bookingTools.filter((t) => ['create_booking_page', 'update_booking_page'].includes(t.name)),
   ...navigationTools,
-  ...billingTools.filter(t => t.name === 'pay_invoice'),
-  ...crmTools.filter(t => ![
-    'get_crm_proposals', 'create_crm_proposal', 'send_crm_proposal',
-  ].includes(t.name)),
-  ...projectTools.filter(t => ['create_project_card', 'update_project_card', 'move_project_card'].includes(t.name)),
+  ...inboxTools.filter((t) => t.name.startsWith('get_')),
+  ...billingTools.filter((t) => t.name === 'pay_invoice'),
+  ...inboxTools.filter((t) => !t.name.startsWith('get_')),
+  ...crmTools.filter((t) => !['get_crm_proposals', 'create_crm_proposal', 'send_crm_proposal'].includes(t.name)),
+  ...projectTools.filter((t) => ['create_project_card', 'update_project_card', 'move_project_card'].includes(t.name)),
   ...surveyTools,
-  ...crmTools.filter(t => ['get_crm_proposals', 'create_crm_proposal', 'send_crm_proposal'].includes(t.name)),
+  ...crmTools.filter((t) => ['get_crm_proposals', 'create_crm_proposal', 'send_crm_proposal'].includes(t.name)),
   ...automationTools,
-  ...emailTools.filter(t => ['add_email_subscriber', 'get_email_segments', 'create_email_segment'].includes(t.name)),
+  ...emailTools.filter((t) => ['add_email_subscriber', 'get_email_segments', 'create_email_segment'].includes(t.name)),
 ];
 
 /**
@@ -90,9 +81,7 @@ const ALL_TOOLS_WITH_META: PortalTool[] = [
  * silently miss the gate. `tests/unit/portal-tools-gating.test.ts` pins this set
  * against the gate-matrix ADR so a change here has to be deliberate.
  */
-export const APPROVAL_REQUIRED_TOOLS: ReadonlySet<string> = new Set(
-  ALL_TOOLS_WITH_META.filter(t => t.requiresApproval).map(t => t.name),
-);
+export const APPROVAL_REQUIRED_TOOLS: ReadonlySet<string> = new Set(ALL_TOOLS_WITH_META.filter((t) => t.requiresApproval).map((t) => t.name));
 
 /** True when the named portal tool is high-blast-radius (see matrix ADR). */
 export function isApprovalRequired(name: string): boolean {
@@ -103,9 +92,7 @@ export function isApprovalRequired(name: string): boolean {
  * The registry sent to the Anthropic API. `requiresApproval` is local metadata,
  * so it is stripped here — the wire shape is exactly `Anthropic.Tool`.
  */
-export const PORTAL_TOOLS: Anthropic.Tool[] = ALL_TOOLS_WITH_META.map(
-  ({ requiresApproval: _requiresApproval, ...tool }) => tool,
-);
+export const PORTAL_TOOLS: Anthropic.Tool[] = ALL_TOOLS_WITH_META.map(({ requiresApproval: _requiresApproval, ...tool }) => tool);
 
 // Lookup table: tool name → handler. Built once at module load. Each handler
 // owns its own DB calls and is identical (line-for-line) to the body that
@@ -124,6 +111,7 @@ export const HANDLERS: Record<string, Handler> = {
   ...bookingHandlers,
   ...teamHandlers,
   ...navigationHandlers,
+  ...inboxHandlers,
   ...crmHandlers,
   ...surveyHandlers,
   ...automationHandlers,
@@ -161,13 +149,7 @@ export interface PortalToolCtx {
  *     the agent-action log with source / outcome / duration (automation runs
  *     pass `{ source: 'automation', ruleId }`).
  */
-export async function executePortalTool(
-  name: string,
-  input: Record<string, unknown>,
-  clientId: number,
-  userId: number,
-  ctx?: PortalToolCtx,
-): Promise<unknown> {
+export async function executePortalTool(name: string, input: Record<string, unknown>, clientId: number, userId: number, ctx?: PortalToolCtx): Promise<unknown> {
   const handler = HANDLERS[name];
   if (!handler) {
     void logAgentAction({

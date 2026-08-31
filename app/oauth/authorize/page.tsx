@@ -204,7 +204,7 @@ export default async function AuthorizePage({ searchParams }: { searchParams: Pr
           {allClients.length > 1 ? 'your portals' : activeClient.company ?? 'your portal'}?
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
-          {oauthClient.clientName} is asking for access to your SimplerDevelopment portal.
+          {oauthClient.clientName} is asking for access to your CRM AGENTS portal.
           Approve only if you trust this application.
         </p>
 

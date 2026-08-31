@@ -130,7 +130,7 @@ export default function CrmCompanyDetailPage() {
     })();
   }, [fetchCompany]);
 
-  // Contacts are driven by the paginated /api/portal/crm/contacts endpoint so
+  // Contacts are driven by the páginated /api/portal/crm/contacts endpoint so
   // we can search and page through companies with many contacts.
   const fetchContacts = useCallback(async () => {
     setContactsLoading(true);
@@ -609,7 +609,7 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Correo</label>
                       <input
                         type="email"
                         value={newContact.email}

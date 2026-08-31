@@ -37,8 +37,8 @@ export default function PortalCampaignsPage() {
   }, []);
 
   async function deleteCampaign(id: number, status: string) {
-    if (status === 'sending') { alert('Cannot delete a campaign that is sending.'); return; }
-    if (!confirm('Delete this campaign?')) return;
+    if (status === 'sending') { alert('No se puede eliminar una campaña que se está enviando.'); return; }
+    if (!confirm('¿Eliminar esta campaña?')) return;
     await fetch(`/api/portal/email/campaigns/${id}`, { method: 'DELETE' });
     setCampaigns(prev => prev.filter(c => c.id !== id));
   }
@@ -46,37 +46,33 @@ export default function PortalCampaignsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Email"
-        title="Campaigns"
-        subtitle={loading ? '' : `${campaigns.length} campaign${campaigns.length !== 1 ? 's' : ''}`}
+        eyebrow="Correo"
+        title="Campañas"
+        subtitle={loading ? '' : `${campaigns.length} ${campaigns.length !== 1 ? 'campañas' : 'campaña'}`}
         actions={
           <Link href="/portal/email/campaigns/new" className={pBtnPrimary}>
-            <span className="material-icons text-base">add</span>
-            New Campaign
-          </Link>
+            <span className="material-icons text-base">add</span>Nueva campaña</Link>
         }
       />
 
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         {loading ? (
-          <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+          <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground mb-3 block">campaign</span>
-            <p className="text-muted-foreground mb-4">No campaigns yet.</p>
-            <Link href="/portal/email/campaigns/new" className={pBtnPrimary}>
-              Create Campaign
-            </Link>
+            <p className="text-muted-foreground mb-4">Aún no hay campañas.</p>
+            <Link href="/portal/email/campaigns/new" className={pBtnPrimary}>Crear campaña</Link>
           </div>
         ) : (
           <div className="overflow-x-auto -mx-4 sm:mx-0">
           <table className="w-full text-sm min-w-[640px]">
             <thead>
               <tr className="border-b border-border bg-muted/40">
-                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Campaign</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">List</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Open Rate</th>
+                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Campaña</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Lista</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
+                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Tasa de apertura</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>

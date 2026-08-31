@@ -30,7 +30,7 @@ When clients need to fulfill an order, generate a shipping label, or respond to 
 
 ## Solution
 
-SimplerDevelopment bakes a complete storefront into every client website. Product pages, cart, and Stripe checkout run on the same domain as the rest of the site, sharing the same branding and navigation structure. The portal gives the merchant a product manager, order tracker, discount engine, and customer messaging inbox — all without leaving the platform.
+CRM AGENTS bakes a complete storefront into every client website. Product pages, cart, and Stripe checkout run on the same domain as the rest of the site, sharing the same branding and navigation structure. The portal gives the merchant a product manager, order tracker, discount engine, and customer messaging inbox — all without leaving the platform.
 
 EasyPost generates live shipping labels at fulfillment time. Printful handles print-on-demand fulfillment for eligible products. Stripe connects via the client's own keys or a platform-managed account. Every store management action is also available through 25+ MCP tools for AI-driven automation.
 
@@ -79,7 +79,7 @@ Yes. 25+ MCP tools cover products, product options, product variants, inventory,
 
 | Field | Value |
 |---|---|
-| **Page title** | White-Label E-Commerce for Agency Clients \| SimplerDevelopment |
+| **Page title** | White-Label E-Commerce for Agency Clients \| CRM AGENTS |
 | **Meta description** | Full storefront per client website — Stripe checkout on your domain, product variants, discount codes, EasyPost shipping, Printful fulfillment, and 25+ AI tools. |
 | **URL slug** | /features/storefront-commerce |
 | **Primary keyword** | white-label e-commerce for agencies |
@@ -92,7 +92,7 @@ Yes. 25+ MCP tools cover products, product options, product variants, inventory,
 Apply both types to this page:
 
 **SoftwareApplication**
-- `name`: "SimplerDevelopment – Storefront & Commerce"
+- `name`: "CRM AGENTS – Storefront & Commerce"
 - `applicationCategory`: "BusinessApplication"
 - `featureList`: ["Stripe checkout on client's own domain", "Product variants with per-variant pricing and inventory", "Discount codes", "EasyPost live shipping label generation", "Printful print-on-demand fulfillment", "Customer accounts, wishlists, and reviews", "25+ MCP tools for AI agents"]
 - `operatingSystem`: "Web"

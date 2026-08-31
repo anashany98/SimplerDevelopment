@@ -193,9 +193,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
                   style={{ fontSize: '12px' }}
                 >
                   check_circle
-                </span>
-                Resolved
-              </span>
+                </span>Resuelto</span>
             ) : null}
           </div>
 
@@ -277,9 +275,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
             >
               <span className="material-icons" style={{ fontSize: '14px' }}>
                 reply
-              </span>
-              Reply
-            </button>
+              </span>Responder</button>
             {thread.resolved ? (
               <button
                 type="button"
@@ -313,9 +309,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
             >
               <span className="material-icons" style={{ fontSize: '14px' }}>
                 delete_outline
-              </span>
-              Delete
-            </button>
+              </span>Eliminar</button>
           ) : null}
         </div>
       ) : null}

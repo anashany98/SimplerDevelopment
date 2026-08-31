@@ -1,6 +1,6 @@
-# Contributing to SimplerDevelopment
+# Contributing to CRM AGENTS
 
-Welcome, and thank you for considering a contribution. SimplerDevelopment is an open-source, MCP-native multi-tenant platform — a real production codebase that has been open-sourced rather than a demo project. We value **small, focused PRs** that move one thing forward clearly. A tight PR with a clear description ships faster and reviews better than a sprawling one.
+Welcome, and thank you for considering a contribution. CRM AGENTS is an open-source, MCP-native multi-tenant platform — a real production codebase that has been open-sourced rather than a demo project. We value **small, focused PRs** that move one thing forward clearly. A tight PR with a clear description ships faster and reviews better than a sprawling one.
 
 If you are new here, start with a [`good first issue`](../../issues?q=label%3A%22good+first+issue%22) and read the [Getting started](#getting-started-local-dev) section below. Questions are welcome in issues.
 

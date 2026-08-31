@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 
 const FIELD_TYPES = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Textarea' },
-  { value: 'number', label: 'Number' },
-  { value: 'date', label: 'Date' },
-  { value: 'select', label: 'Select' },
-  { value: 'checkbox', label: 'Checkbox' },
+  { value: 'text', label: 'Texto' },
+  { value: 'textarea', label: 'Área de texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'select', label: 'Campo de selección' },
+  { value: 'checkbox', label: 'Casilla' },
   { value: 'url', label: 'URL' },
-  { value: 'email', label: 'Email' },
-  { value: 'image', label: 'Image' },
-  { value: 'user_select', label: 'User Select' },
+  { value: 'email', label: 'Correo' },
+  { value: 'image', label: 'Imagen' },
+  { value: 'user_select', label: 'Selector de usuario' },
   { value: 'repeater', label: 'Repeater' },
   { value: 'group', label: 'Field Group' },
 ];
@@ -206,9 +206,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
             <h4 className="text-sm font-semibold text-foreground">
               {editingField ? 'Edit Field' : formData.parentId ? 'New Sub-field' : 'New Field'}
             </h4>
-            <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">
-              Cancel
-            </button>
+            <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
           </div>
 
           {error && (
@@ -263,7 +261,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Order</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Pedido</label>
               <input
                 type="number"
                 value={formData.order}
@@ -314,7 +312,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                 onChange={(e) => setFormData((prev) => ({ ...prev, required: e.target.checked }))}
                 className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
               />
-              <span className="text-sm text-foreground">Required</span>
+              <span className="text-sm text-foreground">Obligatorio</span>
             </label>
             <button
               type="submit"
@@ -334,9 +332,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
           }}
           className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
         >
-          <span className="material-icons text-base">add</span>
-          Add Field
-        </button>
+          <span className="material-icons text-base">add</span>Añadir campo</button>
       )}
 
       {/* Loading / empty / list */}
@@ -395,7 +391,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                         type="button"
                         onClick={() => { toggleGroup(field.id); startAddSubField(field.id); }}
                         className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary"
-                        title="Add sub-field"
+                        title="Añadir subcampo"
                       >
                         <span className="material-icons text-base">add</span>
                       </button>
@@ -404,7 +400,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                       type="button"
                       onClick={() => handleEdit(field)}
                       className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                      title="Edit"
+                      title="Editar"
                     >
                       <span className="material-icons text-base">edit</span>
                     </button>
@@ -412,7 +408,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                       type="button"
                       onClick={() => handleDelete(field.id)}
                       className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                      title="Delete"
+                      title="Eliminar"
                     >
                       <span className="material-icons text-base">delete</span>
                     </button>
@@ -443,7 +439,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                             type="button"
                             onClick={() => handleEdit(child)}
                             className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                            title="Edit"
+                            title="Editar"
                           >
                             <span className="material-icons text-base">edit</span>
                           </button>
@@ -451,7 +447,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                             type="button"
                             onClick={() => handleDelete(child.id)}
                             className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                            title="Delete"
+                            title="Eliminar"
                           >
                             <span className="material-icons text-base">delete</span>
                           </button>

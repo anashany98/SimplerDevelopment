@@ -75,7 +75,7 @@ export default async function StoreOverviewWidget({
       </div>
 
       {recentOrders.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No orders yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Aún no hay pedidos.</p>
       ) : (
         <ul className="space-y-2">
           {recentOrders.map((o) => (

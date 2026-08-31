@@ -64,7 +64,11 @@ export async function checkGroundedness(
         },
       ],
       tools: [GRADE_TOOL],
-      tool_choice: { type: 'tool', name: 'grade' },
+      // Named tool_choice ({type:'tool'}) is rejected by local OpenAI servers
+      // (LM Studio: "Invalid tool_choice type: 'object'") — the 400 dropped
+      // every answer into the fail-closed catch (score 0, uncertain). With
+      // GRADE_TOOL as the only tool, 'any' forces exactly this call.
+      tool_choice: { type: 'any' },
     });
 
     for (const block of response.content) {

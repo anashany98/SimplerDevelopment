@@ -870,7 +870,7 @@ describe('POST /api/portal/crm/contracts/[id]/send', () => {
       expect(body.data.contractUrl).toBe('https://simplerdevelopment.com/contract/CT');
       expect(resendSendMock).toHaveBeenCalledTimes(1);
       const args = resendSendMock.mock.calls[0][0];
-      expect(args.from).toBe('Simpler Development <noreply@simplerdevelopment.com>');
+      expect(args.from).toBe('CRM AGENTS <noreply@simplerdevelopment.com>');
       // No summary block expected since summary is empty string
       expect(args.html).not.toContain('<p style="margin:8px 0 0;color:#64748b;font-size:14px;">');
     } finally {

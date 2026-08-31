@@ -139,7 +139,7 @@ export function NavigationPreview({ items, branding, sitePreviewUrl }: Props) {
               ref={iframeRef}
               src={previewUrl}
               className="w-full h-full border-0"
-              title="Navigation Preview"
+              title="Vista previa de navegación"
               onLoad={() => {
                 setTimeout(() => {
                   if (iframeRef.current?.contentWindow) {
@@ -163,8 +163,8 @@ export function NavigationPreview({ items, branding, sitePreviewUrl }: Props) {
               <span className="material-icons text-3xl mb-2 block">preview</span>
               <p className="text-sm">
                 {useLocalhost
-                  ? `Start the site on localhost:${localPort}`
-                  : 'Site not yet deployed'}
+                  ? `Inicia el sitio en localhost:${localPort}`
+                  : 'El sitio aún no está desplegado'}
               </p>
             </div>
           </div>

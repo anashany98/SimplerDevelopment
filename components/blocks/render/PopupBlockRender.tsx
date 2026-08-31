@@ -170,7 +170,7 @@ export function PopupBlockRender({ block }: PopupBlockRenderProps) {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Close"
+            aria-label="Cerrar"
             className="absolute top-3 right-3 inline-flex items-center justify-center w-8 h-8 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             <span className="material-icons text-base">close</span>

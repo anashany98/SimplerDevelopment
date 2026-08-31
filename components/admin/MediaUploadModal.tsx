@@ -118,7 +118,7 @@ export default function MediaUploadModal({
               }
             />
             {preview ? (
-              <img src={preview} alt="Preview" className="max-h-48 mx-auto" />
+              <img src={preview} alt="Vista previa" className="max-h-48 mx-auto" />
             ) : (
               <div>
                 <span className="material-icons text-6xl text-muted-foreground mb-4">cloud_upload</span>
@@ -175,9 +175,7 @@ export default function MediaUploadModal({
                 <button
                   onClick={onClose}
                   className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </>
           )}

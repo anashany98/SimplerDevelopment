@@ -23,7 +23,7 @@ export function StepMission({ state, setAnswers, next }: StepProps) {
           value={mission}
           onChange={(e) => { setMission(e.target.value); setAnswers({ mission: e.target.value }); }}
           rows={3}
-          placeholder="Try to keep it under 25 words…"
+          placeholder="Intenta mantenerlo en menos de 25 palabras…"
           maxLength={500}
           data-testid="onboarding-mission"
           className={obTextarea}

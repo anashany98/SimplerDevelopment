@@ -95,8 +95,7 @@ export function SocialLinksBlockPreview({ block, isSelected, onChange }: SocialL
         ))}
         {links.length < PLATFORMS.length && (
           <button onClick={addLink} className="flex items-center gap-1 text-xs text-primary hover:underline">
-            <span className="material-icons text-sm">add</span> Add
-          </button>
+            <span className="material-icons text-sm">add</span>Añadir</button>
         )}
       </div>
       {links.length === 0 && (

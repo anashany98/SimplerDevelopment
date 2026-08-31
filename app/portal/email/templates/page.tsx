@@ -21,12 +21,12 @@ interface Template {
 }
 
 const CATEGORIES = [
-  { value: 'all', label: 'All Templates' },
+  { value: 'all', label: 'Todas las plantillas' },
   { value: 'welcome', label: 'Welcome' },
   { value: 'newsletter', label: 'Newsletter' },
   { value: 'promotion', label: 'Promotion' },
   { value: 'transactional', label: 'Transactional' },
-  { value: 'custom', label: 'Custom' },
+  { value: 'custom', label: 'Personalizado' },
 ];
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -92,7 +92,7 @@ export default function EmailTemplatesPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this template?')) return;
+    if (!confirm('¿Eliminar esta plantilla?')) return;
     const res = await fetch(`/api/portal/email/templates/${id}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.success) setTemplates(prev => prev.filter(t => t.id !== id));
@@ -105,44 +105,42 @@ export default function EmailTemplatesPage() {
   return (
     <div className="max-w-5xl mx-auto">
       <PortalPageHeader
-        eyebrow="Email"
-        title="Email Templates"
-        subtitle="Reusable email designs for your campaigns"
+        eyebrow="Correo"
+        title="Plantillas de email"
+        subtitle="Diseños de correo reutilizables para tus campañas"
         actions={
           <button onClick={() => setShowCreate(!showCreate)} className={pBtnPrimary}>
-            <span className="material-icons text-lg">add</span>
-            New Template
-          </button>
+            <span className="material-icons text-lg">add</span>Nueva plantilla</button>
         }
       />
 
       {/* Create form */}
       {showCreate && (
         <form onSubmit={handleCreate} className="bg-card border border-border rounded-xl p-6 mb-6 space-y-4">
-          <h3 className="font-semibold">Create Template</h3>
+          <h3 className="font-semibold">Crear plantilla</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Name</label>
-              <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="My Newsletter Template" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
+              <label className="text-xs font-medium text-muted-foreground">Nombre</label>
+              <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Mi plantilla de newsletter" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Category</label>
+              <label className="text-xs font-medium text-muted-foreground">Categoría</label>
               <select value={newCategory} onChange={e => setNewCategory(e.target.value)} className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50">
                 {CATEGORIES.filter(c => c.value !== 'all').map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Default Subject Line</label>
-            <input value={newSubject} onChange={e => setNewSubject(e.target.value)} placeholder="Optional default subject" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+            <label className="text-xs font-medium text-muted-foreground">Asunto predeterminado</label>
+            <input value={newSubject} onChange={e => setNewSubject(e.target.value)} placeholder="Asunto predeterminado (opcional)" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Description</label>
-            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="What this template is for" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+            <label className="text-xs font-medium text-muted-foreground">Descripción</label>
+            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="Para qué sirve esta plantilla" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
           </div>
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-muted-foreground">Content</label>
+              <label className="text-xs font-medium text-muted-foreground">Contenido</label>
               <div className="flex items-center gap-1 bg-muted rounded-lg p-0.5">
                 <button type="button" onClick={() => setCreateMode('visual')}
                   className={`px-2 py-0.5 text-xs rounded-md ${createMode === 'visual' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'}`}>
@@ -166,7 +164,7 @@ export default function EmailTemplatesPage() {
             <button type="submit" disabled={saving} className={pBtnPrimary}>
               {saving ? 'Saving...' : 'Create Template'}
             </button>
-            <button type="button" onClick={() => setShowCreate(false)} className={pBtnGhost}>Cancel</button>
+            <button type="button" onClick={() => setShowCreate(false)} className={pBtnGhost}>Cancelar</button>
           </div>
         </form>
       )}
@@ -184,8 +182,8 @@ export default function EmailTemplatesPage() {
       {filtered.length === 0 ? (
         <div className="text-center py-16 bg-muted/30 rounded-xl border border-border">
           <span className="material-icons text-5xl text-muted-foreground">dynamic_feed</span>
-          <h2 className="mt-3 font-semibold text-lg">No templates yet</h2>
-          <p className="text-sm text-muted-foreground mt-1">Create reusable email designs to speed up campaign creation</p>
+          <h2 className="mt-3 font-semibold text-lg">Aún no hay plantillas</h2>
+          <p className="text-sm text-muted-foreground mt-1">Crea diseños de email reutilizables para acelerar la creación de campañas</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

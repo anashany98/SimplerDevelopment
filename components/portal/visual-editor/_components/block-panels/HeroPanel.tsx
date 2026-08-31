@@ -20,15 +20,15 @@ export function HeroPanel({ block, onUpdate, siteId }: PanelProps) {
     <>
       {block.type === 'hero' && (
         <>
-          <RichTextField label="Title" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
-          <RichTextField label="Subtitle" value={b.subtitle as string} onChange={(v) => onUpdate({ subtitle: v } as Partial<Block>)} singleLine />
-          <RichTextField label="Description" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
-          <Field label="CTA Text" value={b.ctaText as string} onChange={(v) => onUpdate({ ctaText: v } as Partial<Block>)} />
-          <Field label="CTA Link" value={b.ctaLink as string} onChange={(v) => onUpdate({ ctaLink: v } as Partial<Block>)} />
+          <RichTextField label="Título" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Subtítulo" value={b.subtitle as string} onChange={(v) => onUpdate({ subtitle: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Descripción" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
+          <Field label="Texto del CTA" value={b.ctaText as string} onChange={(v) => onUpdate({ ctaText: v } as Partial<Block>)} />
+          <Field label="Enlace del CTA" value={b.ctaLink as string} onChange={(v) => onUpdate({ ctaLink: v } as Partial<Block>)} />
           <Field label="2nd CTA Text" value={b.secondaryCtaText as string} onChange={(v) => onUpdate({ secondaryCtaText: v } as Partial<Block>)} />
           <Field label="2nd CTA Link" value={b.secondaryCtaLink as string} onChange={(v) => onUpdate({ secondaryCtaLink: v } as Partial<Block>)} />
-          <div><span className="text-xs font-medium text-muted-foreground">Background Image</span><MediaPicker value={b.backgroundImage as string} onChange={(v) => onUpdate({ backgroundImage: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
-          <div><span className="text-xs font-medium text-muted-foreground">Background Video</span><MediaPicker value={b.backgroundVideo as string} onChange={(v) => onUpdate({ backgroundVideo: v } as Partial<Block>)} mimeTypeFilter="video" label="" apiEndpoint={mediaApi} /></div>
+          <div><span className="text-xs font-medium text-muted-foreground">Imagen de fondo</span><MediaPicker value={b.backgroundImage as string} onChange={(v) => onUpdate({ backgroundImage: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
+          <div><span className="text-xs font-medium text-muted-foreground">Video de fondo</span><MediaPicker value={b.backgroundVideo as string} onChange={(v) => onUpdate({ backgroundVideo: v } as Partial<Block>)} mimeTypeFilter="video" label="" apiEndpoint={mediaApi} /></div>
         </>
       )}
       {block.type === 'marquee' && (
@@ -39,10 +39,10 @@ export function HeroPanel({ block, onUpdate, siteId }: PanelProps) {
       )}
       {block.type === 'cta' && (
         <>
-          <RichTextField label="Title" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
-          <RichTextField label="Description" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
-          <Field label="Button Text" value={b.primaryButtonText as string} onChange={(v) => onUpdate({ primaryButtonText: v } as Partial<Block>)} />
-          <Field label="Button URL" value={b.primaryButtonUrl as string} onChange={(v) => onUpdate({ primaryButtonUrl: v } as Partial<Block>)} />
+          <RichTextField label="Título" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Descripción" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
+          <Field label="Texto del botón" value={b.primaryButtonText as string} onChange={(v) => onUpdate({ primaryButtonText: v } as Partial<Block>)} />
+          <Field label="URL del botón" value={b.primaryButtonUrl as string} onChange={(v) => onUpdate({ primaryButtonUrl: v } as Partial<Block>)} />
           <Field label="2nd Button Text" value={b.secondaryButtonText as string} onChange={(v) => onUpdate({ secondaryButtonText: v } as Partial<Block>)} />
           <Field label="2nd Button URL" value={b.secondaryButtonUrl as string} onChange={(v) => onUpdate({ secondaryButtonUrl: v } as Partial<Block>)} />
           {/* Background lives on the Style tab (backgroundColor) — VEQA-065.
@@ -53,29 +53,29 @@ export function HeroPanel({ block, onUpdate, siteId }: PanelProps) {
       {block.type === 'hero-cta' && (
         <>
           <SelectField
-            label="Layout"
+            label="Diseño"
             value={(b.layout as string) || 'hero'}
             options={['hero', 'banner']}
             onChange={(v) => onUpdate({ layout: v } as Partial<Block>)}
           />
-          <RichTextField label="Title" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Título" value={b.title as string} onChange={(v) => onUpdate({ title: v } as Partial<Block>)} singleLine />
           {b.layout !== 'banner' && (
-            <RichTextField label="Subtitle" value={b.subtitle as string} onChange={(v) => onUpdate({ subtitle: v } as Partial<Block>)} singleLine />
+            <RichTextField label="Subtítulo" value={b.subtitle as string} onChange={(v) => onUpdate({ subtitle: v } as Partial<Block>)} singleLine />
           )}
-          <RichTextField label="Description" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
-          <Field label="Primary Button Text" value={b.primaryButtonText as string} onChange={(v) => onUpdate({ primaryButtonText: v } as Partial<Block>)} />
-          <Field label="Primary Button URL" value={b.primaryButtonUrl as string} onChange={(v) => onUpdate({ primaryButtonUrl: v } as Partial<Block>)} />
+          <RichTextField label="Descripción" value={b.description as string} onChange={(v) => onUpdate({ description: v } as Partial<Block>)} tall />
+          <Field label="Texto del botón principal" value={b.primaryButtonText as string} onChange={(v) => onUpdate({ primaryButtonText: v } as Partial<Block>)} />
+          <Field label="URL del botón principal" value={b.primaryButtonUrl as string} onChange={(v) => onUpdate({ primaryButtonUrl: v } as Partial<Block>)} />
           <Field label="2nd Button Text" value={b.secondaryButtonText as string} onChange={(v) => onUpdate({ secondaryButtonText: v } as Partial<Block>)} />
           <Field label="2nd Button URL" value={b.secondaryButtonUrl as string} onChange={(v) => onUpdate({ secondaryButtonUrl: v } as Partial<Block>)} />
           {b.layout !== 'banner' && (
             <>
-              <div><span className="text-xs font-medium text-muted-foreground">Background Image</span><MediaPicker value={b.backgroundImage as string} onChange={(v) => onUpdate({ backgroundImage: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
-              <div><span className="text-xs font-medium text-muted-foreground">Background Video</span><MediaPicker value={b.backgroundVideo as string} onChange={(v) => onUpdate({ backgroundVideo: v } as Partial<Block>)} mimeTypeFilter="video" label="" apiEndpoint={mediaApi} /></div>
+              <div><span className="text-xs font-medium text-muted-foreground">Imagen de fondo</span><MediaPicker value={b.backgroundImage as string} onChange={(v) => onUpdate({ backgroundImage: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
+              <div><span className="text-xs font-medium text-muted-foreground">Video de fondo</span><MediaPicker value={b.backgroundVideo as string} onChange={(v) => onUpdate({ backgroundVideo: v } as Partial<Block>)} mimeTypeFilter="video" label="" apiEndpoint={mediaApi} /></div>
             </>
           )}
           {b.layout === 'banner' && (
             <SelectField
-              label="Background Style"
+              label="Estilo de fondo"
               value={(b.backgroundStyle as string) || 'gradient'}
               options={['gradient', 'solid', 'none']}
               onChange={(v) => onUpdate({ backgroundStyle: v } as Partial<Block>)}

@@ -42,7 +42,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
               html={block.title}
               onChange={(html) => onChange({ title: html })}
               className="font-display text-4xl md:text-6xl font-bold mb-6 tracking-wide w-full bg-transparent border-none focus:outline-none focus:border-b-2 border-primary text-center text-foreground"
-              placeholder="Title"
+              placeholder="Título"
               singleLine={true}
               style={getElementCSS(block.elementStyles, 'title')}
             />
@@ -126,7 +126,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
             html={block.title}
             onChange={(html) => onChange({ title: html })}
             className={`font-display text-5xl md:text-7xl font-bold mb-6 tracking-wide w-full bg-transparent border-none focus:outline-none focus:border-b-2 border-primary text-center ${hasBackground ? 'text-white' : 'text-foreground'}`}
-            placeholder="Title"
+            placeholder="Título"
             singleLine={true}
             style={getElementCSS(block.elementStyles, 'title')}
           />

@@ -33,7 +33,7 @@ export default function GscPropertyPicker({
         if (json.success) setSites(json.data);
         else setError(json.message);
       })
-      .catch(() => setError('Failed to load Search Console sites'))
+      .catch(() => setError('No se pudieron cargar los sitios de Search Console'))
       .finally(() => setLoading(false));
   }, [siteId, currentSiteUrl]);
 
@@ -53,7 +53,7 @@ export default function GscPropertyPicker({
         setError(json.message);
       }
     } catch {
-      setError('Failed to connect Search Console');
+      setError('No se pudo conectar Search Console');
     } finally {
       setSaving(false);
     }
@@ -81,7 +81,7 @@ export default function GscPropertyPicker({
           disabled={saving}
           className="text-xs text-muted-foreground hover:text-red-600 transition-colors"
         >
-          Disconnect
+          Desconectar
         </button>
       </div>
     );
@@ -91,7 +91,7 @@ export default function GscPropertyPicker({
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span className="material-icons text-base animate-spin">refresh</span>
-        Loading Search Console sites...
+        Cargando sitios de Search Console...
       </div>
     );
   }
@@ -110,7 +110,7 @@ export default function GscPropertyPicker({
           className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm hover:bg-primary/20 transition-colors disabled:opacity-50"
         >
           <span className="material-icons text-base">link</span>
-          Connect {matchingSite.siteUrl}
+          Conectar {matchingSite.siteUrl}
         </button>
       ) : suggestedUrl ? (
         <button
@@ -119,13 +119,13 @@ export default function GscPropertyPicker({
           className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm hover:bg-primary/20 transition-colors disabled:opacity-50"
         >
           <span className="material-icons text-base">add</span>
-          Add {suggestedUrl} to Search Console
+          Añadir {suggestedUrl} a Search Console
         </button>
       ) : null}
 
       {sites.length > 0 && !matchingSite && (
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Or select an existing site:</p>
+          <p className="text-xs text-muted-foreground">O selecciona un sitio existente:</p>
           {sites.slice(0, 10).map((s) => (
             <button
               key={s.siteUrl}

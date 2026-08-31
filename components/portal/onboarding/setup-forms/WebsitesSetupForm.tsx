@@ -53,7 +53,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
   return (
     <div className="rounded-[13px] border border-primary/30 bg-primary/[0.04] px-[15px] py-[13px] space-y-3">
       <div>
-        <p className="text-[14px] font-semibold leading-snug">Name your first site</p>
+        <p className="text-[14px] font-semibold leading-snug">Nombra tu primer sitio</p>
         <p className="text-[12.5px] text-muted-foreground mt-0.5">
           Created right here — no need to leave setup. You can add a custom domain later.
         </p>
@@ -80,7 +80,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
             className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-primary"
             aria-label="Subdomain"
           />
-          <span className="text-[13px] text-muted-foreground whitespace-nowrap">.simplerdevelopment.com</span>
+          <span className="text-[13px] text-muted-foreground whitespace-nowrap">· CRM AGENTS</span>
         </div>
       </div>
 

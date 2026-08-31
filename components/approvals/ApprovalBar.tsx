@@ -395,9 +395,7 @@ export function ApprovalBar(props: ApprovalBarProps) {
                   setError(null);
                 }}
                 style={btnStyle('#e5e7eb', '#111827')}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 disabled={submitting}

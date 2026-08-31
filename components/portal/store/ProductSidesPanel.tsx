@@ -142,11 +142,11 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
               aria-label="Side label"
             />
             <div className="ml-auto flex items-center gap-1">
-              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Move up"
+              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Mover arriba"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_upward</span>
               </button>
-              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === sides.length - 1} title="Move down"
+              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === sides.length - 1} title="Mover abajo"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_downward</span>
               </button>

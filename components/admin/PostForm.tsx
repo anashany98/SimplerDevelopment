@@ -77,29 +77,29 @@ export default function PostForm({ post, mode }: PostFormProps) {
 
   // Block types for visual editor
   const blockTypes: Array<{ type: BlockType; label: string; icon: string; category: string; description: string }> = [
-    { type: 'heading', label: 'Heading', icon: '📝', category: 'Basic', description: 'Add a title or heading' },
-    { type: 'text', label: 'Text', icon: '📄', category: 'Basic', description: 'Plain paragraph text' },
-    { type: 'button', label: 'Button', icon: '🔘', category: 'Basic', description: 'Add a call-to-action button' },
-    { type: 'quote', label: 'Quote', icon: '💬', category: 'Basic', description: 'Add a quotation' },
-    { type: 'image', label: 'Image', icon: '🖼️', category: 'Media', description: 'Insert an image' },
+    { type: 'heading', label: 'Encabezado', icon: '📝', category: 'Basic', description: 'Añade un título o encabezado' },
+    { type: 'text', label: 'Texto', icon: '📄', category: 'Basic', description: 'Plain paragraph text' },
+    { type: 'button', label: 'Botón', icon: '🔘', category: 'Basic', description: 'Añade un botón de llamada a la acción' },
+    { type: 'quote', label: 'Cita', icon: '💬', category: 'Basic', description: 'Añade una cita' },
+    { type: 'image', label: 'Imagen', icon: '🖼️', category: 'Media', description: 'Inserta una imagen' },
     { type: 'youtube', label: 'YouTube', icon: '📺', category: 'Media', description: 'Embed a YouTube video' },
-    { type: 'video', label: 'Video', icon: '🎬', category: 'Media', description: 'Embed a video file' },
+    { type: 'video', label: 'Vídeo', icon: '🎬', category: 'Media', description: 'Embed a video file' },
     { type: 'code', label: 'Code', icon: '💻', category: 'Media', description: 'Display code snippet' },
-    { type: 'spacer', label: 'Spacer', icon: '↕️', category: 'Layout', description: 'Add vertical space' },
-    { type: 'divider', label: 'Divider', icon: '➖', category: 'Layout', description: 'Add a horizontal line' },
-    { type: 'columns', label: 'Columns', icon: '📊', category: 'Layout', description: 'Display content in columns' },
+    { type: 'spacer', label: 'Espaciador', icon: '↕️', category: 'Layout', description: 'Añadir espacio vertical' },
+    { type: 'divider', label: 'Divisor', icon: '➖', category: 'Layout', description: 'Añade una línea horizontal' },
+    { type: 'columns', label: 'Columnas', icon: '📊', category: 'Layout', description: 'Display content in columns' },
     { type: 'accordion', label: 'Accordion', icon: '📑', category: 'Layout', description: 'Collapsible content sections' },
     { type: 'tabs', label: 'Tabs', icon: '🗂️', category: 'Layout', description: 'Tabbed content sections' },
-    { type: 'section', label: 'Section', icon: '📦', category: 'Layout', description: 'Container wrapper with styling' },
+    { type: 'section', label: 'Sección', icon: '📦', category: 'Layout', description: 'Container wrapper with styling' },
     { type: 'hero', label: 'Hero', icon: '🎯', category: 'Components', description: 'Hero section with CTA' },
-    { type: 'services-grid', label: 'Services', icon: '📦', category: 'Components', description: 'Grid of services' },
-    { type: 'cta', label: 'Call to Action', icon: '📢', category: 'Components', description: 'CTA section' },
+    { type: 'services-grid', label: 'Servicios', icon: '📦', category: 'Components', description: 'Grid of services' },
+    { type: 'cta', label: 'Llamada a la acción', icon: '📢', category: 'Components', description: 'CTA section' },
     { type: 'card-grid', label: 'Card Grid', icon: '🎴', category: 'Components', description: 'Grid of cards' },
-    { type: 'stats', label: 'Stats', icon: '📈', category: 'Components', description: 'Statistics display' },
+    { type: 'stats', label: 'Estadísticas', icon: '📈', category: 'Components', description: 'Statistics display' },
     { type: 'testimonial', label: 'Testimonial', icon: '⭐', category: 'Components', description: 'Customer testimonial' },
     { type: 'featured-content', label: 'Featured Content', icon: '✨', category: 'Components', description: 'Featured content with image' },
     { type: 'blog-posts', label: 'Blog Posts', icon: '📰', category: 'Components', description: 'Display blog posts' },
-    { type: 'gallery', label: 'Gallery', icon: '🖼️', category: 'Media', description: 'Image gallery with lightbox' },
+    { type: 'gallery', label: 'Galería', icon: '🖼️', category: 'Media', description: 'Image gallery with lightbox' },
   ];
 
   // Parse existing content to blocks or initialize empty
@@ -338,7 +338,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
             onChange={(e) => setCustomFieldValues({ ...customFieldValues, [field.slug]: e.target.value })}
             className={commonClasses}
           >
-            <option value="">Select an option...</option>
+            <option value="">Selecciona una opción...</option>
             {field.options?.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -474,9 +474,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
           type="button"
           onClick={() => router.back()}
           className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
       </div>
     </form>
   );

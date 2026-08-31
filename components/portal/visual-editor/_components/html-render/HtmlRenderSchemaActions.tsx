@@ -57,10 +57,10 @@ export function HtmlRenderSchemaActions({
   const handlePaste = () => {
     if (!clipboard) return;
     const ok = window.confirm(
-      `Replace this block's schema with the copied one?\n\n` +
-      `Copied schema: ${clipboard.fields.length} fields from "${clipboard.sourceLabel || 'unknown'}"\n` +
-      `Current block has ${fields.length} fields.\n\n` +
-      `The current block's HTML, fields, and values will be overwritten.`,
+      `¿Reemplazar el esquema de este bloque con el copiado?\n\n` +
+      `Esquema copiado: ${clipboard.fields.length} campos de "${clipboard.sourceLabel || 'desconocido'}"\n` +
+      `El bloque actual tiene ${fields.length} campos.\n\n` +
+      `Se sobrescribirán el HTML, los campos y los valores del bloque actual.`,
     );
     if (!ok) return;
     onApply(applySchemaSnapshot(clipboard));
@@ -81,10 +81,10 @@ export function HtmlRenderSchemaActions({
         return;
       }
       const ok = window.confirm(
-        `Import schema?\n\n` +
-        `Source: ${result.sourceLabel || 'unknown'}\n` +
-        `Fields: ${result.fields.length}\n\n` +
-        `The current block's HTML, fields, and values will be overwritten.`,
+        `¿Importar esquema?\n\n` +
+        `Fuente: ${result.sourceLabel || 'desconocido'}\n` +
+        `Campos: ${result.fields.length}\n\n` +
+        `Se sobrescribirán el HTML, los campos y los valores del bloque actual.`,
       );
       if (!ok) return;
       onApply(applySchemaSnapshot(result));
@@ -112,11 +112,9 @@ export function HtmlRenderSchemaActions({
         type="button"
         onClick={handleCopy}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Copy this block's schema (fields + template + loop) to a shared clipboard"
+        title="Copiar el esquema de este bloque (campos + plantilla + bucle) a un portapapeles compartido"
       >
-        <span className="material-icons text-sm">content_copy</span>
-        Copy
-      </button>
+        <span className="material-icons text-sm">content_copy</span>Copiar</button>
       <button
         type="button"
         onClick={handlePaste}
@@ -132,20 +130,16 @@ export function HtmlRenderSchemaActions({
         type="button"
         onClick={handleExport}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Download schema as JSON"
+        title="Descargar esquema como JSON"
       >
-        <span className="material-icons text-sm">file_download</span>
-        Export
-      </button>
+        <span className="material-icons text-sm">file_download</span>Exportar</button>
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Import schema from JSON file"
+        title="Importar esquema desde un archivo JSON"
       >
-        <span className="material-icons text-sm">file_upload</span>
-        Import
-      </button>
+        <span className="material-icons text-sm">file_upload</span>Importar</button>
       <input
         ref={fileInputRef}
         type="file"

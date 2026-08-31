@@ -2,7 +2,7 @@
  * Loading skeleton for the survey detail route segment.
  *
  * Next.js 16 App Router wraps `'use client'` pages that call
- * `useSearchParams()` at the top level in an automatic Suspense with a null
+ * `useSearchParams()` at the top level in an automátic Suspense with a null
  * fallback. On a cold dev-server (CI, first access), the JS bundle takes
  * 15–30 s to compile before the client can hydrate, leaving `<main>` empty
  * for that window. This `loading.tsx` replaces the null fallback with the

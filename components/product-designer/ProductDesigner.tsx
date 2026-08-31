@@ -1190,23 +1190,19 @@ export const ProductDesigner: React.FC<ProductDesignerProps> = ({
               <button
                 onClick={() => setNameModalOpen(false)}
                 className="px-4 py-2 text-gray-700 dark:text-gray-200"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 onClick={confirmSave}
                 disabled={!designName.trim()}
                 data-testid="design-name-confirm"
                 className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-              >
-                Save
-              </button>
+              >Guardar</button>
             </div>
           </div>
         </div>
       )}
       {loadModalOpen && (
-        <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"><div className="bg-white p-4 rounded">Loading...</div></div>}>
+        <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"><div className="bg-white p-4 rounded">Cargando...</div></div>}>
           <LoadDesignModal
             designs={savedDesigns}
             onSelect={async (d: any) => {
@@ -1390,9 +1386,7 @@ setControlMode,
                   }`}
                   onClick={() => setResponsiveTab("options")}
                   type="button"
-                >
-                  Options
-                </button>
+                >Opciones</button>
                 <button
                   className={`flex-1 py-2 text-center ${
                     responsiveTab === "design"
@@ -1406,7 +1400,7 @@ setControlMode,
                 </button>
               </div>
               <div className="flex-1">
-                <Suspense fallback={<div className="p-4 animate-pulse bg-gray-100 h-full">Loading...</div>}>
+                <Suspense fallback={<div className="p-4 animate-pulse bg-gray-100 h-full">Cargando...</div>}>
                   {responsiveTab === "options" ? <LeftPanel /> : <CenterPanel
                     zoom={regularViewZoom}
                     setZoom={setRegularViewZoom}
@@ -1720,9 +1714,7 @@ const StyleCarousel = ({ product, hoveredStyleId, style, onClose, setHoveredStyl
             className="bg-gray-800 hover:bg-gray-700 text-white rounded px-2 py-1 text-sm transition-colors duration-200"
             title="Reset Zoom"
             aria-label="Reset Zoom"
-          >
-            Reset
-          </button>
+          >Restablecer</button>
           </div>
         </div>
         

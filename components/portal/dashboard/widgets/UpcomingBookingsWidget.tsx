@@ -51,7 +51,7 @@ export default async function UpcomingBookingsWidget({
       </div>
       {upcoming.length === 0 ? (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No upcoming bookings.</p>
+          <p className="text-sm text-muted-foreground mb-2">Sin reservas próximas.</p>
           <Link
             href="/portal/tools/booking"
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"

@@ -1,6 +1,6 @@
-# SimplerDev Chat (mobile)
+# CRM AGENTS Chat (mobile)
 
-Native iOS/Android client for the SimplerDevelopment portal — conversations, AI assistant, group chats, the Company Brain (notes / decisions / glossary / people), shared media, approvals inbox, and settings.
+Native iOS/Android client for the CRM AGENTS portal — conversations, AI assistant, group chats, the Company Brain (notes / decisions / glossary / people), shared media, approvals inbox, and settings.
 
 Visual + UX language is established by the five hi-fi mockups on `~/Desktop/`:
 

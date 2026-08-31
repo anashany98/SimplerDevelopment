@@ -11,9 +11,7 @@ export function ButtonBlockEdit({ block, onChange }: ButtonBlockEditProps) {
   return (
     <div className="space-y-3">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Button Text
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.text}
@@ -38,9 +36,7 @@ export function ButtonBlockEdit({ block, onChange }: ButtonBlockEditProps) {
 
       <div className="grid grid-cols-3 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Variant
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Variante</label>
           <select
             value={block.variant || 'primary'}
             onChange={(e) => onChange({ ...block, variant: e.target.value as ButtonBlock['variant'] })}
@@ -53,41 +49,35 @@ export function ButtonBlockEdit({ block, onChange }: ButtonBlockEditProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Size
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Tamaño</label>
           <select
             value={block.size || 'md'}
             onChange={(e) => onChange({ ...block, size: e.target.value as ButtonBlock['size'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="sm">Small</option>
-            <option value="md">Medium</option>
-            <option value="lg">Large</option>
+            <option value="sm">Pequeño</option>
+            <option value="md">Media</option>
+            <option value="lg">Grande</option>
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Alignment
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
           <select
             value={block.alignment || 'left'}
             onChange={(e) => onChange({ ...block, alignment: e.target.value as ButtonBlock['alignment'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Icon
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Icono</label>
           <input
             type="text"
             value={block.icon || ''}
@@ -106,8 +96,8 @@ export function ButtonBlockEdit({ block, onChange }: ButtonBlockEditProps) {
             onChange={(e) => onChange({ ...block, iconPosition: e.target.value as ButtonBlock['iconPosition'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="left">Left</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>
@@ -121,7 +111,7 @@ export function ButtonBlockEdit({ block, onChange }: ButtonBlockEditProps) {
           onChange={(e) => onChange({ ...block, hoverEffect: e.target.value as ButtonBlock['hoverEffect'] })}
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
         >
-          <option value="none">None</option>
+          <option value="none">Ninguno</option>
           <option value="lift">Lift (raise + shadow)</option>
           <option value="glow">Glow (color aura)</option>
           <option value="fill">Fill (overlay)</option>

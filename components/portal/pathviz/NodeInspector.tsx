@@ -95,7 +95,7 @@ export default function NodeInspector({
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        <Section title="Status">
+        <Section title="Estado">
           <div className="flex items-center gap-2.5">
             <div className="flex gap-[3px]" data-testid="pathviz-status-ring">
               {segments.map((seg, i) => (
@@ -132,8 +132,8 @@ export default function NodeInspector({
         {hasDeclaredState && (
           <Section title="Declared state">
             <div className="space-y-1">
-              {node.meta.state !== undefined && <KV label="State" value={renderMetaValue(node.meta.state)} />}
-              {node.meta.stores !== undefined && <KV label="Store" value={renderMetaValue(node.meta.stores)} />}
+              {node.meta.state !== undefined && <KV label="Estado" value={renderMetaValue(node.meta.state)} />}
+              {node.meta.stores !== undefined && <KV label="Tienda" value={renderMetaValue(node.meta.stores)} />}
               {node.meta.props !== undefined && <KV label="Props" value={renderMetaValue(node.meta.props)} />}
             </div>
           </Section>

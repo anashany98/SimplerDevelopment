@@ -64,8 +64,8 @@ export default function NewSurveyPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Surveys"
-        title="New Survey"
+        eyebrow="Encuestas"
+        title="Nueva encuesta"
         subtitle={step === 'choose' ? 'Start from a template or build from scratch' : 'Design your survey and add questions'}
         actions={
           <Link href="/portal/surveys" className={pBtnGhost}>
@@ -94,8 +94,8 @@ export default function NewSurveyPage() {
                 <span className="material-icons text-2xl text-muted-foreground group-hover:text-primary">add</span>
               </div>
               <div>
-                <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Start from Scratch</p>
-                <p className="text-sm text-muted-foreground">Build a custom survey with your own questions</p>
+                <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Empezar desde cero</p>
+                <p className="text-sm text-muted-foreground">Crea una encuesta personalizada con tus propias preguntas</p>
               </div>
             </div>
           </button>
@@ -154,7 +154,7 @@ export default function NewSurveyPage() {
               Survey Details
             </h2>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Título</label>
               <input
                 type="text"
                 value={title}
@@ -168,14 +168,14 @@ export default function NewSurveyPage() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Brief description shown at the top of the survey"
+                placeholder="Descripción breve que se muestra en la parte superior de la encuesta"
                 rows={2}
                 className={`${pInput} resize-none`}
               />
             </div>
             <div className="flex items-center gap-6">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Brand Color</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Color de marca</label>
                 <div className="flex items-center gap-2">
                   <input type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-8 h-8 rounded border border-border cursor-pointer" />
                   <span className="text-xs text-muted-foreground">{color}</span>
@@ -199,7 +199,7 @@ export default function NewSurveyPage() {
 
           {/* Submit */}
           <div className="flex items-center justify-end gap-3">
-            <Link href="/portal/surveys" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cancel</Link>
+            <Link href="/portal/surveys" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cancelar</Link>
             <button
               type="submit"
               disabled={saving}
@@ -208,7 +208,7 @@ export default function NewSurveyPage() {
               {saving ? (
                 <><span className="material-icons text-lg animate-spin">progress_activity</span>Creating...</>
               ) : (
-                <><span className="material-icons text-lg">add_circle</span>Create Survey</>
+                <><span className="material-icons text-lg">add_circle</span>Crear encuesta</>
               )}
             </button>
           </div>

@@ -25,14 +25,12 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <AuthShell panelSubtitle="Set a new password for your account.">
+      <AuthShell panelSubtitle="Establece una nueva contraseña para tu cuenta.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10">
           <span className="material-icons text-3xl text-destructive">link_off</span>
         </div>
         <h1 className={`${authHeading} mt-5`}>Invalid reset link.</h1>
-        <p className={authSubtext}>
-          This password reset link is invalid or has expired.
-        </p>
+        <p className={authSubtext}>Este enlace de restablecimiento de contraseña no es válido o ha caducado.</p>
         <a
           href="/portal/forgot-password"
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
@@ -79,7 +77,7 @@ function ResetPasswordForm() {
 
   if (success) {
     return (
-      <AuthShell panelSubtitle="Your account password has been updated.">
+      <AuthShell panelSubtitle="La contraseña de tu cuenta se ha actualizado.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10">
           <span className="material-icons text-3xl text-emerald-500">check_circle</span>
         </div>
@@ -99,13 +97,13 @@ function ResetPasswordForm() {
   }
 
   return (
-    <AuthShell panelSubtitle="Set a new password — choose something strong and unique.">
+    <AuthShell panelSubtitle="Establece una nueva contraseña: que sea fuerte y única.">
       <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
         <span className="material-icons text-3xl text-primary">lock_reset</span>
       </div>
       <div className={authEyebrow}>{'// Account recovery'}</div>
-      <h1 className={authHeading}>Set a new password.</h1>
-      <p className={authSubtext}>Enter your new password below. Must be at least 8 characters.</p>
+      <h1 className={authHeading}>Establece una nueva contraseña.</h1>
+      <p className={authSubtext}>Introduce tu nueva contraseña a continuación. Debe tener al menos 8 caracteres.</p>
 
       <div className="mt-7">
         {error && (
@@ -117,7 +115,7 @@ function ResetPasswordForm() {
 
         <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={authLabel}>New Password</label>
+            <label className={authLabel}>Nueva contraseña</label>
             <AuthField icon="lock">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -141,7 +139,7 @@ function ResetPasswordForm() {
             </AuthField>
           </div>
           <div>
-            <label className={authLabel}>Confirm Password</label>
+            <label className={authLabel}>Confirmar contraseña</label>
             <AuthField icon="lock_outline">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -151,7 +149,7 @@ function ResetPasswordForm() {
                 minLength={8}
                 autoComplete="new-password"
                 className={authInput}
-                placeholder="Confirm your password"
+                placeholder="Confirma tu contraseña"
               />
             </AuthField>
           </div>

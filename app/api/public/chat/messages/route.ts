@@ -10,16 +10,17 @@
 
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { chatConversations, chatMessages } from '@/lib/db/schema';
+import { chatConversations, chatMessages, channelAiRuns } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { verifyVisitorToken } from '@/lib/chat/token';
+import { verifyChatAttachmentToken, verifyVisitorToken } from '@/lib/chat/token';
 import { publishMessage } from '@/lib/chat/realtime';
+import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
 import { checkVisitorRateLimit } from '@/lib/chat/rate-limit';
 
 const MAX_BODY = 4_000;
 
 export async function POST(req: Request) {
-  let body: { conversationId?: number; ephemeralToken?: string; body?: string };
+  let body: { conversationId?: number; ephemeralToken?: string; body?: string; attachments?: unknown[] };
   try {
     body = await req.json();
   } catch {
@@ -35,11 +36,18 @@ export async function POST(req: Request) {
   }
 
   const text = (body.body || '').trim();
-  if (!text) {
-    return NextResponse.json({ success: false, message: 'Message body is required' }, { status: 400 });
-  }
   if (text.length > MAX_BODY) {
     return NextResponse.json({ success: false, message: 'Message too long' }, { status: 413 });
+  }
+  const rawAttachments = Array.isArray(body.attachments)
+    ? body.attachments.filter((item): item is { url: string; name: string; mimeType: string; size: number } => {
+        if (!item || typeof item !== 'object') return false;
+        const value = item as Record<string, unknown>;
+        return typeof value.url === 'string' && typeof value.name === 'string' && typeof value.mimeType === 'string' && typeof value.size === 'number';
+      }).slice(0, 5)
+    : [];
+  if (!text && rawAttachments.length === 0) {
+    return NextResponse.json({ success: false, message: 'Message body is required' }, { status: 400 });
   }
 
   const [conversation] = await db
@@ -50,18 +58,38 @@ export async function POST(req: Request) {
   if (!conversation) {
     return NextResponse.json({ success: false, message: 'Conversation not found' }, { status: 404 });
   }
+  const attachmentPrefix = `/api/media/proxy/chat/${conversation.clientId}/`;
+  const attachments = rawAttachments.filter((item) => {
+    try {
+      const url = new URL(item.url, req.url);
+      return url.pathname.startsWith(attachmentPrefix)
+        && verifyChatAttachmentToken(url.searchParams.get('chatAttachment'), conversation.id, url.pathname);
+    } catch {
+      return false;
+    }
+  });
+  if (attachments.length !== rawAttachments.length) {
+    return NextResponse.json({ success: false, message: 'Invalid attachment reference' }, { status: 400 });
+  }
   if (conversation.status === 'closed') {
     return NextResponse.json({ success: false, message: 'Conversation is closed' }, { status: 409 });
   }
 
   // Rate-limit by visitor — they can only send so fast.
-  const rl = checkVisitorRateLimit(`v:${conversation.visitorId}`);
-  if (!rl.ok) {
+  const localLimit = checkVisitorRateLimit(`v:${conversation.visitorId ?? getClientIp(req)}`);
+  if (!localLimit.ok) {
     return NextResponse.json(
       { success: false, message: 'Too many messages, slow down' },
-      { status: 429, headers: { 'Retry-After': String(rl.retryAfter ?? 1) } },
+      { status: 429, headers: { 'Retry-After': String(localLimit.retryAfter ?? 1) } },
     );
   }
+  // Keep the existing low-latency limiter and add a shared distributed gate
+  // for multi-instance deployments. The latter falls back locally in dev.
+  const allowed = await checkRateLimit(`chat:${conversation.clientId}:${conversation.visitorId ?? getClientIp(req)}`, 10, 10_000);
+  if (!allowed) return NextResponse.json(
+    { success: false, message: 'Too many messages, slow down' },
+    { status: 429, headers: { 'Retry-After': '10' } },
+  );
 
   const now = new Date();
   const [inserted] = await db
@@ -70,8 +98,9 @@ export async function POST(req: Request) {
       conversationId: conversation.id,
       clientId: conversation.clientId,
       authorKind: 'visitor',
-      authorName: conversation.visitorName ?? 'Visitor',
+      authorName: conversation.visitorName ?? 'Visitante',
       body: text,
+      attachments,
       occurredAt: now,
     })
     .returning();
@@ -81,14 +110,42 @@ export async function POST(req: Request) {
     .set({ lastMessageAt: now, updatedAt: now })
     .where(eq(chatConversations.id, conversation.id));
 
+  // The native webchat path bypasses lib/channels/service.ts ingest (which is
+  // webhook-shaped), so it must enqueue the AI run itself — mirrors the
+  // `aiMode === 'ai' || 'hybrid'` block in channels/service.ts, otherwise the
+  // widget's configured AI mode never fires. The process-conversation-ai cron
+  // claims and drains these rows.
+  if (conversation.aiMode === 'ai' || conversation.aiMode === 'hybrid') {
+    await db
+      .insert(channelAiRuns)
+      .values({
+        clientId: conversation.clientId,
+        conversationId: conversation.id,
+        messageId: inserted.id,
+      })
+      .onConflictDoNothing();
+  }
+
   publishMessage(conversation.id, conversation.clientId, {
     id: inserted.id,
     conversationId: conversation.id,
     authorKind: 'visitor',
     authorName: inserted.authorName,
     body: inserted.body,
+    attachments: inserted.attachments,
     occurredAt: inserted.occurredAt,
   }).catch(() => {});
 
-  return NextResponse.json({ success: true, data: inserted });
+  return NextResponse.json({
+    success: true,
+    data: {
+      id: inserted.id,
+      conversationId: inserted.conversationId,
+      authorKind: inserted.authorKind,
+      authorName: inserted.authorName,
+      body: inserted.body,
+      attachments: inserted.attachments,
+      occurredAt: inserted.occurredAt,
+    },
+  });
 }

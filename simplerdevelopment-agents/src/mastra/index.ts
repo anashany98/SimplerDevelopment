@@ -7,7 +7,7 @@ import { weatherWorkflow } from './workflows/weather-workflow';
 import { weatherAgent } from './agents/weather-agent';
 import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 import { toolGroundingScorer, groundednessScorer } from './scorers/brain-scorer';
-// SimplerDevelopment Company Brain example (talks to the portal MCP server).
+// CRM AGENTS Company Brain example (talks to the portal MCP server).
 import { brainAgent } from './agents/brain-agent';
 import { classifierAgent, plannerAgent, grounderAgent } from './agents/brain-stages';
 import { brainWorkflow } from './workflows/brain-workflow';
@@ -46,7 +46,7 @@ export const mastra = new Mastra({
     portalAssistant,
     portalClassifier,
   },
-  // Surface the connected SimplerDevelopment MCP server in Mastra Studio so its
+  // Surface the connected CRM AGENTS MCP server in Mastra Studio so its
   // tools are browsable alongside native ones. Only registered when a key is set.
   ...(sdMcpConfigured ? { mcpServers: sdMcp.toMCPServerProxies() } : {}),
   // Inbound auth. This HTTP surface is private-network-only and is reached SOLELY

@@ -98,7 +98,7 @@ export default async function MyTasksWidget({
       </div>
       {topTasks.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No tasks due.{' '}
+          No hay tareas para hoy.{' '}
           <Link href="/portal/my-tasks" className="text-primary hover:underline">
             View all tasks
           </Link>

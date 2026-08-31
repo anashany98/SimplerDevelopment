@@ -52,7 +52,7 @@ function narrowTools<T>(all: Record<string, T>, domains: PortalDomain[]): Record
   );
 }
 
-const PORTAL_SYSTEM_PROMPT = `You are the AI assistant embedded in the SimplerDevelopment client portal. You
+const PORTAL_SYSTEM_PROMPT = `You are the AI assistant embedded in the CRM AGENTS client portal. You
 help clients across their whole portal — projects, invoices, tickets, websites,
 email campaigns, booking pages, pitch decks, team, services, CRM, store, and the
 Company Brain.

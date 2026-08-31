@@ -8,8 +8,8 @@
  *   ├ status pills (All | Active | Inactive | Departed)
  *   ├ org-unit dropdown   expertise chips   search box
  *   ├ ───────────────────────────────────────────────
- *   ├ PersonCard list (25/page, paginated)
- *   └ ───── pagination ─────
+ *   ├ PersonCard list (25/page, páginated)
+ *   └ ───── págination ─────
  *
  * URL params: status, orgUnitId, expertiseTagId, q, page. We sync them via
  * `router.replace` (no scroll, no history pollution).
@@ -30,10 +30,10 @@ import { pBtnPrimary, pBtnGhost } from '@/components/portal/portal-ui';
 type StatusFilter = 'all' | BrainPersonStatus;
 
 const STATUS_TABS: { key: StatusFilter; label: string }[] = [
-  { key: 'active',   label: 'Active' },
-  { key: 'inactive', label: 'Inactive' },
+  { key: 'active',   label: 'Activo' },
+  { key: 'inactive', label: 'Inactivo' },
   { key: 'departed', label: 'Departed' },
-  { key: 'all',      label: 'All' },
+  { key: 'all',      label: 'Todos' },
 ];
 
 const PAGE_SIZE = 25;
@@ -172,7 +172,7 @@ export default function BrainPeoplePage() {
       if (v === null || v === '') next.delete(k);
       else next.set(k, v);
     }
-    // Any filter change resets pagination.
+    // Any filter change resets págination.
     if (!('page' in updates)) next.delete('page');
     router.replace(`/portal/brain/people${next.toString() ? `?${next.toString()}` : ''}`, { scroll: false });
   }, [params, router]);
@@ -181,7 +181,7 @@ export default function BrainPeoplePage() {
     <div className="max-w-5xl mx-auto py-6 px-4 space-y-4">
       <div className="sticky top-0 z-10 -mx-4 px-4 pb-3 pt-2 bg-background/95 backdrop-blur border-b border-border">
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={<span className="flex items-center gap-2"><span className="material-icons text-primary">groups</span>People</span>}
           subtitle="Your internal team — employees, advisors, and contractors. Distinct from CRM contacts."
           actions={
@@ -212,12 +212,12 @@ export default function BrainPeoplePage() {
           </div>
 
           <select
-            aria-label="Filter by org unit"
+            aria-label="Filtrar por unidad organizativa"
             value={orgUnitId !== null ? String(orgUnitId) : ''}
             onChange={(e) => setParam({ orgUnitId: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">All org units</option>
+            <option value="">Todas las unidades</option>
             {orgUnits.map((u) => (
               <option key={u.id} value={u.id}>
                 {' '.repeat(u.depth)}{u.name}
@@ -233,7 +233,7 @@ export default function BrainPeoplePage() {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search by name, email, or title"
+              placeholder="Buscar por nombre, correo o cargo"
               className="w-full pl-8 pr-3 py-2 text-sm rounded-xl border border-border bg-card text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
             />
           </div>
@@ -250,9 +250,7 @@ export default function BrainPeoplePage() {
                   ? 'border-primary bg-primary/10 text-primary'
                   : 'border-border text-muted-foreground hover:text-foreground'
               }`}
-            >
-              All
-            </button>
+            >Todos</button>
             {tags.slice(0, 24).map((t) => (
               <button
                 key={t.id}
@@ -274,9 +272,7 @@ export default function BrainPeoplePage() {
       <div className="mt-4">
         {loading ? (
           <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>
-            Loading…
-          </div>
+            <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
         ) : error ? (
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
             <div className="flex items-center gap-2 font-medium mb-1">
@@ -288,7 +284,7 @@ export default function BrainPeoplePage() {
         ) : visibleRows.length === 0 ? (
           <div className="text-center py-12 bg-card border border-dashed border-border rounded-lg">
             <span className="material-icons text-5xl text-muted-foreground mb-2 block">person_add</span>
-            <p className="text-sm text-foreground font-medium">No people on file yet.</p>
+            <p className="text-sm text-foreground font-medium">Aún no hay personas registradas.</p>
             <p className="text-xs text-muted-foreground mt-1 mb-4">
               Add the first member of your team.
             </p>
@@ -325,9 +321,7 @@ export default function BrainPeoplePage() {
               disabled={!hasNextPage}
               onClick={() => setParam({ page: String(page + 1) })}
               className={pBtnGhost + " disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"}
-            >
-              Next
-              <span className="material-icons text-base">chevron_right</span>
+            >Siguiente<span className="material-icons text-base">chevron_right</span>
             </button>
           </div>
         )}

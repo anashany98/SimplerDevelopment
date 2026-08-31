@@ -133,9 +133,7 @@ export default function DocumentRequiredReadsPanel({ documentId, versions, onCha
 
       {loading ? (
         <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
-          <span className="material-icons animate-spin text-sm">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin text-sm">progress_activity</span>Cargando…</div>
       ) : rows.length === 0 ? (
         <p className="text-xs text-muted-foreground mt-3">No required-reads yet.</p>
       ) : (
@@ -143,7 +141,7 @@ export default function DocumentRequiredReadsPanel({ documentId, versions, onCha
           {personRows.length > 0 && (
             <RowGroup
               icon="person"
-              title="People"
+              title="Personas"
               rows={personRows}
               versions={versions}
               busy={busy}
@@ -234,8 +232,8 @@ function RowGroup({
               onClick={() => onRemove(r)}
               disabled={busy}
               className="p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded disabled:opacity-50"
-              title="Remove"
-              aria-label="Remove"
+              title="Quitar"
+              aria-label="Quitar"
             >
               <span className="material-icons text-sm">close</span>
             </button>
@@ -338,7 +336,7 @@ function AssignDialog({
               Make this document required reading for a person or org unit.
             </p>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Close">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Cerrar">
             <span className="material-icons text-lg">close</span>
           </button>
         </div>
@@ -436,9 +434,7 @@ function AssignDialog({
             onClick={onClose}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             onClick={submit}
             disabled={submitting}
@@ -446,7 +442,7 @@ function AssignDialog({
           >
             {submitting
               ? <><span className="material-icons animate-spin text-base">progress_activity</span>Assigning…</>
-              : <><span className="material-icons text-base">person_add</span>Assign</>}
+              : <><span className="material-icons text-base">person_add</span>Asignar</>}
           </button>
         </div>
       </div>

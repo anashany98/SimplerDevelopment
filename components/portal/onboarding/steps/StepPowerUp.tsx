@@ -18,7 +18,7 @@ export function StepPowerUp({ state, setAnswers, next, persist }: StepProps) {
 
   const mcpConfig = JSON.stringify({
     mcpServers: {
-      simplerdevelopment: {
+      'crm-agents': {
         command: 'npx',
         args: ['-y', 'mcp-remote', mcpEndpoint],
       },
@@ -64,7 +64,7 @@ export function StepPowerUp({ state, setAnswers, next, persist }: StepProps) {
   return (
     <div className="space-y-5">
       <p className="text-[14px] text-muted-foreground leading-relaxed">
-        SimplerDevelopment plays nicely with <strong>Claude Code</strong>, <strong>Claude Desktop</strong>,
+        CRM AGENTS plays nicely with <strong>Claude Code</strong>, <strong>Claude Desktop</strong>,
         and any MCP-compatible client. Pair both halves below and you can draft pages, decks, emails, surveys,
         and more by chatting.
       </p>
@@ -82,13 +82,11 @@ export function StepPowerUp({ state, setAnswers, next, persist }: StepProps) {
             <h3 className="text-[14.5px] font-extrabold tracking-[-0.01em] flex-1">Install SD Skills</h3>
             {skillsDownloaded && (
               <span className="inline-flex items-center gap-1 text-[12px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                <span className="material-icons text-[14px]">check_circle</span>
-                Done
-              </span>
+                <span className="material-icons text-[14px]">check_circle</span>Listo</span>
             )}
           </header>
           <p className="text-[12.5px] text-muted-foreground leading-[1.45] mt-0">
-            One installer adds every SimplerDevelopment skill to your assistant.
+            One installer adds every CRM AGENTS skill to your assistant.
           </p>
 
           <div className="flex gap-2.5">

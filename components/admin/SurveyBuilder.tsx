@@ -93,9 +93,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
           onClick={() => setShowTypePicker(v => !v)}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-xs font-medium hover:bg-primary/20 transition-colors"
         >
-          <span className="material-icons text-sm">add</span>
-          Add Field
-        </button>
+          <span className="material-icons text-sm">add</span>Añadir campo</button>
       </div>
 
       {/* Type picker */}
@@ -119,9 +117,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
             type="button"
             onClick={() => setShowTypePicker(false)}
             className="mt-3 text-xs text-muted-foreground hover:text-foreground"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         </div>
       )}
 
@@ -157,7 +153,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                       <span className="material-icons text-sm">arrow_downward</span>
                     </button>
                     <button type="button" onClick={() => deleteField(field.id)}
-                      className="p-1 rounded text-muted-foreground hover:text-destructive" title="Delete">
+                      className="p-1 rounded text-muted-foreground hover:text-destructive" title="Eliminar">
                       <span className="material-icons text-sm">delete_outline</span>
                     </button>
                   </div>
@@ -175,7 +171,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     <span className="text-xs text-muted-foreground capitalize">{meta.label}</span>
                   </div>
                   {field.required && hasRequired(field.type) && (
-                    <span className="text-xs text-destructive bg-destructive/10 px-1.5 py-0.5 rounded flex-shrink-0">Required</span>
+                    <span className="text-xs text-destructive bg-destructive/10 px-1.5 py-0.5 rounded flex-shrink-0">Obligatorio</span>
                   )}
                   {field.showIf && (
                     <span
@@ -201,11 +197,11 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                       <span className="material-icons text-sm">arrow_downward</span>
                     </button>
                     <button type="button" onClick={() => setExpandedId(isOpen ? null : field.id)}
-                      className="p-1 rounded text-muted-foreground hover:text-primary transition-colors" title="Edit">
+                      className="p-1 rounded text-muted-foreground hover:text-primary transition-colors" title="Editar">
                       <span className="material-icons text-sm">{isOpen ? 'expand_less' : 'edit'}</span>
                     </button>
                     <button type="button" onClick={() => deleteField(field.id)}
-                      className="p-1 rounded text-muted-foreground hover:text-destructive transition-colors" title="Delete">
+                      className="p-1 rounded text-muted-foreground hover:text-destructive transition-colors" title="Eliminar">
                       <span className="material-icons text-sm">delete_outline</span>
                     </button>
                   </div>
@@ -242,8 +238,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
 
                     {/* Label */}
                     <div className={(field.type === 'heading' || field.type === 'image' || field.type === 'video') ? 'sm:col-span-2' : ''}>
-                      <label className="block text-xs font-medium text-foreground mb-1">
-                        Label <span className="text-destructive">*</span>
+                      <label className="block text-xs font-medium text-foreground mb-1">Etiqueta<span className="text-destructive">*</span>
                       </label>
                       <input
                         type="text"
@@ -253,7 +248,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                         placeholder="e.g. What is your domain name?"
                       />
                       {field.label.includes('{') && field.label.includes('}') && (
-                        <p className="text-xs text-muted-foreground mt-1">Uses piping token — preview shows live substitution</p>
+                        <p className="text-xs text-muted-foreground mt-1">Usa token de canalización: la vista previa muestra la sustitución en vivo</p>
                       )}
                     </div>
 
@@ -274,7 +269,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {/* Placeholder (if applicable) */}
                     {hasPlaceholder(field.type) && field.type !== 'heading' && (
                       <div>
-                        <label className="block text-xs font-medium text-foreground mb-1">Placeholder</label>
+                        <label className="block text-xs font-medium text-foreground mb-1">Marcador de posición</label>
                         <input
                           type="text"
                           value={field.placeholder}
@@ -326,8 +321,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {/* Options (select / radio / checkbox) */}
                     {hasOptions(field.type) && (
                       <div className="sm:col-span-2">
-                        <label className="block text-xs font-medium text-foreground mb-1">
-                          Options <span className="text-muted-foreground">(one per line)</span>
+                        <label className="block text-xs font-medium text-foreground mb-1">Opciones<span className="text-muted-foreground">(one per line)</span>
                         </label>
                         <textarea
                           rows={4}

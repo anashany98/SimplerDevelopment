@@ -35,7 +35,7 @@ export function SurveySlideQuestionList({ slide, fields, onSelectField, onRemove
         </div>
         <div className="flex-1">
           <h3 className="text-base font-semibold text-foreground">{slide.label}</h3>
-          <p className="text-xs text-muted-foreground">Click a question to customize its slide layout</p>
+          <p className="text-xs text-muted-foreground">Haz clic en una pregunta para personalizar el diseño de su diapositiva</p>
         </div>
         <div className="flex items-center gap-1.5">
           <a
@@ -44,9 +44,7 @@ export function SurveySlideQuestionList({ slide, fields, onSelectField, onRemove
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
           >
-            <span className="material-icons text-sm">open_in_new</span>
-            Edit Survey
-          </a>
+            <span className="material-icons text-sm">open_in_new</span>Editar encuesta</a>
           <button
             onClick={onRemoveSlide}
             className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs border border-border rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
@@ -80,35 +78,27 @@ export function SurveySlideQuestionList({ slide, fields, onSelectField, onRemove
         })}
         {fields.length === 0 && (
           <div className="text-center py-8 text-muted-foreground text-sm">
-            <span className="material-icons text-2xl mb-2 block">quiz</span>
-            No questions found. Add questions in the survey editor.
-          </div>
+            <span className="material-icons text-2xl mb-2 block">quiz</span>No se encontraron preguntas. Agrega preguntas en el editor de encuestas.</div>
         )}
       </div>
 
       <div className="bg-accent/30 rounded-lg p-3">
         <div className="flex items-start gap-2">
           <span className="material-icons text-sm text-emerald-500 mt-0.5">info</span>
-          <p className="text-xs text-muted-foreground">
-            Each question expands into its own full-screen slide during the presentation.
-            Customize the layout by clicking a question above. Required blocks (heading, input) cannot be deleted.
-          </p>
+          <p className="text-xs text-muted-foreground">Cada pregunta se expande a su propia diapositiva de pantalla completa durante la presentación.
+            Personaliza el diseño haciendo clic en una pregunta arriba. Los bloques obligatorios (encabezado, campo) no se pueden eliminar.</p>
         </div>
       </div>
 
       <div className="bg-accent/30 rounded-lg p-3">
         <div className="flex items-start gap-2">
           <span className="material-icons text-sm text-primary mt-0.5">recommend</span>
-          <div className="flex-1 text-xs text-muted-foreground">
-            Need to edit the dynamic result slide after the survey?
-            <a
+          <div className="flex-1 text-xs text-muted-foreground">¿Necesitas editar la diapositiva de resultados después de la encuesta?<a
               href={`/portal/surveys/${slide.surveyId}#recommendation`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline ml-1 inline-flex items-center gap-0.5"
-            >
-              Edit recommendation in the survey
-              <span className="material-icons text-xs">open_in_new</span>
+            >Editar recomendación en la encuesta<span className="material-icons text-xs">open_in_new</span>
             </a>
           </div>
         </div>
@@ -140,9 +130,7 @@ export function SurveyFieldEditorView({
           onClick={() => onSelectFieldId(null)}
           className="inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors shrink-0"
         >
-          <span className="material-icons text-sm">arrow_back</span>
-          Back
-        </button>
+          <span className="material-icons text-sm">arrow_back</span>Volver</button>
         <button
           onClick={() => { if (idx > 0) onSelectFieldId(fields[idx - 1].id); }}
           disabled={idx <= 0}
@@ -176,7 +164,7 @@ export function SurveyFieldEditorView({
           onClick={() => { if (idx < fields.length - 1) onSelectFieldId(fields[idx + 1].id); }}
           disabled={idx >= fields.length - 1}
           className="inline-flex items-center justify-center w-7 h-7 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
-          title="Next question"
+          title="Siguiente pregunta"
         >
           <span className="material-icons text-sm">chevron_right</span>
         </button>

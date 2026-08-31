@@ -7,12 +7,12 @@ import { slugify } from '@/lib/publishing/slug';
 import { pBtnPrimary, pBtnGhost, pCard, pInput } from '@/components/portal/portal-ui';
 
 const WEBSITE_TYPES = [
-  { value: 'business', label: 'Business Website', icon: 'business', description: 'Company homepage, about, services, contact' },
-  { value: 'portfolio', label: 'Portfolio', icon: 'photo_library', description: 'Showcase your work and projects' },
-  { value: 'blog', label: 'Blog', icon: 'rss_feed', description: 'Articles, news, and long-form content' },
-  { value: 'landing', label: 'Landing Page', icon: 'web', description: 'Single-page focused on one goal' },
-  { value: 'ecommerce', label: 'E-commerce', icon: 'shopping_cart', description: 'Sell products online' },
-  { value: 'other', label: 'Something Else', icon: 'more_horiz', description: 'Custom setup — we\'ll figure it out together' },
+  { value: 'business', label: 'Web corporativa', icon: 'business', description: 'Inicio, empresa, servicios y contacto' },
+  { value: 'portfolio', label: 'Portafolio', icon: 'photo_library', description: 'Muestra tu trabajo y proyectos' },
+  { value: 'blog', label: 'Blog', icon: 'rss_feed', description: 'Artículos, noticias y contenido extenso' },
+  { value: 'landing', label: 'Landing Page', icon: 'web', description: 'Página única enfocada en un solo objetivo' },
+  { value: 'ecommerce', label: 'E-commerce', icon: 'shopping_cart', description: 'Vende productos en línea' },
+  { value: 'other', label: 'Otra cosa', icon: 'more_horiz', description: 'Configuración personalizada — lo resolvemos juntos' },
 ];
 
 export default function PortalCmsNewPage() {
@@ -26,7 +26,7 @@ export default function PortalCmsNewPage() {
   const effectiveSubdomain = form.subdomain || slugify(form.name, 63);
 
   const handleCreate = async () => {
-    if (!form.name) { setError('Please enter a website name.'); return; }
+    if (!form.name) { setError('Por favor, ingresa un nombre para el sitio web.'); return; }
     setSaving(true); setError('');
     const res = await fetch('/api/portal/cms/websites', {
       method: 'POST',
@@ -39,7 +39,7 @@ export default function PortalCmsNewPage() {
       }),
     });
     const data = await res.json();
-    if (!data.success) { setSaving(false); setError(data.message || 'Failed to create website.'); return; }
+    if (!data.success) { setSaving(false); setError(data.message || 'No se pudo crear la web.'); return; }
 
     setSaving(false);
     router.push(`/portal/websites/${data.data.id}?created=1`);
@@ -53,7 +53,7 @@ export default function PortalCmsNewPage() {
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <span className="material-icons text-base">arrow_back</span>
-        Back to Websites
+        Volver a webs
       </Link>
 
       {/* Progress */}
@@ -71,9 +71,9 @@ export default function PortalCmsNewPage() {
           </div>
         ))}
         <div className="ml-2 text-xs text-muted-foreground">
-          {step === 1 && 'Choose type'}
-          {step === 2 && 'Name your site'}
-          {step === 3 && 'Domain (optional)'}
+          {step === 1 && 'Elige el tipo'}
+          {step === 2 && 'Nombra tu sitio'}
+          {step === 3 && 'Dominio (opcional)'}
         </div>
       </div>
 
@@ -81,8 +81,8 @@ export default function PortalCmsNewPage() {
       {step === 1 && (
         <div className="space-y-4">
           <div>
-            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">What kind of website are you building?</h1>
-            <p className="text-muted-foreground text-sm mt-1">This helps us set things up for you, but you can change it anytime.</p>
+            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">¿Qué tipo de sitio web estás creando?</h1>
+            <p className="text-muted-foreground text-sm mt-1">Esto nos ayuda a configurarlo todo para ti, pero puedes cambiarlo cuando quieras.</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {WEBSITE_TYPES.map((type) => (
@@ -110,49 +110,45 @@ export default function PortalCmsNewPage() {
       {step === 2 && (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">Name your website</h1>
-            <p className="text-muted-foreground text-sm mt-1">This is just an internal label — your visitors won&apos;t see it.</p>
+            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">Nombra tu sitio web</h1>
+            <p className="text-muted-foreground text-sm mt-1">Esto es solo una etiqueta interna — tus visitantes no la verán.</p>
           </div>
           <div className={`${pCard} p-5 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Website name *</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Nombre del sitio web *</label>
               <input
                 autoFocus
                 value={form.name}
                 onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 onKeyDown={e => { if (e.key === 'Enter' && form.name) setStep(3); }}
                 placeholder={
-                  form.websiteType === 'business' ? 'e.g. Acme Corp Website' :
+                  form.websiteType === 'business' ? 'p. ej., Web de Acme' :
                   form.websiteType === 'blog' ? 'e.g. My Blog' :
                   form.websiteType === 'portfolio' ? 'e.g. My Portfolio' :
-                  'e.g. My Website'
+                  'p. ej., Mi web'
                 }
                 className={`${pInput} w-full`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Brief description <span className="text-muted-foreground font-normal">(optional)</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Descripción breve<span className="text-muted-foreground font-normal">(optional)</span></label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 rows={2}
-                placeholder="What is this website for?"
+                placeholder="¿Para qué es este sitio web?"
                 className={`${pInput} w-full resize-none`}
               />
             </div>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <div className="flex gap-3">
-            <button onClick={() => setStep(1)} className={pBtnGhost}>
-              Back
-            </button>
+            <button onClick={() => setStep(1)} className={pBtnGhost}>Atrás</button>
             <button
-              onClick={() => { if (!form.name) { setError('Please enter a name.'); return; } setError(''); setStep(3); }}
+              onClick={() => { if (!form.name) { setError('Por favor, ingresa un nombre.'); return; } setError(''); setStep(3); }}
               disabled={!form.name}
               className={`${pBtnPrimary} flex-1 disabled:opacity-50`}
-            >
-              Continue
-            </button>
+            >Continuar</button>
           </div>
         </div>
       )}
@@ -161,14 +157,14 @@ export default function PortalCmsNewPage() {
       {step === 3 && (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">Your website address</h1>
-            <p className="text-muted-foreground text-sm mt-1">Your site will be live at a simplerdevelopment.com subdomain. You can add a custom domain later.</p>
+            <h1 className="text-xl font-display font-extrabold tracking-[-0.02em] text-foreground">La dirección de tu sitio web</h1>
+            <p className="text-muted-foreground text-sm mt-1">Tu sitio estará disponible en un subdominio gestionado por CRM AGENTS. Puedes agregar un dominio propio más adelante.</p>
           </div>
 
           {/* Subdomain */}
           <div className={`${pCard} p-5 space-y-4`}>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Subdomain</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Subdominio</label>
               <div className="flex items-center gap-0">
                 <div className="flex items-center gap-2 px-3 py-2.5 bg-background border border-border rounded-l-lg flex-1 focus-within:border-primary transition-colors">
                   <input
@@ -179,7 +175,7 @@ export default function PortalCmsNewPage() {
                   />
                 </div>
                 <div className="px-3 py-2.5 bg-muted border border-l-0 border-border rounded-r-lg text-sm text-muted-foreground font-mono shrink-0">
-                  .simplerdevelopment.com
+                  · CRM AGENTS
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-1.5">
@@ -189,7 +185,7 @@ export default function PortalCmsNewPage() {
 
             {/* Custom domain (optional) */}
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Custom domain <span className="text-muted-foreground font-normal">(optional)</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Dominio personalizado<span className="text-muted-foreground font-normal">(optional)</span></label>
               <div className="flex items-center gap-2 px-3 py-2.5 bg-background border border-border rounded-lg focus-within:border-primary transition-colors">
                 <span className="material-icons text-muted-foreground text-base">language</span>
                 <input
@@ -199,28 +195,28 @@ export default function PortalCmsNewPage() {
                   className="bg-transparent outline-none flex-1 text-sm text-foreground font-mono"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-1.5">You can configure this later too</p>
+              <p className="text-xs text-muted-foreground mt-1.5">También puedes configurar esto más tarde</p>
             </div>
           </div>
 
           {/* Summary */}
           <div className="bg-muted/30 border border-border rounded-2xl p-4 space-y-2 text-sm">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Summary</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Resumen</p>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Type</span>
+              <span className="text-muted-foreground">Tipo</span>
               <span className="text-foreground font-medium capitalize">{WEBSITE_TYPES.find(t => t.value === form.websiteType)?.label || form.websiteType}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Name</span>
+              <span className="text-muted-foreground">Nombre</span>
               <span className="text-foreground font-medium">{form.name}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">URL</span>
-              <span className="text-foreground font-mono text-xs">{effectiveSubdomain}.simplerdevelopment.com</span>
+              <span className="text-foreground font-mono text-xs">{effectiveSubdomain} · CRM AGENTS</span>
             </div>
             {form.domain && (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Custom domain</span>
+                <span className="text-muted-foreground">Dominio personalizado</span>
                 <span className="text-foreground font-mono text-xs">{form.domain}</span>
               </div>
             )}
@@ -229,16 +225,14 @@ export default function PortalCmsNewPage() {
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(2)} className={pBtnGhost}>
-              Back
-            </button>
+            <button onClick={() => setStep(2)} className={pBtnGhost}>Atrás</button>
             <button
               onClick={handleCreate}
               disabled={saving}
               className={`${pBtnPrimary} flex-1 disabled:opacity-50`}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {saving ? 'Creating...' : 'Create Website'}
+              {saving ? 'Creando...' : 'Crear web'}
             </button>
           </div>
 
@@ -246,8 +240,8 @@ export default function PortalCmsNewPage() {
           <div className={`${pCard} flex items-center gap-3 p-4`}>
             <span className="material-icons text-muted-foreground">support_agent</span>
             <div className="flex-1 text-sm">
-              <p className="font-medium text-foreground">Need a hand?</p>
-              <p className="text-muted-foreground text-xs mt-0.5">Our team can set everything up for you.</p>
+              <p className="font-medium text-foreground">¿Necesitas ayuda?</p>
+              <p className="text-muted-foreground text-xs mt-0.5">Nuestro equipo puede configurarlo todo por ti.</p>
             </div>
             <Link
               href="/portal/tickets/new"

@@ -116,7 +116,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
   return (
     <div className="-mx-4">
       {/* ── Layout ──────────────────────────────────────────────── */}
-      <StyleSection title="Layout" defaultOpen>
+      <StyleSection title="Diseño" defaultOpen>
         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
           <span className="material-icons text-sm">{BREAKPOINTS[currentViewport].icon}</span>
           <span>Editing for {BREAKPOINTS[currentViewport].label}</span>
@@ -185,7 +185,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
             <div>
               <label className="block text-xs text-muted-foreground mb-1.5">Gap</label>
               <select value={effectiveStyle.gap || ''} onChange={(e) => updateResponsiveStyle('gap', e.target.value)} className={selectClass}>
-                <option value="">None</option>
+                <option value="">Ninguno</option>
                 <option value="0.25rem">4px</option><option value="0.5rem">8px</option><option value="0.75rem">12px</option>
                 <option value="1rem">16px</option><option value="1.5rem">24px</option><option value="2rem">32px</option>
                 <option value="3rem">48px</option><option value="4rem">64px</option>
@@ -197,7 +197,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
         {!noDisplayControls && effectiveStyle.display === 'grid' && (
           <>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Columns</label>
+              <label className="block text-xs text-muted-foreground mb-1">Columnas</label>
               <input type="text" value={effectiveStyle.gridTemplateColumns || ''} onChange={(e) => updateResponsiveStyle('gridTemplateColumns', e.target.value)} placeholder="1fr 1fr 1fr" className={inputClass} />
             </div>
             <div>
@@ -214,7 +214,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
         <div>
           <label className="block text-xs text-muted-foreground mb-1.5">Align Self</label>
           <select value={effectiveStyle.alignSelf || ''} onChange={(e) => updateResponsiveStyle('alignSelf', e.target.value)} className={selectClass}>
-            <option value="">Auto</option><option value="flex-start">Start</option><option value="center">Center</option>
+            <option value="">Automático</option><option value="flex-start">Comenzar</option><option value="center">Centrado</option>
             <option value="flex-end">End</option><option value="stretch">Stretch</option><option value="baseline">Baseline</option>
           </select>
         </div>
@@ -223,11 +223,11 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
             so it writes directly to the block via onChange rather than updateResponsiveStyle. */}
         {block.type === 'image' && (
           <div>
-            <label className="block text-xs text-muted-foreground mb-1">Width</label>
+            <label className="block text-xs text-muted-foreground mb-1">Ancho</label>
             <select value={(block as unknown as Record<string, unknown>).width as string || 'full'} onChange={(e) => onChange({ width: e.target.value } as Partial<Block>)} className={selectClass}>
-              <option value="small">Small</option>
-              <option value="medium">Medium</option>
-              <option value="large">Large</option>
+              <option value="small">Pequeño</option>
+              <option value="medium">Media</option>
+              <option value="large">Grande</option>
               <option value="full">Full</option>
             </select>
           </div>
@@ -236,13 +236,13 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
         <div>
           <label className="block text-xs text-muted-foreground mb-1">Overflow</label>
           <select value={effectiveStyle.overflow || ''} onChange={(e) => updateResponsiveStyle('overflow', e.target.value)} className={selectClass}>
-            <option value="">Visible</option><option value="hidden">Hidden</option><option value="scroll">Scroll</option><option value="auto">Auto</option>
+            <option value="">Visible</option><option value="hidden">Oculto</option><option value="scroll">Scroll</option><option value="auto">Automático</option>
           </select>
         </div>
 
         {/* Position */}
         <div>
-          <label className="block text-xs text-muted-foreground mb-1">Position</label>
+          <label className="block text-xs text-muted-foreground mb-1">Posición</label>
           <select value={effectiveStyle.position || ''} onChange={(e) => updateResponsiveStyle('position', e.target.value)} className={selectClass}>
             <option value="">Static</option><option value="relative">Relative</option><option value="absolute">Absolute</option>
             <option value="fixed">Fixed</option><option value="sticky">Sticky</option>
@@ -251,12 +251,12 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
         {effectiveStyle.position && effectiveStyle.position !== 'static' && (
           <>
             <div className="grid grid-cols-2 gap-2">
-              <div><label className="block text-xs text-muted-foreground mb-1">Top</label><input type="text" value={effectiveStyle.top || ''} onChange={(e) => updateResponsiveStyle('top', e.target.value)} placeholder="auto" className={inputClass} /></div>
-              <div><label className="block text-xs text-muted-foreground mb-1">Right</label><input type="text" value={effectiveStyle.right || ''} onChange={(e) => updateResponsiveStyle('right', e.target.value)} placeholder="auto" className={inputClass} /></div>
+              <div><label className="block text-xs text-muted-foreground mb-1">Arriba</label><input type="text" value={effectiveStyle.top || ''} onChange={(e) => updateResponsiveStyle('top', e.target.value)} placeholder="auto" className={inputClass} /></div>
+              <div><label className="block text-xs text-muted-foreground mb-1">Derecha</label><input type="text" value={effectiveStyle.right || ''} onChange={(e) => updateResponsiveStyle('right', e.target.value)} placeholder="auto" className={inputClass} /></div>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <div><label className="block text-xs text-muted-foreground mb-1">Bottom</label><input type="text" value={effectiveStyle.bottom || ''} onChange={(e) => updateResponsiveStyle('bottom', e.target.value)} placeholder="auto" className={inputClass} /></div>
-              <div><label className="block text-xs text-muted-foreground mb-1">Left</label><input type="text" value={effectiveStyle.left || ''} onChange={(e) => updateResponsiveStyle('left', e.target.value)} placeholder="auto" className={inputClass} /></div>
+              <div><label className="block text-xs text-muted-foreground mb-1">Abajo</label><input type="text" value={effectiveStyle.bottom || ''} onChange={(e) => updateResponsiveStyle('bottom', e.target.value)} placeholder="auto" className={inputClass} /></div>
+              <div><label className="block text-xs text-muted-foreground mb-1">Izquierda</label><input type="text" value={effectiveStyle.left || ''} onChange={(e) => updateResponsiveStyle('left', e.target.value)} placeholder="auto" className={inputClass} /></div>
             </div>
             <div><label className="block text-xs text-muted-foreground mb-1">Z-Index</label><input type="text" value={effectiveStyle.zIndex || ''} onChange={(e) => updateResponsiveStyle('zIndex', e.target.value)} placeholder="auto" className={inputClass} /></div>
           </>
@@ -264,13 +264,13 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
       </StyleSection>
 
       {/* ── Size ─────────────────────────────────────────────────── */}
-      <StyleSection title="Size">
+      <StyleSection title="Tamaño">
         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
           <span className="material-icons text-sm">{BREAKPOINTS[currentViewport].icon}</span>
           <span>Editing for {BREAKPOINTS[currentViewport].label}</span>
         </div>
         {!hideSizeWidthHeight && <div className="grid grid-cols-2 gap-2">
-          <div><label className="block text-xs text-muted-foreground mb-1">Width</label><input type="text" value={effectiveStyle.width || ''} onChange={(e) => updateResponsiveStyle('width', e.target.value)} placeholder="auto" className={inputClass} /></div>
+          <div><label className="block text-xs text-muted-foreground mb-1">Ancho</label><input type="text" value={effectiveStyle.width || ''} onChange={(e) => updateResponsiveStyle('width', e.target.value)} placeholder="auto" className={inputClass} /></div>
           <div><label className="block text-xs text-muted-foreground mb-1">Height</label><input type="text" value={effectiveStyle.height || ''} onChange={(e) => updateResponsiveStyle('height', e.target.value)} placeholder="auto" className={inputClass} /></div>
         </div>}
         <div className="grid grid-cols-2 gap-2">
@@ -343,7 +343,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
       </StyleSection>
 
       {/* ── Background ──────────────────────────────────────────── */}
-      <StyleSection title="Background">
+      <StyleSection title="Fondo">
         {/* Unified color/gradient control:
             - 0 stops = no bg
             - 1 stop  = solid (writes backgroundColor, clears backgroundGradient)
@@ -374,9 +374,9 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
           <>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Size</label>
+                <label className="block text-xs text-muted-foreground mb-1">Tamaño</label>
                 <select value={style.backgroundSize || ''} onChange={(e) => updateStyle('backgroundSize', e.target.value)} className={selectClass}>
-                  <option value="">Auto</option>
+                  <option value="">Automático</option>
                   <option value="cover">Cover</option>
                   <option value="contain">Contain</option>
                   <option value="100% 100%">Stretch</option>
@@ -384,17 +384,17 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Position</label>
+                <label className="block text-xs text-muted-foreground mb-1">Posición</label>
                 <select value={style.backgroundPosition || ''} onChange={(e) => updateStyle('backgroundPosition', e.target.value)} className={selectClass}>
-                  <option value="">Center</option>
-                  <option value="top">Top</option>
+                  <option value="">Centrado</option>
+                  <option value="top">Arriba</option>
                   <option value="top left">Top Left</option>
                   <option value="top right">Top Right</option>
-                  <option value="bottom">Bottom</option>
+                  <option value="bottom">Abajo</option>
                   <option value="bottom left">Bottom Left</option>
                   <option value="bottom right">Bottom Right</option>
-                  <option value="left">Left</option>
-                  <option value="right">Right</option>
+                  <option value="left">Izquierda</option>
+                  <option value="right">Derecha</option>
                 </select>
               </div>
             </div>
@@ -402,7 +402,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
               <div>
                 <label className="block text-xs text-muted-foreground mb-1">Repeat</label>
                 <select value={style.backgroundRepeat || ''} onChange={(e) => updateStyle('backgroundRepeat', e.target.value)} className={selectClass}>
-                  <option value="">Default</option>
+                  <option value="">Predeterminado</option>
                   <option value="no-repeat">No Repeat</option>
                   <option value="repeat">Repeat</option>
                   <option value="repeat-x">Repeat X</option>
@@ -453,7 +453,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
       {/* Non-text blocks (image/video/spacer/divider) have no text, so the whole
           Typography category is hidden for them, not just the font fields. */}
       {hasTextContent && (
-      <StyleSection title="Typography">
+      <StyleSection title="Tipografía">
         <TokenColorPicker label="Text Color" value={style.color || ''} onChange={(v) => updateStyle('color', v)} placeholder="#000000" />
 
         {hasTextContent && (
@@ -461,7 +461,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
             <div>
               <label className="block text-xs text-muted-foreground mb-1.5">Font Size</label>
               <select value={style.fontSize || ''} onChange={(e) => updateStyle('fontSize', e.target.value)} className={selectClass}>
-                <option value="">Default</option>
+                <option value="">Predeterminado</option>
                 <option value="0.75rem">XS (12px)</option><option value="0.875rem">SM (14px)</option>
                 <option value="1rem">Base (16px)</option><option value="1.125rem">LG (18px)</option>
                 <option value="1.25rem">XL (20px)</option><option value="1.5rem">2XL (24px)</option>
@@ -473,7 +473,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
             <div>
               <label className="block text-xs text-muted-foreground mb-1.5">Responsive Font Size</label>
               <select value={responsive.fontSize?.[currentViewport] || ''} onChange={(e) => updateResponsiveSetting('fontSize', currentViewport, e.target.value)} className={selectClass}>
-                <option value="">Default</option>
+                <option value="">Predeterminado</option>
                 {fontSizes.map((size) => <option key={size} value={size}>{size}</option>)}
               </select>
               <p className="text-[10px] text-muted-foreground mt-1">Per-breakpoint override for {BREAKPOINTS[currentViewport].label}</p>
@@ -491,22 +491,22 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
         <div>
           <label className="block text-xs text-muted-foreground mb-1.5">Font Weight</label>
           <select value={style.fontWeight || ''} onChange={(e) => updateStyle('fontWeight', e.target.value)} className={selectClass}>
-            <option value="">Default</option><option value="300">Light</option><option value="400">Normal</option>
-            <option value="500">Medium</option><option value="600">Semibold</option><option value="700">Bold</option>
+            <option value="">Predeterminado</option><option value="300">Light</option><option value="400">Normal</option>
+            <option value="500">Media</option><option value="600">Semibold</option><option value="700">Bold</option>
             <option value="800">Extra Bold</option><option value="900">Black</option>
           </select>
         </div>
         <div>
           <label className="block text-xs text-muted-foreground mb-1.5">Line Height</label>
           <select value={style.lineHeight || ''} onChange={(e) => updateStyle('lineHeight', e.target.value)} className={selectClass}>
-            <option value="">Default</option><option value="1">None</option><option value="1.25">Tight</option>
+            <option value="">Predeterminado</option><option value="1">Ninguno</option><option value="1.25">Tight</option>
             <option value="1.375">Snug</option><option value="1.5">Normal</option><option value="1.625">Relaxed</option><option value="2">Loose</option>
           </select>
         </div>
         <div>
           <label className="block text-xs text-muted-foreground mb-1.5">Letter Spacing</label>
           <select value={style.letterSpacing || ''} onChange={(e) => updateStyle('letterSpacing', e.target.value)} className={selectClass}>
-            <option value="">Default</option><option value="-0.05em">Tighter</option><option value="-0.025em">Tight</option>
+            <option value="">Predeterminado</option><option value="-0.05em">Tighter</option><option value="-0.025em">Tight</option>
             <option value="0">Normal</option><option value="0.025em">Wide</option><option value="0.05em">Wider</option><option value="0.1em">Widest</option>
           </select>
         </div>
@@ -545,7 +545,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
       )}
 
       {/* ── Border ──────────────────────────────────────────────── */}
-      <StyleSection title="Border">
+      <StyleSection title="Borde">
         <div>
           <label className="block text-xs text-muted-foreground mb-1.5">Border Width</label>
           <div className="flex gap-1.5">
@@ -558,7 +558,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
                 updateStyle('borderWidth', v);
               }
             }} className={`${selectClass} flex-1 min-w-0`}>
-              <option value="">None</option><option value="1px">1px</option><option value="2px">2px</option><option value="3px">3px</option><option value="4px">4px</option><option value="6px">6px</option><option value="8px">8px</option>
+              <option value="">Ninguno</option><option value="1px">1px</option><option value="2px">2px</option><option value="3px">3px</option><option value="4px">4px</option><option value="6px">6px</option><option value="8px">8px</option>
               {style.borderWidth && !['1px','2px','3px','4px','6px','8px'].includes(style.borderWidth) && (
                 <option value={style.borderWidth}>{style.borderWidth}</option>
               )}
@@ -575,7 +575,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
                   updateStyle('borderWidth', v);
                 }
               }}
-              placeholder="Custom"
+              placeholder="Personalizado"
               className={`${inputClass} w-20 shrink-0`}
             />
           </div>
@@ -586,7 +586,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
             <div>
               <label className="block text-xs text-muted-foreground mb-1.5">Style</label>
               <select value={style.borderStyle || 'solid'} onChange={(e) => updateStyle('borderStyle', e.target.value)} className={selectClass}>
-                <option value="solid">Solid</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option><option value="inset">Inset</option><option value="outset">Outset</option>
+                <option value="solid">Sólido</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="double">Double</option><option value="groove">Groove</option><option value="ridge">Ridge</option><option value="inset">Inset</option><option value="outset">Outset</option>
               </select>
             </div>
           </>
@@ -625,7 +625,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
                   <div>
                     <label className="block text-[10px] text-muted-foreground mb-0.5">Style</label>
                     <select value={(style[styleKey] as string) || ''} onChange={(e) => updateStyle(styleKey as string, e.target.value)} className={inputClass}>
-                      <option value="">-</option><option value="solid">Solid</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="double">Double</option><option value="none">None</option>
+                      <option value="">-</option><option value="solid">Sólido</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="double">Double</option><option value="none">Ninguno</option>
                     </select>
                   </div>
                 </div>
@@ -637,7 +637,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
           <label className="block text-xs text-muted-foreground mb-1.5">Border Radius</label>
           <div className="flex gap-1.5">
             <select value={style.borderRadius || ''} onChange={(e) => updateStyle('borderRadius', e.target.value)} className={`${selectClass} flex-1 min-w-0`}>
-              <option value="">None</option><option value="0.125rem">XS (2px)</option><option value="0.25rem">SM (4px)</option><option value="0.375rem">MD (6px)</option>
+              <option value="">Ninguno</option><option value="0.125rem">XS (2px)</option><option value="0.25rem">SM (4px)</option><option value="0.375rem">MD (6px)</option>
               <option value="0.5rem">LG (8px)</option><option value="0.75rem">XL (12px)</option>
               <option value="1rem">2XL (16px)</option><option value="1.25rem">3XL (20px)</option><option value="1.5rem">4XL (24px)</option><option value="2rem">5XL (32px)</option><option value="9999px">Full (Pill)</option>
               {style.borderRadius && !['0.125rem','0.25rem','0.375rem','0.5rem','0.75rem','1rem','1.25rem','1.5rem','2rem','9999px'].includes(style.borderRadius) && (
@@ -648,7 +648,7 @@ export function StyleSettings({ block, onChange, currentViewport }: StyleSetting
               type="text"
               value={style.borderRadius || ''}
               onChange={(e) => updateStyle('borderRadius', e.target.value)}
-              placeholder="Custom"
+              placeholder="Personalizado"
               className={`${inputClass} w-20 shrink-0`}
             />
           </div>

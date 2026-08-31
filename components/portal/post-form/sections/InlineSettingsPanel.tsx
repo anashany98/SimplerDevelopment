@@ -34,7 +34,7 @@ export function InlineSettingsPanel({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Título</label>
           <input
             value={formData.title}
             onChange={handleTitleChange}
@@ -52,7 +52,7 @@ export function InlineSettingsPanel({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Type</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo</label>
           <ContentTypeSelect
             value={formData.postType}
             contentTypes={contentTypes}
@@ -61,14 +61,14 @@ export function InlineSettingsPanel({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
           <select
             value={formData.published ? 'published' : 'draft'}
             onChange={e => setFormData(prev => ({ ...prev, published: e.target.value === 'published' }))}
             className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
           >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
+            <option value="draft">Borrador</option>
+            <option value="published">Publicado</option>
           </select>
         </div>
         <div className="col-span-2">
@@ -116,7 +116,7 @@ export function InlineSettingsPanel({
         {/* Tags */}
         {availableTags.length > 0 && (
           <div className="col-span-2">
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Tags</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Etiquetas</label>
             <div className="flex flex-wrap gap-2">
               {availableTags.map(tag => {
                 const selected = formData.tagIds?.includes(tag.id);

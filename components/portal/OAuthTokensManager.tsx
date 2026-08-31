@@ -53,13 +53,13 @@ function TokenTable({
               <th className="px-3 py-2 font-medium">Scopes</th>
               <th className="px-3 py-2 font-medium">Last used</th>
               <th className="px-3 py-2 font-medium">Expires</th>
-              <th className="px-3 py-2 font-medium">Status</th>
+              <th className="px-3 py-2 font-medium">Estado</th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={colCount} className="px-3 py-4 text-center text-muted-foreground">Loading…</td></tr>
+              <tr><td colSpan={colCount} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && tokens.length === 0 && (
               <tr>
@@ -106,9 +106,9 @@ function TokenTable({
                     {t.revokedAt ? (
                       <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revoked</span>
                     ) : expired ? (
-                      <span className="text-xs px-2 py-0.5 bg-muted rounded">Expired</span>
+                      <span className="text-xs px-2 py-0.5 bg-muted rounded">Caducado</span>
                     ) : (
-                      <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Active</span>
+                      <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Activo</span>
                     )}
                   </td>
                   <td className="px-3 py-2 text-right">

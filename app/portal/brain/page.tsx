@@ -39,7 +39,7 @@ export default async function BrainDashboardPage() {
             <span className="material-icons text-base">error_outline</span>
             Couldn&apos;t load Company Brain
           </div>
-          <p>No client profile found for this user.</p>
+          <p>No se encontró un perfil de cliente para este usuario.</p>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default async function BrainDashboardPage() {
       <div className="max-w-3xl mx-auto py-12">
         <div className="bg-card border border-border rounded-lg p-8 text-center">
           <span className="material-icons text-5xl text-primary mb-3 block">psychology</span>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Company Brain</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Cerebro de empresa</h1>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">
             Company Brain isn&apos;t included on your current plan. Upgrade or start a trial to
             enable it.
@@ -78,7 +78,7 @@ export default async function BrainDashboardPage() {
       <div className="max-w-3xl mx-auto py-12">
         <div className="bg-card border border-border rounded-lg p-8 text-center">
           <span className="material-icons text-5xl text-primary mb-3 block">psychology</span>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Company Brain</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Cerebro de empresa</h1>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">
             A structured operating layer for your business. Capture communications, decisions, commitments,
             and tasks into a secure, AI-queryable command center. AI proposes — you approve.
@@ -108,7 +108,7 @@ export default async function BrainDashboardPage() {
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Knowledge"
+        eyebrow="Conocimiento"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">psychology</span>
@@ -121,9 +121,7 @@ export default async function BrainDashboardPage() {
             href="/portal/brain/settings"
             className={pBtnGhost}
           >
-            <span className="material-icons text-base">settings</span>
-            Settings
-          </Link>
+            <span className="material-icons text-base">settings</span>Ajustes</Link>
         }
       />
 

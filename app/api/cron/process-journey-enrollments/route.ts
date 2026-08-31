@@ -277,7 +277,7 @@ async function executeEmailStep(
 
   const subject = (cfg?.subject as string | undefined) ?? `Message from ${journey?.name ?? 'us'}`;
   const htmlContent = (cfg?.htmlContent as string | undefined) ?? '<p>This is an automated email.</p>';
-  const fromName = (cfg?.fromName as string | undefined) ?? 'SimplerDevelopment';
+  const fromName = (cfg?.fromName as string | undefined) ?? 'CRM AGENTS';
   const fromEmail = (cfg?.fromEmail as string | undefined) ?? (process.env.DEFAULT_FROM_EMAIL ?? 'noreply@simplerdevelopment.com');
 
   const unsubscribeUrl = buildUnsubscribeUrl(subscriber.unsubscribeToken);

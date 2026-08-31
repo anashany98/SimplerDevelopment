@@ -226,7 +226,7 @@ export default function CommandPalette({
 
     if (trimmed) {
       if (searchResults.length > 0) {
-        out.push({ kind: 'header', id: 'h-results', label: 'Notes' });
+        out.push({ kind: 'header', id: 'h-results', label: 'Notas' });
         for (const n of searchResults) {
           out.push({ kind: 'note', id: `n-${n.id}`, note: n });
         }
@@ -335,7 +335,7 @@ export default function CommandPalette({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search notes, or type > for actions…"
             className="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-muted-foreground"
-            aria-label="Search"
+            aria-label="Buscar"
           />
           {loading && (
             <span className="material-icons animate-spin text-sm text-muted-foreground">

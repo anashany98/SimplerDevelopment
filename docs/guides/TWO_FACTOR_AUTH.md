@@ -40,7 +40,7 @@ reference for how the flow works and how to test it (AUTH79-005).
 1. User clicks **Enable** → `POST /api/portal/settings/mfa/setup`.
    - Server mints a fresh secret, writes it to `users.totp_secret` (encrypted),
      leaves `mfa_enabled=false`, and returns `{ secret, otpauthUri }`.
-   - `otpauthUri` is `otpauth://totp/SimplerDevelopment:<email>?secret=...&issuer=SimplerDevelopment`
+   - `otpauthUri` is `otpauth://totp/CRM%20AGENTS:<email>?secret=...&issuer=CRM%20AGENTS`
      — render it as a QR code, or the user types the `secret` into their app manually.
 2. User scans the QR, then enters the current 6-digit code →
    `POST /api/portal/settings/mfa/verify-and-enable { code }`.

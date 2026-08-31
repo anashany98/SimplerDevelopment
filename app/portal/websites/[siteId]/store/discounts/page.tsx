@@ -135,26 +135,26 @@ export default function DiscountsPage() {
       if (data.success) {
         setShowModal(false);
         setEditing(null);
-        setSuccess(editing ? 'Discount updated.' : 'Discount created.');
+        setSuccess(editing ? 'Descuento actualizado.' : 'Descuento creado.');
         load();
       } else {
-        setError(data.message || 'Failed to save discount.');
+        setError(data.message || 'No se pudo guardar el descuento.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this discount code? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar este código de descuento? Esta acción no se puede deshacer.')) return;
     try {
       await fetch(`${base}/${id}`, { method: 'DELETE' });
-      setSuccess('Discount deleted.');
+      setSuccess('Descuento eliminado.');
       load();
     } catch {
-      setError('Failed to delete.');
+      setError('No se pudo eliminar.');
     }
   };
 
@@ -173,9 +173,9 @@ export default function DiscountsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Store"
-        title="Discount Codes"
-        subtitle="Create and manage discount codes for your store."
+        eyebrow="Tienda"
+        title="Códigos de descuento"
+        subtitle="Crea y gestiona códigos de descuento para tu tienda."
         actions={
           <button onClick={openCreate} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
@@ -203,14 +203,14 @@ export default function DiscountsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowModal(false)}>
           <div className="bg-card border border-border rounded-2xl shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 py-4 border-b border-border flex items-center justify-between">
-              <h2 className="font-semibold text-foreground">{editing ? 'Edit Discount' : 'New Discount'}</h2>
+              <h2 className="font-semibold text-foreground">{editing ? 'Editar descuento' : 'Nuevo descuento'}</h2>
               <button onClick={() => setShowModal(false)} className="p-1 text-muted-foreground hover:text-foreground transition-colors">
                 <span className="material-icons text-lg">close</span>
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Code</label>
+                <label className="text-sm font-medium text-foreground">Código</label>
                 <input
                   value={form.code}
                   onChange={(e) => setForm((p) => ({ ...p, code: e.target.value }))}
@@ -221,16 +221,16 @@ export default function DiscountsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Type</label>
+                  <label className="text-sm font-medium text-foreground">Tipo</label>
                   <select value={form.discountType} onChange={(e) => setForm((p) => ({ ...p, discountType: e.target.value }))} className={inputClass}>
-                    <option value="percent">Percentage</option>
-                    <option value="fixed_amount">Fixed Amount ($)</option>
-                    <option value="free_shipping">Free Shipping</option>
+                    <option value="percent">Porcentaje</option>
+                    <option value="fixed_amount">Monto fijo ($)</option>
+                    <option value="free_shipping">Envío gratis</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-foreground">
-                    {form.discountType === 'percent' ? 'Discount (%)' : form.discountType === 'fixed_amount' ? 'Amount ($)' : 'Amount'}
+                    {form.discountType === 'percent' ? 'Discount (%)' : form.discountType === 'fixed_amount' ? 'Amount ($)' : 'Monto'}
                   </label>
                   <input
                     type="number"
@@ -246,32 +246,32 @@ export default function DiscountsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Min Order ($)</label>
+                  <label className="text-sm font-medium text-foreground">Pedido mínimo ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     min="0"
                     value={centsToDollars(form.minOrderAmount)}
                     onChange={(e) => setForm((p) => ({ ...p, minOrderAmount: dollarsToCents(e.target.value) }))}
-                    placeholder="No minimum"
+                    placeholder="Sin mínimo"
                     className={inputClass}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Max Uses</label>
+                  <label className="text-sm font-medium text-foreground">Usos máx.</label>
                   <input
                     type="number"
                     min="0"
                     value={form.maxUses}
                     onChange={(e) => setForm((p) => ({ ...p, maxUses: e.target.value }))}
-                    placeholder="Unlimited"
+                    placeholder="Ilimitado"
                     className={inputClass}
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Start Date</label>
+                  <label className="text-sm font-medium text-foreground">Fecha de inicio</label>
                   <input
                     type="date"
                     value={form.startsAt}
@@ -280,7 +280,7 @@ export default function DiscountsPage() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">End Date</label>
+                  <label className="text-sm font-medium text-foreground">Fecha de fin</label>
                   <input
                     type="date"
                     value={form.expiresAt}
@@ -290,7 +290,7 @@ export default function DiscountsPage() {
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label id="discount-active-label" className="text-sm font-medium text-foreground">Active</label>
+                <label id="discount-active-label" className="text-sm font-medium text-foreground">Activo</label>
                 <div className="flex items-center gap-3 pt-1">
                   <button
                     type="button"
@@ -308,7 +308,7 @@ export default function DiscountsPage() {
                       }`}
                     />
                   </button>
-                  <span className="text-sm text-muted-foreground">{form.active ? 'Active' : 'Inactive'}</span>
+                  <span className="text-sm text-muted-foreground">{form.active ? 'Activo' : 'Inactivo'}</span>
                 </div>
               </div>
 
@@ -324,16 +324,14 @@ export default function DiscountsPage() {
                   type="button"
                   onClick={() => setShowModal(false)}
                   className={pBtnGhost}
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
                 <button
                   type="submit"
                   disabled={saving}
                   className={`${pBtnPrimary} disabled:opacity-50`}
                 >
                   {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                  {editing ? 'Update' : 'Create'} Discount
+                  {editing ? 'Actualizar' : 'Crear'} Discount
                 </button>
               </div>
             </form>
@@ -345,8 +343,8 @@ export default function DiscountsPage() {
       {discounts.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-10 flex flex-col items-center text-center">
           <span className="material-icons text-4xl text-muted-foreground/40 mb-2">sell</span>
-          <h2 className="font-semibold text-foreground mb-1">No discount codes</h2>
-          <p className="text-sm text-muted-foreground">Create your first discount code to offer promotions.</p>
+          <h2 className="font-semibold text-foreground mb-1">Sin códigos de descuento</h2>
+          <p className="text-sm text-muted-foreground">Crea tu primer código de descuento para ofrecer promociones.</p>
         </div>
       ) : (
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
@@ -354,13 +352,13 @@ export default function DiscountsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Code</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Type</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Amount</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Min Order</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Uses</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Dates</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Código</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Tipo</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Monto</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Pedido mínimo</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Usos</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Estado</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Fechas</th>
                   <th className="px-4 py-3 text-xs font-medium text-muted-foreground w-20"></th>
                 </tr>
               </thead>
@@ -369,7 +367,7 @@ export default function DiscountsPage() {
                   <tr key={d.id} className="hover:bg-accent/50 transition-colors">
                     <td className="px-4 py-3 font-mono font-medium text-foreground">{d.code}</td>
                     <td className="px-4 py-3 text-muted-foreground capitalize">
-                      {d.discountType === 'free_shipping' ? 'Free Ship' : d.discountType === 'fixed_amount' ? 'Fixed' : d.discountType}
+                      {d.discountType === 'free_shipping' ? 'Envío gratis' : d.discountType === 'fixed_amount' ? 'Fijo' : d.discountType}
                     </td>
                     <td className="px-4 py-3 text-foreground">
                       {d.discountType === 'percent'
@@ -391,7 +389,7 @@ export default function DiscountsPage() {
                             : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                         }`}
                       >
-                        {d.active ? 'Active' : 'Inactive'}
+                        {d.active ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">

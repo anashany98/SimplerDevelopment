@@ -301,7 +301,7 @@ export async function PUT(
     }
     if (stripeMode === 'byok' && settings?.stripeByokAllowed !== true) {
       return NextResponse.json(
-        { success: false, message: 'BYOK not enabled for this site by SimplerDevelopment admin' },
+        { success: false, message: 'BYOK not enabled for this site by CRM AGENTS admin' },
         { status: 403 },
       );
     }

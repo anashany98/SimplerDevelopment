@@ -24,7 +24,7 @@ type Tab = 'overview' | 'edit' | 'flow' | 'recommendation' | 'variants' | 'respo
 
 const TABS: { key: Tab; label: (responseCount: number) => string; icon: string }[] = [
   { key: 'overview', label: () => 'Overview', icon: 'dashboard' },
-  { key: 'edit', label: () => 'Edit', icon: 'edit' },
+  { key: 'edit', label: () => 'Editar', icon: 'edit' },
   { key: 'flow', label: () => 'Flow', icon: 'account_tree' },
   { key: 'recommendation', label: () => 'Recommendation', icon: 'recommend' },
   { key: 'variants', label: () => 'Variants', icon: 'science' },
@@ -212,7 +212,7 @@ export default function SurveyDetailPage() {
     return (
       <div className="max-w-5xl mx-auto text-center py-20">
         <span className="material-icons text-5xl text-muted-foreground/50">error_outline</span>
-        <p className="mt-3 text-muted-foreground">Survey not found</p>
+        <p className="mt-3 text-muted-foreground">Encuesta no encontrada</p>
         <Link href="/portal/surveys" className="text-primary text-sm mt-2 inline-block">
           Back to Surveys
         </Link>

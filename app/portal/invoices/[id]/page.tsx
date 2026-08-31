@@ -39,7 +39,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Link href="/portal/billing" className="hover:text-foreground transition-colors">Billing</Link>
+        <Link href="/portal/billing" className="hover:text-foreground transition-colors">Facturación</Link>
         <span className="material-icons text-sm">chevron_right</span>
         <span className="text-foreground">{invoice.number}</span>
       </div>
@@ -51,8 +51,8 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           <div>
             <h1 className="text-2xl font-bold text-foreground">{invoice.number}</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Issued {new Date(invoice.createdAt).toLocaleDateString()}
-              {invoice.dueDate && ` · Due ${new Date(invoice.dueDate).toLocaleDateString()}`}
+              Emitida el {new Date(invoice.createdAt).toLocaleDateString()}
+              {invoice.dueDate && ` · Vence el ${new Date(invoice.dueDate).toLocaleDateString()}`}
             </p>
           </div>
           <span className={`text-sm px-3 py-1 rounded-full font-medium ${invoiceStatusColor(invoice.status)}`}>
@@ -65,9 +65,9 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left border-b border-border">
-                <th className="pb-2 font-medium text-muted-foreground">Description</th>
-                <th className="pb-2 font-medium text-muted-foreground text-right">Qty</th>
-                <th className="pb-2 font-medium text-muted-foreground text-right">Unit Price</th>
+                <th className="pb-2 font-medium text-muted-foreground">Descripción</th>
+                <th className="pb-2 font-medium text-muted-foreground text-right">Cantidad</th>
+                <th className="pb-2 font-medium text-muted-foreground text-right">Precio unitario</th>
                 <th className="pb-2 font-medium text-muted-foreground text-right">Total</th>
               </tr>
             </thead>
@@ -91,7 +91,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             </div>
             {invoice.tax > 0 && (
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Tax</span>
+                <span>Impuestos</span>
                 <span>{formatCents(invoice.tax)}</span>
               </div>
             )}
@@ -104,7 +104,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           {/* Notes */}
           {invoice.notes && (
             <div className="mt-4 p-3 bg-muted/50 rounded-xl text-sm text-muted-foreground">
-              <strong className="text-foreground">Notes:</strong> {invoice.notes}
+              <strong className="text-foreground">Notas:</strong> {invoice.notes}
             </div>
           )}
         </div>
@@ -114,8 +114,8 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
           <div className="p-6 bg-primary/5 border-t border-primary/20">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold text-foreground">Amount due: {formatCents(invoice.total)}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Pay securely via Stripe — all major cards accepted.</p>
+                <p className="font-semibold text-foreground">Importe pendiente: {formatCents(invoice.total)}</p>
+                <p className="text-sm text-muted-foreground mt-0.5">Paga de forma segura mediante Stripe; se aceptan las principales tarjetas.</p>
               </div>
               <PayInvoiceButton invoiceId={invoiceId} total={invoice.total} />
             </div>
@@ -125,7 +125,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
         {invoice.status === 'paid' && invoice.paidAt && (
           <div className="p-4 bg-green-50 border-t border-green-100 flex items-center gap-2 text-sm text-green-700">
             <span className="material-icons text-base">check_circle</span>
-            Paid on {new Date(invoice.paidAt).toLocaleDateString()}
+            Pagada el {new Date(invoice.paidAt).toLocaleDateString()}
           </div>
         )}
       </div>

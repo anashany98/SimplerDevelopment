@@ -274,9 +274,7 @@ export default function NoteEditorPane({
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 

@@ -1,5 +1,5 @@
 /**
- * Typed registry types for the SimplerDevelopment Agentic OS.
+ * Typed registry types for the CRM AGENTS Agentic OS.
  *
  * `./registry.ts` (the SKILLS array) is the source of truth for the skill
  * catalog — the admin catalog UI and the headless executor both read from it

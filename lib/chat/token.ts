@@ -12,15 +12,15 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 const TTL_MS = 24 * 60 * 60 * 1000; // 24h
+const ATTACHMENT_TTL_MS = 15 * 60 * 1000;
 
 function getSecret(): string {
-  return (
-    process.env.CHAT_TOKEN_SECRET ||
-    process.env.NEXTAUTH_SECRET ||
-    // Dev-only fallback — emits the same value across reloads so tokens
-    // stay valid in `bun dev`. NEVER rely on this in production.
-    'dev-chat-token-secret'
-  );
+  const configured = process.env.CHAT_TOKEN_SECRET || process.env.NEXTAUTH_SECRET;
+  if (configured) return configured;
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('CHAT_TOKEN_SECRET or NEXTAUTH_SECRET is required in production');
+  }
+  return 'dev-chat-token-secret';
 }
 
 function sign(payload: string): string {
@@ -61,4 +61,51 @@ export function verifyVisitorToken(token: string | null | undefined): VerifiedVi
   if (!ok) return null;
   if (Date.now() > expiresAt) return null;
   return { conversationId, expiresAt };
+}
+
+/**
+ * Attachment references are scoped to one visitor conversation.  The media
+ * proxy URL itself is deliberately public so recipients can render an image,
+ * but a visitor must not be able to attach another conversation's object just
+ * by guessing its path.
+ */
+export function issueChatAttachmentToken(
+  conversationId: number,
+  pathname: string,
+  ttlMs: number = ATTACHMENT_TTL_MS,
+): string {
+  const expiresAt = Date.now() + ttlMs;
+  const encodedPath = Buffer.from(pathname, 'utf8').toString('base64url');
+  const payload = `${conversationId}.${expiresAt}.${encodedPath}`;
+  return `${payload}.${sign(payload)}`;
+}
+
+export function verifyChatAttachmentToken(
+  token: string | null | undefined,
+  conversationId: number,
+  pathname: string,
+): boolean {
+  if (!token || typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 4) return false;
+  const [conversationIdText, expiresAtText, encodedPath, signature] = parts;
+  if (Number.parseInt(conversationIdText, 10) !== conversationId) return false;
+  const expiresAt = Number.parseInt(expiresAtText, 10);
+  if (!Number.isInteger(expiresAt) || expiresAt <= Date.now()) return false;
+
+  let tokenPath: string;
+  try {
+    tokenPath = Buffer.from(encodedPath, 'base64url').toString('utf8');
+  } catch {
+    return false;
+  }
+  if (tokenPath !== pathname) return false;
+
+  const expected = sign(`${conversationIdText}.${expiresAtText}.${encodedPath}`);
+  if (signature.length !== expected.length) return false;
+  try {
+    return timingSafeEqual(Buffer.from(signature, 'hex'), Buffer.from(expected, 'hex'));
+  } catch {
+    return false;
+  }
 }

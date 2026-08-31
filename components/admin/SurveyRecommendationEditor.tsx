@@ -250,7 +250,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                         className={`${inputCls} font-mono`}
                       />
                     </Field>
-                    <Field label="Name" inline>
+                    <Field label="Nombre" inline>
                       <input
                         type="text"
                         value={off.name}
@@ -284,7 +284,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                   />
                 </Field>
                 <div className="grid grid-cols-2 gap-2">
-                  <Field label="Price" inline>
+                  <Field label="Precio" inline>
                     <input
                       type="text"
                       value={off.price}
@@ -293,7 +293,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                       placeholder="$7,500"
                     />
                   </Field>
-                  <Field label="Duration" inline>
+                  <Field label="Duración" inline>
                     <input
                       type="text"
                       value={off.duration}
@@ -393,7 +393,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                   <button
                     onClick={() => removeOverride(idx)}
                     className="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                    title="Remove"
+                    title="Quitar"
                   >
                     <span className="material-icons text-sm">delete</span>
                   </button>
@@ -467,14 +467,10 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
         icon="merge"
         action={c.hybrid ? (
           <button onClick={disableHybrid} className={btnSecondaryCls}>
-            <span className="material-icons text-sm">close</span>
-            Disable
-          </button>
+            <span className="material-icons text-sm">close</span>Desactivar</button>
         ) : (
           <button onClick={enableHybrid} className={btnSecondaryCls}>
-            <span className="material-icons text-sm">add</span>
-            Enable
-          </button>
+            <span className="material-icons text-sm">add</span>Activar</button>
         )}
       >
         <p className="text-xs text-muted-foreground mb-2">
@@ -484,7 +480,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
           <p className="text-xs text-muted-foreground text-center py-4">No hybrid rule.</p>
         ) : (
           <div className="space-y-2">
-            <Field label="Title" inline>
+            <Field label="Título" inline>
               <input
                 type="text"
                 value={c.hybrid.title}
@@ -493,7 +489,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                 placeholder="e.g. A Snapshot into a Roadmap."
               />
             </Field>
-            <Field label="Body" inline>
+            <Field label="Cuerpo" inline>
               <textarea
                 value={c.hybrid.body}
                 onChange={e => updateHybrid({ body: e.target.value })}

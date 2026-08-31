@@ -85,14 +85,14 @@ export default function NewPlaybookPage() {
           Playbooks
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">play_circle</span>
               New playbook
             </span>
           }
-          subtitle="Starts as a draft. Add steps in the next screen, then activate when ready."
+          subtitle="Comienza como borrador. Añade pasos en la siguiente pantalla y actívalo cuando estés listo."
         />
       </div>
 

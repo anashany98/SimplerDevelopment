@@ -143,7 +143,7 @@ export function IconPicker({ value, onChange, label = 'Icon' }: IconPickerProps)
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search icons..."
+              placeholder="Buscar iconos..."
               className="w-full px-2.5 py-1.5 text-sm rounded border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>

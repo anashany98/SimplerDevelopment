@@ -1,6 +1,6 @@
 {
   "manifestVersion": 1,
-  "toolCount": 481,
+  "toolCount": 521,
   "domains": [
     {
       "name": "agent",
@@ -13,6 +13,10 @@
     {
       "name": "approvals",
       "tools": 4
+    },
+    {
+      "name": "assign",
+      "tools": 1
     },
     {
       "name": "automations",
@@ -39,6 +43,10 @@
       "tools": 9
     },
     {
+      "name": "cancel",
+      "tools": 1
+    },
+    {
       "name": "chat",
       "tools": 5
     },
@@ -47,8 +55,20 @@
       "tools": 2
     },
     {
+      "name": "close",
+      "tools": 1
+    },
+    {
+      "name": "connect",
+      "tools": 1
+    },
+    {
       "name": "contracts",
       "tools": 4
+    },
+    {
+      "name": "create",
+      "tools": 3
     },
     {
       "name": "crm",
@@ -63,8 +83,20 @@
       "tools": 12
     },
     {
+      "name": "delete",
+      "tools": 1
+    },
+    {
+      "name": "disconnect",
+      "tools": 1
+    },
+    {
       "name": "email",
       "tools": 20
+    },
+    {
+      "name": "get",
+      "tools": 8
     },
     {
       "name": "gift",
@@ -91,8 +123,24 @@
       "tools": 4
     },
     {
+      "name": "list",
+      "tools": 5
+    },
+    {
+      "name": "mark",
+      "tools": 1
+    },
+    {
       "name": "media",
       "tools": 5
+    },
+    {
+      "name": "merge",
+      "tools": 1
+    },
+    {
+      "name": "move",
+      "tools": 1
     },
     {
       "name": "my",
@@ -109,6 +157,10 @@
     {
       "name": "pathviz",
       "tools": 13
+    },
+    {
+      "name": "pause",
+      "tools": 1
     },
     {
       "name": "post",
@@ -135,12 +187,36 @@
       "tools": 5
     },
     {
+      "name": "reopen",
+      "tools": 1
+    },
+    {
+      "name": "reschedule",
+      "tools": 1
+    },
+    {
+      "name": "return",
+      "tools": 1
+    },
+    {
+      "name": "search",
+      "tools": 2
+    },
+    {
+      "name": "send",
+      "tools": 3
+    },
+    {
       "name": "seo",
       "tools": 3
     },
     {
       "name": "service",
       "tools": 3
+    },
+    {
+      "name": "set",
+      "tools": 1
     },
     {
       "name": "sites",
@@ -163,6 +239,10 @@
       "tools": 7
     },
     {
+      "name": "take",
+      "tools": 1
+    },
+    {
       "name": "taxonomies",
       "tools": 3
     },
@@ -173,6 +253,14 @@
     {
       "name": "tickets",
       "tools": 6
+    },
+    {
+      "name": "update",
+      "tools": 3
+    },
+    {
+      "name": "upsert",
+      "tools": 1
     },
     {
       "name": "usage",
@@ -489,6 +577,26 @@
           "type": "string",
           "required": false,
           "desc": "Reason shown to the original submitter."
+        }
+      ]
+    },
+    {
+      "name": "assign_conversation",
+      "cmd": "assign conversation",
+      "domain": "assign",
+      "desc": "Assign a conversation to a tenant user or unassign it.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "userId",
+          "type": "number",
+          "required": true
         }
       ]
     },
@@ -6512,6 +6620,26 @@
       ]
     },
     {
+      "name": "cancel_booking",
+      "cmd": "cancel booking",
+      "domain": "cancel",
+      "desc": "Cancel a tenant booking without deleting its audit history.",
+      "destructive": false,
+      "scope": "bookings:write",
+      "args": [
+        {
+          "name": "bookingId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "chat_conversation_reply",
       "cmd": "chat conversation-reply",
       "domain": "chat",
@@ -6669,6 +6797,58 @@
       ]
     },
     {
+      "name": "close_conversation",
+      "cmd": "close conversation",
+      "domain": "close",
+      "desc": "Close a tenant conversation and stop AI handling.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "connect_channel",
+      "cmd": "connect channel",
+      "domain": "connect",
+      "desc": "Store a tenant-owned provider asset. Credentials are encrypted at rest and never returned.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "channel",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "whatsapp",
+            "instagram",
+            "messenger",
+            "webchat",
+            "email"
+          ]
+        },
+        {
+          "name": "externalAccountId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "credentials",
+          "type": "json",
+          "required": true
+        }
+      ]
+    },
+    {
       "name": "contracts_create",
       "cmd": "contracts create",
       "domain": "contracts",
@@ -6818,6 +6998,137 @@
           "name": "reason",
           "type": "string",
           "required": false
+        }
+      ]
+    },
+    {
+      "name": "create_automation",
+      "cmd": "create automation",
+      "domain": "create",
+      "desc": "Create a rule using the existing Automation Engine.",
+      "destructive": false,
+      "scope": "automations:write",
+      "args": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "trigger",
+          "type": "json",
+          "required": true
+        },
+        {
+          "name": "conditions",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "actions",
+          "type": "json",
+          "required": true
+        },
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "create_booking",
+      "cmd": "create booking",
+      "domain": "create",
+      "desc": "Create a free booking after deterministic availability and capacity checks. Paid bookings require checkout.",
+      "destructive": false,
+      "scope": "bookings:write",
+      "args": [
+        {
+          "name": "bookingPageId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "startTime",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "guestName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "guestEmail",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "guestPhone",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "attendees",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "create_contact",
+      "cmd": "create contact",
+      "domain": "create",
+      "desc": "Create a tenant CRM contact using the existing normalized contact model.",
+      "destructive": false,
+      "scope": "crm:write",
+      "args": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "active",
+            "inactive",
+            "lead",
+            "customer"
+          ]
         }
       ]
     },
@@ -8313,6 +8624,41 @@
       ]
     },
     {
+      "name": "delete_automation",
+      "cmd": "delete automation",
+      "domain": "delete",
+      "desc": "Delete one tenant automation rule.",
+      "destructive": false,
+      "scope": "automations:delete",
+      "args": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "disconnect_channel",
+      "cmd": "disconnect channel",
+      "domain": "disconnect",
+      "desc": "Revoke provider permissions and remove locally stored credentials.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "connectionId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "forceLocal",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "email_analytics_get",
       "cmd": "email analytics-get",
       "domain": "email",
@@ -8870,6 +9216,147 @@
             "transactional",
             "custom"
           ]
+        }
+      ]
+    },
+    {
+      "name": "get_ai_config",
+      "cmd": "get ai-config",
+      "domain": "get",
+      "desc": "Get redacted tenant AI configuration.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": []
+    },
+    {
+      "name": "get_availability",
+      "cmd": "get availability",
+      "domain": "get",
+      "desc": "Return available slots from the existing Booking Engine for an ISO interval (maximum 14 days).",
+      "destructive": false,
+      "scope": "bookings:read",
+      "args": [
+        {
+          "name": "bookingPageId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "start",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "end",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "get_channel_metrics",
+      "cmd": "get channel-metrics",
+      "domain": "get",
+      "desc": "Aggregate inbound/outbound messages and delivery state by channel.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "days",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "whatsapp",
+            "instagram",
+            "messenger",
+            "webchat",
+            "email"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "get_channel_status",
+      "cmd": "get channel-status",
+      "domain": "get",
+      "desc": "Get health and capability metadata for one tenant-owned channel without credentials.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "connectionId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "get_contact",
+      "cmd": "get contact",
+      "domain": "get",
+      "desc": "Get one tenant CRM contact and its provider identities.",
+      "destructive": false,
+      "scope": "crm:read",
+      "args": [
+        {
+          "name": "contactId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "get_conversation",
+      "cmd": "get conversation",
+      "domain": "get",
+      "desc": "Get one tenant-owned conversation with normalized messages.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "get_inbox_metrics",
+      "cmd": "get inbox-metrics",
+      "domain": "get",
+      "desc": "Aggregate conversation volume, open workload and response state for a bounded lookback.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "days",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "get_pipeline",
+      "cmd": "get pipeline",
+      "domain": "get",
+      "desc": "Get tenant CRM pipelines and their ordered stages.",
+      "destructive": false,
+      "scope": "crm:read",
+      "args": [
+        {
+          "name": "pipelineId",
+          "type": "number",
+          "required": false
         }
       ]
     },
@@ -10355,12 +10842,133 @@
       "args": []
     },
     {
+      "name": "list_automations",
+      "cmd": "list automations",
+      "domain": "list",
+      "desc": "List tenant automation rules.",
+      "destructive": false,
+      "scope": "automations:read",
+      "args": []
+    },
+    {
+      "name": "list_booking_services",
+      "cmd": "list booking-services",
+      "domain": "list",
+      "desc": "List active booking pages used as bookable services.",
+      "destructive": false,
+      "scope": "bookings:read",
+      "args": []
+    },
+    {
+      "name": "list_channels",
+      "cmd": "list channels",
+      "domain": "list",
+      "desc": "List tenant channel connections without returning encrypted credentials.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": []
+    },
+    {
+      "name": "list_conversations",
+      "cmd": "list conversations",
+      "domain": "list",
+      "desc": "List normalized conversations across all connected channels.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "open",
+            "assigned",
+            "closed"
+          ]
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "whatsapp",
+            "instagram",
+            "messenger",
+            "webchat",
+            "email"
+          ]
+        },
+        {
+          "name": "assignedUserId",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "aiMode",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "ai",
+            "human",
+            "paused",
+            "hybrid",
+            "closed"
+          ]
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "list_messages",
+      "cmd": "list messages",
+      "domain": "list",
+      "desc": "Page through normalized messages for one tenant-owned conversation.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "list_workflows",
       "cmd": "workflows list",
       "domain": "workflows",
       "desc": "List the guided content workflows this portal supports (create a page, deck, email, survey, website, or booking page). Call this to discover what you can produce, then call `get_workflow` to load the step-by-step instructions BEFORE creating anything.",
       "destructive": false,
       "args": []
+    },
+    {
+      "name": "mark_read",
+      "cmd": "mark read",
+      "domain": "mark",
+      "desc": "Mark received messages through a timestamp as read in the unified inbox.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "through",
+          "type": "string",
+          "required": false
+        }
+      ]
     },
     {
       "name": "media_delete",
@@ -10509,6 +11117,56 @@
           "type": "number",
           "required": true,
           "desc": "Exact byte count the caller will send. Capped at 25 MB; signed into the URL so S3 rejects mismatches."
+        }
+      ]
+    },
+    {
+      "name": "merge_contacts",
+      "cmd": "merge contacts",
+      "domain": "merge",
+      "desc": "Explicitly merge a secondary contact into a primary, preserving channel identities and conversation history.",
+      "destructive": false,
+      "scope": "crm:write",
+      "args": [
+        {
+          "name": "primaryId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "secondaryId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "move_deal",
+      "cmd": "move deal",
+      "domain": "move",
+      "desc": "Move a tenant deal to an owned pipeline stage and optionally set won/lost state.",
+      "destructive": false,
+      "scope": "crm:write",
+      "args": [
+        {
+          "name": "dealId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "stageId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "open",
+            "won",
+            "lost"
+          ]
         }
       ]
     },
@@ -11108,6 +11766,21 @@
         {
           "name": "files",
           "type": "json",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "pause_ai",
+      "cmd": "pause ai",
+      "domain": "pause",
+      "desc": "Pause automatic AI handling without closing the conversation.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
           "required": true
         }
       ]
@@ -12600,6 +13273,244 @@
       ]
     },
     {
+      "name": "reopen_conversation",
+      "cmd": "reopen conversation",
+      "domain": "reopen",
+      "desc": "Reopen a tenant conversation in hybrid mode.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "reschedule_booking",
+      "cmd": "reschedule booking",
+      "domain": "reschedule",
+      "desc": "Reschedule after checking service availability and capacity.",
+      "destructive": false,
+      "scope": "bookings:write",
+      "args": [
+        {
+          "name": "bookingId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "startTime",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "return_conversation_to_ai",
+      "cmd": "return conversation-to-ai",
+      "domain": "return",
+      "desc": "Remove the human assignment and resume automatic AI handling.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "search_contacts",
+      "cmd": "search contacts",
+      "domain": "search",
+      "desc": "Search tenant CRM contacts by name, email or phone.",
+      "destructive": false,
+      "scope": "crm:read",
+      "args": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "search_conversations",
+      "cmd": "search conversations",
+      "domain": "search",
+      "desc": "Search tenant conversations by participant or message text.",
+      "destructive": false,
+      "scope": "chat:read",
+      "args": [
+        {
+          "name": "query",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "whatsapp",
+            "instagram",
+            "messenger",
+            "webchat",
+            "email"
+          ]
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "send_media",
+      "cmd": "send media",
+      "domain": "send",
+      "desc": "Queue one policy-checked media attachment from a public HTTPS URL.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "image",
+            "video",
+            "audio",
+            "file"
+          ]
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "mimeType",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "caption",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "support",
+            "transactional",
+            "marketing"
+          ]
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "send_message",
+      "cmd": "send message",
+      "domain": "send",
+      "desc": "Queue a policy-checked outbound message through the conversation channel.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "support",
+            "transactional",
+            "marketing"
+          ]
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "send_template_message",
+      "cmd": "send template-message",
+      "domain": "send",
+      "desc": "Queue an approved WhatsApp template, including outside the service window.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "templateName",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "components",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "seo_audit_get",
       "cmd": "seo audit-get",
       "domain": "seo",
@@ -12707,6 +13618,33 @@
             "reviewed",
             "approved",
             "rejected"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "set_ai_mode",
+      "cmd": "set ai-mode",
+      "domain": "set",
+      "desc": "Set AI, HUMAN, PAUSED, HYBRID or CLOSED mode.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "ai",
+            "human",
+            "paused",
+            "hybrid",
+            "closed"
           ]
         }
       ]
@@ -14322,6 +15260,21 @@
       ]
     },
     {
+      "name": "take_over_conversation",
+      "cmd": "take over-conversation",
+      "domain": "take",
+      "desc": "Assign the conversation to the calling user and put AI in HUMAN mode.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "conversationId",
+          "type": "number",
+          "required": true
+        }
+      ]
+    },
+    {
       "name": "taxonomies_create_category",
       "cmd": "taxonomies create-category",
       "domain": "taxonomies",
@@ -14688,6 +15641,186 @@
           "type": "number",
           "required": false,
           "desc": "User id; pass null to unassign."
+        }
+      ]
+    },
+    {
+      "name": "update_ai_config",
+      "cmd": "update ai-config",
+      "domain": "update",
+      "desc": "Configure platform or allowlisted OpenAI-compatible inference. API keys are encrypted.",
+      "destructive": false,
+      "scope": "chat:write",
+      "args": [
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "name": "provider",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "platform",
+            "openai-compatible"
+          ]
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "baseUrl",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "apiKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "autoSendMinConfidence",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "systemPrompt",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "update_automation",
+      "cmd": "update automation",
+      "domain": "update",
+      "desc": "Update tenant automation trigger, conditions, actions or enabled state.",
+      "destructive": false,
+      "scope": "automations:write",
+      "args": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "trigger",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "conditions",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "actions",
+          "type": "json",
+          "required": false
+        },
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "update_contact",
+      "cmd": "update contact",
+      "domain": "update",
+      "desc": "Update allowed fields on one tenant-owned CRM contact.",
+      "destructive": false,
+      "scope": "crm:write",
+      "args": [
+        {
+          "name": "contactId",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "enum": [
+            "active",
+            "inactive",
+            "lead",
+            "customer"
+          ]
+        },
+        {
+          "name": "ownerId",
+          "type": "number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "upsert_contact",
+      "cmd": "upsert contact",
+      "domain": "upsert",
+      "desc": "Conservatively upsert by exact normalized email or phone; never fuzzy-merge.",
+      "destructive": false,
+      "scope": "crm:write",
+      "args": [
+        {
+          "name": "email",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "displayName",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false
         }
       ]
     },

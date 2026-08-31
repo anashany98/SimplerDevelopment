@@ -9,8 +9,8 @@ interface Props {
 
 const SEVERITY_STYLES: Record<AuditSeverity, { bg: string; fg: string; icon: string; label: string }> = {
   error: { bg: 'bg-red-50 border-red-200', fg: 'text-red-700', icon: 'error', label: 'Error' },
-  warn: { bg: 'bg-yellow-50 border-yellow-200', fg: 'text-yellow-700', icon: 'warning', label: 'Warning' },
-  info: { bg: 'bg-blue-50 border-blue-200', fg: 'text-blue-700', icon: 'info', label: 'Info' },
+  warn: { bg: 'bg-yellow-50 border-yellow-200', fg: 'text-yellow-700', icon: 'warning', label: 'Advertencia' },
+  info: { bg: 'bg-blue-50 border-blue-200', fg: 'text-blue-700', icon: 'info', label: 'Información' },
 };
 
 export function BrandAuditPanel({ profileId }: Props) {
@@ -42,7 +42,7 @@ export function BrandAuditPanel({ profileId }: Props) {
       <div className="flex items-center justify-between gap-3">
         <div>
           <h4 className="text-sm font-semibold text-foreground">Brand audit</h4>
-          <p className="text-xs text-muted-foreground">Check accessibility, completeness, and consistency.</p>
+          <p className="text-xs text-muted-foreground">Comprueba accesibilidad, integridad y coherencia.</p>
         </div>
         <button
           type="button"

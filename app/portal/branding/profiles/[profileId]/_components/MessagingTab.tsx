@@ -48,7 +48,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className={LABEL_CLASS}>Company Name</label>
+            <label className={LABEL_CLASS}>Nombre de la empresa</label>
             <input
               type="text"
               value={messaging.companyName}
@@ -63,7 +63,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
               type="text"
               value={messaging.tagline}
               onChange={(e) => updateMessaging('tagline', e.target.value)}
-              placeholder="Building the future, today"
+              placeholder="Construyendo el futuro, hoy"
               className={INPUT_CLASS}
             />
           </div>
@@ -74,7 +74,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.missionStatement}
           onChange={(v) => updateMessaging('missionStatement', v)}
           openRewrite={openRewrite}
-          placeholder="What is your company's mission?"
+          placeholder="¿Cuál es la misión de tu empresa?"
         />
         <FieldWithRewrite
           field="visionStatement"
@@ -82,7 +82,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.visionStatement}
           onChange={(v) => updateMessaging('visionStatement', v)}
           openRewrite={openRewrite}
-          placeholder="What is your long-term vision?"
+          placeholder="¿Cuál es tu visión a largo plazo?"
         />
         <FieldWithRewrite
           field="valueProposition"
@@ -90,7 +90,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.valueProposition}
           onChange={(v) => updateMessaging('valueProposition', v)}
           openRewrite={openRewrite}
-          placeholder="What unique value do you provide to customers?"
+          placeholder="¿Qué valor único ofreces a tus clientes?"
         />
       </div>
 
@@ -101,7 +101,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           Brand Voice
         </h3>
         <div>
-          <label className={LABEL_CLASS}>Tone of Voice</label>
+          <label className={LABEL_CLASS}>Tono de voz</label>
           <input
             type="text"
             value={messaging.toneOfVoice}
@@ -116,7 +116,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.brandPersonality}
           onChange={(v) => updateMessaging('brandPersonality', v)}
           openRewrite={openRewrite}
-          placeholder="Describe how your brand should come across in communications"
+          placeholder="Describe cómo debe percibirse tu marca en las comunicaciones"
         />
         <FieldWithRewrite
           field="writingStyle"
@@ -124,7 +124,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.writingStyle}
           onChange={(v) => updateMessaging('writingStyle', v)}
           openRewrite={openRewrite}
-          placeholder="Preferred language, formatting, and communication style"
+          placeholder="Idioma, formato y estilo de comunicación preferidos"
         />
 
         {/* Tone Axes — structured signal that AI can reason about */}
@@ -202,7 +202,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
                     next[idx] = { ...next[idx], text: e.target.value };
                     updateMessaging('voiceSamples', next);
                   }}
-                  placeholder="Sample text written in your brand voice"
+                  placeholder="Texto de ejemplo escrito con la voz de tu marca"
                   rows={2}
                   className={`${INPUT_CLASS} flex-1 resize-y`}
                 />
@@ -245,7 +245,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.elevatorPitch}
           onChange={(v) => updateMessaging('elevatorPitch', v)}
           openRewrite={openRewrite}
-          placeholder="A concise 30-second pitch about your company"
+          placeholder="Un mensaje breve de 30 segundos sobre tu empresa"
         />
         <FieldWithRewrite
           field="boilerplate"
@@ -253,7 +253,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.boilerplate}
           onChange={(v) => updateMessaging('boilerplate', v)}
           openRewrite={openRewrite}
-          placeholder="Standard company description for press releases, proposals, etc."
+          placeholder="Descripción estándar de la empresa para notas de prensa, propuestas, etc."
         />
         <div>
           <label className={LABEL_CLASS}>Key Differentiators</label>
@@ -277,7 +277,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
                 value={newDifferentiator}
                 onChange={(e) => setNewDifferentiator(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addDifferentiator()}
-                placeholder="Add a differentiator"
+                placeholder="Añadir un diferenciador"
                 className={INPUT_CLASS}
               />
               <button
@@ -296,7 +296,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.targetAudience}
           onChange={(v) => updateMessaging('targetAudience', v)}
           openRewrite={openRewrite}
-          placeholder="Who are your ideal customers? Demographics, needs, pain points"
+          placeholder="¿Quiénes son tus clientes ideales? Demografía, necesidades, puntos de dolor"
         />
       </div>
 
@@ -372,7 +372,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.socialProof}
           onChange={(v) => updateMessaging('socialProof', v)}
           openRewrite={openRewrite}
-          placeholder="Notable testimonials, awards, or press mentions"
+          placeholder="Testimonios, premios o menciones en prensa destacados"
         />
         <FieldWithRewrite
           field="keyClients"
@@ -380,7 +380,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.keyClients}
           onChange={(v) => updateMessaging('keyClients', v)}
           openRewrite={openRewrite}
-          placeholder="Notable clients or partners you can reference"
+          placeholder="Clientes o socios destacados que puedes mencionar"
         />
         <FieldWithRewrite
           field="certifications"
@@ -388,7 +388,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
           value={messaging.certifications}
           onChange={(v) => updateMessaging('certifications', v)}
           openRewrite={openRewrite}
-          placeholder="Industry certifications, compliance standards, etc."
+          placeholder="Certificaciones del sector, estándares de cumplimiento, etc."
         />
       </div>
 
@@ -400,7 +400,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
         </h3>
         <FieldWithRewrite
           field="additionalContext"
-          label="Anything else the AI should know"
+          label="Algo más que la IA deba saber"
           value={messaging.additionalContext}
           onChange={(v) => updateMessaging('additionalContext', v)}
           openRewrite={openRewrite}
@@ -439,7 +439,7 @@ function FieldWithRewrite({
           type="button"
           onClick={() => openRewrite(field, label)}
           className="p-0.5 rounded text-muted-foreground hover:text-primary transition-colors"
-          title="Rewrite with AI"
+          title="Reescribir con IA"
         >
           <span className="material-icons text-sm">auto_awesome</span>
         </button>

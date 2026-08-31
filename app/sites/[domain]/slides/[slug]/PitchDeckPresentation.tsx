@@ -820,7 +820,7 @@ function ContactSlide({
             className={inputCls}
             style={inputStyle}
             autoFocus
-            aria-label="Email"
+            aria-label="Correo"
           />
           <input
             type="text"
@@ -829,16 +829,16 @@ function ContactSlide({
             onChange={(e) => onAnswer('__name', e.target.value)}
             className={inputCls}
             style={inputStyle}
-            aria-label="Name"
+            aria-label="Nombre"
           />
           <input
             type="text"
-            placeholder="Company"
+            placeholder="Empresa"
             value={(answers.__company as string) || ''}
             onChange={(e) => onAnswer('__company', e.target.value)}
             className={inputCls}
             style={inputStyle}
-            aria-label="Company"
+            aria-label="Empresa"
           />
         </div>
 
@@ -860,18 +860,14 @@ function ContactSlide({
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-80"
               style={{ color: backFg, backgroundColor: backBg }}
             >
-              <span className="material-icons text-lg">arrow_back</span>
-              Back
-            </button>
+              <span className="material-icons text-lg">arrow_back</span>Atrás</button>
           ) : <div />}
           <button
             type="button"
             onClick={onNext}
             className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-90"
             style={{ backgroundColor: nextBg, color: nextFg }}
-          >
-            Next
-            <span className="material-icons text-lg">arrow_forward</span>
+          >Siguiente<span className="material-icons text-lg">arrow_forward</span>
           </button>
         </div>
       </div>

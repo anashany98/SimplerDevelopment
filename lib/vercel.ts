@@ -15,7 +15,7 @@ function teamParam() {
 }
 
 /**
- * The Vercel project ID of the main SimplerDevelopment platform app.
+ * The Vercel project ID of the main CRM AGENTS platform app.
  * Shared-hosted client sites attach their custom domains to this project
  * (since they are rendered inside the main app via the /sites/[domain]/... route).
  */

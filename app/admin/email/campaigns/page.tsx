@@ -66,7 +66,7 @@ export default function CampaignsPage() {
 
       <div className="bg-card border border-border rounded-lg overflow-hidden">
         {loading ? (
-          <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+          <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground mb-3 block">campaign</span>
@@ -81,7 +81,7 @@ export default function CampaignsPage() {
               <tr className="border-b border-border bg-muted/40">
                 <th className="text-left px-5 py-3 font-medium text-muted-foreground">Campaign</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">List</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Estado</th>
                 <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Open Rate</th>
                 <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Click Rate</th>
                 <th className="px-4 py-3"></th>

@@ -19,7 +19,7 @@ export default async function MetricUnpaidInvoicesWidget({
       icon="receipt_long"
       color="text-red-600"
       value={result?.count ?? 0}
-      label="Unpaid Invoices"
+      label="Facturas pendientes"
     />
   );
 }

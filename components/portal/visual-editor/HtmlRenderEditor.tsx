@@ -109,7 +109,7 @@ export function HtmlRenderEditor({
   return (
     <>
       <SelectField
-        label="Width"
+        label="Ancho"
         value={(b.width as string) || 'full'}
         options={['full', 'contained']}
         onChange={(v) => onUpdate({ width: v } as Partial<Block>)}
@@ -121,9 +121,7 @@ export function HtmlRenderEditor({
       {fields.length > 0 && (
         <details open className="rounded border border-border">
           <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-            <span className="material-icons text-sm">tune</span>
-            Content
-          </summary>
+            <span className="material-icons text-sm">tune</span>Contenido</summary>
           <HtmlRenderTabbedForm
             fields={fields}
             values={values}
@@ -174,13 +172,13 @@ export function HtmlRenderEditor({
               </div>
             )}
             <Field
-              label="Post type slug"
+              label="Slug del tipo de contenido"
               value={loop?.postType || ''}
               onChange={(v) => setLoop({ postType: v })}
             />
             <div className="grid grid-cols-2 gap-2">
-              <NumberField label="Limit" value={loop?.limit ?? 3} min={1} max={24} onChange={(v) => setLoop({ limit: v })} />
-              <SelectField label="Order" value={loop?.orderBy || 'recent'} options={['recent', 'oldest', 'title']} onChange={(v) => setLoop({ orderBy: v as HtmlRenderLoop['orderBy'] })} />
+              <NumberField label="Límite" value={loop?.limit ?? 3} min={1} max={24} onChange={(v) => setLoop({ limit: v })} />
+              <SelectField label="Pedido" value={loop?.orderBy || 'recent'} options={['recent', 'oldest', 'title']} onChange={(v) => setLoop({ orderBy: v as HtmlRenderLoop['orderBy'] })} />
             </div>
             <p className="text-[11px] text-muted-foreground leading-snug">
               Inside the loop element use{' '}
@@ -279,7 +277,7 @@ export function HtmlRenderEditor({
                     <div className="flex items-center gap-1.5">
                       <button
                         type="button"
-                        title="Drag to reorder"
+                        title="Arrastra para reordenar"
                         className="cursor-grab active:cursor-grabbing p-0.5 rounded text-muted-foreground/60 hover:bg-accent hover:text-foreground"
                         {...dragHandleProps}
                       >
@@ -298,7 +296,7 @@ export function HtmlRenderEditor({
                   </span>
                   <button
                     type="button"
-                    title="Rename field key (also rewrites template references)"
+                    title="Renombrar la clave del campo (también reescribe las referencias de la plantilla)"
                     onClick={() => {
                       const next = window.prompt(`Rename field key "${f.name}" to:`, f.name);
                       if (!next || next === f.name) return;
@@ -332,9 +330,9 @@ export function HtmlRenderEditor({
                         <span className="material-icons text-sm">delete_outline</span>
                       </button>
                     </div>
-                    <Field label="Label" value={f.label || ''} onChange={(val) => setField(i, { label: val })} />
+                    <Field label="Etiqueta" value={f.label || ''} onChange={(val) => setField(i, { label: val })} />
                 <SelectField
-                  label="Type"
+                  label="Tipo"
                   value={f.type}
                   options={['text', 'textarea', 'number', 'richtext', 'boolean', 'url', 'image', 'color', 'select', 'radio', 'date', 'datetime', 'link', 'post', 'array', 'group', 'tab']}
                   onChange={(val) => setField(i, { type: val as HtmlRenderField['type'] })}
@@ -347,7 +345,7 @@ export function HtmlRenderEditor({
                 )}
                 {(f.type === 'select' || f.type === 'radio') && (
                   <TextareaField
-                    label="Options (one per line)"
+                    label="Opciones (una por línea)"
                     value={(f.options || []).join('\n')}
                     onChange={(val) => setField(i, { options: val.split('\n').map((s) => s.trim()).filter(Boolean) })}
                     rows={3}
@@ -355,33 +353,33 @@ export function HtmlRenderEditor({
                 )}
                 {f.type === 'post' && (
                   <Field
-                    label="Restrict to post type (optional)"
+                    label="Restringir al tipo de contenido (opcional)"
                     value={f.postType || ''}
                     onChange={(val) => setField(i, { postType: val || undefined })}
                   />
                 )}
                 {f.type === 'number' && (
                   <div className="grid grid-cols-3 gap-2">
-                    <NumberField label="Min" value={f.min ?? 0} onChange={(v) => setField(i, { min: v })} />
-                    <NumberField label="Max" value={f.max ?? 0} onChange={(v) => setField(i, { max: v })} />
-                    <NumberField label="Step" value={f.step ?? 1} onChange={(v) => setField(i, { step: v })} />
+                    <NumberField label="Mín." value={f.min ?? 0} onChange={(v) => setField(i, { min: v })} />
+                    <NumberField label="Máx." value={f.max ?? 0} onChange={(v) => setField(i, { max: v })} />
+                    <NumberField label="Paso" value={f.step ?? 1} onChange={(v) => setField(i, { step: v })} />
                   </div>
                 )}
                 {f.type !== 'tab' && (
-                  <Field label="Default" value={f.default || ''} onChange={(val) => setField(i, { default: val })} />
+                  <Field label="Predeterminado" value={f.default || ''} onChange={(val) => setField(i, { default: val })} />
                 )}
-                <Field label="Help text" value={f.help || ''} onChange={(val) => setField(i, { help: val || undefined })} />
+                <Field label="Texto de ayuda" value={f.help || ''} onChange={(val) => setField(i, { help: val || undefined })} />
 
                 {/* Validation rules */}
                 {f.type !== 'tab' && f.type !== 'array' && f.type !== 'group' && (
                   <details className="border-t border-border pt-2">
                     <summary className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground">Validation</summary>
                     <div className="pt-2 space-y-2">
-                      <CheckboxField label="Required" checked={f.required} onChange={(v) => setField(i, { required: v || undefined })} />
+                      <CheckboxField label="Obligatorio" checked={f.required} onChange={(v) => setField(i, { required: v || undefined })} />
                       {(f.type === 'text' || f.type === 'textarea' || f.type === 'richtext') && (
                         <div className="grid grid-cols-2 gap-2">
-                          <NumberField label="Min length" value={f.minLength ?? 0} onChange={(v) => setField(i, { minLength: v || undefined })} />
-                          <NumberField label="Max length" value={f.maxLength ?? 0} onChange={(v) => setField(i, { maxLength: v || undefined })} />
+                          <NumberField label="Longitud mínima" value={f.minLength ?? 0} onChange={(v) => setField(i, { minLength: v || undefined })} />
+                          <NumberField label="Longitud máxima" value={f.maxLength ?? 0} onChange={(v) => setField(i, { maxLength: v || undefined })} />
                         </div>
                       )}
                       {(f.type === 'text' || f.type === 'url') && (
@@ -400,7 +398,7 @@ export function HtmlRenderEditor({
                     </summary>
                     <div className="pt-2 space-y-2">
                       <SelectField
-                        label="Show this field when"
+                        label="Mostrar este campo cuando"
                         value={f.conditional ? 'enabled' : 'always'}
                         options={['always', 'enabled']}
                         onChange={(v) => {
@@ -411,7 +409,7 @@ export function HtmlRenderEditor({
                       {f.conditional && (
                         <>
                           <SelectField
-                            label="Field"
+                            label="Campo"
                             value={f.conditional.field}
                             options={['', ...fields.filter(other => other.name !== f.name && other.type !== 'tab').map(other => other.name)]}
                             onChange={(v) => setField(i, { conditional: { ...f.conditional!, field: v } })}
@@ -423,10 +421,10 @@ export function HtmlRenderEditor({
                             onChange={(v) => setField(i, { conditional: { ...f.conditional!, operator: v as HtmlRenderConditional['operator'] } })}
                           />
                           {(f.conditional.operator === 'eq' || f.conditional.operator === 'neq') && (
-                            <Field label="Value" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
+                            <Field label="Valor" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
                           )}
                           {(f.conditional.operator === 'in' || f.conditional.operator === 'notIn') && (
-                            <Field label="Values (pipe-delimited, e.g. a|b|c)" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
+                            <Field label="Valores (separados con |, p. ej. a|b|c)" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
                           )}
                         </>
                       )}
@@ -459,9 +457,7 @@ export function HtmlRenderEditor({
           with the same editor for serious editing sessions. */}
       <details className="rounded border border-border">
         <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-          <span className="material-icons text-sm">code</span>
-          HTML template
-        </summary>
+          <span className="material-icons text-sm">code</span>Plantilla HTML</summary>
         <div className="p-3 space-y-2">
           <HtmlTemplateEditor value={html} onChange={setHtml} />
           <p className="text-[11px] text-muted-foreground leading-snug">

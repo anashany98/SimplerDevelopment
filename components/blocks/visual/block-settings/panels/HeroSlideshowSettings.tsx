@@ -87,23 +87,23 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
       {slide && (
         <div className="space-y-3 border-t border-border pt-3">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Título</label>
             <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
               <RichTextEditable html={slide.title} onChange={(html) => updateSlide(activeSlide, { title: html })} singleLine placeholder="Slide Title" className="text-sm text-foreground" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
             <input type="text" value={slide.subtitle || ''} onChange={(e) => updateSlide(activeSlide, { subtitle: e.target.value })} className={inputClass} placeholder="Optional subtitle" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
             <textarea value={slide.description || ''} onChange={(e) => updateSlide(activeSlide, { description: e.target.value })} className={`${inputClass} min-h-[60px] resize-y`} placeholder="Optional description" />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">CTA Text</label>
-              <input type="text" value={slide.ctaText || ''} onChange={(e) => updateSlide(activeSlide, { ctaText: e.target.value })} className={inputClass} placeholder="Button text" />
+              <input type="text" value={slide.ctaText || ''} onChange={(e) => updateSlide(activeSlide, { ctaText: e.target.value })} className={inputClass} placeholder="Texto del botón" />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">CTA Link</label>
@@ -113,11 +113,11 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Secondary Text</label>
-              <input type="text" value={slide.secondaryCtaText || ''} onChange={(e) => updateSlide(activeSlide, { secondaryCtaText: e.target.value })} className={inputClass} placeholder="Optional" />
+              <input type="text" value={slide.secondaryCtaText || ''} onChange={(e) => updateSlide(activeSlide, { secondaryCtaText: e.target.value })} className={inputClass} placeholder="Opcional" />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Secondary Link</label>
-              <input type="text" value={slide.secondaryCtaLink || ''} onChange={(e) => updateSlide(activeSlide, { secondaryCtaLink: e.target.value })} className={inputClass} placeholder="Optional" />
+              <input type="text" value={slide.secondaryCtaLink || ''} onChange={(e) => updateSlide(activeSlide, { secondaryCtaLink: e.target.value })} className={inputClass} placeholder="Opcional" />
             </div>
           </div>
 
@@ -129,7 +129,7 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
                 <img src={slide.backgroundImage} alt="Slide background" className="w-full h-24 object-cover rounded border border-border" />
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90">Change</button>
-                  <button type="button" onClick={() => updateSlide(activeSlide, { backgroundImage: '' })} className="px-3 py-1.5 text-xs border border-border rounded hover:bg-accent">Remove</button>
+                  <button type="button" onClick={() => updateSlide(activeSlide, { backgroundImage: '' })} className="px-3 py-1.5 text-xs border border-border rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>
             ) : (
@@ -161,9 +161,9 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Text Alignment</label>
               <select value={slide.textAlignment || 'center'} onChange={(e) => updateSlide(activeSlide, { textAlignment: e.target.value as 'left' | 'center' | 'right' })} className={selectClass}>
-                <option value="left">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
+                <option value="left">Izquierda</option>
+                <option value="center">Centrado</option>
+                <option value="right">Derecha</option>
               </select>
             </div>
           </div>
@@ -238,7 +238,7 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
       {/* Persistent background video */}
       <div className="border-t border-border pt-3 space-y-3">
         <label className="block text-sm font-medium text-foreground">Background Video</label>
-        <p className="text-xs text-muted-foreground">Plays continuously behind all slides. Not per-slide.</p>
+        <p className="text-xs text-muted-foreground">Se reproduce de forma continua bajo todas las diapositivas. No por diapositiva.</p>
         <div>
           <label className="block text-xs text-muted-foreground mb-1">Video URL</label>
           <input type="text" value={block.backgroundVideo || ''} onChange={(e) => onChange({ backgroundVideo: e.target.value || undefined })} className={inputClass} placeholder="https://...mp4 (optional)" />
@@ -370,7 +370,7 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
                   onChange({ stats: newStats });
                 }}
                 className={inputClass}
-                placeholder="Label"
+                placeholder="Etiqueta"
               />
             </div>
             <button

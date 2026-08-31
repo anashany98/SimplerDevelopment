@@ -64,10 +64,10 @@ export default function PortalTriggerLinksPage() {
     try {
       const res = await fetch('/api/portal/trigger-links');
       const data = await res.json();
-      if (!data.success) throw new Error(data.error || 'Failed to load');
+      if (!data.success) throw new Error(data.error || 'No se pudo cargar');
       setLinks(data.data?.links ?? []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
+      setError(err instanceof Error ? err.message : 'No se pudo cargar');
     } finally {
       setLoading(false);
     }
@@ -91,23 +91,23 @@ export default function PortalTriggerLinksPage() {
         }),
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.error || 'Create failed');
+      if (!data.success) throw new Error(data.error || 'Error al crear');
       setDestination('');
       setLabel('');
       await refresh();
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : 'Create failed');
+      setCreateError(err instanceof Error ? err.message : 'Error al crear');
     } finally {
       setCreating(false);
     }
   }
 
   async function handleDelete(id: number) {
-    if (!confirm('Delete this trigger link? Past click history will also be removed.')) return;
+    if (!confirm('¿Eliminar este enlace de activación? También se eliminará su historial de clics.')) return;
     const res = await fetch(`/api/portal/trigger-links/${id}`, { method: 'DELETE' });
     const data = await res.json();
     if (!data.success) {
-      alert(data.error || 'Delete failed');
+      alert(data.error || 'No se pudo eliminar');
       return;
     }
     if (selectedId === id) {
@@ -140,8 +140,8 @@ export default function PortalTriggerLinksPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <PortalPageHeader
-        eyebrow="Automations"
-        title="Trigger Links"
+        eyebrow="Automatizaciones"
+        title="Enlaces de disparo"
         subtitle={
           <>
             Tracked shortlinks. Each visit to{' '}
@@ -152,7 +152,7 @@ export default function PortalTriggerLinksPage() {
       />
 
       <section className={`mb-6 ${pCard} p-5`}>
-        <h2 className="text-sm font-medium text-foreground mb-3">Create a new link</h2>
+        <h2 className="text-sm font-medium text-foreground mb-3">Crear un nuevo enlace</h2>
         <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end">
           <div className="flex-1">
             <label className="block text-xs font-medium text-muted-foreground mb-1">Destination URL</label>
@@ -171,7 +171,7 @@ export default function PortalTriggerLinksPage() {
               type="text"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="Spring promo"
+              placeholder="Promo de primavera"
               className={pInput}
             />
           </div>
@@ -181,7 +181,7 @@ export default function PortalTriggerLinksPage() {
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add_link</span>
-            {creating ? 'Creating…' : 'Create link'}
+            {creating ? 'Creating…' : 'Crear enlace'}
           </button>
         </form>
         {createError && (
@@ -190,7 +190,7 @@ export default function PortalTriggerLinksPage() {
       </section>
 
       {loading && (
-        <div className="text-sm text-muted-foreground">Loading…</div>
+        <div className="text-sm text-muted-foreground">Cargando…</div>
       )}
       {error && (
         <div role="alert" className="text-sm text-destructive">{error}</div>
@@ -205,16 +205,14 @@ export default function PortalTriggerLinksPage() {
                 <th className="text-left px-4 py-2 font-medium">Slug</th>
                 <th className="text-left px-4 py-2 font-medium">Destination</th>
                 <th className="text-right px-4 py-2 font-medium">Clicks</th>
-                <th className="text-left px-4 py-2 font-medium">Created</th>
-                <th className="text-right px-4 py-2 font-medium">Actions</th>
+                <th className="text-left px-4 py-2 font-medium">Creado</th>
+                <th className="text-right px-4 py-2 font-medium">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {links.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="text-center text-muted-foreground py-8">
-                    No trigger links yet. Create one above.
-                  </td>
+                  <td colSpan={5} className="text-center text-muted-foreground py-8">Aún no hay enlaces de activación. Crea uno arriba.</td>
                 </tr>
               )}
               {links.map((link) => (
@@ -248,7 +246,7 @@ export default function PortalTriggerLinksPage() {
                       type="button"
                       onClick={(e) => { e.stopPropagation(); handleDelete(link.id); }}
                       className="inline-flex items-center gap-1 text-xs text-destructive hover:bg-destructive/10 px-2 py-1 rounded"
-                      title="Delete"
+                      title="Eliminar"
                     >
                       <span className="material-icons text-base">delete</span>
                     </button>
@@ -273,24 +271,22 @@ export default function PortalTriggerLinksPage() {
               onClick={() => { setSelectedId(null); setDetail(null); }}
               className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
             >
-              <span className="material-icons text-base">close</span>
-              Close
-            </button>
+              <span className="material-icons text-base">close</span>Cerrar</button>
           </header>
-          {detailLoading && <div className="text-sm text-muted-foreground">Loading…</div>}
+          {detailLoading && <div className="text-sm text-muted-foreground">Cargando…</div>}
           {!detailLoading && detail && (
             <>
               <div className="text-xs text-muted-foreground mb-3">
                 {detail.clickCount} total click{detail.clickCount === 1 ? '' : 's'}.
               </div>
               {detail.recentClicks.length === 0 ? (
-                <div className="text-sm text-muted-foreground italic py-4">No clicks recorded yet.</div>
+                <div className="text-sm text-muted-foreground italic py-4">Aún no hay clics registrados.</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead className="text-muted-foreground">
                       <tr>
-                        <th className="text-left py-1 font-medium">When</th>
+                        <th className="text-left py-1 font-medium">Cuándo</th>
                         <th className="text-left py-1 font-medium">IP</th>
                         <th className="text-left py-1 font-medium">User-Agent</th>
                         <th className="text-left py-1 font-medium">Referer</th>

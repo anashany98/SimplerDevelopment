@@ -52,7 +52,7 @@ export function HtmlRenderPostPicker({
       {error ? (
         <div className="mt-1 text-xs text-destructive">{error}</div>
       ) : !options ? (
-        <div className="mt-1 text-xs text-muted-foreground">Loading posts…</div>
+        <div className="mt-1 text-xs text-muted-foreground">Cargando publicaciones…</div>
       ) : (
         <select
           value={value}
@@ -66,7 +66,7 @@ export function HtmlRenderPostPicker({
         </select>
       )}
       {!postType && (
-        <p className="text-[11px] text-muted-foreground/80 mt-0.5">All post types. Set a postType in the schema to filter.</p>
+        <p className="text-[11px] text-muted-foreground/80 mt-0.5">Todos los tipos de contenido. Define un postType en el esquema para filtrar.</p>
       )}
     </label>
   );

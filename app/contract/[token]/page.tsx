@@ -307,7 +307,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                   <tr className="border-b border-gray-200 text-left">
                     <th className="pb-2 font-medium text-gray-500">Item</th>
                     <th className="pb-2 font-medium text-gray-500 text-right">Qty</th>
-                    <th className="pb-2 font-medium text-gray-500 text-right">Price</th>
+                    <th className="pb-2 font-medium text-gray-500 text-right">Precio</th>
                     <th className="pb-2 font-medium text-gray-500 text-right">Total</th>
                   </tr>
                 </thead>
@@ -372,7 +372,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                   />
                 </div>
                 <div className="flex gap-3 mt-2">
-                  <button onClick={clearCanvas} className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
+                  <button onClick={clearCanvas} className="text-xs text-gray-500 hover:text-gray-700">Limpiar</button>
                   <button onClick={saveSignature} className="text-xs font-medium" style={{ color: accent }}>
                     Use This Signature
                   </button>
@@ -426,7 +426,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-500/40"
               />
               <div className="flex gap-3 justify-end">
-                <button onClick={() => setShowDecline(false)} className="px-4 py-2 text-sm text-gray-500">Cancel</button>
+                <button onClick={() => setShowDecline(false)} className="px-4 py-2 text-sm text-gray-500">Cancelar</button>
                 <button onClick={handleDecline} className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
                   Decline Contract
                 </button>

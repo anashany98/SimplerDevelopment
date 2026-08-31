@@ -20,7 +20,7 @@ export default async function MetricAmountDueWidget({
       icon="attach_money"
       color="text-green-600"
       value={formatCents(Number(result?.total ?? 0))}
-      label="Amount Due"
+      label="Importe pendiente"
     />
   );
 }

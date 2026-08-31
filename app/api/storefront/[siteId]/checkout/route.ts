@@ -6,9 +6,9 @@ import {
   bulkPricingRules, shippingRates, shippingZones, discountCodes,
   orders, orderItems, orderStatusHistory,
   giftCertificates, giftCertificateRedemptions,
-  clientWebsites, productDesigns,
+  clientWebsites, productDesigns, storeSettings,
 } from '@/lib/db/schema';
-import { eq, and, asc, desc, sql, inArray, isNull } from 'drizzle-orm';
+import { eq, and, desc, sql, inArray, isNull } from 'drizzle-orm';
 import { resolveSiteStripe, SiteStripeError, type SiteStripeContext } from '@/lib/stripe/site-stripe';
 import { revalidateAdminDashboard } from '@/lib/admin/dashboard-cache';
 import { emitEvent } from '@/lib/automation/event-bus';
@@ -32,6 +32,28 @@ export async function POST(
     const websiteId = parseInt(siteId, 10);
     if (isNaN(websiteId)) {
       return NextResponse.json({ success: false, message: 'Invalid site ID' }, { status: 400 });
+    }
+
+    // Reject an unconfigured Connect store before resolving the Stripe client.
+    // In local/demo deployments there may be no platform secret at all; trying
+    // to construct it first turned this expected configuration state into 500.
+    const [paymentConfig] = await db.select({
+      enabled: storeSettings.enabled,
+      stripeMode: storeSettings.stripeMode,
+      stripeAccountId: storeSettings.stripeAccountId,
+      stripeOnboardingComplete: storeSettings.stripeOnboardingComplete,
+    }).from(storeSettings).where(eq(storeSettings.websiteId, websiteId)).limit(1);
+    if (!paymentConfig?.enabled) {
+      return NextResponse.json({ success: false, message: 'Store not found' }, { status: 404 });
+    }
+    if (
+      paymentConfig.stripeMode === 'connect' &&
+      (!paymentConfig.stripeAccountId || !paymentConfig.stripeOnboardingComplete)
+    ) {
+      return NextResponse.json(
+        { success: false, message: 'Store has not completed Stripe Connect onboarding' },
+        { status: 400 },
+      );
     }
 
     // Resolve per-site Stripe context (Connect vs BYOK). Resolver throws

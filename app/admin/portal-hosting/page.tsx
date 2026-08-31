@@ -242,9 +242,9 @@ export default function AdminPortalHostingPage() {
         >
           <option value="">All statuses</option>
           <option value="provisioning">Provisioning</option>
-          <option value="active">Active</option>
+          <option value="active">Activo</option>
           <option value="suspended">Suspended</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="cancelled">Cancelado</option>
         </select>
       </div>
 
@@ -260,10 +260,10 @@ export default function AdminPortalHostingPage() {
             <thead>
               <tr className="border-b border-border bg-muted/30">
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Site</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Client</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Domain</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Cliente</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Dominio</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Plan</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Renewal</th>
                 <th className="px-4 py-3" />
               </tr>
@@ -309,10 +309,10 @@ export default function AdminPortalHostingPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
-                      <button onClick={() => openEdit(site)} className="p-1.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" title="Edit">
+                      <button onClick={() => openEdit(site)} className="p-1.5 rounded hover:bg-accent transition-colors text-muted-foreground hover:text-foreground" title="Editar">
                         <span className="material-icons text-base">edit</span>
                       </button>
-                      <button onClick={() => setDeleteId(site.id)} className="p-1.5 rounded hover:bg-red-50 transition-colors text-muted-foreground hover:text-red-600" title="Delete">
+                      <button onClick={() => setDeleteId(site.id)} className="p-1.5 rounded hover:bg-red-50 transition-colors text-muted-foreground hover:text-red-600" title="Eliminar">
                         <span className="material-icons text-base">delete</span>
                       </button>
                     </div>
@@ -357,7 +357,7 @@ export default function AdminPortalHostingPage() {
 
               {/* Domain Info */}
               <div className="space-y-2">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Domain</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Dominio</h3>
                 <div className="bg-muted/30 rounded-lg p-3 space-y-1">
                   {detailSite.customDomain && (
                     <div className="flex justify-between text-sm">
@@ -413,9 +413,9 @@ export default function AdminPortalHostingPage() {
                     <table className="w-full text-xs">
                       <thead>
                         <tr className="bg-muted/40 border-b border-border">
-                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Type</th>
+                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Tipo</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">Host</th>
-                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Value</th>
+                          <th className="text-left px-3 py-2 font-medium text-muted-foreground">Valor</th>
                           <th className="text-left px-3 py-2 font-medium text-muted-foreground">TTL</th>
                         </tr>
                       </thead>
@@ -437,7 +437,7 @@ export default function AdminPortalHostingPage() {
               {/* Notes */}
               {detailSite.notes && (
                 <div className="space-y-2">
-                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Notes</h3>
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Notas</h3>
                   <p className="text-sm text-foreground bg-muted/30 rounded-lg p-3">{detailSite.notes}</p>
                 </div>
               )}
@@ -512,16 +512,16 @@ export default function AdminPortalHostingPage() {
 
                 {/* Status / Plan */}
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
                   <select
                     value={form.status}
                     onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                     className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
                   >
                     <option value="provisioning">Provisioning</option>
-                    <option value="active">Active</option>
+                    <option value="active">Activo</option>
                     <option value="suspended">Suspended</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="cancelled">Cancelado</option>
                   </select>
                 </div>
                 <div>
@@ -625,7 +625,7 @@ export default function AdminPortalHostingPage() {
                   </button>
                 </div>
                 {dnsRows.length === 0 ? (
-                  <p className="text-xs text-muted-foreground bg-muted/30 rounded-lg p-3 text-center">No DNS records added. Click &quot;Add record&quot; to add one.</p>
+                  <p className="text-xs text-muted-foreground bg-muted/30 rounded-lg p-3 text-center">No hay registros DNS. Haz clic en &quot;Añadir registro&quot; para agregar uno.</p>
                 ) : (
                   <div className="space-y-2">
                     {dnsRows.map((row, i) => (
@@ -668,9 +668,7 @@ export default function AdminPortalHostingPage() {
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 p-4 border-t border-border">
-              <button onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Cancel
-              </button>
+              <button onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
               <button
                 onClick={handleSave}
                 disabled={saving}
@@ -692,10 +690,10 @@ export default function AdminPortalHostingPage() {
               <span className="material-icons text-red-500 text-2xl">warning</span>
               <h2 className="font-semibold text-foreground">Delete hosted site?</h2>
             </div>
-            <p className="text-sm text-muted-foreground">This will permanently remove the site record. The actual Railway project is not affected.</p>
+            <p className="text-sm text-muted-foreground">Esto eliminará permanentemente el registro del sitio. El proyecto real de Railway no se ve afectado.</p>
             <div className="flex justify-end gap-3">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">Cancel</button>
-              <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors">Delete</button>
+              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors">Cancelar</button>
+              <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors">Eliminar</button>
             </div>
           </div>
         </div>

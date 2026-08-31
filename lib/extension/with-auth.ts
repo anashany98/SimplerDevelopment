@@ -1,6 +1,6 @@
 /**
  * Auth + CORS wrapper for the `/api/extension/v1/**` namespace used by the
- * SimplerDevelopment browser extension.
+ * CRM AGENTS browser extension.
  *
  * Mirrors `lib/api-key-middleware.ts:withApiKeyAndCors` in spirit but without
  * the per-site/website coupling — extension calls are tenant-scoped via the

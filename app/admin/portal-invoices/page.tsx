@@ -63,7 +63,7 @@ export default function AdminPortalInvoicesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Invoices</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">Manage client billing and payments across the platform.</p>
+          <p className="text-muted-foreground text-sm mt-0.5">Gestiona la facturación y pagos de clientes en la plataforma.</p>
         </div>
         <Link href="/admin/portal-invoices/new"
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
@@ -90,7 +90,7 @@ export default function AdminPortalInvoicesPage() {
         <div className={`bg-card border rounded-xl p-4 ${overdueCount > 0 ? 'border-red-200' : 'border-border'}`}>
           <div className="flex items-center gap-2 mb-1">
             <span className={`material-icons text-base ${overdueCount > 0 ? 'text-red-600' : 'text-muted-foreground'}`}>warning</span>
-            <span className="text-xs text-muted-foreground font-medium">Overdue</span>
+            <span className="text-xs text-muted-foreground font-medium">Atrasado</span>
           </div>
           <p className={`text-2xl font-bold ${overdueCount > 0 ? 'text-red-600' : 'text-foreground'}`}>{overdueCount}</p>
         </div>
@@ -153,12 +153,12 @@ export default function AdminPortalInvoicesPage() {
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Invoice</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Due</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Vence</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Paid</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -204,11 +204,11 @@ export default function AdminPortalInvoicesPage() {
                             onChange={e => updateStatus(inv.id, e.target.value)}
                             className="text-xs px-2 py-1 rounded border border-border bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                           >
-                            <option value="draft">Draft</option>
-                            <option value="sent">Sent</option>
+                            <option value="draft">Borrador</option>
+                            <option value="sent">Enviado</option>
                             <option value="paid">Paid</option>
-                            <option value="overdue">Overdue</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="overdue">Atrasado</option>
+                            <option value="cancelled">Cancelado</option>
                           </select>
                           <Link href={`/portal/invoices/${inv.id}`} className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
                             <span className="material-icons text-sm">open_in_new</span>

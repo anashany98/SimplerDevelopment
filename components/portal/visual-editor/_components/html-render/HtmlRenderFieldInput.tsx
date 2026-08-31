@@ -86,8 +86,8 @@ export function HtmlRenderFieldInput({
     const subFields: HtmlRenderField[] = field.type === 'link'
       ? [
           { name: 'url', label: 'URL', type: 'url' },
-          { name: 'label', label: 'Label', type: 'text' },
-          { name: 'target', label: 'Open in', type: 'select', options: ['_self', '_blank'], default: '_self' },
+          { name: 'label', label: 'Etiqueta', type: 'text' },
+          { name: 'target', label: 'Abrir en', type: 'select', options: ['_self', '_blank'], default: '_self' },
         ]
       : (field.itemFields || []);
     return (
@@ -107,12 +107,11 @@ export function HtmlRenderFieldInput({
             />
           ))}
           {field.type === 'group' && subFields.length === 0 && (
-            <p className="text-[11px] text-muted-foreground">No sub-fields detected. Add <code className="font-mono">data-field</code> elements or <code className="font-mono">{'{{' + field.name + '.X}}'}</code> placeholders inside the group&apos;s <code className="font-mono">data-group</code> wrapper.</p>
+            <p className="text-[11px] text-muted-foreground">No se detectaron subcampos. Agrega <code className="font-mono">data-field</code> elementos o <code className="font-mono">{'{{' + field.name + '.X}}'}</code> dentro del <code className="font-mono">data-group</code> del grupo.</p>
           )}
         </div>
         {field.type === 'link' && (
-          <p className="text-[11px] text-muted-foreground">
-            Use <code className="font-mono">{'{{' + field.name + '.url}}'}</code>, <code className="font-mono">{'{{' + field.name + '.label}}'}</code>, <code className="font-mono">{'{{' + field.name + '.target}}'}</code> in the template.
+          <p className="text-[11px] text-muted-foreground">Usar<code className="font-mono">{'{{' + field.name + '.url}}'}</code>, <code className="font-mono">{'{{' + field.name + '.label}}'}</code>, <code className="font-mono">{'{{' + field.name + '.target}}'}</code> in the template.
           </p>
         )}
       </div>

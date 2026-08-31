@@ -34,6 +34,8 @@ const eslintConfig = defineConfig([
     // Not first-party source — vendored skills, throwaway probes, generated artifacts:
     ".agents/**",
     ".claude/**",
+    ".freebuff/**",
+    ".fallow/**",
     ".planning/**",
     "playwright-report/**",
     "test-results/**",

@@ -88,7 +88,7 @@ export function CardComments({
           </div>
         ))}
         {comments.length === 0 && (
-          <p className="text-xs text-muted-foreground italic">No comments yet.</p>
+          <p className="text-xs text-muted-foreground italic">Aún no hay comentarios.</p>
         )}
       </div>
 
@@ -108,7 +108,7 @@ export function CardComments({
         <MentionTextarea
           value={commentBody}
           onChange={setCommentBody}
-          placeholder="Add a comment… type @ to mention, paste an image to attach"
+          placeholder="Añade un comentario… usa @ para mencionar, pega una imagen para adjuntarla"
           rows={3}
           users={mentionUsers}
           onFilePaste={file => uploadFile(file, true)}

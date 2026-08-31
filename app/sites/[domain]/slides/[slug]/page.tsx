@@ -116,7 +116,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const canonicalUrl = site ? `https://${site.domain}/slides/${slug}` : undefined;
 
   const metadata: Metadata = {
-    // Absolute title bypasses the root layout's `%s | SimplerDevelopment`
+    // Absolute title bypasses the root layout's `%s | CRM AGENTS`
     // template so deck titles render as authored, with no agency suffix.
     title: { absolute: title },
     description,

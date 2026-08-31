@@ -175,17 +175,17 @@ export default function AISettingsPage() {
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-blue-500">mail</span>
           <p className="mt-2 text-xl font-bold text-foreground">{emailCount}</p>
-          <p className="text-xs text-muted-foreground">Email Requests</p>
+          <p className="text-xs text-muted-foreground">Solicitudes por email</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-purple-500">chat</span>
           <p className="mt-2 text-xl font-bold text-foreground">{chatCount}</p>
-          <p className="text-xs text-muted-foreground">Chat Conversations</p>
+          <p className="text-xs text-muted-foreground">Conversaciones de chat</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-green-500">token</span>
           <p className="mt-2 text-xl font-bold text-foreground">{credits ? credits.balance.toLocaleString() : '---'}</p>
-          <p className="text-xs text-muted-foreground">Credits Remaining</p>
+          <p className="text-xs text-muted-foreground">Créditos restantes</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-pink-500">auto_awesome</span>
@@ -285,10 +285,10 @@ export default function AISettingsPage() {
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-border">
           <div className="flex items-center gap-2">
             <span className="material-icons text-base text-primary">receipt_long</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Token Receipts</h2>
+            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Recibos de tokens</h2>
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span>This month: <span className="font-medium text-foreground">{monthlyUsage.toLocaleString()}</span> tokens</span>
+            <span>Este mes: <span className="font-medium text-foreground">{monthlyUsage.toLocaleString()}</span> tokens</span>
             {ledger.length > 5 && (
               <button onClick={() => setShowAllReceipts(v => !v)} className="text-primary hover:underline">
                 {showAllReceipts ? 'Show less' : `View all (${ledger.length})`}
@@ -297,17 +297,17 @@ export default function AISettingsPage() {
           </div>
         </div>
         {ledger.length === 0 ? (
-          <div className="p-6 text-center text-xs text-muted-foreground">No token activity yet.</div>
+          <div className="p-6 text-center text-xs text-muted-foreground">Aún no hay actividad de tokens.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/30">
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Date</th>
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Type</th>
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Description</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Fecha</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Tipo</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Descripción</th>
                   <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Tokens</th>
-                  <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Balance</th>
+                  <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Saldo</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -352,7 +352,7 @@ export default function AISettingsPage() {
           <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">AI Email Address</h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Send requests to this email address and the AI assistant will process them automatically. Only registered team members can use this address.
+          Send requests to this email address and the AI assistant will process them automátically. Only registered team members can use this address.
         </p>
         <div className="flex items-center gap-2">
           <div className="flex items-center">
@@ -396,11 +396,11 @@ export default function AISettingsPage() {
       {/* Request Log */}
       <div className={`${pCard} overflow-hidden`}>
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-border">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Request Log</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Registro de solicitudes</h2>
           <div className="flex items-center gap-1 bg-accent rounded-lg p-0.5">
             {([
-              { value: 'all' as const, label: 'All' },
-              { value: 'email' as const, label: 'Email' },
+              { value: 'all' as const, label: 'Todos' },
+              { value: 'email' as const, label: 'Correo' },
               { value: 'chat' as const, label: 'Chat' },
             ]).map(f => (
               <button
@@ -466,7 +466,7 @@ export default function AISettingsPage() {
             {!selectedConv ? (
               <div className="flex flex-col items-center justify-center h-full py-16">
                 <span className="material-icons text-3xl text-muted-foreground mb-2">forum</span>
-                <p className="text-xs text-muted-foreground">Select a request to view the conversation</p>
+                <p className="text-xs text-muted-foreground">Selecciona una solicitud para ver la conversación</p>
               </div>
             ) : messagesLoading ? (
               <div className="flex items-center justify-center py-12">
@@ -526,7 +526,7 @@ export default function AISettingsPage() {
                 {messages.length > 0 && (
                   <div className="px-4 py-3 border-t border-border bg-muted/30">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-medium">Token Receipt</span>
+                      <span className="font-medium">Recibo de tokens</span>
                       <div className="flex items-center gap-3">
                         <span>Input: {selectedConv.totalInputTokens.toLocaleString()}</span>
                         <span>Output: {selectedConv.totalOutputTokens.toLocaleString()}</span>

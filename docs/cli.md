@@ -1,6 +1,6 @@
 # `simpler` CLI
 
-The `simpler` CLI is a token-lean, JSON-first command-line client for the entire SimplerDevelopment portal — posts, media, CRM, projects, email, commerce, Company Brain, and more. Its commands are generated from the portal's MCP tool manifest, so it has **451-tool parity with the MCP server by construction**: every write goes through the same tool handlers, scope checks, and approval staging an AI agent would hit.
+The `simpler` CLI is a token-lean, JSON-first command-line client for the entire CRM AGENTS portal — posts, media, CRM, projects, email, commerce, Company Brain, and more. Its commands are generated from the portal's MCP tool manifest, so it has **451-tool parity with the MCP server by construction**: every write goes through the same tool handlers, scope checks, and approval staging an AI agent would hit.
 
 ## Installation
 

@@ -5,7 +5,7 @@
  * top-level path. Both endpoints return the same `Post` shape, so the render
  * path is identical either way.
  *
- * Only the LAST path segment is used as the slug: SimplerDevelopment slugs are
+ * Only the LAST path segment is used as the slug: CRM AGENTS slugs are
  * flat, so /about and /company/about resolve to the same document. If you need
  * true nested routing, key it off the full joined path instead and give your
  * content matching slugs.

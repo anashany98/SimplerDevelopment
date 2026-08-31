@@ -312,7 +312,7 @@ function SidePanelHost({
           type="button"
           onClick={onCollapse}
           title="Collapse panel"
-          aria-label="Collapse right panel"
+          aria-label="Colapsar panel derecho"
           className="shrink-0 px-2 py-2 text-muted-foreground hover:text-foreground hover:bg-background/60"
         >
           <span className="material-icons text-sm">chevron_right</span>

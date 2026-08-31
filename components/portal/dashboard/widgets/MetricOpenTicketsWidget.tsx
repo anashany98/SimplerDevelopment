@@ -19,7 +19,7 @@ export default async function MetricOpenTicketsWidget({
       icon="support_agent"
       color="text-orange-600"
       value={result?.count ?? 0}
-      label="Open Tickets"
+      label="Tickets abiertos"
     />
   );
 }

@@ -29,7 +29,13 @@ const BUNDLE_KEY = 'bundle';
 const BYOK_MAILTO =
   'mailto:sales@simplerdevelopment.com?subject=BYOK%20pricing%20—%20bring%20your%20own%20AI%20key';
 
-export function StepChooseModules({ state, setAnswers, persist, next }: StepProps) {
+export function StepChooseModules({
+  state,
+  setAnswers,
+  persist,
+  next,
+  stripeEnabled = true,
+}: StepProps & { stripeEnabled?: boolean }) {
   const [modules, setModules] = useState<ModuleItem[]>([]);
   const [loading, setLoading] = useState(true);
   // Seed selection lazily: localStorage cart → previously saved answers → empty.
@@ -150,7 +156,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
   const sumOfParts = sumOfModulePricesCents();
   const upcoming = nextVolumeTier(moduleCount);
   // Once the discounted total still beats the flat bundle, nudge to the bundle.
-  const showBundleSuggestion = !isBundle && selected.size >= 2 && totalCents >= bundlePriceCents;
+  const showBundleSuggestion = stripeEnabled && !isBundle && selected.size >= 2 && totalCents >= bundlePriceCents;
 
   async function handleContinue() {
     setSaving(true);
@@ -161,8 +167,9 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
     setSaving(false);
   }
 
-  const formatPrice = (cents: number) =>
-    `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`;
+  const formatPrice = (cents: number) => stripeEnabled
+    ? `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`
+    : 'Included';
 
   return (
     <div className="space-y-5">
@@ -174,7 +181,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
       ) : (
         <>
           {/* Volume-discount progress — advertises the bulk pricing as you build */}
-          {!isBundle && (
+          {stripeEnabled && !isBundle && (
             <div className="rounded-2xl border border-border bg-card px-4 py-3">
               <div className="flex items-center gap-1.5 flex-wrap text-xs">
                 {VOLUME_TIERS.slice().reverse().map((t) => {
@@ -203,7 +210,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
                     {discountPercent}% volume discount unlocked
                   </span>
                 ) : (
-                  <span>Bundle modules to save — the more you add, the bigger the discount.</span>
+                  <span>Agrupa módulos para ahorrar: cuanto más añades, mayor es el descuento.</span>
                 )}
                 {upcoming && (
                   <>
@@ -232,7 +239,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
             aria-pressed={isBundle}
           >
             <span className="inline-block font-mono text-[10px] font-semibold uppercase tracking-[0.12em] bg-foreground text-background px-2 py-0.5 rounded-[5px] mb-2">
-              Best value
+              {stripeEnabled ? 'Best value' : 'All modules'}
             </span>
             <div className="flex items-start gap-3">
               <span className={isBundle ? obChipOn : obChip}>
@@ -241,9 +248,11 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-semibold text-sm">{BUNDLE.name}</span>
-                  <span className="text-[11px] bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
-                    Save {Math.round((1 - bundlePriceCents / sumOfParts) * 100)}%
-                  </span>
+                  {stripeEnabled && (
+                    <span className="text-[11px] bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
+                      Save {Math.round((1 - bundlePriceCents / sumOfParts) * 100)}%
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">{BUNDLE.tagline}</p>
               </div>
@@ -305,24 +314,31 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
             })}
           </div>
 
-          {/* BYOK — contact sales, not self-serve */}
-          <a
-            href={BYOK_MAILTO}
+          {/* BYOK is self-configured locally; hosted billing routes it through sales. */}
+          <div
             className="block rounded-2xl border border-dashed border-border p-4 hover:border-foreground/20 hover:bg-muted/20 transition-all"
           >
             <div className="flex items-start gap-2">
               <span className="material-icons text-xl text-primary mt-0.5">vpn_key</span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-1">
-                  <span className="font-medium text-sm">Bring your own AI key (BYOK)</span>
-                  <span className="text-xs font-medium text-primary whitespace-nowrap">Contact sales →</span>
+                  <span className="font-medium text-sm">Usa tu propia clave de IA (BYOK)</span>
+                  {stripeEnabled ? (
+                    <a href={BYOK_MAILTO} className="text-xs font-medium text-primary whitespace-nowrap hover:underline">
+                      Contact sales →
+                    </a>
+                  ) : (
+                    <span className="text-xs font-medium text-primary whitespace-nowrap">Configure later</span>
+                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Spend AI tokens at cost on your own provider key, plus white-label &amp; governance. Custom pricing — email us to set it up.
+                  {stripeEnabled
+                    ? 'Spend AI tokens at cost on your own provider key, plus white-label & governance. Custom pricing — email us to set it up.'
+                    : 'Connect your own provider key during setup. No platform subscription is required.'}
                 </p>
               </div>
             </div>
-          </a>
+          </div>
 
           {/* Bundle upsell banner */}
           {showBundleSuggestion && (
@@ -335,7 +351,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
                   onClick={switchToBundle}
                   className="underline text-primary hover:text-primary/80 font-medium"
                 >
-                  switch to SimplerDev Complete
+                  switch to CRM AGENTS Complete
                 </button>
               </p>
             </div>
@@ -348,7 +364,7 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
         <div className={obFootbar}>
           <div className="min-w-0">
             {selected.size === 0 ? (
-              <p className="text-sm text-muted-foreground">No modules selected</p>
+              <p className="text-sm text-muted-foreground">No hay módulos seleccionados</p>
             ) : isBundle ? (
               <p className="text-sm font-medium">
                 {BUNDLE.name} — {formatPrice(bundlePriceCents)}
@@ -371,13 +387,15 @@ export function StepChooseModules({ state, setAnswers, persist, next }: StepProp
                 )}
               </p>
             )}
-            {selected.size > 0 && (
+            {stripeEnabled && selected.size > 0 && (
               <span className="block text-xs mt-0.5 text-muted-foreground/70">
                 after your 14-day free trial
               </span>
             )}
             <span className="block text-xs mt-1 text-muted-foreground">
-              Pricing is for your seat. Add teammates any time — each extra seat is your module total, capped at ${SEAT_PRICE_CAP_CENTS / 100}/mo, billed when they accept.
+              {stripeEnabled
+                ? `Pricing is for your seat. Add teammates any time — each extra seat is your module total, capped at $${SEAT_PRICE_CAP_CENTS / 100}/mo, billed when they accept.`
+                : 'No subscription or card is required on this self-hosted instance.'}
             </span>
           </div>
           <button

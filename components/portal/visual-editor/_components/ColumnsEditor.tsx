@@ -69,7 +69,7 @@ export function ColumnsEditor({ block, onUpdate }: { block: Block & { type: 'col
                   type="button"
                   onClick={() => removeColumn(i)}
                   className="absolute top-0 right-0 text-[8px] text-destructive/70 hover:text-destructive opacity-0 group-hover:opacity-100 p-0.5"
-                  title="Remove column"
+                  title="Quitar columna"
                 >x</button>
               )}
             </div>
@@ -106,9 +106,9 @@ export function ColumnsEditor({ block, onUpdate }: { block: Block & { type: 'col
         </div>
       </div>
 
-      <CheckboxField label="Stack on mobile" checked={block.stackOnMobile !== false} onChange={(v) => onUpdate({ stackOnMobile: v } as Partial<Block>)} />
-      <CheckboxField label="Stack on tablet" checked={block.stackOnTablet === true} onChange={(v) => onUpdate({ stackOnTablet: v } as Partial<Block>)} />
-      <CheckboxField label="Reverse when stacked" checked={block.reverseOnStack === true} onChange={(v) => onUpdate({ reverseOnStack: v } as Partial<Block>)} />
+      <CheckboxField label="Apilar en móvil" checked={block.stackOnMobile !== false} onChange={(v) => onUpdate({ stackOnMobile: v } as Partial<Block>)} />
+      <CheckboxField label="Apilar en tablet" checked={block.stackOnTablet === true} onChange={(v) => onUpdate({ stackOnTablet: v } as Partial<Block>)} />
+      <CheckboxField label="Invertir al apilarse" checked={block.reverseOnStack === true} onChange={(v) => onUpdate({ reverseOnStack: v } as Partial<Block>)} />
 
       <p className="text-xs text-muted-foreground">{cols.reduce((sum, c) => sum + c.blocks.length, 0)} nested blocks total</p>
     </div>

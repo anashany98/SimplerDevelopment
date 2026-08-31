@@ -1,6 +1,6 @@
 /**
  * Agentic OS pitch deck slides for Crossover Capital Advisors.
- * 9 slides pitching SimplerDevelopment's agentic OS capabilities
+ * 9 slides pitching CRM AGENTS's agentic OS capabilities
  * to Alex Pron, Tasha Shadle & Danielle Montgomery.
  *
  * Brand: Crossover Capital Advisors
@@ -38,7 +38,7 @@ export function buildAgenticSlides(): any[] {
               id: 'cover-eyebrow',
               type: 'text',
               order: 1,
-              content: 'SIMPLERDEVELOPMENT &nbsp;&times;&nbsp; CROSSOVER CAPITAL',
+              content: 'CRM AGENTS &nbsp;&times;&nbsp; CROSSOVER CAPITAL',
               style: {
                 color: '#cfa122',
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
@@ -152,7 +152,7 @@ export function buildAgenticSlides(): any[] {
                       id: 'cover-from-value',
                       type: 'text',
                       order: 2,
-                      content: 'Dan Coyle &amp; Cody York / SimplerDevelopment + CY Strategies',
+                      content: 'Dan Coyle &amp; Cody York / CRM AGENTS + CY Strategies',
                       style: {
                         color: '#ffffff',
                         fontFamily: 'Plus Jakarta Sans, sans-serif',
@@ -522,7 +522,7 @@ export function buildAgenticSlides(): any[] {
               id: 'vision-body',
               type: 'text',
               order: 4,
-              content: 'SimplerDevelopment is the warehouse that holds everything. Claude is the driver that reasons over it. MCP is the wiring that connects roughly twenty domains &mdash; so the whole business answers a single question.',
+              content: 'CRM AGENTS is the warehouse that holds everything. Claude is the driver that reasons over it. MCP is the wiring that connects roughly twenty domains &mdash; so the whole business answers a single question.',
               style: {
                 color: '#475569',
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
@@ -540,7 +540,7 @@ export function buildAgenticSlides(): any[] {
                 {
                   id: 'step-warehouse',
                   title: 'The Warehouse',
-                  description: 'SimplerDevelopment stores your site, CRM, brain, content and bookings as one source of truth.',
+                  description: 'CRM AGENTS stores your site, CRM, brain, content and bookings as one source of truth.',
                 },
                 {
                   id: 'step-wiring',
@@ -1033,7 +1033,7 @@ export function buildAgenticSlides(): any[] {
               id: 'retainer-body',
               type: 'text',
               order: 4,
-              content: 'The build delivers the dashboard. The retainer keeps it alive &mdash; and keeps SimplerDevelopment as your technology steward, not a vendor you call when something breaks.',
+              content: 'The build delivers the dashboard. The retainer keeps it alive &mdash; and keeps CRM AGENTS as your technology steward, not a vendor you call when something breaks.',
               style: {
                 color: '#475569',
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
@@ -1344,7 +1344,7 @@ export function buildAgenticSlides(): any[] {
               id: 'next-attribution',
               type: 'text',
               order: 7,
-              content: 'Dan Coyle &mdash; SimplerDevelopment &nbsp;&middot;&nbsp; Cody York &mdash; CY Strategies',
+              content: 'Dan Coyle &mdash; CRM AGENTS &nbsp;&middot;&nbsp; Cody York &mdash; CY Strategies',
               style: {
                 color: '#cfa122',
                 fontFamily: 'Plus Jakarta Sans, sans-serif',

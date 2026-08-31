@@ -68,9 +68,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
             )}
             {saveStatus === 'error' && (
               <span className="flex items-center gap-1 text-xs text-destructive">
-                <span className="material-icons text-sm">error</span>
-                Save failed
-              </span>
+                <span className="material-icons text-sm">error</span>Error al guardar</span>
             )}
           </div>
           <button type="button" onClick={onClose} className="text-muted-foreground hover:text-foreground">
@@ -85,7 +83,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
               value={seoTitle}
               onChange={(e) => setSeoTitle(e.target.value)}
               onBlur={() => commitIfChanged('seoTitle', seoTitle)}
-              placeholder={deck.title || 'Defaults to deck title'}
+              placeholder={deck.title || 'Por defecto usa el título de la presentación'}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
             />
             <p className="text-xs text-muted-foreground mt-1">{(seoTitle || deck.title || '').length}/60 characters</p>
@@ -98,7 +96,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
               onChange={(e) => setSeoDescription(e.target.value)}
               onBlur={() => commitIfChanged('seoDescription', seoDescription)}
               rows={3}
-              placeholder={deck.description || 'Description for search engines...'}
+              placeholder={deck.description || 'Descripción para buscadores…'}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary resize-none"
             />
             <p className="text-xs text-muted-foreground mt-1">{seoDescription.length}/160 characters</p>
@@ -128,7 +126,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
               onChange={(e) => void patchField({ noIndex: e.target.checked })}
               className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
             />
-            <span className="text-sm text-foreground">Hide from search engines (noindex)</span>
+            <span className="text-sm text-foreground">Ocultar de los buscadores (noindex)</span>
           </label>
         </div>
       </div>

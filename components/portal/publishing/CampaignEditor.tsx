@@ -117,7 +117,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
           </div>
         )}
 
-        <Field label="Name" required>
+        <Field label="Nombre" required>
           <input
             type="text"
             required
@@ -148,13 +148,13 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
           />
         </Field>
 
-        <Field label="Description">
+        <Field label="Descripción">
           <textarea
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             rows={2}
             className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1.5 text-sm"
-            placeholder="Optional context for the team."
+            placeholder="Contexto opcional para el equipo."
           />
         </Field>
 
@@ -167,7 +167,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
               className="h-9 w-full rounded border border-gray-300 dark:border-gray-700"
             />
           </Field>
-          <Field label="Status">
+          <Field label="Estado">
             <select
               value={form.status}
               onChange={(e) =>
@@ -182,7 +182,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
               ))}
             </select>
           </Field>
-          <Field label="Start date">
+          <Field label="Fecha de inicio">
             <input
               type="date"
               value={form.startDate}
@@ -190,7 +190,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
               className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1.5 text-sm"
             />
           </Field>
-          <Field label="End date">
+          <Field label="Fecha de fin">
             <input
               type="date"
               value={form.endDate}
@@ -205,9 +205,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
             type="button"
             onClick={onCancel}
             className="rounded border border-gray-300 dark:border-gray-700 px-3 py-1.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             type="submit"
             disabled={saving || !form.name.trim()}

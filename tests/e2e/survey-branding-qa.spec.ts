@@ -146,7 +146,7 @@ test.describe('Survey Page QA - Branding & Functionality', () => {
     expect(await footer.count()).toBe(0);
 
     // Should have "Powered by" text (standalone mode only)
-    const powered = page.locator('text=Powered by SimplerDevelopment');
+    const powered = page.locator('text=Powered by CRM AGENTS');
     expect(await powered.count()).toBeGreaterThan(0);
   });
 
@@ -154,7 +154,7 @@ test.describe('Survey Page QA - Branding & Functionality', () => {
     await page.goto(SURVEY_URL + '?embed=1', { waitUntil: 'networkidle' });
     await page.waitForTimeout(500);
 
-    const powered = page.locator('text=Powered by SimplerDevelopment');
+    const powered = page.locator('text=Powered by CRM AGENTS');
     expect(await powered.count()).toBe(0);
 
     await page.screenshot({ path: `${SCREENSHOTS}/05-survey-embed.png`, fullPage: true });

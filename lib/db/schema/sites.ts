@@ -25,7 +25,7 @@ export const clients = pgTable('clients', {
   customDomainVerifiedAt: timestamp('custom_domain_verified_at'),
   customDomainVerificationToken: varchar('custom_domain_verification_token', { length: 64 }), // DNS TXT verification value
   whiteLabelEnabled: boolean('white_label_enabled').default(false).notNull(),
-  agencyName: varchar('agency_name', { length: 255 }), // overrides "Simpler Development" in portal chrome
+  agencyName: varchar('agency_name', { length: 255 }), // overrides "CRM AGENTS" in portal chrome
   agencyLogoUrl: varchar('agency_logo_url', { length: 500 }), // overrides /iconLogo.png and login wordmark
   agencyPrimaryColor: varchar('agency_primary_color', { length: 20 }), // optional accent for portal chrome
   // Self-serve / PLG brain trial — when non-null and > now() the entitlement
@@ -189,7 +189,7 @@ export const clientWebsites = pgTable('client_websites', {
   active: boolean('active').default(true).notNull(),
   // Repository & deployment
   subdomain: varchar('subdomain', { length: 100 }), // slug for <slug>.simplerdevelopment.com
-  githubRepoName: varchar('github_repo_name', { length: 255 }), // e.g. "simplerdevelopment/acme-main"
+  githubRepoName: varchar('github_repo_name', { length: 255 }), // e.g. "org/acme-main"
   githubRepoUrl: varchar('github_repo_url', { length: 500 }),
   deployBranch: varchar('deploy_branch', { length: 100 }).default('main'), // branch to deploy from
   vercelProjectId: varchar('vercel_project_id', { length: 255 }),

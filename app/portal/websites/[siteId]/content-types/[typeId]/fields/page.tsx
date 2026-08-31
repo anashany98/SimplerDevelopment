@@ -41,9 +41,9 @@ export default async function ContentTypeFieldsPage({ params }: PageProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
+        eyebrow="Sitio web"
         title={type.name}
-        subtitle={<>Define structured fields for every <code className="font-mono">{type.slug}</code> post — text, select, image, repeaters, groups, etc. Authors fill them in alongside the block content on the post edit page; values surface in templates via the same custom-field engine the CRM uses.</>}
+        subtitle={<>Define campos estructurados para cada publicación de tipo <code className="font-mono">{type.slug}</code>: texto, select, imagen, repetidores, grupos, etc. Los autores los completan junto con el contenido de bloques en la página de edición de la publicación; los valores aparecen en las plantillas mediante el mismo motor de campos personalizados que usa el CRM.</>}
       />
 
       <CustomFieldsManager

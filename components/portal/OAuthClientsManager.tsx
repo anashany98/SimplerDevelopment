@@ -195,9 +195,7 @@ export default function OAuthClientsManager({
                   onClick={() => navigator.clipboard.writeText(revealed.clientId)}
                   className="inline-flex items-center gap-1 text-xs px-2 py-1 border border-border rounded hover:bg-muted"
                 >
-                  <span className="material-icons text-[14px] leading-none">content_copy</span>
-                  Copy
-                </button>
+                  <span className="material-icons text-[14px] leading-none">content_copy</span>Copiar</button>
               </div>
             </div>
             {revealed.clientSecret && (
@@ -211,9 +209,7 @@ export default function OAuthClientsManager({
                     onClick={() => navigator.clipboard.writeText(revealed.clientSecret!)}
                     className="inline-flex items-center gap-1 text-xs px-2 py-1 border border-border rounded hover:bg-muted"
                   >
-                    <span className="material-icons text-[14px] leading-none">content_copy</span>
-                    Copy
-                  </button>
+                    <span className="material-icons text-[14px] leading-none">content_copy</span>Copiar</button>
                 </div>
               </div>
             )}
@@ -316,9 +312,7 @@ export default function OAuthClientsManager({
             <button
               onClick={() => { setShowCreate(false); resetCreateForm(); }}
               className="px-3 py-2 border border-border rounded-md text-sm"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -328,17 +322,17 @@ export default function OAuthClientsManager({
           <table className="w-full min-w-[800px] text-sm">
             <thead className="bg-muted/50">
               <tr className="text-left">
-                <th className="px-3 py-2 font-medium">Name</th>
+                <th className="px-3 py-2 font-medium">Nombre</th>
                 <th className="px-3 py-2 font-medium">client_id</th>
                 <th className="px-3 py-2 font-medium">Secret</th>
                 <th className="px-3 py-2 font-medium">Auth method</th>
-                <th className="px-3 py-2 font-medium">Created</th>
+                <th className="px-3 py-2 font-medium">Creado</th>
                 <th className="px-3 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {loading && (
-                <tr><td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">Loading…</td></tr>
+                <tr><td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
               )}
               {!loading && clients.length === 0 && (
                 <tr>
@@ -376,9 +370,7 @@ export default function OAuthClientsManager({
                       <button
                         onClick={() => handleDelete(c.id, c.clientName)}
                         className="text-xs text-destructive hover:underline"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </div>
                   </td>
                 </tr>

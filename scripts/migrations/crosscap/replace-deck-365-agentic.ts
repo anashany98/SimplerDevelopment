@@ -1,5 +1,5 @@
 /**
- * Replace pitch deck 365 (CrossCap, client 103) content with the SimplerDevelopment
+ * Replace pitch deck 365 (CrossCap, client 103) content with the CRM AGENTS
  * capabilities pitch — "An Agentic OS for Crossover Capital" — an agentic dashboard
  * build followed by a fractional-CTO retainer. Keeps the same deck row, slug, and
  * CrossCap gold/navy theme; swaps title/description/slides and republishes.
@@ -30,7 +30,7 @@ const DECK_ID = 365;
 const CLIENT_ID = 103;
 const TITLE = 'An Agentic OS for Crossover Capital';
 const DESC =
-  'SimplerDevelopment capabilities pitch for Crossover Capital Advisors — an agentic dashboard build followed by a fractional-CTO retainer, built on the foundation already live in their portal.';
+  'CRM AGENTS capabilities pitch for Crossover Capital Advisors — an agentic dashboard build followed by a fractional-CTO retainer, built on the foundation already live in their portal.';
 
 function connect() {
   const url = process.env.DATABASE_URL;

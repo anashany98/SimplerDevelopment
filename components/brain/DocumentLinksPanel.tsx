@@ -30,8 +30,8 @@ const ENTITY_TYPES: BrainDocumentLinkEntityType[] = [
 const META: Record<BrainDocumentLinkEntityType, { label: string; plural: string; icon: string }> = {
   topic:         { label: 'Topic',         plural: 'Topics',     icon: 'account_tree' },
   initiative:    { label: 'Initiative',    plural: 'Initiatives', icon: 'flag' },
-  decision:      { label: 'Decision',      plural: 'Decisions',  icon: 'gavel' },
-  meeting:       { label: 'Meeting',       plural: 'Meetings',   icon: 'event' },
+  decision:      { label: 'Decisión',      plural: 'Decisions',  icon: 'gavel' },
+  meeting:       { label: 'Reunión',       plural: 'Meetings',   icon: 'event' },
   glossary_term: { label: 'Glossary term', plural: 'Glossary',   icon: 'menu_book' },
   person:        { label: 'Person',        plural: 'People',     icon: 'person' },
 };
@@ -100,9 +100,7 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
           onClick={() => setPickerOpen(true)}
           className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md border border-border text-foreground hover:bg-accent"
         >
-          <span className="material-icons text-sm">add_link</span>
-          Link
-        </button>
+          <span className="material-icons text-sm">add_link</span>Enlace</button>
       </div>
 
       {err && (
@@ -266,14 +264,14 @@ function LinkPickerDialog({
               Attach a topic, initiative, decision, meeting, glossary term, or person.
             </p>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Close">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Cerrar">
             <span className="material-icons text-lg">close</span>
           </button>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Type</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Tipo</span>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as BrainDocumentLinkEntityType)}
@@ -285,7 +283,7 @@ function LinkPickerDialog({
             </select>
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Search</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Buscar</span>
             <input
               type="text"
               value={search}
@@ -299,9 +297,7 @@ function LinkPickerDialog({
         <div className="max-h-48 overflow-y-auto bg-muted/30 border border-border rounded-md">
           {loading ? (
             <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-              <span className="material-icons animate-spin text-base mr-1.5">progress_activity</span>
-              Loading…
-            </div>
+              <span className="material-icons animate-spin text-base mr-1.5">progress_activity</span>Cargando…</div>
           ) : options.length === 0 ? (
             <div className="text-center py-6 text-xs text-muted-foreground">
               No {META[type].plural.toLowerCase()} found.
@@ -350,9 +346,7 @@ function LinkPickerDialog({
             onClick={onClose}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             onClick={submit}
             disabled={submitting || pickedId === null}
@@ -360,7 +354,7 @@ function LinkPickerDialog({
           >
             {submitting
               ? <><span className="material-icons animate-spin text-base">progress_activity</span>Linking…</>
-              : <><span className="material-icons text-base">add_link</span>Link</>}
+              : <><span className="material-icons text-base">add_link</span>Enlace</>}
           </button>
         </div>
       </div>

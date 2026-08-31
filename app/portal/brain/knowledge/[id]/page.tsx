@@ -229,9 +229,7 @@ export default function BrainNoteDetailPage() {
           href="/portal/brain/knowledge"
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent"
         >
-          <span className="material-icons text-base">arrow_back</span>
-          Back to knowledge
-        </Link>
+          <span className="material-icons text-base">arrow_back</span>Volver al conocimiento</Link>
       </div>
     );
   }
@@ -265,9 +263,7 @@ export default function BrainNoteDetailPage() {
           disabled={!dirty || saveState === 'saving'}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          <span className="material-icons text-base">save</span>
-          Save
-        </button>
+          <span className="material-icons text-base">save</span>Guardar</button>
         <NoteActionButtons
           note={note}
           onPatch={patchMeta}

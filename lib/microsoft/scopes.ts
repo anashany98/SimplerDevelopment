@@ -1,5 +1,5 @@
 /**
- * Microsoft Graph OAuth scopes for the SimplerDevelopment Teams integration.
+ * Microsoft Graph OAuth scopes for the CRM AGENTS Teams integration.
  * Must stay in sync with the Azure AD app registration's "API permissions" list
  * in the Azure portal.
  *

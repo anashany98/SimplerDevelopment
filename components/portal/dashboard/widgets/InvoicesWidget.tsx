@@ -31,11 +31,11 @@ export default async function InvoicesWidget({
       <div className="mb-3 flex items-baseline gap-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{unpaidCount}</span>
         <span className="text-sm text-muted-foreground">
-          unpaid · {formatCents(amountDue)} due
+          pendientes · {formatCents(amountDue)} por cobrar
         </span>
       </div>
       {recent.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No invoices yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Todavía no hay facturas.</p>
       ) : (
         <ul className="space-y-2">
           {recent.map((inv) => (

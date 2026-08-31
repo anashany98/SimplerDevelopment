@@ -7,7 +7,7 @@ import {
 } from '@mastra/evals/scorers/utils';
 
 /**
- * Eval scorers for the SimplerDevelopment agents (Brain + Portal).
+ * Eval scorers for the CRM AGENTS agents (Brain + Portal).
  *
  * These are the Mastra **eval layer** — they grade runs (sampled) and surface in
  * Studio, separate from the runtime groundedness gate inside the Brain workflow.

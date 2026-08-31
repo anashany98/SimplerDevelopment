@@ -73,18 +73,18 @@ export default function CrmDashboardPage() {
     (data.contractsByStatus['partially_signed'] ?? 0);
 
   const navLinks = [
-    { href: '/admin/crm/contacts', icon: 'contacts', label: 'Contacts', desc: 'Manage all CRM contacts' },
-    { href: '/admin/crm/companies', icon: 'business', label: 'Companies', desc: 'View companies across clients' },
-    { href: '/admin/crm/deals', icon: 'handshake', label: 'Deals', desc: 'Track deal pipelines' },
-    { href: '/admin/crm/proposals', icon: 'description', label: 'Proposals', desc: 'Monitor proposals' },
-    { href: '/admin/crm/contracts', icon: 'gavel', label: 'Contracts', desc: 'Track contract signings' },
+    { href: '/admin/crm/contacts', icon: 'contacts', label: 'Contactos', desc: 'Manage all CRM contacts' },
+    { href: '/admin/crm/companies', icon: 'business', label: 'Empresas', desc: 'View companies across clients' },
+    { href: '/admin/crm/deals', icon: 'handshake', label: 'Negocios', desc: 'Track deal pipelines' },
+    { href: '/admin/crm/proposals', icon: 'description', label: 'Propuestas', desc: 'Monitor proposals' },
+    { href: '/admin/crm/contracts', icon: 'gavel', label: 'Contratos', desc: 'Track contract signings' },
   ];
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">CRM Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Overview of contacts, deals, proposals, and contracts across all clients.</p>
+        <p className="text-muted-foreground mt-1">Resumen de contactos, negocios, propuestas y contratos de todos los clientes.</p>
       </div>
 
       {/* KPI Cards */}
@@ -147,7 +147,7 @@ export default function CrmDashboardPage() {
             <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="material-icons text-blue-600 text-sm">pending</span>
-                <span className="text-sm font-medium text-blue-700">Open</span>
+                <span className="text-sm font-medium text-blue-700">Abierto</span>
               </div>
               <div className="text-right">
                 <span className="text-sm font-bold text-blue-700">{openDeals.count} deals</span>

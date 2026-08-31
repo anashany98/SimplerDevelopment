@@ -162,23 +162,23 @@ export default function BrainDocumentNewPage() {
           Documents
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
-        <span>New</span>
+        <span>Nuevo</span>
       </nav>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">add</span>
             New document
           </span>
         }
-        subtitle="Start a fresh SOP or promote an existing note into a versioned document."
+        subtitle="Empieza un nuevo SOP o promueve una nota existente a un documento versionado."
       />
 
       <form onSubmit={submit} className="bg-card border border-border rounded-2xl p-5 space-y-4">
         <div>
-          <label htmlFor="doc-title" className="block text-xs font-medium text-foreground mb-1">Title</label>
+          <label htmlFor="doc-title" className="block text-xs font-medium text-foreground mb-1">Título</label>
           <input
             id="doc-title"
             type="text"
@@ -191,7 +191,7 @@ export default function BrainDocumentNewPage() {
 
         <div className="grid sm:grid-cols-2 gap-3">
           <div>
-            <label htmlFor="doc-cat" className="block text-xs font-medium text-foreground mb-1">Category</label>
+            <label htmlFor="doc-cat" className="block text-xs font-medium text-foreground mb-1">Categoría</label>
             <select
               id="doc-cat"
               value={category}
@@ -218,7 +218,7 @@ export default function BrainDocumentNewPage() {
         </div>
 
         <div>
-          <label htmlFor="doc-owner" className="block text-xs font-medium text-foreground mb-1">Owner</label>
+          <label htmlFor="doc-owner" className="block text-xs font-medium text-foreground mb-1">Propietario</label>
           <select
             id="doc-owner"
             value={ownerId ?? ''}
@@ -236,7 +236,7 @@ export default function BrainDocumentNewPage() {
             selectedTopicIds={defaultTopicIds}
             onChange={setDefaultTopicIds}
             allowCreate={false}
-            placeholder="Add a topic…"
+            placeholder="Agregar un tema…"
           />
         </div>
 
@@ -262,7 +262,7 @@ export default function BrainDocumentNewPage() {
                 type="text"
                 value={noteSearch}
                 onChange={(e) => setNoteSearch(e.target.value)}
-                placeholder="Search notes…"
+                placeholder="Buscar notas…"
                 className={pInput}
               />
               <div className="max-h-48 overflow-y-auto bg-background border border-border rounded-md">
@@ -302,13 +302,11 @@ export default function BrainDocumentNewPage() {
         )}
 
         <div className="flex items-center justify-end gap-2">
-          <Link href="/portal/brain/documents" className={pBtnGhost}>
-            Cancel
-          </Link>
+          <Link href="/portal/brain/documents" className={pBtnGhost}>Cancelar</Link>
           <button type="submit" disabled={submitting} className={pBtnPrimary}>
             {submitting
               ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creating…</>
-              : <><span className="material-icons text-base">add</span>Create &amp; open editor</>}
+              : <><span className="material-icons text-base">add</span>Crear y abrir el editor</>}
           </button>
         </div>
       </form>

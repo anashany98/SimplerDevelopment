@@ -30,7 +30,7 @@ Content publishing compounds the problem: scheduling posts, managing a content c
 
 ## Solution
 
-SimplerDevelopment puts website management, content editing, and publishing under each tenant's portal. Clients open the visual block editor, make changes against a live iframe preview of their actual site, and save — without a developer in the loop.
+CRM AGENTS puts website management, content editing, and publishing under each tenant's portal. Clients open the visual block editor, make changes against a live iframe preview of their actual site, and save — without a developer in the loop.
 
 Every site ships with custom domain support, a branding profile (colors, typography, logos), a navigation editor, per-site CSS/JS injection, and a media library. A content calendar and publishing kanban board give teams a shared view of what's scheduled and what's live.
 
@@ -80,7 +80,7 @@ Email campaigns are the built publishing channel. Social media and webhook publi
 
 | Field | Value |
 |---|---|
-| **Page title** | Website Builder & CMS for Agencies \| SimplerDevelopment |
+| **Page title** | Website Builder & CMS for Agencies \| CRM AGENTS |
 | **Meta description** | Manage client websites with 47 content blocks, a live-preview visual editor, real-time collaboration, and email publishing — all in one tenant portal. |
 | **URL slug** | /features/websites-cms-visual-editor |
 | **Primary keyword** | visual website editor for agencies |
@@ -93,7 +93,7 @@ Email campaigns are the built publishing channel. Social media and webhook publi
 Apply both types to this page:
 
 **SoftwareApplication**
-- `name`: "SimplerDevelopment – Sites, CMS & Visual Editor"
+- `name`: "CRM AGENTS – Sites, CMS & Visual Editor"
 - `applicationCategory`: "WebApplication"
 - `featureList`: ["47 built-in block types", "Live-preview visual block editor", "Multi-user real-time collaboration", "Custom domains and branding profiles", "Content calendar and publishing board", "42 MCP tools for AI agents"]
 - `operatingSystem`: "Web"

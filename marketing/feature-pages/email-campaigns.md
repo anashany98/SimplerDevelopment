@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment Email Campaigns",
+  "name": "CRM AGENTS Email Campaigns",
   "applicationCategory": "BusinessApplication",
   "featureList": [
     "Drag-and-drop block email builder",
@@ -56,7 +56,7 @@ Agencies managing email marketing for clients bounce between the client's ESP lo
 
 ## Solution
 
-SimplerDevelopment gives every client an email module inside their portal. They can build campaigns with the same block editor used for their website pages, manage their subscriber lists and segments in one place, test subject lines with built-in A/B configuration, and track results in a per-campaign analytics view. Outbound delivery runs through Resend with open, click, and bounce tracking. The agency never needs to hand clients access to a third-party ESP.
+CRM AGENTS gives every client an email module inside their portal. They can build campaigns with the same block editor used for their website pages, manage their subscriber lists and segments in one place, test subject lines with built-in A/B configuration, and track results in a per-campaign analytics view. Outbound delivery runs through Resend with open, click, and bounce tracking. The agency never needs to hand clients access to a third-party ESP.
 
 ---
 

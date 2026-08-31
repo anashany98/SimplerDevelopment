@@ -131,7 +131,7 @@ export function RightPanel({
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-center p-6 text-muted-foreground">
                 <span className="material-icons text-3xl mb-2">touch_app</span>
-                <p className="text-sm">Click a block to edit</p>
+                <p className="text-sm">Haz clic en un bloque para editarlo</p>
               </div>
             )}
           </>
@@ -178,9 +178,7 @@ function MultiSelectPane({
       <div className="px-4 py-3 border-b border-border shrink-0">
         <div className="flex gap-2">
           <button type="button" onClick={bulkDuplicate} className="flex items-center gap-1.5 flex-1 justify-center rounded border border-border px-2 py-1.5 text-xs hover:bg-accent transition-colors">
-            <span className="material-icons text-sm text-muted-foreground">content_copy</span>
-            Duplicate
-          </button>
+            <span className="material-icons text-sm text-muted-foreground">content_copy</span>Duplicar</button>
           <button type="button" onClick={bulkGroup} className="flex items-center gap-1.5 flex-1 justify-center rounded border border-border px-2 py-1.5 text-xs hover:bg-accent transition-colors">
             <span className="material-icons text-sm text-muted-foreground">crop_free</span>
             Group
@@ -305,7 +303,7 @@ function SingleBlockPane({
               <span className="material-icons text-base">lock</span>
             </span>
           ) : (
-            <button type="button" onClick={() => onDeleteBlock(selectedBlock.id)} className="p-1 text-muted-foreground hover:text-destructive" title="Delete">
+            <button type="button" onClick={() => onDeleteBlock(selectedBlock.id)} className="p-1 text-muted-foreground hover:text-destructive" title="Eliminar">
               <span className="material-icons text-base">delete</span>
             </button>
           )}
@@ -337,10 +335,10 @@ function SingleBlockPane({
       <div className="flex border-b border-border shrink-0">
         <button type="button" onClick={() => setRightPanelTab('content')}
           className={`flex-1 py-2 text-xs font-medium ${rightPanelTab === 'content' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
-        >Content</button>
+        >Contenido</button>
         <button type="button" onClick={() => setRightPanelTab('style')}
           className={`flex-1 py-2 text-xs font-medium ${rightPanelTab === 'style' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
-        >Style</button>
+        >Estilo</button>
       </div>
 
       {/* Tab content */}

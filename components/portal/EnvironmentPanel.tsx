@@ -279,7 +279,7 @@ export default function EnvironmentPanel({
           </h4>
 
           {loading ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">Loading...</p>
+            <p className="text-xs text-muted-foreground py-4 text-center">Cargando...</p>
           ) : (
             <>
               {/* Var list */}

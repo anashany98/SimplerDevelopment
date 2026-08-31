@@ -195,7 +195,7 @@ export default function BrainTopicsAdminPage() {
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">account_tree</span>
@@ -265,7 +265,7 @@ export default function BrainTopicsAdminPage() {
                       else if (e.key === 'Escape') { setCreateRoot(false); setCreateRootValue(''); }
                     }}
                     onBlur={handleCreateRoot}
-                    placeholder="New root topic name…"
+                    placeholder="Nombre del tema raíz nuevo…"
                     className={`flex-1 ${pInput} py-1`}
                   />
                 </div>
@@ -273,7 +273,7 @@ export default function BrainTopicsAdminPage() {
               {tree.length === 0 && !createRoot ? (
                 <div className="py-12 text-center text-sm text-muted-foreground">
                   <span className="material-icons text-3xl text-muted-foreground/50 block mb-2">account_tree</span>
-                  <p className="mb-3">No topics yet.</p>
+                  <p className="mb-3">Aún no hay temas.</p>
                   <button
                     type="button"
                     onClick={() => { setCreateRoot(true); setCreateRootValue(''); }}
@@ -429,9 +429,7 @@ function TopicDetailPanel({
   if (loading) {
     return (
       <div className="p-6 text-center text-sm text-muted-foreground">
-        <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -489,7 +487,7 @@ function TopicDetailPanel({
 
       <div className="px-4 py-3 space-y-3 text-sm flex-1 overflow-y-auto">
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Description</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">Descripción</label>
           <textarea
             value={descDraft}
             onChange={(e) => setDescDraft(e.target.value)}
@@ -503,7 +501,7 @@ function TopicDetailPanel({
               if (!ok) setDescDraft(topic.description ?? '');
             }}
             rows={3}
-            placeholder="Optional — what does this topic cover?"
+            placeholder="Opcional — ¿qué abarca este tema?"
             className={`${pInput} resize-none`}
           />
           {saving === 'desc' && <div className="text-[10px] text-muted-foreground mt-1"><span className="material-icons text-sm animate-spin align-middle">progress_activity</span> Saving…</div>}
@@ -545,7 +543,7 @@ function TopicDetailPanel({
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground block mb-1">Icon</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Icono</label>
             <input
               type="text"
               value={iconDraft}
@@ -572,7 +570,7 @@ function TopicDetailPanel({
             {entitiesLoading && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
           </div>
           {entities && entities.items.length === 0 && !entitiesLoading && (
-            <div className="text-xs text-muted-foreground italic px-1 py-2">No entities attached yet.</div>
+            <div className="text-xs text-muted-foreground italic px-1 py-2">Aún no hay entidades asociadas.</div>
           )}
           {entities && entities.items.length > 0 && (
             <div className="space-y-3">
@@ -672,13 +670,13 @@ function ImportFromTagsWizard({
         <div className="pointer-events-auto w-full max-w-2xl rounded-2xl border border-border bg-card shadow-xl flex flex-col max-h-[85vh]">
           <div className="px-4 py-3 border-b border-border flex items-center gap-2">
             <span className="material-icons text-base text-primary">file_download</span>
-            <h3 className="text-base font-semibold flex-1">Import topics from tags</h3>
+            <h3 className="text-base font-semibold flex-1">Importar temas desde etiquetas</h3>
             <button
               type="button"
               onClick={() => !busy && onClose()}
               disabled={busy}
               className="h-7 w-7 inline-flex items-center justify-center rounded hover:bg-accent disabled:opacity-50"
-              aria-label="Close"
+              aria-label="Cerrar"
             >
               <span className="material-icons text-base">close</span>
             </button>
@@ -736,7 +734,7 @@ function ImportFromTagsWizard({
             ) : (
               <>
                 <div className="bg-muted/40 border border-border rounded-xl p-3 text-xs">
-                  <div className="font-medium text-foreground mb-1">Preview</div>
+                  <div className="font-medium text-foreground mb-1">Vista previa</div>
                   <p className="text-muted-foreground">
                     <strong className="text-foreground">{report.topicsCreated}</strong>{' '}
                     {report.topicsCreated === 1 ? 'topic' : 'topics'} would be created (or matched if already
@@ -758,8 +756,8 @@ function ImportFromTagsWizard({
                       <thead className="bg-muted/50">
                         <tr className="text-left">
                           <th className="px-2 py-1 font-medium">Topic path</th>
-                          <th className="px-2 py-1 font-medium text-right">Notes</th>
-                          <th className="px-2 py-1 font-medium">Status</th>
+                          <th className="px-2 py-1 font-medium text-right">Notas</th>
+                          <th className="px-2 py-1 font-medium">Estado</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -794,9 +792,7 @@ function ImportFromTagsWizard({
                 onClick={onDone}
                 className={pBtnPrimary}
               >
-                <span className="material-icons text-sm">done</span>
-                Done
-              </button>
+                <span className="material-icons text-sm">done</span>Listo</button>
             ) : (
               <>
                 <button
@@ -804,9 +800,7 @@ function ImportFromTagsWizard({
                   onClick={onClose}
                   disabled={busy}
                   className={`${pBtnGhost} disabled:opacity-50`}
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
                 <button
                   type="button"
                   onClick={() => { setStep('confirm'); runImport(false); }}

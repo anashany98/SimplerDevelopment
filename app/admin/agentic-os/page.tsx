@@ -676,9 +676,7 @@ export default function AgenticOsPage() {
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               refresh
-            </span>
-            Refresh
-          </button>
+            </span>Actualizar</button>
         </div>
       </div>
 
@@ -687,9 +685,9 @@ export default function AgenticOsPage() {
         {[
           { label: 'Skills', value: totalSkills, icon: 'extension' },
           { label: 'On-demand', value: onDemandCount, icon: 'play_arrow' },
-          { label: 'Scheduled', value: scheduledCount, icon: 'schedule' },
-          { label: 'Succeeded', value: data.counts.succeeded ?? 0, icon: 'check_circle' },
-          { label: 'Failed', value: data.counts.failed ?? 0, icon: 'error_outline' },
+          { label: 'Programado', value: scheduledCount, icon: 'schedule' },
+          { label: 'Exitoso', value: data.counts.succeeded ?? 0, icon: 'check_circle' },
+          { label: 'Fallido', value: data.counts.failed ?? 0, icon: 'error_outline' },
         ].map((s) => (
           <div key={s.label} className="bg-card border border-border rounded-xl p-3">
             <div className="flex items-center gap-2">
@@ -728,7 +726,7 @@ export default function AgenticOsPage() {
           [
             { id: 'all', label: 'All domains', icon: 'apps' },
             { id: 'on-demand', label: 'On-demand only', icon: 'play_arrow' },
-            { id: 'scheduled', label: 'Scheduled', icon: 'schedule' },
+            { id: 'scheduled', label: 'Programado', icon: 'schedule' },
             { id: 'history', label: 'Run history', icon: 'history' },
           ] as { id: FilterMode; label: string; icon: string }[]
         ).map((f) => (
@@ -836,12 +834,8 @@ function RunHistory({
               <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Skill
               </th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Duration
-              </th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Started
               </th>

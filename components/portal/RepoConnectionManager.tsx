@@ -103,14 +103,12 @@ export default function RepoConnectionManager({
           <button
             onClick={() => setEditing(true)}
             className="text-xs text-primary hover:underline"
-          >
-            Edit
-          </button>
+          >Editar</button>
         )}
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Connect a GitHub repository to use your own codebase with the SimplerDevelopment SDK.
+        Connect a GitHub repository to use your own codebase with the CRM AGENTS SDK.
         Without a repo, your site is served by the built-in rendering engine.
       </p>
 
@@ -169,7 +167,7 @@ export default function RepoConnectionManager({
               className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-foreground outline-none focus:border-primary text-sm font-mono"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Paste the full GitHub URL. The repo name will be extracted automatically.
+              Paste the full GitHub URL. The repo name will be extracted automátically.
             </p>
           </div>
 
@@ -206,9 +204,7 @@ export default function RepoConnectionManager({
               <button
                 onClick={() => { setEditing(false); setRepoName(initialRepoName || ''); setRepoUrl(initialRepoUrl || ''); setBranch(initialBranch || 'main'); }}
                 className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             )}
           </div>
         </div>

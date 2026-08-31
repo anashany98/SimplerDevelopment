@@ -137,9 +137,7 @@ export function LeftPanel({
                   leftTab === 'add' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <span className="material-icons text-sm">add_circle_outline</span>
-                Add Block
-              </button>
+                <span className="material-icons text-sm">add_circle_outline</span>Agregar bloque</button>
             </div>
 
             {/* Branding profile selector */}
@@ -161,18 +159,16 @@ export function LeftPanel({
                     type="button"
                     onClick={() => setTemplateLibraryOpen(true)}
                     className="w-full flex items-center justify-center gap-1.5 rounded border border-border bg-primary/5 hover:bg-primary/10 text-primary px-2 py-2 mb-2 text-xs font-medium transition-colors"
-                    title="Insert a saved template"
+                    title="Insertar una plantilla guardada"
                   >
-                    <span className="material-icons text-sm">bookmark</span>
-                    Browse Templates
-                  </button>
+                    <span className="material-icons text-sm">bookmark</span>Explorar plantillas</button>
                   <div className="flex items-center gap-1.5 rounded border border-border bg-background px-2 py-1.5 mb-2">
                     <span className="material-icons text-sm text-muted-foreground">search</span>
                     <input
                       type="text"
                       value={pickerSearch}
                       onChange={(e) => setPickerSearch(e.target.value)}
-                      placeholder="Search blocks..."
+                      placeholder="Buscar bloques..."
                       className="flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
                     />
                     {pickerSearch && (
@@ -230,7 +226,7 @@ export function LeftPanel({
                     ))}
                   </div>
                   {filteredBlockTypes.length === 0 && (
-                    <p className="text-xs text-muted-foreground text-center py-4">No blocks found</p>
+                    <p className="text-xs text-muted-foreground text-center py-4">No se encontraron bloques</p>
                   )}
                 </div>
               </div>
@@ -266,10 +262,8 @@ export function LeftPanel({
                 {blocks.length === 0 && (
                   <div className="px-3 py-8 text-center">
                     <span className="material-icons text-2xl text-muted-foreground/50 mb-2 block">layers_clear</span>
-                    <p className="text-xs text-muted-foreground">No blocks yet</p>
-                    <button type="button" onClick={() => setLeftTab('add')} className="text-xs text-primary hover:text-primary/80 mt-1">
-                      Add your first block
-                    </button>
+                    <p className="text-xs text-muted-foreground">Aún no hay bloques</p>
+                    <button type="button" onClick={() => setLeftTab('add')} className="text-xs text-primary hover:text-primary/80 mt-1">Agrega tu primer bloque</button>
                   </div>
                 )}
               </div>

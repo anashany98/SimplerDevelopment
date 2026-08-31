@@ -4,7 +4,7 @@
  * Visitor-side chat UI rendered inside the widget iframe.
  *
  * Lifecycle:
- *   1. mount → POST /api/public/chat/start (issues conversationId + token)
+ *   1. open → request a verified session from the host-page loader
  *   2. open SSE on /api/public/chat/stream
  *   3. visitor types → POST /api/public/chat/messages
  *
@@ -12,7 +12,7 @@
  * Google CDN (the iframe is its own document — we can include it freely).
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface StartResponse {
   conversationId: number;
@@ -22,6 +22,13 @@ interface StartResponse {
   primaryColor: string;
   position: string;
   awayMessage: string | null;
+  displayName: string | null;
+  logoUrl: string | null;
+  avatarUrl: string | null;
+  language: string;
+  allowAttachments: boolean;
+  showBranding: boolean;
+  privacyLink: string | null;
 }
 
 interface Message {
@@ -29,46 +36,34 @@ interface Message {
   authorKind: 'visitor' | 'agent' | 'system';
   authorName: string | null;
   body: string;
+  attachments?: Array<{ url: string; name: string; mimeType: string; size: number }>;
   occurredAt: string;
 }
 
-const VISITOR_KEY = 'sd-chat-visitor-id';
-
-function getVisitorId(): string {
-  try {
-    const existing = localStorage.getItem(VISITOR_KEY);
-    if (existing) return existing;
-    const fresh = `v_${Math.random().toString(36).slice(2, 12)}${Date.now().toString(36)}`;
-    localStorage.setItem(VISITOR_KEY, fresh);
-    return fresh;
-  } catch {
-    // Sandboxed iframes / third-party-cookie blocks — fall back to a
-    // session-scoped id. The visitor will look like a new person on
-    // every reload, but the widget keeps working.
-    return `vt_${Math.random().toString(36).slice(2, 12)}${Date.now().toString(36)}`;
-  }
-}
-
-function postParent(message: unknown) {
+function postParent(message: unknown, targetOrigin: string) {
   try {
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage(message, '*');
+      window.parent.postMessage(message, targetOrigin);
     }
   } catch {
     // ignore
   }
 }
 
-export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
+export default function ChatBootstrap({
+  parentOrigin = '',
+}: {
+  parentOrigin?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<StartResponse | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [attachments, setAttachments] = useState<Array<{ url: string; name: string; mimeType: string; size: number }>>([]);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  const widgetIdNum = useMemo(() => Number.parseInt(widgetId, 10), [widgetId]);
 
   // Always-on Material Icons — self-hosted webfont injected once per iframe.
   // The widget iframe is served from our origin, so the relative /fonts URL
@@ -85,43 +80,49 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
 
   // Tell the parent loader to expand/collapse.
   useEffect(() => {
-    postParent({ type: 'sd-chat:resize', expanded: open, width: 380, height: 560 });
-  }, [open]);
+    postParent({ type: 'sd-chat:resize', expanded: open, width: 380, height: 560 }, parentOrigin || '*');
+  }, [open, parentOrigin]);
 
-  // Establish the visitor session on first open.
+  // The iframe never creates a session itself. The host-page loader performs
+  // that cross-origin request so the server can validate the browser Origin,
+  // then sends this opaque session back over a pinned postMessage channel.
   useEffect(() => {
-    if (!open || session || !widgetIdNum) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('/api/public/chat/start', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ widgetId: widgetIdNum, visitorId: getVisitorId() }),
-        });
-        const json = await res.json();
-        if (!res.ok || !json.success) throw new Error(json.message || 'Failed to start chat');
-        if (cancelled) return;
-        setSession(json.data as StartResponse);
-        if (json.data.greetingMessage) {
-          setMessages([
-            {
-              id: -1,
-              authorKind: 'system',
-              authorName: null,
-              body: json.data.greetingMessage,
-              occurredAt: new Date().toISOString(),
-            },
-          ]);
-        }
-      } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Could not connect');
+    if (!parentOrigin) return;
+    const receiveSession = (event: MessageEvent) => {
+      if (event.origin !== parentOrigin || event.source !== window.parent) return;
+      const data = event.data as { type?: string; session?: StartResponse; message?: string } | null;
+      if (!data) return;
+      if (data.type === 'sd-chat:error') {
+        setError(data.message || 'No se pudo iniciar el chat');
+        return;
       }
-    })();
-    return () => {
-      cancelled = true;
+      if (data.type !== 'sd-chat:session' || !data.session
+        || !Number.isInteger(data.session.conversationId)
+        || typeof data.session.ephemeralToken !== 'string') return;
+      setSession(data.session);
+      setError(null);
+      if (data.session.greetingMessage) {
+        setMessages([{
+          id: -1,
+          authorKind: 'system',
+          authorName: null,
+          body: data.session.greetingMessage,
+          occurredAt: new Date().toISOString(),
+        }]);
+      }
     };
-  }, [open, session, widgetIdNum]);
+    window.addEventListener('message', receiveSession);
+    return () => window.removeEventListener('message', receiveSession);
+  }, [parentOrigin]);
+
+  useEffect(() => {
+    if (!open || session) return;
+    if (!parentOrigin) {
+      setError('Este chat debe abrirse desde un sitio autorizado.');
+      return;
+    }
+    postParent({ type: 'sd-chat:start' }, parentOrigin);
+  }, [open, parentOrigin, session]);
 
   // SSE subscription — only after session is live.
   useEffect(() => {
@@ -153,7 +154,7 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
   }, [messages.length]);
 
   const send = useCallback(async () => {
-    if (!session || !draft.trim() || sending) return;
+    if (!session || (!draft.trim() && attachments.length === 0) || sending) return;
     const body = draft.trim();
     setSending(true);
     setDraft('');
@@ -165,18 +166,47 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
           conversationId: session.conversationId,
           ephemeralToken: session.ephemeralToken,
           body,
+          attachments,
         }),
       });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message || 'Send failed');
+      if (!res.ok || !json.success) throw new Error(json.message || 'No se pudo enviar el mensaje');
       // Optimistically reflect — SSE will dedupe by id.
       setMessages((prev) => [...prev, json.data as Message]);
+      setAttachments([]);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Send failed');
+      setError(e instanceof Error ? e.message : 'No se pudo enviar el mensaje');
     } finally {
       setSending(false);
     }
-  }, [draft, sending, session]);
+  }, [attachments, draft, sending, session]);
+
+  const upload = useCallback(async (file: File) => {
+    if (!session) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const form = new FormData();
+      form.set('conversationId', String(session.conversationId));
+      form.set('ephemeralToken', session.ephemeralToken);
+      form.set('file', file);
+      const response = await fetch('/api/public/chat/upload', {
+        method: 'POST',
+        headers: {
+          'X-Chat-Conversation': String(session.conversationId),
+          'X-Chat-Token': session.ephemeralToken,
+        },
+        body: form,
+      });
+      const body = await response.json();
+      if (!response.ok || !body.success) throw new Error(body.message || 'No se pudo subir el archivo');
+      setAttachments((current) => [...current, body.data].slice(0, 5));
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'No se pudo subir el archivo');
+    } finally {
+      setUploading(false);
+    }
+  }, [session]);
 
   const primary = session?.primaryColor || '#0070f3';
 
@@ -232,13 +262,13 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
           justifyContent: 'space-between',
         }}
       >
-        <span style={{ fontWeight: 600 }}>Live chat</span>
+        <span style={{ fontWeight: 600 }}>{session?.displayName || 'Chat en vivo'}</span>
         <button
           type="button"
-          aria-label="Close chat"
+          aria-label="Cerrar chat"
           onClick={() => {
             setOpen(false);
-            postParent({ type: 'sd-chat:close' });
+            postParent({ type: 'sd-chat:close' }, parentOrigin || '*');
           }}
           style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', padding: 4 }}
         >
@@ -273,6 +303,9 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
               }}
             >
               {m.body}
+              {m.attachments?.map((attachment) => (
+                <a key={attachment.url} href={attachment.url} target="_blank" rel="noreferrer" style={{ display: 'block', marginTop: 6, textDecoration: 'underline' }}>{attachment.name}</a>
+              ))}
             </div>
           </div>
         ))}
@@ -283,13 +316,15 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
           e.preventDefault();
           void send();
         }}
-        style={{ display: 'flex', borderTop: '1px solid #eee', padding: 8, gap: 8, background: 'white' }}
+        style={{ display: 'flex', flexWrap: 'wrap', borderTop: '1px solid #eee', padding: 8, gap: 8, background: 'white' }}
       >
+        {attachments.length > 0 && <div style={{ width: '100%', display: 'flex', gap: 4, flexWrap: 'wrap' }}>{attachments.map((attachment) => <button key={attachment.url} type="button" onClick={() => setAttachments((current) => current.filter((item) => item.url !== attachment.url))} style={{ border: '1px solid #ddd', borderRadius: 6, background: '#fff', padding: '3px 6px', fontSize: 11 }}>{attachment.name} ×</button>)}</div>}
+        {session?.allowAttachments && <label aria-label="Adjuntar archivo" style={{ display: 'flex', alignItems: 'center', cursor: uploading ? 'wait' : 'pointer' }}><span className="material-icons">attach_file</span><input type="file" hidden disabled={uploading || attachments.length >= 5} accept="image/png,image/jpeg,image/gif,image/webp,application/pdf,text/plain" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.target.value = ''; }} /></label>}
         <input
           type="text"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Type a message…"
+          placeholder="Escribe un mensaje…"
           maxLength={4000}
           style={{
             flex: 1,
@@ -303,16 +338,16 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
         />
         <button
           type="submit"
-          disabled={!session || !draft.trim() || sending}
-          aria-label="Send message"
+          disabled={!session || (!draft.trim() && attachments.length === 0) || sending}
+          aria-label="Enviar mensaje"
           style={{
             border: 'none',
             background: primary,
             color: 'white',
             borderRadius: 8,
             padding: '0 12px',
-            cursor: !session || !draft.trim() || sending ? 'not-allowed' : 'pointer',
-            opacity: !session || !draft.trim() || sending ? 0.5 : 1,
+            cursor: !session || (!draft.trim() && attachments.length === 0) || sending ? 'not-allowed' : 'pointer',
+            opacity: !session || (!draft.trim() && attachments.length === 0) || sending ? 0.5 : 1,
             display: 'flex',
             alignItems: 'center',
           }}
@@ -320,6 +355,7 @@ export default function ChatBootstrap({ widgetId }: { widgetId: string }) {
           <span className="material-icons">send</span>
         </button>
       </form>
+      {session?.showBranding && <div style={{ padding: '4px 8px', textAlign: 'center', fontSize: 10, color: '#777', background: 'white' }}>Con tecnología de CRM AGENTS{session.privacyLink ? <> · <a href={session.privacyLink} target="_blank" rel="noreferrer">Privacidad</a></> : null}</div>}
     </div>
   );
 }

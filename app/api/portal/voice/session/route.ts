@@ -32,7 +32,7 @@ export const dynamic = 'force-dynamic';
 const MODEL = process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime';
 const VOICE = process.env.OPENAI_REALTIME_VOICE || 'marin';
 
-const BASE_INSTRUCTIONS = `You are the SimplerDevelopment portal voice assistant for this client's team.
+const BASE_INSTRUCTIONS = `You are the CRM AGENTS portal voice assistant for this client's team.
 You can answer questions about and take actions in the client's CRM, Company Brain, and tasks using the provided tools.
 Be concise and conversational — your replies are spoken aloud. Confirm understanding briefly, then act.
 When a tool requires confirmation, the user will be shown a confirm card; tell them you've prepared the action and ask them to confirm.

@@ -85,7 +85,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           <div>
             <h3 className="font-semibold text-foreground">Deploy your website</h3>
             <p className="text-sm text-muted-foreground">
-              Set up a GitHub repo, Vercel deployment, and {data.subdomain}.simplerdevelopment.com subdomain.
+              Set up a GitHub repo, Vercel deployment, and your CRM AGENTS subdomain.
             </p>
           </div>
         </div>
@@ -166,9 +166,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
             </span>
           )}
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-            <span className="material-icons text-xs">check_circle</span>
-            Active
-          </span>
+            <span className="material-icons text-xs">check_circle</span>Activo</span>
         </div>
       </div>
       <div className="p-5 space-y-4">
@@ -198,7 +196,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
             <span className="material-icons text-muted-foreground text-lg">info</span>
             <p className="text-xs text-muted-foreground">
-              Hosted on simplerdevelopment.com — manage content with the block editor. Add a custom domain in settings.
+              Hosted by CRM AGENTS — manage content with the block editor. Add a custom domain in settings.
             </p>
           </div>
         )}

@@ -10,7 +10,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -20,13 +20,13 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
         </div>
@@ -64,7 +64,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground font-bold"
-              placeholder="Name"
+              placeholder="Nombre"
             />
             <input
               type="text"
@@ -75,7 +75,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Title"
+              placeholder="Título"
             />
             <input
               type="text"
@@ -126,9 +126,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
               type="button"
               onClick={() => onChange({ members: (block.members || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button
@@ -148,7 +146,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -158,19 +156,19 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 4}
           onChange={(e) => onChange({ columns: Number(e.target.value) as TeamFlipGridBlock['columns'] })}
@@ -212,7 +210,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground font-bold"
-              placeholder="Name"
+              placeholder="Nombre"
             />
             <input
               type="text"
@@ -223,7 +221,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Title"
+              placeholder="Título"
             />
             <input
               type="url"
@@ -273,9 +271,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
               type="button"
               onClick={() => onChange({ members: (block.members || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button

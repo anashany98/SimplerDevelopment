@@ -22,7 +22,7 @@ function ResetPasswordForm() {
       <div className="max-w-md mx-auto px-4 py-16 text-center">
         <span className="material-icons text-4xl text-red-400 mb-4 block">error_outline</span>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Invalid Reset Link</h1>
-        <p className="text-gray-500 text-sm mb-6">This password reset link is invalid or has expired.</p>
+        <p className="text-gray-500 text-sm mb-6">Este enlace de restablecimiento de contraseña no es válido o ha caducado.</p>
         <Link href="/account/login" className="text-gray-900 font-medium hover:underline">Back to Sign In</Link>
       </div>
     );
@@ -33,7 +33,7 @@ function ResetPasswordForm() {
       <div className="max-w-md mx-auto px-4 py-16 text-center">
         <span className="material-icons text-4xl text-green-500 mb-4 block">check_circle</span>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Password Reset</h1>
-        <p className="text-gray-500 text-sm mb-6">Your password has been successfully reset. You can now sign in with your new password.</p>
+        <p className="text-gray-500 text-sm mb-6">Tu contraseña se restableció correctamente. Ya puedes iniciar sesión con tu nueva contraseña.</p>
         <Link href="/account/login"
           className="inline-block bg-gray-900 text-white rounded-lg px-6 py-2.5 text-sm font-medium hover:bg-gray-800 transition-colors">
           Sign In

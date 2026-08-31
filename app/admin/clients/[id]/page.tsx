@@ -459,7 +459,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   const ic = 'w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary';
   function copyToClipboard(text: string) { navigator.clipboard.writeText(text); }
 
-  if (loading) return <div className="p-6 text-sm text-muted-foreground">Loading…</div>;
+  if (loading) return <div className="p-6 text-sm text-muted-foreground">Cargando…</div>;
   if (!client) return <div className="p-6 text-sm text-muted-foreground">Client not found.</div>;
 
   return (
@@ -503,13 +503,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
       {tab === 'overview' && (
         <div className="bg-card border border-border rounded-lg divide-y divide-border">
           {[
-            { label: 'Name', value: client.userName },
-            { label: 'Email', value: client.userEmail },
-            { label: 'Company', value: client.company ?? '—' },
-            { label: 'Phone', value: client.phone ?? '—' },
-            { label: 'Website', value: client.website ?? '—' },
-            { label: 'Status', value: client.userActive ? 'Active' : 'Inactive' },
-            { label: 'Notes', value: client.notes ?? '—' },
+            { label: 'Nombre', value: client.userName },
+            { label: 'Correo', value: client.userEmail },
+            { label: 'Empresa', value: client.company ?? '—' },
+            { label: 'Teléfono', value: client.phone ?? '—' },
+            { label: 'Sitio web', value: client.website ?? '—' },
+            { label: 'Estado', value: client.userActive ? 'Active' : 'Inactive' },
+            { label: 'Notas', value: client.notes ?? '—' },
           ].map(row => (
             <div key={row.label} className="flex px-5 py-3 gap-4">
               <span className="text-sm text-muted-foreground w-24 shrink-0">{row.label}</span>
@@ -653,7 +653,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     <th className="text-left px-5 py-2 font-medium">Stripe Item</th>
                     <th className="text-right px-5 py-2 font-medium">Unit (¢)</th>
                     <th className="text-right px-5 py-2 font-medium">Included</th>
-                    <th className="text-left px-5 py-2 font-medium">Status</th>
+                    <th className="text-left px-5 py-2 font-medium">Estado</th>
                     <th className="px-5 py-2"></th>
                   </tr>
                 </thead>
@@ -675,7 +675,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                         <div className="flex items-center justify-end gap-1">
                           {it.status === 'active' ? (
                             <button onClick={() => patchMeteredStatus(it.id, 'paused')}
-                              className="p-1 text-muted-foreground hover:text-foreground" title="Pause">
+                              className="p-1 text-muted-foreground hover:text-foreground" title="Pausar">
                               <span className="material-icons text-base">pause</span>
                             </button>
                           ) : (
@@ -685,7 +685,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                             </button>
                           )}
                           <button onClick={() => deleteMeteredItemAdmin(it.id)}
-                            className="p-1 text-muted-foreground hover:text-red-500" title="Delete">
+                            className="p-1 text-muted-foreground hover:text-red-500" title="Eliminar">
                             <span className="material-icons text-base">delete</span>
                           </button>
                         </div>
@@ -821,23 +821,23 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Full Name</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Nombre completo</label>
                   <input value={settingsForm.name} onChange={e => setSettingsForm(p => ({ ...p, name: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Company</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Empresa</label>
                   <input value={settingsForm.company} onChange={e => setSettingsForm(p => ({ ...p, company: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Phone</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Teléfono</label>
                   <input value={settingsForm.phone} onChange={e => setSettingsForm(p => ({ ...p, phone: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Website</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Sitio web</label>
                   <input type="url" value={settingsForm.website} onChange={e => setSettingsForm(p => ({ ...p, website: e.target.value }))} className={ic} placeholder="https://" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-foreground mb-1">Notes</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Notas</label>
                   <textarea value={settingsForm.notes} onChange={e => setSettingsForm(p => ({ ...p, notes: e.target.value }))}
                     rows={3} className={ic} />
                 </div>
@@ -867,7 +867,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <div>
                 <h2 className="font-semibold text-foreground">Sending Domains</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">Manage verified domains for white-label email sending.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Gestiona dominios verificados para envío de email de marca blanca.</p>
               </div>
               <button onClick={() => setShowAddDomainForm(!showAddDomainForm)}
                 className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
@@ -890,9 +890,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     {addingDomain ? 'Adding…' : 'Add Domain'}
                   </button>
                   <button type="button" onClick={() => setShowAddDomainForm(false)}
-                    className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">
-                    Cancel
-                  </button>
+                    className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
                 </div>
               </form>
             )}
@@ -901,7 +899,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* Domain list */}
               <div className="lg:col-span-2 border-r border-border">
                 {domainsLoading ? (
-                  <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+                  <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
                 ) : domains.length === 0 ? (
                   <div className="p-10 text-center">
                     <span className="material-icons text-3xl text-muted-foreground mb-2 block">domain</span>
@@ -938,10 +936,10 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 {!selectedDomain ? (
                   <div className="text-center py-10">
                     <span className="material-icons text-3xl text-muted-foreground mb-2 block">dns</span>
-                    <p className="text-sm text-muted-foreground">Select a domain to view DNS records and settings.</p>
+                    <p className="text-sm text-muted-foreground">Selecciona un dominio para ver registros DNS y ajustes.</p>
                   </div>
                 ) : domainDetailLoading ? (
-                  <p className="text-sm text-muted-foreground py-8 text-center">Loading…</p>
+                  <p className="text-sm text-muted-foreground py-8 text-center">Cargando…</p>
                 ) : (
                   <>
                     {/* Domain header */}
@@ -967,7 +965,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                         <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-muted/20">
                           <div>
                             <p className="text-sm font-semibold text-foreground">DNS Records</p>
-                            <p className="text-xs text-muted-foreground">Add these to your domain registrar, then click Verify Now.</p>
+                            <p className="text-xs text-muted-foreground">Añádelos a tu registrador de dominio y haz clic en Verificar ahora.</p>
                           </div>
                           {selectedDomain.status !== 'verified' && (
                             <div className="flex items-center gap-1.5 text-xs text-yellow-600 bg-yellow-50 px-2 py-1 rounded-md">
@@ -980,10 +978,10 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                           <table className="w-full text-xs">
                             <thead>
                               <tr className="border-b border-border bg-muted/40">
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Type</th>
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Name</th>
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Value</th>
-                                <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Status</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Tipo</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Nombre</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Valor</th>
+                                <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Estado</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
@@ -996,7 +994,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                                   <td className="px-4 py-3">
                                     <div className="flex items-center gap-1.5">
                                       <code className="font-mono text-foreground break-all">{record.name}</code>
-                                      <button onClick={() => copyToClipboard(record.name)} title="Copy"
+                                      <button onClick={() => copyToClipboard(record.name)} title="Copiar"
                                         className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground">
                                         <span className="material-icons text-sm">content_copy</span>
                                       </button>
@@ -1005,7 +1003,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                                   <td className="px-4 py-3 max-w-xs">
                                     <div className="flex items-center gap-1.5">
                                       <code className="font-mono text-foreground break-all line-clamp-2">{record.value}</code>
-                                      <button onClick={() => copyToClipboard(record.value)} title="Copy"
+                                      <button onClick={() => copyToClipboard(record.value)} title="Copiar"
                                         className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground">
                                         <span className="material-icons text-sm">content_copy</span>
                                       </button>
@@ -1063,8 +1061,8 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                           <p className="text-sm font-medium">Next steps</p>
                         </div>
                         <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
-                          <li>Copy each DNS record above and add it to your domain registrar</li>
-                          <li>Wait for DNS to propagate — usually a few minutes, up to 72 hours</li>
+                          <li>Copia cada registro DNS de arriba y añádelo a tu registrador de dominio</li>
+                          <li>Espera a que se propague el DNS: suele tardar unos minutos, hasta 72 horas</li>
                           <li>Click <strong>Verify Now</strong> to check if the records are live</li>
                         </ol>
                       </div>
@@ -1108,20 +1106,20 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   <input required type="password" value={memberForm.password} onChange={e => setMemberForm(p => ({ ...p, password: e.target.value }))} className={ic} />
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">If the email already exists in the system, the existing user will be added to this client.</p>
+              <p className="text-xs text-muted-foreground">Si el email ya existe en el sistema, el usuario existente se añadirá a este cliente.</p>
               <div className="flex gap-2">
                 <button type="submit" disabled={memberSaving}
                   className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
                   {memberSaving ? 'Adding…' : 'Add Member'}
                 </button>
                 <button type="button" onClick={() => setShowAddMember(false)}
-                  className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                  className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
               </div>
             </form>
           )}
 
           {!teamLoaded ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+            <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : members.length === 0 ? (
             <p className="p-8 text-sm text-muted-foreground text-center">No team members yet.</p>
           ) : (
@@ -1170,8 +1168,8 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   placeholder="List name" className={ic} />
                 <input value={listForm.description} onChange={e => setListForm(p => ({ ...p, description: e.target.value }))}
                   placeholder="Description (optional)" className={ic} />
-                <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90">Create</button>
-                <button type="button" onClick={() => setShowListForm(false)} className="px-3 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90">Crear</button>
+                <button type="button" onClick={() => setShowListForm(false)} className="px-3 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
               </form>
             )}
 
@@ -1179,7 +1177,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* List column */}
               <div className="divide-y divide-border">
                 {!emailLoaded ? (
-                  <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+                  <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
                 ) : lists.length === 0 ? (
                   <p className="p-6 text-sm text-muted-foreground">No lists yet.</p>
                 ) : lists.map(list => (
@@ -1200,14 +1198,14 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* Subscribers column */}
               <div>
                 {!selectedList ? (
-                  <p className="p-6 text-sm text-muted-foreground">Select a list to manage subscribers.</p>
+                  <p className="p-6 text-sm text-muted-foreground">Selecciona una lista para gestionar suscriptores.</p>
                 ) : (
                   <>
                     <form onSubmit={addSubscriber} className="flex gap-2 p-4 border-b border-border">
                       <input required type="email" value={subForm.email} onChange={e => setSubForm(p => ({ ...p, email: e.target.value }))}
-                        placeholder="Email" className={`${ic} flex-1`} />
+                        placeholder="Correo" className={`${ic} flex-1`} />
                       <input value={subForm.name} onChange={e => setSubForm(p => ({ ...p, name: e.target.value }))}
-                        placeholder="Name" className={`${ic} w-28`} />
+                        placeholder="Nombre" className={`${ic} w-28`} />
                       <button type="submit" disabled={subSaving} className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 disabled:opacity-50">
                         <span className="material-icons text-base">add</span>
                       </button>
@@ -1271,13 +1269,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   <button type="submit" disabled={campSaving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
                     {campSaving ? 'Saving…' : 'Create Campaign'}
                   </button>
-                  <button type="button" onClick={() => setShowCampForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                  <button type="button" onClick={() => setShowCampForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
                 </div>
               </form>
             )}
 
             {!emailLoaded ? (
-              <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+              <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
             ) : campaigns.length === 0 ? (
               <p className="p-8 text-sm text-muted-foreground text-center">No campaigns yet.</p>
             ) : (
@@ -1285,7 +1283,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 <thead><tr className="border-b border-border bg-muted/40">
                   <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Campaign</th>
                   <th className="text-left px-4 py-2.5 font-medium text-muted-foreground hidden sm:table-cell">List</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Status</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Estado</th>
                   <th className="text-right px-4 py-2.5 font-medium text-muted-foreground hidden md:table-cell">Open Rate</th>
                   <th className="px-4 py-2.5"></th>
                 </tr></thead>

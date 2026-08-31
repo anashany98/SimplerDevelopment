@@ -245,9 +245,7 @@ export default function TopicPicker({
           <div className="max-h-64 overflow-y-auto -mx-1">
             {loading && (
               <div className="px-2 py-3 text-center text-xs text-muted-foreground">
-                <span className="material-icons text-sm animate-spin align-middle mr-1">progress_activity</span>
-                Loading…
-              </div>
+                <span className="material-icons text-sm animate-spin align-middle mr-1">progress_activity</span>Cargando…</div>
             )}
             {!loading && topics && filtered.length === 0 && (
               <div className="px-2 py-3 text-center text-xs text-muted-foreground">

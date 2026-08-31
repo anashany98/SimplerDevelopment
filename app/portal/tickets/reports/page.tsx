@@ -45,7 +45,7 @@ function fmtMinutes(mins: number): string {
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  open: 'Open',
+  open: 'Abierto',
   in_progress: 'In Progress',
   waiting_on_customer: 'Waiting on Customer',
   resolved: 'Resolved',
@@ -190,9 +190,7 @@ function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
           Opened
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 bg-current rounded-sm opacity-25" />
-          Resolved
-        </span>
+          <span className="inline-block w-3 h-3 bg-current rounded-sm opacity-25" />Resuelto</span>
       </div>
     </div>
   );
@@ -282,9 +280,9 @@ export default function TicketReportsPage() {
     <div className="space-y-6 max-w-5xl">
       {/* Header + nav */}
       <PortalPageHeader
-        eyebrow="Support"
+        eyebrow="Soporte"
         title="Help-Desk Reports"
-        subtitle="Response times, resolution stats, and ticket volume for your support queue."
+        subtitle="Tiempos de respuesta, estadísticas de resolución y volumen de tickets de tu cola de soporte."
         actions={
           <Link href="/portal/tickets" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
@@ -332,7 +330,7 @@ export default function TicketReportsPage() {
             />
             <StatCard
               icon="inbox"
-              label="Open"
+              label="Abierto"
               value={data.openCount}
               sub={
                 data.awaitingFirstResponse > 0
@@ -364,12 +362,12 @@ export default function TicketReportsPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <StatCard
                 icon="reply"
-                label="Median First Response"
+                label="Primera respuesta mediana"
                 value={fmtMinutes(data.firstResponse.medianMinutes)}
               />
               <StatCard
                 icon="avg_pace"
-                label="Avg First Response"
+                label="Primera respuesta promedio"
                 value={fmtMinutes(data.firstResponse.avgMinutes)}
               />
               <StatCard
@@ -400,11 +398,11 @@ export default function TicketReportsPage() {
                 onChange={(e) => setDays(parseInt(e.target.value, 10))}
                 className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 w-auto"
               >
-                <option value={7}>Last 7 days</option>
-                <option value={14}>Last 14 days</option>
-                <option value={30}>Last 30 days</option>
-                <option value={60}>Last 60 days</option>
-                <option value={90}>Last 90 days</option>
+                <option value={7}>Últimos 7 días</option>
+                <option value={14}>Últimos 14 días</option>
+                <option value={30}>Últimos 30 días</option>
+                <option value={60}>Últimos 60 días</option>
+                <option value={90}>Últimos 90 días</option>
               </select>
             </div>
             <VolumeTrendChart trend={data.volumeTrend} />
@@ -412,8 +410,8 @@ export default function TicketReportsPage() {
 
           {/* ── Status breakdown ──────────────────────────────────────────── */}
           <section>
-            <h2 className={`${pSectionTitle} mb-1`}>By Status</h2>
-            <p className="text-sm text-muted-foreground mb-3">All-time ticket counts per status.</p>
+            <h2 className={`${pSectionTitle} mb-1`}>Por estado</h2>
+            <p className="text-sm text-muted-foreground mb-3">Total de tickets por estado.</p>
             <BreakdownBars
               entries={statusEntries}
               total={data.totalTickets}
@@ -422,7 +420,7 @@ export default function TicketReportsPage() {
 
           {/* ── Priority breakdown (open only) ────────────────────────────── */}
           <section>
-            <h2 className={`${pSectionTitle} mb-1`}>Open Tickets by Priority</h2>
+            <h2 className={`${pSectionTitle} mb-1`}>Tickets abiertos por prioridad</h2>
             <p className="text-sm text-muted-foreground mb-3">
               Distribution of currently-open tickets across priority levels.
             </p>

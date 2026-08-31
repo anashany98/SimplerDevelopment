@@ -106,7 +106,7 @@ function PropertyField({
             onChange={(e) => onChange(e.target.value)}
             className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           >
-            <option value="">Select...</option>
+            <option value="">Seleccionar...</option>
             {schema.enumOptions?.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
@@ -197,9 +197,7 @@ function ListField({
               <button
                 onClick={() => removeItem(i)}
                 className="text-xs text-destructive hover:text-destructive"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
             {schema.listItemSchema?.map((subSchema) => (
               <div key={subSchema.name} className="mb-2">

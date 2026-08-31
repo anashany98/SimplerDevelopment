@@ -74,7 +74,7 @@ function renderEmail(params: {
           You're receiving this because you're an owner or admin on this account.
         </p>
         <p style="margin:0;font-size:12px;color:#94a3b8;">
-          Simpler Development &middot; Set <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> to disable
+          CRM AGENTS &middot; Set <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> to disable
         </p>
       </div>
     </div>
@@ -169,7 +169,7 @@ export async function sendApprovalEmails(params: SendApprovalEmailsParams): Prom
         if (recentCount > 1) return; // flurry cooldown; another email was sent recently
         try {
           await resend.emails.send({
-            from: `Simpler Development <${FROM_EMAIL}>`,
+            from: `CRM AGENTS <${FROM_EMAIL}>`,
             to: u.email,
             subject,
             html,

@@ -492,11 +492,11 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
           </div>
           <div className="p-6 grid grid-cols-2 gap-4 text-sm">
             <div>
-              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Duration</div>
+              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Duración</div>
               <div className="text-gray-900">{preview.duration} min</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Price</div>
+              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Precio</div>
               <div className="text-gray-900">
                 {preview.priceLabel ?? (preview.price > 0 ? `$${(preview.price / 100).toFixed(2)}` : 'Free')}
               </div>
@@ -515,7 +515,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
             </div>
             {preview.description && (
               <div className="col-span-2 mt-2 pt-4 border-t border-gray-100">
-                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Description</div>
+                <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Descripción</div>
                 <p className="text-gray-700">{preview.description}</p>
               </div>
             )}
@@ -574,8 +574,7 @@ function DecisionModal(props: {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email <span className="text-gray-500 font-normal">(optional)</span>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Correo<span className="text-gray-500 font-normal">(optional)</span>
               </label>
               <input
                 type="email"
@@ -606,9 +605,7 @@ function DecisionModal(props: {
             onClick={props.onCancel}
             disabled={props.submitting}
             className="px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             type="button"
             onClick={props.onConfirm}

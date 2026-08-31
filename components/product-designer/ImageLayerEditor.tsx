@@ -79,7 +79,7 @@ export const ImageLayerEditor = ({ layer, handleInputChange }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Width</label>
+        <label className="block text-sm font-medium mb-1">Ancho</label>
         <input
           type="number"
           value={layer.width}

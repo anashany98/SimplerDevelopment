@@ -170,9 +170,7 @@ export default function UsersPage() {
                   onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="active" className="ml-2 block text-sm text-gray-700">
-                  Active
-                </label>
+                <label htmlFor="active" className="ml-2 block text-sm text-gray-700">Activo</label>
               </div>
 
               <div className="flex gap-2">
@@ -186,9 +184,7 @@ export default function UsersPage() {
                   type="button"
                   onClick={handleCancel}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </form>
           )}
@@ -197,24 +193,14 @@ export default function UsersPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Email
-                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Correo</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Role
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Created
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                    Actions
-                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Creado</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -255,15 +241,11 @@ export default function UsersPage() {
                       <button
                         onClick={() => handleEdit(user)}
                         className="text-blue-600 hover:text-blue-900"
-                      >
-                        Edit
-                      </button>
+                      >Editar</button>
                       <button
                         onClick={() => handleDelete(user.id)}
                         className="text-red-600 hover:text-red-900"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </td>
                   </tr>
                 ))}

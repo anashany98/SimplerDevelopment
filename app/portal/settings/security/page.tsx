@@ -18,9 +18,9 @@ export default async function SecuritySettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Two-factor authentication</h2>
+        <h2 className="text-lg font-semibold text-foreground">Autenticación de dos factores</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Add a second step at sign-in using an authenticator app (Google Authenticator, 1Password, Authy).
+          Añade un segundo paso al iniciar sesión mediante una aplicación de autenticación (Google Authenticator, 1Password, Authy).
           When enabled, your password alone won&apos;t be enough to log in.
         </p>
       </div>

@@ -23,8 +23,8 @@ export const LeftPanel = () => {
         <button
           className="navItem add"
           onClick={() => setControlMode("welcome")}
-          aria-label="Add"
-          title="Add"
+          aria-label="Añadir"
+          title="Añadir"
         >
           <BsPlus size={36} />
         </button>
@@ -48,7 +48,7 @@ export const LeftPanel = () => {
 const LeftPanelContent = memo(({ controlMode }: { controlMode: string }) => {
   return (
     <div className="leftPanelContent">
-      <Suspense fallback={<div className="p-4 animate-pulse">Loading...</div>}>
+      <Suspense fallback={<div className="p-4 animate-pulse">Cargando...</div>}>
         {controlMode === "welcome" && <WelcomeScreen />}
         {controlMode === "upload" && <UploadScreen />}
         {controlMode === "text" && <AddTextScreen />}

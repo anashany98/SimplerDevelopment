@@ -1,6 +1,6 @@
 # MCP Tools — Email, Surveys, Pitch Decks & Automations
 
-These MCP tools let you manage your email marketing (lists, subscribers, campaigns, templates, segments), build and publish surveys and intake forms, create and iterate on pitch decks and presentations, and define automation rules — all from any AI client connected to the SimplerDevelopment portal.
+These MCP tools let you manage your email marketing (lists, subscribers, campaigns, templates, segments), build and publish surveys and intake forms, create and iterate on pitch decks and presentations, and define automation rules — all from any AI client connected to the CRM AGENTS portal.
 
 Authentication and connection setup are covered in [MCP Overview](./overview.md). Every tool call is scoped to your client account — you cannot read or write another tenant's data.
 

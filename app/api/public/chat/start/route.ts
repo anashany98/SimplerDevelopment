@@ -1,35 +1,69 @@
 /**
  * POST /api/public/chat/start
  *
- * Public surface — no auth. Widget posts `{ widgetId, visitorId, name?, email? }`,
+ * Public surface — no auth. Widget posts `{ widgetKey, visitorId, name?, email? }`,
  * gets back `{ conversationId, ephemeralToken }`. Idempotent on
- * (widget, visitorId): the same visitor returning to the same site reuses
- * their open conversation.
+ * (widget, visitorId). `widgetId` remains accepted for legacy embeds.
  */
 
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { chatWidgets, chatConversations } from '@/lib/db/schema';
-import { and, eq, ne } from 'drizzle-orm';
+import { chatWidgets, chatConversations, clientWebsites } from '@/lib/db/schema';
+import { and, eq, isNull, ne } from 'drizzle-orm';
 import { issueVisitorToken } from '@/lib/chat/token';
 import { publishConversationUpdate } from '@/lib/chat/realtime';
+import { isAllowedWidgetOrigin } from '@/lib/chat/origin';
+import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
+
+function corsHeaders(origin: string): HeadersInit {
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    Vary: 'Origin',
+  };
+}
+
+export function OPTIONS() {
+  // The final POST response is narrowed to a configured widget origin. This
+  // preflight response cannot identify a widget yet and uses no credentials.
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '600',
+      Vary: 'Origin',
+    },
+  });
+}
 
 export async function POST(req: Request) {
   let body: {
+    widgetKey?: string;
     widgetId?: number | string;
     visitorId?: string;
     name?: string;
     email?: string;
   };
+  if (!(await checkRateLimit(`chat-start:ip:${getClientIp(req)}`, 20, 60_000))) {
+    return NextResponse.json({ success: false, message: 'Too many chat starts, slow down' }, { status: 429 });
+  }
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ success: false, message: 'Invalid JSON body' }, { status: 400 });
   }
 
+  const widgetKey = typeof body.widgetKey === 'string' ? body.widgetKey.trim() : '';
+  const hasWidgetKey = body.widgetKey !== undefined;
+  if (hasWidgetKey && !/^[A-Za-z0-9_-]{20,64}$/.test(widgetKey)) {
+    return NextResponse.json({ success: false, message: 'widgetKey is invalid' }, { status: 400 });
+  }
   const widgetId = typeof body.widgetId === 'string' ? Number.parseInt(body.widgetId, 10) : body.widgetId;
   const visitorId = (body.visitorId || '').trim();
-  if (!Number.isInteger(widgetId) || (widgetId as number) <= 0) {
+  if (!widgetKey && (!Number.isInteger(widgetId) || (widgetId as number) <= 0)) {
     return NextResponse.json({ success: false, message: 'widgetId is required' }, { status: 400 });
   }
   if (!visitorId || visitorId.length > 64) {
@@ -39,10 +73,38 @@ export async function POST(req: Request) {
   const [widget] = await db
     .select()
     .from(chatWidgets)
-    .where(eq(chatWidgets.id, widgetId as number))
+    .where(widgetKey
+      ? eq(chatWidgets.publicKey, widgetKey)
+      : and(eq(chatWidgets.id, widgetId as number), isNull(chatWidgets.publicKey)))
     .limit(1);
   if (!widget || !widget.enabled) {
     return NextResponse.json({ success: false, message: 'Widget not available' }, { status: 404 });
+  }
+  const configuredOrigins = widget.allowedOrigins ?? [];
+  const requestOrigin = req.headers.get('origin');
+  const [site] = requestOrigin || configuredOrigins.length > 0
+    ? await db.select({
+        domain: clientWebsites.domain,
+        vercelDomain: clientWebsites.vercelDomain,
+        subdomain: clientWebsites.subdomain,
+      }).from(clientWebsites).where(and(eq(clientWebsites.id, widget.siteId), eq(clientWebsites.clientId, widget.clientId))).limit(1)
+    : [undefined];
+  const allowedOrigins = [
+    ...configuredOrigins,
+    site?.domain,
+    site?.vercelDomain,
+    site?.subdomain ? `${site.subdomain}.simplerdevelopment.com` : null,
+  ].filter((value): value is string => Boolean(value));
+  // The session is minted by the host-page loader, not the cross-origin iframe.
+  // `Origin` is therefore the browser's real embedding origin; never accept a
+  // client-supplied origin claim here.
+  if ((process.env.NODE_ENV === 'production' && !requestOrigin)
+    || !isAllowedWidgetOrigin(requestOrigin, allowedOrigins)) {
+    return NextResponse.json({ success: false, message: 'Widget is not allowed on this domain' }, { status: 403 });
+  }
+  const headers = requestOrigin ? corsHeaders(requestOrigin) : undefined;
+  if (!(await checkRateLimit(`chat-start:widget:${widget.id}:${getClientIp(req)}`, 10, 60_000))) {
+    return NextResponse.json({ success: false, message: 'Too many chat starts, slow down' }, { status: 429, headers });
   }
 
   // Reuse the visitor's existing open/assigned conversation if one exists.
@@ -80,8 +142,15 @@ export async function POST(req: Request) {
         primaryColor: widget.primaryColor,
         position: widget.position,
         awayMessage: widget.awayMessage,
+        displayName: widget.displayName,
+        logoUrl: widget.logoUrl,
+        avatarUrl: widget.avatarUrl,
+        language: widget.language,
+        allowAttachments: widget.allowAttachments,
+        showBranding: widget.showBranding,
+        privacyLink: widget.privacyLink,
       },
-    });
+    }, { headers });
   }
 
   const [created] = await db
@@ -93,6 +162,7 @@ export async function POST(req: Request) {
       visitorName: body.name?.slice(0, 255) ?? null,
       visitorEmail: body.email?.slice(0, 255) ?? null,
       status: 'open',
+      aiMode: widget.aiMode,
       lastMessageAt: new Date(),
     })
     .returning();
@@ -117,6 +187,13 @@ export async function POST(req: Request) {
       primaryColor: widget.primaryColor,
       position: widget.position,
       awayMessage: widget.awayMessage,
+      displayName: widget.displayName,
+      logoUrl: widget.logoUrl,
+      avatarUrl: widget.avatarUrl,
+      language: widget.language,
+      allowAttachments: widget.allowAttachments,
+      showBranding: widget.showBranding,
+      privacyLink: widget.privacyLink,
     },
-  });
+  }, { headers });
 }

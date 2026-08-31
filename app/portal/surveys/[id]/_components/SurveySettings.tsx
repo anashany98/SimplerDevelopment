@@ -182,7 +182,7 @@ export default function SurveySettings(props: Props) {
             onChange={(e) => setEditBrandingProfileId(e.target.value ? Number(e.target.value) : null)}
             className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
           >
-            <option value="">None (use overrides below)</option>
+            <option value="">Ninguna (usa las anulaciones de abajo)</option>
             {brandingProfiles.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
@@ -213,11 +213,11 @@ export default function SurveySettings(props: Props) {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {(
               [
-                { key: 'primaryColor', label: 'Primary', fallback: editColor || '#2563eb' },
-                { key: 'secondaryColor', label: 'Secondary', fallback: '#1e40af' },
-                { key: 'accentColor', label: 'Accent', fallback: '#f59e0b' },
-                { key: 'backgroundColor', label: 'Background', fallback: '#ffffff' },
-                { key: 'textColor', label: 'Text', fallback: '#111827' },
+                { key: 'primaryColor', label: 'Principal', fallback: editColor || '#2563eb' },
+                { key: 'secondaryColor', label: 'Secundario', fallback: '#1e40af' },
+                { key: 'accentColor', label: 'Acento', fallback: '#f59e0b' },
+                { key: 'backgroundColor', label: 'Fondo', fallback: '#ffffff' },
+                { key: 'textColor', label: 'Texto', fallback: '#111827' },
                 { key: 'formBg', label: 'Form Card', fallback: '#ffffff' },
                 { key: 'inputBg', label: 'Input Fields', fallback: '#ffffff' },
                 { key: 'inputTextColor', label: 'Input Text', fallback: '#111827' },
@@ -290,13 +290,13 @@ export default function SurveySettings(props: Props) {
                   type="text"
                   value={(editStyling.buttonPrimaryBg as string) || ''}
                   onChange={(e) => setEditStyling((prev) => ({ ...prev, buttonPrimaryBg: e.target.value }))}
-                  placeholder="Auto"
+                  placeholder="Automático"
                   className="flex-1 px-2 py-1 text-xs bg-background border border-border rounded text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Button Text</label>
+              <label className="block text-xs text-muted-foreground mb-1">Texto del botón</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -320,7 +320,7 @@ export default function SurveySettings(props: Props) {
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, buttonBorderRadius: e.target.value }))}
                 className="w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="">Default</option>
+                <option value="">Predeterminado</option>
                 <option value="0px">Square (0px)</option>
                 <option value="4px">Slight (4px)</option>
                 <option value="8px">Rounded (8px)</option>
@@ -334,9 +334,7 @@ export default function SurveySettings(props: Props) {
         {/* Layout */}
         <div>
           <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
-            <span className="material-icons text-base text-muted-foreground">view_quilt</span>
-            Layout
-          </h4>
+            <span className="material-icons text-base text-muted-foreground">view_quilt</span>Diseño</h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-muted-foreground mb-1">Card Border Radius</label>
@@ -362,7 +360,7 @@ export default function SurveySettings(props: Props) {
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, hideTitle: e.target.checked }))}
                 className="rounded border-border accent-primary"
               />
-              <span className="text-sm text-foreground">Hide title on public page</span>
+              <span className="text-sm text-foreground">Ocultar título en la página pública</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -371,7 +369,7 @@ export default function SurveySettings(props: Props) {
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, hideLogo: e.target.checked }))}
                 className="rounded border-border accent-primary"
               />
-              <span className="text-sm text-foreground">Hide logo</span>
+              <span className="text-sm text-foreground">Ocultar logotipo</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -387,7 +385,7 @@ export default function SurveySettings(props: Props) {
 
         {/* Preview */}
         <div>
-          <h4 className="text-sm font-semibold text-foreground mb-3">Preview</h4>
+          <h4 className="text-sm font-semibold text-foreground mb-3">Vista previa</h4>
           <div
             className="rounded-xl border p-6 flex items-center justify-center"
             style={{
@@ -435,9 +433,7 @@ export default function SurveySettings(props: Props) {
                   color: (editStyling.buttonPrimaryText as string) || '#ffffff',
                   borderRadius: (editStyling.buttonBorderRadius as string) || '8px',
                 }}
-              >
-                Next
-              </button>
+              >Siguiente</button>
             </div>
           </div>
         </div>
@@ -450,7 +446,7 @@ export default function SurveySettings(props: Props) {
           Completion Screen
         </h3>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Thank You Title</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Título de agradecimiento</label>
           <input
             type="text"
             value={editThankYouTitle}
@@ -459,7 +455,7 @@ export default function SurveySettings(props: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Thank You Message</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Mensaje de agradecimiento</label>
           <textarea
             value={editThankYouMessage}
             onChange={(e) => setEditThankYouMessage(e.target.value)}
@@ -514,7 +510,7 @@ export default function SurveySettings(props: Props) {
               onChange={(e) => setEditNotify(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-sm text-foreground">Email notification on new response</span>
+            <span className="text-sm text-foreground">Notificación por correo al recibir una respuesta</span>
           </label>
           <label className="flex items-start gap-2 cursor-pointer">
             <input
@@ -585,7 +581,7 @@ export default function SurveySettings(props: Props) {
 
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Close Date (optional)</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Fecha de cierre (opcional)</label>
             <input
               type="datetime-local"
               value={editClosesAt}
@@ -615,9 +611,9 @@ export default function SurveySettings(props: Props) {
           <div className="flex items-start gap-2">
             <span className="material-icons text-primary">forward_to_inbox</span>
             <div className="flex-1">
-              <h3 className="font-semibold text-foreground">Auto-route to CRM</h3>
+              <h3 className="font-semibold text-foreground">Enrutar automáticamente al CRM</h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                When a response&apos;s score crosses your threshold (and an email is captured), automatically create a
+                When a response&apos;s score crosses your threshold (and an email is captured), automátically create a
                 deal in the chosen CRM pipeline.
               </p>
             </div>
@@ -670,7 +666,7 @@ export default function SurveySettings(props: Props) {
                   }}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Deal is created when score is at least this value.</p>
+                <p className="text-xs text-muted-foreground mt-1">El trato se crea cuando la puntuación alcanza este valor.</p>
               </div>
 
               <div>
@@ -692,7 +688,7 @@ export default function SurveySettings(props: Props) {
                   }}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <option value="">Select a pipeline…</option>
+                  <option value="">Selecciona un pipeline…</option>
                   {pipelines.map((p) => (
                     <option key={p.id} value={p.id}>{p.name}</option>
                   ))}
@@ -700,7 +696,7 @@ export default function SurveySettings(props: Props) {
                 {pipelinesLoaded && pipelines.length === 0 && (
                   <p className="text-xs text-muted-foreground mt-1">
                     No CRM pipelines yet.{' '}
-                    <a href="/portal/crm/pipelines" className="text-primary hover:underline">Create one</a>.
+                    <a href="/portal/crm/pipelines" className="text-primary hover:underline">Crea uno</a>.
                   </p>
                 )}
               </div>
@@ -722,7 +718,7 @@ export default function SurveySettings(props: Props) {
                   disabled={!selectedPipeline}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
                 >
-                  <option value="">Select a stage…</option>
+                  <option value="">Selecciona una etapa…</option>
                   {(selectedPipeline?.stages || []).map((s) => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}
@@ -772,11 +768,10 @@ export default function SurveySettings(props: Props) {
         >
           {saving ? (
             <>
-              <span className="material-icons text-lg animate-spin">progress_activity</span>Saving...
-            </>
+              <span className="material-icons text-lg animate-spin">progress_activity</span>Guardando...</>
           ) : (
             <>
-              <span className="material-icons text-lg">save</span>Save Settings
+              <span className="material-icons text-lg">save</span>Guardar ajustes
             </>
           )}
         </button>

@@ -104,12 +104,12 @@ fi
 # ── DB prep ─────────────────────────────────────────────────────────────
 if [[ "$RESET_DB" == "1" ]]; then
   echo ">> resetting E2E database"
-  npx tsx scripts/reset-e2e-db.ts
+  bunx tsx scripts/reset-e2e-db.ts
 fi
 
 if [[ "$LAYER" == "all" || "$LAYER" == "e2e" ]]; then
   # seed is idempotent; only needed for E2E which hits the shared db
-  npx tsx scripts/seed-admin-e2e.ts
+  bunx tsx scripts/seed-admin-e2e.ts
 fi
 
 FAIL=0
@@ -138,9 +138,9 @@ run_step() {
 # ── Layer 1: Unit ───────────────────────────────────────────────────────
 if [[ "$LAYER" == "all" || "$LAYER" == "unit" ]]; then
   if [[ "$NO_COVERAGE" == "1" ]]; then
-    run_step "unit" npx vitest run --project=unit
+    run_step "unit" bunx vitest run --project=unit
   else
-    run_step "unit" npx vitest run --project=unit \
+    run_step "unit" bunx vitest run --project=unit \
       --coverage --coverage.reportsDirectory=coverage/vitest/unit
   fi
 fi
@@ -215,9 +215,9 @@ if [[ "$LAYER" == "all" || "$LAYER" == "integration" ]]; then
     fi
   fi
   if [[ "$NO_COVERAGE" == "1" ]]; then
-    run_step "integration" npx vitest run "${INT_VITEST_ARGS[@]}"
+    run_step "integration" bunx vitest run "${INT_VITEST_ARGS[@]}"
   else
-    run_step "integration" npx vitest run "${INT_VITEST_ARGS[@]}" \
+    run_step "integration" bunx vitest run "${INT_VITEST_ARGS[@]}" \
       --coverage --coverage.reportsDirectory=coverage/vitest/integration
   fi
 fi
@@ -282,13 +282,13 @@ if [[ "$LAYER" == "all" || "$LAYER" == "e2e" ]]; then
   if [[ "$NO_COVERAGE" == "1" ]]; then
     "${SERVER_CMD[@]}" >coverage/server.log 2>&1 &
   else
-    npx c8 --no-clean --reporter=none -- "${SERVER_CMD[@]}" >coverage/server.log 2>&1 &
+    bunx c8 --no-clean --reporter=none -- "${SERVER_CMD[@]}" >coverage/server.log 2>&1 &
   fi
   SERVER_PID=$!
   trap 'kill -SIGTERM $SERVER_PID 2>/dev/null || true; wait $SERVER_PID 2>/dev/null || true' EXIT
 
   echo ">> waiting for health endpoint"
-  if ! npx wait-on http://localhost:3000/api/health -t 120000; then
+  if ! bunx wait-on http://localhost:3000/api/health -t 120000; then
     echo "server never became healthy; last 200 lines (full log: coverage/server.log):"
     tail -200 coverage/server.log
     exit 1
@@ -299,7 +299,7 @@ if [[ "$LAYER" == "all" || "$LAYER" == "e2e" ]]; then
   [[ -n "$SHARD" ]] && PW_ARGS+=(--shard="$SHARD")
   # Use the `${arr[@]+"${arr[@]}"}` idiom so an EMPTY array doesn't trip
   # `set -u` ("unbound variable") on macOS's default bash 3.2.
-  run_step "e2e" npx playwright test ${PW_ARGS[@]+"${PW_ARGS[@]}"} --reporter=list,html
+  run_step "e2e" bunx playwright test ${PW_ARGS[@]+"${PW_ARGS[@]}"} --reporter=list,html
 
   # Clean shutdown so V8 coverage flushes to disk
   echo ">> stopping server"
@@ -314,17 +314,17 @@ if [[ "$NO_COVERAGE" != "1" ]]; then
   echo "==> building coverage reports"
 
   if [[ -d coverage/.v8-client && -n "$(ls -A coverage/.v8-client 2>/dev/null)" ]]; then
-    npx tsx scripts/convert-client-coverage.ts || echo "(client coverage conversion skipped)"
+    bunx tsx scripts/convert-client-coverage.ts || echo "(client coverage conversion skipped)"
   fi
 
   if [[ -d coverage/.v8-server && -n "$(ls -A coverage/.v8-server 2>/dev/null)" ]]; then
-    npx c8 report --temp-directory coverage/.v8-server \
+    bunx c8 report --temp-directory coverage/.v8-server \
       --reporter=html --reporter=lcov --reporter=text-summary \
       --report-dir coverage/server || true
   fi
 
   if [[ -d coverage/.v8-merged && -n "$(ls -A coverage/.v8-merged 2>/dev/null)" ]]; then
-    npx c8 report --temp-directory coverage/.v8-merged \
+    bunx c8 report --temp-directory coverage/.v8-merged \
       --reporter=html --reporter=lcov --reporter=text-summary \
       --report-dir coverage/combined || true
   fi
@@ -339,7 +339,7 @@ fi
 # ── CI threshold gate ───────────────────────────────────────────────────
 if [[ "${CI:-}" == "1" && "$NO_COVERAGE" != "1" ]]; then
   if [[ -d coverage/.v8-merged && -n "$(ls -A coverage/.v8-merged 2>/dev/null)" ]]; then
-    npx c8 check-coverage --lines 75 --functions 70 --branches 60 \
+    bunx c8 check-coverage --lines 75 --functions 70 --branches 60 \
       --temp-directory coverage/.v8-merged || FAIL=1
   fi
 fi

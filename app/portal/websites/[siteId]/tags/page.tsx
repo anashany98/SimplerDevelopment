@@ -84,14 +84,14 @@ export default function PortalTagsPage() {
         setError(data.message);
       }
     } catch {
-      setError('Something went wrong');
+      setError('Algo salió mal');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this tag? Posts will be unlinked, not deleted.')) return;
+    if (!confirm('¿Eliminar este tag? Las publicaciones quedarán desvinculadas, no se eliminarán.')) return;
     await fetch(`${base}/${id}`, { method: 'DELETE' });
     load();
   };
@@ -107,32 +107,32 @@ export default function PortalTagsPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Tags"
-        subtitle="Label your posts with tags for filtering and discovery."
+        eyebrow="Sitio web"
+        title="Etiquetas"
+        subtitle="Etiqueta tus publicaciones con tags para filtrar y encontrarlas."
         actions={
           <button
             onClick={showForm ? () => setShowForm(false) : openCreate}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'Add Tag'}
+            {showForm ? 'Cancelar' : 'Agregar tag'}
           </button>
         }
       />
 
       {showForm && (
         <form onSubmit={handleSubmit} className={`${pCard} p-6 space-y-4`}>
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm">{editing ? 'Edit Tag' : 'New Tag'}</h2>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm">{editing ? 'Editar tag' : 'Nuevo tag'}</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Name</label>
+              <label className="text-sm font-medium text-foreground">Nombre</label>
               <input
                 value={form.name}
                 onChange={e => handleNameChange(e.target.value)}
                 required
-                placeholder="e.g. Featured"
+                placeholder="p. ej., Destacado"
                 className={`${pInput} w-full`}
               />
             </div>
@@ -159,16 +159,14 @@ export default function PortalTagsPage() {
               type="button"
               onClick={() => setShowForm(false)}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={saving}
               className={`${pBtnPrimary} disabled:opacity-50`}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editing ? 'Update' : 'Create'} Tag
+              {editing ? 'Actualizar' : 'Crear'} Tag
             </button>
           </div>
         </form>
@@ -179,7 +177,7 @@ export default function PortalTagsPage() {
         {tags.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground/40">label</span>
-            <p className="text-sm text-muted-foreground mt-2">No tags yet. Create your first one above.</p>
+            <p className="text-sm text-muted-foreground mt-2">Aún no hay tags. Crea el primero arriba.</p>
           </div>
         ) : (
           <div className="p-4 flex flex-wrap gap-2">
@@ -194,14 +192,14 @@ export default function PortalTagsPage() {
                 <button
                   onClick={() => openEdit(tag)}
                   className="ml-1 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground transition-all"
-                  title="Edit"
+                  title="Editar"
                 >
                   <span className="material-icons text-sm">edit</span>
                 </button>
                 <button
                   onClick={() => handleDelete(tag.id)}
                   className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-red-600 transition-all"
-                  title="Delete"
+                  title="Eliminar"
                 >
                   <span className="material-icons text-sm">close</span>
                 </button>

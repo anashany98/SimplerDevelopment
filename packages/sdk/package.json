@@ -1,7 +1,7 @@
 {
   "name": "@simplerdevelopment/sdk",
   "version": "0.2.0",
-  "description": "TypeScript SDK for the SimplerDevelopment platform",
+  "description": "TypeScript SDK for the CRM AGENTS platform",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -42,7 +42,7 @@
     "url": "https://github.com/SimplerDevelopment/SimplerDevelopment/issues"
   },
   "keywords": [
-    "simplerdevelopment",
+    "CRM AGENTS",
     "cms",
     "sdk",
     "headless"

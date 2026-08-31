@@ -9,7 +9,7 @@ tags:
   - cms
   - mcp
   - agency-workflow
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 canonical: "https://example.com/blog/migrate-crm-contacts-content-guide"
 seo:

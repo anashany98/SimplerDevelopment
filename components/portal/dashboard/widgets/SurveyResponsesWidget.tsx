@@ -65,7 +65,7 @@ export default async function SurveyResponsesWidget({
       </div>
       {clientSurveys.length === 0 ? (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No surveys yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Aún no hay encuestas.</p>
           <Link
             href="/portal/surveys"
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"

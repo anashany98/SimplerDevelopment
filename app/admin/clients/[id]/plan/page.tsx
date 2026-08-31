@@ -386,9 +386,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
               >
                 {isActive && (
                   <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
-                    <span className="material-icons text-sm">check</span>
-                    Active
-                  </span>
+                    <span className="material-icons text-sm">check</span>Activo</span>
                 )}
                 <h3 className="text-lg font-semibold text-foreground">{tier.name}</h3>
                 <p className="text-sm text-muted-foreground mt-1 min-h-[3rem]">{tier.description ?? ''}</p>
@@ -522,9 +520,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                       disabled={billingInFlight}
                       className="flex items-center gap-1 text-red-600 hover:text-red-700 disabled:opacity-50 text-xs"
                     >
-                      <span className="material-icons text-sm">remove_circle_outline</span>
-                      Remove
-                    </button>
+                      <span className="material-icons text-sm">remove_circle_outline</span>Quitar</button>
                   </li>
                 ))}
               </ul>
@@ -623,9 +619,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 onClick={() => { setSeatsInput(''); billingAction({ action: 'set-seats', override: null }); }}
                 disabled={billingInFlight}
                 className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted disabled:opacity-50"
-              >
-                Clear
-              </button>
+              >Limpiar</button>
             </div>
           </div>
 
@@ -664,9 +658,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 onClick={() => { setCompInput(''); billingAction({ action: 'set-comp', percent: null }); }}
                 disabled={billingInFlight}
                 className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted disabled:opacity-50"
-              >
-                Clear
-              </button>
+              >Limpiar</button>
             </div>
           </div>
 

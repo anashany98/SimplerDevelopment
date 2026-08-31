@@ -291,9 +291,9 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
       {!tenant && (
         <div className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center">
           <span className="material-icons text-5xl text-muted-foreground mb-3">workspace_premium</span>
-          <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">Workspace integration is an enterprise feature</h3>
+          <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">La integración de espacios de trabajo es una función empresarial</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            This account uses standard email tracking (incoming mail to your SimplerDevelopment domain). To enable
+            This account uses standard email tracking (incoming mail to your CRM AGENTS domain). To enable
             full Workspace ingestion (sent mail, calendar, Drive, contacts), upgrade and we&apos;ll provision
             the integration with your Google Workspace.
           </p>
@@ -313,7 +313,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
           <div>
             <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Workspace integration paused</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Status: <code className="font-mono">{tenant.status}</code>. Contact your SimplerDevelopment administrator to resume.
+              Status: <code className="font-mono">{tenant.status}</code>. Contact your CRM AGENTS administrator to resume.
             </p>
           </div>
         </div>
@@ -324,7 +324,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
           <div className="flex items-start gap-3">
             <span className="material-icons text-2xl text-muted-foreground">link_off</span>
             <div>
-              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Not connected</h3>
+              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">No conectado</h3>
               <p className="text-sm text-muted-foreground mt-1">
                 Connect your Google Workspace account ({session.user.email ?? 'your work email'}) to enable the brain.
               </p>
@@ -340,7 +340,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
             </a>
           </div>
           <p className="text-xs text-muted-foreground">
-            You&apos;ll be redirected to Google to grant read-only access. SimplerDevelopment never sends email or modifies your account.
+            You&apos;ll be redirected to Google to grant read-only access. CRM AGENTS never sends email or modifies your account.
           </p>
         </div>
       )}
@@ -395,7 +395,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div className="border border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400 rounded-xl p-4 flex items-start gap-3">
           <span className="material-icons text-base mt-0.5">check_circle</span>
           <div className="text-sm">
-            Microsoft Teams connected. Transcripts from new meetings you organize will sync automatically — usually within minutes of the meeting ending.
+            Microsoft Teams connected. Transcripts from new meetings you organize will sync automátically — usually within minutes of the meeting ending.
           </div>
         </div>
       )}
@@ -415,7 +415,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div>
           <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Microsoft Teams</h2>
           <p className="text-muted-foreground text-sm mt-1">
-            Connect your Microsoft 365 account so transcripts from meetings you organize land in the brain automatically.
+            Connect your Microsoft 365 account so transcripts from meetings you organize land in the brain automátically.
           </p>
         </div>
       </div>
@@ -424,10 +424,10 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div className="bg-card border border-border rounded-2xl p-6 flex items-start gap-3">
           <span className="material-icons text-2xl text-muted-foreground">settings</span>
           <div>
-            <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Not yet enabled on this deploy</h3>
+            <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Aún no está habilitado en esta implementación</h3>
             <p className="text-sm text-muted-foreground mt-1">
               The Teams integration requires <code className="font-mono">MICROSOFT_TEAMS_CLIENT_ID</code> and{' '}
-              <code className="font-mono">MICROSOFT_TEAMS_CLIENT_SECRET</code> in the environment. Contact your SimplerDevelopment administrator.
+              <code className="font-mono">MICROSOFT_TEAMS_CLIENT_SECRET</code> in the environment. Contact your CRM AGENTS administrator.
             </p>
           </div>
         </div>
@@ -438,7 +438,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
           <div className="flex items-start gap-3">
             <span className="material-icons text-2xl text-muted-foreground">link_off</span>
             <div>
-              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Not connected</h3>
+              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">No conectado</h3>
               <p className="text-sm text-muted-foreground mt-1">
                 Connect your Microsoft 365 account to start syncing Teams meeting transcripts.
               </p>
@@ -449,7 +449,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
           <div className="border border-amber-500/30 bg-amber-500/5 text-amber-700 dark:text-amber-400 rounded-lg p-3 flex items-start gap-2">
             <span className="material-icons text-base mt-0.5">info</span>
             <div className="text-xs leading-relaxed">
-              <strong>Heads up:</strong> only meetings where you are organizer or co-organizer will sync. Microsoft does not allow read access to a transcript when you are only an attendee — that&apos;s a Microsoft Graph permission constraint, not a SimplerDevelopment limitation.
+              <strong>Heads up:</strong> only meetings where you are organizer or co-organizer will sync. Microsoft does not allow read access to a transcript when you are only an attendee — that&apos;s a Microsoft Graph permission constraint, not a CRM AGENTS limitation.
             </div>
           </div>
 
@@ -463,7 +463,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
             </a>
           </div>
           <p className="text-xs text-muted-foreground">
-            You&apos;ll be redirected to Microsoft to grant read-only transcript access. SimplerDevelopment can never read meetings you didn&apos;t organize, and never sees the recording — just the transcript text.
+            You&apos;ll be redirected to Microsoft to grant read-only transcript access. CRM AGENTS can never read meetings you didn&apos;t organize, and never sees the recording — just the transcript text.
           </p>
         </div>
       )}
@@ -520,7 +520,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div className="border border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400 rounded-xl p-4 flex items-start gap-3">
           <span className="material-icons text-base mt-0.5">check_circle</span>
           <div className="text-sm">
-            LinkedIn connected. You can now schedule and publish posts directly from SimplerDevelopment.
+            LinkedIn connected. You can now schedule and publish posts directly from CRM AGENTS.
           </div>
         </div>
       )}
@@ -537,7 +537,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div>
           <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">LinkedIn</h2>
           <p className="text-muted-foreground text-sm mt-1">
-            Connect your LinkedIn profile to schedule and publish posts directly from the SimplerDevelopment content calendar.
+            Connect your LinkedIn profile to schedule and publish posts directly from the CRM AGENTS content calendar.
           </p>
         </div>
       </div>
@@ -546,10 +546,10 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
         <div className="bg-card border border-border rounded-2xl p-6 flex items-start gap-3">
           <span className="material-icons text-2xl text-muted-foreground">settings</span>
           <div>
-            <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Not yet enabled on this deploy</h3>
+            <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Aún no está habilitado en esta implementación</h3>
             <p className="text-sm text-muted-foreground mt-1">
               The LinkedIn integration requires <code className="font-mono">LINKEDIN_CLIENT_ID</code> and{' '}
-              <code className="font-mono">LINKEDIN_CLIENT_SECRET</code> in the environment. Contact your SimplerDevelopment administrator.
+              <code className="font-mono">LINKEDIN_CLIENT_SECRET</code> in the environment. Contact your CRM AGENTS administrator.
             </p>
           </div>
         </div>
@@ -560,7 +560,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
           <div className="flex items-start gap-3">
             <span className="material-icons text-2xl text-muted-foreground">link_off</span>
             <div>
-              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">Not connected</h3>
+              <h3 className="font-display font-extrabold tracking-[-0.01em] text-foreground">No conectado</h3>
               <p className="text-sm text-muted-foreground mt-1">
                 Connect your LinkedIn profile to start publishing scheduled posts.
               </p>
@@ -576,7 +576,7 @@ export default async function SettingsIntegrationsPage({ searchParams }: PagePro
             </a>
           </div>
           <p className="text-xs text-muted-foreground">
-            You&apos;ll be redirected to LinkedIn to authorize posting on your behalf. SimplerDevelopment only publishes what you explicitly schedule — it never reads your connections or messages.
+            You&apos;ll be redirected to LinkedIn to authorize posting on your behalf. CRM AGENTS only publishes what you explicitly schedule — it never reads your connections or messages.
           </p>
         </div>
       )}

@@ -242,9 +242,7 @@ export default function BrainDocumentDetailPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -293,7 +291,7 @@ export default function BrainDocumentDetailPage({
 
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={document.title}
         subtitle={
           <div className="flex items-center gap-2 flex-wrap">
@@ -311,7 +309,7 @@ export default function BrainDocumentDetailPage({
                 {ownerName}
               </span>
             )}
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] text-muted-foreground" title="Last published">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] text-muted-foreground" title="Última publicación">
               <span className="material-icons text-[12px]">schedule</span>
               Published {formatDate(document.publishedAt)}
             </span>
@@ -326,9 +324,7 @@ export default function BrainDocumentDetailPage({
               href={`/portal/brain/documents/${document.id}/edit`}
               className={pBtnGhost}
             >
-              <span className="material-icons text-base">edit</span>
-              Edit draft
-            </Link>
+              <span className="material-icons text-base">edit</span>Editar borrador</Link>
             {canPublish && (
               <button
                 type="button"
@@ -349,9 +345,7 @@ export default function BrainDocumentDetailPage({
                 disabled={busyAction !== null}
                 className={`${pBtnGhost} disabled:opacity-50`}
               >
-                <span className="material-icons text-base">archive</span>
-                Archive
-              </button>
+                <span className="material-icons text-base">archive</span>Archivar</button>
             )}
             {document.status === 'archived' && (
               <button
@@ -382,7 +376,7 @@ export default function BrainDocumentDetailPage({
       {/* Summary / description */}
       {(displayedVersion?.summary ?? '').trim() && (
         <section className={pCardPad}>
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Summary</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Resumen</h2>
           <p className="text-sm text-foreground whitespace-pre-wrap">{displayedVersion?.summary}</p>
         </section>
       )}

@@ -135,7 +135,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
             </>
           )}
         </button>
-        <p className="text-xs text-muted-foreground/70">Uses AI credits — a real metered generation, usually a few seconds.</p>
+        <p className="text-xs text-muted-foreground/70">Usa créditos de IA — una generación real medida, normalmente unos segundos.</p>
         {genError && <p className="text-xs text-destructive">{genError}</p>}
       </div>
     );
@@ -166,9 +166,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
                   'Confirm'
                 )}
               </button>
-              <button type="button" onClick={() => setConfirmingRegenerate(false)} disabled={generating} className={pBtnGhost}>
-                Cancel
-              </button>
+              <button type="button" onClick={() => setConfirmingRegenerate(false)} disabled={generating} className={pBtnGhost}>Cancelar</button>
             </>
           ) : (
             <button type="button" onClick={() => setConfirmingRegenerate(true)} className={pBtnGhost}>
@@ -183,7 +181,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
       {open.length === 0 ? (
         <div className={`${pCard} p-10 text-center`}>
           <span className="material-icons text-4xl text-green-500 mb-2">check_circle</span>
-          <p className="text-sm text-muted-foreground">No open recommendations — you&apos;re caught up.</p>
+          <p className="text-sm text-muted-foreground">No hay recomendaciones abiertas: estás al día.</p>
         </div>
       ) : (
         <div className="space-y-3">

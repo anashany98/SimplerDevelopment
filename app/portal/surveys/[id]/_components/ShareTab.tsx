@@ -25,9 +25,9 @@ export default function ShareTab({ survey, publicUrl, copied, onCopyLink, onCopy
       <div className="bg-card border border-border rounded-xl p-6 space-y-3">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">link</span>
-          Public Link
+          Enlace público
         </h3>
-        <p className="text-sm text-muted-foreground">Share this link with anyone to collect responses</p>
+        <p className="text-sm text-muted-foreground">Comparte este enlace con quien quieras para recopilar respuestas</p>
         <div className="flex items-center gap-2">
           <input
             readOnly
@@ -47,9 +47,9 @@ export default function ShareTab({ survey, publicUrl, copied, onCopyLink, onCopy
       <div className="bg-card border border-border rounded-xl p-6 space-y-3">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">code</span>
-          Embed on Website
+          Incrustar en sitio web
         </h3>
-        <p className="text-sm text-muted-foreground">Embed this survey on any website or your client sites</p>
+        <p className="text-sm text-muted-foreground">Inserta esta encuesta en cualquier sitio web o en los sitios de tus clientes</p>
         <div className="bg-muted border border-border rounded-lg p-3">
           <code className="text-xs text-foreground font-mono break-all">{embedSnippet}</code>
         </div>
@@ -65,49 +65,49 @@ export default function ShareTab({ survey, publicUrl, copied, onCopyLink, onCopy
       <div className="bg-card border border-border rounded-xl p-6 space-y-4">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">hub</span>
-          Integrations
+          Integraciones
         </h3>
         <p className="text-sm text-muted-foreground">
-          Connect this survey to other tools for automatic distribution
+          Conecta esta encuesta con otras herramientas para una distribución automática
         </p>
         <div className="grid sm:grid-cols-2 gap-3">
           <div className="border border-border rounded-lg p-4 space-y-2">
             <div className="flex items-center gap-2">
               <span className="material-icons text-lg text-primary">email</span>
-              <p className="font-medium text-foreground text-sm">Email Campaigns</p>
+              <p className="font-medium text-foreground text-sm">Campañas de email</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Include survey link in email campaigns. Add{' '}
-              <code className="bg-muted px-1 rounded">{`{{survey:${survey.slug}}}`}</code> to any email
-              template.
+              Incluye el enlace de la encuesta en campañas de correo. Añade{' '}
+              <code className="bg-muted px-1 rounded">{`{{survey:${survey.slug}}}`}</code> a cualquier
+              plantilla de correo.
             </p>
           </div>
           <div className="border border-border rounded-lg p-4 space-y-2">
             <div className="flex items-center gap-2">
               <span className="material-icons text-lg text-primary">handshake</span>
-              <p className="font-medium text-foreground text-sm">CRM Deals & Proposals</p>
+              <p className="font-medium text-foreground text-sm">Tratos y propuestas del CRM</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Attach to a deal or proposal. Responses are linked to the contact record for follow-up.
+              Adjunta un trato o una propuesta. Las respuestas se vinculan al registro del contacto para dar seguimiento.
             </p>
           </div>
           <div className="border border-border rounded-lg p-4 space-y-2">
             <div className="flex items-center gap-2">
               <span className="material-icons text-lg text-primary">calendar_month</span>
-              <p className="font-medium text-foreground text-sm">Booking Follow-up</p>
+              <p className="font-medium text-foreground text-sm">Seguimiento de reservas</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Send survey after a booking is completed. Set up in Automations with the
-              &ldquo;booking.completed&rdquo; trigger.
+              Envía la encuesta después de completar una reserva. Configúralo en Automatizaciones con
+              el disparador &ldquo;booking.completed&rdquo;.
             </p>
           </div>
           <div className="border border-border rounded-lg p-4 space-y-2">
             <div className="flex items-center gap-2">
               <span className="material-icons text-lg text-primary">web</span>
-              <p className="font-medium text-foreground text-sm">Website Embed</p>
+              <p className="font-medium text-foreground text-sm">Incrustar en la web</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Use the embed code above or add to your site via the website builder&apos;s custom HTML block.
+              Usa el código de inserción de arriba o añade la encuesta a tu sitio con el bloque HTML personalizado del constructor web.
             </p>
           </div>
         </div>

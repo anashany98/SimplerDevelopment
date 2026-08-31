@@ -15,7 +15,7 @@ note: No dollar amounts are stated here. All figures are "configurable / see cur
 
 ## Model Summary
 
-SimplerDevelopment uses a **modular subscription model** with four pricing dimensions that compose independently: à-la-carte module subscriptions, volume discounts, per-seat charges, and AI credits. An all-in-one bundle option is also available.
+CRM AGENTS uses a **modular subscription model** with four pricing dimensions that compose independently: à-la-carte module subscriptions, volume discounts, per-seat charges, and AI credits. An all-in-one bundle option is also available.
 
 ---
 

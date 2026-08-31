@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment Bookings & Scheduling",
+  "name": "CRM AGENTS Bookings & Scheduling",
   "applicationCategory": "BusinessApplication",
   "featureList": [
     "Online time-slot booking",
@@ -57,7 +57,7 @@ Agencies that offer time-based services — consultations, workshops, coaching, 
 
 ## Solution
 
-SimplerDevelopment gives each client their own booking page inside their portal. They configure their services, staff availability, add-ons, and payment settings once. Guests land on a branded time-slot picker, pay via Stripe, and receive an automatically generated Zoom link for remote appointments. The appointment lands in Google Calendar. The agency never has to touch an external scheduling tool.
+CRM AGENTS gives each client their own booking page inside their portal. They configure their services, staff availability, add-ons, and payment settings once. Guests land on a branded time-slot picker, pay via Stripe, and receive an automatically generated Zoom link for remote appointments. The appointment lands in Google Calendar. The agency never has to touch an external scheduling tool.
 
 ---
 

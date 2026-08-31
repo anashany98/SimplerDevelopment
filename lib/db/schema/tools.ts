@@ -584,7 +584,7 @@ export const microsoftTeamsUserConnections = pgTable('microsoft_teams_user_conne
   clientId: integer('client_id').notNull().references(() => clients.id, { onDelete: 'cascade' }),
   userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   // Microsoft Entra ID (Azure AD) tenant the connected user lives in. Distinct
-  // from our own SimplerDevelopment clientId — this is the customer's M365
+  // from our own CRM AGENTS clientId — this is the customer's M365
   // tenant.
   microsoftTenantId: varchar('microsoft_tenant_id', { length: 64 }).notNull(),
   // Stable Graph user object id (oid claim) — preferred over UPN/email for

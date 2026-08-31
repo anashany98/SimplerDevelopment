@@ -212,7 +212,7 @@ export default function NewDecisionPage() {
           {isSupersede ? 'Back to decision' : 'Decisions'}
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">{isSupersede ? 'history' : 'add_circle'}</span>

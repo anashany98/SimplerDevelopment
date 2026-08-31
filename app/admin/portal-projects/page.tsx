@@ -98,7 +98,7 @@ function ProjectsContent() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Projects</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">Manage client projects and Kanban boards across the platform.</p>
+          <p className="text-muted-foreground text-sm mt-0.5">Gestiona proyectos de clientes y tableros Kanban en toda la plataforma.</p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
@@ -111,7 +111,7 @@ function ProjectsContent() {
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-green-600">play_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Active</span>
+            <span className="text-xs text-muted-foreground font-medium">Activo</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{activeCount}</p>
         </div>
@@ -125,7 +125,7 @@ function ProjectsContent() {
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-blue-600">check_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Completed</span>
+            <span className="text-xs text-muted-foreground font-medium">Completado</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{completedCount}</p>
         </div>
@@ -174,7 +174,7 @@ function ProjectsContent() {
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Client <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1">Cliente<span className="text-destructive">*</span></label>
               <select required value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
                 <option value="">Select client...</option>
@@ -182,7 +182,7 @@ function ProjectsContent() {
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
               <textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
             </div>
@@ -197,7 +197,7 @@ function ProjectsContent() {
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div className="sm:col-span-2 flex justify-end gap-3">
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</button>
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
               <button type="submit" disabled={saving}
                 className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
                 {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creating...</> : 'Create Project'}
@@ -226,13 +226,13 @@ function ProjectsContent() {
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Project</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Members</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Owner</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Start</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Due</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Propietario</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Comenzar</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Vence</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

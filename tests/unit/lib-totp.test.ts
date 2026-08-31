@@ -63,7 +63,7 @@ describe('generateTOTPSecret / getTOTPUri', () => {
     const uri = getTOTPUri('GEZDGNBVGY3TQOJQ', 'user@example.com');
     expect(uri).toContain('otpauth://totp/');
     expect(uri).toContain('secret=GEZDGNBVGY3TQOJQ');
-    expect(uri).toContain('issuer=SimplerDevelopment');
+    expect(uri).toContain('issuer=CRM AGENTS');
     expect(uri).toContain('algorithm=SHA1');
   });
 });

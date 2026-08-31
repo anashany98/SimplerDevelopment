@@ -44,7 +44,7 @@ export default function AgencyHubPage() {
         agencyLogoUrl: brandingRes?.data?.agencyLogoUrl ?? null,
       });
     } catch {
-      setMessage({ type: 'error', text: 'Failed to load agency settings.' });
+      setMessage({ type: 'error', text: 'No se pudieron cargar los ajustes de la agencia.' });
     } finally {
       setLoading(false);
     }
@@ -64,12 +64,12 @@ export default function AgencyHubPage() {
       const data = await res.json();
       if (data.success) {
         setStatus(s => ({ ...s, whiteLabelEnabled: next }));
-        setMessage({ type: 'success', text: next ? 'White-label enabled.' : 'White-label disabled.' });
+        setMessage({ type: 'success', text: next ? 'Marca blanca activada.' : 'Marca blanca desactivada.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Could not update white-label.' });
+        setMessage({ type: 'error', text: data.error || 'No se pudo actualizar la marca blanca.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error.' });
+      setMessage({ type: 'error', text: 'Error de red.' });
     } finally {
       setToggling(false);
     }
@@ -81,9 +81,9 @@ export default function AgencyHubPage() {
   return (
     <div className="max-w-3xl">
       <PortalPageHeader
-        eyebrow="White-label"
-        title="Agency / White-Label"
-        subtitle="Configure your agency's portal. Map a custom domain, override the brand chrome, and resell the platform under your own identity."
+        eyebrow="Marca blanca"
+        title="Agencia / Marca blanca"
+        subtitle="Configura el portal de tu agencia. Asocia un dominio personalizado, personaliza la marca y revende la plataforma con tu propia identidad."
       />
 
       {message && (
@@ -113,18 +113,18 @@ export default function AgencyHubPage() {
               <div>
                 <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground flex items-center gap-2">
                   <span className="material-icons text-primary">campaign</span>
-                  White-Label Mode
+                  Modo marca blanca
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  When enabled, the portal chrome shows your agency name and logo instead of
-                  &quot;Simpler Development&quot;. Available on the Scale tier.
+                  Al activarlo, la interfaz del portal muestra el nombre y logo de tu agencia en lugar de
+                  &quot;CRM AGENTS&quot;. Disponible en el plan Scale.
                 </p>
                 {!canEnable && (
                   <p className="text-xs text-amber-700 dark:text-amber-400 mt-2 flex items-center gap-1">
                     <span className="material-icons text-sm">info</span>
                     {!verified
-                      ? 'Verify a custom domain to unlock this toggle.'
-                      : 'Set an agency name to unlock this toggle.'}
+                      ? 'Verifica un dominio personalizado para desbloquear este interruptor.'
+                      : 'Establece un nombre de agencia para desbloquear este interruptor.'}
                   </p>
                 )}
               </div>
@@ -132,7 +132,7 @@ export default function AgencyHubPage() {
                 className={`relative inline-flex items-center cursor-pointer ${
                   !canEnable && !status.whiteLabelEnabled ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
-                title={!canEnable && !status.whiteLabelEnabled ? 'Verify a custom domain and set an agency name first' : ''}
+                title={!canEnable && !status.whiteLabelEnabled ? 'Primero verifica un dominio personalizado y establece un nombre de agencia' : ''}
               >
                 <input
                   type="checkbox"
@@ -154,9 +154,9 @@ export default function AgencyHubPage() {
             <div className="flex items-start gap-4">
               <span className="material-icons text-primary text-3xl">dns</span>
               <div className="flex-1">
-                <h3 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Custom Portal Domain</h3>
+                <h3 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Dominio personalizado del portal</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Map your own domain (e.g. portal.your-agency.com) to this portal.
+                  Asocia tu propio dominio (p. ej. portal.tu-agencia.com) a este portal.
                 </p>
                 <div className="mt-2 text-sm flex items-center gap-2">
                   {status.customDomain ? (
@@ -165,17 +165,17 @@ export default function AgencyHubPage() {
                       {verified ? (
                         <span className="text-emerald-700 dark:text-emerald-300 flex items-center gap-1">
                           <span className="material-icons text-sm">verified</span>
-                          Verified
+                          Verificado
                         </span>
                       ) : (
                         <span className="text-amber-700 dark:text-amber-400 flex items-center gap-1">
                           <span className="material-icons text-sm">schedule</span>
-                          Pending verification
+                          Verificación pendiente
                         </span>
                       )}
                     </>
                   ) : (
-                    <span className="text-muted-foreground italic">No custom domain configured</span>
+                    <span className="text-muted-foreground italic">No hay dominio personalizado configurado</span>
                   )}
                 </div>
               </div>
@@ -191,20 +191,20 @@ export default function AgencyHubPage() {
             <div className="flex items-start gap-4">
               <span className="material-icons text-primary text-3xl">palette</span>
               <div className="flex-1">
-                <h3 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Agency Branding</h3>
+                <h3 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Marca de la agencia</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Override the portal chrome with your own name, logo, and accent color.
+                  Personaliza la interfaz del portal con tu propio nombre, logo y color de acento.
                 </p>
                 <div className="mt-2 text-sm flex items-center gap-2">
                   {status.agencyName ? (
                     <span className="text-foreground">{status.agencyName}</span>
                   ) : (
-                    <span className="text-muted-foreground italic">Not configured</span>
+                    <span className="text-muted-foreground italic">Sin configurar</span>
                   )}
                   {status.agencyLogoUrl && (
                     <span className="text-emerald-700 dark:text-emerald-300 flex items-center gap-1">
                       <span className="material-icons text-sm">image</span>
-                      Logo set
+                      Logo configurado
                     </span>
                   )}
                 </div>

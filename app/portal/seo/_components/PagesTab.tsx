@@ -104,7 +104,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">description</span>
-        <p className="text-sm text-muted-foreground">No crawls yet. Run an audit to see crawled pages here.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay rastreos. Ejecuta una auditoría para ver aquí las páginas rastreadas.</p>
       </div>
     );
   }
@@ -122,7 +122,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
   if (pages.length === 0) {
     return (
       <div className={`${pCard} p-10 text-center`}>
-        <p className="text-sm text-muted-foreground">No pages crawled yet.</p>
+        <p className="text-sm text-muted-foreground">Aún no se han rastreado páginas.</p>
       </div>
     );
   }
@@ -134,7 +134,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
         <input
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          placeholder="Filter by URL…"
+          placeholder="Filtrar por URL…"
           className={`${pInput} pl-10`}
         />
       </div>
@@ -144,14 +144,14 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
           <thead className="border-b border-border">
             <tr>
               <SortHeader id="url" label="URL" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="httpStatus" label="Status" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <th className="px-3 py-2 text-left font-medium text-muted-foreground">Title</th>
+              <SortHeader id="httpStatus" label="Estado" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <th className="px-3 py-2 text-left font-medium text-muted-foreground">Título</th>
               <th className="px-3 py-2 text-left font-medium text-muted-foreground">Indexable</th>
               <SortHeader id="depth" label="Depth" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
               <SortHeader id="internalRank" label="Rank" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
               <SortHeader id="incomingLinks" label="Inbound" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
               <SortHeader id="wordCount" label="Words" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="responseTimeMs" label="Time" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="responseTimeMs" label="Hora" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
             </tr>
           </thead>
           <tbody>

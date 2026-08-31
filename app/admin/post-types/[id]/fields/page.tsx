@@ -25,16 +25,16 @@ interface PostType {
 }
 
 const fieldTypes = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Textarea' },
-  { value: 'number', label: 'Number' },
-  { value: 'date', label: 'Date' },
-  { value: 'select', label: 'Select' },
-  { value: 'checkbox', label: 'Checkbox' },
+  { value: 'text', label: 'Texto' },
+  { value: 'textarea', label: 'Área de texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'select', label: 'Campo de selección' },
+  { value: 'checkbox', label: 'Casilla' },
   { value: 'url', label: 'URL' },
-  { value: 'email', label: 'Email' },
-  { value: 'image', label: 'Image URL' },
-  { value: 'user_select', label: 'User Select' },
+  { value: 'email', label: 'Correo' },
+  { value: 'image', label: 'URL de imagen' },
+  { value: 'user_select', label: 'Selector de usuario' },
   { value: 'repeater', label: 'Repeater' },
   { value: 'group', label: 'Field Group' },
 ];
@@ -205,7 +205,7 @@ export default function CustomFieldsPage() {
   };
 
   if (loading || !postType) {
-    return <div className="p-8">Loading...</div>;
+    return <div className="p-8">Cargando...</div>;
   }
 
   return (
@@ -310,7 +310,7 @@ export default function CustomFieldsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground">Order</label>
+                <label className="block text-sm font-medium text-foreground">Pedido</label>
                 <input
                   type="number"
                   value={formData.order}
@@ -380,9 +380,7 @@ export default function CustomFieldsPage() {
                 onClick={resetForm}
                 disabled={submitting}
                 className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent disabled:opacity-50"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
@@ -391,24 +389,14 @@ export default function CustomFieldsPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Order
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Pedido</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Required
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Tipo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Obligatorio</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -481,15 +469,11 @@ export default function CustomFieldsPage() {
                       <button
                         onClick={() => handleEdit(field)}
                         className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                      >
-                        Edit
-                      </button>
+                      >Editar</button>
                       <button
                         onClick={() => handleDelete(field.id)}
                         className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </td>
                   </tr>,
                   ...children.map((child) => (
@@ -527,15 +511,11 @@ export default function CustomFieldsPage() {
                         <button
                           onClick={() => handleEdit(child)}
                           className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                        >
-                          Edit
-                        </button>
+                        >Editar</button>
                         <button
                           onClick={() => handleDelete(child.id)}
                           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                        >
-                          Delete
-                        </button>
+                        >Eliminar</button>
                       </td>
                     </tr>
                   )),

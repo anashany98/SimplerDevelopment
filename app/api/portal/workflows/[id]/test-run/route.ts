@@ -8,8 +8,9 @@ import { eq, and } from 'drizzle-orm';
 import { runWorkflow } from '@/lib/workflows/runtime';
 
 // POST /api/portal/workflows/[id]/test-run — fire the workflow with a
-// synthetic context. The single live call site for the runtime today; real
-// CRM event hooks come later via lib/workflows/trigger.ts.
+// synthetic context. Live triggers (CRM events via lib/automation/engine.ts,
+// schedule via app/api/cron/process-workflow-schedules) go through the
+// durable queue instead; this is the manual "fire it now" path.
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });

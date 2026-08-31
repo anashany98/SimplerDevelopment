@@ -47,13 +47,13 @@ function BlogPostsBlockSettings({ block, onChange, currentViewport }: { block: B
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" />
         </div>
@@ -95,7 +95,7 @@ function BlogPostsBlockSettings({ block, onChange, currentViewport }: { block: B
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as BlogPostsBlock['columns'] })}
@@ -129,8 +129,8 @@ function CardGridBlockSettings({ block, onChange, currentViewport }: { block: Ca
 
   return (
     <div className="space-y-4">
-      <div><label className="block text-sm font-medium text-foreground mb-1">Section Title</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" /></div></div>
-      <div><label className="block text-sm font-medium text-foreground mb-1">Section Description</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" /></div></div>
+      <div><label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" /></div></div>
+      <div><label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" /></div></div>
       <div className="border-t border-border pt-4">
         <label className="block text-sm font-medium text-foreground mb-2">Number of Columns</label>
         <select value={block.columns || 3} onChange={(e) => onChange({ columns: parseInt(e.target.value) as CardGridBlock['columns'] })} className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground">
@@ -157,19 +157,19 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Description..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
@@ -179,7 +179,7 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Button URL</label>
+        <label className="block text-sm font-medium text-foreground mb-1">URL del botón</label>
         <input
           type="text"
           value={block.buttonUrl || ''}
@@ -209,9 +209,7 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
                 type="button"
                 onClick={() => onChange({ imageUrl: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -233,15 +231,15 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
           onChange={(e) => onChange({ imagePosition: e.target.value as FeaturedContentBlock['imagePosition'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="left">Left</option>
-          <option value="right">Right</option>
+          <option value="left">Izquierda</option>
+          <option value="right">Derecha</option>
         </select>
       </div>
 
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Call to Action (optional)</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.buttonText || ''}
@@ -251,7 +249,7 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.buttonUrl || ''}
@@ -284,13 +282,13 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
         </div>
@@ -308,7 +306,7 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Sort By</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Ordenar por</label>
         <select
           value={block.sort || 'newest'}
           onChange={(e) => onChange({ sort: e.target.value as ProductGridBlock['sort'] })}
@@ -334,7 +332,7 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as ProductGridBlock['columns'] })}
@@ -347,7 +345,7 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
@@ -379,13 +377,13 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
         </div>
@@ -403,7 +401,7 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 4}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as FeaturedProductsBlock['columns'] })}
@@ -427,7 +425,7 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
@@ -455,19 +453,19 @@ function ProductCategoriesBlockSettings({ block, onChange }: { block: ProductCat
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'grid'}
           onChange={(e) => onChange({ layout: e.target.value as ProductCategoriesBlock['layout'] })}
@@ -480,7 +478,7 @@ function ProductCategoriesBlockSettings({ block, onChange }: { block: ProductCat
 
       {block.layout !== 'list' && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 3}
             onChange={(e) => onChange({ columns: parseInt(e.target.value) as ProductCategoriesBlock['columns'] })}
@@ -569,7 +567,7 @@ function ProductDetailBlockSettings({ block, onChange }: { block: ProductDetailB
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'standard'}
           onChange={(e) => onChange({ layout: e.target.value as ProductDetailBlock['layout'] })}
@@ -621,13 +619,13 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Banner title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
         </div>
@@ -645,7 +643,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
         </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
@@ -656,7 +654,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+        <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
         <input
           type="text"
           value={block.buttonUrl || ''}
@@ -674,7 +672,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
           <option value="gradient">Gradient</option>
-          <option value="solid">Solid</option>
+          <option value="solid">Sólido</option>
           <option value="image">Image</option>
         </select>
       </div>
@@ -696,7 +694,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
               <img src={block.backgroundImage} alt="Banner background" className="w-full h-24 object-cover rounded border border-border" />
               <div className="flex gap-2">
                 <button type="button" onClick={() => setShowMediaPicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change</button>
-                <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Remove</button>
+                <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
               </div>
             </div>
           ) : (
@@ -729,7 +727,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
           onChange={(e) => onChange({ countdownDate: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         />
-        <p className="text-xs text-muted-foreground mt-1">Optional: Shows a live countdown timer</p>
+        <p className="text-xs text-muted-foreground mt-1">Opcional: muestra un contador en vivo</p>
       </div>
       </div>
     </div>
@@ -740,13 +738,13 @@ function AccordionBlockSettings({ block, onChange, currentViewport }: { block: A
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Frequently Asked Questions" className="text-sm text-foreground" />
         </div>
       </div>
       <div className="border-t border-border pt-4">
-      <p className="text-xs text-muted-foreground">Use the controls in the editor to add, remove, or edit accordion items.</p>
+      <p className="text-xs text-muted-foreground">Usa los controles del editor para añadir, quitar o editar elementos de acordeón.</p>
       </div>
     </div>
   );

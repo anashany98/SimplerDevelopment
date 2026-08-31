@@ -111,9 +111,7 @@ export function CheckoutPaymentSection({
   return (
     <div className="border border-border rounded-xl bg-card p-5">
       <h2 className="font-semibold flex items-center gap-2 mb-4">
-        <span className="material-icons text-base">credit_card</span>
-        Payment
-      </h2>
+        <span className="material-icons text-base">credit_card</span>Pago</h2>
 
       {checkoutLoading && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">

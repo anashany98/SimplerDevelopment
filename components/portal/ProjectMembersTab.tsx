@@ -22,7 +22,7 @@ interface TeamUser {
 const ROLE_OPTIONS: ProjectRole[] = ['owner', 'editor', 'commenter', 'viewer'];
 
 const roleLabel: Record<ProjectRole, string> = {
-  owner: 'Owner',
+  owner: 'Propietario',
   editor: 'Editor',
   commenter: 'Commenter',
   viewer: 'Viewer',
@@ -138,11 +138,11 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
 
       {showAdd && canManage && (
         <form onSubmit={onAdd} className="bg-card border border-border rounded-xl p-5 space-y-4">
-          <h3 className="text-sm font-semibold text-foreground">Add member</h3>
+          <h3 className="text-sm font-semibold text-foreground">Añadir miembro</h3>
           {availableTeam.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Everyone on your team is already a member of this project. Invite new teammates from{' '}
-              <a href="/portal/settings/team" className="text-primary hover:underline">Team Settings</a>.
+              <a href="/portal/settings/team" className="text-primary hover:underline">Ajustes del equipo</a>.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -205,7 +205,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Member</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Role</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Added</th>
-                {canManage && <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Actions</th>}
+                {canManage && <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -236,9 +236,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
                       <button
                         onClick={() => onRemove(m.userId)}
                         className="text-xs text-destructive hover:underline"
-                      >
-                        Remove
-                      </button>
+                      >Quitar</button>
                     </td>
                   )}
                 </tr>

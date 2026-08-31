@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build the signed + notarized macOS .pkg installer for the SimplerDevelopment
+# Build the signed + notarized macOS .pkg installer for the CRM AGENTS
 # Claude skills bundle. Run this on a Mac with Xcode Command Line Tools
 # installed and the Developer ID Installer cert already loaded into your
 # login keychain (or available as a .p12 referenced via SD_PKG_P12_PATH).

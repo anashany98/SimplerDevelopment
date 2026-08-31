@@ -226,9 +226,7 @@ export default function GoalProgress({ goal, ownerLookup, onCheckin, onEdit, onD
               onClick={() => { setCheckinOpen(false); setErr(null); }}
               disabled={submitting}
               className="px-2.5 py-1 text-xs rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="button"
               onClick={submitCheckin}

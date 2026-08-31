@@ -347,7 +347,7 @@ async function seedAdminE2E() {
         summary: 'Master service agreement for the TechVentures platform build project.',
         status: 'draft',
         clauses: [
-          { id: 'cl-1', title: 'Scope of Work', content: 'Simpler Development will deliver a full-stack web platform as described in the attached proposal.', required: true },
+          { id: 'cl-1', title: 'Scope of Work', content: 'CRM AGENTS will deliver a full-stack web platform as described in the attached proposal.', required: true },
           { id: 'cl-2', title: 'Payment Terms', content: 'Payment due net-30 from invoice date. 50% deposit required before work begins.', required: true },
         ],
         clientToken: contractToken,
@@ -772,6 +772,7 @@ async function seedAdminE2E() {
 
   } catch (error) {
     console.error('Error seeding admin E2E data:', error);
+    process.exit(1);
   }
   process.exit(0);
 }

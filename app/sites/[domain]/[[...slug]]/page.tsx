@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // Build per-page metadata from a CMS post row. Uses the dedicated SEO
   // fields when set, falls back to title/excerpt. Returns `title` as
-  // `{ absolute }` so the root layout's `%s | SimplerDevelopment` template
+  // `{ absolute }` so the root layout's `%s | CRM AGENTS` template
   // never appends an agency suffix to client-site pages.
   type SeoPage = {
     title: string;

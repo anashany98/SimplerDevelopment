@@ -58,9 +58,7 @@ export default function LoginPage() {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
-                Email
-              </label>
+              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">Correo</label>
               <input
                 id="email"
                 name="email"

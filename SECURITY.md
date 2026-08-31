@@ -48,7 +48,7 @@ users, please say so in your initial report and we will prioritize accordingly.
 
 ## Scope
 
-This policy covers the SimplerDevelopment platform codebase in this repository.
+This policy covers the CRM AGENTS platform codebase in this repository.
 Third-party dependencies are out of scope for this policy — please report those
 directly to the upstream project.
 

@@ -68,7 +68,7 @@ function CancelContent() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500">Cargando...</p>
       </div>
     );
   }
@@ -151,7 +151,7 @@ function CancelContent() {
 
 export default function CancelPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><p className="text-gray-500">Loading...</p></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50"><p className="text-gray-500">Cargando...</p></div>}>
       <CancelContent />
     </Suspense>
   );

@@ -82,9 +82,7 @@ export function HtmlRenderFullJson({
   return (
     <details className="rounded border border-border">
       <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-        <span className="material-icons text-sm">data_object</span>
-        Full block JSON (export / import)
-      </summary>
+        <span className="material-icons text-sm">data_object</span>JSON completo del bloque (exportar / importar)</summary>
       <div className="p-3 space-y-2">
         <p className="text-[11px] text-muted-foreground leading-snug">
           Includes the HTML template, field schema, loop, current values, and width — everything needed
@@ -116,18 +114,14 @@ export function HtmlRenderFullJson({
             disabled={!dirty}
             className="inline-flex items-center gap-1.5 rounded border border-border px-2.5 py-1 text-xs hover:bg-accent disabled:opacity-50"
           >
-            <span className="material-icons text-sm">restart_alt</span>
-            Reset
-          </button>
+            <span className="material-icons text-sm">restart_alt</span>Restablecer</button>
           <button
             type="button"
             onClick={handleApply}
             disabled={!dirty}
             className="inline-flex items-center gap-1.5 rounded bg-primary text-primary-foreground px-2.5 py-1 text-xs hover:bg-primary/90 disabled:opacity-50"
           >
-            <span className="material-icons text-sm">play_arrow</span>
-            Apply
-          </button>
+            <span className="material-icons text-sm">play_arrow</span>Aplicar</button>
         </div>
       </div>
     </details>

@@ -1,6 +1,6 @@
 /* ============================================================
    If Agile Were Invented After AI — scene layer
-   SimplerDevelopment, 2026
+   CRM AGENTS, 2026
 
    PURE ENHANCEMENT. The article, figures, ladder and effort bars all work
    without this file (see the inline base layer in index.html). If any of it

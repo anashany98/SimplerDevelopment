@@ -18,9 +18,9 @@ const HONEYPOT_FIELD = 'website';
 
 // Where contact-form submissions are delivered.
 const CONTACT_INBOX = process.env.CONTACT_INBOX || 'info@simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'SimplerDevelopment <noreply@simplerdevelopment.com>';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CRM AGENTS <noreply@simplerdevelopment.com>';
 
-// This is SimplerDevelopment's OWN marketing form, not a tenant route — there
+// This is CRM AGENTS's OWN marketing form, not a tenant route — there
 // is no session and no site-resolver to derive a tenant from, so the owning
 // client is configuration, never request input. Unset = capture is skipped and
 // the form degrades to email-only (its behaviour before lead capture existed).

@@ -101,13 +101,11 @@ export function HtmlRenderArrayEditor({
           onClick={addItem}
           className="flex items-center gap-1 text-xs text-primary hover:underline"
         >
-          <span className="material-icons text-sm">add</span>
-          Add item
-        </button>
+          <span className="material-icons text-sm">add</span>Agregar elemento</button>
       </div>
       {items.length === 0 ? (
         <div className="rounded border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
-          No items yet — click <strong>Add item</strong> to create one.
+          No items yet — click <strong>Añadir elemento</strong> to create one.
         </div>
       ) : (
         <DndContext
@@ -133,13 +131,13 @@ export function HtmlRenderArrayEditor({
                         <span
                           {...handleProps}
                           className="cursor-grab active:cursor-grabbing material-icons text-sm text-muted-foreground/60 hover:text-foreground"
-                          title="Drag to reorder"
+                          title="Arrastra para reordenar"
                           onClick={(e) => e.preventDefault()}
                         >drag_indicator</span>
                         <span className="flex-1 truncate text-foreground">{summarize(item)}</span>
                         <button
                           type="button"
-                          title="Remove"
+                          title="Quitar"
                           onClick={(e) => { e.preventDefault(); removeItem(idx); }}
                           className="p-0.5 rounded text-destructive hover:bg-destructive/10"
                         >

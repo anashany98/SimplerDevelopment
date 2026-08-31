@@ -11,7 +11,7 @@ tags:
   - agent-loop
   - company-brain
   - ai-knowledge-base
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 ---
 
@@ -188,7 +188,7 @@ The full 156-tool Brain catalogue is documented in the [Brain MCP tool reference
 
 <!-- SEO block -->
 <!--
-page_title: "Building a Company Brain: RAG with pgvector and Claude | SimplerDevelopment"
+page_title: "Building a Company Brain: RAG with pgvector and Claude | CRM AGENTS"
 meta_description: "How we built a per-tenant AI knowledge base using OpenAI embeddings, pgvector HNSW indexes, a classifier-planner-grounder agent loop, and a human-review queue."
 primary_keyword: "RAG pgvector"
 secondary_keywords: "company knowledge base, multi-tenant AI, embeddings Postgres, HNSW index, OpenAI embeddings, Claude classifier planner, groundedness check, human review queue"

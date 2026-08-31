@@ -172,9 +172,7 @@ export default function PlaybookRunStepper({ steps, onComplete, onSkip, busy }: 
                         disabled={busy}
                         className="inline-flex items-center gap-1 px-2 py-1 text-[11px] rounded-md text-muted-foreground hover:bg-accent disabled:opacity-50"
                       >
-                        <span className="material-icons text-[14px]">skip_next</span>
-                        Skip
-                      </button>
+                        <span className="material-icons text-[14px]">skip_next</span>Omitir</button>
                     )}
                   </div>
                 )}

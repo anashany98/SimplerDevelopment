@@ -106,7 +106,7 @@ export default function LeadScoringTab() {
     <div className="bg-card border border-border rounded-xl p-6 space-y-6">
       <div>
         <h3 className="font-semibold text-foreground text-lg">Puntuación de leads</h3>
-        {/* NOTE: "automatically" here is aspirational — see the comment on
+        {/* NOTE: "automátically" here is aspirational — see the comment on
             POST /api/portal/crm/contacts/[id]/score. No in-app event calls
             that endpoint today; applying a rule's points is manual/API-only. */}
         <p className="text-sm text-muted-foreground mt-1">

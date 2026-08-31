@@ -49,7 +49,7 @@ export default function WebsiteAutomationSettings() {
     <ProductAutomationSettings
       productScope="website"
       presets={WEBSITE_AUTOMATION_PRESETS}
-      title="Automations"
+      title="Automatizaciones"
       description="Automate CRM workflows and customer follow-ups"
     />
   );

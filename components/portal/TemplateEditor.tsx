@@ -212,9 +212,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
                 className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                <span className="material-icons text-base">save</span>
-                Save
-              </button>
+                <span className="material-icons text-base">save</span>Guardar</button>
             </div>
           </div>
 

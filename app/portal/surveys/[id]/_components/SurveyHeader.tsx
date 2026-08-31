@@ -46,18 +46,14 @@ export default function SurveyHeader({ survey, onToggleStatus }: Props) {
             onClick={() => onToggleStatus('active')}
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
           >
-            <span className="material-icons text-lg">publish</span>
-            Publish
-          </button>
+            <span className="material-icons text-lg">publish</span>Publicar</button>
         )}
         {survey.status === 'active' && (
           <button
             onClick={() => onToggleStatus('closed')}
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
           >
-            <span className="material-icons text-lg">block</span>
-            Close
-          </button>
+            <span className="material-icons text-lg">block</span>Cerrar</button>
         )}
         {survey.status === 'closed' && (
           <button

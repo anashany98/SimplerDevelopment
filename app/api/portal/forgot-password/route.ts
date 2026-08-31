@@ -53,9 +53,9 @@ export async function POST(req: Request) {
 
   try {
     const result = await resend.emails.send({
-      from: `Simpler Development <${FROM_EMAIL}>`,
+      from: `CRM AGENTS <${FROM_EMAIL}>`,
       to: email.toLowerCase().trim(),
-      subject: 'Reset your password — Simpler Development',
+      subject: 'Reset your password — CRM AGENTS',
       html: `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8" /></head>
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
                 Hi${user.name ? ` ${user.name}` : ''},
               </p>
               <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#333;">
-                We received a request to reset your password for the Simpler Development portal. Click the button below to set a new password.
+                We received a request to reset your password for the CRM AGENTS portal. Click the button below to set a new password.
               </p>
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 24px;">
                 <tr>
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
           </tr>
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#9ca3af;">Simpler Development</p>
+              <p style="margin:0;font-size:12px;color:#9ca3af;">CRM AGENTS</p>
             </td>
           </tr>
         </table>

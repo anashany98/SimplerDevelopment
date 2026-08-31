@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  WiX 4/5 source for the SimplerDevelopment Skills Windows MSI installer.
+  WiX 4/5 source for the CRM AGENTS Skills Windows MSI installer.
 
   Builds via scripts/installers/build-windows-msi.sh on a Windows runner
   (GitHub Actions `windows-latest`). The build script substitutes the
@@ -27,8 +27,8 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
   <Package
-      Name="SimplerDevelopment Skills"
-      Manufacturer="SimplerDevelopment"
+      Name="CRM AGENTS Skills"
+      Manufacturer="CRM AGENTS"
       Version="$(var.SD_VERSION)"
       UpgradeCode="77FBE124-F560-441E-A43E-3DBBF5507C51"
       Scope="perUser"
@@ -36,8 +36,8 @@
       InstallerVersion="500">
 
     <SummaryInformation
-        Description="SimplerDevelopment Claude skills bundle. Installs to %USERPROFILE%\.claude\skills."
-        Keywords="SimplerDevelopment, Claude, Skills, MCP" />
+        Description="CRM AGENTS Claude skills bundle. Installs to %USERPROFILE%\.claude\skills."
+        Keywords="CRM AGENTS, Claude, Skills, MCP" />
 
     <MajorUpgrade
         DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -53,8 +53,8 @@
     </ComponentGroup>
 
     <Feature Id="MainFeature"
-             Title="SimplerDevelopment Skills"
-             Description="The full SimplerDevelopment Claude skills bundle plus design-principles and quickstart docs."
+             Title="CRM AGENTS Skills"
+             Description="The full CRM AGENTS Claude skills bundle plus design-principles and quickstart docs."
              Level="1"
              AllowAdvertise="no"
              AllowAbsent="no">

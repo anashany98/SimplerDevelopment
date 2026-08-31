@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { randomBytes } from 'node:crypto';
-import { encryptSecret, decryptSecret, decryptMaybe } from '@/lib/crypto/secrets';
+import { encryptSecret, decryptSecret, decryptMaybe, hasWorkspaceTenantSecretsKey } from '@/lib/crypto/secrets';
 
 const TEST_KEY = randomBytes(32).toString('hex');
 
@@ -112,5 +112,20 @@ describe('decryptMaybe (tolerant decrypt for backfill-free adoption)', () => {
     buf[15] ^= 0x01;
     const tampered = buf.toString('base64');
     expect(decryptMaybe(tampered)).toBe(tampered);
+  });
+});
+
+describe('hasWorkspaceTenantSecretsKey', () => {
+  it('accepts exactly 32 hex-encoded bytes', () => {
+    expect(hasWorkspaceTenantSecretsKey()).toBe(true);
+  });
+
+  it('rejects missing, malformed, and short keys', () => {
+    delete process.env.WORKSPACE_TENANT_SECRETS_KEY;
+    expect(hasWorkspaceTenantSecretsKey()).toBe(false);
+    process.env.WORKSPACE_TENANT_SECRETS_KEY = 'z'.repeat(64);
+    expect(hasWorkspaceTenantSecretsKey()).toBe(false);
+    process.env.WORKSPACE_TENANT_SECRETS_KEY = 'aa';
+    expect(hasWorkspaceTenantSecretsKey()).toBe(false);
   });
 });

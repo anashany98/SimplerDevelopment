@@ -11,7 +11,7 @@
  */
 
 const NOMINATIM_ENDPOINT = 'https://nominatim.openstreetmap.org/search';
-const USER_AGENT = 'SimplerDevelopmentCRM/1.0 (+https://simplerdevelopment.com)';
+const USER_AGENT = 'CRM-AGENTS-Geocoder/1.0 (+https://simplerdevelopment.com)';
 const REQUEST_TIMEOUT_MS = 6000;
 
 interface NominatimResult {

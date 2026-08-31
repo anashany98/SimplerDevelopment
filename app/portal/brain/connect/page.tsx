@@ -140,7 +140,7 @@ export default function BrainConnectPage() {
     return JSON.stringify(
       {
         mcpServers: {
-          'simplerdevelopment-brain': {
+          'crm-agents-brain': {
             command: 'npx',
             args: [
               '-y',
@@ -188,7 +188,7 @@ export default function BrainConnectPage() {
           <span className="material-icons text-base">chevron_right</span>
           <span>Connect Claude Desktop</span>
         </div>
-        <h1 className="mt-2 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-[1.05] tracking-[-0.028em] text-foreground">Connect Claude Desktop to Brain</h1>
+        <h1 className="mt-2 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-[1.05] tracking-[-0.028em] text-foreground">Conecta Claude Desktop con Brain</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Generate an API key, paste a one-line config into Claude Desktop, and your Brain&apos;s
           knowledge, meetings, tasks, and CRM become available as MCP tools.
@@ -231,11 +231,11 @@ export default function BrainConnectPage() {
             <table className="w-full text-sm min-w-[640px]">
               <thead className="bg-muted/50">
                 <tr className="text-left">
-                  <th className="px-3 py-2 font-medium">Name</th>
+                  <th className="px-3 py-2 font-medium">Nombre</th>
                   <th className="px-3 py-2 font-medium">Key</th>
                   <th className="px-3 py-2 font-medium">Scopes</th>
-                  <th className="px-3 py-2 font-medium">Last used</th>
-                  <th className="px-3 py-2 font-medium">Created</th>
+                  <th className="px-3 py-2 font-medium">Último uso</th>
+                  <th className="px-3 py-2 font-medium">Creado</th>
                 </tr>
               </thead>
               <tbody>
@@ -386,9 +386,9 @@ export default function BrainConnectPage() {
           </li>
           <li>Restart Claude Desktop.</li>
           <li>
-            Brain tools appear automatically. Try{' '}
+            Brain tools appear automátically. Try{' '}
             <code className="text-xs px-1 py-0.5 bg-muted rounded">/mcp</code> in Claude Desktop to
-            verify <code className="text-xs px-1 py-0.5 bg-muted rounded">simplerdevelopment-brain</code>{' '}
+              verify <code className="text-xs px-1 py-0.5 bg-muted rounded">crm-agents-brain</code>{' '}
             is listed.
           </li>
         </ol>

@@ -36,11 +36,11 @@ const PERMISSION_GROUPS: ReadonlyArray<PermissionGroup> = [
     icon: 'swap_horiz',
     keys: [
       { key: 'move_to_idea',       label: 'Idea' },
-      { key: 'move_to_draft',      label: 'Draft' },
+      { key: 'move_to_draft',      label: 'Borrador' },
       { key: 'move_to_in_review',  label: 'In Review' },
-      { key: 'move_to_scheduled',  label: 'Scheduled' },
+      { key: 'move_to_scheduled',  label: 'Programado' },
       { key: 'move_to_published',  label: 'Published' },
-      { key: 'move_to_archived',   label: 'Archived' },
+      { key: 'move_to_archived',   label: 'Archivado' },
     ],
   },
   {
@@ -158,7 +158,7 @@ export default function PermissionMatrix({
         <div className="flex items-start gap-2">
           <span className="material-icons text-base">info</span>
           <div>
-            <p className="font-medium">Owners and admins automatically have every permission.</p>
+            <p className="font-medium">Los propietarios y administradores tienen automáticamente todos los permisos.</p>
             <p className="mt-1 text-blue-800/90 dark:text-blue-300/90">
               The matrix below sets permissions for member-role users. Check a
               box to grant; uncheck to revoke. Changes save instantly.
@@ -280,7 +280,7 @@ export default function PermissionMatrix({
         <section className="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
           <header className="mb-3 flex items-center gap-2">
             <span className="material-icons text-base text-amber-600 dark:text-amber-400">key</span>
-            <h2 className="text-sm font-medium">Owners and admins</h2>
+            <h2 className="text-sm font-medium">Propietarios y administradores</h2>
             <span className="text-xs text-gray-500 dark:text-gray-400">
               Implicit grant on every permission key.
             </span>

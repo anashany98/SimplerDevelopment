@@ -25,38 +25,38 @@ export function MediaPanel({ block, onUpdate }: PanelProps) {
     <>
       {block.type === 'image' && (
         <>
-          <div><span className="text-xs font-medium text-muted-foreground">Image</span><MediaPicker value={b.url as string} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
+          <div><span className="text-xs font-medium text-muted-foreground">Imagen</span><MediaPicker value={b.url as string} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
           <Field label="Alt Text" value={b.alt as string} onChange={(v) => onUpdate({ alt: v } as Partial<Block>)} />
-          <Field label="Caption" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} />
-          <SelectField label="Alignment" value={(b.alignment as string) || 'center'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
+          <Field label="Leyenda" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} />
+          <SelectField label="Alineación" value={(b.alignment as string) || 'center'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
         </>
       )}
       {block.type === 'youtube' && (
         <>
           <Field label="URL" value={b.url as string} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} />
-          <RichTextField label="Caption" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Leyenda" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} singleLine />
         </>
       )}
       {block.type === 'video' && (
         <>
           <div><span className="text-xs font-medium text-muted-foreground">Video</span><MediaPicker value={b.url as string} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} mimeTypeFilter="video" label="" apiEndpoint={mediaApi} /></div>
-          <RichTextField label="Caption" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Leyenda" value={b.caption as string} onChange={(v) => onUpdate({ caption: v } as Partial<Block>)} singleLine />
           <CheckboxField label="Autoplay" checked={b.autoplay as boolean} onChange={(v) => onUpdate({ autoplay: v } as Partial<Block>)} />
-          <CheckboxField label="Show Controls" checked={b.controls as boolean ?? true} onChange={(v) => onUpdate({ controls: v } as Partial<Block>)} />
+          <CheckboxField label="Mostrar controles" checked={b.controls as boolean ?? true} onChange={(v) => onUpdate({ controls: v } as Partial<Block>)} />
         </>
       )}
       {block.type === 'gallery' && (
         <>
-          <SelectField label="Layout" value={(b.layout as string) || 'grid'} options={['grid','masonry']} onChange={(v) => onUpdate({ layout: v } as Partial<Block>)} />
-          <SelectField label="Columns" value={String(b.columns || 3)} options={['2','3','4','5','6','7','8','9','10','11','12']} onChange={(v) => onUpdate({ columns: Number(v) } as Partial<Block>)} />
+          <SelectField label="Diseño" value={(b.layout as string) || 'grid'} options={['grid','masonry']} onChange={(v) => onUpdate({ layout: v } as Partial<Block>)} />
+          <SelectField label="Columnas" value={String(b.columns || 3)} options={['2','3','4','5','6','7','8','9','10','11','12']} onChange={(v) => onUpdate({ columns: Number(v) } as Partial<Block>)} />
           <CheckboxField label="Enable Lightbox" checked={b.lightbox as boolean} onChange={(v) => onUpdate({ lightbox: v } as Partial<Block>)} />
           <ListEditor
             label="Images"
             items={(block.images || []).map(img => ({ id: img.id, fields: { url: img.url, alt: img.alt, caption: img.caption || '' } }))}
             fieldDefs={[
-              { name: 'url', label: 'Image', type: 'image' as const },
+              { name: 'url', label: 'Imagen', type: 'image' as const },
               { name: 'alt', label: 'Alt', placeholder: 'Image description' },
-              { name: 'caption', label: 'Caption', placeholder: 'Optional caption' },
+              { name: 'caption', label: 'Leyenda', placeholder: 'Optional caption' },
             ]}
             onAdd={() => onUpdate({ images: [...(block.images || []), { id: uid(), url: '', alt: '' }] } as Partial<Block>)}
             onRemove={(id) => onUpdate({ images: block.images.filter(i => i.id !== id) } as Partial<Block>)}

@@ -189,7 +189,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1">First Name</label>
+                    <label className="block text-sm font-medium text-gray-900 mb-1">Nombre</label>
                     <input
                       type="text"
                       value={firstName}
@@ -198,7 +198,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-1">Last Name</label>
+                    <label className="block text-sm font-medium text-gray-900 mb-1">Apellido</label>
                     <input
                       type="text"
                       value={lastName}
@@ -209,18 +209,18 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Correo</label>
                   <input
                     type="email"
                     value={profile?.email ?? ''}
                     disabled
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-400 bg-gray-50"
                   />
-                  <p className="text-xs text-gray-400 mt-1">Email cannot be changed. Contact support if you need to update it.</p>
+                  <p className="text-xs text-gray-400 mt-1">El email no se puede cambiar. Contacta con soporte si necesitas actualizarlo.</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-1">Phone</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-1">Teléfono</label>
                   <input
                     type="tel"
                     value={phone}
@@ -291,7 +291,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       <div className="col-span-2 sm:col-span-1">
-                        <label className="block text-sm font-medium text-gray-900 mb-1">City</label>
+                        <label className="block text-sm font-medium text-gray-900 mb-1">Ciudad</label>
                         <input
                           type="text"
                           value={addressForm.city}
@@ -301,7 +301,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-900 mb-1">State</label>
+                        <label className="block text-sm font-medium text-gray-900 mb-1">Estado</label>
                         <input
                           type="text"
                           value={addressForm.state}
@@ -321,7 +321,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-900 mb-1">Country</label>
+                        <label className="block text-sm font-medium text-gray-900 mb-1">País</label>
                         <input
                           type="text"
                           value={addressForm.country}
@@ -336,9 +336,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                         type="button"
                         onClick={() => { setShowAddressForm(false); setEditingAddressId(null); }}
                         className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900"
-                      >
-                        Cancel
-                      </button>
+                      >Cancelar</button>
                       <button
                         type="submit"
                         disabled={savingAddress}
@@ -365,7 +363,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-medium text-gray-900">{addr.label || 'Address'}</p>
                             {addr.isDefault && (
-                              <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full font-medium">Default</span>
+                              <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full font-medium">Predeterminado</span>
                             )}
                           </div>
                           <p className="text-sm text-gray-500 mt-0.5">{addr.line1}{addr.line2 ? `, ${addr.line2}` : ''}</p>

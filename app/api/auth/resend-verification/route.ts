@@ -113,7 +113,7 @@ export async function POST(req: Request) {
 
   try {
     await sendEmail({
-      from: process.env.RESEND_FROM_EMAIL ?? 'SimplerDevelopment <noreply@simplerdevelopment.com>',
+      from: process.env.RESEND_FROM_EMAIL ?? 'CRM AGENTS <noreply@simplerdevelopment.com>',
       to: user.email,
       subject: 'Verify your email — new link',
       html: [

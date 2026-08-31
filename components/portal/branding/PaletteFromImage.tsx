@@ -117,7 +117,7 @@ export function PaletteFromImage({ onApply }: Props) {
           >
             <span className="material-icons text-4xl text-muted-foreground">image</span>
             <div className="text-sm font-medium text-foreground mt-2">Drop an image or click to upload</div>
-            <div className="text-xs text-muted-foreground mt-1">PNG, JPG, WebP, SVG — processed locally in your browser</div>
+            <div className="text-xs text-muted-foreground mt-1">PNG, JPG, WebP, SVG: procesados localmente en tu navegador</div>
             <input
               ref={fileInputRef}
               type="file"
@@ -157,9 +157,7 @@ export function PaletteFromImage({ onApply }: Props) {
               }}
               className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           </div>
         )}
 

@@ -24,7 +24,7 @@ export function BookingPageClient({ slug }: { slug: string }) {
         showSteps={!embedFlags.hideSteps}
       />
       <p className="text-center text-xs text-gray-400 dark:text-gray-600 pb-6">
-        Powered by Simpler Development
+        Powered by CRM AGENTS
       </p>
     </div>
   );

@@ -96,7 +96,7 @@ function BrainUpsell({
     <div className="max-w-3xl mx-auto py-12 px-4">
       <div className="bg-card border border-border rounded-2xl p-8 text-center">
         <span className="material-icons text-5xl text-primary mb-3 block">psychology</span>
-        <h1 className="text-2xl font-bold text-foreground mb-2">Company Brain</h1>
+        <h1 className="text-2xl font-bold text-foreground mb-2">Cerebro de empresa</h1>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">{description}</p>
 
         {trialState === 'expired' && trialUntil && (

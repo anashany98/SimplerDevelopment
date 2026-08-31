@@ -40,6 +40,12 @@ function getKey(): Buffer {
   return Buffer.from(hex, 'hex');
 }
 
+/** True when tenant-owned encrypted columns can be read and written safely. */
+export function hasWorkspaceTenantSecretsKey(): boolean {
+  const value = process.env.WORKSPACE_TENANT_SECRETS_KEY;
+  return typeof value === 'string' && value.length === KEY_BYTES * 2 && /^[0-9a-fA-F]+$/.test(value);
+}
+
 export function encryptSecret(plaintext: string): string {
   const key = getKey();
   const iv = randomBytes(IV_BYTES);

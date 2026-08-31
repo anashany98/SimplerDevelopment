@@ -134,11 +134,11 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
 
       {/* Key list */}
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading...</p>
+        <p className="text-sm text-muted-foreground">Cargando...</p>
       ) : keys.length === 0 ? (
         <div className="text-center py-8">
           <span className="material-icons text-4xl text-muted-foreground/30">vpn_key</span>
-          <p className="text-sm text-muted-foreground mt-2">No API keys yet. Create one to get started with the SDK.</p>
+          <p className="text-sm text-muted-foreground mt-2">Aún no hay claves API. Crea una para empezar con el SDK.</p>
         </div>
       ) : (
         <div className="border border-border rounded-xl overflow-hidden divide-y divide-border">

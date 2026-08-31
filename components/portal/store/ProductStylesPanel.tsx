@@ -147,20 +147,18 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
             </label>
 
             <label className="flex items-center gap-1 text-xs text-muted-foreground">
-              <input type="checkbox" checked={s.active} onChange={(e) => save(s.id, { active: e.target.checked })} />
-              Active
-            </label>
+              <input type="checkbox" checked={s.active} onChange={(e) => save(s.id, { active: e.target.checked })} />Activo</label>
 
             <div className="ml-auto flex items-center gap-1">
-              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Move up"
+              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Mover arriba"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_upward</span>
               </button>
-              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === styles.length - 1} title="Move down"
+              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === styles.length - 1} title="Mover abajo"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_downward</span>
               </button>
-              <button type="button" onClick={() => remove(s.id)} title="Remove colourway and its print surfaces"
+              <button type="button" onClick={() => remove(s.id)} title="Eliminar este color y sus superficies de impresión"
                 className="rounded-md border border-destructive/40 p-1 text-destructive">
                 <span className="material-icons text-base">delete</span>
               </button>
@@ -180,7 +178,7 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void add(); } }}
-          placeholder="New colourway, e.g. Black"
+          placeholder="Nuevo color, p. ej. Negro"
           className="w-56 rounded-md border border-border bg-background px-2 py-1 text-sm"
         />
         <button type="button" onClick={() => void add()} disabled={!newName.trim()}

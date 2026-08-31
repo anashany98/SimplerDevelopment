@@ -9,7 +9,7 @@
 
 ### User Story 1 - Discover Agency Services (Priority: P1)
 
-A potential client visits the website to learn about SimplerDevelopment's capabilities and service offerings. They navigate through the home page and solutions to understand what the agency offers.
+A potential client visits the website to learn about CRM AGENTS's capabilities and service offerings. They navigate through the home page and solutions to understand what the agency offers.
 
 **Why this priority**: Core marketing function - without clear service presentation, the website fails its primary purpose of attracting and informing potential clients.
 
@@ -60,7 +60,7 @@ A visitor wants to explore the agency's thought leadership and expertise through
 
 ### User Story 4 - Contact the Agency (Priority: P2)
 
-A potential client decides to reach out to SimplerDevelopment to inquire about services or start a project conversation.
+A potential client decides to reach out to CRM AGENTS to inquire about services or start a project conversation.
 
 **Why this priority**: Critical conversion point for lead generation. Essential for business goals, but requires prior pages (services, about) to establish context.
 
@@ -94,7 +94,7 @@ A visitor prefers to browse the website in their preferred color scheme (light o
 
 ### User Story 6 - Search Engine Discovery (Priority: P1)
 
-A potential client searches for design, development, or automation services on search engines and discovers SimplerDevelopment through organic search results.
+A potential client searches for design, development, or automation services on search engines and discovers CRM AGENTS through organic search results.
 
 **Why this priority**: Primary acquisition channel for new clients. Without SEO, the website has limited discoverability and business impact.
 
@@ -207,7 +207,7 @@ Agency staff need to update website content (solutions, blog posts, about inform
 
 ## Dependencies
 
-- Brand design system and visual assets from SimplerDevelopment team
+- Brand design system and visual assets from CRM AGENTS team
 - Initial content for all page types (solutions, about, blog)
 - Builder.io account setup and API key configuration
 - Email delivery service or CRM integration for contact form submissions

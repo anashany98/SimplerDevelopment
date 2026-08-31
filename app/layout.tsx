@@ -18,6 +18,17 @@ const LayoutContent = dynamic(() =>
   import("@/components/LayoutContent").then((m) => m.LayoutContent),
 );
 
+// A Cloudflare Quick Tunnel has a generated hostname. Reuse the explicitly
+// configured development origins so the same tunnel receives the app chrome
+// (including SessionProvider) instead of being mistaken for a tenant site.
+// Unknown hosts remain tenant sites and keep their isolated public layout.
+const DEV_TUNNEL_APP_HOSTS = new Set(
+  (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? "")
+    .split(",")
+    .map((host) => host.trim().toLowerCase())
+    .filter(Boolean),
+);
+
 // preload: false — these app/portal fonts were being <link rel=preload>ed on
 // EVERY route (~180KB of woff2), including public client sites that use their
 // own brand fonts (Raleway/Open Sans) and never reference these. With preload
@@ -76,9 +87,19 @@ export default async function RootLayout({
   // (/sites/<domain>) on one host, so hostname alone can't tell them apart —
   // the middleware forwards `x-site-pathname` on /sites/* routes to mark them.
   const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com"];
-  const hostname = host.split(":")[0];
+  const hostname = host.split(":")[0].toLowerCase();
   const isSitesRoute = headersList.get("x-site-pathname") !== null;
-  const isClientSite = isSitesRoute || (!APP_HOSTS.includes(hostname) && !hostname.endsWith(".railway.app"));
+  const isAppHost =
+    APP_HOSTS.includes(hostname) ||
+    hostname.endsWith(".railway.app") ||
+    // Temporary Cloudflare Quick Tunnels are app surfaces too (portal, auth).
+    // Mirrors the `.trycloudflare.com` allowance in middleware.ts isAppHostname
+    // — without it the root layout classifies the tunnel host as a client
+    // site, skips the SessionProvider, and every useSession() caller in the
+    // portal chrome (PortalSidebar, NotificationBell) throws at render time.
+    hostname.endsWith(".trycloudflare.com") ||
+    DEV_TUNNEL_APP_HOSTS.has(hostname);
+  const isClientSite = isSitesRoute || !isAppHost;
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   // Fonts declared with next/font in THIS file are attributed to the root
   // layout, which is in every route's graph — so Next emitted their

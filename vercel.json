@@ -144,7 +144,19 @@
       "schedule": "* * * * *"
     },
     {
+      "path": "/api/cron/process-workflow-schedules",
+      "schedule": "* * * * *"
+    },
+    {
       "path": "/api/cron/process-automation-jobs",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/process-channel-outbox",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/process-conversation-ai",
       "schedule": "* * * * *"
     },
     {

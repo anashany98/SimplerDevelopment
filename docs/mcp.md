@@ -9,7 +9,7 @@ The portal exposes a [Model Context Protocol](https://modelcontextprotocol.io) s
 Claude.ai web has a custom-connector dialog that handles login and consent for you. No API key to copy and paste.
 
 1. In Claude.ai → **Settings → Connectors → Browse connectors → Add custom connector**.
-2. Name: **SimplerDevelopment**.
+2. Name: **CRM AGENTS**.
 3. Remote MCP server URL: `https://www.simplerdevelopment.com/api/mcp`
 4. Leave the OAuth fields blank — Claude registers itself automatically.
 5. Click **Add**. You'll be redirected to your portal login (if not already signed in), then to a consent screen showing what Claude is asking for. Approve to finish.
@@ -44,7 +44,7 @@ Claude Desktop expects stdio-style MCP servers. Use `mcp-remote` as a bridge:
 ```json
 {
   "mcpServers": {
-    "simplerdevelopment": {
+    "crm-agents": {
       "command": "npx",
       "args": [
         "-y",
@@ -61,7 +61,7 @@ Claude Desktop expects stdio-style MCP servers. Use `mcp-remote` as a bridge:
 ### 4. Claude Code
 
 ```bash
-claude mcp add --transport http simplerdevelopment \
+claude mcp add --transport http crm-agents \
   https://www.simplerdevelopment.com/api/mcp \
   --header "Authorization: Bearer sd_mcp_your_key_here"
 ```

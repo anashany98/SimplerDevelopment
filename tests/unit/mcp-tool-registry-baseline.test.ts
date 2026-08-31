@@ -256,6 +256,47 @@ const EXPECTED_TOOLS: readonly string[] = [
   'chat_conversation_reply',
   'chat_conversation_update',
   'chat_widgets_list',
+  // ── omnichannel task aliases ──
+  'assign_conversation',
+  'cancel_booking',
+  'close_conversation',
+  'connect_channel',
+  'create_automation',
+  'create_booking',
+  'create_contact',
+  'delete_automation',
+  'disconnect_channel',
+  'get_ai_config',
+  'get_availability',
+  'get_channel_status',
+  'get_channel_metrics',
+  'get_contact',
+  'get_conversation',
+  'get_inbox_metrics',
+  'get_pipeline',
+  'list_automations',
+  'list_booking_services',
+  'list_channels',
+  'list_conversations',
+  'list_messages',
+  'mark_read',
+  'merge_contacts',
+  'move_deal',
+  'pause_ai',
+  'reopen_conversation',
+  'reschedule_booking',
+  'return_conversation_to_ai',
+  'search_contacts',
+  'search_conversations',
+  'send_media',
+  'send_message',
+  'send_template_message',
+  'set_ai_mode',
+  'take_over_conversation',
+  'update_ai_config',
+  'update_automation',
+  'update_contact',
+  'upsert_contact',
   // ── client ──
   'client_get',
   'client_update',
@@ -720,9 +761,15 @@ describe('MCP tool registry — baseline @critical', () => {
     expect(names.has('crm_contacts_search')).toBe(true);
     expect(names.has('crm_deals_list')).toBe(true);
     expect(names.has('crm_pipelines_list')).toBe(true);
+    expect(names.has('search_contacts')).toBe(true);
+    expect(names.has('get_contact')).toBe(true);
+    expect(names.has('get_pipeline')).toBe(true);
     // crm writes hidden
     expect(names.has('crm_contacts_create')).toBe(false);
     expect(names.has('crm_deals_create')).toBe(false);
+    expect(names.has('create_contact')).toBe(false);
+    expect(names.has('update_contact')).toBe(false);
+    expect(names.has('move_deal')).toBe(false);
     // off-domain tools hidden
     expect(names.has('projects_create')).toBe(false);
     expect(names.has('posts_create')).toBe(false);

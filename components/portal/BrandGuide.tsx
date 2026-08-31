@@ -167,16 +167,16 @@ function CoverSection({
 
 function LogoSection({ branding }: { branding: ResolvedBranding }) {
   const variants = [
-    { label: 'Primary', url: branding.logoRectUrl || branding.logoUrl, usage: 'Default — headers, footers, documents' },
+    { label: 'Principal', url: branding.logoRectUrl || branding.logoUrl, usage: 'Default — headers, footers, documents' },
     { label: 'Square', url: branding.logoSquareUrl, usage: 'Avatars, app icons, social profiles' },
-    { label: 'Icon', url: branding.logoIconUrl, usage: 'Favicons, small-format surfaces' },
+    { label: 'Icono', url: branding.logoIconUrl, usage: 'Favicons, small-format surfaces' },
   ].filter((v) => !!v.url);
 
   if (variants.length === 0 && !branding.logoText) {
     return (
       <section>
         <SectionHeader number="01" label="Logo" title="Logo" />
-        <p className="text-gray-600">No logo assets uploaded yet. Add them on the profile&apos;s Logos tab.</p>
+        <p className="text-gray-600">Aún no hay logos subidos. Añádelos en la pestaña Logos del perfil.</p>
       </section>
     );
   }
@@ -217,7 +217,7 @@ function LogoSection({ branding }: { branding: ResolvedBranding }) {
           >
             {branding.logoText}
           </div>
-          <div className="text-sm text-gray-600 mt-3">Typeset wordmark — use when an image logo is unavailable.</div>
+          <div className="text-sm text-gray-600 mt-3">Logotipo tipográfico: úsalo cuando no haya un logo de imagen disponible.</div>
         </div>
       )}
 
@@ -246,14 +246,14 @@ function LogoBgSwatch({ label, bg, url }: { label: string; bg: string; url: stri
 
 function ColorsSection({ branding }: { branding: ResolvedBranding }) {
   const swatches: Array<{ label: string; hex?: string; cssVar: string; role: string }> = [
-    { label: 'Primary', hex: branding.primaryColor, cssVar: '--brand-primary', role: 'Actions, links, emphasis' },
-    { label: 'Secondary', hex: branding.secondaryColor, cssVar: '--brand-secondary', role: 'Supporting accents' },
-    { label: 'Accent', hex: branding.accentColor, cssVar: '--brand-accent', role: 'Highlights, badges' },
-    { label: 'Background', hex: branding.backgroundColor, cssVar: '--brand-bg', role: 'Page surface' },
-    { label: 'Text', hex: branding.textColor, cssVar: '--brand-text', role: 'Body copy' },
-    { label: 'Nav Background', hex: branding.navBackground, cssVar: '--brand-nav-bg', role: 'Navigation surface' },
-    { label: 'Nav Text', hex: branding.navTextColor, cssVar: '--brand-nav-text', role: 'Nav labels' },
-    { label: 'Link', hex: branding.linkColor, cssVar: '--brand-link-color', role: 'Inline hyperlinks' },
+    { label: 'Principal', hex: branding.primaryColor, cssVar: '--brand-primary', role: 'Actions, links, emphasis' },
+    { label: 'Secundario', hex: branding.secondaryColor, cssVar: '--brand-secondary', role: 'Supporting accents' },
+    { label: 'Acento', hex: branding.accentColor, cssVar: '--brand-accent', role: 'Highlights, badges' },
+    { label: 'Fondo', hex: branding.backgroundColor, cssVar: '--brand-bg', role: 'Page surface' },
+    { label: 'Texto', hex: branding.textColor, cssVar: '--brand-text', role: 'Body copy' },
+    { label: 'Fondo de navegación', hex: branding.navBackground, cssVar: '--brand-nav-bg', role: 'Navigation surface' },
+    { label: 'Texto de navegación', hex: branding.navTextColor, cssVar: '--brand-nav-text', role: 'Nav labels' },
+    { label: 'Enlace', hex: branding.linkColor, cssVar: '--brand-link-color', role: 'Inline hyperlinks' },
     { label: 'Link Hover', hex: branding.linkHoverColor, cssVar: '--brand-link-hover-color', role: 'Link hover state' },
   ].filter((s) => !!s.hex);
 
@@ -308,8 +308,8 @@ function TypographySection({ branding, sample }: { branding: ResolvedBranding; s
     { tag: 'h4', label: 'H4' },
     { tag: 'h5', label: 'H5' },
     { tag: 'h6', label: 'H6' },
-    { tag: 'p', label: 'Body' },
-    { tag: 'blockquote', label: 'Quote' },
+    { tag: 'p', label: 'Cuerpo' },
+    { tag: 'blockquote', label: 'Cita' },
     { tag: 'small', label: 'Small' },
   ];
 
@@ -325,8 +325,8 @@ function TypographySection({ branding, sample }: { branding: ResolvedBranding; s
     <section className="break-inside-avoid">
       <SectionHeader
         number="03"
-        label="Typography"
-        title="Type system"
+        label="Tipografía"
+        title="Sistema tipográfico"
         description="Heading + body pairing and the full type scale as configured."
       />
 

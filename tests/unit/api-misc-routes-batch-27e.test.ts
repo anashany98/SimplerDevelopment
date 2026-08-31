@@ -604,6 +604,51 @@ describe('GET /api/portal/ai/conversations/[id]', () => {
     expect(body.data.messages[0].content).toBe('hi');
   });
 
+  it('returns safe tool-call statuses without exposing persisted results', async () => {
+    authorizePortalMock.mockResolvedValue({ client: { id: 11 }, userId: 7, role: 'admin' });
+    selectQueue.push([{ id: 5, clientId: 11, title: 'Tool convo' }]);
+    selectQueue.push([
+      {
+        id: 101,
+        conversationId: 5,
+        role: 'assistant',
+        content: 'Finished',
+        toolCalls: [
+          {
+            name: 'create_website_page',
+            input: { website_id: 0 },
+            result: { error: 'Website not found' },
+          },
+          {
+            name: 'create_website',
+            input: { name: 'Acme' },
+            result: { id: 44, name: 'Acme' },
+          },
+        ],
+      },
+    ]);
+
+    const res = await aiConvByIdRoute.GET(new Request('http://x'), buildArgs('5'));
+
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.data.messages[0].toolCalls).toEqual([
+      {
+        name: 'create_website_page',
+        input: { website_id: 0 },
+        success: false,
+      },
+      {
+        name: 'create_website',
+        input: { name: 'Acme' },
+        success: true,
+      },
+    ]);
+    for (const toolCall of body.data.messages[0].toolCalls) {
+      expect(toolCall).not.toHaveProperty('result');
+    }
+  });
+
   it('returns 500 on unexpected error', async () => {
     authorizePortalMock.mockRejectedValue(new Error('boom'));
     const res = await aiConvByIdRoute.GET(new Request('http://x'), buildArgs('5'));

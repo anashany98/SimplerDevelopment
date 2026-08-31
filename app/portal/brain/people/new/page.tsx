@@ -25,8 +25,8 @@ interface MentionableUser {
 }
 
 const STATUS_OPTIONS: { value: BrainPersonStatus; label: string }[] = [
-  { value: 'active',   label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
+  { value: 'active',   label: 'Activo' },
+  { value: 'inactive', label: 'Inactivo' },
   { value: 'departed', label: 'Departed' },
 ];
 
@@ -119,7 +119,7 @@ export default function NewBrainPersonPage() {
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={<><span className="material-icons text-primary">person_add</span> New person</>}
         subtitle="Add someone to your internal team. You can attach expertise tags and org-unit memberships from the profile after creating."
       />
@@ -139,7 +139,7 @@ export default function NewBrainPersonPage() {
         </Field>
 
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Email">
+          <Field label="Correo">
             <input
               type="email"
               value={email}
@@ -148,13 +148,13 @@ export default function NewBrainPersonPage() {
               placeholder="jane@example.com"
             />
           </Field>
-          <Field label="Title">
+          <Field label="Título">
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={inputCls}
-              placeholder="Director of Engineering"
+              placeholder="Director de Ingeniería"
             />
           </Field>
         </div>
@@ -174,16 +174,16 @@ export default function NewBrainPersonPage() {
           </select>
         </Field>
 
-        <Field label="Reports to (manager)">
+        <Field label="Reporta con (gerente)">
           <PersonPicker
             value={managerId}
             onChange={setManagerId}
-            placeholder="Search for a manager…"
+            placeholder="Buscar un gerente…"
           />
         </Field>
 
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Start date">
+          <Field label="Fecha de inicio">
             <input
               type="date"
               value={startDate}
@@ -191,7 +191,7 @@ export default function NewBrainPersonPage() {
               className={inputCls}
             />
           </Field>
-          <Field label="End date">
+          <Field label="Fecha de fin">
             <input
               type="date"
               value={endDate}
@@ -201,7 +201,7 @@ export default function NewBrainPersonPage() {
           </Field>
         </div>
 
-        <Field label="Status">
+        <Field label="Estado">
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as BrainPersonStatus)}
@@ -213,7 +213,7 @@ export default function NewBrainPersonPage() {
           </select>
         </Field>
 
-        <Field label="Notes" hint="Private context — visible only to your team.">
+        <Field label="Notas" hint="Private context — visible only to your team.">
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -235,7 +235,7 @@ export default function NewBrainPersonPage() {
                     next[i] = { ...next[i], label: e.target.value };
                     setProfileUrls(next);
                   }}
-                  placeholder="Label"
+                  placeholder="Etiqueta"
                   className={`${inputCls} flex-1`}
                 />
                 <input
@@ -281,9 +281,7 @@ export default function NewBrainPersonPage() {
           <Link
             href="/portal/brain/people"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm disabled:opacity-50"
-          >
-            Cancel
-          </Link>
+          >Cancelar</Link>
           <button
             type="submit"
             disabled={!canSubmit}

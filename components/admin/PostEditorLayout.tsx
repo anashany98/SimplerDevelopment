@@ -63,7 +63,7 @@ export function PostEditorLayout({
               <Link
                 href={backHref || '/admin/posts'}
                 className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors shrink-0"
-                title="Back"
+                title="Atrás"
               >
                 <span className="material-icons text-xl">chevron_left</span>
               </Link>
@@ -99,8 +99,8 @@ export function PostEditorLayout({
                 onChange={(e) => onStatusChange(e.target.value as 'draft' | 'published')}
                 className="px-2 py-1 text-sm rounded-md border border-border hover:bg-accent transition-colors bg-background shrink-0"
               >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="draft">Borrador</option>
+                <option value="published">Publicado</option>
               </select>
 
               {onPreviewToggle && (
@@ -197,9 +197,7 @@ export function PostEditorLayout({
               )}
               {saveStatus === 'error' && (
                 <span className="flex items-center gap-1 text-xs text-destructive shrink-0">
-                  <span className="material-icons text-sm">error</span>
-                  Failed
-                </span>
+                  <span className="material-icons text-sm">error</span>Fallido</span>
               )}
             </div>
           ) : (
@@ -238,8 +236,8 @@ export function PostEditorLayout({
                     onChange={(e) => onStatusChange(e.target.value as 'draft' | 'published')}
                     className="px-3 py-1.5 text-sm rounded-md border border-border hover:bg-accent transition-colors bg-background"
                   >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
+                    <option value="draft">Borrador</option>
+                    <option value="published">Publicado</option>
                   </select>
                   <button
                     type="button"
@@ -272,9 +270,7 @@ export function PostEditorLayout({
                   )}
                   {saveStatus === 'error' && (
                     <span className="flex items-center gap-1 text-xs text-destructive">
-                      <span className="material-icons text-sm">error</span>
-                      Failed
-                    </span>
+                      <span className="material-icons text-sm">error</span>Fallido</span>
                   )}
 
                 </div>

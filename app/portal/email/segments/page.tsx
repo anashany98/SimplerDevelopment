@@ -23,12 +23,12 @@ interface Tag {
 }
 
 const SEGMENT_FIELDS = [
-  { value: 'status', label: 'Subscriber Status' },
-  { value: 'tag', label: 'Has Tag' },
+  { value: 'status', label: 'Estado del suscriptor' },
+  { value: 'tag', label: 'Tiene etiqueta' },
   { value: 'subscribed_days', label: 'Days Since Subscribed' },
   { value: 'list', label: 'In List' },
-  { value: 'opened_campaign', label: 'Opened Campaign' },
-  { value: 'clicked_campaign', label: 'Clicked Campaign' },
+  { value: 'opened_campaign', label: 'Campaña abierta' },
+  { value: 'clicked_campaign', label: 'Campaña con clic' },
 ];
 
 const OPERATORS: Record<string, { value: string; label: string }[]> = {
@@ -91,7 +91,7 @@ export default function EmailSegmentsPage() {
   };
 
   const handleDeleteSegment = async (id: number) => {
-    if (!confirm('Delete this segment?')) return;
+    if (!confirm('¿Eliminar este segmento?')) return;
     const res = await fetch(`/api/portal/email/segments/${id}`, { method: 'DELETE' });
     if ((await res.json()).success) setSegments(prev => prev.filter(s => s.id !== id));
   };
@@ -112,7 +112,7 @@ export default function EmailSegmentsPage() {
   };
 
   const handleDeleteTag = async (id: number) => {
-    if (!confirm('Delete this tag?')) return;
+    if (!confirm('¿Eliminar esta etiqueta?')) return;
     const res = await fetch(`/api/portal/email/tags/${id}`, { method: 'DELETE' });
     if ((await res.json()).success) setTags(prev => prev.filter(t => t.id !== id));
   };
@@ -130,9 +130,9 @@ export default function EmailSegmentsPage() {
   return (
     <div className="max-w-5xl mx-auto">
       <PortalPageHeader
-        eyebrow="Email"
-        title="Audience"
-        subtitle="Segment and tag your subscribers for targeted campaigns"
+        eyebrow="Correo"
+        title="Audiencia"
+        subtitle="Segmenta y etiqueta a tus suscriptores para campañas dirigidas"
       />
 
       {/* Tabs */}
@@ -152,24 +152,22 @@ export default function EmailSegmentsPage() {
         <div className="space-y-4">
           <div className="flex justify-end">
             <button onClick={() => setShowCreateSegment(!showCreateSegment)} className={`flex items-center gap-2 ${pBtnPrimary}`}>
-              <span className="material-icons text-lg">add</span>
-              New Segment
-            </button>
+              <span className="material-icons text-lg">add</span>Nuevo segmento</button>
           </div>
 
           {showCreateSegment && (
             <form onSubmit={handleCreateSegment} className="bg-card border border-border rounded-xl p-6 space-y-4">
-              <h3 className="font-semibold">Create Segment</h3>
+              <h3 className="font-semibold">Crear segmento</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground">Segment Name</label>
+                  <label className="text-xs font-medium text-muted-foreground">Nombre del segmento</label>
                   <input value={segName} onChange={e => setSegName(e.target.value)} placeholder="e.g. Active Subscribers" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground">Match</label>
                   <select value={segMatch} onChange={e => setSegMatch(e.target.value)} className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50">
-                    <option value="all">All rules must match</option>
-                    <option value="any">Any rule can match</option>
+                    <option value="all">Todas las reglas deben coincidir</option>
+                    <option value="any">Cualquier regla puede coincidir</option>
                   </select>
                 </div>
               </div>
@@ -195,15 +193,14 @@ export default function EmailSegmentsPage() {
                   ))}
                 </div>
                 <button type="button" onClick={addRule} className="mt-2 text-xs text-primary hover:underline flex items-center gap-1">
-                  <span className="material-icons text-xs">add</span> Add rule
-                </button>
+                  <span className="material-icons text-xs">add</span>Agregar regla</button>
               </div>
 
               <div className="flex gap-3">
                 <button type="submit" disabled={segSaving} className={`${pBtnPrimary}`}>
                   {segSaving ? 'Creating...' : 'Create Segment'}
                 </button>
-                <button type="button" onClick={() => setShowCreateSegment(false)} className={`${pBtnGhost}`}>Cancel</button>
+                <button type="button" onClick={() => setShowCreateSegment(false)} className={`${pBtnGhost}`}>Cancelar</button>
               </div>
             </form>
           )}
@@ -211,8 +208,8 @@ export default function EmailSegmentsPage() {
           {segments.length === 0 && !showCreateSegment ? (
             <div className="text-center py-16 bg-muted/30 rounded-xl border border-border">
               <span className="material-icons text-5xl text-muted-foreground">filter_alt</span>
-              <h3 className="mt-3 font-semibold text-lg">No segments yet</h3>
-              <p className="text-sm text-muted-foreground mt-1">Create segments to target specific groups of subscribers</p>
+              <h3 className="mt-3 font-semibold text-lg">Aún no hay segmentos</h3>
+              <p className="text-sm text-muted-foreground mt-1">Crea segmentos para dirigirte a grupos concretos de suscriptores</p>
             </div>
           ) : (
             segments.map(seg => (
@@ -221,7 +218,7 @@ export default function EmailSegmentsPage() {
                   <h3 className="font-semibold text-sm">{seg.name}</h3>
                   {seg.description && <p className="text-xs text-muted-foreground mt-0.5">{seg.description}</p>}
                   <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
-                    <span>{seg.rules.length} rule{seg.rules.length !== 1 ? 's' : ''}</span>
+                    <span>{seg.rules.length} {seg.rules.length !== 1 ? 'reglas' : 'regla'}</span>
                     <span>Match: {seg.matchType}</span>
                     <span>{seg.subscriberCount} subscribers</span>
                   </div>
@@ -240,7 +237,7 @@ export default function EmailSegmentsPage() {
         <div className="space-y-4">
           <form onSubmit={handleCreateTag} className="flex items-end gap-3">
             <div className="flex-1">
-              <label className="text-xs font-medium text-muted-foreground">Tag Name</label>
+              <label className="text-xs font-medium text-muted-foreground">Nombre de la etiqueta</label>
               <input value={newTagName} onChange={e => setNewTagName(e.target.value)} placeholder="e.g. VIP, Newsletter, Lead" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
             </div>
             <div>
@@ -255,8 +252,8 @@ export default function EmailSegmentsPage() {
           {tags.length === 0 ? (
             <div className="text-center py-16 bg-muted/30 rounded-xl border border-border">
               <span className="material-icons text-5xl text-muted-foreground">label</span>
-              <h3 className="mt-3 font-semibold text-lg">No tags yet</h3>
-              <p className="text-sm text-muted-foreground mt-1">Tags help you organize subscribers beyond just lists</p>
+              <h3 className="mt-3 font-semibold text-lg">Aún no hay etiquetas</h3>
+              <p className="text-sm text-muted-foreground mt-1">Las etiquetas te ayudan a organizar suscriptores más allá de las listas</p>
             </div>
           ) : (
             <div className="flex flex-wrap gap-2">

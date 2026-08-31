@@ -97,7 +97,7 @@ export function HtmlEmbedBlockSettings({ block, onChange }: { block: HtmlEmbedBl
           ) : block.url ? (
             <div>
               <div className="font-medium text-foreground truncate">{block.filename || 'uploaded.html'}</div>
-              <div className="text-xs text-muted-foreground mt-1">Click or drop a new file to replace</div>
+              <div className="text-xs text-muted-foreground mt-1">Haz clic o suelta un archivo nuevo para reemplazar</div>
             </div>
           ) : (
             <div className="text-muted-foreground">
@@ -118,7 +118,7 @@ export function HtmlEmbedBlockSettings({ block, onChange }: { block: HtmlEmbedBl
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground font-mono"
           placeholder="/api/media/proxy/media/..."
         />
-        <p className="text-xs text-muted-foreground mt-1">Auto-populated by upload. You can also paste an existing URL.</p>
+        <p className="text-xs text-muted-foreground mt-1">Se rellena solo al subir. También puedes pegar una URL existente.</p>
       </div>
 
       <div>
@@ -133,7 +133,7 @@ export function HtmlEmbedBlockSettings({ block, onChange }: { block: HtmlEmbedBl
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Width</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Ancho</label>
         <select
           value={block.width || 'full'}
           onChange={(e) => onChange({ width: e.target.value as HtmlEmbedBlock['width'] })}

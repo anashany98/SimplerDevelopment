@@ -22,14 +22,14 @@ export default function RequestActivationButton({ siteId }: Props) {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setError(json.message ?? 'Failed to request activation. Please try again.');
+        setError(json.message ?? 'No se pudo solicitar la activación. Inténtalo de nuevo.');
       } else {
         setDone(true);
         // Refresh the page so the provisioning banner replaces this one
         router.refresh();
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError('Error de red. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }

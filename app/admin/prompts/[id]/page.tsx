@@ -665,9 +665,7 @@ export default function PromptDetailPage() {
                     <button
                       onClick={() => setConfirmingReal(false)}
                       className="px-2 py-1 text-yellow-700 hover:text-yellow-900 transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                   </div>
                 </div>
               ) : (
@@ -768,9 +766,7 @@ export default function PromptDetailPage() {
                       onClick={() => { setEditorOpen(false); setEditorError(null); }}
                       disabled={editorSaving}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                     <span className="text-xs text-muted-foreground">
                       Saves a new DRAFT version — does not change production.
                     </span>
@@ -851,7 +847,7 @@ export default function PromptDetailPage() {
                     <tr>
                       <th className="px-3 py-2 w-6"></th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Run ID</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pass Rate</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Passed / Total</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tokens</th>
@@ -923,7 +919,7 @@ export default function PromptDetailPage() {
                                         <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Agg</th>
                                         <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Latency</th>
                                         <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Tokens</th>
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider">Details</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider">Detalles</th>
                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-border/50">
@@ -1194,15 +1190,11 @@ export default function PromptDetailPage() {
                             onClick={() => handlePromote(v.id)}
                             disabled={isInFlight}
                             className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors font-medium"
-                          >
-                            Confirm
-                          </button>
+                          >Confirmar</button>
                           <button
                             onClick={() => setPromoteConfirm(null)}
                             className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            Cancel
-                          </button>
+                          >Cancelar</button>
                         </div>
                       )}
 
@@ -1214,15 +1206,11 @@ export default function PromptDetailPage() {
                             onClick={() => handleRollback(v.id)}
                             disabled={isInFlight}
                             className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-yellow-600 text-white hover:bg-yellow-700 disabled:opacity-50 transition-colors font-medium"
-                          >
-                            Confirm
-                          </button>
+                          >Confirmar</button>
                           <button
                             onClick={() => setRollbackConfirm(null)}
                             className="px-2 py-1 text-yellow-700 hover:text-yellow-900 transition-colors"
-                          >
-                            Cancel
-                          </button>
+                          >Cancelar</button>
                         </div>
                       )}
                     </div>
@@ -1242,9 +1230,7 @@ export default function PromptDetailPage() {
 
             {auditLoading ? (
               <div className="flex items-center gap-2 py-3 text-xs text-muted-foreground">
-                <span className="material-icons animate-spin text-base leading-none">refresh</span>
-                Loading…
-              </div>
+                <span className="material-icons animate-spin text-base leading-none">refresh</span>Cargando…</div>
             ) : auditError ? (
               <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
                 {auditError}

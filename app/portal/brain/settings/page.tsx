@@ -26,12 +26,12 @@ const CONFIDENTIALITY_OPTIONS = [
 
 const MODULE_OPTIONS: { id: keyof BrainEnabledModules; label: string; help: string }[] = [
   { id: 'meetings', label: 'Communications', help: 'Ingest communication transcripts, emails, and pasted notes. AI summarises, human approves.' },
-  { id: 'tasks', label: 'Tasks', help: 'Brain-flavoured tasks with promotion to project boards.' },
-  { id: 'calendar', label: 'Calendar', help: 'Month view of tasks, communications, relationship reviews, and free-form scheduled events. Phase C will add Google Calendar sync.' },
+  { id: 'tasks', label: 'Tareas', help: 'Brain-flavoured tasks with promotion to project boards.' },
+  { id: 'calendar', label: 'Calendario', help: 'Month view of tasks, communications, relationship reviews, and free-form scheduled events. Phase C will add Google Calendar sync.' },
   { id: 'knowledge', label: 'Knowledge', help: 'Free-form notes linked to relationships, deals, contacts, or communications — pinnable, taggable, searchable.' },
-  { id: 'prospects', label: 'Prospects', help: 'Stale-prospect detection over CRM deals.' },
+  { id: 'prospects', label: 'Prospectos', help: 'Stale-prospect detection over CRM deals.' },
   { id: 'ask', label: 'Ask Brain', help: 'Conversational query layer with citations.' },
-  { id: 'automations', label: 'Automations', help: 'Cross-product rules that fire on events (booking, survey, deal, task) and act on your behalf — NLP-built or template-installed.' },
+  { id: 'automations', label: 'Automatizaciones', help: 'Cross-product rules that fire on events (booking, survey, deal, task) and act on your behalf — NLP-built or template-installed.' },
 ];
 
 export default function BrainSettingsPage() {
@@ -92,9 +92,7 @@ export default function BrainSettingsPage() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading...
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando...</div>
     );
   }
 
@@ -113,14 +111,12 @@ export default function BrainSettingsPage() {
   return (
     <div className="max-w-3xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
-        title="Brain Settings"
-        subtitle="Configure how Company Brain behaves for your team."
+        eyebrow="Cerebro de empresa"
+        title="Ajustes del cerebro"
+        subtitle="Configura cómo se comporta Company Brain para tu equipo."
         actions={
           <Link href="/portal/brain" className={pBtnGhost}>
-            <span className="material-icons text-base">arrow_back</span>
-            Back
-          </Link>
+            <span className="material-icons text-base">arrow_back</span>Atrás</Link>
         }
       />
 
@@ -137,7 +133,7 @@ export default function BrainSettingsPage() {
       )}
 
       {/* Enable / disable */}
-      <Section title="Status" icon="power_settings_new">
+      <Section title="Estado" icon="power_settings_new">
         <Row
           label="Company Brain enabled"
           help="Disable to hide Brain from the sidebar and pause processing."
@@ -171,14 +167,14 @@ export default function BrainSettingsPage() {
         <Section title="Inbound email" icon="mark_email_read">
           <p className="text-xs text-muted-foreground mb-3">
             Forward or BCC any email to the address below to add it as a communication in your Brain.
-            Attachments are stored automatically.
+            Attachments are stored automátically.
           </p>
           <Row label="Brain email address">
             <EmailIngestField token={profile.emailIngestToken} />
           </Row>
           <Row
             label="Auto-process on arrival"
-            help="Run the full AI pipeline (attachment analysis, link previews, transcript summary) automatically when an email lands. Off by default — communications stay in Draft until you click Process."
+            help="Run the full AI pipeline (attachment analysis, link previews, transcript summary) automátically when an email lands. Off by default — communications stay in Draft until you click Process."
             labelId="auto-process-email-label"
           >
             <Toggle
@@ -189,7 +185,7 @@ export default function BrainSettingsPage() {
             />
           </Row>
           <Row
-            label="Auto-link to CRM"
+            label="Vinculación automática con el CRM"
             help="When an email is processed, also: upsert the sender as a CRM contact, link the email to a CRM company on unambiguous domain match, and propose contact classification, deal links, and brain-aware action items in the review queue. Requires Auto-process on arrival."
             labelId="auto-link-crm-label"
           >
@@ -304,21 +300,20 @@ export default function BrainSettingsPage() {
           <p>
             <strong className="text-foreground">Trashed notes</strong> — deleting a
             note from the knowledge IDE moves it to trash. Trashed notes stay
-            recoverable until you click <strong className="text-foreground">Empty
-            trash</strong> on the trash tab. There is no automatic purge today.
+            recoverable until you click <strong className="text-foreground">Vaciar papelera</strong> on the trash tab. There is no automátic purge today.
           </p>
           <p>
             Trashed notes that have been in trash for longer than{' '}
-            <strong className="text-foreground">90 days</strong> are automatically
+            <strong className="text-foreground">90 days</strong> are automátically
             purged by a daily background job. You can still empty the trash
             manually at any time to reclaim attachment storage sooner.
           </p>
           <p>
-            <strong className="text-foreground">What empty trash removes:</strong>{' '}
-            the note row, its attachment in object storage, custom-field values
-            attached to it, incoming wiki-style backlinks, and the per-note audit
-            history. A single tenant-level <code className="px-1 rounded bg-muted">trash_emptied</code>{' '}
-            audit entry is retained.
+            <strong className="text-foreground">Al vaciar la papelera se elimina:</strong>{' '}
+            la fila de la nota, su archivo adjunto en el almacenamiento de objetos, los valores
+            de campos personalizados asociados, los backlinks wiki entrantes y el historial de
+            auditoría de la nota. Se conserva una única entrada de auditoría a nivel de tenant{' '}
+            <code className="px-1 rounded bg-muted">trash_emptied</code>.
           </p>
           <p className="italic">
             Active (non-trashed) notes are never auto-deleted.
@@ -430,9 +425,7 @@ function NameField({
         onClick={() => dirty && onSave(draft.trim())}
         disabled={disabled || !dirty}
         className={pBtnPrimary}
-      >
-        Save
-      </button>
+      >Guardar</button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build the (eventually signed) Windows .msi installer for the SimplerDevelopment
+# Build the (eventually signed) Windows .msi installer for the CRM AGENTS
 # Claude skills bundle.
 #
 # IMPORTANT: this script invokes WiX, which the WiX project officially
@@ -140,7 +140,7 @@ else
     -pass "${SD_PFX_PASSWORD}" \
     -h sha256 \
     -ts "http://timestamp.digicert.com" \
-    -n "SimplerDevelopment Skills" \
+    -n "CRM AGENTS Skills" \
     -i "https://simplerdevelopment.com/install" \
     -in "${UNSIGNED_MSI}" \
     -out "${FINAL_MSI}"

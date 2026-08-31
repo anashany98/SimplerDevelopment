@@ -33,7 +33,7 @@ export default function ConnectAiPage() {
   return (
     <div className="max-w-4xl mx-auto py-8 space-y-8">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">cable</span>
@@ -57,9 +57,7 @@ export default function ConnectAiPage() {
           <button
             onClick={() => navigator.clipboard.writeText(endpoint)}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm disabled:opacity-50 shrink-0 text-xs"
-          >
-            Copy
-          </button>
+          >Copiar</button>
         </div>
         <p className="text-xs text-muted-foreground">
           Streamable HTTP transport in stateless mode. Claude.ai web uses OAuth (no API key needed).
@@ -70,7 +68,7 @@ export default function ConnectAiPage() {
       <section className="space-y-4">
         <div>
           <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Setup instructions</h2>
-          <p className="text-sm text-muted-foreground">Pick your client and follow the steps. You&apos;ll need an API key from the section below.</p>
+          <p className="text-sm text-muted-foreground">Elige tu cliente y sigue los pasos. Necesitarás una clave API de la sección de abajo.</p>
         </div>
 
         <div className="flex gap-1 border-b border-border overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
@@ -126,18 +124,18 @@ function ClaudeWebInstructions({ endpoint }: { endpoint: string }) {
             claude.ai → Settings → Connectors
           </a>{' '}
           and click <span className="font-medium">Browse connectors</span>, then{' '}
-          <span className="font-medium">Add custom connector</span> at the bottom of the list.
+          <span className="font-medium">Añadir conector personalizado</span> at the bottom of the list.
         </li>
         <li>
           Fill in the form:
           <ul className="list-disc ml-5 mt-1 text-muted-foreground space-y-0.5">
-            <li>Name: <code className="text-xs px-1 py-0.5 bg-muted rounded">SimplerDevelopment</code></li>
+            <li>Name: <code className="text-xs px-1 py-0.5 bg-muted rounded">CRM AGENTS</code></li>
             <li>Remote MCP server URL: <code className="text-xs px-1 py-0.5 bg-muted rounded break-all">{endpoint}</code></li>
-            <li>Leave OAuth Client ID / Secret <strong>blank</strong> — Claude registers itself automatically.</li>
+            <li>Leave OAuth Client ID / Secret <strong>blank</strong> — Claude registers itself automátically.</li>
           </ul>
         </li>
         <li>
-          Click <span className="font-medium">Add</span>. Claude will redirect you to your portal login (if you&apos;re not
+          Click <span className="font-medium">Añadir</span>. Claude will redirect you to your portal login (if you&apos;re not
           already signed in here), then to a consent screen showing the application name and the scopes it&apos;s asking for.
         </li>
         <li>
@@ -146,7 +144,7 @@ function ClaudeWebInstructions({ endpoint }: { endpoint: string }) {
         </li>
         <li>
           Try it: in any new chat, ask <em>&quot;Show me my CRM pipeline&quot;</em> or <em>&quot;What support tickets are
-          open?&quot;</em> Claude will use the SimplerDevelopment connector to answer.
+          open?&quot;</em> Claude will use the CRM AGENTS connector to answer.
         </li>
       </ol>
       <div className="rounded-xl border border-border p-3 text-xs space-y-1.5">
@@ -155,9 +153,9 @@ function ClaudeWebInstructions({ endpoint }: { endpoint: string }) {
           Two ways to revoke at any time:
         </p>
         <ul className="list-disc ml-5 text-muted-foreground space-y-0.5">
-          <li>Claude.ai → Settings → Connectors → SimplerDevelopment → Disconnect.</li>
-          <li>The <span className="font-medium">OAuth-issued tokens</span> table below — click <span className="font-medium">Revoke</span>
-              on the SimplerDevelopment row. Cuts access immediately.</li>
+          <li>Claude.ai → Ajustes → Conectores → CRM AGENTS → Desconectar.</li>
+          <li>Usa la tabla de <span className="font-medium">tokens emitidos por OAuth</span> de abajo y haz clic en
+              <span className="font-medium"> Revocar</span> en la fila de CRM AGENTS. Corta el acceso de inmediato.</li>
         </ul>
         <p className="text-muted-foreground">
           Tokens have a 1-year max lifetime and are scoped to the portal you approved — they can&apos;t see other portals
@@ -197,7 +195,7 @@ function CodeBlock({ children }: { children: string }) {
 function ClaudeDesktopInstructions({ endpoint }: { endpoint: string }) {
   const config = `{
   "mcpServers": {
-    "simplerdevelopment": {
+    "crm-agents": {
       "command": "npx",
       "args": [
         "-y",
@@ -213,18 +211,18 @@ function ClaudeDesktopInstructions({ endpoint }: { endpoint: string }) {
     <div className="space-y-4 text-sm">
       <ol className="list-decimal ml-5 space-y-3">
         <li>
-          <span className="font-medium">Generate an API key</span> in the section below — name it something like{' '}
+          <span className="font-medium">Generar una clave de API</span> in the section below — name it something like{' '}
           <code className="text-xs px-1 py-0.5 bg-muted rounded">Claude Desktop</code>.
         </li>
         <li>
-          <span className="font-medium">Open the Claude Desktop config</span> file:
+          <span className="font-medium">Abre la configuración de Claude Desktop</span> file:
           <ul className="list-disc ml-5 mt-1 text-muted-foreground space-y-0.5">
             <li>macOS: <code className="text-xs px-1 py-0.5 bg-muted rounded">~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
             <li>Windows: <code className="text-xs px-1 py-0.5 bg-muted rounded">%APPDATA%\Claude\claude_desktop_config.json</code></li>
           </ul>
         </li>
         <li>
-          <span className="font-medium">Add the SimplerDevelopment MCP server</span> (replace{' '}
+          <span className="font-medium">Agrega el servidor MCP de CRM AGENTS</span> (replace{' '}
           <code className="text-xs px-1 py-0.5 bg-muted rounded">sd_mcp_your_key_here</code> with the key you generated):
           <div className="mt-2"><CodeBlock>{config}</CodeBlock></div>
         </li>
@@ -234,31 +232,31 @@ function ClaudeDesktopInstructions({ endpoint }: { endpoint: string }) {
         </li>
       </ol>
       <p className="text-xs text-muted-foreground">
-        The <code className="text-[11px] px-1 py-0.5 bg-muted rounded">mcp-remote</code> bridge translates the
-        Streamable HTTP endpoint into the stdio transport that Claude Desktop expects. No additional install — npx pulls it on demand.
+        El puente <code className="text-[11px] px-1 py-0.5 bg-muted rounded">mcp-remote</code> traduce el endpoint
+        Streamable HTTP al transporte stdio que espera Claude Desktop. Sin instalaciones adicionales — npx lo descarga al momento.
       </p>
     </div>
   );
 }
 
 function ClaudeCodeInstructions({ endpoint }: { endpoint: string }) {
-  const command = `claude mcp add --transport http simplerdevelopment \\
+  const command = `claude mcp add --transport http crm-agents \\
   ${endpoint} \\
   --header "Authorization: Bearer sd_mcp_your_key_here"`;
   return (
     <div className="space-y-4 text-sm">
       <ol className="list-decimal ml-5 space-y-3">
         <li>
-          <span className="font-medium">Generate an API key</span> below — name it{' '}
+          <span className="font-medium">Generar una clave de API</span> below — name it{' '}
           <code className="text-xs px-1 py-0.5 bg-muted rounded">Claude Code</code>.
         </li>
         <li>
-          <span className="font-medium">Add the MCP server</span> from your terminal:
+          <span className="font-medium">Añadir el servidor MCP</span> from your terminal:
           <div className="mt-2"><CodeBlock>{command}</CodeBlock></div>
         </li>
         <li>
           <span className="font-medium">Verify</span> with <code className="text-xs px-1 py-0.5 bg-muted rounded">claude mcp list</code>.
-          The <code className="text-xs px-1 py-0.5 bg-muted rounded">simplerdevelopment</code> server should appear and respond.
+          The <code className="text-xs px-1 py-0.5 bg-muted rounded">CRM AGENTS</code> server should appear and respond.
         </li>
         <li>
           In any Claude Code session, type <code className="text-xs px-1 py-0.5 bg-muted rounded">/mcp</code> to see available tools.
@@ -277,26 +275,26 @@ function ChatGptInstructions({ endpoint }: { endpoint: string }) {
       </p>
       <ol className="list-decimal ml-5 space-y-3">
         <li>
-          <span className="font-medium">Generate an API key</span> below — name it{' '}
+          <span className="font-medium">Generar una clave de API</span> below — name it{' '}
           <code className="text-xs px-1 py-0.5 bg-muted rounded">ChatGPT</code>.
         </li>
         <li>
           In ChatGPT, open <span className="font-medium">Settings → Connectors</span> (or{' '}
           <span className="font-medium">Beta features → MCP</span> depending on your plan), and choose{' '}
-          <span className="font-medium">Add custom connector</span>.
+          <span className="font-medium">Añadir conector personalizado</span>.
         </li>
         <li>
           Configure the connector:
           <ul className="list-disc ml-5 mt-1 text-muted-foreground space-y-0.5">
-            <li>Name: <code className="text-xs px-1 py-0.5 bg-muted rounded">SimplerDevelopment</code></li>
+            <li>Name: <code className="text-xs px-1 py-0.5 bg-muted rounded">CRM AGENTS</code></li>
             <li>Server URL: <code className="text-xs px-1 py-0.5 bg-muted rounded">{endpoint}</code></li>
             <li>Auth: <span className="font-medium">Bearer token</span></li>
             <li>Token: <code className="text-xs px-1 py-0.5 bg-muted rounded">sd_mcp_your_key_here</code></li>
           </ul>
         </li>
         <li>
-          <span className="font-medium">Save and enable the connector</span>. New conversations will have access to
-          all the SimplerDevelopment tools your key&apos;s scopes allow.
+          <span className="font-medium">Guardar y activar el conector</span>. New conversations will have access to
+          all the CRM AGENTS tools your key&apos;s scopes allow.
         </li>
       </ol>
       <p className="text-xs text-muted-foreground">

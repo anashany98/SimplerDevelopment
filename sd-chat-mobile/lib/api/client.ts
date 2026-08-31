@@ -1,7 +1,7 @@
 /**
  * SD Chat — API client
  *
- * Thin fetch wrapper around the SimplerDevelopment portal API.
+ * Thin fetch wrapper around the CRM AGENTS portal API.
  * - Reads the bearer token via `getAuthToken()` (set by `lib/api/auth.ts`)
  *   and injects `Authorization: Bearer <token>` on every request.
  * - On `401` the optional `onUnauthorized` handler is invoked so the auth

@@ -48,18 +48,17 @@ export default async function PortalHostingPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Infrastructure"
-        title="Hosting"
-        subtitle="Your managed hosting environments, powered by Railway and managed by Simpler Development."
+        eyebrow="Infraestructura"
+        title="Alojamiento"
+        subtitle="Your managed hosting environments, powered by Railway and managed by CRM AGENTS."
       />
 
       {sites.length === 0 ? (
         <div className={`${pCard} p-12 flex flex-col items-center text-center`}>
           <span className="material-icons text-5xl text-muted-foreground mb-3">cloud_off</span>
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">No hosted sites yet</h2>
-          <p className="text-sm text-muted-foreground max-w-sm">
-            When Simpler Development provisions a hosting environment for you, it will appear here with status, domain info, and DNS setup instructions.
-          </p>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">Aún no hay sitios alojados</h2>
+          <p className="text-sm text-muted-foreground max-w-sm">Cuando CRM AGENTS te aprovisiona un entorno de alojamiento, aparecerá aquí con estado,
+            información de dominio e instrucciones de configuración de DNS.</p>
           <Link
             href="/portal/tickets/new"
             className={`mt-4 ${pBtnPrimary}`}
@@ -86,7 +85,7 @@ export default async function PortalHostingPage() {
                   ) : site.railwayDomain ? (
                     <p className="text-xs font-mono text-muted-foreground mt-0.5 truncate">{site.railwayDomain}</p>
                   ) : (
-                    <p className="text-xs text-muted-foreground mt-0.5">Domain not configured</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Dominio no configurado</p>
                   )}
                 </div>
                 <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${statusColor[site.status] || 'bg-gray-100 text-gray-700'}`}>
@@ -121,7 +120,7 @@ export default async function PortalHostingPage() {
         <div className={`${pCard} rounded-2xl p-4 flex items-start gap-3`}>
           <span className="material-icons text-primary mt-0.5">info</span>
           <div className="text-sm">
-            <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Need help with your hosting?</p>
+            <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">¿Necesitas ayuda con tu alojamiento?</p>
             <p className="text-muted-foreground mt-0.5">
               Open a{' '}
               <Link href="/portal/tickets/new" className="text-primary hover:underline">support ticket</Link>

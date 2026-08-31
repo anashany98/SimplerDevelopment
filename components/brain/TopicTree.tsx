@@ -480,13 +480,13 @@ function TopicRow(props: TopicRowProps) {
                   className="absolute right-0 top-full mt-1 z-40 w-40 rounded-md border border-border bg-popover shadow-md py-1 text-xs"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <MenuItem icon="edit" label="Rename" onClick={() => onStartRename(node)} />
+                  <MenuItem icon="edit" label="Renombrar" onClick={() => onStartRename(node)} />
                   <MenuItem icon="add" label="New child" onClick={() => onStartNewChild(node.id)} />
                   <MenuItem icon="merge_type" label="Merge into…" onClick={() => onStartMerge(node.id)} />
                   <div className="my-1 border-t border-border" />
                   <MenuItem
                     icon="delete"
-                    label="Delete"
+                    label="Eliminar"
                     destructive
                     onClick={() => onStartDelete(node)}
                   />
@@ -582,7 +582,7 @@ function MergePickerModal({
               type="button"
               onClick={onCancel}
               className="h-7 w-7 inline-flex items-center justify-center rounded hover:bg-accent"
-              aria-label="Cancel"
+              aria-label="Cancelar"
             >
               <span className="material-icons text-base">close</span>
             </button>
@@ -667,18 +667,14 @@ function DeleteConfirmModal({
               type="button"
               onClick={onCancel}
               className="px-3 py-1.5 text-xs rounded border border-border text-foreground hover:bg-accent"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="button"
               onClick={() => onConfirm(force)}
               disabled={hasEntities && !force}
               className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded bg-destructive text-destructive-foreground hover:opacity-90 disabled:opacity-50"
             >
-              <span className="material-icons text-sm">delete</span>
-              Delete
-            </button>
+              <span className="material-icons text-sm">delete</span>Eliminar</button>
           </div>
         </div>
       </div>

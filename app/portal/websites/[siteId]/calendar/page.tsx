@@ -28,8 +28,8 @@ export default async function PortalCalendarPage({
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Content Calendar"
+        eyebrow="Sitio web"
+        title="Calendario de contenido"
         subtitle={`Plan, schedule, and manage content for ${site.name}.`}
         actions={
           <Link href={`${basePath}/posts/new`} className={pBtnPrimary}>

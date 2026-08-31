@@ -558,12 +558,12 @@ describe('POST /api/portal/crm/contacts/[id]/send-email', () => {
     expect((sendArgs.from as string)).toContain('custom@from.test');
   });
 
-  it('falls back to "Simpler Development" when client.company is missing', async () => {
+  it('falls back to "CRM AGENTS" when client.company is missing', async () => {
     H.getPortalClientMock.mockResolvedValueOnce({ id: 10 }); // no company
     state.contacts.push({ id: 1, clientId: 10, email: 'c@x.test' });
     await callSendEmail('1', { subject: 's', body: 'b' });
     const sendArgs = H.resendSendMock.mock.calls[0][0] as Record<string, unknown>;
-    expect((sendArgs.from as string).startsWith('Simpler Development <')).toBe(true);
+    expect((sendArgs.from as string).startsWith('CRM AGENTS <')).toBe(true);
   });
 
   // -- Error paths ---------------------------------------------------------

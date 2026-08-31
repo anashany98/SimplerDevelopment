@@ -125,7 +125,7 @@ export function AIGeneratorPanel({ profile, update, setMessaging }: GeneratorPro
             disabled={aiGenerating}
           />
           <div className="flex items-center gap-4">
-            <span className="text-xs font-medium text-muted-foreground">Apply to:</span>
+            <span className="text-xs font-medium text-muted-foreground">Aplicar a:</span>
             <label className="flex items-center gap-1.5 cursor-pointer">
               <input
                 type="checkbox"
@@ -166,7 +166,7 @@ export function AIGeneratorPanel({ profile, update, setMessaging }: GeneratorPro
               )}
             </button>
             {!aiTargets.visual && !aiTargets.messaging && (
-              <span className="text-xs text-destructive">Select at least one section</span>
+              <span className="text-xs text-destructive">Selecciona al menos una sección</span>
             )}
           </div>
         </div>
@@ -245,14 +245,14 @@ export function RewriteModal({ modal, messaging, onAccept, onClose }: RewriteMod
         <div className="px-5 py-4 space-y-3">
           {Boolean(currentValue) && (
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Current value</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Valor actual</label>
               <div className="px-3 py-2 rounded-md border border-border bg-muted/30 text-sm text-muted-foreground max-h-24 overflow-y-auto whitespace-pre-wrap">
                 {String(currentValue)}
               </div>
             </div>
           )}
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">What should AI do?</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">¿Qué debe hacer la IA?</label>
             <textarea
               value={rewritePrompt}
               onChange={(e) => setRewritePrompt(e.target.value)}
@@ -267,7 +267,7 @@ export function RewriteModal({ modal, messaging, onAccept, onClose }: RewriteMod
           </div>
           {rewritePreview && (
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Preview</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Vista previa</label>
               <div className="px-3 py-2 rounded-md border border-primary/30 bg-primary/5 text-sm text-foreground max-h-32 overflow-y-auto whitespace-pre-wrap">
                 {rewritePreview}
               </div>

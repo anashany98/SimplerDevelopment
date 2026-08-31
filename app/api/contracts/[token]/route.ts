@@ -64,7 +64,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
       logoUrl: contract.logoUrl,
       footerText: contract.footerText,
       status: contract.status,
-      companyName: clientRow?.company || 'Simpler Development',
+      companyName: clientRow?.company || 'CRM AGENTS',
       signer: {
         id: signer.id,
         name: signer.name,

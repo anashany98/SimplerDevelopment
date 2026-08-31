@@ -20,10 +20,10 @@ interface UrlSuggestionGroups {
 }
 
 const SUGGESTION_GROUP_META: Array<{ key: keyof UrlSuggestionGroups; icon: string; label: string }> = [
-  { key: 'posts', icon: 'description', label: 'Pages' },
+  { key: 'posts', icon: 'description', label: 'Páginas' },
   { key: 'decks', icon: 'slideshow', label: 'Pitch Decks' },
   { key: 'bookings', icon: 'event', label: 'Booking Pages' },
-  { key: 'proposals', icon: 'request_quote', label: 'Proposals' },
+  { key: 'proposals', icon: 'request_quote', label: 'Propuestas' },
 ];
 
 function filterSuggestions(items: UrlSuggestion[], q: string): UrlSuggestion[] {

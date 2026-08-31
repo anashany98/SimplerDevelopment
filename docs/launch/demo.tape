@@ -28,7 +28,7 @@ Set Padding 24
 Set TypingSpeed 45ms
 
 # --- Frame 1: the pitch -------------------------------------------------
-Type "# SimplerDevelopment — operate an entire agency stack by talking to an agent"
+Type "# CRM AGENTS — operate an entire agency stack by talking to an agent"
 Enter
 Sleep 1200
 Type "# 200+ MCP tools. Self-hostable. Apache-2.0."

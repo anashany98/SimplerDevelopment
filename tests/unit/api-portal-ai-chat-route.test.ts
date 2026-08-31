@@ -60,8 +60,36 @@ vi.mock('@/lib/ai/plan-gate', () => ({
 
 const executePortalToolMock = vi.fn();
 vi.mock('@/lib/ai/portal-tools', () => ({
-  PORTAL_TOOLS: [{ name: 'list_projects', description: 'List projects', input_schema: { type: 'object', properties: {} } }],
+  PORTAL_TOOLS: [
+    {
+      name: 'list_projects',
+      description: 'List projects',
+      input_schema: { type: 'object', properties: {} },
+    },
+    {
+      name: 'get_crm_contacts',
+      description: 'List CRM contacts',
+      input_schema: { type: 'object', properties: {} },
+    },
+    {
+      name: 'get_my_invoices',
+      description: 'List invoices',
+      input_schema: { type: 'object', properties: {} },
+    },
+  ],
   executePortalTool: (...args: unknown[]) => executePortalToolMock(...args),
+}));
+
+const resolveChoiceMock = vi.fn();
+vi.mock('@/lib/ai/models', () => ({
+  resolveChoice: (...args: unknown[]) => resolveChoiceMock(...args),
+}));
+
+const anthropicToolsToToolSetMock = vi.fn();
+const completeAgentLoopMock = vi.fn();
+vi.mock('@/lib/ai/agent-loop', () => ({
+  anthropicToolsToToolSet: (...args: unknown[]) => anthropicToolsToToolSetMock(...args),
+  completeAgentLoop: (...args: unknown[]) => completeAgentLoopMock(...args),
 }));
 
 // Classifier — bypass Anthropic so it doesn't consume messagesCreateMock slots
@@ -77,9 +105,21 @@ vi.mock('@/lib/ai/tracer', () => ({
   startSpan: () => ({ end: () => {} }),
 }));
 
-// toolsForDomains / domainsOfToolCalls — passthrough stubs
+// toolsForDomains / domainsOfToolCalls — deterministic subset routing. Keeping
+// this mock domain-aware lets the specialist tests prove that the route passes
+// the already-restricted agent surface into the second-stage intent router.
 vi.mock('@/lib/ai/portal-tools/domains', () => ({
-  toolsForDomains: (_domains: unknown, tools: unknown) => tools,
+  toolsForDomains: (domains: unknown, tools: unknown) => {
+    const domainList = Array.isArray(domains) ? domains : [];
+    const toolList = Array.isArray(tools) ? (tools as Array<{ name: string }>) : [];
+    if (domainList.length === 0) return toolList;
+    const domainByTool: Record<string, string> = {
+      list_projects: 'projects',
+      get_crm_contacts: 'crm',
+      get_my_invoices: 'billing',
+    };
+    return toolList.filter((tool) => domainList.includes(domainByTool[tool.name]));
+  },
   domainsOfToolCalls: () => [],
   PORTAL_DOMAINS: [],
 }));
@@ -112,10 +152,16 @@ vi.mock('@/lib/db/schema', () => {
         },
       },
     );
-  return new Proxy({
-    aiConversations: wrap('aiConversations'),
-    aiMessages: wrap('aiMessages'),
-  }, { has: (t, p) => (p in t) || !(p === "then" || p === "__esModule" || p === "default" || typeof p !== "string"), get: (t, p) => (p in t) ? t[p] : ((p === "then" || p === "__esModule" || p === "default" || typeof p !== "string") ? undefined : wrap(p)) });
+  return new Proxy(
+    {
+      aiConversations: wrap('aiConversations'),
+      aiMessages: wrap('aiMessages'),
+    },
+    {
+      has: (t, p) => p in t || !(p === 'then' || p === '__esModule' || p === 'default' || typeof p !== 'string'),
+      get: (t, p) => (p in t ? t[p] : p === 'then' || p === '__esModule' || p === 'default' || typeof p !== 'string' ? undefined : wrap(p)),
+    },
+  );
 });
 
 vi.mock('drizzle-orm', () => ({
@@ -146,7 +192,12 @@ function tableArray(name: string): Array<Record<string, unknown>> {
 function evalPredicate(filter: unknown, row: Record<string, unknown>): boolean {
   if (!filter) return true;
   if (typeof filter !== 'object') return true;
-  const f = filter as { op?: string; a?: unknown; b?: unknown; args?: unknown[] };
+  const f = filter as {
+    op?: string;
+    a?: unknown;
+    b?: unknown;
+    args?: unknown[];
+  };
   switch (f.op) {
     case 'eq': {
       const col = f.a as { __col?: string } | undefined;
@@ -207,7 +258,12 @@ vi.mock('@/lib/db', () => {
       values(vals: Record<string, unknown> | Record<string, unknown>[]) {
         const arr = Array.isArray(vals) ? vals : [vals];
         const inserted = arr.map((v) => {
-          const row = { ...v, id: nextId(), createdAt: new Date(), updatedAt: new Date() };
+          const row = {
+            ...v,
+            id: nextId(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
           tableArray(table.__table).push(row);
           return row;
         });
@@ -292,21 +348,17 @@ function textResponse(text: string, opts: { input?: number; output?: number } = 
   return {
     content: [{ type: 'text', text }],
     stop_reason: 'end_turn',
-    usage: { input_tokens: opts.input ?? 100, output_tokens: opts.output ?? 200 },
+    usage: {
+      input_tokens: opts.input ?? 100,
+      output_tokens: opts.output ?? 200,
+    },
   };
 }
 
 /** A response that triggers a tool call with the given id + name + input. */
-function toolUseResponse(
-  id: string,
-  name: string,
-  input: Record<string, unknown>,
-  opts: { input_tokens?: number; output_tokens?: number } = {},
-) {
+function toolUseResponse(id: string, name: string, input: Record<string, unknown>, opts: { input_tokens?: number; output_tokens?: number } = {}) {
   return {
-    content: [
-      { type: 'tool_use', id, name, input },
-    ],
+    content: [{ type: 'tool_use', id, name, input }],
     stop_reason: 'tool_use',
     usage: {
       input_tokens: opts.input_tokens ?? 50,
@@ -331,6 +383,12 @@ beforeEach(() => {
   recordAiUsageMock.mockReset().mockResolvedValue(undefined);
   checkAiPlanGateMock.mockReset().mockResolvedValue({ allowed: true });
   executePortalToolMock.mockReset();
+  resolveChoiceMock.mockReset().mockReturnValue({
+    provider: 'anthropic',
+    model: 'claude-haiku-4-5-20251001',
+  });
+  anthropicToolsToToolSetMock.mockReset();
+  completeAgentLoopMock.mockReset();
   classifyPortalRequestMock.mockReset().mockResolvedValue({
     complexity: 'simple',
     domains: [],
@@ -344,6 +402,109 @@ beforeEach(() => {
   // sane defaults
   authMock.mockResolvedValue({ user: { id: '7', role: 'client' } });
   getPortalClientMock.mockResolvedValue({ id: 10 });
+});
+
+// ---------------------------------------------------------------------------
+// Contextual specialist boundary
+// ---------------------------------------------------------------------------
+
+describe('POST /api/portal/ai/chat — contextual specialist boundary', () => {
+  it('returns invalid_agent before resolving a model or executing tools', async () => {
+    const res = await POST(makeRequest({ message: 'hi', agentId: 'not-a-real-agent' }));
+
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({
+      success: false,
+      error: 'invalid_agent',
+      message: 'Unknown AI agent.',
+    });
+    expect(resolveChoiceMock).not.toHaveBeenCalled();
+    expect(resolveClientApiKeyMock).not.toHaveBeenCalled();
+    expect(messagesCreateMock).not.toHaveBeenCalled();
+    expect(executePortalToolMock).not.toHaveBeenCalled();
+    expect(state.aiConversations).toHaveLength(0);
+    expect(state.aiMessages).toHaveLength(0);
+  });
+
+  it('keeps the CRM prompt and tool surface restricted when domain routing falls back', async () => {
+    // Empty classifier domains exercise the intent router's fail-open path.
+    // The hard specialist boundary must remain in place in both shadow and
+    // active modes, so only the CRM tool can reach the model.
+    classifyPortalRequestMock.mockResolvedValueOnce({
+      complexity: 'simple',
+      domains: [],
+      reasoning: 'ambiguous request',
+      inputTokens: 0,
+      outputTokens: 0,
+    });
+    messagesCreateMock.mockResolvedValueOnce(textResponse('CRM ready.'));
+
+    const res = await POST(makeRequest({ message: 'Help with my leads', agentId: 'crm' }));
+
+    expect(res.status).toBe(200);
+    const call = messagesCreateMock.mock.calls[0]![0] as {
+      system: string;
+      tools: Array<{ name: string }>;
+    };
+    expect(call.system).toContain('Agente comercial y CRM');
+    expect(call.system).toContain('Your permitted tool domains are: crm, automations, booking, email.');
+    expect(call.tools.map((tool) => tool.name)).toEqual(['get_crm_contacts']);
+    expect(resolveChoiceMock).toHaveBeenCalledWith('chat');
+
+    const body = await res.json();
+    expect(body.data.agent).toEqual({ id: 'crm', name: 'Agente comercial y CRM' });
+  });
+
+  it('gives the CEO a cross-domain, read-only tool surface', async () => {
+    messagesCreateMock.mockResolvedValueOnce(textResponse('Executive plan ready.'));
+
+    const res = await POST(makeRequest({ message: 'Give me the executive overview', agentId: 'ceo' }));
+
+    expect(res.status).toBe(200);
+    const call = messagesCreateMock.mock.calls[0]![0] as {
+      system: string;
+      tools: Array<{ name: string }>;
+    };
+    expect(call.system).toContain('Agente CEO');
+    expect(call.system).toContain('strictly read-only');
+    expect(call.tools.map((tool) => tool.name)).toEqual(['get_crm_contacts', 'get_my_invoices']);
+
+    const body = await res.json();
+    expect(body.data.agent).toEqual({ id: 'ceo', name: 'Agente CEO' });
+  });
+
+  it('returns tool_not_allowed to the model without executing an out-of-profile tool', async () => {
+    messagesCreateMock.mockResolvedValueOnce(toolUseResponse('tu_forbidden', 'get_my_invoices', {})).mockResolvedValueOnce(textResponse('Please switch to the Billing Agent.'));
+
+    const res = await POST(makeRequest({ message: 'Show invoices', agentId: 'crm' }));
+
+    expect(res.status).toBe(200);
+    expect(executePortalToolMock).not.toHaveBeenCalled();
+    expect(messagesCreateMock).toHaveBeenCalledTimes(2);
+
+    const secondCall = messagesCreateMock.mock.calls[1]![0] as {
+      messages: Array<{
+        role: string;
+        content: Array<{ type: string; content?: string }> | string;
+      }>;
+    };
+    const toolResultTurn = secondCall.messages[secondCall.messages.length - 1];
+    expect(toolResultTurn.role).toBe('user');
+    expect(Array.isArray(toolResultTurn.content)).toBe(true);
+    const toolResult = (toolResultTurn.content as Array<{ type: string; content?: string }>)[0];
+    expect(toolResult.type).toBe('tool_result');
+    expect(toolResult.content).toContain('tool_not_allowed');
+
+    const assistant = state.aiMessages.find((message) => message.role === 'assistant');
+    expect(assistant?.toolCalls).toEqual([
+      {
+        agentId: 'crm',
+        name: 'get_my_invoices',
+        input: {},
+        result: expect.objectContaining({ error: 'tool_not_allowed' }),
+      },
+    ]);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -430,7 +591,10 @@ describe('POST /api/portal/ai/chat — auth + early exits', () => {
   });
 
   it('returns 402 with a default message when plan-gate denies without a message', async () => {
-    checkAiPlanGateMock.mockResolvedValueOnce({ allowed: false, reason: 'plan_lock' });
+    checkAiPlanGateMock.mockResolvedValueOnce({
+      allowed: false,
+      reason: 'plan_lock',
+    });
     const res = await POST(makeRequest({ message: 'hi' }));
     expect(res.status).toBe(402);
     const body = await res.json();
@@ -449,7 +613,10 @@ describe('POST /api/portal/ai/chat — auth + early exits', () => {
   });
 
   it('skips credit check entirely when source=byok', async () => {
-    resolveClientApiKeyMock.mockResolvedValueOnce({ source: 'byok', key: 'sk-byok' });
+    resolveClientApiKeyMock.mockResolvedValueOnce({
+      source: 'byok',
+      key: 'sk-byok',
+    });
     messagesCreateMock.mockResolvedValueOnce(textResponse('hello there'));
     const res = await POST(makeRequest({ message: 'hi' }));
     expect(res.status).toBe(200);
@@ -465,9 +632,7 @@ describe('POST /api/portal/ai/chat — auth + early exits', () => {
 
 describe('POST /api/portal/ai/chat — happy path (new conversation)', () => {
   it('returns 200 with reply, creates conversation, persists user + assistant messages', async () => {
-    messagesCreateMock.mockResolvedValueOnce(
-      textResponse('Hello! How can I help?', { input: 30, output: 70 }),
-    );
+    messagesCreateMock.mockResolvedValueOnce(textResponse('Hello! How can I help?', { input: 30, output: 70 }));
 
     const res = await POST(makeRequest({ message: 'Hi there' }));
     expect(res.status).toBe(200);
@@ -504,41 +669,30 @@ describe('POST /api/portal/ai/chat — happy path (new conversation)', () => {
   });
 
   it('deducts platform credits using the total token count', async () => {
-    messagesCreateMock.mockResolvedValueOnce(
-      textResponse('reply', { input: 111, output: 222 }),
-    );
+    messagesCreateMock.mockResolvedValueOnce(textResponse('reply', { input: 111, output: 222 }));
     const res = await POST(makeRequest({ message: 'hi' }));
     const body = await res.json();
-    expect(deductCreditsMock).toHaveBeenCalledWith(
-      10,
-      333,
-      'ai',
-      expect.any(String),
-      expect.stringContaining('Chat conversation'),
-    );
+    expect(deductCreditsMock).toHaveBeenCalledWith(10, 333, 'ai', expect.any(String), expect.stringContaining('Chat conversation'));
     expect(body.data.creditsRemaining).toBe(4242);
   });
 
   it('records AI usage with the right source + token total', async () => {
-    messagesCreateMock.mockResolvedValueOnce(
-      textResponse('reply', { input: 5, output: 7 }),
-    );
+    messagesCreateMock.mockResolvedValueOnce(textResponse('reply', { input: 5, output: 7 }));
     await POST(makeRequest({ message: 'hi' }));
-    expect(recordAiUsageMock).toHaveBeenCalledWith(
-      expect.objectContaining({ clientId: 10, source: 'platform', tokens: 12 }),
-    );
+    expect(recordAiUsageMock).toHaveBeenCalledWith(expect.objectContaining({ clientId: 10, source: 'platform', tokens: 12 }));
   });
 
   it('does NOT deduct credits on BYOK and returns null creditsRemaining', async () => {
-    resolveClientApiKeyMock.mockResolvedValueOnce({ source: 'byok', key: 'sk-byok' });
+    resolveClientApiKeyMock.mockResolvedValueOnce({
+      source: 'byok',
+      key: 'sk-byok',
+    });
     messagesCreateMock.mockResolvedValueOnce(textResponse('reply'));
     const res = await POST(makeRequest({ message: 'hi' }));
     const body = await res.json();
     expect(body.data.creditsRemaining).toBeNull();
     expect(deductCreditsMock).not.toHaveBeenCalled();
-    expect(recordAiUsageMock).toHaveBeenCalledWith(
-      expect.objectContaining({ source: 'byok' }),
-    );
+    expect(recordAiUsageMock).toHaveBeenCalledWith(expect.objectContaining({ source: 'byok' }));
   });
 });
 
@@ -549,9 +703,7 @@ describe('POST /api/portal/ai/chat — happy path (new conversation)', () => {
 describe('POST /api/portal/ai/chat — existing conversation', () => {
   it('returns 404 when the conversationId does not exist', async () => {
     messagesCreateMock.mockResolvedValueOnce(textResponse('x'));
-    const res = await POST(
-      makeRequest({ message: 'hi', conversationId: 9999 }),
-    );
+    const res = await POST(makeRequest({ message: 'hi', conversationId: 9999 }));
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.message).toBe('Conversation not found');
@@ -559,9 +711,7 @@ describe('POST /api/portal/ai/chat — existing conversation', () => {
 
   it('returns 404 when the conversation belongs to a different client', async () => {
     state.aiConversations.push({ id: 55, clientId: 999, title: 'foreign' });
-    const res = await POST(
-      makeRequest({ message: 'hi', conversationId: 55 }),
-    );
+    const res = await POST(makeRequest({ message: 'hi', conversationId: 55 }));
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.message).toBe('Conversation not found');
@@ -569,22 +719,37 @@ describe('POST /api/portal/ai/chat — existing conversation', () => {
 
   it('uses the provided conversationId and replays prior history into the Anthropic call', async () => {
     state.aiConversations.push({ id: 77, clientId: 10, title: 'old chat' });
-    state.aiMessages.push({ id: 1, conversationId: 77, role: 'user', content: 'previous q', createdAt: new Date(1) });
-    state.aiMessages.push({ id: 2, conversationId: 77, role: 'assistant', content: 'previous a', createdAt: new Date(2) });
+    state.aiMessages.push({
+      id: 1,
+      conversationId: 77,
+      role: 'user',
+      content: 'previous q',
+      createdAt: new Date(1),
+    });
+    state.aiMessages.push({
+      id: 2,
+      conversationId: 77,
+      role: 'assistant',
+      content: 'previous a',
+      createdAt: new Date(2),
+    });
     messagesCreateMock.mockResolvedValueOnce(textResponse('new reply'));
 
-    const res = await POST(
-      makeRequest({ message: 'follow-up', conversationId: 77 }),
-    );
+    const res = await POST(makeRequest({ message: 'follow-up', conversationId: 77 }));
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.conversationId).toBe(77);
 
-    const call = messagesCreateMock.mock.calls[0]![0] as { messages: Array<{ role: string; content: unknown }> };
+    const call = messagesCreateMock.mock.calls[0]![0] as {
+      messages: Array<{ role: string; content: unknown }>;
+    };
     // History (2) + new user message (1) = 3
     expect(call.messages).toHaveLength(3);
     expect(call.messages[0]).toEqual({ role: 'user', content: 'previous q' });
-    expect(call.messages[1]).toEqual({ role: 'assistant', content: 'previous a' });
+    expect(call.messages[1]).toEqual({
+      role: 'assistant',
+      content: 'previous a',
+    });
     expect(call.messages[2]).toEqual({ role: 'user', content: 'follow-up' });
 
     // No new conversation row created
@@ -598,17 +763,18 @@ describe('POST /api/portal/ai/chat — existing conversation', () => {
 
 describe('POST /api/portal/ai/chat — agentic tool loop', () => {
   it('executes a tool then loops back to Anthropic for the final answer', async () => {
-    executePortalToolMock.mockResolvedValueOnce({ ok: true, projects: ['Acme'] });
-    messagesCreateMock
-      .mockResolvedValueOnce(toolUseResponse('tu_1', 'list_projects', { foo: 'bar' }))
-      .mockResolvedValueOnce(textResponse('You have 1 project: Acme.'));
+    executePortalToolMock.mockResolvedValueOnce({
+      ok: true,
+      projects: ['Acme'],
+    });
+    messagesCreateMock.mockResolvedValueOnce(toolUseResponse('tu_1', 'list_projects', { foo: 'bar' })).mockResolvedValueOnce(textResponse('You have 1 project: Acme.'));
 
     const res = await POST(makeRequest({ message: 'list my projects' }));
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.data.reply).toBe('You have 1 project: Acme.');
     expect(body.data.toolCalls).toEqual([
-      { name: 'list_projects', input: { foo: 'bar' } },
+      { name: 'list_projects', input: { foo: 'bar' }, success: true },
     ]);
     expect(executePortalToolMock).toHaveBeenCalledWith('list_projects', { foo: 'bar' }, 10, 7, { source: 'assistant' });
     expect(messagesCreateMock).toHaveBeenCalledTimes(2);
@@ -616,8 +782,32 @@ describe('POST /api/portal/ai/chat — agentic tool loop', () => {
     // Assistant row stores the toolCalls JSON
     const assistant = state.aiMessages.find((m) => m.role === 'assistant');
     expect(assistant!.toolCalls).toEqual([
-      { name: 'list_projects', input: { foo: 'bar' }, result: { ok: true, projects: ['Acme'] } },
+      {
+        agentId: 'general',
+        name: 'list_projects',
+        input: { foo: 'bar' },
+        result: { ok: true, projects: ['Acme'] },
+      },
     ]);
+  });
+
+  it.each([
+    ['an object error', { error: 'Project lookup failed' }],
+    ['a JSON-string error', JSON.stringify({ error: 'Project lookup failed' })],
+  ])('marks an executed tool call unsuccessful for %s without exposing its result', async (_label, toolResult) => {
+    executePortalToolMock.mockResolvedValueOnce(toolResult);
+    messagesCreateMock
+      .mockResolvedValueOnce(toolUseResponse('tu_failed', 'list_projects', { foo: 'bar' }))
+      .mockResolvedValueOnce(textResponse('The project lookup failed.'));
+
+    const res = await POST(makeRequest({ message: 'list my projects' }));
+
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.data.toolCalls).toEqual([
+      { name: 'list_projects', input: { foo: 'bar' }, success: false },
+    ]);
+    expect(body.data.toolCalls[0]).not.toHaveProperty('result');
   });
 
   it('returns 400 with tool_call_cap_exceeded when the tool-call cap is exceeded', async () => {
@@ -645,9 +835,7 @@ describe('POST /api/portal/ai/chat — agentic tool loop', () => {
   it('returns 400 with loop_cap_exceeded when the agentic loop hits the iteration cap', async () => {
     // Every iteration returns tool_use → loop never terminates → MAX_LOOPS (8) tripped.
     executePortalToolMock.mockResolvedValue({ ok: true });
-    messagesCreateMock.mockResolvedValue(
-      toolUseResponse('tu_x', 'fake_tool', {}, { input_tokens: 1, output_tokens: 1 }),
-    );
+    messagesCreateMock.mockResolvedValue(toolUseResponse('tu_x', 'fake_tool', {}, { input_tokens: 1, output_tokens: 1 }));
 
     const res = await POST(makeRequest({ message: 'infinite' }));
     expect(res.status).toBe(400);
@@ -664,12 +852,13 @@ describe('POST /api/portal/ai/chat — agentic tool loop', () => {
 describe('POST /api/portal/ai/chat — tool result sanitization (N2 fix)', () => {
   it('redacts an API key in a tool result before it reaches the Anthropic messages array', async () => {
     // Tool returns a payload that embeds a fake secret (sk- prefix triggers sanitizer)
-    const poisonedResult = { data: 'some notes', apiKey: 'sk-ABCDEF1234567890abcdef' };
+    const poisonedResult = {
+      data: 'some notes',
+      apiKey: 'sk-ABCDEF1234567890abcdef', // pragma: allowlist secret
+    };
     executePortalToolMock.mockResolvedValueOnce(poisonedResult);
 
-    messagesCreateMock
-      .mockResolvedValueOnce(toolUseResponse('tu_sec', 'list_projects', {}))
-      .mockResolvedValueOnce(textResponse('All done.'));
+    messagesCreateMock.mockResolvedValueOnce(toolUseResponse('tu_sec', 'list_projects', {})).mockResolvedValueOnce(textResponse('All done.'));
 
     const res = await POST(makeRequest({ message: 'show notes' }));
     expect(res.status).toBe(200);
@@ -688,7 +877,7 @@ describe('POST /api/portal/ai/chat — tool result sanitization (N2 fix)', () =>
     const toolResultBlock = lastUserMsg.content.find((b) => b.type === 'tool_result');
     expect(toolResultBlock).toBeDefined();
     // The raw secret must NOT appear in the content sent to the model.
-    expect(toolResultBlock!.content).not.toContain('sk-ABCDEF1234567890abcdef');
+    expect(toolResultBlock!.content).not.toContain('sk-ABCDEF1234567890abcdef'); // pragma: allowlist secret
     // The redaction marker must be present instead.
     expect(toolResultBlock!.content).toContain('[REDACTED_API_KEY]');
   });

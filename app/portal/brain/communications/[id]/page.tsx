@@ -91,10 +91,10 @@ interface Meeting {
 }
 
 const STATUS_LABELS: Record<Meeting['status'], { label: string; tone: string }> = {
-  draft: { label: 'Draft', tone: 'bg-muted text-muted-foreground' },
+  draft: { label: 'Borrador', tone: 'bg-muted text-muted-foreground' },
   processing: { label: 'Processing…', tone: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
   needs_review: { label: 'Needs review', tone: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
-  approved: { label: 'Approved', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
+  approved: { label: 'Aprobado', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
 };
 
 export default function BrainMeetingDetailPage() {
@@ -161,9 +161,7 @@ export default function BrainMeetingDetailPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
   if (!meeting) {
@@ -187,7 +185,7 @@ export default function BrainMeetingDetailPage() {
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={meeting.title}
         subtitle={
           <span className="inline-flex items-center gap-2 flex-wrap">
@@ -244,7 +242,7 @@ export default function BrainMeetingDetailPage() {
             <button
               onClick={deleteMeeting}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
-              aria-label="Delete communication"
+              aria-label="Eliminar comunicación"
             >
               <span className="material-icons text-base">delete</span>
             </button>
@@ -288,11 +286,11 @@ export default function BrainMeetingDetailPage() {
       {/* Email envelope — only shown for email-sourced notes. The worker
           captures From/To/sender on ingest into source_metadata. */}
       {meeting.source === 'email' && (meeting.sourceMetadata?.from || meeting.sourceMetadata?.to) && (
-        <Section title="Email" icon="mail">
+        <Section title="Correo" icon="mail">
           <dl className="text-sm space-y-1.5">
             {meeting.sourceMetadata.from && (
               <div className="flex gap-2">
-                <dt className="text-muted-foreground w-12 shrink-0">From</dt>
+                <dt className="text-muted-foreground w-12 shrink-0">De</dt>
                 <dd className="text-foreground break-all">{meeting.sourceMetadata.from}</dd>
               </div>
             )}
@@ -352,9 +350,7 @@ export default function BrainMeetingDetailPage() {
                       <Link
                         href={`/portal/brain/communications/${seg.id}`}
                         className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-0.5 shrink-0"
-                      >
-                        Open
-                        <span className="material-icons text-sm">open_in_new</span>
+                      >Abiertos<span className="material-icons text-sm">open_in_new</span>
                       </Link>
                     )}
                   </header>

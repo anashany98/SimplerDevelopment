@@ -57,7 +57,7 @@ interface SettingsPanelProps {
 }
 
 const CONFERENCE_OPTIONS = [
-  { value: 'none', label: 'None', icon: 'videocam_off', desc: 'No video call' },
+  { value: 'none', label: 'Ninguno', icon: 'videocam_off', desc: 'No video call' },
   { value: 'google_meet', label: 'Google Meet', icon: 'video_call', desc: 'Requires Google Calendar' },
   { value: 'zoom', label: 'Zoom', icon: 'video_camera_front', desc: 'Requires Zoom connection' },
 ];
@@ -111,7 +111,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
     <div className="bg-card border border-border rounded-xl p-5 space-y-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-foreground mb-1.5">Title</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Título</label>
           <input
             type="text"
             value={title}
@@ -121,18 +121,18 @@ export function SettingsPanel(props: SettingsPanelProps) {
         </div>
 
         <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-foreground mb-1.5">Description</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Descripción</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
             className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
-            placeholder="Describe what this meeting is about"
+            placeholder="Describe de qué trata esta reunión"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">Duration</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Duración</label>
           <select
             value={duration}
             onChange={(e) => setDuration(Number(e.target.value))}
@@ -201,7 +201,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <label id="booking-active-label" className="text-sm font-medium text-foreground">Active</label>
+          <label id="booking-active-label" className="text-sm font-medium text-foreground">Activo</label>
           <button
             type="button"
             onClick={() => setActive(!active)}
@@ -227,9 +227,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
           <span className="material-icons text-lg">videocam</span>
           Video Conferencing
         </h3>
-        <p className="text-xs text-muted-foreground mb-3">
-          Automatically generate a video call link for each booking. The link will be included in confirmation emails.
-        </p>
+        <p className="text-xs text-muted-foreground mb-3">Genera automáticamente un enlace de videollamada para cada reserva. Se incluirá en los correos de confirmación.</p>
         <div className="grid grid-cols-3 gap-3">
           {CONFERENCE_OPTIONS.map((opt) => (
             <button
@@ -262,13 +260,11 @@ export function SettingsPanel(props: SettingsPanelProps) {
           <span className="material-icons text-lg">image</span>
           Block Thumbnail
         </h3>
-        <p className="text-xs text-muted-foreground mb-3">
-          This image is used as the preview thumbnail when this booking page appears on your website.
-        </p>
+        <p className="text-xs text-muted-foreground mb-3">Esta imagen se usa como miniatura de vista previa cuando esta página de reservas aparece en tu sitio web.</p>
         <MediaPicker
           value={thumbnail}
           onChange={(url) => setThumbnail(url)}
-          label="Select Thumbnail"
+          label="Seleccionar miniatura"
           apiEndpoint="/api/portal/media"
         />
       </div>
@@ -279,14 +275,12 @@ export function SettingsPanel(props: SettingsPanelProps) {
           <span className="material-icons text-lg">payments</span>
           Payments &amp; Waivers
         </h3>
-        <p className="text-xs text-muted-foreground mb-4">
-          Charge for bookings, require a deposit, collect e-signatures, and accept gift certificates or discount codes.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4">Cobra por reservas, solicita un depósito, recoge firmas electrónicas y acepta tarjetas de regalo o códigos de descuento.</p>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Price */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Price</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Precio</label>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">$</span>
               <input
@@ -299,7 +293,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Leave blank for free bookings</p>
+            <p className="text-xs text-muted-foreground mt-1">Déjalo en blanco para reservas gratuitas</p>
           </div>
 
           {/* Price label */}
@@ -312,7 +306,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
               placeholder="e.g. Per session"
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             />
-            <p className="text-xs text-muted-foreground mt-1">Short label shown next to the price</p>
+            <p className="text-xs text-muted-foreground mt-1">Etiqueta breve que se muestra junto al precio</p>
           </div>
         </div>
 
@@ -323,7 +317,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
               {
                 id: 'gift-certificates',
                 label: 'Accept gift certificates',
-                desc: 'Allow customers to redeem gift certificates at checkout',
+                desc: 'Permitir que los clientes canjeen tarjetas de regalo al pagar',
                 value: enableGiftCertificates,
                 set: setEnableGiftCertificates,
                 icon: 'card_giftcard',
@@ -331,15 +325,15 @@ export function SettingsPanel(props: SettingsPanelProps) {
               {
                 id: 'discount-codes',
                 label: 'Accept discount codes',
-                desc: 'Allow customers to enter promo/discount codes',
+                desc: 'Permitir que los clientes ingresen códigos de promoción/descuento',
                 value: enableDiscountCodes,
                 set: setEnableDiscountCodes,
                 icon: 'local_offer',
               },
               {
                 id: 'add-ons',
-                label: 'Enable add-ons',
-                desc: 'Let customers purchase optional add-ons with their booking',
+                label: 'Habilitar complementos',
+                desc: 'Permitir que los clientes compren complementos opcionales con su reserva',
                 value: enableAddOns,
                 set: setEnableAddOns,
                 icon: 'add_shopping_cart',
@@ -381,7 +375,7 @@ export function SettingsPanel(props: SettingsPanelProps) {
               <span className="material-icons text-lg text-muted-foreground mt-0.5">draw</span>
               <div>
                 <p id="require-waiver-label" className="text-sm font-medium text-foreground">Require waiver / e-signature</p>
-                <p className="text-xs text-muted-foreground">Customers must sign before their booking is confirmed</p>
+                <p className="text-xs text-muted-foreground">Los clientes deben firmar antes de que se confirme su reserva</p>
               </div>
             </div>
             <button
@@ -410,14 +404,14 @@ export function SettingsPanel(props: SettingsPanelProps) {
                   value={waiverContent}
                   onChange={(e) => setWaiverContent(e.target.value)}
                   rows={5}
-                  placeholder="Enter the waiver / liability text that customers must agree to..."
+                  placeholder="Ingresa el texto de exención de responsabilidad que los clientes deben aceptar…"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none text-sm"
                 />
               </div>
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p id="block-booking-until-signed-label" className="text-sm font-medium text-foreground">Block booking until signed</p>
-                  <p className="text-xs text-muted-foreground">Prevent confirmation until the waiver is e-signed</p>
+                  <p className="text-xs text-muted-foreground">Evitar la confirmación hasta que la exención sea firmada electrónicamente</p>
                 </div>
                 <button
                   type="button"
@@ -446,28 +440,22 @@ export function SettingsPanel(props: SettingsPanelProps) {
         <h3 className="text-sm font-medium text-red-600 dark:text-red-400 mb-2">Danger Zone</h3>
         {deleteConfirm ? (
           <div className="flex items-center gap-3">
-            <p className="text-sm text-muted-foreground">Are you sure? This cannot be undone.</p>
+            <p className="text-sm text-muted-foreground">¿Estás seguro? Esto no se puede deshacer.</p>
             <button
               onClick={onDelete}
               className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
-            >
-              Yes, delete
-            </button>
+            >Sí, eliminar</button>
             <button
               onClick={() => setDeleteConfirm(false)}
               className="px-3 py-1.5 bg-background border border-border rounded-lg text-sm text-foreground hover:bg-muted transition-colors"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         ) : (
           <button
             onClick={() => setDeleteConfirm(true)}
             className="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
           >
-            <span className="material-icons text-lg">delete</span>
-            Delete Booking Page
-          </button>
+            <span className="material-icons text-lg">delete</span>Eliminar página de reservas</button>
         )}
       </div>
     </div>

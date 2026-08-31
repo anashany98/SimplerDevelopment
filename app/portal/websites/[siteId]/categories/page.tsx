@@ -91,14 +91,14 @@ export default function PortalCategoriesPage() {
         setError(data.message);
       }
     } catch {
-      setError('Something went wrong');
+      setError('Algo salió mal');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this category? Posts will be unlinked, not deleted.')) return;
+    if (!confirm('¿Eliminar esta categoría? Las publicaciones quedarán desvinculadas, no se eliminarán.')) return;
     await fetch(`${base}/${id}`, { method: 'DELETE' });
     load();
   };
@@ -114,32 +114,32 @@ export default function PortalCategoriesPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Categories"
-        subtitle="Organise your posts into categories."
+        eyebrow="Sitio web"
+        title="Categorías"
+        subtitle="Organiza tus publicaciones en categorías."
         actions={
           <button
             onClick={showForm ? () => setShowForm(false) : openCreate}
             className={showForm ? pBtnGhost : pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'Add Category'}
+            {showForm ? 'Cancelar' : 'Agregar categoría'}
           </button>
         }
       />
 
       {showForm && (
         <form onSubmit={handleSubmit} className={`${pCard} p-6 space-y-4`}>
-          <h2 className="font-semibold text-foreground">{editing ? 'Edit Category' : 'New Category'}</h2>
+          <h2 className="font-semibold text-foreground">{editing ? 'Editar categoría' : 'Nueva categoría'}</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Name</label>
+              <label className="text-sm font-medium text-foreground">Nombre</label>
               <input
                 value={form.name}
                 onChange={e => handleNameChange(e.target.value)}
                 required
-                placeholder="e.g. News"
+                placeholder="p. ej., Noticias"
                 className={pInput}
               />
             </div>
@@ -157,11 +157,11 @@ export default function PortalCategoriesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Description</label>
+              <label className="text-sm font-medium text-foreground">Descripción</label>
               <input
                 value={form.description}
                 onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Optional description"
+                placeholder="Descripción opcional"
                 className={pInput}
               />
             </div>
@@ -187,16 +187,14 @@ export default function PortalCategoriesPage() {
               type="button"
               onClick={() => setShowForm(false)}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={saving}
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editing ? 'Update' : 'Create'} Category
+              {editing ? 'Actualizar' : 'Crear'} Category
             </button>
           </div>
         </form>
@@ -207,7 +205,7 @@ export default function PortalCategoriesPage() {
         {categories.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground/40">folder</span>
-            <p className="text-sm text-muted-foreground mt-2">No categories yet. Create your first one above.</p>
+            <p className="text-sm text-muted-foreground mt-2">Aún no hay categorías. Crea la primera arriba.</p>
           </div>
         ) : (
           <ul className="divide-y divide-border">
@@ -228,14 +226,14 @@ export default function PortalCategoriesPage() {
                   <button
                     onClick={() => openEdit(cat)}
                     className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    title="Edit"
+                    title="Editar"
                   >
                     <span className="material-icons text-base">edit</span>
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
                     className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                    title="Delete"
+                    title="Eliminar"
                   >
                     <span className="material-icons text-base">delete</span>
                   </button>

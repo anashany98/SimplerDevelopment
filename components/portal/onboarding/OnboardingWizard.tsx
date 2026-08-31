@@ -44,8 +44,32 @@ const STEP_META: Record<
   features: { title: 'What brings you here?', subtitle: "Pick what you want to explore first — we'll tailor your setup around it.", rail: 'Your goals', icon: 'interests', eyebrow: 'Your goals' },
   upsell: { title: 'Supercharge your plan', subtitle: 'Modules other teams like yours add first.', rail: 'Add-ons', icon: 'auto_awesome', eyebrow: 'Add-ons' },
   'power-up': { title: 'Power up with Claude', subtitle: 'Optional, but the magic happens when you wire this up.', rail: 'Power up', icon: 'bolt', eyebrow: 'Power up' },
-  done: { title: "You're all set!", subtitle: 'Welcome to SimplerDevelopment.', rail: 'Done', icon: 'celebration', eyebrow: 'All set' },
+  done: { title: "You're all set!", subtitle: 'Welcome to CRM AGENTS.', rail: 'Done', icon: 'celebration', eyebrow: 'All set' },
 };
+
+function getStepMeta(step: OnboardingStep, stripeEnabled: boolean) {
+  if (stripeEnabled) return STEP_META[step];
+  if (step === 'choose-modules') {
+    return {
+      ...STEP_META[step],
+      title: 'Choose your tools',
+      subtitle: 'Everything is included on this self-hosted instance.',
+      rail: 'Choose tools',
+      eyebrow: 'Your tools',
+    };
+  }
+  if (step === 'payment') {
+    return {
+      ...STEP_META[step],
+      title: 'Activate your tools',
+      subtitle: 'No subscription or card required.',
+      rail: 'Activate',
+      icon: 'check_circle',
+      eyebrow: 'Your tools',
+    };
+  }
+  return STEP_META[step];
+}
 
 function seedTimezone(s: OnboardingState): OnboardingState {
   if (s.answers.timezone) return s;
@@ -197,7 +221,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const meta = STEP_META[currentStep];
+  const meta = getStepMeta(currentStep, stripeEnabled);
 
   const stepBody = useMemo(() => {
     const common = { state, setAnswers, persist, next, back, goTo, finish };
@@ -205,7 +229,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
       case 'welcome': return <StepWelcome {...common} />;
       case 'about-you': return <StepAboutYou {...common} />;
       case 'about-company': return <StepAboutCompany {...common} />;
-      case 'choose-modules': return <StepChooseModules {...common} />;
+      case 'choose-modules': return <StepChooseModules {...common} stripeEnabled={stripeEnabled} />;
       case 'payment': return <StepPayment {...common} stripeEnabled={stripeEnabled} />;
       case 'module-setup': return <StepModuleSetup {...common} />;
       case 'brand-vibe': return <StepBrandVibe {...common} />;
@@ -244,6 +268,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
           <ol className="min-h-0 flex-1 space-y-0.5 overflow-y-auto">
             {railSteps.map((s, i) => {
               const status = i < railIndex ? 'done' : i === railIndex ? 'active' : 'upcoming';
+              const railMeta = getStepMeta(s, stripeEnabled);
               return (
                 <li
                   key={s}
@@ -268,10 +293,10 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
                     }`}
                   >
                     <span className="material-icons text-[13px]">
-                      {status === 'done' ? 'check' : STEP_META[s].icon}
+                      {status === 'done' ? 'check' : railMeta.icon}
                     </span>
                   </span>
-                  {STEP_META[s].rail}
+                  {railMeta.rail}
                 </li>
               );
             })}
@@ -392,9 +417,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
                 data-testid="onboarding-back"
                 className={`${obQuietLink} inline-flex items-center gap-1.5`}
               >
-                <span className="material-icons text-base">arrow_back</span>
-                Back
-              </button>
+                <span className="material-icons text-base">arrow_back</span>Atrás</button>
             ) : <span />}
             {error && <span className="text-xs text-destructive" role="alert">{error}</span>}
           </div>

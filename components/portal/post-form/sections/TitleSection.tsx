@@ -13,7 +13,7 @@ export function TitleSection({ formData, setFormData, handleTitleChange }: Title
   return (
     <>
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Título</label>
         <input
           value={formData.title}
           onChange={handleTitleChange}

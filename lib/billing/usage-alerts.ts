@@ -464,7 +464,7 @@ export async function runUsageAlerts(): Promise<UsageAlertsResult> {
         if (alert.notifyEmail && ownerEmail) {
           try {
             await sendEmail({
-              from: `SimplerDevelopment <${process.env.BILLING_EMAIL || 'billing@simplerdevelopment.com'}>`,
+              from: `CRM AGENTS <${process.env.BILLING_EMAIL || 'billing@simplerdevelopment.com'}>`,
               to: ownerEmail,
               subject: alertSubject(alert),
               html: alertBody(alert, ownerEmail),

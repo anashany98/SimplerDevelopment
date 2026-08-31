@@ -89,7 +89,7 @@ export function DeckPresenceBar({
       {status === 'connecting' && (
         <span
           className="inline-flex items-center text-[10px] text-muted-foreground"
-          title="Connecting to collaboration server"
+          title="Conectando al servidor de colaboración"
         >
           <span className="material-icons text-sm animate-spin">autorenew</span>
         </span>

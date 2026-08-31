@@ -20,7 +20,7 @@ export function ColumnsBlockSettings({ block, onChange, currentViewport }: { blo
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <p className="text-sm text-muted-foreground mb-2">{block.columns.length} columns</p>
       </div>
 
@@ -31,9 +31,9 @@ export function ColumnsBlockSettings({ block, onChange, currentViewport }: { blo
           onChange={(e) => onChange({ gap: e.target.value as ColumnsBlock['gap'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="sm">Small</option>
-          <option value="md">Medium</option>
-          <option value="lg">Large</option>
+          <option value="sm">Pequeño</option>
+          <option value="md">Media</option>
+          <option value="lg">Grande</option>
         </select>
       </div>
 
@@ -71,7 +71,7 @@ export function ColumnsBlockSettings({ block, onChange, currentViewport }: { blo
                   </div>
                   <div>
                     <TokenColorPicker
-                      label="Background"
+                      label="Fondo"
                       value={column.backgroundColor || ''}
                       onChange={(v) => updateColumn(column.id, { backgroundColor: v || undefined })}
                       placeholder="transparent"
@@ -85,10 +85,10 @@ export function ColumnsBlockSettings({ block, onChange, currentViewport }: { blo
                         onChange={(e) => updateColumn(column.id, { padding: e.target.value as 'none' | 'sm' | 'md' | 'lg' })}
                         className="w-full text-sm rounded border border-border bg-background px-2 py-1 text-foreground"
                       >
-                        <option value="none">None</option>
-                        <option value="sm">Small</option>
-                        <option value="md">Medium</option>
-                        <option value="lg">Large</option>
+                        <option value="none">Ninguno</option>
+                        <option value="sm">Pequeño</option>
+                        <option value="md">Media</option>
+                        <option value="lg">Grande</option>
                       </select>
                     </div>
                     <div>
@@ -98,9 +98,9 @@ export function ColumnsBlockSettings({ block, onChange, currentViewport }: { blo
                         onChange={(e) => updateColumn(column.id, { verticalAlign: e.target.value as 'top' | 'center' | 'bottom' })}
                         className="w-full text-sm rounded border border-border bg-background px-2 py-1 text-foreground"
                       >
-                        <option value="top">Top</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
+                        <option value="top">Arriba</option>
+                        <option value="center">Centrado</option>
+                        <option value="bottom">Abajo</option>
                       </select>
                     </div>
                   </div>

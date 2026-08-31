@@ -207,7 +207,7 @@ export default function BrainCalendarPage() {
   return (
     <div className="max-w-6xl mx-auto py-8 space-y-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">calendar_month</span>
@@ -247,9 +247,7 @@ export default function BrainCalendarPage() {
           <button
             onClick={() => setCursor(new Date())}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm"
-          >
-            Today
-          </button>
+          >Hoy</button>
           <button
             onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))}
             className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -450,7 +448,7 @@ function NewEventModal({
         </div>
 
         <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Title</label>
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</label>
           <input
             type="text"
             value={title}
@@ -463,7 +461,7 @@ function NewEventModal({
 
         <div className="grid sm:grid-cols-3 gap-3">
           <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</label>
             <input
               type="date"
               value={dateStr}
@@ -482,7 +480,7 @@ function NewEventModal({
             {!allDay && (
               <div className="flex-1 grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-[10px] text-muted-foreground">Start</label>
+                  <label className="text-[10px] text-muted-foreground">Comenzar</label>
                   <input
                     type="time"
                     value={startTime}
@@ -505,7 +503,7 @@ function NewEventModal({
         </div>
 
         <div>
-          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</label>
+          <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Descripción</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -525,7 +523,7 @@ function NewEventModal({
             />
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Link</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Enlace</label>
             <input
               type="url"
               value={link}
@@ -544,12 +542,10 @@ function NewEventModal({
           >
             {saving
               ? <><span className="material-icons text-base animate-spin">progress_activity</span>Creating…</>
-              : <><span className="material-icons text-base">check</span>Create event</>
+              : <><span className="material-icons text-base">check</span>Crear evento</>
             }
           </button>
-          <button type="button" onClick={onCancel} className={pBtnGhost}>
-            Cancel
-          </button>
+          <button type="button" onClick={onCancel} className={pBtnGhost}>Cancelar</button>
         </div>
       </form>
     </div>
@@ -587,9 +583,7 @@ function EventDetailModal({
 
         {loading || !event ? (
           <div className="flex items-center justify-center py-10 text-muted-foreground">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>
-            Loading…
-          </div>
+            <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
         ) : (
           <>
             <h4 className="text-lg font-semibold">{event.title}</h4>
@@ -614,7 +608,7 @@ function EventDetailModal({
               </p>
             )}
             {event.source === 'google' && (
-              <p className="text-xs text-muted-foreground italic">Synced from Google Calendar.</p>
+              <p className="text-xs text-muted-foreground italic">Sincronizado con Google Calendar.</p>
             )}
 
             <div className="flex items-center justify-between pt-3 border-t border-border">
@@ -622,15 +616,11 @@ function EventDetailModal({
                 onClick={onDelete}
                 className="text-destructive text-sm inline-flex items-center gap-1 hover:underline"
               >
-                <span className="material-icons text-base">delete</span>
-                Delete
-              </button>
+                <span className="material-icons text-base">delete</span>Eliminar</button>
               <button
                 onClick={onChanged}
                 className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Refresh
-              </button>
+              >Actualizar</button>
             </div>
           </>
         )}

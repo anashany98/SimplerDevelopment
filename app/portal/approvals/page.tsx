@@ -35,11 +35,11 @@ type StatusFilter = 'pending' | 'applied' | 'rejected' | 'failed' | 'expired' | 
 type TimeFilter = 'any' | '24h' | '7d';
 
 const entityLabel: Record<string, string> = {
-  post: 'Post',
-  pitch_deck: 'Pitch Deck',
-  pitch_deck_slides: 'Deck Slides',
-  proposal: 'Proposal',
-  email_campaign: 'Email Campaign',
+  post: 'Publicación',
+  pitch_deck: 'Pitch deck',
+  pitch_deck_slides: 'Diapositivas del deck',
+  proposal: 'Propuesta',
+  email_campaign: 'Campaña de email',
 };
 
 const statusBadge: Record<string, string> = {
@@ -311,9 +311,9 @@ export default function PortalApprovalsPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="REVIEW"
-        title="MCP Approvals"
-        subtitle={<>Review AI-agent-initiated CMS changes before they go live. Keys flagged with{' '}<code className="text-xs">require_cms_approval</code> stage writes here instead of applying directly.</>}
+        eyebrow="REVISIÓN"
+        title="Aprobaciones MCP"
+        subtitle={<>Revisa los cambios de CMS iniciados por agentes de IA antes de que se publiquen. Las claves marcadas con{' '}<code className="text-xs">require_cms_approval</code> almacenan las escrituras aquí en lugar de aplicarlas directamente.</>}
       />
 
       {/* Filter tabs */}
@@ -346,7 +346,7 @@ export default function PortalApprovalsPage() {
             }}
             className="px-2 py-1.5 rounded-md border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">All types</option>
+            <option value="">Todos los tipos</option>
             {entityTypeOptions.map(t => (
               <option key={t} value={t}>{entityLabel[t] ?? t}</option>
             ))}
@@ -364,7 +364,7 @@ export default function PortalApprovalsPage() {
             }}
             className="px-2 py-1.5 rounded-md border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">All agents</option>
+            <option value="">Todos los agentes</option>
             {agentOptions.map(([id, label]) => (
               <option key={id} value={id}>{label}</option>
             ))}
@@ -373,9 +373,9 @@ export default function PortalApprovalsPage() {
 
         <div className="flex gap-0.5 rounded-md border border-border overflow-hidden text-xs">
           {([
-            { value: 'any', label: 'Any time' },
-            { value: '24h', label: 'Last 24h' },
-            { value: '7d', label: 'Last 7d' },
+            { value: 'any', label: 'Cualquier momento' },
+            { value: '24h', label: 'Últimas 24 h' },
+            { value: '7d', label: 'Últimos 7 días' },
           ] as { value: TimeFilter; label: string }[]).map(({ value, label }) => (
             <button
               key={value}
@@ -401,7 +401,7 @@ export default function PortalApprovalsPage() {
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
           >
             <span className="material-icons text-sm">close</span>
-            Clear filters
+            Limpiar filtros
           </button>
         )}
       </div>
@@ -423,10 +423,10 @@ export default function PortalApprovalsPage() {
                   className="w-3.5 h-3.5 accent-primary cursor-pointer"
                 />
                 <span className="text-muted-foreground">
-                  {checkedIds.size > 0 ? `${checkedIds.size} selected` : `Select all ${pendingIds.length} pending`}
+                  {checkedIds.size > 0 ? `${checkedIds.size} seleccionados` : `Seleccionar los ${pendingIds.length} pendientes`}
                 </span>
                 {checkedIds.size > MAX_BULK && (
-                  <span className="text-destructive ml-auto">Max {MAX_BULK} per batch</span>
+                  <span className="text-destructive ml-auto">Máx. {MAX_BULK} por lote</span>
                 )}
               </div>
             );
@@ -435,12 +435,12 @@ export default function PortalApprovalsPage() {
             {loading ? (
               <div className="p-8 text-center text-muted-foreground flex items-center justify-center gap-2">
                 <span className="material-icons animate-spin text-base">progress_activity</span>
-                Loading...
+                Cargando...
               </div>
             ) : items.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground">
                 <span className="material-icons text-4xl mb-2 block">check_circle</span>
-                No {filter === 'all' ? '' : filter + ' '}changes.
+                No hay {filter === 'all' ? '' : filter + ' '}cambios.
               </div>
             ) : (
               items.map(item => {
@@ -508,7 +508,7 @@ export default function PortalApprovalsPage() {
           {!selected ? (
             <div className="py-12 text-center text-muted-foreground">
               <span className="material-icons text-4xl mb-2 block">visibility</span>
-              <p className="text-sm">Select a change to review.</p>
+              <p className="text-sm">Selecciona un cambio para revisarlo.</p>
             </div>
           ) : (
             <>
@@ -543,20 +543,20 @@ export default function PortalApprovalsPage() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {selected.change.operation === 'create' ? 'Proposed content' : 'Field-level diff'}
+                    {selected.change.operation === 'create' ? 'Contenido propuesto' : 'Diferencia por campos'}
                   </span>
                   <div className="flex gap-0.5 rounded-md border border-border overflow-hidden text-[11px]">
                     <button
                       onClick={() => setView('diff')}
                       className={`px-2 py-1 ${view === 'diff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
                     >
-                      Diff
+                      Diferencia
                     </button>
                     <button
                       onClick={() => setView('raw')}
                       className={`px-2 py-1 ${view === 'raw' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
                     >
-                      Raw JSON
+                      JSON crudo
                     </button>
                   </div>
                 </div>
@@ -568,12 +568,12 @@ export default function PortalApprovalsPage() {
                 ) : (
                   <div className="space-y-2">
                     <div>
-                      <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-1">Proposed payload</div>
+                      <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-1">Contenido propuesto</div>
                       {renderJson(selected.change.payload)}
                     </div>
                     {selected.change.operation !== 'create' && (
                       <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-1">Current state</div>
+                        <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-1">Estado actual</div>
                         {renderJson(selected.change.originalSnapshot)}
                       </div>
                     )}
@@ -584,20 +584,20 @@ export default function PortalApprovalsPage() {
               {selected.change.status === 'pending' && !canManage && (
                 <div className="text-xs text-muted-foreground bg-muted/40 rounded-md p-3 border border-border">
                   <span className="material-icons text-sm align-middle mr-1">info</span>
-                  Only owners and admins can approve or reject pending changes.
+                  Solo los propietarios y administradores pueden aprobar o rechazar los cambios pendientes.
                 </div>
               )}
 
               {selected.change.status === 'pending' && canManage && (
                 <div className="space-y-3 pt-2 border-t border-border">
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">Review note (optional)</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Nota de revisión (opcional)</label>
                     <textarea
                       value={note}
                       onChange={e => setNote(e.target.value)}
                       rows={2}
                       className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                      placeholder="Add a note for the submitter..."
+                      placeholder="Añade una nota para el remitente..."
                     />
                   </div>
                   <div className="flex gap-2">
@@ -607,14 +607,14 @@ export default function PortalApprovalsPage() {
                       className={`flex-1 ${pBtnPrimary}`}
                     >
                       <span className="material-icons text-base">check</span>
-                      {busy ? 'Applying...' : 'Approve & Apply'}
+                      {busy ? 'Aplicando...' : 'Aprobar y aplicar'}
                     </button>
                     <button
                       onClick={reject}
                       disabled={busy}
                       className="px-4 py-2 text-sm font-medium rounded-md border border-border text-destructive hover:bg-destructive/10 disabled:opacity-50"
                     >
-                      Reject
+                      Rechazar
                     </button>
                   </div>
                 </div>
@@ -628,7 +628,7 @@ export default function PortalApprovalsPage() {
       {checkedIds.size > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-card border border-border rounded-full shadow-lg px-4 py-2 flex items-center gap-3 flex-wrap max-w-[calc(100vw-2rem)]">
           <span className="text-sm font-medium text-foreground">
-            {checkedIds.size} selected
+            {checkedIds.size} seleccionados
           </span>
           {checkedIds.size > MAX_BULK && (
             <span className="text-xs text-destructive">Max {MAX_BULK} per batch</span>
@@ -639,19 +639,19 @@ export default function PortalApprovalsPage() {
             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             <span className="material-icons text-sm">check</span>
-            Approve
+            Aprobar
           </button>
           <button
             onClick={() => setBulkAction('reject')}
             disabled={checkedIds.size > MAX_BULK || busy}
             className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-full border border-border text-destructive hover:bg-destructive/10 disabled:opacity-50"
           >
-            Reject
+            Rechazar
           </button>
           <button
             onClick={() => setCheckedIds(new Set())}
             className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
-            title="Clear selection"
+            title="Limpiar selección"
           >
             <span className="material-icons text-base">close</span>
           </button>
@@ -664,12 +664,12 @@ export default function PortalApprovalsPage() {
           <div className={`${pCard} max-w-md w-full p-6 space-y-4`}>
             <div>
               <h3 className="text-lg font-semibold text-foreground">
-                {bulkAction === 'approve' ? 'Approve' : 'Reject'} {checkedIds.size} change{checkedIds.size === 1 ? '' : 's'}?
+                ¿{bulkAction === 'approve' ? 'Aprobar' : 'Rechazar'} {checkedIds.size} cambio{checkedIds.size === 1 ? '' : 's'}?
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
                 {bulkAction === 'approve'
-                  ? 'Each staged mutation will run with its stored payload. Items apply serially; a single failure does not halt the rest.'
-                  : 'Each selected change will be marked rejected. No mutations run.'}
+                  ? 'Cada mutación en cola se ejecutará con su contenido almacenado. Los elementos se aplican en serie; un único fallo no detiene al resto.'
+                  : 'Cada cambio seleccionado se marcará como rechazado. No se ejecutará ninguna mutación.'}
               </p>
             </div>
 
@@ -683,13 +683,13 @@ export default function PortalApprovalsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Review note (applied to all)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nota de revisión (aplicada a todos)</label>
               <textarea
                 value={note}
                 onChange={e => setNote(e.target.value)}
                 rows={2}
                 className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Optional..."
+                placeholder="Opcional..."
               />
             </div>
 
@@ -704,15 +704,15 @@ export default function PortalApprovalsPage() {
                 }`}
               >
                 {busy
-                  ? (bulkAction === 'approve' ? 'Applying...' : 'Rejecting...')
-                  : `Confirm ${bulkAction}`}
+                  ? (bulkAction === 'approve' ? 'Aplicando...' : 'Rechazando...')
+                  : `Confirmar ${bulkAction === 'approve' ? 'aprobación' : 'rechazo'}`}
               </button>
               <button
                 onClick={() => { setBulkAction(null); }}
                 disabled={busy}
                 className="px-4 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </div>
@@ -724,7 +724,7 @@ export default function PortalApprovalsPage() {
         <div className="fixed bottom-6 right-6 z-40 bg-card border border-border rounded-lg shadow-lg p-4 max-w-sm space-y-2">
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm font-medium text-foreground">
-              Bulk result: {bulkResult.applied ?? bulkResult.rejected ?? 0} of {bulkResult.total}
+              Resultado del lote: {bulkResult.applied ?? bulkResult.rejected ?? 0} de {bulkResult.total}
             </div>
             <button
               onClick={() => setBulkResult(null)}
@@ -734,10 +734,10 @@ export default function PortalApprovalsPage() {
             </button>
           </div>
           <div className="text-xs text-muted-foreground space-y-0.5">
-            {bulkResult.applied !== undefined && <div><span className="text-emerald-600">Applied:</span> {bulkResult.applied}</div>}
-            {bulkResult.rejected !== undefined && <div><span className="text-muted-foreground">Rejected:</span> {bulkResult.rejected}</div>}
-            {bulkResult.failed > 0 && <div><span className="text-destructive">Failed:</span> {bulkResult.failed}</div>}
-            {bulkResult.skipped > 0 && <div><span className="text-muted-foreground">Skipped:</span> {bulkResult.skipped}</div>}
+            {bulkResult.applied !== undefined && <div><span className="text-emerald-600">Aplicados:</span> {bulkResult.applied}</div>}
+            {bulkResult.rejected !== undefined && <div><span className="text-muted-foreground">Rechazados:</span> {bulkResult.rejected}</div>}
+            {bulkResult.failed > 0 && <div><span className="text-destructive">Fallidos:</span> {bulkResult.failed}</div>}
+            {bulkResult.skipped > 0 && <div><span className="text-muted-foreground">Omitidos:</span> {bulkResult.skipped}</div>}
           </div>
         </div>
       )}

@@ -123,9 +123,7 @@ export const ArtPicker = ({ setView, view }) => {
         <button
           onClick={() => setView("categories")}
           className="text-blue-500 cursor-pointer bg-none border-none p-0 underline"
-        >
-          Back
-        </button>
+        >Atrás</button>
         <h1 className="text-xl font-semibold">Art Picker</h1>
         <div />
       </div>

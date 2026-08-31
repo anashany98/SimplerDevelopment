@@ -452,9 +452,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     type="button"
                     onClick={() => { setStep('contact'); setCheckoutResult(null); setStripePromise(null); }}
                     className="text-primary text-xs hover:underline flex-shrink-0"
-                  >
-                    Edit
-                  </button>
+                  >Editar</button>
                 </div>
               </div>
 
@@ -563,9 +561,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     type="button"
                     onClick={() => { setStep('shipping'); setCheckoutResult(null); setStripePromise(null); }}
                     className="text-primary text-xs hover:underline flex-shrink-0"
-                  >
-                    Edit
-                  </button>
+                  >Editar</button>
                 </div>
               </div>
 

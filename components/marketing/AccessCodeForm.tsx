@@ -99,7 +99,7 @@ export function AccessCodeForm({ variant = 'inline' }: { variant?: Variant }) {
           <span className="material-icons text-3xl text-gray-700">lock</span>
         </div>
         <h2 className="mb-2 text-xl font-bold text-gray-900">Have an access code?</h2>
-        <p className="mb-6 text-sm text-gray-500">Enter the code you were given to view this site.</p>
+        <p className="mb-6 text-sm text-gray-500">Introduce el código que te dieron para ver este sitio.</p>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
             id="access-code"

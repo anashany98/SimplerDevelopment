@@ -172,15 +172,15 @@ export default function GiftCertificatePurchasePage() {
             {/* Recipient */}
             <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4">
               <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Recipient (optional)</h2>
-              <p className="text-xs text-gray-500">Leave blank to keep the certificate for yourself</p>
+              <p className="text-xs text-gray-500">Déjalo en blanco para conservar el certificado para ti</p>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
                   <input type="text" value={recipientName} onChange={e => setRecipientName(e.target.value)}
                     className="w-full text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2.5 text-gray-900 dark:text-gray-100" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo</label>
                   <input type="email" value={recipientEmail} onChange={e => setRecipientEmail(e.target.value)}
                     className="w-full text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl px-3 py-2.5 text-gray-900 dark:text-gray-100" />
                 </div>

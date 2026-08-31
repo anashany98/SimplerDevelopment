@@ -64,8 +64,22 @@ const FRAME_DENY_HEADERS = [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }];
 // (TypeScript is already skipped in-build for ALL branches below.)
 const isDevDeploy = process.env.VERCEL_GIT_COMMIT_REF === 'dev';
 
+// Dev-only assets (including Turbopack HMR) reject cross-origin requests by
+// default. Keep temporary tunnels opt-in and explicitly scoped by the runtime
+// environment instead of allowing an entire public tunnel domain.
+// Cloudflare Quick Tunnels issue a fresh *.trycloudflare.com hostname on every
+// start, so in development the suffix is allowed wholesale — this mirrors the
+// `.trycloudflare.com` allowance in middleware.ts isAppHostname. Any other
+// dev origin must be listed explicitly via NEXT_ALLOWED_DEV_ORIGINS.
+const allowedDevOrigins = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+allowedDevOrigins.push('*.trycloudflare.com');
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  allowedDevOrigins,
   // Expose Google-auth availability to the client bundle so the login/signup
   // pages can conditionally render the "Continue with Google" button.
   // Computed at build time — matches the runtime provider-registration check in

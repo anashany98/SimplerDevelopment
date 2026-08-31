@@ -63,36 +63,36 @@ export function ContentPanel({ block, onUpdate, onForceHoverChange }: PanelProps
     <>
       {block.type === 'heading' && (
         <>
-          <RichTextField label="Content" value={b.content as string} onChange={(v) => onUpdate({ content: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Contenido" value={b.content as string} onChange={(v) => onUpdate({ content: v } as Partial<Block>)} singleLine />
           <SelectField label="Level" value={String(b.level || 2)} options={['1','2','3','4','5','6']} onChange={(v) => onUpdate({ level: Number(v) } as Partial<Block>)} />
-          <SelectField label="Alignment" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
+          <SelectField label="Alineación" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
         </>
       )}
       {block.type === 'text' && (
         <>
-          <RichTextField label="Content" value={b.content as string} onChange={(v) => onUpdate({ content: v } as Partial<Block>)} />
-          <SelectField label="Size" value={(b.size as string) || 'base'} options={['sm','base','lg','xl']} onChange={(v) => onUpdate({ size: v } as Partial<Block>)} />
-          <SelectField label="Alignment" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
+          <RichTextField label="Contenido" value={b.content as string} onChange={(v) => onUpdate({ content: v } as Partial<Block>)} />
+          <SelectField label="Tamaño" value={(b.size as string) || 'base'} options={['sm','base','lg','xl']} onChange={(v) => onUpdate({ size: v } as Partial<Block>)} />
+          <SelectField label="Alineación" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
         </>
       )}
       {block.type === 'button' && (() => {
         const { variantOverridden, presetOverridden, sizeOverridden } = buttonOverrideFlags(b);
         return (
           <>
-            <Field label="Text" value={b.text as string} onChange={(v) => onUpdate({ text: v } as Partial<Block>)} />
+            <Field label="Texto" value={b.text as string} onChange={(v) => onUpdate({ text: v } as Partial<Block>)} />
             <Field label="URL" value={b.url as string} onChange={(v) => onUpdate({ url: v } as Partial<Block>)} />
             <div>
-              <SelectField label="Variant" value={(b.variant as string) || 'primary'} options={['primary','secondary','outline']} onChange={(v) => onUpdate({ variant: v } as Partial<Block>)} />
+              <SelectField label="Variante" value={(b.variant as string) || 'primary'} options={['primary','secondary','outline']} onChange={(v) => onUpdate({ variant: v } as Partial<Block>)} />
               {variantOverridden && <OverrideBadge />}
             </div>
             <div>
-              <SelectField label="Size" value={(b.size as string) || 'md'} options={['sm','md','lg']} onChange={(v) => onUpdate({ size: v } as Partial<Block>)} />
+              <SelectField label="Tamaño" value={(b.size as string) || 'md'} options={['sm','md','lg']} onChange={(v) => onUpdate({ size: v } as Partial<Block>)} />
               {sizeOverridden && <OverrideBadge />}
             </div>
-            <SelectField label="Alignment" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
-            <CheckboxField label="Open in new tab" checked={b.openInNewTab as boolean} onChange={(v) => onUpdate({ openInNewTab: v } as Partial<Block>)} />
+            <SelectField label="Alineación" value={(b.alignment as string) || 'left'} options={['left','center','right']} onChange={(v) => onUpdate({ alignment: v } as Partial<Block>)} />
+            <CheckboxField label="Abrir en una pestaña nueva" checked={b.openInNewTab as boolean} onChange={(v) => onUpdate({ openInNewTab: v } as Partial<Block>)} />
             <div>
-              <span className="text-xs font-medium text-muted-foreground">Icon</span>
+              <span className="text-xs font-medium text-muted-foreground">Ícono</span>
               <IconPicker value={(b.icon as string) || ''} onChange={(v) => onUpdate({ icon: v || undefined } as Partial<Block>)} />
             </div>
             <div>
@@ -103,8 +103,8 @@ export function ContentPanel({ block, onUpdate, onForceHoverChange }: PanelProps
                 disabled={!(b.icon as string)}
                 className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground mt-1"
               >
-                <option value="left">Left of text</option>
-                <option value="right">Right of text</option>
+                <option value="left">A la izquierda del texto</option>
+                <option value="right">A la derecha del texto</option>
               </select>
             </div>
             <div
@@ -116,11 +116,11 @@ export function ContentPanel({ block, onUpdate, onForceHoverChange }: PanelProps
               onMouseEnter={() => onForceHoverChange?.(true)}
               onMouseLeave={() => onForceHoverChange?.(false)}
             >
-              <SelectField label="Hover Effect" value={(b.hoverEffect as string) || 'none'} options={['none','lift','glow','fill','slide','pulse']} onChange={(v) => onUpdate({ hoverEffect: v } as Partial<Block>)} />
+              <SelectField label="Efecto al pasar el cursor" value={(b.hoverEffect as string) || 'none'} options={['none','lift','glow','fill','slide','pulse']} onChange={(v) => onUpdate({ hoverEffect: v } as Partial<Block>)} />
             </div>
             <div>
               <Field label="Brand Preset (optional)" value={(b.presetId as string) || ''} onChange={(v) => onUpdate({ presetId: v || undefined } as Partial<Block>)} />
-              <p className="text-xs text-muted-foreground mt-0.5">Preset key from brand presets. Preset styles apply first, block styles override on top.</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Clave preestablecida de los preajustes de marca. Los estilos preestablecidos se aplican primero; los estilos del bloque los sobrescriben.</p>
               {presetOverridden && <OverrideBadge />}
             </div>
           </>
@@ -129,7 +129,7 @@ export function ContentPanel({ block, onUpdate, onForceHoverChange }: PanelProps
       {block.type === 'quote' && (
         <>
           <RichTextField label="Quote" value={b.content as string} onChange={(v) => onUpdate({ content: v } as Partial<Block>)} />
-          <RichTextField label="Author" value={b.author as string} onChange={(v) => onUpdate({ author: v } as Partial<Block>)} singleLine />
+          <RichTextField label="Autor" value={b.author as string} onChange={(v) => onUpdate({ author: v } as Partial<Block>)} singleLine />
           <RichTextField label="Citation" value={b.citation as string} onChange={(v) => onUpdate({ citation: v } as Partial<Block>)} singleLine />
         </>
       )}
@@ -140,10 +140,10 @@ export function ContentPanel({ block, onUpdate, onForceHoverChange }: PanelProps
         </>
       )}
       {block.type === 'spacer' && (
-        <SelectField label="Height" value={(b.height as string) || 'md'} options={['sm','md','lg','xl']} onChange={(v) => onUpdate({ height: v } as Partial<Block>)} />
+        <SelectField label="Alto" value={(b.height as string) || 'md'} options={['sm','md','lg','xl']} onChange={(v) => onUpdate({ height: v } as Partial<Block>)} />
       )}
       {block.type === 'divider' && (
-        <SelectField label="Line Style" value={(b.lineStyle as string) || 'solid'} options={['solid','dashed','dotted']} onChange={(v) => onUpdate({ lineStyle: v } as Partial<Block>)} />
+        <SelectField label="Estilo de línea" value={(b.lineStyle as string) || 'solid'} options={['solid','dashed','dotted']} onChange={(v) => onUpdate({ lineStyle: v } as Partial<Block>)} />
       )}
     </>
   );

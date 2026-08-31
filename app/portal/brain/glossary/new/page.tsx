@@ -21,11 +21,11 @@ export default function BrainGlossaryNewPage() {
           Glossary
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
-        <span>New term</span>
+        <span>Nuevo término</span>
       </nav>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">add</span>

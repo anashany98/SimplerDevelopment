@@ -57,7 +57,7 @@ export function CheckoutOrderSummary({
           </div>
           {selectedRate && (
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Shipping</span>
+              <span className="text-muted-foreground">Envío</span>
               <span>{shippingCost === 0 ? 'Free' : formatPrice(shippingCost)}</span>
             </div>
           )}

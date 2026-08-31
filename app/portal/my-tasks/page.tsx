@@ -267,8 +267,8 @@ function MyTasksPageInner() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="My work"
-        title="My Tasks"
+        eyebrow="Mi trabajo"
+        title="Mis tareas"
         subtitle={<>{total} task{total !== 1 ? 's' : ''} assigned to you{overdueCount > 0 && <span className="text-destructive"> · {overdueCount} overdue</span>}</>}
         actions={
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -285,8 +285,8 @@ function MyTasksPageInner() {
 
       {/* Filter chips */}
       <div className="bg-card border border-border rounded-2xl p-3 space-y-3" aria-label="Task filters">
-        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Source">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Source</span>
+        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Fuente">
+          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Fuente</span>
           {(['all', 'kanban', 'brain'] as const).map((s) => (
             <button
               key={s}
@@ -305,8 +305,8 @@ function MyTasksPageInner() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Priority">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Priority</span>
+        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Prioridad">
+          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Prioridad</span>
           {VALID_PRIORITIES.map((p) => {
             const active = filters.priorities.includes(p);
             return (
@@ -335,9 +335,7 @@ function MyTasksPageInner() {
                 : 'bg-background text-muted-foreground border-border hover:border-primary/50'
             }`}
           >
-            <span className="material-icons text-xs">schedule</span>
-            Overdue
-          </button>
+            <span className="material-icons text-xs">schedule</span>Atrasado</button>
         </div>
 
         {filters.source !== 'brain' && projectsAvailable.length > 0 && (

@@ -78,21 +78,21 @@ export default function AcceptInvitePage() {
 
   if (done) {
     return (
-      <AuthShell panelSubtitle="Welcome to your team's portal.">
+      <AuthShell panelSubtitle="Bienvenido al portal de tu equipo.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-green-500/20 bg-green-500/10">
           <span className="material-icons text-3xl text-green-600 dark:text-green-400">check_circle</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>You&apos;re all set!</h1>
-        <p className={authSubtext}>Redirecting to your portal…</p>
+        <h1 className={`${authHeading} mt-5`}>¡Todo listo!</h1>
+        <p className={authSubtext}>Redirigiendo a tu portal…</p>
       </AuthShell>
     );
   }
 
   return (
-    <AuthShell panelSubtitle="You've been invited to join a team portal — set your password to get started.">
+    <AuthShell panelSubtitle="Te han invitado a unirte a un portal de equipo: define tu contraseña para empezar.">
       <div className={authEyebrow}>{"// You're invited"}</div>
-      <h1 className={authHeading}>Set your password.</h1>
-      <p className={authSubtext}>Create a password to access your team&apos;s portal.</p>
+      <h1 className={authHeading}>Define tu contraseña.</h1>
+      <p className={authSubtext}>Crea una contraseña para acceder al portal de tu equipo.</p>
 
       <div className="mt-7">
         {error && (
@@ -136,7 +136,7 @@ export default function AcceptInvitePage() {
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Type your password again"
+                placeholder="Escribe tu contraseña de nuevo"
                 className={`${authInput} pr-11`}
                 required
                 minLength={8}

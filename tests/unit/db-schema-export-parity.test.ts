@@ -67,6 +67,7 @@ function collectSchemaExportNames(): string[] {
 // + manually appended agent_flows 2026-08-02 (Workflow Designer / APWD-003, lib/db/schema/agentFlows.ts).
 // + manually appended agent_flow_runs + agent_flow_run_events 2026-08-03 (executions, same module).
 // + regenerated 2026-08-12: seo_* tables (SEO Intelligence core audit + GSC history, lib/db/schema/seo.ts).
+// + appended omnichannel tables/types 2026-08-25 (lib/db/schema/chat.ts).
 const EXPECTED_EXPORTS: readonly string[] = [
   'AB_TARGET_TYPES',
   'AbAssignment',
@@ -151,6 +152,11 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'BrainSavedSearchFilters',
   'BrainTaskStatus',
   'BrainTopicEntityType',
+  'ChannelConnection',
+  'ChannelIdentity',
+  'ChannelOutboxItem',
+  'ChannelProviderConfig',
+  'ChannelWebhookEvent',
   'ChatConversation',
   'ChatMessage',
   'ChatWidget',
@@ -357,6 +363,14 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'catalogSizes',
   'catalogStyles',
   'categories',
+  'channelAiConfigs',
+  'channelAiRuns',
+  'channelConnections',
+  'channelConsents',
+  'channelIdentities',
+  'channelOutbox',
+  'channelProviderConfigs',
+  'channelWebhookEvents',
   'chatConversations',
   'chatMessages',
   'chatWidgets',
@@ -368,6 +382,7 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'columnDailySnapshots',
   'contentBriefs',
   'contentDrafts',
+  'conversationAuditLogs',
   'crmActivities',
   'crmCompanies',
   'crmContactTags',
@@ -685,6 +700,14 @@ const EXPECTED_TABLE_NAMES: Readonly<Record<string, string>> = {
   catalogSizes: 'catalog_sizes',
   catalogStyles: 'catalog_styles',
   categories: 'categories',
+  channelAiConfigs: 'channel_ai_configs',
+  channelAiRuns: 'channel_ai_runs',
+  channelConnections: 'channel_connections',
+  channelConsents: 'channel_consents',
+  channelIdentities: 'channel_identities',
+  channelOutbox: 'channel_outbox',
+  channelProviderConfigs: 'channel_provider_configs',
+  channelWebhookEvents: 'channel_webhook_events',
   chatConversations: 'chat_conversations',
   chatMessages: 'chat_messages',
   chatWidgets: 'chat_widgets',
@@ -696,6 +719,7 @@ const EXPECTED_TABLE_NAMES: Readonly<Record<string, string>> = {
   columnDailySnapshots: 'column_daily_snapshots',
   contentBriefs: 'content_briefs',
   contentDrafts: 'content_drafts',
+  conversationAuditLogs: 'conversation_audit_logs',
   crmActivities: 'crm_activities',
   crmCompanies: 'crm_companies',
   crmContactTags: 'crm_contact_tags',
@@ -949,13 +973,13 @@ describe('lib/db/schema export parity', () => {
     expect(actualTables).toEqual(EXPECTED_TABLE_NAMES);
   });
 
-  it('reports the recorded number of tables (312)', () => {
+  it('reports the recorded number of tables (321)', () => {
     const schemaMap = Schema as unknown as Record<string, unknown>;
     let count = 0;
     for (const value of Object.values(schemaMap)) {
       if (value && typeof value === 'object' && isTable(value)) count += 1;
     }
     expect(count).toBe(Object.keys(EXPECTED_TABLE_NAMES).length);
-    expect(count).toBe(312);
+    expect(count).toBe(321);
   });
 });

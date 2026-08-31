@@ -125,7 +125,7 @@ export default function AdminAutomationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Automations</h1>
-          <p className="text-muted-foreground mt-1">Manage automation rules and view execution logs.</p>
+          <p className="text-muted-foreground mt-1">Gestiona reglas de automatización y ve registros de ejecución.</p>
         </div>
         <div className="flex items-center gap-2">
           {(['rules', 'logs'] as const).map(t => (
@@ -167,20 +167,20 @@ export default function AdminAutomationsPage() {
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">smart_toy</span>
               <h3 className="mt-4 font-semibold text-foreground">No automation rules</h3>
-              <p className="text-muted-foreground mt-1 text-sm">Rules will appear here once clients create automations.</p>
+              <p className="text-muted-foreground mt-1 text-sm">Las reglas aparecerán aquí una vez que los clientes creen automatizaciones.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Source</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fuente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Executions</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Run</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Descripción</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -244,19 +244,19 @@ export default function AdminAutomationsPage() {
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">receipt_long</span>
               <h3 className="mt-4 font-semibold text-foreground">No logs found</h3>
-              <p className="text-muted-foreground mt-1 text-sm">Execution logs will appear here after automations run.</p>
+              <p className="text-muted-foreground mt-1 text-sm">Los registros de ejecución aparecerán aquí tras ejecutarse las automatizaciones.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Rule Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Trigger Event</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duration</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Error</th>
                   </tr>
                 </thead>

@@ -113,7 +113,7 @@ export default function QuotePaymentPage({ params }: { params: Promise<{ slug: s
               <span className="material-icons text-3xl text-green-600">check_circle</span>
             </div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Payment Complete</h2>
-            <p className="text-gray-500 text-sm">Thank you! A confirmation has been sent to your email.</p>
+            <p className="text-gray-500 text-sm">¡Gracias! Se ha enviado una confirmación a tu email.</p>
           </div>
         ) : (
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-5">

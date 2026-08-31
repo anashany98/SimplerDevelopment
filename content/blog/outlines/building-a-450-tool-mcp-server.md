@@ -118,7 +118,7 @@
 
 ## CTA
 
-**Primary:** "Connect your AI agent to SimplerDevelopment — get an API key in the portal under Settings → API Keys."
+**Primary:** "Connect your AI agent to CRM AGENTS — get an API key in the portal under Settings → API Keys."
 **Secondary:** Link to `/docs/agents/tool-reference` for the full tool catalogue.
 
 ---

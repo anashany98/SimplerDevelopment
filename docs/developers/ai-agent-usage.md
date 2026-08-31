@@ -1,6 +1,6 @@
 # AI agent usage of `simpler`
 
-How coding agents (Claude Code, Codex, or any terminal-driving agent) should use the `simpler` CLI against the SimplerDevelopment portal, and the parity guarantee between it and the portal's MCP tool surface.
+How coding agents (Claude Code, Codex, or any terminal-driving agent) should use the `simpler` CLI against the CRM AGENTS portal, and the parity guarantee between it and the portal's MCP tool surface.
 
 ## How agents should use the CLI
 

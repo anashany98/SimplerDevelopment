@@ -35,9 +35,11 @@ function generateCheckinCode(): string {
 }
 
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
-  // Billing removed — payments are disabled.
+  // Billing removed — payments are disabled. Free bookings stay fully
+  // functional (create the booking, send emails) — only bookings that would
+  // require a charge are rejected, and that happens when the price is known
+  // (below), before any row is written, so no orphan bookings are created.
   const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
-  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   const { slug } = await params;
 
   // An approval reviewer is looking at an INACTIVE page (approving is what flips
@@ -295,6 +297,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   }
 
   const total = Math.max(0, subtotal - discountTotal - giftCertAmount);
+
+  // Billing removed — reject paid bookings upfront (before any write) with a
+  // clean "payments disabled" response; free bookings continue past here.
+  if (PAYMENTS_DISABLED && total > 0) {
+    return billingDisabledResponse(403);
+  }
 
   // ─── CREATE BOOKING ────────────────────────────────────────────────────────
 

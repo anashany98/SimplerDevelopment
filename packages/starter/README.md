@@ -1,7 +1,7 @@
-# SimplerDevelopment starter
+# CRM AGENTS starter
 
 A minimal Next.js App Router site that renders its content from a
-SimplerDevelopment CMS site over the public REST v1 API.
+CRM AGENTS CMS site over the public REST v1 API.
 
 Use it as the starting point for a **headless** SD site: one that deploys on its
 own infrastructure and its own domain, while the content, navigation and
@@ -35,7 +35,7 @@ custom properties on `:root`.
 
 ## The one thing that will trip you up
 
-The SDK types a post's `content` as `string`, but SimplerDevelopment does **not**
+The SDK types a post's `content` as `string`, but CRM AGENTS does **not**
 store HTML there — it stores the block document as JSON:
 
 ```json

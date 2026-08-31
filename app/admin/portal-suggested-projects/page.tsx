@@ -29,7 +29,7 @@ interface Client {
 }
 
 const categoryOptions = [
-  { value: 'website', label: 'Website' },
+  { value: 'website', label: 'Sitio web' },
   { value: 'ecommerce', label: 'E-Commerce' },
   { value: 'mobile', label: 'Mobile App' },
   { value: 'maintenance', label: 'Maintenance' },
@@ -85,7 +85,7 @@ function SuggestedProjectForm({
   return (
     <form onSubmit={onSubmit} className="grid sm:grid-cols-2 gap-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título<span className="text-destructive">*</span></label>
         <input
           type="text" required value={values.title}
           onChange={e => setValues(v => ({ ...v, title: e.target.value }))}
@@ -93,7 +93,7 @@ function SuggestedProjectForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Category</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Categoría</label>
         <select
           value={values.category}
           onChange={e => setValues(v => ({ ...v, category: e.target.value, icon: categoryIcon[e.target.value] ?? 'rocket_launch' }))}
@@ -103,7 +103,7 @@ function SuggestedProjectForm({
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <textarea
           rows={2} value={values.description}
           onChange={e => setValues(v => ({ ...v, description: e.target.value }))}
@@ -118,7 +118,7 @@ function SuggestedProjectForm({
           onChange={e => setValues(v => ({ ...v, estimatedPrice: e.target.value }))}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />
-        <p className="text-xs text-muted-foreground mt-0.5">Leave blank to show &quot;Quote on request&quot;</p>
+        <p className="text-xs text-muted-foreground mt-0.5">Déjalo en blanco para mostrar &quot;Cotización a petición&quot;</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Estimated Timeline</label>
@@ -185,13 +185,11 @@ function SuggestedProjectForm({
       </div>
 
       <div className="sm:col-span-2 flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
-          Cancel
-        </button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
         <button type="submit" disabled={saving}
           className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
           {saving
-            ? <><span className="material-icons text-base animate-spin">refresh</span>Saving...</>
+            ? <><span className="material-icons text-base animate-spin">refresh</span>Guardando...</>
             : submitLabel}
         </button>
       </div>
@@ -364,7 +362,7 @@ export default function AdminSuggestedProjectsPage() {
       )}
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando...</div>
       ) : items.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">rocket_launch</span>
@@ -456,7 +454,7 @@ export default function AdminSuggestedProjectsPage() {
                       <button
                         onClick={() => startEdit(item)}
                         className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                        title="Edit"
+                        title="Editar"
                       >
                         <span className="material-icons text-base">edit</span>
                       </button>
@@ -464,7 +462,7 @@ export default function AdminSuggestedProjectsPage() {
                         onClick={() => deleteItem(item.id, item.title)}
                         disabled={deleting === item.id}
                         className="p-1.5 rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors disabled:opacity-40"
-                        title="Delete"
+                        title="Eliminar"
                       >
                         <span className="material-icons text-base">{deleting === item.id ? 'refresh' : 'delete_outline'}</span>
                       </button>

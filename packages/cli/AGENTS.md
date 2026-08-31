@@ -1,6 +1,6 @@
 # AGENTS.md — `simpler` CLI
 
-Instructions for Codex and other generic coding agents working with the `simpler` CLI: a token-lean, JSON-first wrapper over the SimplerDevelopment portal's MCP tool surface (450+ tools — posts, CRM, kanban, brain, store, bookings, email, sites, and more), reachable over `POST /api/mcp`.
+Instructions for Codex and other generic coding agents working with the `simpler` CLI: a token-lean, JSON-first wrapper over the CRM AGENTS portal's MCP tool surface (450+ tools — posts, CRM, kanban, brain, store, bookings, email, sites, and more), reachable over `POST /api/mcp`.
 
 ## Prefer this CLI over connecting an MCP server
 

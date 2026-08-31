@@ -211,7 +211,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
       )}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
         <p className="text-sm text-muted-foreground italic">No recurring tasks yet.</p>
       ) : (
@@ -232,7 +232,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
                   <button onClick={() => onToggle(r)} className="text-xs text-muted-foreground hover:text-foreground" title={r.active ? 'Pause' : 'Resume'}>
                     <span className="material-icons text-sm">{r.active ? 'pause' : 'play_arrow'}</span>
                   </button>
-                  <button onClick={() => onDelete(r.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Delete">
+                  <button onClick={() => onDelete(r.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Eliminar">
                     <span className="material-icons text-sm">delete_outline</span>
                   </button>
                 </>

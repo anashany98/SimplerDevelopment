@@ -61,7 +61,7 @@ export default function VariantsPanel({ surveyId }: Props) {
         fetch(`/api/portal/surveys/${surveyId}/variants/stats`),
       ]);
       const variantsJson = await variantsRes.json();
-      if (!variantsJson.success) throw new Error(variantsJson.message || 'Failed to load variants');
+      if (!variantsJson.success) throw new Error(variantsJson.message || 'No se pudieron cargar las variantes');
       setVariants(variantsJson.data as SurveyVariant[]);
 
       // Stats endpoint is best-effort — if it fails we still render the list,
@@ -81,7 +81,7 @@ export default function VariantsPanel({ surveyId }: Props) {
 
   async function createVariant() {
     if (!newName.trim()) {
-      setError('Name is required');
+      setError('El nombre es obligatorio');
       return;
     }
     setCreating(true);
@@ -93,7 +93,7 @@ export default function VariantsPanel({ surveyId }: Props) {
         body: JSON.stringify({ name: newName.trim() }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to create variant');
+      if (!json.success) throw new Error(json.message || 'No se pudo crear la variante');
       setNewName('');
       await refresh();
     } catch (err) {
@@ -112,7 +112,7 @@ export default function VariantsPanel({ surveyId }: Props) {
         body: JSON.stringify(patch),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to update variant');
+      if (!json.success) throw new Error(json.message || 'No se pudo actualizar la variante');
       // Optimistic merge — the server returns the canonical row so we use it
       // directly rather than re-fetching the whole list on every keystroke.
       setVariants((rows) => rows.map((r) => (r.id === id ? { ...r, ...(json.data as SurveyVariant) } : r)));
@@ -122,12 +122,12 @@ export default function VariantsPanel({ surveyId }: Props) {
   }
 
   async function deleteVariant(id: number) {
-    if (!confirm('Delete this variant? Existing responses keep their data but lose the variant label.')) return;
+    if (!confirm('¿Eliminar esta variante? Las respuestas existentes conservan sus datos, pero pierden la etiqueta de variante.')) return;
     setError('');
     try {
       const res = await fetch(`/api/portal/surveys/${surveyId}/variants/${id}`, { method: 'DELETE' });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to delete variant');
+      if (!json.success) throw new Error(json.message || 'No se pudo eliminar la variante');
       if (openEditFor === id) setOpenEditFor(null);
       await refresh();
     } catch (err) {
@@ -147,11 +147,11 @@ export default function VariantsPanel({ surveyId }: Props) {
         <div className="flex items-start gap-3 mb-4">
           <span className="material-icons text-primary text-xl mt-0.5">science</span>
           <div className="flex-1">
-            <h3 className="font-semibold text-foreground">A/B Variants</h3>
+            <h3 className="font-semibold text-foreground">Variantes A/B</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Add multiple field sets and the public renderer will fork visitors deterministically by cookie.
-              Each variant has its own field list, weight, and enabled flag. With no enabled variants the
-              survey renders its default fields.
+              Añade varios conjuntos de campos y el renderizador público dividirá a los visitantes de
+              forma determinista por cookie. Cada variante tiene su propia lista de campos, peso y
+              estado de activación. Sin variantes activas, la encuesta muestra sus campos predeterminados.
             </p>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function VariantsPanel({ surveyId }: Props) {
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder="Variant name (e.g. Short form, Long form)"
+            placeholder="Nombre de la variante (ej. Formulario corto, Formulario largo)"
             className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             onKeyDown={(e) => { if (e.key === 'Enter') void createVariant(); }}
           />
@@ -185,7 +185,7 @@ export default function VariantsPanel({ surveyId }: Props) {
             ) : (
               <span className="material-icons text-lg">add</span>
             )}
-            Add variant
+            Añadir variante
           </button>
         </div>
       </div>
@@ -198,7 +198,7 @@ export default function VariantsPanel({ surveyId }: Props) {
         <div className="bg-card border border-border rounded-xl p-10 text-center">
           <span className="material-icons text-4xl text-muted-foreground/50">science</span>
           <p className="mt-3 text-sm text-muted-foreground">
-            No variants yet. Add one above to start splitting visitors between alternate field sets.
+            Aún no hay variantes. Añade una arriba para empezar a dividir visitantes entre conjuntos de campos alternativos.
           </p>
         </div>
       ) : (
@@ -231,20 +231,20 @@ export default function VariantsPanel({ surveyId }: Props) {
                         className="bg-transparent border-none p-0 text-sm font-medium text-foreground focus:outline-none focus:ring-0"
                       />
                       <span className="text-xs text-muted-foreground">
-                        {variant.fields?.length ?? 0} fields
-                        {stat && ` • ${stat.total} response${stat.total === 1 ? '' : 's'}`}
+                        {variant.fields?.length ?? 0} campos
+                        {stat && ` • ${stat.total} respuesta${stat.total === 1 ? '' : 's'}`}
                       </span>
                     </div>
                     {variant.enabled && enabledTotal > 0 && (
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        ~{sharePct}% of traffic (weight {variant.weight} of {enabledTotal})
+                        ~{sharePct}% del tráfico (peso {variant.weight} de {enabledTotal})
                       </p>
                     )}
                   </div>
 
                   <div className="flex items-center gap-2">
                     <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <span>Weight</span>
+                      <span>Peso</span>
                       <input
                         type="number"
                         min={1}
@@ -262,14 +262,14 @@ export default function VariantsPanel({ surveyId }: Props) {
                       onClick={() => void updateVariant(variant.id, { enabled: !variant.enabled })}
                       className="text-xs px-2.5 py-1.5 rounded-md border border-border hover:bg-accent transition-colors"
                     >
-                      {variant.enabled ? 'Disable' : 'Enable'}
+                      {variant.enabled ? 'Desactivar' : 'Activar'}
                     </button>
                     <button
                       onClick={() => setOpenEditFor(isOpen ? null : variant.id)}
                       className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-md border border-border hover:bg-accent transition-colors"
                     >
                       <span className="material-icons text-base">{isOpen ? 'expand_less' : 'edit'}</span>
-                      {isOpen ? 'Close' : 'Fields'}
+                      {isOpen ? 'Cerrar' : 'Campos'}
                     </button>
                     <button
                       onClick={() => void deleteVariant(variant.id)}
@@ -294,7 +294,7 @@ export default function VariantsPanel({ surveyId }: Props) {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
                       >
                         <span className="material-icons text-base">save</span>
-                        Save fields
+                        Guardar campos
                       </button>
                     </div>
                   </div>

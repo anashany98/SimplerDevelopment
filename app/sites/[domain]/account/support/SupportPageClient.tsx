@@ -102,7 +102,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
           {showForm && (
             <form onSubmit={handleSubmit} className="border border-gray-200 rounded-xl p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Subject</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Asunto</label>
                 <input
                   type="text"
                   value={form.subject}
@@ -113,7 +113,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Category</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Categoría</label>
                 <select
                   value={form.category}
                   onChange={e => setForm(prev => ({ ...prev, category: e.target.value }))}
@@ -125,7 +125,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1">Message</label>
+                <label className="block text-sm font-medium text-gray-900 mb-1">Mensaje</label>
                 <textarea
                   value={form.body}
                   onChange={e => setForm(prev => ({ ...prev, body: e.target.value }))}

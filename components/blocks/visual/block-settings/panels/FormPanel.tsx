@@ -46,7 +46,7 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Headline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Titular</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable
             html={block.headline || ''}
@@ -58,7 +58,7 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Body</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Cuerpo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable
             html={block.body || ''}
@@ -162,7 +162,7 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.text}
@@ -184,7 +184,7 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Variant</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Variante</label>
         <select
           value={block.variant || 'primary'}
           onChange={(e) => onChange({ variant: e.target.value as ButtonBlock['variant'] })}
@@ -197,20 +197,20 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Size</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Tamaño</label>
         <select
           value={block.size || 'md'}
           onChange={(e) => onChange({ size: e.target.value as ButtonBlock['size'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="sm">Small</option>
-          <option value="md">Medium</option>
-          <option value="lg">Large</option>
+          <option value="sm">Pequeño</option>
+          <option value="md">Media</option>
+          <option value="lg">Grande</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <div className="flex gap-2">
           {(['left', 'center', 'right'] as const).map((align) => (
             <button
@@ -278,7 +278,7 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
           onChange={(e) => onChange({ hoverEffect: e.target.value as ButtonBlock['hoverEffect'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="none">None</option>
+          <option value="none">Ninguno</option>
           <option value="lift">Lift (translate up)</option>
           <option value="glow">Glow</option>
           <option value="fill">Fill (subtle wash)</option>
@@ -378,12 +378,12 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <input type="text" value={block.title || ''} onChange={(e) => onChange({ title: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Take Our Survey" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <input type="text" value={block.description || ''} onChange={(e) => onChange({ description: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="We'd love to hear your feedback" />
       </div>
@@ -438,11 +438,11 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <TokenColorPicker label="Accent (input tint)" value={so.accentColor || ''} onChange={(v) => update({ accentColor: v || undefined })} />
-                    <TokenColorPicker label="Background" value={so.backgroundColor || ''} onChange={(v) => update({ backgroundColor: v || undefined })} />
+                    <TokenColorPicker label="Fondo" value={so.backgroundColor || ''} onChange={(v) => update({ backgroundColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Text" value={so.textColor || ''} onChange={(v) => update({ textColor: v || undefined })} />
-                    <TokenColorPicker label="Label" value={so.labelColor || ''} onChange={(v) => update({ labelColor: v || undefined })} />
+                    <TokenColorPicker label="Texto" value={so.textColor || ''} onChange={(v) => update({ textColor: v || undefined })} />
+                    <TokenColorPicker label="Etiqueta" value={so.labelColor || ''} onChange={(v) => update({ labelColor: v || undefined })} />
                   </div>
                   <label className="flex items-center gap-1.5 text-xs text-foreground">
                     <input
@@ -538,7 +538,7 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
                   <div className={groupLabel}>Buttons</div>
                   <div className="grid grid-cols-2 gap-2">
                     <TokenColorPicker label="Button Background" value={so.buttonBg || ''} onChange={(v) => update({ buttonBg: v || undefined })} />
-                    <TokenColorPicker label="Button Text" value={so.buttonText || ''} onChange={(v) => update({ buttonText: v || undefined })} />
+                    <TokenColorPicker label="Texto del botón" value={so.buttonText || ''} onChange={(v) => update({ buttonText: v || undefined })} />
                   </div>
                   <div>
                     <label className={fieldLabel}>Button Radius</label>
@@ -548,7 +548,7 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
                   <div>
                     <label className={fieldLabel}>Submit Label</label>
                     <input type="text" value={so.submitLabel || ''} onChange={(e) => update({ submitLabel: e.target.value || undefined })}
-                      className={inputClass} placeholder="Submit" />
+                      className={inputClass} placeholder="Enviar" />
                   </div>
                 </div>
 
@@ -610,7 +610,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Placeholder</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Marcador de posición</label>
         <input
           type="text"
           value={block.placeholder || ''}
@@ -621,7 +621,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
       </div>
       {showOptions && (
         <div className="border-t border-border pt-4 space-y-2">
-          <label className="block text-sm font-medium text-foreground">Options</label>
+          <label className="block text-sm font-medium text-foreground">Opciones</label>
           {(block.options || []).map((opt, i) => (
             <div key={i} className="flex gap-2">
               <input
@@ -713,15 +713,15 @@ function EmailHeaderBlockSettings({ block, onChange }: { block: EmailHeaderBlock
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Alignment</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Alineación</label>
           <select
             value={block.alignment || 'center'}
             onChange={(e) => onChange({ alignment: e.target.value as EmailHeaderBlock['alignment'] })}
             className={inputClass}
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>
@@ -744,7 +744,7 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Company Name</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Nombre de la empresa</label>
         <input
           type="text"
           value={block.companyName || ''}
@@ -754,7 +754,7 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Address</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Dirección</label>
         <textarea
           value={block.address || ''}
           onChange={(e) => onChange({ address: e.target.value || undefined })}
@@ -834,19 +834,19 @@ function BookingMenuBlockSettings({ block, onChange }: { block: BookingMenuBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: Number(e.target.value) as BookingMenuBlock['columns'] })}

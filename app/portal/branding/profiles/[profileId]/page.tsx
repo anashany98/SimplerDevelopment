@@ -62,7 +62,7 @@ export default function BrandingProfileEditorPage() {
   if (!profile) {
     return (
       <div className="max-w-4xl mx-auto text-center py-16">
-        <p className="text-muted-foreground">Profile not found.</p>
+        <p className="text-muted-foreground">Perfil no encontrado.</p>
         <Link href="/portal/branding" className="text-primary text-sm mt-2 inline-block">
           Back to Branding
         </Link>
@@ -73,9 +73,9 @@ export default function BrandingProfileEditorPage() {
   const tabs = [
     { id: 'logos' as const, label: 'Logos', icon: 'image' },
     { id: 'colors' as const, label: 'Colors', icon: 'palette' },
-    { id: 'typography' as const, label: 'Typography', icon: 'text_fields' },
+    { id: 'typography' as const, label: 'Tipografía', icon: 'text_fields' },
     { id: 'buttons' as const, label: 'Buttons', icon: 'smart_button' },
-    { id: 'style' as const, label: 'Style', icon: 'tune' },
+    { id: 'style' as const, label: 'Estilo', icon: 'tune' },
     { id: 'messaging' as const, label: 'Messaging', icon: 'chat' },
   ];
 
@@ -106,7 +106,7 @@ export default function BrandingProfileEditorPage() {
                 onChange={(e) => update({ isDefault: e.target.checked })}
                 className="rounded border-border"
               />
-              <span className="text-xs text-muted-foreground">Default</span>
+              <span className="text-xs text-muted-foreground">Predeterminado</span>
             </label>
           </div>
           <p className="text-sm text-muted-foreground mt-1">

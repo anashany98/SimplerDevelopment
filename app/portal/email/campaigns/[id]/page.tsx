@@ -270,7 +270,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
 
   async function sendCampaign() {
     if (!campaign) return;
-    if (!confirm(`Send "${campaign.name}" to all active subscribers now?`)) return;
+    if (!confirm(`¿Enviar "${campaign.name}" a todos los suscriptores activos ahora?`)) return;
     setSending(true);
     const res = await fetch(`/api/portal/email/campaigns/${id}/send`, { method: 'POST' });
     const data = await res.json();
@@ -281,8 +281,8 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
     setCampaign(prev => prev ? { ...prev, status: 'sending' } : prev);
   }
 
-  if (loading) return <div className="p-6 text-muted-foreground text-sm">Loading…</div>;
-  if (!campaign) return <div className="p-6 text-muted-foreground text-sm">Campaign not found.</div>;
+  if (loading) return <div className="p-6 text-muted-foreground text-sm">Cargando…</div>;
+  if (!campaign) return <div className="p-6 text-muted-foreground text-sm">Campaña no encontrada.</div>;
 
   const openRate = campaign.totalSent > 0 ? Math.round(campaign.totalOpened / campaign.totalSent * 100) : 0;
   const clickRate = campaign.totalSent > 0 ? Math.round(campaign.totalClicked / campaign.totalSent * 100) : 0;
@@ -295,11 +295,9 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       {/* Header */}
       <div>
         <Link href="/portal/email/campaigns" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-3">
-          <span className="material-icons text-base">arrow_back</span>
-          Campaigns
-        </Link>
+          <span className="material-icons text-base">arrow_back</span>Campañas</Link>
         <PortalPageHeader
-          eyebrow="Email"
+          eyebrow="Correo"
           title={
             <span className="flex items-center gap-2 flex-wrap">
               {campaign.name}
@@ -312,15 +310,14 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
               <EmailPresenceBar />
               {campaign.status === 'draft' && !editing && (
                 <button onClick={startEdit} className={pBtnGhost}>
-                  <span className="material-icons text-base">edit</span>Edit
-                </button>
+                  <span className="material-icons text-base">edit</span>Editar</button>
               )}
               {campaign.status === 'draft' && (campaign.useBlockEditor || hasBlockContent) && (
                 <button
                   onClick={sendTestEmail}
                   disabled={sendingTest}
                   className={`${pBtnGhost} disabled:opacity-50`}
-                  title="Send the rendered email to your own address"
+                  title="Enviar el correo renderizado a tu propia dirección"
                 >
                   <span className="material-icons text-base">science</span>
                   {sendingTest ? 'Sending…' : 'Send test'}
@@ -357,8 +354,8 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { label: 'Sent', value: campaign.totalSent, icon: 'send' },
-            { label: 'Open Rate', value: `${openRate}%`, icon: 'drafts' },
-            { label: 'Click Rate', value: `${clickRate}%`, icon: 'touch_app' },
+            { label: 'Tasa de apertura', value: `${openRate}%`, icon: 'drafts' },
+            { label: 'Tasa de clics', value: `${clickRate}%`, icon: 'touch_app' },
             { label: 'Bounce Rate', value: `${bounceRate}%`, icon: 'error_outline' },
           ].map(stat => (
             <div key={stat.label} className="bg-card border border-border rounded-2xl p-4">
@@ -390,12 +387,12 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
         />
         <div className="bg-card border border-border rounded-2xl divide-y divide-border mt-4">
           {[
-            { label: 'From', value: `${campaign.fromName} <${campaign.fromEmail}>` },
-            { label: 'Reply-To', value: campaign.replyTo ?? '—' },
-            { label: 'List', value: campaign.listName ?? '—' },
-            { label: 'Preview Text', value: campaign.previewText ?? '—' },
-            { label: 'Sent At', value: campaign.sentAt ? new Date(campaign.sentAt).toLocaleString() : '—' },
-            { label: 'Unsubscribes', value: campaign.totalUnsubscribed },
+            { label: 'Remitente', value: `${campaign.fromName} <${campaign.fromEmail}>` },
+            { label: 'Correo de respuesta', value: campaign.replyTo ?? '—' },
+            { label: 'Lista', value: campaign.listName ?? '—' },
+            { label: 'Texto de vista previa', value: campaign.previewText ?? '—' },
+            { label: 'Enviado el', value: campaign.sentAt ? new Date(campaign.sentAt).toLocaleString() : '—' },
+            { label: 'Cancelaciones de suscripción', value: campaign.totalUnsubscribed },
           ].map(row => (
             <div key={row.label} className="flex px-5 py-3 gap-4">
               <span className="text-sm text-muted-foreground w-28 shrink-0">{row.label}</span>
@@ -407,15 +404,15 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
               <span className="text-sm text-muted-foreground w-28 shrink-0">Editor</span>
               <div className="flex items-center gap-3 flex-1">
                 <span className="text-sm text-foreground">
-                  {campaign.useBlockEditor ? 'Block builder (cached MJML-style render)' : 'Template / HTML'}
+                  {campaign.useBlockEditor ? 'Constructor de bloques (render estilo MJML con caché)' : 'Plantilla / HTML'}
                 </span>
                 <button
                   onClick={toggleUseBlockEditor}
                   className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-xl text-xs hover:bg-accent"
-                  title="Toggle between the legacy template flow and the new block builder"
+                  title="Alterna entre el flujo de plantillas clásico y el nuevo constructor de bloques"
                 >
                   <span className="material-icons text-sm">swap_horiz</span>
-                  Switch to {campaign.useBlockEditor ? 'template' : 'block builder'}
+                  Cambiar a {campaign.useBlockEditor ? 'plantilla' : 'constructor de bloques'}
                 </button>
               </div>
             </div>
@@ -427,13 +424,11 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       {tab === 'content' && (
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <h3 className="font-semibold text-foreground">{editing ? 'Edit Content' : 'Email Preview'}</h3>
+            <h3 className="font-semibold text-foreground">{editing ? 'Edit Content' : 'Vista previa del correo'}</h3>
             {editing && hasBlockContent && (
               <button type="button" onClick={() => setShowPreview(!showPreview)}
                 className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors ${showPreview ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}>
-                <span className="material-icons text-sm align-middle mr-1">preview</span>
-                Preview
-              </button>
+                <span className="material-icons text-sm align-middle mr-1">preview</span>Vista previa</button>
             )}
           </div>
           {editing ? (
@@ -442,7 +437,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
                 {editError && <p className="text-sm text-red-600">{editError}</p>}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Subject *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Asunto *</label>
                     <EmailFieldFocusIndicator fieldPath="subject">
                       <input
                         required
@@ -455,7 +450,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
                     </EmailFieldFocusIndicator>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Preview Text</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">Texto de vista previa</label>
                     <EmailFieldFocusIndicator fieldPath="previewText">
                       <input
                         value={editForm.previewText}
@@ -505,7 +500,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
                 </div>
               ) : (
                 <div className="p-5 pt-0">
-                  <label className="block text-sm font-medium text-foreground mb-1">HTML Content *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">Contenido HTML *</label>
                   <textarea required value={editForm.htmlContent} onChange={e => setEditForm(p => ({ ...p, htmlContent: e.target.value }))}
                     rows={16} className={`${inputClass} font-mono text-xs`} />
                 </div>
@@ -517,9 +512,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
                   {editSaving ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button type="button" onClick={() => setEditing(false)}
-                  className={pBtnGhost}>
-                  Cancel
-                </button>
+                  className={pBtnGhost}>Cancelar</button>
               </div>
             </div>
           ) : (
@@ -537,13 +530,13 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
             <h3 className="font-semibold text-foreground">Send Log ({sends.length})</h3>
           </div>
           {sends.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">No sends recorded yet.</p>
+            <p className="p-6 text-sm text-muted-foreground">Aún no hay envíos registrados.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
                   <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Recipient</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Sent</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Enviado</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Opened</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clicked</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Bounced</th>

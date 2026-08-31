@@ -104,7 +104,7 @@ export default function MediaLibraryPage() {
 
         {/* Media Grid */}
         {loading ? (
-          <div className="text-center py-12">Loading...</div>
+          <div className="text-center py-12">Cargando...</div>
         ) : (
           <MediaGrid media={media} onUpdate={fetchMedia} />
         )}
@@ -116,9 +116,7 @@ export default function MediaLibraryPage() {
               disabled={offset === 0}
               onClick={() => setOffset(Math.max(0, offset - limit))}
               className="px-4 py-2 text-sm border border-border rounded-md disabled:opacity-50 hover:bg-accent"
-            >
-              Previous
-            </button>
+            >Anterior</button>
             <span className="px-4 py-2 text-sm">
               {offset + 1} - {Math.min(offset + limit, total)} of {total}
             </span>
@@ -126,9 +124,7 @@ export default function MediaLibraryPage() {
               disabled={offset + limit >= total}
               onClick={() => setOffset(offset + limit)}
               className="px-4 py-2 text-sm border border-border rounded-md disabled:opacity-50 hover:bg-accent"
-            >
-              Next
-            </button>
+            >Siguiente</button>
           </div>
         )}
 

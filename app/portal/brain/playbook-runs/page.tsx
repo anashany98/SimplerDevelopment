@@ -52,9 +52,7 @@ export default function PlaybookRunsPage() {
 function ListFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-muted-foreground">
-      <span className="material-icons animate-spin mr-2">progress_activity</span>
-      Loading…
-    </div>
+      <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
   );
 }
 
@@ -162,9 +160,9 @@ function PlaybookRunsContent() {
     <div className="space-y-4">
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
-          eyebrow="Brain"
+          eyebrow="Cerebro de empresa"
           title={<span className="flex items-center gap-2"><span className="material-icons text-primary">playlist_play</span>Playbook runs</span>}
-          subtitle="In-flight and historical runs. Click a row to see its step-by-step state."
+          subtitle="Ejecuciones en curso e históricas. Haz clic en una fila para ver su estado paso a paso."
           actions={
             <Link
               href="/portal/brain/playbooks"
@@ -200,7 +198,7 @@ function PlaybookRunsContent() {
 
         <div className="mt-2 flex items-center gap-2 flex-wrap text-xs">
           <select
-            aria-label="Filter by playbook"
+            aria-label="Filtrar por playbook"
             value={playbookIdParam ?? ''}
             onChange={(e) => setParam({ playbookId: e.target.value || null })}
             className="px-2 py-1 rounded-xl border border-border bg-card text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary"
@@ -243,9 +241,7 @@ function PlaybookRunsContent() {
               }
               className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 text-muted-foreground hover:text-foreground"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           )}
         </div>
       </div>
@@ -285,9 +281,7 @@ function PlaybookRunsContent() {
             onClick={() => setParam({ offset: String(Math.max(0, offset - PAGE_SIZE)) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
           >
-            <span className="material-icons text-base">chevron_left</span>
-            Previous
-          </button>
+            <span className="material-icons text-base">chevron_left</span>Anterior</button>
           <span className="text-xs text-muted-foreground">
             {offset + 1}–{offset + items.length}
           </span>
@@ -296,9 +290,7 @@ function PlaybookRunsContent() {
             disabled={!hasMore}
             onClick={() => setParam({ offset: String(offset + PAGE_SIZE) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
-          >
-            Next
-            <span className="material-icons text-base">chevron_right</span>
+          >Siguiente<span className="material-icons text-base">chevron_right</span>
           </button>
         </div>
       )}

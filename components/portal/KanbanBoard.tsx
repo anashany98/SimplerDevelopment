@@ -136,13 +136,13 @@ function KanbanCard({
             type="button"
             onClick={(e) => { e.stopPropagation(); setShowMoveMenu(!showMoveMenu); }}
             className="p-1 rounded bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-            title="Move to column"
+            title="Mover a columna"
           >
             <span className="material-icons text-sm">swap_horiz</span>
           </button>
           {showMoveMenu && (
             <div className="absolute right-0 top-full mt-1 bg-card border border-border rounded-lg shadow-lg py-1 min-w-[140px] z-20">
-              <p className="px-3 py-1 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Move to</p>
+              <p className="px-3 py-1 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Mover a</p>
               {otherColumns.map(col => (
                 <button
                   key={col.id}
@@ -346,9 +346,7 @@ function KanbanColumn({
             );
           })()}
           {column.isDone && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium shrink-0" title="Marked as Done column">
-              Done
-            </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium shrink-0" title="Columna marcada como Hecho">Listo</span>
           )}
         </div>
         <div className="flex items-center gap-0.5 opacity-100 sm:opacity-0 sm:group-hover/col:opacity-100 transition-opacity shrink-0">
@@ -357,7 +355,7 @@ function KanbanColumn({
               type="button"
               onClick={() => onToggleDone(column.id, !column.isDone)}
               className={`p-0.5 rounded transition-colors ${column.isDone ? 'text-green-600' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
-              title={column.isDone ? 'Remove as Done column' : 'Mark as Done column (for sprint reports)'}
+              title={column.isDone ? 'Quitar como columna de Hecho' : 'Marcar como columna de Hecho (para informes de sprint)'}
             >
               <span className="material-icons text-sm">{column.isDone ? 'check_circle' : 'check_circle_outline'}</span>
             </button>
@@ -384,7 +382,7 @@ function KanbanColumn({
               type="button"
               onClick={() => onMoveColumn(column.id, 'left')}
               className="p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              title="Move left"
+              title="Mover a la izquierda"
             >
               <span className="material-icons text-sm">chevron_left</span>
             </button>
@@ -394,7 +392,7 @@ function KanbanColumn({
               type="button"
               onClick={() => onMoveColumn(column.id, 'right')}
               className="p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              title="Move right"
+              title="Mover a la derecha"
             >
               <span className="material-icons text-sm">chevron_right</span>
             </button>
@@ -404,7 +402,7 @@ function KanbanColumn({
               type="button"
               onClick={() => onDeleteColumn(column.id)}
               className="p-0.5 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors ml-0.5"
-              title="Delete empty column"
+              title="Eliminar columna vacía"
             >
               <span className="material-icons text-sm">delete_outline</span>
             </button>
@@ -439,7 +437,7 @@ function KanbanColumn({
               value={newCardTitle}
               onChange={e => onNewCardTitleChange(e.target.value)}
               onKeyDown={e => { if (e.key === 'Escape') onCancelAdd(); }}
-              placeholder="Card title…"
+              placeholder="Título de la tarjeta…"
               className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <div className="flex gap-2">
@@ -447,16 +445,12 @@ function KanbanColumn({
                 type="submit"
                 disabled={!newCardTitle.trim()}
                 className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
-              >
-                Add
-              </button>
+              >Añadir</button>
               <button
                 type="button"
                 onClick={onCancelAdd}
                 className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         ) : (
@@ -464,9 +458,7 @@ function KanbanColumn({
             onClick={() => onStartAdd(column.id)}
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg px-2 py-1.5 transition-colors w-full"
           >
-            <span className="material-icons text-sm">add</span>
-            Add card
-          </button>
+            <span className="material-icons text-sm">add</span>Añadir tarjeta</button>
         )}
       </div>
     </div>
@@ -553,7 +545,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
       if (cardCollisions.length > 0) return [cardCollisions[0]];
       return [overCol];
     }
-    // Fallback: card-level proximity anywhere on screen
+    // Fallback: card-level próximity anywhere on screen
     const corners = closestCorners(args);
     const firstCard = corners.find(c => String(c.id).startsWith('card-'));
     if (firstCard) return [firstCard];
@@ -859,7 +851,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === '/') {
         e.preventDefault();
-        const el = document.querySelector<HTMLInputElement>('input[placeholder="Filter cards…"]');
+        const el = document.querySelector<HTMLInputElement>('input[placeholder="Filtrar tarjetas…"]');
         el?.focus();
       } else if (e.key === 'c' && s.canEdit && s.columns.length > 0) {
         e.preventDefault();
@@ -924,7 +916,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
               type="text"
               value={filterSearch}
               onChange={e => setFilterSearch(e.target.value)}
-              placeholder="Filter cards…"
+              placeholder="Filtrar tarjetas…"
               className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
@@ -949,7 +941,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-muted-foreground">Sprint:</span>
                 <button onClick={() => setFilterSprintId(null)}
-                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === null ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>All</button>
+                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === null ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>Todos</button>
                 {sprints.map(s => (
                   <button key={s.id} onClick={() => setFilterSprintId(s.id)}
                     className={`px-2 py-0.5 rounded-full border ${filterSprintId === s.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>{s.name}</button>
@@ -1022,7 +1014,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
               />
             ))}
 
-            {/* Add column */}
+            {/* Añadir columna */}
             <div className="flex-shrink-0 w-72">
               {addingColumn ? (
                 <form onSubmit={handleAddColumn} className="bg-muted/40 rounded-xl border border-border p-3 space-y-3">
@@ -1031,7 +1023,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
                     value={newColumnName}
                     onChange={e => setNewColumnName(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Escape') setAddingColumn(false); }}
-                    placeholder="Column name..."
+                    placeholder="Nombre de la columna..."
                     className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <div className="flex items-center gap-2">
@@ -1048,16 +1040,12 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
                       type="submit"
                       disabled={!newColumnName.trim()}
                       className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
-                    >
-                      Add
-                    </button>
+                    >Añadir</button>
                     <button
                       type="button"
                       onClick={() => setAddingColumn(false)}
                       className="text-xs text-muted-foreground hover:text-foreground"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                   </div>
                 </form>
               ) : (
@@ -1066,7 +1054,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
                   className="flex items-center justify-center gap-1 w-full py-3 rounded-xl border border-dashed border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 hover:bg-muted/40 transition-colors"
                 >
                   <span className="material-icons text-sm">add</span>
-                  Add column
+                  Añadir columna
                 </button>
               )}
             </div>

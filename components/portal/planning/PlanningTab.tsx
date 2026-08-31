@@ -283,7 +283,7 @@ export default function PlanningTab({ projectId, projectKey, canEdit, isStaff, c
                 {sprints.length === 0 && !showCreateForm && (
                   <div className="bg-card border border-border rounded-xl p-12 text-center">
                     <span className="material-icons text-5xl text-muted-foreground">sprint</span>
-                    <h3 className="mt-4 font-semibold text-foreground">No sprints yet</h3>
+                    <h3 className="mt-4 font-semibold text-foreground">Aún no hay sprints</h3>
                     <p className="mt-2 text-sm text-muted-foreground">
                       {canEdit ? 'Create a sprint to start planning work.' : 'No sprints have been set up for this project yet.'}
                     </p>

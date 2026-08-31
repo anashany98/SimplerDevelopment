@@ -19,9 +19,9 @@ const MAX_TONES = 3;
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
   { id: 'logos', label: 'Logos', icon: 'image' },
   { id: 'colors', label: 'Colors', icon: 'palette' },
-  { id: 'typography', label: 'Typography', icon: 'text_fields' },
+  { id: 'typography', label: 'Tipografía', icon: 'text_fields' },
   { id: 'buttons', label: 'Buttons', icon: 'smart_button' },
-  { id: 'style', label: 'Style', icon: 'tune' },
+  { id: 'style', label: 'Estilo', icon: 'tune' },
   { id: 'messaging', label: 'Messaging', icon: 'chat' },
 ];
 
@@ -114,9 +114,7 @@ export function StepBrandVibe({ state, setAnswers, next }: StepProps) {
             onClick={() => next({ brandTones: tones })}
             data-testid="onboarding-brand-next"
             className={obPrimaryBtn}
-          >
-            Continue
-            <span className="material-icons" style={{ fontSize: 18 }}>arrow_forward</span>
+          >Continuar<span className="material-icons" style={{ fontSize: 18 }}>arrow_forward</span>
           </button>
         </div>
       ) : (

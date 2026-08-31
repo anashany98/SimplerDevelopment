@@ -39,7 +39,7 @@ interface Delivery {
 }
 
 const ALL_EVENTS = [
-  { key: 'response.submitted', label: 'Response submitted' },
+  { key: 'response.submitted', label: 'Respuesta enviada' },
 ] as const;
 
 interface Props {
@@ -68,7 +68,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
     try {
       const res = await fetch(`/api/portal/surveys/${surveyId}/webhooks`);
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to load webhooks');
+      if (!json.success) throw new Error(json.message || 'No se pudieron cargar los webhooks');
       setHooks(json.data as SurveyWebhook[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -81,7 +81,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
 
   async function createWebhook() {
     if (!newUrl.trim()) {
-      setError('URL is required');
+      setError('La URL es obligatoria');
       return;
     }
     setCreating(true);
@@ -93,7 +93,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
         body: JSON.stringify({ url: newUrl.trim(), events: newEvents, enabled: true }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to create webhook');
+      if (!json.success) throw new Error(json.message || 'No se pudo crear el webhook');
       const created = json.data as SurveyWebhook;
       // Show the secret once on creation — subsequent reads redact it.
       if (created.secret) setSavedSecret({ id: created.id, secret: created.secret });
@@ -116,7 +116,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
         body: JSON.stringify({ enabled: !hook.enabled }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to update webhook');
+      if (!json.success) throw new Error(json.message || 'No se pudo actualizar el webhook');
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -124,14 +124,14 @@ export default function WebhooksPanel({ surveyId }: Props) {
   }
 
   async function deleteWebhook(hook: SurveyWebhook) {
-    if (!confirm(`Delete webhook for ${hook.url}? This also clears its delivery history.`)) return;
+    if (!confirm(`¿Eliminar el webhook de ${hook.url}? Esto también borra su historial de entregas.`)) return;
     setError('');
     try {
       const res = await fetch(`/api/portal/surveys/${surveyId}/webhooks/${hook.id}`, {
         method: 'DELETE',
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to delete webhook');
+      if (!json.success) throw new Error(json.message || 'No se pudo eliminar el webhook');
       if (openDeliveriesFor === hook.id) setOpenDeliveriesFor(null);
       await refresh();
     } catch (err) {
@@ -150,7 +150,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
     try {
       const res = await fetch(`/api/portal/surveys/${surveyId}/webhooks/${hookId}/deliveries?limit=20`);
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Failed to load deliveries');
+      if (!json.success) throw new Error(json.message || 'No se pudieron cargar las entregas');
       setDeliveries(json.data as Delivery[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -165,7 +165,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
       return (
         <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
           <span className="material-icons text-sm">schedule</span>
-          Never fired
+          Nunca se ejecutó
         </span>
       );
     }
@@ -174,7 +174,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
       ? 'text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/20'
       : 'text-red-700 bg-red-50 dark:text-red-400 dark:bg-red-900/20';
     const icon = success ? 'check_circle' : 'error';
-    const label = hook.lastStatus !== null ? `HTTP ${hook.lastStatus}` : 'No response';
+    const label = hook.lastStatus !== null ? `HTTP ${hook.lastStatus}` : 'Sin respuesta';
     return (
       <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded ${cls}`}>
         <span className="material-icons text-sm">{icon}</span>
@@ -195,8 +195,8 @@ export default function WebhooksPanel({ surveyId }: Props) {
           <div className="flex-1">
             <h3 className="font-semibold text-foreground">Webhooks</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Receive HMAC-signed POST requests when responses are submitted. Failures retry 3 times
-              with backoff (1s, 4s, 16s). The signature header is{' '}
+              Recibe solicitudes POST firmadas con HMAC cuando se envían respuestas. Los fallos se
+              reintentan 3 veces con backoff (1 s, 4 s, 16 s). El encabezado de firma es{' '}
               <code className="text-xs bg-muted px-1 py-0.5 rounded">X-SD-Signature: sha256=…</code>.
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 text-sm text-amber-900 dark:text-amber-300 space-y-2">
             <div className="flex items-center gap-2 font-medium">
               <span className="material-icons text-lg">key</span>
-              Save this secret — it will not be shown again
+              Guarda este secreto — no se mostrará de nuevo
             </div>
             <code className="block text-xs bg-amber-100 dark:bg-amber-900/40 p-2 rounded break-all font-mono">
               {savedSecret.secret}
@@ -226,14 +226,14 @@ export default function WebhooksPanel({ surveyId }: Props) {
               onClick={() => setSavedSecret(null)}
               className="text-xs underline"
             >
-              I&apos;ve saved it
+              Ya lo guardé
             </button>
           </div>
         )}
 
         {/* Create form */}
         <div className="space-y-3 pt-2 border-t border-border">
-          <label className="block text-sm font-medium text-foreground">Add a webhook</label>
+          <label className="block text-sm font-medium text-foreground">Añadir un webhook</label>
           <input
             type="url"
             value={newUrl}
@@ -260,7 +260,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
             className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
           >
             <span className="material-icons text-base">add</span>
-            {creating ? 'Adding…' : 'Add webhook'}
+            {creating ? 'Añadiendo…' : 'Añadir webhook'}
           </button>
         </div>
       </div>
@@ -270,11 +270,11 @@ export default function WebhooksPanel({ surveyId }: Props) {
         {loading && (
           <div className="p-6 text-sm text-muted-foreground flex items-center gap-2">
             <span className="material-icons animate-spin text-base">progress_activity</span>
-            Loading…
+            Cargando…
           </div>
         )}
         {!loading && hooks.length === 0 && (
-          <div className="p-6 text-sm text-muted-foreground">No webhooks configured yet.</div>
+          <div className="p-6 text-sm text-muted-foreground">Aún no hay webhooks configurados.</div>
         )}
         {!loading && hooks.map((h) => (
           <div key={h.id} className="p-4 space-y-2">
@@ -291,7 +291,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
                   {lastDeliveryBadge(h)}
                   {h.failureCount > 0 && (
                     <span className="text-amber-700 dark:text-amber-400">
-                      {h.failureCount} consecutive failure{h.failureCount === 1 ? '' : 's'}
+                      {h.failureCount} fallo{h.failureCount === 1 ? '' : 's'} consecutivo{h.failureCount === 1 ? '' : 's'}
                     </span>
                   )}
                 </div>
@@ -301,7 +301,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
                   type="button"
                   onClick={() => loadDeliveries(h.id)}
                   className="px-2 py-1 text-xs rounded hover:bg-muted text-muted-foreground"
-                  title="Recent deliveries"
+                  title="Entregas recientes"
                 >
                   <span className="material-icons text-base">history</span>
                 </button>
@@ -309,7 +309,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
                   type="button"
                   onClick={() => toggleEnabled(h)}
                   className="px-2 py-1 text-xs rounded hover:bg-muted text-muted-foreground"
-                  title={h.enabled ? 'Disable' : 'Enable'}
+                  title={h.enabled ? 'Desactivar' : 'Activar'}
                 >
                   <span className="material-icons text-base">{h.enabled ? 'pause' : 'play_arrow'}</span>
                 </button>
@@ -317,7 +317,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
                   type="button"
                   onClick={() => deleteWebhook(h)}
                   className="px-2 py-1 text-xs rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600"
-                  title="Delete"
+                  title="Eliminar"
                 >
                   <span className="material-icons text-base">delete</span>
                 </button>
@@ -327,13 +327,13 @@ export default function WebhooksPanel({ surveyId }: Props) {
             {openDeliveriesFor === h.id && (
               <div className="mt-3 ml-7 border border-border rounded-lg overflow-hidden">
                 <div className="px-3 py-2 text-xs font-medium text-muted-foreground bg-muted/50 border-b border-border">
-                  Recent deliveries
+                  Entregas recientes
                 </div>
                 {deliveriesLoading && (
-                  <div className="p-3 text-xs text-muted-foreground">Loading…</div>
+                  <div className="p-3 text-xs text-muted-foreground">Cargando…</div>
                 )}
                 {!deliveriesLoading && deliveries.length === 0 && (
-                  <div className="p-3 text-xs text-muted-foreground">No deliveries recorded yet.</div>
+                  <div className="p-3 text-xs text-muted-foreground">Aún no se han registrado entregas.</div>
                 )}
                 {!deliveriesLoading && deliveries.map((d) => {
                   const ok = d.status === 'success';
@@ -343,7 +343,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
                         {ok ? 'check_circle' : 'error'}
                       </span>
                       <span className="font-mono">{new Date(d.createdAt).toLocaleString()}</span>
-                      <span className="text-muted-foreground">attempt {d.attempt}</span>
+                      <span className="text-muted-foreground">intento {d.attempt}</span>
                       <span className="text-muted-foreground">{d.event}</span>
                       <span className="ml-auto font-mono">
                         {d.statusCode !== null ? `HTTP ${d.statusCode}` : (d.error ?? '—')}

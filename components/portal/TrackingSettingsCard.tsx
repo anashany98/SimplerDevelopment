@@ -28,7 +28,7 @@ export default function TrackingSettingsCard({
   siteId: number;
   initialConfig: TrackingConfigClient | null;
   /** QAD-034: when false, the site isn't live yet — settings still save and
-   *  apply automatically on deploy; we just surface a note. */
+   *  apply automátically on deploy; we just surface a note. */
   deployed?: boolean;
 }) {
   const router = useRouter();
@@ -174,7 +174,7 @@ export default function TrackingSettingsCard({
       {!deployed && (
         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
           <span className="material-icons text-sm">schedule</span>
-          This site isn&apos;t deployed yet — settings save now and apply automatically when the site goes live.
+          This site isn&apos;t deployed yet — settings save now and apply automátically when the site goes live.
         </p>
       )}
 

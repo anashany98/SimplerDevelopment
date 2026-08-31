@@ -106,7 +106,7 @@ export default async function PublicSurveyResultsPage(
         )}
 
         <footer className="pt-4 text-center">
-          <p className="text-xs text-gray-400 dark:text-gray-600">Powered by SimplerDevelopment</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600">Powered by CRM AGENTS</p>
         </footer>
       </div>
     </div>

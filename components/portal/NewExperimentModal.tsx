@@ -232,7 +232,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             type="button"
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title="Close"
+            title="Cerrar"
           >
             <span className="material-icons text-base">close</span>
           </button>
@@ -279,9 +279,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             </label>
             {loading ? (
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground">
-                <span className="material-icons animate-spin text-base">progress_activity</span>
-                Loading...
-              </div>
+                <span className="material-icons animate-spin text-base">progress_activity</span>Cargando...</div>
             ) : loadError ? (
               <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
                 <span className="material-icons text-base">error</span>
@@ -322,7 +320,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 }}
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="">Select a pitch deck...</option>
+                <option value="">Selecciona una presentación...</option>
                 {decks.map(d => (
                   <option key={d.id} value={d.id}>
                     {d.title}
@@ -334,9 +332,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Name
-            </label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre</label>
             <input
               value={name}
               onChange={e => {
@@ -365,9 +361,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={submitting || loading || selectedTargetId == null}
@@ -380,9 +374,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 </>
               ) : (
                 <>
-                  <span className="material-icons text-base">add</span>
-                  Create
-                </>
+                  <span className="material-icons text-base">add</span>Crear</>
               )}
             </button>
           </div>

@@ -245,9 +245,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -301,7 +299,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
 
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={initiative.name}
         actions={!editing && !closing ? (
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -312,9 +310,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                 disabled={busy}
                 className={pBtnGhost}
               >
-                <span className="material-icons text-sm">edit</span>
-                Edit
-              </button>
+                <span className="material-icons text-sm">edit</span>Editar</button>
             )}
             {!isTerminal && (
               <button
@@ -323,9 +319,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                 disabled={busy}
                 className={pBtnGhost}
               >
-                <span className="material-icons text-sm">archive</span>
-                Close
-              </button>
+                <span className="material-icons text-sm">archive</span>Cerrar</button>
             )}
             {isTerminal && (
               <button
@@ -345,9 +339,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                 disabled={busy}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-card px-4 py-2.5 text-sm font-semibold text-destructive transition hover:border-destructive/60 hover:bg-destructive/5 disabled:opacity-50"
               >
-                <span className="material-icons text-sm">delete</span>
-                Cancel
-              </button>
+                <span className="material-icons text-sm">delete</span>Cancelar</button>
             )}
           </div>
         ) : undefined}
@@ -438,7 +430,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         {/* Inline edit form */}
         {editing && (
           <div className="mt-4 pt-4 border-t border-border">
-            <h2 className={`${pSectionTitle} mb-3`}>Edit initiative</h2>
+            <h2 className={`${pSectionTitle} mb-3`}>Editar iniciativa</h2>
             <InitiativeForm
               mode="edit"
               team={team}
@@ -488,7 +480,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
             className={pBtnGhost}
           >
             <span className="material-icons text-sm">{addGoalOpen ? 'close' : 'add'}</span>
-            {addGoalOpen ? 'Cancel' : 'Add goal'}
+            {addGoalOpen ? 'Cancelar' : 'Agregar objetivo'}
           </button>
         </div>
 
@@ -660,7 +652,7 @@ function AddGoalForm({
           </select>
         </label>
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Target</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Objetivo</span>
           <input
             type="number"
             step="any"
@@ -670,7 +662,7 @@ function AddGoalForm({
           />
         </label>
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Current</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Actual</span>
           <input
             type="number"
             step="any"
@@ -689,7 +681,7 @@ function AddGoalForm({
           />
         </label>
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Status</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Estado</span>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as BrainGoalStatus)}
@@ -712,9 +704,7 @@ function AddGoalForm({
           onClick={onCancel}
           disabled={submitting}
           className={pBtnGhost}
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
         <button
           type="submit"
           disabled={submitting}
@@ -722,7 +712,7 @@ function AddGoalForm({
         >
           {submitting
             ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Adding…</>
-            : <><span className="material-icons text-sm">add</span>Add goal</>}
+            : <><span className="material-icons text-sm">add</span>Añadir objetivo</>}
         </button>
       </div>
     </form>

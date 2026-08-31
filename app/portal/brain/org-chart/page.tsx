@@ -11,7 +11,7 @@
  *   │  <OrgUnitTree>                     │   Name (inline edit)  │
  *   │                                    │   description…       │
  *   │                                    │   Lead person         │
- *   │                                    │   Members (paginated)│
+ *   │                                    │   Members (páginated)│
  *   │                                    │   [+ Add member]      │
  *   │                                    │   [Delete unit]       │
  *   └────────────────────────────────────┴──────────────────────┘
@@ -163,9 +163,7 @@ export default function BrainOrgChartPage() {
   if (loading && tree.length === 0) {
     return (
       <div className="max-w-7xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -186,7 +184,7 @@ export default function BrainOrgChartPage() {
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">account_tree</span>
@@ -280,8 +278,8 @@ function EmptySidePanel() {
   return (
     <div className={`${pCard} p-6 text-center text-sm text-muted-foreground`}>
       <span className="material-icons text-4xl text-muted-foreground/60 mb-2 block">account_tree</span>
-      <p className="font-medium text-foreground">Nothing selected</p>
-      <p className="text-xs mt-1">Select an org unit, or drag rows to reorganize.</p>
+      <p className="font-medium text-foreground">Nada seleccionado</p>
+      <p className="text-xs mt-1">Selecciona una unidad organizativa o arrastra las filas para reorganizar.</p>
     </div>
   );
 }
@@ -438,9 +436,7 @@ function UnitSidePanel({
 
       {/* Name (inline editable) */}
       <div>
-        <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">
-          Name
-        </label>
+        <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">Nombre</label>
         <input
           value={nameDraft}
           onChange={(e) => setNameDraft(e.target.value)}
@@ -456,9 +452,7 @@ function UnitSidePanel({
 
       {/* Description */}
       <div>
-        <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">
-          Description
-        </label>
+        <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">Descripción</label>
         <textarea
           value={descDraft}
           onChange={(e) => setDescDraft(e.target.value)}
@@ -467,7 +461,7 @@ function UnitSidePanel({
             if (v !== (unit.description ?? '')) patchUnit({ description: v || null }, 'description');
           }}
           rows={2}
-          placeholder="What does this unit do?"
+          placeholder="¿Qué hace esta unidad?"
           className={`${pInput} resize-y`}
         />
       </div>
@@ -492,9 +486,7 @@ function UnitSidePanel({
           </div>
         </div>
         <div>
-          <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">
-            Icon
-          </label>
+          <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">Icono</label>
           <div className="flex flex-wrap gap-1">
             {ICON_PRESETS.map((icon) => (
               <button
@@ -556,7 +548,7 @@ function UnitSidePanel({
         )}
         {showLeadPicker && (
           <PersonPickerDialog
-            title="Set lead person"
+            title="Definir responsable"
             onClose={() => setShowLeadPicker(false)}
             onPick={async (person) => {
               setShowLeadPicker(false);
@@ -582,7 +574,7 @@ function UnitSidePanel({
           </button>
         </div>
         {members.length === 0 ? (
-          <p className="text-xs text-muted-foreground italic">No members yet.</p>
+          <p className="text-xs text-muted-foreground italic">Aún no hay miembros.</p>
         ) : (
           <>
             <ul className="space-y-1 border border-border rounded-xl divide-y divide-border">
@@ -614,9 +606,7 @@ function UnitSidePanel({
                   onClick={() => setMemberPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={memberPage >= totalPages - 1}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-muted-foreground hover:bg-muted disabled:opacity-40"
-                >
-                  Next
-                  <span className="material-icons text-sm">chevron_right</span>
+                >Siguiente<span className="material-icons text-sm">chevron_right</span>
                 </button>
               </div>
             )}
@@ -752,7 +742,7 @@ function MemberRow({
       <button
         type="button"
         onClick={onRemove}
-        title="Remove from unit"
+        title="Quitar de la unidad"
         className="h-6 w-6 inline-flex items-center justify-center rounded text-muted-foreground hover:text-destructive hover:bg-muted"
       >
         <span className="material-icons text-base">close</span>
@@ -813,9 +803,9 @@ function NewUnitModal({
   };
 
   return (
-    <ModalShell title="New org unit" onClose={onClose}>
+    <ModalShell title="Nueva unidad organizativa" onClose={onClose}>
       <div className="space-y-3">
-        <Field label="Name">
+        <Field label="Nombre">
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -836,7 +826,7 @@ function NewUnitModal({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
-            placeholder="What does this unit do?"
+            placeholder="¿Qué hace esta unidad?"
             className={`${pInput} resize-y`}
           />
         </Field>
@@ -857,7 +847,7 @@ function NewUnitModal({
                 type="button"
                 onClick={() => { setLeadPersonId(null); setLeadPersonName(null); }}
                 className="text-muted-foreground hover:text-destructive"
-                title="Clear"
+                title="Limpiar"
               >
                 <span className="material-icons text-base">close</span>
               </button>
@@ -865,7 +855,7 @@ function NewUnitModal({
           )}
           {showLeadPicker && (
             <PersonPickerDialog
-              title="Pick lead person"
+              title="Elegir responsable"
               onClose={() => setShowLeadPicker(false)}
               onPick={(p) => { setLeadPersonId(p.id); setLeadPersonName(p.fullName); setShowLeadPicker(false); }}
             />
@@ -886,7 +876,7 @@ function NewUnitModal({
               ))}
             </div>
           </Field>
-          <Field label="Icon">
+          <Field label="Icono">
             <div className="flex flex-wrap gap-1">
               {ICON_PRESETS.map((it) => (
                 <button
@@ -912,9 +902,7 @@ function NewUnitModal({
             type="button"
             onClick={onClose}
             className={pBtnGhost}
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             type="button"
             onClick={submit}
@@ -978,7 +966,7 @@ function AddMemberDialog({
   const [submitting, setSubmitting] = useState(false);
 
   return (
-    <ModalShell title="Add member" onClose={onClose}>
+    <ModalShell title="Añadir miembro" onClose={onClose}>
       <div className="space-y-3">
         <Field label="Person">
           {selected ? (
@@ -991,7 +979,7 @@ function AddMemberDialog({
                 type="button"
                 onClick={() => setSelected(null)}
                 className="text-muted-foreground hover:text-foreground"
-                title="Clear"
+                title="Limpiar"
               >
                 <span className="material-icons text-base">close</span>
               </button>
@@ -1003,7 +991,7 @@ function AddMemberDialog({
             />
           )}
         </Field>
-        <Field label="Role in unit (optional)">
+        <Field label="Rol en la unidad (opcional)">
           <input
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -1017,16 +1005,14 @@ function AddMemberDialog({
             checked={primary}
             onChange={(e) => setPrimary(e.target.checked)}
           />
-          <span>Primary unit for this person</span>
+          <span>Unidad principal de esta persona</span>
         </label>
         <div className="flex justify-end gap-2 pt-1">
           <button
             type="button"
             onClick={onClose}
             className={pBtnGhost}
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             type="button"
             disabled={!selected || submitting}
@@ -1095,7 +1081,7 @@ function DeleteUnitInlineModal({
       {needsForce && (
         <label className="flex items-start gap-2 text-xs mb-3 cursor-pointer">
           <input type="checkbox" checked={force} onChange={(e) => setForce(e.target.checked)} className="mt-0.5" />
-          <span><strong>Force delete</strong> (cascades children to parent, detaches all members)</span>
+          <span><strong>Eliminar forzosamente</strong> (cascades children to parent, detaches all members)</span>
         </label>
       )}
       <div className="flex justify-end gap-2 pt-1">
@@ -1103,18 +1089,14 @@ function DeleteUnitInlineModal({
           type="button"
           onClick={onClose}
           className={pBtnGhost}
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
         <button
           type="button"
           disabled={needsForce && !force}
           onClick={() => onConfirm(force)}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-destructive px-4 py-2.5 text-sm font-bold text-destructive-foreground transition hover:-translate-y-px hover:shadow-lg hover:shadow-destructive/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
         >
-          <span className="material-icons text-base">delete</span>
-          Delete
-        </button>
+          <span className="material-icons text-base">delete</span>Eliminar</button>
       </div>
     </ModalShell>
   );
@@ -1154,7 +1136,7 @@ function ModalShell({
             type="button"
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground"
-            aria-label="Close"
+            aria-label="Cerrar"
           >
             <span className="material-icons text-base">close</span>
           </button>

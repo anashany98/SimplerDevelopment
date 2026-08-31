@@ -115,8 +115,8 @@ export default async function ExperimentsListPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Experiments"
-        title="A/B Experiments"
+        eyebrow="Experimentos"
+        title="Experimentos A/B"
         subtitle="Run head-to-head tests on any page. Track conversion lift with statistical significance."
         actions={<NewExperimentLauncher />}
       />
@@ -124,11 +124,9 @@ export default async function ExperimentsListPage() {
       {experiments.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border px-8 py-16 text-center">
           <span className="material-icons text-4xl text-muted-foreground mb-2">science</span>
-          <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] mb-2">No experiments yet</h2>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-            Pick a page or pitch deck to test, give it a name, and we&apos;ll spin up a draft experiment with two variants ready to edit.
-          </p>
-          <NewExperimentLauncher variant="cta" label="Create your first experiment" />
+          <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] mb-2">Aún no hay experimentos</h2>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">Elige una página o presentación para probar, ponle un nombre y crearemos un experimento de borrador con dos variantes listas para editar.</p>
+          <NewExperimentLauncher variant="cta" label="Crea tu primer experimento" />
         </div>
       ) : (
         <ExperimentsTable experiments={experiments} />

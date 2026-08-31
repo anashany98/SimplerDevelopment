@@ -1,9 +1,9 @@
 ---
 name: simplerdev-code-review
-description: Review SimplerDevelopment code changes for repo-specific bugs, regressions, tenancy leaks, auth/security risks, MCP payload problems, accessibility issues, performance risks, and missing tests. Use for PR reviews, pre-commit self-review, "review this diff", "audit this change", "check for tenant leaks", "security review", "accessibility review", "performance review", or when changes touch auth, billing, database access, MCP tools, public/portal routes, visual editor, blocks, email, bookings, surveys, or Company Brain.
+description: Review CRM AGENTS code changes for repo-specific bugs, regressions, tenancy leaks, auth/security risks, MCP payload problems, accessibility issues, performance risks, and missing tests. Use for PR reviews, pre-commit self-review, "review this diff", "audit this change", "check for tenant leaks", "security review", "accessibility review", "performance review", or when changes touch auth, billing, database access, MCP tools, public/portal routes, visual editor, blocks, email, bookings, surveys, or Company Brain.
 ---
 
-# SimplerDev Code Review
+# CRM AGENTS Code Review
 
 Use this as the repo-aware review router. Start in code-review stance: findings first, ordered by severity, with file and line references. Summaries come after findings.
 

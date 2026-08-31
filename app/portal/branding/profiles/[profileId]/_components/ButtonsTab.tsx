@@ -55,7 +55,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
           <span className="material-icons text-base">smart_button</span>
           Button Style
         </h2>
-        <p className="text-sm text-muted-foreground mb-4">Default styling for buttons and CTAs across blocks.</p>
+        <p className="text-sm text-muted-foreground mb-4">Estilo predeterminado de botones y CTA en todos los bloques.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
@@ -86,7 +86,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
               className={`${INPUT_CLASS} max-w-[200px]`}
               placeholder="8px"
             />
-            <p className="text-[11px] text-muted-foreground mt-1">Independent from site border radius.</p>
+            <p className="text-[11px] text-muted-foreground mt-1">Independiente del radio de borde del sitio.</p>
           </div>
         </div>
 
@@ -126,7 +126,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
         <div className="space-y-3">
           <h3 className="text-sm font-semibold text-foreground">Primary Button</h3>
           <div>
-            <label className={LABEL_CLASS}>Background</label>
+            <label className={LABEL_CLASS}>Fondo</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -185,7 +185,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
         <div className="space-y-3">
           <h3 className="text-sm font-semibold text-foreground">Secondary Button</h3>
           <div>
-            <label className={LABEL_CLASS}>Background</label>
+            <label className={LABEL_CLASS}>Fondo</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -243,7 +243,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
 
       {/* Button Previews */}
       <div>
-        <label className={LABEL_CLASS}>Preview</label>
+        <label className={LABEL_CLASS}>Vista previa</label>
         <div className="p-6 rounded-lg bg-muted/30 border border-border flex flex-wrap gap-4 items-center">
           <button
             className="px-5 py-2.5 text-sm font-medium transition-colors"
@@ -353,7 +353,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   onClick={() => movePreset(preset.id, -1)}
                   disabled={idx === 0}
                   className="p-1 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="Move up"
+                  title="Subir"
                 >
                   <span className="material-icons text-base">arrow_upward</span>
                 </button>
@@ -361,14 +361,14 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   onClick={() => movePreset(preset.id, 1)}
                   disabled={idx === arr.length - 1}
                   className="p-1 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-                  title="Move down"
+                  title="Bajar"
                 >
                   <span className="material-icons text-base">arrow_downward</span>
                 </button>
                 <button
                   onClick={() => removePreset(preset.id)}
                   className="p-1 text-muted-foreground hover:text-destructive"
-                  title="Delete preset"
+                  title="Eliminar preajuste"
                 >
                   <span className="material-icons text-base">delete_outline</span>
                 </button>
@@ -376,7 +376,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
               <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <PresetField
-                    label="Background"
+                    label="Fondo"
                     value={preset.backgroundColor}
                     onChange={(v) => updatePreset(preset.id, { backgroundColor: v })}
                     placeholder="brand.primary or #hex"
@@ -426,10 +426,10 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                         className={INPUT_CLASS}
                       >
                         <option value="">—</option>
-                        <option value="solid">Solid</option>
+                        <option value="solid">Sólido</option>
                         <option value="dashed">Dashed</option>
                         <option value="dotted">Dotted</option>
-                        <option value="none">None</option>
+                        <option value="none">Ninguno</option>
                       </select>
                     </div>
                   </div>
@@ -452,7 +452,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                         className={INPUT_CLASS}
                       >
                         <option value="">—</option>
-                        <option value="none">None</option>
+                        <option value="none">Ninguno</option>
                         <option value="uppercase">UPPERCASE</option>
                         <option value="lowercase">lowercase</option>
                         <option value="capitalize">Capitalize</option>

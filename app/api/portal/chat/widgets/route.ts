@@ -9,6 +9,7 @@ import { db } from '@/lib/db';
 import { chatWidgets, clientWebsites } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { and, eq } from 'drizzle-orm';
+import { randomBytes } from 'node:crypto';
 
 export async function GET() {
   const session = await auth();
@@ -42,7 +43,13 @@ export async function POST(req: Request) {
 
   // Verify the site belongs to the active client (multi-tenant guard).
   const [site] = await db
-    .select({ id: clientWebsites.id })
+    .select({
+      id: clientWebsites.id,
+      name: clientWebsites.name,
+      domain: clientWebsites.domain,
+      vercelDomain: clientWebsites.vercelDomain,
+      subdomain: clientWebsites.subdomain,
+    })
     .from(clientWebsites)
     .where(and(eq(clientWebsites.id, siteId), eq(clientWebsites.clientId, client.id)))
     .limit(1);
@@ -60,10 +67,14 @@ export async function POST(req: Request) {
       clientId: client.id,
       siteId,
       enabled: body.enabled ?? true,
-      greetingMessage: body.greetingMessage ?? 'Hi there! How can we help?',
+      greetingMessage: body.greetingMessage ?? '¡Hola! ¿En qué podemos ayudarte?',
       position: body.position ?? 'bottom-right',
       primaryColor: body.primaryColor ?? '#0070f3',
       awayMessage: body.awayMessage ?? null,
+      displayName: body.displayName ?? site.name,
+      allowedOrigins: [site.domain, site.vercelDomain, site.subdomain ? `${site.subdomain}.simplerdevelopment.com` : null]
+        .filter((value): value is string => Boolean(value)),
+      publicKey: randomBytes(24).toString('base64url'),
       brainEnabled: false,
     })
     .returning();

@@ -279,6 +279,7 @@ describe('POST /api/storefront/[siteId]/checkout @storefront @store @stripe @byo
     const res = await postCheckout(siteId, buildCheckoutBody(sessionId));
     expect(res.status).toBe(400);
     expect((res.data?.message ?? '').toLowerCase()).toContain('onboarding');
+    expect(stripeCalls.constructorKeys).toHaveLength(0);
     expect(stripeCalls.piCreates.length).toBe(0);
   });
 

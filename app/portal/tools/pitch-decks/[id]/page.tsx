@@ -321,11 +321,11 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const slug = slugify(name.trim());
     if (!slug) return;
     const initialBlocks: Block[] = [
-      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'New Slide', level: 2 as const, alignment: 'center' as const },
+      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'Nueva diapositiva', level: 2 as const, alignment: 'center' as const },
     ];
     const newSlide: PitchDeckSlideV2 = {
       id: `slide-${Date.now()}`,
-      label: 'New Slide',
+      label: 'Nueva diapositiva',
       blocks: [],
       pathGroup: slug,
       draft: {
@@ -343,11 +343,11 @@ function PitchDeckEditorContent({ id }: { id: string }) {
   function addSlideToPathGroup(pathGroup: string) {
     if (!deck) return;
     const initialBlocks: Block[] = [
-      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'New Slide', level: 2 as const, alignment: 'center' as const },
+      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'Nueva diapositiva', level: 2 as const, alignment: 'center' as const },
     ];
     const newSlide: PitchDeckSlideV2 = {
       id: `slide-${Date.now()}`,
-      label: 'New Slide',
+      label: 'Nueva diapositiva',
       blocks: [],
       pathGroup,
       draft: {
@@ -396,7 +396,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
             pathGroup: pg,
           }))
         : [
-            { id: `opt-${Date.now()}-0`, label: 'Option A', pathGroup: 'path-a' },
+            { id: `opt-${Date.now()}-0`, label: 'Opción A', pathGroup: 'path-a' },
             { id: `opt-${Date.now()}-1`, label: 'Option B', pathGroup: 'path-b' },
           ],
     };
@@ -427,7 +427,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const slide = { ...newSlides[slideIdx] };
     slide.decisionOptions = [
       ...(slide.decisionOptions || []),
-      { id: `opt-${Date.now()}`, label: 'New Option', pathGroup: `path-${Date.now()}` },
+      { id: `opt-${Date.now()}`, label: 'Nueva opción', pathGroup: `path-${Date.now()}` },
     ];
     newSlides[slideIdx] = slide;
     setDeck({ ...deck, slides: newSlides });
@@ -478,7 +478,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
         ],
       }));
     } else {
-      setError(data.message || 'Failed to edit slide');
+      setError(data.message || 'Error al editar la diapositiva');
     }
   }
 
@@ -495,7 +495,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       setSelectedSlides(new Set());
       setHasUnsavedChanges(false);
     } else {
-      setError(data.message || 'Batch edit failed');
+      setError(data.message || 'Error en la edición por lotes');
     }
   }
 
@@ -521,7 +521,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       setActiveSlide(0);
       setHasUnsavedChanges(false);
     } else {
-      setError(data.message || 'Failed to regenerate');
+      setError(data.message || 'Error al regenerar');
     }
   }
 
@@ -609,9 +609,9 @@ function PitchDeckEditorContent({ id }: { id: string }) {
               draft: target.draft,
               surveyFieldBlocks: target.surveyFieldBlocks,
             })
-          : { success: false, message: 'Slide not found' } as const;
+          : { success: false, message: 'Diapositiva no encontrada' } as const;
         if (!flush.success) {
-          setError(flush.message || 'Failed to save draft before publish');
+          setError(flush.message || 'Error al guardar el borrador antes de publicar');
           return;
         }
       } else {
@@ -624,7 +624,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
         setDeck(normalizeDeckBlockIds(res.data));
         setHasUnsavedChanges(false);
       } else {
-        setError(res.message || 'Failed to publish slide');
+        setError(res.message || 'Error al publicar la diapositiva');
       }
     } finally {
       setPublishingSlideId(null);
@@ -643,7 +643,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       if (!collab.enabled) {
         const flush = await apiSaveDeck(id, deck.slides, deck.theme);
         if (!flush.success) {
-          setError(flush.message || 'Failed to save drafts before publish');
+          setError(flush.message || 'Error al guardar los borradores antes de publicar');
           return;
         }
       } else {
@@ -654,7 +654,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
         setDeck(normalizeDeckBlockIds(res.data));
         setHasUnsavedChanges(false);
       } else {
-        setError(res.message || 'Failed to publish drafts');
+        setError(res.message || 'Error al publicar los borradores');
       }
     } finally {
       setPublishingAll(false);
@@ -697,10 +697,10 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       if (json.success && json.data?.id) {
         router.push(`/portal/experiments/${json.data.id}`);
       } else {
-        setError(json.error || 'Failed to create experiment');
+        setError(json.error || 'No se pudo crear el experimento');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create experiment');
+      setError(err instanceof Error ? err.message : 'No se pudo crear el experimento');
     }
   }
 
@@ -715,12 +715,12 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     // New slide is draft-only — live `blocks` empty, content lives in draft
     // until the user publishes.
     const initialBlocks: Block[] = [
-      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'New Slide', level: 2 as const, alignment: 'center' as const },
-      { id: `block-${Date.now()}-t`, type: 'text', order: 2, content: 'Add your content here...', alignment: 'center' as const, size: 'base' as const },
+      { id: `block-${Date.now()}-h`, type: 'heading', order: 1, content: 'Nueva diapositiva', level: 2 as const, alignment: 'center' as const },
+      { id: `block-${Date.now()}-t`, type: 'text', order: 2, content: 'Agrega tu contenido aquí…', alignment: 'center' as const, size: 'base' as const },
     ];
     const newSlide: PitchDeckSlideV2 = {
       id: `slide-${Date.now()}`,
-      label: 'New Slide',
+      label: 'Nueva diapositiva',
       blocks: [],
       draft: {
         pendingCreate: true,
@@ -908,7 +908,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const data = await patchDeck(id, { slug: normalized });
     setSaving(false);
     if (!data.success) {
-      setSlugError(data.message || 'Failed to update slug.');
+      setSlugError(data.message || 'Error al actualizar el slug.');
       return;
     }
     setDeck({ ...deck, slug: data.data?.slug ?? normalized });
@@ -942,7 +942,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       setShowHistory(false);
       loadVersions();
     } else {
-      setError(data.message || 'Failed to restore');
+      setError(data.message || 'Error al restaurar');
     }
   }
 
@@ -960,10 +960,8 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
         <span className="material-icons text-5xl text-muted-foreground/50">error_outline</span>
-        <h2 className="text-lg font-semibold mt-4">Deck not found</h2>
-        <Link href="/portal/tools/pitch-decks" className="text-primary text-sm mt-2 inline-block">
-          Back to Pitch Decks
-        </Link>
+        <h2 className="text-lg font-semibold mt-4">Presentación no encontrada</h2>
+        <Link href="/portal/tools/pitch-decks" className="text-primary text-sm mt-2 inline-block">Volver a las presentaciones</Link>
       </div>
     );
   }
@@ -1128,25 +1126,19 @@ function PitchDeckEditorContent({ id }: { id: string }) {
       {deck.slides.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-10 text-center space-y-4">
           <span className="material-icons text-5xl text-muted-foreground/50">slideshow</span>
-          <h2 className="text-lg font-semibold text-foreground">No slides yet</h2>
-          <p className="text-muted-foreground text-sm">
-            Use the Regenerate button above to generate slides with AI, or add slides manually.
-          </p>
+          <h2 className="text-lg font-semibold text-foreground">Aún no hay diapositivas</h2>
+          <p className="text-muted-foreground text-sm">Usa el botón Regenerar de arriba para generar diapositivas con IA, o agrega diapositivas manualmente.</p>
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => setShowRegenerate(true)}
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium"
             >
-              <span className="material-icons text-base">auto_awesome</span>
-              Generate with AI
-            </button>
+              <span className="material-icons text-base">auto_awesome</span>Generar con IA</button>
             <button
               onClick={addSlide}
               className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg text-sm font-medium hover:bg-accent transition-colors"
             >
-              <span className="material-icons text-base">add</span>
-              Add Blank Slide
-            </button>
+              <span className="material-icons text-base">add</span>Agregar diapositiva en blanco</button>
             <button
               onClick={() => htmlSlideFileInputRef.current?.click()}
               className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg text-sm font-medium hover:bg-accent transition-colors"
@@ -1197,7 +1189,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
               <button
                 onClick={() => setMobileSlideDrawerOpen(false)}
                 className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent"
-                aria-label="Close slides panel"
+                aria-label="Cerrar panel de diapositivas"
               >
                 <span className="material-icons text-base">close</span>
               </button>
@@ -1277,21 +1269,15 @@ function PitchDeckEditorContent({ id }: { id: string }) {
               </span>
               {slideIsPendingCreate(currentSlide) && (
                 <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold">
-                  <span className="material-icons text-[12px]">fiber_new</span>
-                  New (draft)
-                </span>
+                  <span className="material-icons text-[12px]">fiber_new</span>Nuevo (borrador)</span>
               )}
               {slideIsPendingDelete(currentSlide) && (
                 <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 font-semibold">
-                  <span className="material-icons text-[12px]">delete_sweep</span>
-                  Pending delete
-                </span>
+                  <span className="material-icons text-[12px]">delete_sweep</span>Pendiente de eliminación</span>
               )}
               {slideHasDraft(currentSlide) && !slideIsPendingCreate(currentSlide) && !slideIsPendingDelete(currentSlide) && (
                 <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold">
-                  <span className="material-icons text-[12px]">edit_note</span>
-                  Draft
-                </span>
+                  <span className="material-icons text-[12px]">edit_note</span>Borrador</span>
               )}
               {slideHasDraft(currentSlide) && (
                 <>
@@ -1301,7 +1287,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
                     className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md bg-amber-600 text-white hover:bg-amber-700 transition-colors disabled:opacity-50"
                     title={
                       slideIsPendingDelete(currentSlide)
-                        ? 'Publish — removes this slide from the live deck'
+                        ? 'Publicar — elimina esta diapositiva de la presentación publicada'
                         : 'Publish this slide\'s draft to the live deck'
                     }
                   >
@@ -1313,10 +1299,10 @@ function PitchDeckEditorContent({ id }: { id: string }) {
                   <button
                     onClick={() => cancelSlideDraft(activeSlide)}
                     className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    title={slideIsPendingDelete(currentSlide) ? 'Cancel deletion' : 'Discard draft changes'}
+                    title={slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Discard draft changes'}
                   >
                     <span className="material-icons text-sm">undo</span>
-                    {slideIsPendingDelete(currentSlide) ? 'Cancel deletion' : 'Discard draft'}
+                    {slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Discard draft'}
                   </button>
                 </>
               )}
@@ -1344,18 +1330,14 @@ function PitchDeckEditorContent({ id }: { id: string }) {
                       editorMode === 'preview' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'
                     }`}
                   >
-                    <span className="material-icons text-sm">visibility</span>
-                    Preview
-                  </button>
+                    <span className="material-icons text-sm">visibility</span>Vista previa</button>
                   <button
                     onClick={() => setEditorMode('edit')}
                     className={`px-3 py-1.5 text-xs font-medium flex items-center gap-1 transition-colors ${
                       editorMode === 'edit' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'
                     }`}
                   >
-                    <span className="material-icons text-sm">edit</span>
-                    Edit Blocks
-                  </button>
+                    <span className="material-icons text-sm">edit</span>Editar bloques</button>
                 </div>
               </div>
             </div>

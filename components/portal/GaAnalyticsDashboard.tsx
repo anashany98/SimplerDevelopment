@@ -289,9 +289,7 @@ export default function GaAnalyticsDashboard({
           <button
             onClick={fetchReport}
             className="text-xs text-primary hover:underline ml-2"
-          >
-            Retry
-          </button>
+          >Reintentar</button>
         </div>
       )}
 

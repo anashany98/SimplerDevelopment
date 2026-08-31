@@ -91,17 +91,15 @@ export default function GiftCertificatesPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Link href="/portal/tools/booking" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-        <span className="material-icons text-lg">arrow_back</span>
-        Back
-      </Link>
+        <span className="material-icons text-lg">arrow_back</span>Volver</Link>
       <PortalPageHeader
-        eyebrow="Gift Cards"
+        eyebrow="Tarjetas de regalo"
         title="Gift Certificates"
-        subtitle="Manage gift certificates redeemable for bookings and store purchases"
+        subtitle="Administra tarjetas de regalo canjeables por reservas y compras en la tienda"
         actions={
           <button onClick={() => setShowCreate(!showCreate)} className={showCreate ? pBtnGhost : pBtnPrimary}>
             <span className="material-icons text-base">{showCreate ? 'close' : 'add'}</span>
-            {showCreate ? 'Cancel' : 'Create Gift Cert'}
+            {showCreate ? 'Cancelar' : 'Crear certificado de regalo'}
           </button>
         }
       />
@@ -110,11 +108,11 @@ export default function GiftCertificatesPage() {
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-2xl p-4 text-center">
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{certs.length}</p>
-          <p className="text-xs text-muted-foreground">Total Issued</p>
+          <p className="text-xs text-muted-foreground">Total emitidos</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4 text-center">
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{certs.filter(c => c.status === 'active').length}</p>
-          <p className="text-xs text-muted-foreground">Active</p>
+          <p className="text-xs text-muted-foreground">Activo</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4 text-center">
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{formatCents(totalActive)}</p>
@@ -125,8 +123,8 @@ export default function GiftCertificatesPage() {
       {/* Create form */}
       {showCreate && (
         <form onSubmit={handleCreate} className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Create Gift Certificate (Admin)</h2>
-          <p className="text-xs text-muted-foreground">This creates an immediately active certificate - no payment required.</p>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Crear certificado de regalo (Admin)</h2>
+          <p className="text-xs text-muted-foreground">Esto crea un certificado activo de inmediato - sin pago requerido.</p>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Amount ($) *</label>
@@ -151,7 +149,7 @@ export default function GiftCertificatesPage() {
           </div>
           <button type="submit" disabled={creating || !amount}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-sm font-bold text-background transition hover:-translate-y-px hover:shadow-lg hover:shadow-foreground/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0">
-            {creating ? 'Creating...' : 'Create Certificate'}
+            {creating ? 'Creating...' : 'Crear certificado'}
           </button>
         </form>
       )}
@@ -164,8 +162,8 @@ export default function GiftCertificatesPage() {
       ) : certs.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-4xl text-muted-foreground mb-3 block">card_giftcard</span>
-          <h2 className="text-lg font-semibold text-foreground mb-1">No gift certificates yet</h2>
-          <p className="text-sm text-muted-foreground">Create one above or customers can purchase them on your site</p>
+          <h2 className="text-lg font-semibold text-foreground mb-1">Aún no hay tarjetas de regalo</h2>
+          <p className="text-sm text-muted-foreground">Crea uno arriba o los clientes pueden comprarlos en tu web</p>
         </div>
       ) : (
         <div className={`${pCard} overflow-hidden`}>

@@ -1,4 +1,4 @@
-# AI Overview — SimplerDevelopment
+# AI Overview — CRM AGENTS
 
 > Agent / LLM entry point. Factual, no marketing copy. Status flags are accurate as of 2026-06-27.
 > Cross-links: [glossary](./glossary.md) · [architecture](./architecture-for-agents.md) · [repository map](./repository-map.md) · [API index](./api-index.md) · [tool reference](./tool-reference.md) · [workflow reference](./workflow-reference.md) · [/llms.txt](/llms.txt)
@@ -7,7 +7,7 @@
 
 ## What This Is
 
-SimplerDevelopment is a multi-tenant agency SaaS platform built on Next.js 16.1.1 (App Router) + Postgres. A single deployment serves three audiences from one monorepo: an internal agency-admin panel, a per-tenant client portal, and per-tenant public-facing websites. The platform covers content management (48+ block types, visual editor, custom post types), CRM (contacts/companies/deals/proposals/contracts), Company Brain AI knowledge base with RAG (notes, decisions, documents, goals, playbooks, org chart, semantic search), marketing (email campaigns, surveys, pitch decks, A/B testing), commerce (white-label storefront, bookings/scheduling), project management (kanban, sprints, tickets), automations (event-driven rules + visual workflow builder), and Stripe billing — all under a single MCP surface of 481 tools. It is not a no-code builder; every tenant customization happens through structured JSON (blocks, post types, branding profiles) rather than freeform HTML.
+CRM AGENTS is a multi-tenant agency SaaS platform built on Next.js 16.1.1 (App Router) + Postgres. A single deployment serves three audiences from one monorepo: an internal agency-admin panel, a per-tenant client portal, and per-tenant public-facing websites. The platform covers content management (48+ block types, visual editor, custom post types), CRM (contacts/companies/deals/proposals/contracts), Company Brain AI knowledge base with RAG (notes, decisions, documents, goals, playbooks, org chart, semantic search), marketing (email campaigns, surveys, pitch decks, A/B testing), commerce (white-label storefront, bookings/scheduling), project management (kanban, sprints, tickets), automations (event-driven rules + visual workflow builder), and Stripe billing — all under a single MCP surface of 481 tools. It is not a no-code builder; every tenant customization happens through structured JSON (blocks, post types, branding profiles) rather than freeform HTML.
 
 ---
 

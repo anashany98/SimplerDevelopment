@@ -51,8 +51,8 @@ const STATUS_TONE: Record<BrainPersonStatus, string> = {
 };
 
 const STATUS_OPTIONS: { value: BrainPersonStatus; label: string }[] = [
-  { value: 'active',   label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
+  { value: 'active',   label: 'Activo' },
+  { value: 'inactive', label: 'Inactivo' },
   { value: 'departed', label: 'Departed' },
 ];
 
@@ -184,9 +184,7 @@ export default function BrainPersonProfilePage({
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
     );
   }
 
@@ -228,7 +226,7 @@ export default function BrainPersonProfilePage({
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-3">
             <span className="shrink-0 w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base font-bold">
@@ -276,17 +274,13 @@ export default function BrainPersonProfilePage({
                 onClick={startEdit}
                 className={pBtnGhost}
               >
-                <span className="material-icons text-base">edit</span>
-                Edit
-              </button>
+                <span className="material-icons text-base">edit</span>Editar</button>
               <button
                 type="button"
                 onClick={() => setConfirmingDelete(true)}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-card px-4 py-2.5 text-sm font-semibold text-rose-600 dark:text-rose-400 transition hover:border-rose-500/50 hover:bg-rose-500/5"
               >
-                <span className="material-icons text-base">delete</span>
-                Delete
-              </button>
+                <span className="material-icons text-base">delete</span>Eliminar</button>
             </>
           ) : (
             <>
@@ -295,9 +289,7 @@ export default function BrainPersonProfilePage({
                 onClick={() => setEditing(false)}
                 disabled={saving}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 onClick={saveEdit}
@@ -311,9 +303,7 @@ export default function BrainPersonProfilePage({
                   </>
                 ) : (
                   <>
-                    <span className="material-icons text-base">check</span>
-                    Save
-                  </>
+                    <span className="material-icons text-base">check</span>Guardar</>
                 )}
               </button>
             </>
@@ -346,7 +336,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Title">
+                <FormRow label="Título">
                   <input
                     type="text"
                     value={formTitle}
@@ -354,7 +344,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Email">
+                <FormRow label="Correo">
                   <input
                     type="email"
                     value={formEmail}
@@ -362,7 +352,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Status">
+                <FormRow label="Estado">
                   <select
                     value={formStatus}
                     onChange={(e) => setFormStatus(e.target.value as BrainPersonStatus)}
@@ -373,7 +363,7 @@ export default function BrainPersonProfilePage({
                     ))}
                   </select>
                 </FormRow>
-                <FormRow label="Notes">
+                <FormRow label="Notas">
                   <textarea
                     value={formNotes}
                     onChange={(e) => setFormNotes(e.target.value)}
@@ -384,11 +374,11 @@ export default function BrainPersonProfilePage({
               </div>
             ) : (
               <dl className="text-sm space-y-2.5">
-                <Detail label="Email">{person.email ?? <Muted />}</Detail>
-                <Detail label="Title">{person.title ?? <Muted />}</Detail>
-                <Detail label="Start date">{fmtDate(person.startDate) ?? <Muted />}</Detail>
-                <Detail label="End date">{fmtDate(person.endDate) ?? <Muted />}</Detail>
-                <Detail label="Notes">
+                <Detail label="Correo">{person.email ?? <Muted />}</Detail>
+                <Detail label="Título">{person.title ?? <Muted />}</Detail>
+                <Detail label="Fecha de inicio">{fmtDate(person.startDate) ?? <Muted />}</Detail>
+                <Detail label="Fecha de fin">{fmtDate(person.endDate) ?? <Muted />}</Detail>
+                <Detail label="Notas">
                   {person.notes
                     ? <span className="whitespace-pre-wrap">{person.notes}</span>
                     : <Muted />
@@ -438,7 +428,7 @@ export default function BrainPersonProfilePage({
               Org membership
             </h2>
             {orgUnits.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Not assigned to any org units yet.</p>
+              <p className="text-sm text-muted-foreground">Aún no está asignado a ninguna unidad organizativa.</p>
             ) : (
               <ul className="space-y-2">
                 {orgUnits.map((u) => (
@@ -485,7 +475,7 @@ export default function BrainPersonProfilePage({
                     {manager.fullName}
                   </Link>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No manager set.</p>
+                  <p className="text-sm text-muted-foreground">Sin gerente asignado.</p>
                 )}
               </div>
               <div>
@@ -544,9 +534,7 @@ export default function BrainPersonProfilePage({
                 onClick={() => setConfirmingDelete(false)}
                 disabled={deleting}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 onClick={doDelete}
@@ -560,9 +548,7 @@ export default function BrainPersonProfilePage({
                   </>
                 ) : (
                   <>
-                    <span className="material-icons text-base">delete</span>
-                    Delete
-                  </>
+                    <span className="material-icons text-base">delete</span>Eliminar</>
                 )}
               </button>
             </div>

@@ -126,9 +126,7 @@ export default function DomainGetStarted({ domainKey }: { domainKey: string }) {
                   href={action.href}
                   className="shrink-0 text-xs text-primary hover:text-primary/80 font-medium whitespace-nowrap"
                   aria-label={`Open ${action.label}`}
-                >
-                  Open
-                  <span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
+                >Abierto<span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
                 </a>
               )}
             </div>
