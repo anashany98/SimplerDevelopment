@@ -37,6 +37,17 @@ vi.mock('@/lib/billing/activate-modules', () => ({
   activateModuleSubscription: (...args: unknown[]) => activateModuleSubscriptionMock(...args),
 }));
 
+// Billing was removed (2026-08): the route short-circuits with 403 when
+// PAYMENTS_DISABLED is true. The gate is mocked open here so the tests below
+// can exercise the session-verification logic itself.
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 const stripeSessionsRetrieveMock = vi.fn();
 vi.mock('stripe', () => {
   class Stripe {

@@ -51,6 +51,11 @@ interface DbState {
   updates: Array<{ table: string; values: unknown }>;
   // If true, the next db.insert() will throw.
   insertShouldThrow: boolean;
+  // The route runs a PROJECTION pre-check on storeSettings before
+  // resolveSiteStripe (db.select({enabled, stripeMode, ...})). Projection
+  // selects do NOT consume the queue: they return this row (default =
+  // enabled Connect store). Set to [] to simulate "no store row" (404).
+  projectionRow?: unknown;
 }
 
 const dbState: DbState = {
@@ -131,8 +136,18 @@ vi.mock('@/lib/automation/event-bus', () => ({
 }));
 
 vi.mock('@/lib/db', () => {
-  function makeSelectChain() {
-    const rows = dbState.selectQueue.shift() ?? [];
+  function makeSelectChain(selectArgs: unknown[] = []) {
+    // The route's storeSettings pre-check is a PROJECTION select
+    // (db.select({enabled, ...})). resolveSiteStripe() re-queries
+    // storeSettings with a FULL-ROW select. Only the projection select on
+    // storeSettings returns the canned row without consuming the queue;
+    // every other select (including the resolver's full-row storeSettings
+    // select) consumes the next queued row-set.
+    const isStoreSettingsProjection =
+      selectArgs.length > 0 && selectArgs[0] && typeof selectArgs[0] === 'object';
+    let rows: unknown[] = isStoreSettingsProjection
+      ? [{ enabled: true, stripeMode: 'connect', stripeAccountId: 'acct_test_123', stripeOnboardingComplete: true }]
+      : dbState.selectQueue.shift() ?? [];
     const chain: Record<string, unknown> = {};
     const passthrough = [
       'from', 'where', 'innerJoin', 'leftJoin', 'rightJoin',
@@ -191,7 +206,7 @@ vi.mock('@/lib/db', () => {
 
   return {
     db: {
-      select: () => makeSelectChain(),
+      select: (...args: unknown[]) => makeSelectChain(args),
       insert: (t: unknown) => makeInsertChain(tableName(t)),
       update: (t: unknown) => makeUpdateChain(tableName(t)),
     },
@@ -280,6 +295,7 @@ beforeEach(() => {
   dbState.inserts = [];
   dbState.updates = [];
   dbState.insertShouldThrow = false;
+  dbState.projectionRow = undefined;
   stripeState.paymentIntentsCreate.mockReset();
   stripeState.paymentIntentsUpdate.mockReset();
   stripeState.paymentIntentsCreate.mockResolvedValue({
@@ -307,7 +323,8 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
   });
 
   it('returns 404 when no store row is found for the site', async () => {
-    queueSelectRows([[]]); // storeSettings -> empty
+    dbState.projectionRow = []; // storeSettings projection -> empty (no store row)
+    queueSelectRows([[]]); // resolveSiteStripe -> no_settings
     const { POST } = await import('@/app/api/storefront/[siteId]/checkout/route');
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(404);

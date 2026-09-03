@@ -103,12 +103,22 @@ const nextConfig: NextConfig = {
   // Limit static generation workers to avoid exhausting Postgres connections
   experimental: {
     workerThreads: false,
-    cpus: 4,
+    // Constrained deployment hosts can opt into a single build worker without
+    // slowing down developer and CI builds. This prevents prerender workers
+    // from exhausting the host during Docker image creation.
+    cpus: process.env.NEXT_BUILD_CPUS === '1' ? 1 : 4,
+    // Next.js documents this as a low-risk way to reduce the peak Webpack
+    // memory footprint. Keep it opt-in for constrained production builders.
+    webpackMemoryOptimizations: process.env.NEXT_LOW_MEMORY_BUILD === '1',
     // Next 16 enables Turbopack's persistent on-disk dev cache by default. On a
     // repo this size it thrashes — "filesystem cache database compaction" runs
     // for 1-2 min on a loop and freezes dev so the app never loads (vercel/next.js#87796).
     // Off = no compaction stalls; cost is a slower cold compile after a restart.
     turbopackFileSystemCacheForDev: false,
+    // A full application preload exceeds the available memory on small self-hosted
+    // instances. Load route entries on demand instead; frequently used routes
+    // naturally stay warm after their first request.
+    preloadEntriesOnStart: false,
     // Rewrites `import { MdFoo } from 'react-icons/md'` into a direct
     // per-icon path so a handful of named icons don't drag a barrel of
     // thousands in. Only helps NAMED imports — a `import * as X` is still
