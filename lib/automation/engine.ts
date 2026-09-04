@@ -614,7 +614,9 @@ async function processEvent(event: AutomationEvent): Promise<void> {
 
   // Phase 1a: wire live events to the visual workflow canvas.
   // `enqueueWorkflowRunsForTrigger` finds active workflows whose trigger matches
-  // and fires `runWorkflow` fire-and-forget per matched workflow.
+  // and enqueues durable runs for the cron worker (retries/backoff/DLQ apply).
+  // Live events MUST NOT call runWorkflow() directly — the sync DFS runner has
+  // no retries, no queue and no parallelism (see lib/workflows/runtime.ts).
   try {
     const workflowTrigger = mapEventToWorkflowTrigger(event);
     if (workflowTrigger) {
