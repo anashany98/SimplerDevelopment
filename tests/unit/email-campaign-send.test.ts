@@ -30,10 +30,19 @@ const H = vi.hoisted(() => {
   };
   const updateCalls: Array<Record<string, unknown>> = [];
   const insertCalls: Array<Record<string, unknown>> = [];
+  // Streaming batches: the SUT pages subscribers with an id cursor, so the
+  // first batch returns the fixture rows and every later batch is empty.
+  // (All fixtures fit in one SEND_BATCH_SIZE page, like production.)
+  let subFetches = 0;
   return {
     dbState,
     updateCalls,
     insertCalls,
+    resetSubFetches() { subFetches = 0; },
+    nextSubBatch() {
+      subFetches++;
+      return subFetches === 1 ? dbState.activeSubs : [];
+    },
     resendSendMock: vi.fn(),
     getOrRenderMock: vi.fn(),
     htmlToTextMock: vi.fn(),
@@ -67,6 +76,8 @@ vi.mock('@/lib/db/schema', () => {
 vi.mock('drizzle-orm', () => ({
   eq: (a: unknown, b: unknown) => ({ op: 'eq', a, b }),
   and: (...args: unknown[]) => ({ op: 'and', args: args.filter(Boolean) }),
+  asc: (a: unknown) => ({ op: 'asc', a }),
+  gt: (a: unknown, b: unknown) => ({ op: 'gt', a, b }),
   isNull: (a: unknown) => ({ op: 'isNull', a }),
   or: (...args: unknown[]) => ({ op: 'or', args: args.filter(Boolean) }),
   inArray: (a: unknown, list: unknown[]) => ({ op: 'inArray', a, list }),
@@ -82,8 +93,18 @@ vi.mock('@/lib/db', () => {
       },
       where() {
         if (table === 'emailCampaignSends') return H.dbState.alreadySent;
-        if (table === 'emailSubscribers') return H.dbState.activeSubs;
-        return [];
+        // emailSubscribers streams in id-cursor batches: orderBy() consumes
+        // one batch (full rows first, then empty); limit() is a no-op cap
+        // since fixtures fit in a single page. orderBy() is also directly
+        // awaitable for the A/B path.
+        return {
+          orderBy() {
+            const rows = H.nextSubBatch();
+            const p = Promise.resolve(rows) as Promise<unknown[]> & { limit?: () => Promise<unknown[]> };
+            p.limit = () => Promise.resolve(rows);
+            return p;
+          },
+        };
       },
     };
     return chain;
@@ -202,6 +223,7 @@ beforeEach(() => {
   process.env.RESEND_API_KEY = 'test-platform-key';
   H.dbState.alreadySent = [];
   H.dbState.activeSubs = [];
+  H.resetSubFetches();
   H.updateCalls.length = 0;
   H.insertCalls.length = 0;
   H.resendSendMock.mockReset();
@@ -261,11 +283,12 @@ describe('executeCampaignSend', () => {
     expect(result).toEqual({ sent: 2, failed: 0, total: 2 });
     expect(H.resendSendMock).toHaveBeenCalledTimes(2);
 
-    // Two campaign-level update calls: status=sending, status=sent
+    // Two campaign-level update calls: status=sending (lazy, on first real
+    // recipient — totalRecipients is only known after streaming), then sent.
     expect(H.updateCalls).toHaveLength(2);
     expect((H.updateCalls[0].values as Record<string, unknown>).status).toBe('sending');
-    expect((H.updateCalls[0].values as Record<string, unknown>).totalRecipients).toBe(2);
     expect((H.updateCalls[1].values as Record<string, unknown>).status).toBe('sent');
+    expect((H.updateCalls[1].values as Record<string, unknown>).totalRecipients).toBe(2);
     expect((H.updateCalls[1].values as Record<string, unknown>).totalSent).toBe(2);
 
     // Two insert rows into emailCampaignSends with resend ids

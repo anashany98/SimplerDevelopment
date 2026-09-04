@@ -10,13 +10,16 @@
  *   `abTestSizePct` of the (deterministically-ordered) recipient list is
  *   split evenly between subject A (`subject`) and subject B
  *   (`abSubjectB`). The remainder is held back; status flips to
- *   'ab_testing'. An operator (or future cron) calls
- *   POST /api/portal/email/campaigns/[id]/promote-winner — implemented in
- *   that route — to aggregate per-variant counts, pick the winner by
- *   `abWinnerMetric`, and dispatch the held-back remainder.
+ *   'ab_testing'. The email-ab-promote cron auto-promotes past the decision
+ *   window; POST /api/portal/email/campaigns/[id]/promote-winner remains
+ *   for manual (or forced) promotion — both aggregate per-variant counts,
+ *   pick the winner by `abWinnerMetric`, and dispatch the held-back remainder.
+ *
+ * Non-A/B sends stream the list in id-cursor batches (minimal columns,
+ * DB-ordered) instead of loading every subscriber row into memory.
  */
 
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq, gt } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import {
   emailCampaigns,
@@ -30,6 +33,18 @@ import { splitForAbTest, type AbVariant } from './subject-ab';
 import { resolveResendKey } from './resolve-resend';
 import { createEmailTransport, isMailpitEmailTransport, type EmailTransport } from './transport';
 
+// Only what the dispatch loop reads — never SELECT * over the subscriber
+// table (metadata/subscribedAt add up fast on large lists).
+const subscriberCols = {
+  id: emailSubscribers.id,
+  email: emailSubscribers.email,
+  unsubscribeToken: emailSubscribers.unsubscribeToken,
+};
+type DispatchRecipient = { id: number; email: string; unsubscribeToken: string };
+
+// Batches per round-trip for the streaming (non-A/B) send path.
+const SEND_BATCH_SIZE = 500;
+
 export async function executeCampaignSend(
   campaignId: number,
   campaign: typeof emailCampaigns.$inferSelect,
@@ -40,33 +55,7 @@ export async function executeCampaignSend(
     .where(eq(emailCampaignSends.campaignId, campaignId));
   const sentIds = new Set(already.map(s => s.subscriberId));
 
-  const activeSubs = await db
-    .select()
-    .from(emailSubscribers)
-    .where(and(eq(emailSubscribers.listId, campaign.listId), eq(emailSubscribers.status, 'active')));
-
-  // Deterministic order — same recipients land in the same A/B cohort
-  // across re-runs.
-  activeSubs.sort((a, b) => a.id - b.id);
-
-  const targets = activeSubs.filter(s => !sentIds.has(s.id));
-  if (targets.length === 0) throw new Error('No active subscribers remaining to send to');
-
-  // Build the dispatch plan. Non-A/B mode: one bucket. A/B mode: A + B
-  // buckets, remainder held for the winner phase.
-  type DispatchBucket = { variant: AbVariant | null; subject: string; recipients: typeof targets };
-  const plan: DispatchBucket[] = [];
   const abActive = !!(campaign.abEnabled && campaign.abSubjectB?.trim() && !campaign.abDecidedAt);
-
-  if (abActive) {
-    const split = splitForAbTest(targets, campaign.abTestSizePct ?? 10);
-    if (split.a.length > 0) plan.push({ variant: 'a', subject: campaign.subject, recipients: split.a });
-    if (split.b.length > 0) plan.push({ variant: 'b', subject: campaign.abSubjectB!, recipients: split.b });
-  } else {
-    plan.push({ variant: null, subject: campaign.subject, recipients: targets });
-  }
-
-  const totalThisDispatch = plan.reduce((sum, b) => sum + b.recipients.length, 0);
 
   // Resolve the email transport: BYOK Resend in hosted environments, Mailpit in
   // local development when EMAIL_TRANSPORT=mailpit. campaign.clientId is
@@ -86,11 +75,6 @@ export async function executeCampaignSend(
     emailTransport = createEmailTransport({ resendApiKey: platformKey });
   }
 
-  await db
-    .update(emailCampaigns)
-    .set({ status: 'sending', totalRecipients: targets.length, updatedAt: new Date() })
-    .where(eq(emailCampaigns.id, campaignId));
-
   // When the campaign opted into the block builder, render once via the
   // sha256-keyed cache so we don't re-render per recipient. The cached HTML
   // contains a `{{UNSUBSCRIBE_URL}}` placeholder we substitute below.
@@ -108,55 +92,113 @@ export async function executeCampaignSend(
 
   let sent = 0;
   let failed = 0;
-  for (const bucket of plan) {
-    for (const subscriber of bucket.recipients) {
-      try {
-        const unsubscribeUrl = buildUnsubscribeUrl(subscriber.unsubscribeToken);
-        const html = cachedHtml
-          ? cachedHtml.replace(/\{\{UNSUBSCRIBE_URL\}\}/g, unsubscribeUrl)
-          : buildCampaignHtml(campaign.htmlContent, unsubscribeUrl, campaign.previewText);
-        const text = cachedText ?? htmlToText(html);
-        const result = await emailTransport.send({
-          from: `${campaign.fromName} <${campaign.fromEmail}>`,
-          to: subscriber.email,
-          subject: bucket.subject,
-          html,
-          text,
-          ...(campaign.replyTo ? { replyTo: campaign.replyTo } : {}),
-          headers: {
-            'List-Unsubscribe': `<${unsubscribeUrl}>`,
-            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-          },
-        });
-        await db.insert(emailCampaignSends).values({
-          campaignId,
-          subscriberId: subscriber.id,
-          resendEmailId: result.data?.id ?? null,
-          abVariant: bucket.variant,
-          sentAt: new Date(),
-        });
-        sent++;
-      } catch {
-        failed++;
-      }
+  let attempted = 0;
+
+  // Flip to 'sending' lazily on the first real recipient — an empty list (or
+  // a fully-resumed one) throws below with zero status transitions, so the
+  // campaign is never stranded in 'sending' with nothing dispatched.
+  let statusFlipped = false;
+  async function flipToSending(): Promise<void> {
+    if (statusFlipped) return;
+    statusFlipped = true;
+    await db
+      .update(emailCampaigns)
+      .set({ status: 'sending', updatedAt: new Date() })
+      .where(eq(emailCampaigns.id, campaignId));
+  }
+
+  async function sendToRecipient(subscriber: DispatchRecipient, subject: string, variant: AbVariant | null): Promise<void> {
+    attempted++;
+    await flipToSending();
+    try {
+      const unsubscribeUrl = buildUnsubscribeUrl(subscriber.unsubscribeToken);
+      const html = cachedHtml
+        ? cachedHtml.replace(/\{\{UNSUBSCRIBE_URL\}\}/g, unsubscribeUrl)
+        : buildCampaignHtml(campaign.htmlContent, unsubscribeUrl, campaign.previewText);
+      const text = cachedText ?? htmlToText(html);
+      const result = await emailTransport.send({
+        from: `${campaign.fromName} <${campaign.fromEmail}>`,
+        to: subscriber.email,
+        subject,
+        html,
+        text,
+        ...(campaign.replyTo ? { replyTo: campaign.replyTo } : {}),
+        headers: {
+          'List-Unsubscribe': `<${unsubscribeUrl}>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
+      });
+      await db.insert(emailCampaignSends).values({
+        campaignId,
+        subscriberId: subscriber.id,
+        resendEmailId: result.data?.id ?? null,
+        abVariant: variant,
+        sentAt: new Date(),
+      });
+      sent++;
+    } catch {
+      failed++;
     }
   }
 
-  // A/B campaigns stay in 'ab_testing' until promote-winner flips them to
-  // 'sent' after dispatching the remainder.
-  const nextStatus = abActive ? 'ab_testing' : 'sent';
-  await db
-    .update(emailCampaigns)
-    .set({ status: nextStatus, sentAt: new Date(), totalSent: sent, updatedAt: new Date() })
-    .where(eq(emailCampaigns.id, campaignId));
+  // Base filter shared by both paths: active subscribers of this list.
+  const listFilter = and(
+    eq(emailSubscribers.listId, campaign.listId),
+    eq(emailSubscribers.status, 'active'),
+  );
 
   if (abActive) {
+    // A/B mode needs the deterministically-ordered head of the list so the
+    // same recipients land in the same cohort across re-runs — ordered in
+    // the DB (never sort in JS), minimal columns only.
+    const ordered = await db
+      .select(subscriberCols)
+      .from(emailSubscribers)
+      .where(listFilter)
+      .orderBy(asc(emailSubscribers.id));
+    const targets = ordered.filter(s => !sentIds.has(s.id));
+    if (targets.length === 0) throw new Error('No active subscribers remaining to send to');
+    const split = splitForAbTest(targets, campaign.abTestSizePct ?? 10);
+    for (const r of split.a) await sendToRecipient(r, campaign.subject, 'a');
+    for (const r of split.b) await sendToRecipient(r, campaign.abSubjectB!, 'b');
+
+    await db
+      .update(emailCampaigns)
+      .set({ status: 'ab_testing', sentAt: new Date(), totalRecipients: attempted, totalSent: sent, updatedAt: new Date() })
+      .where(eq(emailCampaigns.id, campaignId));
     return {
       sent,
       failed,
-      total: totalThisDispatch,
-      ab: { phase: 'testing', held: targets.length - totalThisDispatch },
+      total: attempted,
+      ab: { phase: 'testing', held: targets.length - attempted },
     };
   }
-  return { sent, failed, total: totalThisDispatch };
+
+  // Standard mode streams the list in id-cursor batches (minimal columns,
+  // DB-ordered) instead of loading every subscriber row into memory. Resume
+  // stays safe: already-sent ids are skipped per batch via the sends table
+  // snapshot taken above.
+  let lastId = 0;
+  for (;;) {
+    const batch: DispatchRecipient[] = await db
+      .select(subscriberCols)
+      .from(emailSubscribers)
+      .where(and(listFilter, gt(emailSubscribers.id, lastId)))
+      .orderBy(asc(emailSubscribers.id))
+      .limit(SEND_BATCH_SIZE);
+    if (batch.length === 0) break;
+    lastId = batch[batch.length - 1].id;
+    for (const subscriber of batch) {
+      if (sentIds.has(subscriber.id)) continue;
+      await sendToRecipient(subscriber, campaign.subject, null);
+    }
+  }
+  if (attempted === 0) throw new Error('No active subscribers remaining to send to');
+
+  await db
+    .update(emailCampaigns)
+    .set({ status: 'sent', sentAt: new Date(), totalRecipients: attempted, totalSent: sent, updatedAt: new Date() })
+    .where(eq(emailCampaigns.id, campaignId));
+
+  return { sent, failed, total: attempted };
 }
