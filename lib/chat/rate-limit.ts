@@ -1,9 +1,16 @@
 /**
  * Visitor message rate limit — token-bucket-ish, in-memory.
  *
- * No `lib/rate-limit.ts` exists in the repo today, so this is a small
- * keyed limiter scoped to chat. Lives in-process: when we eventually
- * scale to multiple Node instances we'll lift this into Redis.
+ * Two-layer setup (see app/api/public/chat/messages/route.ts): this fast
+ * per-instance window runs FIRST because it returns a precise `retryAfter`
+ * for the 429 response; the shared Upstash-backed `checkRateLimit` from
+ * lib/security/rate-limit.ts runs SECOND as the global gate across
+ * serverless instances (with its own in-memory fallback in dev). Do NOT
+ * remove this layer thinking the shared one covers it — the shared one
+ * returns boolean only, so the precise Retry-After header would be lost.
+ * Conversely, do NOT rely on this layer alone in production — per-instance
+ * counters don't sum across instances; the shared gate is the real global
+ * limit.
  */
 
 const WINDOW_MS = 10_000; // 10s sliding window

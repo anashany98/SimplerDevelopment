@@ -75,8 +75,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, message: 'Conversation is closed' }, { status: 409 });
   }
 
-  // Rate-limit by visitor — they can only send so fast.
-  const localLimit = checkVisitorRateLimit(`v:${conversation.visitorId ?? getClientIp(req)}`);
+  // Rate-limit by visitor — they can only send so fast. Keyed per tenant so a
+  // visitorId collision across tenants shares nothing (fail-closed buckets
+  // must never throttle an unrelated tenant's visitors).
+  const localLimit = checkVisitorRateLimit(`v:${conversation.clientId}:${conversation.visitorId ?? getClientIp(req)}`);
   if (!localLimit.ok) {
     return NextResponse.json(
       { success: false, message: 'Too many messages, slow down' },
