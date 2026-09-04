@@ -66,7 +66,12 @@ export const crmContacts = pgTable('crm_contacts', {
 }, (t) => [
   index('crm_contacts_client_idx').on(t.clientId),
   index('crm_contacts_client_company_idx').on(t.clientId, t.companyId),
-  index('crm_contacts_client_email_idx').on(t.clientId, t.email),
+  // Unique per tenant: backing constraint for the atomic upsert in
+  // lib/crm/contacts.ts (upsertContactByEmail). Without it, concurrent
+  // SELECT-then-INSERT races create duplicate (clientId, email) rows.
+  // NULL emails (contacts without email) are exempt — Postgres treats NULLs
+  // as distinct in unique indexes, so multiple NULLs per client stay legal.
+  uniqueIndex('crm_contacts_client_email_unique_idx').on(t.clientId, t.email),
   index('crm_contacts_client_updated_idx').on(t.clientId, t.updatedAt),
 ]);
 
