@@ -480,6 +480,17 @@ export async function POST(req: Request): Promise<Response> {
       };
 
       try {
+        // ── Agent pipeline contract (load-bearing order — keep in sync with
+        // lib/ai/evals/suites/brain-{classifier,planner,grounder}.eval.ts):
+        //   1. classify intent (+ complexity → model routing)
+        //   2. plan (complex queries only) → injected into the system prompt
+        //   3. tool loop (tools narrowed by intent; every result sanitized)
+        //   4. groundedness check → answer or explicit "I don't know"
+        // Each stage streams its SSE event (intent/plan/…) AND records a
+        // `brain_agent.*` span, so a run is replayable from Sentry, the dev
+        // log, or the streamed events. Do not reorder or skip stages without
+        // updating the eval suites — they pin this exact sequence.
+        //
         // ── Load user preferences (long-term memory).
         const prefs = await getAgentPreferences(client.id);
         const prefsText = formatPreferencesForPrompt(prefs);

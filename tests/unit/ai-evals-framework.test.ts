@@ -109,12 +109,12 @@ describe('real suites — mock smoke run @critical', () => {
 
     const report = await runAll(ALL_SUITES, { mock: true }, '2026-06-17T00:00:00Z');
     expect(report.mock).toBe(true);
-    // 4 automation + 2 survey + 6 classifier + 3 grounder + 2 page-extractor
-    // + 2 note-classifier + 2 meeting-extractor + 2 branding-messaging
-    // + 2 branding-theme + 1 deck-generator.
-    expect(report.overall.total).toBe(26);
-    // Only automation's one deliberately-wrong case fails → 25/26.
-    expect(report.overall.passed).toBe(25);
+    // 4 automation + 2 survey + 6 classifier + 3 planner + 3 grounder
+    // + 2 page-extractor + 2 note-classifier + 2 meeting-extractor
+    // + 2 branding-messaging + 2 branding-theme + 1 deck-generator.
+    expect(report.overall.total).toBe(29);
+    // Only automation's one deliberately-wrong case fails → 28/29.
+    expect(report.overall.passed).toBe(28);
 
     const automation = report.suites.find((s) => s.suiteId === 'automation-parser')!;
     expect(automation.passRate).toBe(0.75);
