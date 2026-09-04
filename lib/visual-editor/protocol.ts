@@ -58,14 +58,54 @@ export function sendToIframe(
   iframe: HTMLIFrameElement | null,
   type: string,
   payload: unknown,
+  targetOrigin?: string,
 ): void {
   if (!iframe?.contentWindow) return;
   const message = createMessage('sd-editor-parent', type, payload);
-  iframe.contentWindow.postMessage(message, '*');
+  iframe.contentWindow.postMessage(message, resolveIframeTargetOrigin(iframe, targetOrigin));
 }
 
-export function sendToParent(type: string, payload: unknown): void {
+export function sendToParent(type: string, payload: unknown, parentOrigin?: string): void {
   if (typeof window === 'undefined' || !window.parent || window.parent === window) return;
   const message = createMessage('sd-editor-iframe', type, payload);
-  window.parent.postMessage(message, '*');
+  window.parent.postMessage(message, resolveParentTargetOrigin(parentOrigin));
+}
+
+/**
+ * Never broadcast editor content with '*': derive the iframe's origin from
+ * its `src` (the preview may live on a tenant host, so same-origin cannot be
+ * assumed). An explicit, validated `targetOrigin` always wins. Falls back to
+ * the current origin only when the src is missing/unparseable — never '*'.
+ */
+function resolveIframeTargetOrigin(iframe: HTMLIFrameElement, explicit?: string): string {
+  if (explicit && isValidOrigin(explicit)) return new URL(explicit).origin;
+  try {
+    const src = iframe.getAttribute('src') ?? iframe.src;
+    if (src) {
+      const origin = new URL(src, window.location.href).origin;
+      if (isValidOrigin(origin)) return origin;
+    }
+  } catch {
+    // fall through to the safe default below
+  }
+  return window.location.origin;
+}
+
+/**
+ * Same rule in the other direction: target the embedding portal origin
+ * (via document.referrer) instead of '*', so block content is never offered
+ * to an unexpected ancestor frame. Both sides still validate inbound senders
+ * with isValidOrigin — this only narrows the outbound audience.
+ */
+function resolveParentTargetOrigin(explicit?: string): string {
+  if (explicit && isValidOrigin(explicit)) return new URL(explicit).origin;
+  try {
+    if (typeof document !== 'undefined' && document.referrer) {
+      const origin = new URL(document.referrer).origin;
+      if (isValidOrigin(origin)) return origin;
+    }
+  } catch {
+    // fall through to the safe default below
+  }
+  return window.location.origin;
 }
