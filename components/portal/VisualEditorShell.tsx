@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useVisualEditorParent } from '@/lib/visual-editor/useVisualEditorParent';
 import {
   findBlockById,
-  insertBlockAfter,
   updateBlockById,
 } from '@/lib/utils/blockHelpers';
 import type { Block, BlockType, ColumnsBlock } from '@/types/blocks';
@@ -27,7 +26,7 @@ import { usePanZoom } from './visual-editor/_hooks/usePanZoom';
 import { useBlockClipboard } from './visual-editor/_hooks/useBlockClipboard';
 import { useBulkActions } from './visual-editor/_hooks/useBulkActions';
 import { useLayersDragDrop } from './visual-editor/_hooks/useLayersDragDrop';
-import { applyDottedFieldUpdate, type BlockValues } from './VisualEditorShell.helpers';
+import { applyDottedFieldUpdate, createArrayItem, createTextBlock, insertNewBlockAfter, type BlockValues } from './VisualEditorShell.helpers';
 
 // No-op sorting strategy: items stay in place during drag, only reorder on drop
 const noMovementStrategy = () => null;
@@ -246,22 +245,8 @@ export function VisualEditorShell({
       onBlocksChange(newBlocks);
     },
     onAddBlockAfter: (blockId: string) => {
-      const newBlock = {
-        id: `block-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        type: 'text' as const,
-        order: 0,
-        content: 'New block — click to edit',
-      } as Block;
-      // Insert after the target block (works for nested blocks too)
-      const topIdx = blocks.findIndex((b) => b.id === blockId);
-      let updated: Block[];
-      if (topIdx !== -1) {
-        updated = [...blocks];
-        updated.splice(topIdx + 1, 0, newBlock);
-      } else {
-        // Nested — use recursive insert
-        updated = insertBlockAfter(blocks, blockId, newBlock);
-      }
+      const newBlock = createTextBlock(`${Date.now()}-${Math.random().toString(36).slice(2, 6)}`);
+      const updated = insertNewBlockAfter(blocks, blockId, newBlock);
       iframeOriginatedRef.current = true;
       onBlocksChange(updated);
       selectBlock(newBlock.id);
@@ -305,15 +290,7 @@ export function VisualEditorShell({
         const arrayField = value as string;
         const existing = (block as unknown as Record<string, unknown[]>)[arrayField] as unknown[] || [];
         const uid = `item-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-        const defaults: Record<string, unknown> = {
-          cards: { id: uid, title: 'New card', description: '' },
-          stats: { id: uid, value: '0', label: 'New stat' },
-          images: { id: uid, url: '', alt: '' },
-          services: { id: uid, title: 'New service', description: '' },
-          items: { id: uid, title: 'New item', content: '' },
-          tabs: { id: uid, label: 'New Tab', blocks: [] },
-        };
-        handleUpdateBlock(blockId, { [arrayField]: [...existing, defaults[arrayField] || { id: uid }] } as Partial<Block>);
+        handleUpdateBlock(blockId, { [arrayField]: [...existing, createArrayItem(arrayField, uid)] } as Partial<Block>);
       } else {
         // For html-render blocks the field-edit channel writes into the
         // `values` map (keyed by field name) so the template substitution
