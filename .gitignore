@@ -14,6 +14,7 @@
 
 # testing
 /coverage
+/vitest-out.json
 
 # next.js
 /.next/

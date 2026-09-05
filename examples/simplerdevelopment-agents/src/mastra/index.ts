@@ -3,9 +3,6 @@ import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
 import { PostgresStore } from '@mastra/pg';
 import { Observability, MastraStorageExporter, MastraPlatformExporter, SensitiveDataFilter } from '@mastra/observability';
-import { weatherWorkflow } from './workflows/weather-workflow';
-import { weatherAgent } from './agents/weather-agent';
-import { toolCallAppropriatenessScorer, completenessScorer, translationScorer } from './scorers/weather-scorer';
 import { toolGroundingScorer, groundednessScorer } from './scorers/brain-scorer';
 // CRM AGENTS Company Brain example (talks to the portal MCP server).
 import { brainAgent } from './agents/brain-agent';
@@ -36,9 +33,8 @@ if (process.env.NODE_ENV === 'production' && !process.env.SD_AGENTS_INTERNAL_SEC
 }
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow, brainWorkflow },
+  workflows: { brainWorkflow },
   agents: {
-    weatherAgent,
     brainAgent,
     classifierAgent,
     plannerAgent,
@@ -95,9 +91,6 @@ export const mastra = new Mastra({
     ],
   },
   scorers: {
-    toolCallAppropriatenessScorer,
-    completenessScorer,
-    translationScorer,
     toolGroundingScorer,
     groundednessScorer,
   },

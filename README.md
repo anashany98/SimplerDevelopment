@@ -85,10 +85,10 @@ New to the skill system? Start with the **[overview](docs/skills/SD-SKILLS-OVERV
 
 This repo is built to be worked on by AI agents alongside humans — the agent tooling is first-class infrastructure, not an add-on. The root **[`CLAUDE.md`](CLAUDE.md)** and per-area nested `CLAUDE.md` files carry the operating rules; [`.claude/index.md`](.claude/index.md) maps "I need to work on X" to the right guide.
 
-The unifying idea for building *your own* agents against the platform: **connect to the MCP server as a client and inherit all 450+ tools — never re-implement them.** [`simplerdevelopment-agents/`](simplerdevelopment-agents/) is the worked example.
+The unifying idea for building *your own* agents against the platform: **connect to the MCP server as a client and inherit all 450+ tools — never re-implement them.** [`examples/simplerdevelopment-agents/`](examples/simplerdevelopment-agents/) is the worked example (reference only — production traffic runs the hand-rolled agents in `lib/ai/`).
 
-- **Mastra** — two production agents built on [Mastra](https://mastra.ai): a deterministic *Workflow* for the Company Brain (classify → plan → tool-loop → groundedness check, with a scorer eval layer) and a *dynamic agent* portal assistant whose model and tools are chosen per request. Learn it here: **[`simplerdevelopment-agents/MASTRA_GUIDE.md`](simplerdevelopment-agents/MASTRA_GUIDE.md)**.
-- **Mastra → Next.js** — how the agents service plugs into the parent app: in multi-tenant mode it holds *no* per-tenant secrets — the Next.js app mints a short-lived, single-tenant token per request and the MCP client fails closed without one. Architecture, setup, and the adoption path: **[`simplerdevelopment-agents/BRAIN_AGENT_README.md`](simplerdevelopment-agents/BRAIN_AGENT_README.md)**.
+- **Mastra** — two worked-example agents built on [Mastra](https://mastra.ai): a deterministic *Workflow* for the Company Brain (classify → plan → tool-loop → groundedness check, with a scorer eval layer) and a *dynamic agent* portal assistant whose model and tools are chosen per request. Learn it here: **[`examples/simplerdevelopment-agents/MASTRA_GUIDE.md`](examples/simplerdevelopment-agents/MASTRA_GUIDE.md)**.
+- **Mastra → Next.js** — how the agents service plugs into the parent app: in multi-tenant mode it holds *no* per-tenant secrets — the Next.js app mints a short-lived, single-tenant token per request and the MCP client fails closed without one. Architecture, setup, and the adoption path: **[`examples/simplerdevelopment-agents/BRAIN_AGENT_README.md`](examples/simplerdevelopment-agents/BRAIN_AGENT_README.md)**.
 - **Crew AI** — a second reference implementation of the same MCP-client pattern is planned. *Coming soon.*
 
 ## Deployment

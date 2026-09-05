@@ -2,8 +2,8 @@
 
 This is a learning guide for **Mastra**, the TypeScript AI-agent framework, taught by
 mapping its concepts onto the files already in this project. We're on
-**`@mastra/core ^1.46`** (the v1 line). The repo is the default Mastra "weather agent"
-scaffold, which conveniently contains every core primitive.
+**`@mastra/core ^1.46`** (the v1 line). The default weather scaffold was removed —
+every primitive below is taught through the real Brain/portal agents instead.
 
 > ⚠️ APIs shift between Mastra versions. Verify anything here against the docs for our
 > exact version, and load the project `mastra` skill before building. The code references
@@ -26,18 +26,18 @@ it's wired in.
 
 ## The six primitives (all present in this repo)
 
-### 1. Agent — `src/mastra/agents/weather-agent.ts`
+### 1. Agent — `src/mastra/agents/brain-agent.ts`
 `instructions + model + tools + memory + scorers`. You give it a goal in natural
 language; it decides which tools to call, when, and when it's done.
 
 ```ts
-export const weatherAgent = new Agent({
-  id: 'weather-agent',
-  instructions: `You are a helpful weather assistant...`, // the system prompt = product logic
-  model: 'openai/gpt-5-mini',   // unified model router: "provider/model" string
-  tools: { weatherTool },
+export const brainAgent = new Agent({
+  id: 'brain-agent',
+  instructions: `You are the Company Brain assistant...`, // the system prompt = product logic
+  model: MAIN_MODEL,   // 'anthropic/claude-sonnet-4-6' (overridable via SD_BRAIN_MODEL)
+  tools: async () => await sdTools(),   // pulled live from the portal MCP server
   memory: new Memory(),
-  scorers: { ... },
+  scorers: { toolGroundingScorer, groundednessScorer },
 });
 ```
 
@@ -45,45 +45,37 @@ export const weatherAgent = new Agent({
   ~90 providers. Swap providers by editing one string (+ the provider's API key in `.env`).
 - **`instructions` is the highest-leverage thing you own** — it's most of the behavior.
 
-### 2. Tool — `src/mastra/tools/weather-tool.ts`
-A typed function the agent can call. The schema is the contract the LLM sees.
+### 2. Tool — via MCP (`src/mastra/mcp/sd-mcp.ts`)
+Our tools aren't hand-declared functions — they're the portal's MCP catalogue,
+loaded live (`MCPClient.listTools()`). Same contract the model sees (schema +
+description), zero re-implementation. `description` fields remain **prompt
+engineering, not docs** — they're how the model decides what to pass and when
+to call. Prefer the narrow `brain:read` slice: a full-scope key exposes ~450
+tools, which bloats the prompt and dilutes tool selection.
 
-```ts
-export const weatherTool = createTool({
-  id: 'get-weather',
-  description: 'Get current weather for a location', // model reads this to decide when to call
-  inputSchema: z.object({ location: z.string().describe('City name') }),
-  outputSchema: z.object({ temperature: z.number(), /* ... */ }),
-  execute: async (inputData) => getWeather(inputData.location),
-});
-```
-
-`description` and each `.describe()` are **prompt engineering, not docs** — they're how the
-model decides what to pass and when to call. `execute` is plain TypeScript (here: two
-open-meteo HTTP calls). Tools are where the agent reaches the real world (APIs, DBs, MCP
-servers — note the CRM AGENTS portal exposes ~400 MCP tools an agent could use).
-
-### 3. Workflow — `src/mastra/workflows/weather-workflow.ts`
+### 3. Workflow — `src/mastra/workflows/brain-workflow.ts`
 Agents are non-deterministic; **workflows are deterministic** — explicit steps, branching,
 parallelism, loops, pause-for-human-approval. Built from `createStep` + `createWorkflow`;
 each step has its own `inputSchema`/`outputSchema` so steps type-check like a pipeline.
+Ours runs classify → plan → tool-loop → groundedness check.
 
-**Agent vs workflow:** agent = open-ended ("answer weather questions"); workflow = fixed
-process ("fetch → summarize → email", same every time). They compose — a workflow step can
-call an agent, and an agent can run a workflow as a tool.
+**Agent vs workflow:** agent = open-ended ("answer anything about the workspace");
+workflow = fixed process ("classify → plan → act → verify", same every time). They
+compose — a workflow step can call an agent, and an agent can run a workflow as a tool.
 
 ### 4. Memory — `new Memory()` in the agent
 Persistence across turns (conversation history; optionally semantic recall + working
-memory). Backed by storage. Currently defaults, persisting to LibSQL.
+memory). Backed by storage — Postgres here (see index.ts), so memory survives
+redeploys; the parent app scopes it per tenant via the resourceId key.
 
-### 5. Scorers — `src/mastra/scorers/weather-scorer.ts`
-Mastra's **eval** layer. Each scorer auto-grades outputs (here: tool-call appropriateness,
-completeness, translation). `sampling: { type: 'ratio', rate: 1 }` = score 100% of runs.
+### 5. Scorers — `src/mastra/scorers/brain-scorer.ts`
+Mastra's **eval** layer. Each scorer auto-grades outputs (here: tool grounding +
+groundedness). `sampling: { type: 'ratio', rate: 1 }` = score 100% of runs.
 Results show in Studio — the "are my prompt changes actually better?" feedback loop.
 
 ### 6. Storage + Observability — `src/mastra/index.ts`
-- **Storage:** `MastraCompositeStore` — LibSQL (`file:./mastra.db`) default, DuckDB for the
-  observability domain. Persists memory, evals, traces.
+- **Storage:** Postgres (`PostgresStore`, same `DATABASE_URL` as the parent app
+  or `MASTRA_DATABASE_URL`) — memory, evals, traces survive redeploys.
 - **Observability:** OTel-style tracing with a `SensitiveDataFilter` (redacts
   passwords/tokens) + exporter to Mastra's hosted platform if `MASTRA_PLATFORM_ACCESS_TOKEN`
   is set.
@@ -117,10 +109,10 @@ and **how you measure what comes out**. "Context engineering" is the actual craf
 bun dev   # = "mastra dev"
 ```
 
-Open **`localhost:4111`** (Mastra Studio): chat with the agent, watch each tool call + the
-trace, run the workflow, see scorer results. **Learn by mutating the scaffold** — change
-`instructions`, add a field to the tool's `outputSchema`, add a second tool, watch the loop
-change in Studio.
+Open **`localhost:4111`** (Mastra Studio): chat with the Brain agent, watch each tool call + the
+trace, run the workflow, see scorer results. **Learn by mutating the agents** — tighten
+`instructions`, narrow the MCP tool slice in `sd-mcp.ts`, add a step to the workflow,
+watch the loop change in Studio.
 
 ---
 
