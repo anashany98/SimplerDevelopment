@@ -47,13 +47,20 @@ services:
     image: ghcr.io/berriai/litellm:main-stable
     container_name: simplerdev-litellm
     restart: unless-stopped
-    command: --config /app/config.yaml --port 4000
+    # NOTE: the config travels inline (top-level `configs:`) instead of a
+    # host bind mount: a `./docker/litellm-config.yaml:/app/config.yaml` bind
+    # broke on the deploy host (missing source → Docker mounts a directory →
+    # litellm dies with IsADirectoryError). The file under
+    # docker/litellm-config.yaml stays as the editable source of truth — copy
+    # any change into the `content:` block below.
+    command: --config /litellm-config.yaml --port 4000
+    configs:
+      - source: litellm-config
+        target: /litellm-config.yaml
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
       LITELLM_LOCAL_MODEL_COST_MAP: "True" # skip startup fetch to api.litellm.ai (offline-friendly)
-    volumes:
-      - ./docker/litellm-config.yaml:/app/config.yaml:ro
     ports:
       - "127.0.0.1:4100:4000" # localhost-only, for debugging the gateway
     healthcheck:
@@ -366,3 +373,22 @@ volumes:
   simplerdev-realtime-node-modules:
   simplerdev-agents-node-modules:
   simplerdev-minio-data:
+
+# Inline file configs — travel inside this compose file so no host bind is
+# needed (binds of single files break when the source is missing: Docker
+# mounts a directory instead and the container dies reading it).
+configs:
+  litellm-config:
+    content: |
+      # Anthropic-protocol gateway for the local-AI deployment (mirror of
+      # docker/litellm-config.yaml — edit that file, then copy it here).
+      model_list:
+        - model_name: "*"
+          litellm_params:
+            model: openai/qwen3-vl-8b-instruct
+            api_base: http://host.docker.internal:1234/v1
+            api_key: lmstudio-local
+      litellm_settings:
+        drop_params: true
+      general_settings:
+        master_key: local-anthropic-gateway
