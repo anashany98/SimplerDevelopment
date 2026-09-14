@@ -26,7 +26,10 @@
 
 services:
   db:
-    image: pgvector/pgvector:pg16
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: database
     container_name: simplerdev-db
     restart: unless-stopped
     environment:
@@ -85,7 +88,10 @@ services:
       - "8025:8025" # Web UI
 
   app:
-    image: oven/bun:1.3.11
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
     container_name: simplerdev-app
     restart: unless-stopped
     # Docker Desktop on this machine does not auto-inject host.docker.internal;
@@ -201,7 +207,6 @@ services:
       S3_SECRET_ACCESS_KEY: minioadmin
       PORT: "3000"
     volumes:
-      - .:/workspace
       - simplerdev-app-node-modules:/workspace/node_modules
       # .next on a named volume: keeps the write-heavy dev/build cache off the
       # macOS bind mount (VirtioFS) — measurably faster compiles in-container.
@@ -224,7 +229,10 @@ services:
       start_period: 1200s
 
   cron:
-    image: oven/bun:1.3.11
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
     container_name: simplerdev-cron
     restart: unless-stopped
     working_dir: /workspace
@@ -238,7 +246,6 @@ services:
     environment:
       CRON_BASE_URL: http://app:3000
     volumes:
-      - .:/workspace
       - simplerdev-cron-node-modules:/workspace/node_modules
     healthcheck:
       test: ["CMD-SHELL", "grep -qa cron-runner /proc/[0-9]*/cmdline 2>/dev/null || exit 1"]
@@ -269,7 +276,10 @@ services:
       retries: 10
 
   realtime:
-    image: oven/bun:1.3.11
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
     container_name: simplerdev-realtime
     restart: unless-stopped
     working_dir: /workspace/packages/realtime-server
@@ -286,7 +296,6 @@ services:
       REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
       PORT: "3030"
     volumes:
-      - .:/workspace
       # realtime-server is a workspace member, so its `bun install` resolves the
       # workspace ROOT and writes /workspace/node_modules — without this volume
       # that lands on the bind mount (slow on macOS, pollutes the host checkout).
