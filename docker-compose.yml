@@ -2,7 +2,11 @@
 # - db: Postgres 16 with pgvector preinstalled
 # - app: Next.js app at http://localhost:3000
 # - realtime: Yjs WebSocket server at http://localhost:3030/health
-# - agents: Mastra agents service at http://localhost:4111
+# NOTE: no `agents` service — simplerdevelopment-agents moved to
+# examples/simplerdevelopment-agents (reference only) and the old
+# working_dir no longer has a package.json, so the service died with
+# "Bun could not find a package.json file to install from". Nothing
+# depends on it: the app runs without SD_AGENTS_URL (see its env below).
 # - cron: fires the vercel.json cron jobs against the app (self-hosted
 #   replacement for Vercel's scheduler; needs CRON_SECRET in .env.local)
 # - mailpit: local email capture at http://localhost:8025
@@ -301,69 +305,6 @@ services:
       retries: 30
       start_period: 1200s # cold bun install grace — see app service note
 
-  agents:
-    image: oven/bun:1.3.11
-    container_name: simplerdev-agents
-    restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    working_dir: /workspace/simplerdevelopment-agents
-    # `mastra dev` (the Studio/hot-reload server) exits 0 immediately in this
-    # detached container and crash-loops under restart:unless-stopped. Use the
-    # production build+start flow instead — same as the Dockerfile and the
-    # deployed Railway service — which serves the HTTP API the app calls.
-    # The build persists on the host bind-mount and is REUSED only when it is
-    # genuinely up-to-date: if any source file (src/**, package.json, bun.lock,
-    # tsconfig.json) is newer than .mastra/output/index.mjs, we rebuild. This
-    # avoids the stale-build trap where a changed dep (e.g. a @mastra/* bump)
-    # was silently served from a previous build and crashed at runtime. Only the
-    # first start pays the ~5-min cold bundle; later starts go straight to
-    # `start` unless something changed. Force a rebuild manually with:
-    #   docker compose exec agents rm -rf .mastra/output && docker compose restart agents
-    command: sh -lc "bun install --frozen-lockfile && { [ -f .mastra/output/index.mjs ] && [ -z \"$(find src package.json bun.lock tsconfig.json -newer .mastra/output/index.mjs -print -quit)\" ] && echo 'reusing existing .mastra/output build' || { echo 'building .mastra/output (source or deps changed)'; bun run build; }; } && bun run start"
-    depends_on:
-      app:
-        condition: service_healthy
-    env_file:
-      - path: .env.local
-        required: false
-    environment:
-      # Mastra storage connects via DATABASE_URL; without this override the
-      # .env.local value (host-local Postgres) is unreachable from the
-      # container and mastra start dies with ECONNREFUSED.
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
-      # Local AI for Mastra agents: the model strings use the `openai/`
-      # prefix because @ai-sdk/anthropic does NOT honor ANTHROPIC_BASE_URL
-      # (verified 2026-08-28: Mastra hit api.anthropic.com and got 404 while
-      # the litellm gateway saw zero traffic). @ai-sdk/openai DOES honor
-      # OPENAI_BASE_URL, so agents talk to LM Studio directly over the OpenAI
-      # protocol — same local model the rest of the seam uses.
-      OPENAI_API_KEY: ${LMSTUDIO_API_KEY:-lmstudio-local}
-      OPENAI_BASE_URL: http://host.docker.internal:1234/v1
-      SD_BRAIN_MODEL: openai/qwen3-vl-8b-instruct
-      SD_BRAIN_FAST_MODEL: openai/qwen3-vl-8b-instruct
-      SD_PORTAL_MODEL: openai/qwen3-vl-8b-instruct
-      SD_PORTAL_FAST_MODEL: openai/qwen3-vl-8b-instruct
-      SD_SCORER_MODEL: openai/qwen3-vl-8b-instruct
-      SD_MCP_URL: http://app:3000/api/mcp
-      SD_AGENTS_INTERNAL_SECRET: ${SD_AGENTS_INTERNAL_SECRET:-sd-local-dev-agents-internal-secret}
-      PORT: "4111"
-    volumes:
-      - .:/workspace
-      - simplerdev-agents-node-modules:/workspace/simplerdevelopment-agents/node_modules
-    ports:
-      - "4111:4111"
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "bun --eval \"fetch('http://localhost:4111').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\"",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-      start_period: 1200s # cold bun install grace — see app service note
-
 volumes:
   simplerdev-pgdata:
   simplerdev-app-node-modules:
@@ -371,7 +312,6 @@ volumes:
   simplerdev-app-next:
   simplerdev-realtime-root-node-modules:
   simplerdev-realtime-node-modules:
-  simplerdev-agents-node-modules:
   simplerdev-minio-data:
 
 # Inline file configs — travel inside this compose file so no host bind is
