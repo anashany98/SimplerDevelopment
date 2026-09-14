@@ -1,0 +1,188 @@
+# Coolify: Base Directory=/, Docker Compose Location=/docker-compose.coolify.yml.
+# Deploy from the Git repository. Code is copied into the image at build time;
+# do not add a source bind mount over /workspace (it would hide that code).
+# This retains the LOCAL DEVELOPMENT stack and its startup/migration commands.
+# It fixes missing source files in Coolify; it is not a production configuration.
+# Configure production secrets, public URLs and services before public use.
+# Keep docker-compose.yml for local bind-mounted development.
+#
+# Differences vs docker-compose.yml (all dead weight removed for deploy):
+# - no `minio-init`: its image (minio/mc) no longer exists on Docker Hub and
+#   kills the whole `up`. Create the `simplerdev-media` bucket once via the
+#   MinIO console (:9001) with public read access instead.
+# - no `agents`: simplerdevelopment-agents moved to examples/ (reference
+#   only) and nothing depends on it — the app runs without SD_AGENTS_URL.
+# - no `litellm`: it proxied a host-local LM Studio that doesn't exist on a
+#   server; set real ANTHROPIC_API_KEY / OPENAI_API_KEY instead.
+services:
+  db:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: database
+    container_name: simplerdev-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: simplerdev
+    ports:
+      - "5432:5432"
+    volumes:
+      - simplerdev-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d simplerdev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: simplerdev-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
+    container_name: simplerdev-app
+    restart: unless-stopped
+    working_dir: /workspace
+    command: >
+      sh -lc "bun install --frozen-lockfile &&
+      bun scripts/verify-db-target.ts &&
+      bunx drizzle-kit migrate &&
+      bun scripts/apply-local-manual-migrations.ts &&
+      bun dev"
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
+      DRIZZLE_DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_PUBLIC_REALTIME_URL: ws://localhost:3030
+      REALTIME_INTERNAL_URL: http://realtime:3030
+      REALTIME_JWT_SECRET: ${REALTIME_JWT_SECRET:-sd-local-dev-realtime-jwt-secret}
+      REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
+      AUTH_TRUST_HOST: "true"
+      EMAIL_TRANSPORT: mailpit
+      MAILPIT_SMTP_HOST: mailpit
+      MAILPIT_SMTP_PORT: "1025"
+      PORT: "3000"
+    volumes:
+      - simplerdev-app-node-modules:/workspace/node_modules
+      - simplerdev-app-next:/workspace/.next
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bun --eval \"fetch('http://localhost:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 1200s
+
+  minio:
+    image: minio/minio:latest
+    container_name: simplerdev-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # Console
+    volumes:
+      - simplerdev-minio-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cron:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
+    container_name: simplerdev-cron
+    restart: unless-stopped
+    working_dir: /workspace
+    command: sh -lc "bun install --frozen-lockfile && bun scripts/cron-runner.ts"
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      CRON_BASE_URL: http://app:3000
+    volumes:
+      - simplerdev-cron-node-modules:/workspace/node_modules
+    healthcheck:
+      test: ["CMD-SHELL", "grep -qa cron-runner /proc/[0-9]*/cmdline 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 1200s # cold bun install grace — see app service note
+
+  realtime:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.coolify
+      target: source
+    container_name: simplerdev-realtime
+    restart: unless-stopped
+    working_dir: /workspace/packages/realtime-server
+    command: sh -lc "bun install --frozen-lockfile && bun src/server.ts"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
+      REALTIME_JWT_SECRET: ${REALTIME_JWT_SECRET:-sd-local-dev-realtime-jwt-secret}
+      REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
+      PORT: "3030"
+    volumes:
+      - simplerdev-realtime-root-node-modules:/workspace/node_modules
+      - simplerdev-realtime-node-modules:/workspace/packages/realtime-server/node_modules
+    ports:
+      - "3030:3030"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bun --eval \"fetch('http://localhost:3030/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 1200s
+
+volumes:
+  simplerdev-pgdata:
+  simplerdev-app-node-modules:
+  simplerdev-cron-node-modules:
+  simplerdev-app-next:
+  simplerdev-realtime-root-node-modules:
+  simplerdev-realtime-node-modules:
+  simplerdev-minio-data:

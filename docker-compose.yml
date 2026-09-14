@@ -1,4 +1,6 @@
 # Full local development stack:
+# For Coolify, select /docker-compose.coolify.yml instead: its images contain
+# the source and database init SQL, without runtime repository bind mounts.
 # - db: Postgres 16 with pgvector preinstalled
 # - app: Next.js app at http://localhost:3000
 # - realtime: Yjs WebSocket server at http://localhost:3030/health
