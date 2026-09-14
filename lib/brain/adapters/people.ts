@@ -14,7 +14,6 @@ import {
   brainOrgUnits,
   brainPeople,
   brainPersonOrgUnits,
-  type BrainOrgUnitTreeNode,
   type BrainPersonStatus,
 } from '@/lib/db/schema';
 import { hasScope, type PortalMcpContext } from '@/lib/mcp-auth';
@@ -37,6 +36,7 @@ import {
 } from '../people';
 import {
   addMember,
+  type BrainOrgUnitTreeNode,
   createOrgUnit,
   deleteOrgUnit,
   getOrgUnitById,
