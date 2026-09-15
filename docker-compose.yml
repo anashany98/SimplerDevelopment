@@ -12,7 +12,9 @@
 # - cron: fires the vercel.json cron jobs against the app (self-hosted
 #   replacement for Vercel's scheduler; needs CRON_SECRET in .env.local)
 # - mailpit: local email capture at http://localhost:8025
-# - minio: local S3-compatible object storage at :9000 (console :9011)
+# NOTE: no `minio` service — minio/* images are pull-restricted on Docker Hub
+# (anonymous pulls get access-denied) and kill the whole `up`. The app boots
+# without object storage; media uploads fail until real S3 vars are set.
 #
 # Usage:
 #   cp .env.example .env.local
@@ -194,17 +196,15 @@ services:
       # (drizzle/9028) and lib/db/schema/brain.ts.
       EMBEDDINGS_MODEL: text-embedding-nomic-embed-text-v1.5@f32
       EMBEDDINGS_DIM: "768"
-      # Local MinIO for media uploads. Create the bucket ONCE via the MinIO
-      # console (:9001, minioadmin/minioadmin): buckets → Create Bucket
-      # `simplerdev-media`, then set Access Policy to Public. The
-      # public endpoint is browser-facing: presigned URLs signed for
-      # http://minio:9000 would fail when fetched from the host browser.
-      S3_ENDPOINT: http://minio:9000
-      S3_PUBLIC_ENDPOINT: http://localhost:9000
-      S3_REGION: us-east-1
-      S3_BUCKET_NAME: simplerdev-media
-      S3_ACCESS_KEY_ID: minioadmin
-      S3_SECRET_ACCESS_KEY: minioadmin
+      # Object storage: no local MinIO in this deploy (minio/* images are
+      # pull-restricted on Docker Hub). Media uploads fail until real S3
+      # vars are set (AWS S3, R2, …). Uncomment + fill to enable.
+      # S3_ENDPOINT: https://s3.us-east-1.amazonaws.com
+      # S3_PUBLIC_ENDPOINT: https://s3.us-east-1.amazonaws.com
+      # S3_REGION: us-east-1
+      # S3_BUCKET_NAME: simplerdev-media
+      # S3_ACCESS_KEY_ID: change-me
+      # S3_SECRET_ACCESS_KEY: change-me
       PORT: "3000"
     volumes:
       - simplerdev-app-node-modules:/workspace/node_modules
@@ -254,27 +254,6 @@ services:
       retries: 5
       start_period: 1200s # cold bun install grace — see app service note
 
-  minio:
-    image: minio/minio:latest
-    container_name: simplerdev-minio
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    ports:
-      - "9000:9000" # S3 API
-      # Console on 9011: the omnigraph-rag stack already owns 9001 on this box.
-      - "9011:9001" # Console
-    volumes:
-      - simplerdev-minio-data:/data
-    healthcheck:
-      # the minio image includes curl
-      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
   realtime:
     build:
       context: .
@@ -323,7 +302,6 @@ volumes:
   simplerdev-app-next:
   simplerdev-realtime-root-node-modules:
   simplerdev-realtime-node-modules:
-  simplerdev-minio-data:
 
 # Inline file configs — travel inside this compose file so no host bind is
 # needed (binds of single files break when the source is missing: Docker
