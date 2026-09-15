@@ -101,12 +101,17 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     working_dir: /workspace
+    # Production server: build once, serve precompiled. `bun dev` compiles
+    # on demand and eats RAM until the host OOM-kills it (observed: serves,
+    # then dies). The build re-runs only when sources are newer than the
+    # last build marker; .next persists on its named volume across restarts.
     command: >
       sh -lc "bun install --frozen-lockfile --linker=hoisted &&
       bun scripts/verify-db-target.ts &&
       bunx drizzle-kit migrate &&
       bun scripts/apply-local-manual-migrations.ts &&
-      bun dev"
+      { [ -f .next/BUILD_ID ] && [ -z \"$(find app lib components packages public middleware.ts instrumentation.ts instrumentation-client.ts next.config.ts package.json bun.lock tsconfig.json -newer .next/BUILD_ID -print -quit 2>/dev/null)\" ] && echo 'reusing existing .next build' || { echo 'building (first boot or sources changed)'; rm -rf .next; bun run build; }; } &&
+      bun run start"
     depends_on:
       db:
         condition: service_healthy
