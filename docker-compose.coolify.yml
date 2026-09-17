@@ -211,8 +211,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 30
-      # First boot: bun install + first Next build inside the container.
-      start_period: 1200s
+      # First boot runs `bun install` + the first Next production build INSIDE
+      # the container. On a 2-vCPU VPS (e.g. Hostinger KVM 2) that can take
+      # 15-40 min — keep this well above it, otherwise the cron service's
+      # depends_on: service_healthy aborts the deploy while the app is still
+      # building. 2400s + the 30x10s retries = ~45 min before unhealthy.
+      start_period: 2400s
     # No hard memory limit by default: the first-boot `bun run build` needs
     # headroom (~3-4GB peak). Once the build is cached on the .next volume you
     # can add a limit here, e.g. memory: 2G.
