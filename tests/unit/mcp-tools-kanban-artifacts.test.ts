@@ -232,9 +232,6 @@ vi.mock('next/cache', () => ({ revalidatePath: vi.fn(), unstable_cache: (fn: (..
 vi.mock('@/lib/portal-auth', () => ({ hasServiceAccess: vi.fn(async () => true) }));
 
 // projections re-exports — transitively imported but never invoked; stub minimally.
-vi.mock('../projections', () => ({
-  postProjection: {}, deckProjection: {}, campaignProjection: {},
-}));
 vi.mock('@/lib/mcp/projections', () => ({
   postProjection: {}, deckProjection: {}, campaignProjection: {},
 }));

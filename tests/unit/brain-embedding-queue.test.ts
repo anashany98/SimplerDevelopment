@@ -85,13 +85,6 @@ vi.mock('@/lib/brain/embeddings', () => ({
     return state.embedByIdImpl(args);
   }),
 }));
-// Cover the relative-resolution alias too.
-vi.mock('./embeddings', () => ({
-  embedById: vi.fn(async (args: { clientId: number; entityType: string; entityId: number }) => {
-    state.embedByIdCalls.push(args);
-    return state.embedByIdImpl(args);
-  }),
-}));
 
 beforeEach(() => {
   state.execCalls.length = 0;

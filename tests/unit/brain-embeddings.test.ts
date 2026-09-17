@@ -87,16 +87,6 @@ vi.mock('@/lib/brain/embedding-extractors', () => ({
   }),
 }));
 
-// We mock the relative path used inside embeddings.ts's dynamic imports
-// (`await import('./embedding-extractors')`). Vitest resolves it relative to
-// the source file, so this absolute alias also needs covering.
-vi.mock('./embedding-extractors', () => ({
-  extractContentForEntity: vi.fn(async (clientId: number, type: string, id: number) => {
-    if (state.extractorImpl) return state.extractorImpl(clientId, type, id);
-    return { text: '', found: false };
-  }),
-}));
-
 // Helper to install a fake fetch returning a configurable OpenAI response.
 function installFetchMock(opts: {
   vectors?: number[][];
