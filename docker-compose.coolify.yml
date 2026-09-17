@@ -1,33 +1,85 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Coolify — PRODUCTION stack.
 # Coolify: Base Directory=/, Docker Compose Location=/docker-compose.coolify.yml.
-# Deploy from the Git repository. Code is copied into the image at build time;
-# do not add a source bind mount over /workspace (it would hide that code).
-# This retains the LOCAL DEVELOPMENT stack and its startup/migration commands.
-# It fixes missing source files in Coolify; it is not a production configuration.
-# Configure production secrets, public URLs and services before public use.
+# Deploy from the Git repository. Source is baked into the image at build time;
+# do NOT add a source bind mount over /workspace (it would hide that code).
 # Keep docker-compose.yml for local bind-mounted development.
+# ─────────────────────────────────────────────────────────────────────────────
+# Changes vs the previous rev of this file:
+# - serves a PRODUCTION build (built once, cached on a volume, served under
+#   Node — see the app command), not `bun dev` (the dev server OOMs on shared
+#   hosts — git history fa508d1).
+# - public URLs are env-overridable so the host middleware accepts your deploy
+#   domain (git history 68087ea). Set NEXTAUTH_URL / NEXT_PUBLIC_APP_URL /
+#   NEXT_PUBLIC_SITE_URL in Coolify.
+# - `minio` is gone (image is pull-restricted on Docker Hub and killed `up` —
+#   git history e23f317). Media uploads need real S3 vars (forwarded below).
+# - no `litellm` / host-local LM Studio (doesn't exist on a server). AI features
+#   use real ANTHROPIC_API_KEY / OPENAI_API_KEY.
+# - `container_name` removed so Coolify can run this next to other stacks.
+# - only the app publishes a host port (${APP_PORT:-3000}); the database and
+#   mailpit stay on the internal network only.
+# - per-service memory limits + single-worker low-memory build flags keep the
+#   whole stack inside a small VPS.
+# - the Next build and `next start` run under the NODE runtime shipped in the
+#   image: Next 16.3 production builds are fragile under the Bun runtime (the
+#   CJS-wrapper crash was observed on Bun 1.3.11; see oven-sh/bun#25650/#25609
+#   and the note in docker/Dockerfile.coolify). Bun remains the package manager
+#   and runs the cron/realtime services. The boot command also fails loudly
+#   when the build fails (the previous rev could mask a failed build and
+#   `next start` on a missing build).
 #
-# Differences vs docker-compose.yml (all dead weight removed for deploy):
-# - no `minio-init`: its image (minio/mc) no longer exists on Docker Hub and
-#   kills the whole `up`. Create the `simplerdev-media` bucket once via the
-#   MinIO console (:9001) with public read access instead.
-# - no `agents`: simplerdevelopment-agents moved to examples/ (reference
-#   only) and nothing depends on it — the app runs without SD_AGENTS_URL.
-# - no `litellm`: it proxied a host-local LM Studio that doesn't exist on a
-#   server; set real ANTHROPIC_API_KEY / OPENAI_API_KEY instead.
+# Required Coolify environment variables (UI -> Environment Variables):
+#   POSTGRES_PASSWORD             DB password. The 'postgres' default is
+#                                 DEV-ONLY — set a strong one BEFORE the first
+#                                 boot (the pgdata volume keeps it afterwards).
+#   AUTH_SECRET                   openssl rand -base64 32
+#   NEXTAUTH_URL                  https://your-domain
+#   NEXT_PUBLIC_APP_URL           https://your-domain
+#   NEXT_PUBLIC_SITE_URL          https://your-domain
+#   WORKSPACE_TENANT_SECRETS_KEY  openssl rand -hex 32
+#   PORTAL_KMS_KEY                openssl rand -base64 32
+#   OAUTH_STATE_SECRET            openssl rand -hex 32
+#   ENCRYPTION_KEY                openssl rand -hex 32   (64 hex chars)
+#   CRON_SECRET                   openssl rand -hex 32   (cron refuses to boot without it)
+#   REALTIME_JWT_SECRET           openssl rand -hex 32
+#   REALTIME_INTERNAL_SECRET      openssl rand -hex 32
+# Recommended: ANTHROPIC_API_KEY / OPENAI_API_KEY (AI features), RESEND_API_KEY
+# + RESEND_FROM_EMAIL (real email — also set EMAIL_TRANSPORT=resend), S3_*
+# (media uploads), AUTH_GOOGLE_ID/SECRET or GOOGLE_CLIENT_ID/SECRET (Google
+# login — they are BUILD-TIME for the login button, see note in the app cmd).
+#
+# Testing this file locally? The `environment:` block WINS over `env_file:`
+# (Docker semantics), so every `${VAR:-}` that is unset in the shell/.env
+# arrives blank — including AUTH_SECRET, which the production build REQUIRES
+# (routes do module-level checks). Feed the interpolation from .env.local:
+#   docker compose --env-file .env.local -f docker-compose.coolify.yml up -d
+#
+# Host sizing: the first boot builds Next.js inside the app container (needs
+# ~3-4GB peak RAM; ~10-20 min on a 2-vCPU VPS, less on more cores).
+# Recommended: 8GB RAM / 4 vCPU / 40GB disk + 4GB swap. After that first build
+# the app serves at ~0.5-0.8GB and the whole stack idles around 1.5-2GB.
+# Subsequent boots skip the build when the source CONTENT and the build-time
+# public env are unchanged (content-hash + env stamps on the persistent .next
+# volume) — container restarts AND image redeploys of unchanged code come up
+# in ~1 min. A real code change rebuilds — that is the deploy window on a
+# 2-vCPU box, so redeploy code changes off-hours.
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
   db:
+    # Postgres 16 + pgvector. The `database` target copies docker/initdb SQL
+    # so the extensions (vector, pg_trgm, pgcrypto) exist before the first
+    # migration runs.
     build:
       context: .
       dockerfile: docker/Dockerfile.coolify
       target: database
-    container_name: simplerdev-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: simplerdev
-    ports:
-      - "5432:5432"
     volumes:
       - simplerdev-pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -35,29 +87,44 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    # No host port: only the app and its siblings reach the DB, internally.
+    deploy:
+      resources:
+        limits:
+          memory: 768M
 
   mailpit:
+    # SMTP catcher (EMAIL_TRANSPORT=mailpit default). No host port — reach its
+    # UI through Coolify's container terminal, or temporarily publish 8025 if
+    # you need it. For real email: set EMAIL_TRANSPORT=resend + RESEND_API_KEY.
     image: axllent/mailpit:latest
-    container_name: simplerdev-mailpit
     restart: unless-stopped
-    ports:
-      - "1025:1025" # SMTP
-      - "8025:8025" # Web UI
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
   app:
     build:
       context: .
       dockerfile: docker/Dockerfile.coolify
       target: source
-    container_name: simplerdev-app
     restart: unless-stopped
     working_dir: /workspace
+    # Production boot: install deps, migrate, then build ONCE (cached on the
+    # .next volume) and serve. The rebuild check compares the source CONTENT
+    # hash and the build-time public env — NOT mtimes — so an image redeploy
+    # of unchanged code (which rewrites every file) still reuses the cached
+    # build. NEXT_PUBLIC_* values are inlined into the client bundle at build
+    # time, so a URL change (e.g. adding your domain later) must force a
+    # rebuild; the env stamp comparison handles that automatically.
     command: >
-      sh -lc "bun install --frozen-lockfile &&
+      sh -lc "bun install --frozen-lockfile --linker=hoisted &&
       bun scripts/verify-db-target.ts &&
       bunx drizzle-kit migrate &&
       bun scripts/apply-local-manual-migrations.ts &&
-      bun dev"
+      { [ -f .next/BUILD_ID ] && [ \"$(find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)\" = \"$(cat .next/.src-hash 2>/dev/null)\" ] && [ \"$(env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort)\" = \"$(cat .next/.env-stamp 2>/dev/null)\" ] && echo 'reusing existing .next build' || { echo 'building (first boot, source or public env changed)'; find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1 > /tmp/.src-hash-before; find .next -mindepth 1 -delete 2>/dev/null || true; node node_modules/next/dist/bin/next build && cp /tmp/.src-hash-before .next/.src-hash && env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort > .next/.env-stamp; }; } &&
+      node node_modules/next/dist/bin/next start"
     depends_on:
       db:
         condition: service_healthy
@@ -67,25 +134,74 @@ services:
       - path: .env.local
         required: false
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
-      DRIZZLE_DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
-      NEXTAUTH_URL: http://localhost:3000
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
-      NEXT_PUBLIC_SITE_URL: http://localhost:3000
-      NEXT_PUBLIC_REALTIME_URL: ws://localhost:3030
+      # ── Build tuning for constrained hosts (see next.config.ts) ───────────
+      # 2 prerender workers + low-memory mode: right for a 2-vCPU / 8GB VPS
+      # (e.g. Hostinger KVM 2). On a RAM-tight host (<=4GB) set
+      # NEXT_BUILD_CPUS=1; on a bigger host try 4 / NEXT_LOW_MEMORY_BUILD=0.
+      NEXT_BUILD_CPUS: ${NEXT_BUILD_CPUS:-2}
+      NEXT_LOW_MEMORY_BUILD: ${NEXT_LOW_MEMORY_BUILD:-1}
+      # ── Database (same password interpolation as the db service) ──────────
+      # DRIZZLE_DATABASE_URL is the channel verify-db-target.ts + drizzle.config
+      # prefer inside containers (an .env.local placeholder cannot clobber it).
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
+      DRIZZLE_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
+      # ── Public URLs — SET THESE to your deploy origin in Coolify ──────────
+      # The host middleware rejects unknown hosts on non-localhost origins.
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      # ── Realtime (live collaboration) ─────────────────────────────────────
+      # Internal URL always resolves through the compose network. The browser
+      # URL must be publicly reachable (wss://domain) only if you enable live
+      # collab; without it, collab features degrade to disabled (503).
+      NEXT_PUBLIC_REALTIME_URL: ${NEXT_PUBLIC_REALTIME_URL:-ws://localhost:3030}
       REALTIME_INTERNAL_URL: http://realtime:3030
       REALTIME_JWT_SECRET: ${REALTIME_JWT_SECRET:-sd-local-dev-realtime-jwt-secret}
       REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
       AUTH_TRUST_HOST: "true"
-      EMAIL_TRANSPORT: mailpit
+      PORT: "3000"
+      # ── Secrets forwarded from the Coolify env UI ─────────────────────────
+      AUTH_SECRET: ${AUTH_SECRET:-}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-}
+      WORKSPACE_TENANT_SECRETS_KEY: ${WORKSPACE_TENANT_SECRETS_KEY:-}
+      PORTAL_KMS_KEY: ${PORTAL_KMS_KEY:-}
+      OAUTH_STATE_SECRET: ${OAUTH_STATE_SECRET:-}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      CRON_SECRET: ${CRON_SECRET:-}
+      CHAT_TOKEN_SECRET: ${CHAT_TOKEN_SECRET:-}
+      # ── AI / email / media (optional features) ────────────────────────────
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      EMAIL_TRANSPORT: ${EMAIL_TRANSPORT:-mailpit}
       MAILPIT_SMTP_HOST: mailpit
       MAILPIT_SMTP_PORT: "1025"
-      PORT: "3000"
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL:-}
+      INBOUND_EMAIL_SECRET: ${INBOUND_EMAIL_SECRET:-}
+      # ── Google login (BUILD-TIME: the login button is computed in
+      # next.config.ts during the build — included in the env stamp above) ──
+      AUTH_GOOGLE_ID: ${AUTH_GOOGLE_ID:-}
+      AUTH_GOOGLE_SECRET: ${AUTH_GOOGLE_SECRET:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      # ── S3-compatible object storage (media uploads) ──────────────────────
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_PUBLIC_ENDPOINT: ${S3_PUBLIC_ENDPOINT:-}
+      S3_REGION: ${S3_REGION:-}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME:-}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-}
+      # Any other optional integration (Meta, GitHub, LinkedIn, Zoom, …) can be
+      # forwarded the same way — see the annotated list in .env.example.
     volumes:
       - simplerdev-app-node-modules:/workspace/node_modules
+      # .next on a named volume: the build cache survives redeploys, so only a
+      # real change (sources or public env) triggers a rebuild.
       - simplerdev-app-next:/workspace/.next
     ports:
-      - "3000:3000"
+      # Only the web app is published. If the host's 3000 is taken, set
+      # APP_PORT in Coolify. (Coolify's proxy can also route by FQDN.)
+      - "${APP_PORT:-3000}:3000"
     healthcheck:
       test:
         [
@@ -95,33 +211,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 30
+      # First boot: bun install + first Next build inside the container.
       start_period: 1200s
-
-  minio:
-    image: minio/minio:latest
-    container_name: simplerdev-minio
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    ports:
-      - "9000:9000" # S3 API
-      - "9001:9001" # Console
-    volumes:
-      - simplerdev-minio-data:/data
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+    # No hard memory limit by default: the first-boot `bun run build` needs
+    # headroom (~3-4GB peak). Once the build is cached on the .next volume you
+    # can add a limit here, e.g. memory: 2G.
 
   cron:
     build:
       context: .
       dockerfile: docker/Dockerfile.coolify
       target: source
-    container_name: simplerdev-cron
     restart: unless-stopped
     working_dir: /workspace
     command: sh -lc "bun install --frozen-lockfile && bun scripts/cron-runner.ts"
@@ -133,6 +233,12 @@ services:
         required: false
     environment:
       CRON_BASE_URL: http://app:3000
+      # Explicit (wins over env_file): a host-side .env.local DATABASE_URL
+      # (localhost:port) is meaningless inside the container network.
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
+      # Required: the runner refuses to start without it (and the app rejects
+      # calls whose bearer token doesn't match). Set it in Coolify.
+      CRON_SECRET: ${CRON_SECRET:-}
     volumes:
       - simplerdev-cron-node-modules:/workspace/node_modules
     healthcheck:
@@ -141,13 +247,16 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1200s # cold bun install grace — see app service note
+    deploy:
+      resources:
+        limits:
+          memory: 384M
 
   realtime:
     build:
       context: .
       dockerfile: docker/Dockerfile.coolify
       target: source
-    container_name: simplerdev-realtime
     restart: unless-stopped
     working_dir: /workspace/packages/realtime-server
     command: sh -lc "bun install --frozen-lockfile && bun src/server.ts"
@@ -158,15 +267,20 @@ services:
       - path: .env.local
         required: false
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/simplerdev
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
       REALTIME_JWT_SECRET: ${REALTIME_JWT_SECRET:-sd-local-dev-realtime-jwt-secret}
       REALTIME_INTERNAL_SECRET: ${REALTIME_INTERNAL_SECRET:-sd-local-dev-realtime-internal-secret}
       PORT: "3030"
     volumes:
+      # realtime-server is a workspace member, so its `bun install` resolves the
+      # workspace ROOT and writes /workspace/node_modules — without this volume
+      # that lands on the image layer (slow, lost on redeploy).
       - simplerdev-realtime-root-node-modules:/workspace/node_modules
       - simplerdev-realtime-node-modules:/workspace/packages/realtime-server/node_modules
-    ports:
-      - "3030:3030"
+    # No host port published. To use live collaboration, give this service a
+    # Coolify domain on port 3030 (e.g. wss://realtime.example.com) and set
+    # NEXT_PUBLIC_REALTIME_URL to it. Without that, collab degrades to
+    # disabled — nothing else breaks.
     healthcheck:
       test:
         [
@@ -176,7 +290,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 30
-      start_period: 1200s
+      start_period: 1200s # cold bun install grace — see app service note
+    deploy:
+      resources:
+        limits:
+          memory: 384M
 
 volumes:
   simplerdev-pgdata:
@@ -185,4 +303,3 @@ volumes:
   simplerdev-app-next:
   simplerdev-realtime-root-node-modules:
   simplerdev-realtime-node-modules:
-  simplerdev-minio-data:

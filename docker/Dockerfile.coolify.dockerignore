@@ -2,6 +2,9 @@
 **
 !package.json
 !bun.lock
+# cron-runner.ts reads vercel.json at runtime (scripts/cron-runner.ts:44) —
+# without it the cron service crash-loops with ENOENT.
+!vercel.json
 !*.config.*
 !tsconfig.json
 !next-env.d.ts
