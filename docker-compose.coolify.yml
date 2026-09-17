@@ -119,11 +119,16 @@ services:
     # time, so a URL change (e.g. adding your domain later) must force a
     # rebuild; the env stamp comparison handles that automatically.
     command: >
-      sh -lc "bun install --frozen-lockfile --linker=hoisted &&
+      sh -lc "echo '[boot] 1/6 bun install' &&
+      bun install --frozen-lockfile --linker=hoisted &&
+      echo '[boot] 2/6 verify db target' &&
       bun scripts/verify-db-target.ts &&
+      echo '[boot] 3/6 drizzle migrate' &&
       bunx drizzle-kit migrate &&
+      echo '[boot] 4/6 manual migrations' &&
       bun scripts/apply-local-manual-migrations.ts &&
-      { [ -f .next/BUILD_ID ] && [ \"$(find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)\" = \"$(cat .next/.src-hash 2>/dev/null)\" ] && [ \"$(env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort)\" = \"$(cat .next/.env-stamp 2>/dev/null)\" ] && echo 'reusing existing .next build' || { echo 'building (first boot, source or public env changed)'; find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1 > /tmp/.src-hash-before; find .next -mindepth 1 -delete 2>/dev/null || true; node node_modules/next/dist/bin/next build && cp /tmp/.src-hash-before .next/.src-hash && env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort > .next/.env-stamp; }; } &&
+      { [ -f .next/BUILD_ID ] && [ \"$(find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)\" = \"$(cat .next/.src-hash 2>/dev/null)\" ] && [ \"$(env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort)\" = \"$(cat .next/.env-stamp 2>/dev/null)\" ] && echo 'reusing existing .next build' || { echo '[boot] 5/6 building Next (first boot, source or public env changed)'; find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1 > /tmp/.src-hash-before; find .next -mindepth 1 -delete 2>/dev/null || true; node node_modules/next/dist/bin/next build && cp /tmp/.src-hash-before .next/.src-hash && env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort > .next/.env-stamp; }; } &&
+      echo '[boot] 6/6 starting next server' &&
       node node_modules/next/dist/bin/next start"
     depends_on:
       db:
