@@ -1,7 +1,7 @@
-#!/bin/sh
+﻿#!/bin/sh
 # TEMPORARY boot diagnostic (used by docker-compose.debug.yml).
 # Prints environment facts (CPU, host memory, cgroup limit) and captures the
-# exit code of every boot phase — 137 = SIGKILL (usually cgroup OOM), 139 =
+# exit code of every boot phase â€” 137 = SIGKILL (usually cgroup OOM), 139 =
 # SIGSEGV, 1 = app-level error. On failure it parks in `sleep` so the failed
 # state stays inspectable via `docker logs` (and the Coolify logs API) instead
 # of looping through container restarts. Delete together with
@@ -27,19 +27,19 @@ if [ "$RC" -ne 0 ]; then sleep 3600; fi
 
 echo "[boot] 3/6 drizzle migrate"
 head -2 /proc/meminfo 2>/dev/null
-bunx drizzle-kit migrate --verbose > /tmp/mig.log 2>&1
+bunx drizzle-kit migrate > /tmp/mig.log 2>&1
 RC=$?
 echo "[diag] step3(migrate) rc=$RC size=$(wc -c < /tmp/mig.log 2>/dev/null) bytes"
 echo "[diag] migrate log (last 60):"
-tr -d '\r' < /tmp/mig.log 2>/dev/null | tail -60
+tr -d '\r' < /tmp/mig.log 2>/dev/null | tail -200
 if [ "$RC" -ne 0 ]; then
-  echo "[diag] migrate failed — recreating the (empty, half-migrated) database and retrying once"
+  echo "[diag] migrate failed â€” recreating the (empty, half-migrated) database and retrying once"
   bun scripts/debug-recreate-db.ts
-  bunx drizzle-kit migrate --verbose > /tmp/mig2.log 2>&1
+  bunx drizzle-kit migrate > /tmp/mig2.log 2>&1
   RC=$?
   echo "[diag] retry(migrate) rc=$RC size=$(wc -c < /tmp/mig2.log 2>/dev/null) bytes"
   echo "[diag] retry log (last 60):"
-  tr -d '\r' < /tmp/mig2.log 2>/dev/null | tail -60
+  tr -d '\r' < /tmp/mig2.log 2>/dev/null | tail -200
   if [ "$RC" -ne 0 ]; then sleep 3600; fi
 fi
 head -2 /proc/meminfo 2>/dev/null
