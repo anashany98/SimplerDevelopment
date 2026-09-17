@@ -27,19 +27,19 @@ if [ "$RC" -ne 0 ]; then sleep 3600; fi
 
 echo "[boot] 3/6 drizzle migrate"
 head -2 /proc/meminfo 2>/dev/null
-bunx drizzle-kit migrate > /tmp/mig.log 2>&1
+bunx drizzle-kit migrate --verbose > /tmp/mig.log 2>&1
 RC=$?
-echo "[diag] step3(migrate) rc=$RC"
-echo "[diag] migrate log (last 40):"
-(sed 's/\r//g' /tmp/mig.log 2>/dev/null || cat /tmp/mig.log) | tail -40
+echo "[diag] step3(migrate) rc=$RC size=$(wc -c < /tmp/mig.log 2>/dev/null) bytes"
+echo "[diag] migrate log (last 60):"
+tr -d '\r' < /tmp/mig.log 2>/dev/null | tail -60
 if [ "$RC" -ne 0 ]; then
   echo "[diag] migrate failed — recreating the (empty, half-migrated) database and retrying once"
   bun scripts/debug-recreate-db.ts
-  bunx drizzle-kit migrate > /tmp/mig2.log 2>&1
+  bunx drizzle-kit migrate --verbose > /tmp/mig2.log 2>&1
   RC=$?
-  echo "[diag] retry(migrate) rc=$RC"
-  echo "[diag] retry log (last 40):"
-  (sed 's/\r//g' /tmp/mig2.log 2>/dev/null || cat /tmp/mig2.log) | tail -40
+  echo "[diag] retry(migrate) rc=$RC size=$(wc -c < /tmp/mig2.log 2>/dev/null) bytes"
+  echo "[diag] retry log (last 60):"
+  tr -d '\r' < /tmp/mig2.log 2>/dev/null | tail -60
   if [ "$RC" -ne 0 ]; then sleep 3600; fi
 fi
 head -2 /proc/meminfo 2>/dev/null
