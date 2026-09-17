@@ -27,11 +27,22 @@ if [ "$RC" -ne 0 ]; then sleep 3600; fi
 
 echo "[boot] 3/6 drizzle migrate"
 head -2 /proc/meminfo 2>/dev/null
-bunx drizzle-kit migrate
+bunx drizzle-kit migrate > /tmp/mig.log 2>&1
 RC=$?
 echo "[diag] step3(migrate) rc=$RC"
+echo "[diag] migrate log (last 40):"
+(sed 's/\r//g' /tmp/mig.log 2>/dev/null || cat /tmp/mig.log) | tail -40
+if [ "$RC" -ne 0 ]; then
+  echo "[diag] migrate failed — recreating the (empty, half-migrated) database and retrying once"
+  bun scripts/debug-recreate-db.ts
+  bunx drizzle-kit migrate > /tmp/mig2.log 2>&1
+  RC=$?
+  echo "[diag] retry(migrate) rc=$RC"
+  echo "[diag] retry log (last 40):"
+  (sed 's/\r//g' /tmp/mig2.log 2>/dev/null || cat /tmp/mig2.log) | tail -40
+  if [ "$RC" -ne 0 ]; then sleep 3600; fi
+fi
 head -2 /proc/meminfo 2>/dev/null
-if [ "$RC" -ne 0 ]; then sleep 3600; fi
 
 echo "[boot] 4/6 manual migrations"
 bun scripts/apply-local-manual-migrations.ts
