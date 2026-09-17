@@ -53,12 +53,19 @@ if [ "$RC" -ne 0 ]; then sleep 3600; fi
 if [ -f .next/BUILD_ID ]; then
   echo "[boot] 5/6 reusing existing .next build (debug: hash check skipped)"
 else
-  echo "[boot] 5/6 building next"
+  echo "[boot] 5/6 building next (NEXT_BUILD_CPUS=${NEXT_BUILD_CPUS:-unset}; NODE_OPTIONS=--max-old-space-size=2048)"
+  head -2 /proc/meminfo 2>/dev/null
   find .next -mindepth 1 -delete 2>/dev/null || true
-  node node_modules/next/dist/bin/next build
+  NODE_OPTIONS="--max-old-space-size=2048" node node_modules/next/dist/bin/next build
   RC=$?
   echo "[diag] step5(build) rc=$RC"
+  head -2 /proc/meminfo 2>/dev/null
   if [ "$RC" -ne 0 ]; then sleep 3600; fi
+  # Persist the same stamps the production boot uses, so the real compose
+  # reuses this build instead of rebuilding (and risking another OOM).
+  find . -name node_modules -prune -o -name .next -prune -o -name next-env.d.ts -prune -o -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1 > .next/.src-hash
+  env | grep -E '^(NEXT_PUBLIC_|AUTH_GOOGLE_|GOOGLE_CLIENT_)' | sort > .next/.env-stamp
+  echo "[diag] build stamps written (.src-hash + .env-stamp)"
 fi
 
 echo "[boot] 6/6 starting next server"
