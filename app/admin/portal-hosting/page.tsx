@@ -148,7 +148,7 @@ export default function AdminPortalHostingPage() {
   };
 
   const handleSave = async () => {
-    if (!form.name || !form.clientId) { setError('Client and site name are required.'); return; }
+    if (!form.name || !form.clientId) { setError('El cliente y el nombre del sitio son obligatorios.'); return; }
     setSaving(true); setError('');
     const payload = { ...form, dnsInstructions: dnsRows };
     const url = editSite ? `/api/admin/portal/hosting/${editSite.id}` : '/api/admin/portal/hosting';
@@ -156,7 +156,7 @@ export default function AdminPortalHostingPage() {
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message || 'Save failed'); return; }
+    if (!data.success) { setError(data.message || 'Error al guardar'); return; }
     if (editSite) {
       setSites(prev => prev.map(s => s.id === editSite.id ? { ...s, ...data.data } : s));
     } else {
@@ -196,14 +196,14 @@ export default function AdminPortalHostingPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Hosting</h1>
-          <p className="text-muted-foreground text-sm mt-1">Managed Railway hosting sold to clients.</p>
+          <p className="text-muted-foreground text-sm mt-1">Hosting Railway gestionado que vendemos a los clientes.</p>
         </div>
         <button
           onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          Add Hosted Site
+          Añadir sitio alojado
         </button>
       </div>
 
@@ -230,7 +230,7 @@ export default function AdminPortalHostingPage() {
           <span className="material-icons text-muted-foreground text-base">search</span>
           <input
             className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground"
-            placeholder="Search sites, domains, clients..."
+            placeholder="Buscar sitios, dominios, clientes..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -240,10 +240,10 @@ export default function AdminPortalHostingPage() {
           onChange={e => setStatusFilter(e.target.value)}
           className="px-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground outline-none"
         >
-          <option value="">All statuses</option>
-          <option value="provisioning">Provisioning</option>
+          <option value="">Todos los estados</option>
+          <option value="provisioning">Aprovisionando</option>
           <option value="active">Activo</option>
-          <option value="suspended">Suspended</option>
+          <option value="suspended">Suspendido</option>
           <option value="cancelled">Cancelado</option>
         </select>
       </div>
@@ -253,18 +253,18 @@ export default function AdminPortalHostingPage() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
             <span className="material-icons text-4xl mb-2">cloud_off</span>
-            <p className="text-sm">{search || statusFilter ? 'No sites match your filters.' : 'No hosted sites yet. Add one to get started.'}</p>
+            <p className="text-sm">{search || statusFilter ? 'Ningún sitio coincide con tus filtros.' : 'Aún no hay sitios alojados. Añade uno para empezar.'}</p>
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Site</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Sitio</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Cliente</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Dominio</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Plan</th>
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Renewal</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Renovación</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -290,7 +290,7 @@ export default function AdminPortalHostingPage() {
                     {site.customDomain ? (
                       <span className="font-mono text-xs text-foreground">{site.customDomain}</span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">Not configured</span>
+                      <span className="text-xs text-muted-foreground">Sin configurar</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -361,18 +361,18 @@ export default function AdminPortalHostingPage() {
                 <div className="bg-muted/30 rounded-lg p-3 space-y-1">
                   {detailSite.customDomain && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Custom Domain</span>
+                      <span className="text-muted-foreground">Dominio personalizado</span>
                       <span className="font-mono text-foreground">{detailSite.customDomain}</span>
                     </div>
                   )}
                   {detailSite.railwayDomain && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Railway URL</span>
+                      <span className="text-muted-foreground">URL de Railway</span>
                       <span className="font-mono text-xs text-foreground">{detailSite.railwayDomain}</span>
                     </div>
                   )}
                   {!detailSite.customDomain && !detailSite.railwayDomain && (
-                    <p className="text-sm text-muted-foreground">No domain configured.</p>
+                    <p className="text-sm text-muted-foreground">Sin dominio configurado.</p>
                   )}
                 </div>
               </div>
@@ -383,24 +383,24 @@ export default function AdminPortalHostingPage() {
                 <div className="bg-muted/30 rounded-lg p-3 space-y-1 font-mono text-xs">
                   {detailSite.railwayProjectId && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-muted-foreground">Project ID</span>
+                      <span className="text-muted-foreground">ID del proyecto</span>
                       <span className="text-foreground truncate">{detailSite.railwayProjectId}</span>
                     </div>
                   )}
                   {detailSite.railwayServiceId && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-muted-foreground">Service ID</span>
+                      <span className="text-muted-foreground">ID del servicio</span>
                       <span className="text-foreground truncate">{detailSite.railwayServiceId}</span>
                     </div>
                   )}
                   {detailSite.railwayEnvironmentId && (
                     <div className="flex justify-between gap-4">
-                      <span className="text-muted-foreground">Env ID</span>
+                      <span className="text-muted-foreground">ID de entorno</span>
                       <span className="text-foreground truncate">{detailSite.railwayEnvironmentId}</span>
                     </div>
                   )}
                   {!detailSite.railwayProjectId && !detailSite.railwayServiceId && (
-                    <p className="text-muted-foreground">No Railway IDs linked.</p>
+                    <p className="text-muted-foreground">Sin IDs de Railway vinculados.</p>
                   )}
                 </div>
               </div>
@@ -408,7 +408,7 @@ export default function AdminPortalHostingPage() {
               {/* DNS Instructions */}
               {detailSite.dnsInstructions && detailSite.dnsInstructions.length > 0 && (
                 <div className="space-y-2">
-                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">DNS Records</h3>
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Registros DNS</h3>
                   <div className="border border-border rounded-lg overflow-hidden">
                     <table className="w-full text-xs">
                       <thead>
@@ -446,7 +446,7 @@ export default function AdminPortalHostingPage() {
               {detailSite.renewalDate && (
                 <div className="flex items-center gap-2 text-sm">
                   <span className="material-icons text-base text-muted-foreground">calendar_today</span>
-                  <span className="text-muted-foreground">Renews</span>
+                  <span className="text-muted-foreground">Renueva</span>
                   <span className="text-foreground font-medium">{new Date(detailSite.renewalDate).toLocaleDateString()}</span>
                 </div>
               )}
@@ -457,7 +457,7 @@ export default function AdminPortalHostingPage() {
                 className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors w-full"
               >
                 <span className="material-icons text-base">delete</span>
-                Delete Site
+                Eliminar sitio
               </button>
             </div>
           </div>
@@ -469,7 +469,7 @@ export default function AdminPortalHostingPage() {
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 py-8">
           <div className="bg-card border border-border rounded-xl w-full max-w-2xl mx-4 shadow-xl">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">{editSite ? 'Edit Hosted Site' : 'Add Hosted Site'}</h2>
+              <h2 className="font-semibold text-foreground">{editSite ? 'Editar sitio alojado' : 'Añadir sitio alojado'}</h2>
               <button onClick={() => setShowForm(false)} className="p-2 rounded-md hover:bg-accent transition-colors text-muted-foreground">
                 <span className="material-icons text-base">close</span>
               </button>
@@ -485,14 +485,14 @@ export default function AdminPortalHostingPage() {
               <div className="grid grid-cols-2 gap-4">
                 {/* Client */}
                 <div className="col-span-2">
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Client *</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Cliente *</label>
                   <select
                     value={form.clientId}
                     onChange={e => setForm(f => ({ ...f, clientId: e.target.value }))}
                     disabled={!!editSite}
                     className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary disabled:opacity-60"
                   >
-                    <option value="">Select a client...</option>
+                    <option value="">Selecciona un cliente...</option>
                     {clients.map(c => (
                       <option key={c.id} value={c.id}>{clientLabel(c)}</option>
                     ))}
@@ -501,11 +501,11 @@ export default function AdminPortalHostingPage() {
 
                 {/* Name */}
                 <div className="col-span-2">
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Site Name *</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre del sitio *</label>
                   <input
                     value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    placeholder="e.g. Acme Corp E-commerce"
+                    placeholder="p. ej. E-commerce de Acme Corp"
                     className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
                   />
                 </div>
@@ -518,9 +518,9 @@ export default function AdminPortalHostingPage() {
                     onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                     className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
                   >
-                    <option value="provisioning">Provisioning</option>
+                    <option value="provisioning">Aprovisionando</option>
                     <option value="active">Activo</option>
-                    <option value="suspended">Suspended</option>
+                    <option value="suspended">Suspendido</option>
                     <option value="cancelled">Cancelado</option>
                   </select>
                 </div>
@@ -539,7 +539,7 @@ export default function AdminPortalHostingPage() {
 
                 {/* Custom Domain */}
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Custom Domain</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Dominio personalizado</label>
                   <input
                     value={form.customDomain}
                     onChange={e => setForm(f => ({ ...f, customDomain: e.target.value }))}
@@ -550,7 +550,7 @@ export default function AdminPortalHostingPage() {
 
                 {/* Railway Domain */}
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Railway URL</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">URL de Railway</label>
                   <input
                     value={form.railwayDomain}
                     onChange={e => setForm(f => ({ ...f, railwayDomain: e.target.value }))}
@@ -561,7 +561,7 @@ export default function AdminPortalHostingPage() {
 
                 {/* Railway IDs */}
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Railway Project ID</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">ID de proyecto de Railway</label>
                   <input
                     value={form.railwayProjectId}
                     onChange={e => setForm(f => ({ ...f, railwayProjectId: e.target.value }))}
@@ -570,7 +570,7 @@ export default function AdminPortalHostingPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Railway Service ID</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">ID de servicio de Railway</label>
                   <input
                     value={form.railwayServiceId}
                     onChange={e => setForm(f => ({ ...f, railwayServiceId: e.target.value }))}
@@ -579,7 +579,7 @@ export default function AdminPortalHostingPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Railway Environment ID</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">ID de entorno de Railway</label>
                   <input
                     value={form.railwayEnvironmentId}
                     onChange={e => setForm(f => ({ ...f, railwayEnvironmentId: e.target.value }))}
@@ -590,7 +590,7 @@ export default function AdminPortalHostingPage() {
 
                 {/* Renewal Date */}
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Renewal Date</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Fecha de renovación</label>
                   <input
                     type="date"
                     value={form.renewalDate}
@@ -602,12 +602,12 @@ export default function AdminPortalHostingPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Internal Notes</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Notas internas</label>
                 <textarea
                   value={form.notes}
                   onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
                   rows={2}
-                  placeholder="Internal notes visible to staff only..."
+                  placeholder="Notas internas visibles solo para el personal..."
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary resize-none"
                 />
               </div>
@@ -615,13 +615,13 @@ export default function AdminPortalHostingPage() {
               {/* DNS Instructions */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-medium text-muted-foreground">DNS Records (shown to client)</label>
+                  <label className="text-xs font-medium text-muted-foreground">Registros DNS (visibles para el cliente)</label>
                   <button
                     onClick={addDnsRow}
                     className="flex items-center gap-1 text-xs text-primary hover:underline"
                   >
                     <span className="material-icons text-sm">add</span>
-                    Add record
+                    Añadir registro
                   </button>
                 </div>
                 {dnsRows.length === 0 ? (
@@ -643,13 +643,13 @@ export default function AdminPortalHostingPage() {
                         <input
                           value={row.host}
                           onChange={e => updateDnsRow(i, 'host', e.target.value)}
-                          placeholder="Host (e.g. @)"
+                          placeholder="Host (p. ej. @)"
                           className="w-24 shrink-0 px-2 py-1.5 bg-background border border-border rounded-md text-xs text-foreground font-mono outline-none"
                         />
                         <input
                           value={row.value}
                           onChange={e => updateDnsRow(i, 'value', e.target.value)}
-                          placeholder="Value / points to"
+                          placeholder="Valor / apunta a"
                           className="flex-1 min-w-0 px-2 py-1.5 bg-background border border-border rounded-md text-xs text-foreground font-mono outline-none"
                         />
                         <input
@@ -675,7 +675,7 @@ export default function AdminPortalHostingPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                {editSite ? 'Save Changes' : 'Add Site'}
+                {editSite ? 'Guardar cambios' : 'Añadir sitio'}
               </button>
             </div>
           </div>
@@ -688,7 +688,7 @@ export default function AdminPortalHostingPage() {
           <div className="bg-card border border-border rounded-xl p-6 w-full max-w-sm mx-4 shadow-xl space-y-4">
             <div className="flex items-center gap-3">
               <span className="material-icons text-red-500 text-2xl">warning</span>
-              <h2 className="font-semibold text-foreground">Delete hosted site?</h2>
+              <h2 className="font-semibold text-foreground">¿Eliminar sitio alojado?</h2>
             </div>
             <p className="text-sm text-muted-foreground">Esto eliminará permanentemente el registro del sitio. El proyecto real de Railway no se ve afectado.</p>
             <div className="flex justify-end gap-3">
