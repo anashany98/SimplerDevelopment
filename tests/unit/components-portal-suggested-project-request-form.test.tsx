@@ -87,19 +87,19 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
 
   it('renders breadcrumb links', () => {
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    expect(screen.getByText('Suggested Projects')).toBeInTheDocument();
-    expect(screen.getByText('Get Started')).toBeInTheDocument();
+    expect(screen.getByText('Proyectos sugeridos')).toBeInTheDocument();
+    expect(screen.getByText('Empezar')).toBeInTheDocument();
   });
 
   it('renders Back link and Submit button', () => {
     render(<SuggestedProjectRequestForm {...baseProps()} />);
     expect(screen.getByText('Atrás')).toBeInTheDocument();
-    expect(screen.getByText('Submit Request')).toBeInTheDocument();
+    expect(screen.getByText('Enviar solicitud')).toBeInTheDocument();
   });
 
   it('does not render progress bar when no survey fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    expect(screen.queryByText(/required fields answered/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/campos obligatorios respondidos/)).not.toBeInTheDocument();
   });
 
   it('submits message and navigates on success', async () => {
@@ -109,7 +109,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
       target: { value: 'My project message' },
     });
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -127,7 +127,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
       target: { value: 'hello' },
     });
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
       expect(screen.getByText('Error message')).toBeInTheDocument();
@@ -142,10 +142,10 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
       target: { value: 'hello' },
     });
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
-      expect(screen.getByText('Something went wrong. Please try again.')).toBeInTheDocument();
+      expect(screen.getByText('Algo salió mal. Inténtalo de nuevo.')).toBeInTheDocument();
     });
   });
 
@@ -156,7 +156,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
       target: { value: 'My note' },
     });
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
       const body = JSON.parse((global.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
@@ -174,9 +174,9 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
       target: { value: 'hello' },
     });
     act(() => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
-    expect(await screen.findByText('Submitting...')).toBeInTheDocument();
+    expect(await screen.findByText('Enviando...')).toBeInTheDocument();
     // Clean up
     await act(async () => {
       resolveFetch({ json: async () => ({ success: true }) });
@@ -222,13 +222,13 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
 
   it('renders progress bar when required fields exist', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [textField] })} />);
-    expect(screen.getByText(/required fields answered/)).toBeInTheDocument();
+    expect(screen.getByText(/campos obligatorios respondidos/)).toBeInTheDocument();
   });
 
   it('shows 100% when no required fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [optionalField] })} />);
     // No progress bar shown when no required fields
-    expect(screen.queryByText(/required fields answered/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/campos obligatorios respondidos/)).not.toBeInTheDocument();
   });
 
   it('renders heading field as section divider', () => {
@@ -253,17 +253,17 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'Alice' } });
     await waitFor(() => {
-      expect(screen.getByText('1 of 1 required fields answered')).toBeInTheDocument();
+      expect(screen.getByText('1 de 1 campos obligatorios respondidos')).toBeInTheDocument();
     });
   });
 
   it('shows required validation error when required field empty on submit', async () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [textField] })} />);
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
-      expect(screen.getByText(/"Your Name" is required\./)).toBeInTheDocument();
+      expect(screen.getByText(/"Your Name" es obligatorio\./)).toBeInTheDocument();
     });
     expect(global.fetch).not.toHaveBeenCalled();
   });
@@ -273,7 +273,7 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [textField] })} />);
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Bob' } });
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
       const body = JSON.parse((global.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body);
@@ -287,7 +287,7 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
     const sel = screen.getByRole('combobox');
     fireEvent.change(sel, { target: { value: 'Red' } });
     await waitFor(() => {
-      expect(screen.getByText('1 of 1 required fields answered')).toBeInTheDocument();
+      expect(screen.getByText('1 de 1 campos obligatorios respondidos')).toBeInTheDocument();
     });
   });
 
@@ -311,7 +311,7 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [toggleField] })} />);
     const toggle = screen.getByText('No').closest('div')!;
     fireEvent.click(toggle);
-    expect(screen.getByText('Yes')).toBeInTheDocument();
+    expect(screen.getByText('Sí')).toBeInTheDocument();
   });
 
   it('renders slider field with range input', () => {
@@ -332,12 +332,12 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
 
   it('renders email field with email placeholder default', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [emailField] })} />);
-    expect(screen.getByPlaceholderText('you@example.com')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('tu@ejemplo.com')).toBeInTheDocument();
   });
 
   it('renders phone field with tel placeholder', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [phoneField] })} />);
-    expect(screen.getByPlaceholderText('+1 (555) 000-0000')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('+34 600 123 456')).toBeInTheDocument();
   });
 
   it('renders url field with url placeholder', () => {
@@ -362,7 +362,7 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
       conditionalOptions: { fieldId: 'rad1', map: { Small: ['XS', 'S'] }, default: [] },
     };
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [radioField, depField] })} />);
-    expect(screen.getByText('Answer the previous question to see options.')).toBeInTheDocument();
+    expect(screen.getByText('Responde la pregunta anterior para ver las opciones.')).toBeInTheDocument();
   });
 
   it('showIf hides field when condition not met', () => {
@@ -414,17 +414,17 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
   it('heading fields not counted as required and not numbered', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [headingField, textField] })} />);
     // Only 1 required field (textField), heading not included
-    expect(screen.getByText(/0 of 1 required fields answered/)).toBeInTheDocument();
+    expect(screen.getByText(/0 de 1 campos obligatorios respondidos/)).toBeInTheDocument();
   });
 
   it('required field with array answer (checkbox) validates correctly', async () => {
     const requiredCheckbox: SurveyField = { ...checkboxField, required: true };
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [requiredCheckbox] })} />);
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
-      expect(screen.getByText(/"Features" is required\./)).toBeInTheDocument();
+      expect(screen.getByText(/"Features" es obligatorio\./)).toBeInTheDocument();
     });
   });
 
@@ -438,7 +438,7 @@ describe('SuggestedProjectRequestForm — with survey fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps({ surveyFields: [radioField, hiddenRequired] })} />);
     // Submit without revealing the field — should pass validation
     await act(async () => {
-      fireEvent.submit(screen.getByRole('button', { name: /Submit Request/ }).closest('form')!);
+      fireEvent.submit(screen.getByRole('button', { name: /Enviar solicitud/ }).closest('form')!);
     });
     await waitFor(() => {
       expect(mockRouterPush).toHaveBeenCalledWith('/portal/suggested-projects?requested=1');

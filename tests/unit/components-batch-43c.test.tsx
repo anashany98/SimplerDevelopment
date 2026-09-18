@@ -446,9 +446,9 @@ describe('DeleteWebsiteButton', () => {
 describe('GitHubConnectButton', () => {
   it('renders the panel and shows Connect GitHub link', () => {
     const { container } = render(<GitHubConnectButton siteId={1} />);
-    expect(container.textContent).toContain('GitHub Access');
-    expect(container.textContent).toContain('Connect GitHub');
-    expect(container.textContent).toContain('Request Repo Access');
+    expect(container.textContent).toContain('Acceso a GitHub');
+    expect(container.textContent).toContain('Conectar GitHub');
+    expect(container.textContent).toContain('Solicitar acceso al repositorio');
     const link = container.querySelector('a[href="/api/portal/github/connect"]');
     expect(link).toBeTruthy();
   });
@@ -462,7 +462,7 @@ describe('GitHubConnectButton', () => {
 
     try {
       const { container } = render(<GitHubConnectButton siteId={2} />);
-      expect(container.textContent).toContain('GitHub connected successfully!');
+      expect(container.textContent).toContain('¡GitHub conectado correctamente!');
     } finally {
       Object.defineProperty(window, 'location', {
         configurable: true,
@@ -479,7 +479,7 @@ describe('GitHubConnectButton', () => {
 
     const { container } = render(<GitHubConnectButton siteId={99} />);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Request Repo Access'),
+      b.textContent?.includes('Solicitar acceso al repositorio'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -530,7 +530,7 @@ describe('GitHubConnectButton', () => {
     try {
       const { container } = render(<GitHubConnectButton siteId={5} />);
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Request Repo Access'),
+        b.textContent?.includes('Solicitar acceso al repositorio'),
       ) as HTMLButtonElement;
 
       await act(async () => {
@@ -560,7 +560,7 @@ describe('GitHubConnectButton', () => {
 
     const { container } = render(<GitHubConnectButton siteId={7} />);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Request Repo Access'),
+      b.textContent?.includes('Solicitar acceso al repositorio'),
     ) as HTMLButtonElement;
 
     await act(async () => {

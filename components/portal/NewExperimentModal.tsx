@@ -46,7 +46,7 @@ interface Props {
  */
 export function NewExperimentLauncher({
   variant = 'primary',
-  label = 'New Experiment',
+  label = 'Nuevo experimento',
 }: {
   variant?: 'primary' | 'cta';
   label?: string;
@@ -98,7 +98,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
         // Pull sites first; then fetch posts per-site in parallel.
         const sitesRes = await fetch('/api/portal/cms/websites');
         const sitesJson = await sitesRes.json();
-        if (!sitesJson.success) throw new Error(sitesJson.message || 'Failed to load sites');
+        if (!sitesJson.success) throw new Error(sitesJson.message || 'No se pudieron cargar los sitios');
         const sites: Site[] = sitesJson.data ?? [];
 
         const [postsBySite, decksJson] = await Promise.all([
@@ -130,7 +130,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
         setDecks(deckList);
       } catch (err) {
         if (!cancelled) {
-          setLoadError(err instanceof Error ? err.message : 'Failed to load targets.');
+          setLoadError(err instanceof Error ? err.message : 'No se pudieron cargar los objetivos.');
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -164,7 +164,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
 
   useEffect(() => {
     if (nameDirty) return;
-    setName(selectedTitle ? `A/B test — ${selectedTitle}` : '');
+    setName(selectedTitle ? `Test A/B — ${selectedTitle}` : '');
   }, [selectedTitle, nameDirty]);
 
   // When the user toggles target type, clear selection (default name follows).
@@ -178,11 +178,11 @@ export default function NewExperimentModal({ open, onClose }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (selectedTargetId == null) {
-      setSubmitError('Pick a target first.');
+      setSubmitError('Selecciona un objetivo primero.');
       return;
     }
     if (!name.trim()) {
-      setSubmitError('Name is required.');
+      setSubmitError('El nombre es obligatorio.');
       return;
     }
 
@@ -201,19 +201,19 @@ export default function NewExperimentModal({ open, onClose }: Props) {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setSubmitError(json.error || json.message || 'Failed to create experiment.');
+        setSubmitError(json.error || json.message || 'No se pudo crear el experimento.');
         setSubmitting(false);
         return;
       }
       const newId: number | undefined = json.data?.id;
       if (!newId) {
-        setSubmitError('Experiment created but response was missing an id.');
+        setSubmitError('El experimento se creó pero la respuesta no incluía un id.');
         setSubmitting(false);
         return;
       }
       router.push(`/portal/experiments/${newId}`);
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : 'Network error.');
+      setSubmitError(err instanceof Error ? err.message : 'Error de red.');
       setSubmitting(false);
     }
   }
@@ -226,7 +226,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-primary">science</span>
-            New Experiment
+            Nuevo experimento
           </h3>
           <button
             type="button"
@@ -242,7 +242,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
           {/* Target type toggle */}
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">
-              Target type
+              Tipo de objetivo
             </label>
             <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
               <button
@@ -255,7 +255,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 }`}
               >
                 <span className="material-icons text-base">description</span>
-                Page
+                Página
               </button>
               <button
                 type="button"
@@ -267,7 +267,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 }`}
               >
                 <span className="material-icons text-base">slideshow</span>
-                Pitch deck
+                Presentación
               </button>
             </div>
           </div>
@@ -275,7 +275,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
           {/* Target picker */}
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              {targetType === 'post' ? 'Page' : 'Pitch deck'}
+              {targetType === 'post' ? 'Página' : 'Presentación'}
             </label>
             {loading ? (
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground">
@@ -288,7 +288,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             ) : targetType === 'post' ? (
               posts.length === 0 ? (
                 <div className="text-sm text-muted-foreground bg-background border border-border rounded-lg px-3 py-2">
-                  No pages found on your sites.
+                  No se encontraron páginas en tus sitios.
                 </div>
               ) : (
                 <select
@@ -299,7 +299,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                   }}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <option value="">Select a page...</option>
+                  <option value="">Selecciona una página...</option>
                   {posts.map(p => (
                     <option key={p.id} value={p.id}>
                       {p.title} — {p.siteName}
@@ -309,7 +309,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
               )
             ) : decks.length === 0 ? (
               <div className="text-sm text-muted-foreground bg-background border border-border rounded-lg px-3 py-2">
-                No pitch decks yet.
+                Todavía no hay presentaciones.
               </div>
             ) : (
               <select
@@ -339,11 +339,11 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 setName(e.target.value);
                 setNameDirty(true);
               }}
-              placeholder="A/B test — ..."
+              placeholder="Test A/B — ..."
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Default updates with your selection. Click to override.
+              El valor predeterminado se actualiza con tu selección. Haz clic para cambiarlo.
             </p>
           </div>
 
@@ -370,7 +370,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
               {submitting ? (
                 <>
                   <span className="material-icons animate-spin text-base">progress_activity</span>
-                  Creating...
+                  Creando...
                 </>
               ) : (
                 <>

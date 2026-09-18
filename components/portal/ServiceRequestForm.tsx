@@ -71,7 +71,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
       if (!field.required || field.type === 'heading' || !isFieldVisible(field)) continue;
       const val = answers[field.id];
       if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) {
-        setError(`"${field.label}" is required.`);
+        setError(`"${field.label}" es obligatorio.`);
         setLoading(false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
@@ -100,14 +100,14 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
       const data = await res.json();
       setLoading(false);
       if (!data.success) {
-        setError(data.message ?? 'Failed to submit request.');
+        setError(data.message ?? 'No se pudo enviar la solicitud.');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         router.push('/portal/services?requested=1');
       }
     } catch {
       setLoading(false);
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -150,7 +150,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
         <div className="ml-9">
           {isConditionalPending(field) && (
             <p className="text-sm text-muted-foreground italic">
-              Answer the previous question to see options.
+              Responde la pregunta anterior para ver las opciones.
             </p>
           )}
           {field.type === 'text' && (
@@ -167,11 +167,11 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
           )}
           {field.type === 'email' && (
             <input type="email" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
-              placeholder={field.placeholder || 'you@example.com'} className={inputCls} />
+              placeholder={field.placeholder || 'tu@ejemplo.com'} className={inputCls} />
           )}
           {field.type === 'phone' && (
             <input type="tel" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
-              placeholder={field.placeholder || '+1 (555) 000-0000'} className={inputCls} />
+              placeholder={field.placeholder || '+34 600 123 456'} className={inputCls} />
           )}
           {field.type === 'url' && (
             <input type="url" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
@@ -255,7 +255,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
               <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${val ? 'bg-primary' : 'bg-muted-foreground/30'}`}>
                 <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${val ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </div>
-              <span className={`text-sm font-medium ${val ? 'text-primary' : 'text-muted-foreground'}`}>{val ? 'Yes' : 'No'}</span>
+              <span className={`text-sm font-medium ${val ? 'text-primary' : 'text-muted-foreground'}`}>{val ? 'Sí' : 'No'}</span>
             </div>
           )}
 
@@ -290,8 +290,8 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
                   />
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Drag to set your budget</span>
-                  <span>Step: ${step.toLocaleString()}</span>
+                  <span>Arrastra para fijar tu presupuesto</span>
+                  <span>Incremento: ${step.toLocaleString()}</span>
                 </div>
               </div>
             );
@@ -327,7 +327,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
         <div className="fixed top-0 inset-x-0 z-30 lg:pl-64 bg-background/95 backdrop-blur-sm border-b border-border">
           <div className="max-w-2xl mx-auto px-6 py-3">
             <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
-              <span>{answeredRequired.length} of {requiredFields.length} required fields answered</span>
+              <span>{answeredRequired.length} de {requiredFields.length} campos obligatorios respondidos</span>
               <span className={progress === 100 ? 'text-green-600 font-medium' : ''}>{progress}%</span>
             </div>
             <div className="h-1.5 bg-muted rounded-full overflow-hidden">
@@ -344,9 +344,9 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-          <Link href="/portal/services" className="hover:text-foreground transition-colors">Services</Link>
+          <Link href="/portal/services" className="hover:text-foreground transition-colors">Servicios</Link>
           <span className="material-icons text-sm">chevron_right</span>
-          <span className="text-foreground">Request</span>
+          <span className="text-foreground">Solicitud</span>
         </div>
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -380,7 +380,7 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
                 <label className="block text-sm font-semibold text-foreground mb-2">Mensaje<span className="text-primary">*</span>
                 </label>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Tell us about your project and we&apos;ll get back to you with next steps.
+                  Cuéntanos tu proyecto y te responderemos con los siguientes pasos.
                 </p>
                 <textarea
                   rows={6}
@@ -404,9 +404,9 @@ export default function ServiceRequestForm({ serviceId, serviceName, serviceDesc
               className="flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-xl text-sm font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-sm"
             >
               {loading ? (
-                <><span className="material-icons text-base animate-spin">refresh</span>Submitting...</>
+                <><span className="material-icons text-base animate-spin">refresh</span>Enviando...</>
               ) : (
-                <><span className="material-icons text-base">send</span>Submit Request</>
+                <><span className="material-icons text-base">send</span>Enviar solicitud</>
               )}
             </button>
           </div>

@@ -347,7 +347,7 @@ describe('BuyServiceButton', () => {
 
   it('renders the default "Buy Now" label', () => {
     render(<BuyServiceButton serviceId={1} />);
-    expect(screen.getByRole('button', { name: /Buy Now/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Comprar ahora/ })).toBeTruthy();
   });
 
   it('uses a custom label prop when provided', () => {
@@ -405,7 +405,7 @@ describe('BuyServiceButton', () => {
     fireEvent.click(screen.getByRole('button'));
 
     await waitFor(() => {
-      expect(screen.getByText('Could not start checkout.')).toBeTruthy();
+      expect(screen.getByText('No se pudo iniciar el pago.')).toBeTruthy();
     });
   });
 });
