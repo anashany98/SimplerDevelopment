@@ -295,8 +295,8 @@ describe('AgenticOsPage', () => {
       await renderPage();
       expect(screen.getAllByText('Skills').length).toBeGreaterThan(0);
       expect(screen.getAllByText('On-demand').length).toBeGreaterThan(0);
-      expect(screen.getByText('Succeeded')).toBeTruthy();
-      expect(screen.getByText('Failed')).toBeTruthy();
+      expect(screen.getByText('Exitoso')).toBeTruthy();
+      expect(screen.getByText('Fallido')).toBeTruthy();
     });
 
     it('shows succeeded count (42) from server', async () => {
@@ -418,7 +418,7 @@ describe('AgenticOsPage', () => {
       await renderPage();
       expect(screen.getByRole('button', { name: /All domains/ })).toBeTruthy();
       expect(screen.getByRole('button', { name: /On-demand only/ })).toBeTruthy();
-      expect(screen.getByRole('button', { name: /Scheduled/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Programado/ })).toBeTruthy();
       expect(screen.getByRole('button', { name: /Run history/ })).toBeTruthy();
     });
 
@@ -435,7 +435,7 @@ describe('AgenticOsPage', () => {
 
     it('scheduled filter hides on-demand skill from grid section', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Scheduled/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Programado/ }));
       // Beta Skill (scheduled) should remain
       expect(screen.getAllByText('Beta Skill').length).toBeGreaterThan(0);
       // After scheduled filter, domain section shows 1 skill
@@ -570,7 +570,7 @@ describe('AgenticOsPage', () => {
     it('calls fetch again when Refresh is clicked', async () => {
       await renderPage();
       const callsBefore = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.length;
-      fireEvent.click(screen.getByRole('button', { name: /Refresh/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
       await waitFor(() => {
         expect((global.fetch as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(callsBefore);
       });
