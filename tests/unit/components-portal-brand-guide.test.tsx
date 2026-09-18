@@ -211,10 +211,10 @@ describe('BrandGuide', () => {
     it('renders Primary, Square, Icon logo variants when all URLs set', () => {
       render(<BrandGuide {...baseProps} />);
       // "Primary" appears in logo section, color swatch, and buttons section
-      const allPrimary = screen.getAllByText('Primary');
+      const allPrimary = screen.getAllByText('Principal');
       expect(allPrimary.length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText('Square')).toBeInTheDocument();
-      expect(screen.getByText('Icon')).toBeInTheDocument();
+      expect(screen.getByText('Icono')).toBeInTheDocument();
     });
 
     it('renders wordmark when logoText is set', () => {
@@ -234,7 +234,7 @@ describe('BrandGuide', () => {
       };
       render(<BrandGuide {...baseProps} branding={brandingNoLogo} />);
       expect(
-        screen.getByText(/No logo assets uploaded yet/i),
+        screen.getByText(/Aún no hay logos subidos/i),
       ).toBeInTheDocument();
     });
 
@@ -281,7 +281,7 @@ describe('BrandGuide', () => {
   describe('TypographySection', () => {
     it('renders type system section header', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Type system')).toBeInTheDocument();
+      expect(screen.getByText('Sistema tipográfico')).toBeInTheDocument();
     });
 
     it('renders heading and body font cards', () => {
@@ -300,7 +300,7 @@ describe('BrandGuide', () => {
 
     it('renders all type scale rows (H1–H6, Body, Quote, Small)', () => {
       render(<BrandGuide {...baseProps} />);
-      ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Body', 'Quote', 'Small'].forEach((label) => {
+      ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Cuerpo', 'Cita', 'Small'].forEach((label) => {
         expect(screen.getByText(label)).toBeInTheDocument();
       });
     });
@@ -320,7 +320,7 @@ describe('BrandGuide', () => {
       render(<BrandGuide {...baseProps} />);
       expect(screen.getByText('Buttons')).toBeInTheDocument();
       // "Primary" appears in both colors (swatch label) and buttons section label
-      const primaryLabels = screen.getAllByText('Primary');
+      const primaryLabels = screen.getAllByText('Principal');
       expect(primaryLabels.length).toBeGreaterThanOrEqual(2);
       expect(screen.getByText('Outline')).toBeInTheDocument();
     });
