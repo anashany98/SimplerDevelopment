@@ -159,7 +159,7 @@ describe('PortalEmailListsPage — initial render', () => {
   it('shows empty-state message when no lists exist', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No hay listas aún. Crea una arriba.');
+      expect(container.textContent).toContain('Aún no hay listas. Crea una arriba.');
     });
   });
 
@@ -277,7 +277,7 @@ describe('PortalEmailListsPage — create list form', () => {
     fireEvent.click(newListBtn);
     await waitFor(() => expect(container.textContent).toContain('Crear lista'));
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -304,7 +304,7 @@ describe('PortalEmailListsPage — create list form', () => {
     const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Newsletter' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Crear lista'),
+      (b) => b.textContent?.includes('Create List'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -331,7 +331,7 @@ describe('PortalEmailListsPage — create list form', () => {
     const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Crear lista'),
+      (b) => b.textContent?.includes('Create List'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -359,7 +359,7 @@ describe('PortalEmailListsPage — create list form', () => {
     const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Crear lista'),
+      (b) => b.textContent?.includes('Create List'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     expect(container.textContent).toContain('Creating');
@@ -528,8 +528,8 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Email address"]')).toBeTruthy();
-      expect(container.querySelector('input[placeholder="Name"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Correo electrónico"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Nombre"]')).toBeTruthy();
     });
   });
 
@@ -575,7 +575,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Email address"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Correo electrónico"]')).toBeTruthy();
     });
   }
 
@@ -583,7 +583,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     setupWithList();
     const { container } = renderPage();
     await openList(container);
-    const emailInput = container.querySelector('input[placeholder="Email address"]') as HTMLInputElement;
+    const emailInput = container.querySelector('input[placeholder="Correo electrónico"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
     const addBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(addBtn);
@@ -608,7 +608,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     });
     const { container } = renderPage();
     await openList(container);
-    const emailInput = container.querySelector('input[placeholder="Email address"]') as HTMLInputElement;
+    const emailInput = container.querySelector('input[placeholder="Correo electrónico"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'dup@example.com' } });
     const addBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(addBtn);
@@ -653,7 +653,7 @@ describe('PortalEmailListsPage — remove subscriber', () => {
     await waitFor(() => {
       expect(container.textContent).not.toContain('user42@example.com');
     });
-    expect(window.confirm).toHaveBeenCalledWith('Remove this subscriber?');
+    expect(window.confirm).toHaveBeenCalledWith('¿Quitar este suscriptor?');
   });
 
   it('does not remove subscriber when confirm returns false', async () => {
@@ -710,9 +710,9 @@ describe('PortalEmailListsPage — CSV import', () => {
       (el) => el.textContent?.includes('Newsletter'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Import CSV'));
+    await waitFor(() => expect(container.textContent).toContain('Importar CSV'));
     const importBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Import CSV'),
+      (b) => b.textContent?.includes('Importar CSV'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -732,7 +732,7 @@ describe('PortalEmailListsPage — CSV import', () => {
     const { container } = renderPage();
     await openCsvPanel(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -749,11 +749,11 @@ describe('PortalEmailListsPage — CSV import', () => {
       target: { value: 'email,name\nalice@example.com,Alice\nbob@example.com,Bob' },
     });
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     fireEvent.click(importSubmitBtn);
     await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Imported 2 of 2 subscribers.');
+      expect(window.alert).toHaveBeenCalledWith('Se importaron 2 de 2 suscriptores.');
     });
   });
 
@@ -766,7 +766,7 @@ describe('PortalEmailListsPage — CSV import', () => {
       target: { value: 'email,name\nbadrow' },
     });
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     fireEvent.click(importSubmitBtn);
     await waitFor(() => {
@@ -779,7 +779,7 @@ describe('PortalEmailListsPage — CSV import', () => {
     const { container } = renderPage();
     await openCsvPanel(container);
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     expect(importSubmitBtn.disabled).toBe(true);
   });
@@ -875,9 +875,9 @@ describe('PortalEmailListsPage — pagination', () => {
       (el) => el.textContent?.includes('BigList'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Próxima'));
+    await waitFor(() => expect(container.textContent).toContain('Siguiente'));
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Próxima',
+      (b) => b.textContent?.trim() === 'Siguiente',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(nextBtn);
