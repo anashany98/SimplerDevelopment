@@ -119,7 +119,7 @@ describe('BrainConnectPage — static content', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.querySelector('h1')?.textContent).toContain(
-        'Connect Claude Desktop to Brain',
+        'Conecta Claude Desktop con Brain',
       );
     });
   });
@@ -292,11 +292,11 @@ describe('BrainConnectPage — connected state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const text = container.textContent ?? '';
-      expect(text).toContain('Name');
+      expect(text).toContain('Nombre');
       expect(text).toContain('Key');
       expect(text).toContain('Scopes');
-      expect(text).toContain('Last used');
-      expect(text).toContain('Created');
+      expect(text).toContain('Último uso');
+      expect(text).toContain('Creado');
     });
   });
 
