@@ -102,7 +102,7 @@ describe('CrmImportExport — initial render', () => {
   it('renders Export and Import buttons', () => {
     render(<CrmImportExport entityType="contact" />);
     expect(screen.getByText('Export')).toBeInTheDocument();
-    expect(screen.getByText('Import')).toBeInTheDocument();
+    expect(screen.getByText('Importar')).toBeInTheDocument();
   });
 
   it('does not show the import modal by default', () => {
@@ -123,20 +123,20 @@ describe('CrmImportExport — modal open / close', () => {
 
   it('opens import modal when Import button is clicked', () => {
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     // Modal title: "Import contacts" — multiple elements may contain this text
     expect(screen.getAllByText(/Import contacts/i).length).toBeGreaterThan(0);
   });
 
   it('shows upload step by default when modal opens', () => {
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     expect(screen.getByText(/Upload a CSV file/i)).toBeInTheDocument();
   });
 
   it('closes modal when close (X) button is clicked', () => {
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     // The close button has text 'close' (material icon text)
     const closeBtn = document.querySelector('.flex.items-center.justify-between button') as HTMLButtonElement;
     fireEvent.click(closeBtn);
@@ -145,7 +145,7 @@ describe('CrmImportExport — modal open / close', () => {
 
   it('closes modal when backdrop overlay is clicked', () => {
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     const overlay = document.querySelector('.fixed.inset-0') as HTMLElement;
     fireEvent.click(overlay);
     expect(screen.queryAllByText(/Import contacts/i).length).toBe(0);
@@ -153,7 +153,7 @@ describe('CrmImportExport — modal open / close', () => {
 
   it('shows correct entity type in modal title for company', () => {
     render(<CrmImportExport entityType="company" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     // h3 contains "Import companys"
     const h3 = document.querySelector('.fixed h3') as HTMLElement;
     expect(h3.textContent).toMatch(/company/i);
@@ -161,7 +161,7 @@ describe('CrmImportExport — modal open / close', () => {
 
   it('shows correct entity type in modal title for deal', () => {
     render(<CrmImportExport entityType="deal" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     const h3 = document.querySelector('.fixed h3') as HTMLElement;
     expect(h3.textContent).toMatch(/deal/i);
   });
@@ -180,7 +180,7 @@ describe('CrmImportExport — file upload and preview', () => {
     const fetchMock = vi.fn().mockResolvedValue(mockPreviewSuccess());
     global.fetch = fetchMock;
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith('/api/portal/crm/import/preview', expect.objectContaining({ method: 'POST' }));
@@ -190,7 +190,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('transitions to map step after successful preview', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['firstName', 'email']));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText(/Map CSV columns/i)).toBeInTheDocument();
@@ -200,7 +200,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('renders CSV header columns as mapping rows', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['FirstNameCol', 'EmailCol']));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getAllByText('FirstNameCol').length).toBeGreaterThan(0);
@@ -211,7 +211,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('shows sample data rows in preview table', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['firstName'], [['Alice'], ['Bob']]));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText('Alice')).toBeInTheDocument();
@@ -222,7 +222,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('shows error when preview API returns ok=false', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewNotOk());
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText('Failed to upload file. Please try again.')).toBeInTheDocument();
@@ -232,7 +232,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('shows error message from preview API when success=false', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewFail('Invalid CSV format'));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText('Invalid CSV format')).toBeInTheDocument();
@@ -245,7 +245,7 @@ describe('CrmImportExport — file upload and preview', () => {
       json: async () => ({ success: false }),
     } as unknown as Response);
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText('Failed to preview file')).toBeInTheDocument();
@@ -255,7 +255,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('auto-maps headers that match field values', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['firstName', 'email']));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       // firstName should be auto-mapped to 'firstName' option
@@ -268,7 +268,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('renders skip duplicates checkbox for contact entity', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['email']));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.getByText('Skip duplicate emails')).toBeInTheDocument();
@@ -278,7 +278,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('does not render skip duplicates checkbox for deal entity', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['title']));
     render(<CrmImportExport entityType="deal" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => {
       expect(screen.queryByText('Skip duplicate emails')).not.toBeInTheDocument();
@@ -288,7 +288,7 @@ describe('CrmImportExport — file upload and preview', () => {
   it('can change a column mapping via select', async () => {
     global.fetch = vi.fn().mockResolvedValue(mockPreviewSuccess(['MyUniqueCol']));
     render(<CrmImportExport entityType="contact" />);
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await selectFile(makeFakeFile());
     await waitFor(() => screen.getAllByText('MyUniqueCol'));
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
@@ -319,7 +319,7 @@ describe('CrmImportExport — import submit', () => {
     global.fetch = previewFetch;
     render(<CrmImportExport entityType={entityType} />);
     // Click the upload "Import" button (the toolbar one, not the modal submit)
-    const importToolbarBtn = screen.getAllByText('Import')[0];
+    const importToolbarBtn = screen.getAllByText('Importar')[0];
     fireEvent.click(importToolbarBtn);
     await selectFile(makeFakeFile());
     await waitFor(() => screen.getByText(/Map CSV columns/i));
@@ -381,7 +381,7 @@ describe('CrmImportExport — import submit', () => {
     const previewFetch = vi.fn().mockResolvedValueOnce(mockPreviewSuccess(['HeaderA']));
     global.fetch = previewFetch;
     render(<CrmImportExport entityType="contact" onImportComplete={onImportComplete} />);
-    const importToolbarBtn = screen.getAllByText('Import')[0];
+    const importToolbarBtn = screen.getAllByText('Importar')[0];
     fireEvent.click(importToolbarBtn);
     await selectFile(makeFakeFile());
     await waitFor(() => screen.getByText(/Map CSV columns/i));
@@ -420,13 +420,13 @@ describe('CrmImportExport — import submit', () => {
     await act(async () => { clickModalImportBtn(); });
     await waitFor(() => screen.getByText(/imported successfully/i));
     // Done button — find by text
-    fireEvent.click(screen.getByText('Done'));
+    fireEvent.click(screen.getByText('Listo'));
     expect(screen.queryAllByText(/Import contacts/i).length).toBe(0);
   });
 
   it('Cancel button on map step resets to closed state', async () => {
     await reachMapStep();
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     expect(screen.queryAllByText(/Import contacts/i).length).toBe(0);
   });
 });
@@ -530,7 +530,7 @@ describe('CrmImportExport — export', () => {
     });
     // Now open the import modal to see the error
     await waitFor(() => expect(fetchMock.mock.calls.length).toBeGreaterThan(0));
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await waitFor(() => {
       expect(screen.getByText('Export failed. Please try again.')).toBeInTheDocument();
     });
@@ -546,7 +546,7 @@ describe('CrmImportExport — export', () => {
       expect((global.fetch as ReturnType<typeof vi.fn>).mock.calls.length).toBeGreaterThan(0);
     });
     // Error is stored in state; open the modal to see it
-    fireEvent.click(screen.getByText('Import'));
+    fireEvent.click(screen.getByText('Importar'));
     await waitFor(() => {
       expect(screen.getByText('Export failed. Please try again.')).toBeInTheDocument();
     });
