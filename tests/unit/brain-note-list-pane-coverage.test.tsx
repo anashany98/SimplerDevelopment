@@ -382,7 +382,7 @@ describe('NoteListPane — select mode and bulk actions', () => {
     if (noteEl) {
       fireEvent.click(noteEl);
       await flush();
-      const cancelBtns = screen.getAllByRole('button', { name: 'Cancel' });
+      const cancelBtns = screen.getAllByRole('button', { name: 'Cancelar' });
       // The cancel in the bulk bar (last one)
       fireEvent.click(cancelBtns[cancelBtns.length - 1]);
       await flush();
@@ -412,7 +412,7 @@ describe('NoteListPane — trash restore and hard-delete', () => {
     await flush();
     fireEvent.click(screen.getByRole('button', { name: /Trash/ }));
     await flush();
-    const restoreBtn = screen.queryByRole('button', { name: /Restore/ });
+    const restoreBtn = screen.queryByRole('button', { name: /Restaurar/ });
     if (restoreBtn) {
       fireEvent.click(restoreBtn);
       await flush();
@@ -692,7 +692,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Rename'));
+    fireEvent.click(screen.getByText('Renombrar'));
     await flush();
     const renameInput = container.querySelector('input[type="text"][value]') as HTMLInputElement;
     if (renameInput) {
@@ -711,7 +711,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Rename'));
+    fireEvent.click(screen.getByText('Renombrar'));
     await flush();
     const renameInput = container.querySelector('input[type="text"]') as HTMLInputElement;
     if (renameInput) {
@@ -730,7 +730,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Rename'));
+    fireEvent.click(screen.getByText('Renombrar'));
     await flush();
     const renameInput = container.querySelector('input[type="text"]') as HTMLInputElement;
     if (renameInput) {
@@ -750,7 +750,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Delete'));
+    fireEvent.click(screen.getByText('Eliminar'));
     await flush();
     expect(window.confirm).toHaveBeenCalled();
   });
@@ -764,7 +764,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Delete'));
+    fireEvent.click(screen.getByText('Eliminar'));
     await flush();
     expect(screen.getByText('Work Notes')).toBeTruthy();
   });
@@ -777,7 +777,7 @@ describe('NoteListPane — rename and delete saved search', () => {
     const moreBtn = container.querySelector('[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     await flush();
-    fireEvent.click(screen.getByText('Rename'));
+    fireEvent.click(screen.getByText('Renombrar'));
     await flush();
     // While renaming, the rename input should exist
     const renameInput = container.querySelector('input[type="text"]') as HTMLInputElement;
@@ -1007,7 +1007,7 @@ describe('NoteListPane — sort Desc button', () => {
       <NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />,
     );
     await flush();
-    fireEvent.click(container.querySelector('[aria-label="Sort"]') as HTMLButtonElement);
+    fireEvent.click(container.querySelector('[aria-label="Ordenar"]') as HTMLButtonElement);
     await flush();
     const descBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Desc') as HTMLButtonElement;
     if (descBtn) {
