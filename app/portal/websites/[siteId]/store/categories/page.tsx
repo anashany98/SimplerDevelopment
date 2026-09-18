@@ -199,7 +199,7 @@ export default function StoreCategoriesPage() {
                   setError('');
                 }}
                 required
-                placeholder="t-shirts"
+                placeholder="camisetas"
                 className={`${pInput} font-mono`}
               />
             </div>
@@ -274,7 +274,7 @@ export default function StoreCategoriesPage() {
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editing ? 'Actualizar' : 'Crear'} Category
+              {editing ? 'Actualizar' : 'Crear'} categoría
             </button>
           </div>
         </form>
@@ -306,7 +306,7 @@ export default function StoreCategoriesPage() {
                     <p className="text-sm font-medium text-foreground">{cat.name}</p>
                     {cat.parentName && (
                       <span className="text-xs text-muted-foreground bg-accent/50 px-1.5 py-0.5 rounded">
-                        in {cat.parentName}
+                        en {cat.parentName}
                       </span>
                     )}
                   </div>
@@ -318,7 +318,7 @@ export default function StoreCategoriesPage() {
                 )}
 
                 {cat.productCount != null && (
-                  <span className="text-xs text-muted-foreground">{cat.productCount} products</span>
+                  <span className="text-xs text-muted-foreground">{cat.productCount} productos</span>
                 )}
 
                 {/* Actions */}

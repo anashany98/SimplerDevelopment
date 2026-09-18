@@ -181,7 +181,7 @@ describe('ShippingSettingsPage — info banner', () => {
   it('renders the EasyPost info banner', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Live carrier rates require EasyPost');
+      expect(container.textContent).toContain('Las tarifas en vivo de la transportista');
     });
   });
 
@@ -406,7 +406,7 @@ describe('ShippingSettingsPage — zones list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('2 rates');
+      expect(container.textContent).toContain('2 tarifas');
     });
   });
 
@@ -416,7 +416,7 @@ describe('ShippingSettingsPage — zones list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1 rate');
+      expect(container.textContent).toContain('1 tarifa');
     });
   });
 
@@ -429,7 +429,7 @@ describe('ShippingSettingsPage — zones list', () => {
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
     await waitFor(() => {
-      expect(container.textContent).toContain('Add Rate');
+      expect(container.textContent).toContain('Agregar tarifa');
     });
   });
 
@@ -441,10 +441,10 @@ describe('ShippingSettingsPage — zones list', () => {
     await waitFor(() => expect(container.textContent).toContain('Domestic'));
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
-    await waitFor(() => expect(container.textContent).toContain('Add Rate'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar tarifa'));
     fireEvent.click(zoneHeader);
     await waitFor(() => {
-      expect(findBtn(container, 'Add Rate')).toBeUndefined();
+      expect(findBtn(container, 'Agregar tarifa')).toBeUndefined();
     });
   });
 
@@ -588,7 +588,7 @@ describe('ShippingSettingsPage — rate table', () => {
     fireEvent.click(zoneHeader);
     await waitFor(() => {
       expect(container.textContent).toContain('EasyPost');
-      expect(container.textContent).toContain('LIVE');
+      expect(container.textContent).toContain('EN VIVO');
       expect(container.textContent).toContain('USPS');
       expect(container.textContent).toContain('Priority');
     });
@@ -630,7 +630,7 @@ describe('ShippingSettingsPage — rate table', () => {
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
     await waitFor(() => {
-      expect(container.textContent).toContain('3-7 days');
+      expect(container.textContent).toContain('3-7 días');
     });
   });
 
@@ -650,7 +650,7 @@ describe('ShippingSettingsPage — rate table', () => {
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
     await waitFor(() => {
-      expect(container.textContent).toContain('2+ days');
+      expect(container.textContent).toContain('2+ días');
     });
   });
 
@@ -735,8 +735,8 @@ describe('ShippingSettingsPage — rate form create manual', () => {
   async function openRateForm(container: HTMLElement) {
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
-    await waitFor(() => expect(findBtn(container, 'Add Rate')).toBeTruthy());
-    fireEvent.click(findBtn(container, 'Add Rate')!);
+    await waitFor(() => expect(findBtn(container, 'Agregar tarifa')).toBeTruthy());
+    fireEvent.click(findBtn(container, 'Agregar tarifa')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Nueva tarifa');
     });
@@ -924,12 +924,12 @@ describe('ShippingSettingsPage — rate form create manual', () => {
       container.querySelectorAll('input[type="number"]'),
     ) as HTMLInputElement[];
     // Min Days input has placeholder "e.g. 3"
-    const minInput = container.querySelector('input[placeholder="e.g. 3"]') as HTMLInputElement;
+    const minInput = container.querySelector('input[placeholder="p. ej. 3"]') as HTMLInputElement;
     expect(minInput).toBeTruthy();
     fireEvent.change(minInput, { target: { value: '2' } });
     expect(minInput.value).toBe('2');
 
-    const maxInput = container.querySelector('input[placeholder="e.g. 7"]') as HTMLInputElement;
+    const maxInput = container.querySelector('input[placeholder="p. ej. 7"]') as HTMLInputElement;
     expect(maxInput).toBeTruthy();
     fireEvent.change(maxInput, { target: { value: '5' } });
     expect(maxInput.value).toBe('5');
@@ -945,8 +945,8 @@ describe('ShippingSettingsPage — rate form easypost', () => {
   async function openRateFormEasypost(container: HTMLElement) {
     const zoneHeader = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(zoneHeader);
-    await waitFor(() => expect(findBtn(container, 'Add Rate')).toBeTruthy());
-    fireEvent.click(findBtn(container, 'Add Rate')!);
+    await waitFor(() => expect(findBtn(container, 'Agregar tarifa')).toBeTruthy());
+    fireEvent.click(findBtn(container, 'Agregar tarifa')!);
     await waitFor(() => expect(container.textContent).toContain('Nueva tarifa'));
     const labels = Array.from(container.querySelectorAll('label')) as HTMLLabelElement[];
     const easypostLabel = labels.find(

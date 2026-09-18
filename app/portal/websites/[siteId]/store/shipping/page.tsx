@@ -297,12 +297,12 @@ export default function ShippingSettingsPage() {
       <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-800 text-sm dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300">
         <span className="material-icons text-base mt-0.5">info</span>
         <p>
-          Live carrier rates require EasyPost to be enabled in{' '}
+          Las tarifas en vivo de la transportista requieren que EasyPost esté activado en{' '}
           <a
             href={`/portal/websites/${siteId}/store/settings`}
             className="font-medium underline hover:no-underline"
           >
-            Store Settings &rarr; Shipping Provider
+            Configuración de la tienda &rarr; Proveedor de envío
           </a>
           .
         </p>
@@ -360,7 +360,7 @@ export default function ShippingSettingsPage() {
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editingZone ? 'Actualizar' : 'Crear'} Zone
+              {editingZone ? 'Actualizar' : 'Crear'} zona
             </button>
           </div>
         </form>
@@ -387,7 +387,7 @@ export default function ShippingSettingsPage() {
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {zone.countries.length > 0 ? zone.countries.join(', ') : 'Todos los países'}
                     {' -- '}
-                    {zone.rates.length} rate{zone.rates.length !== 1 ? 's' : ''}
+                    {zone.rates.length} tarifa{zone.rates.length !== 1 ? 's' : ''}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -464,7 +464,7 @@ export default function ShippingSettingsPage() {
                                   {isLive ? (
                                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 text-xs font-bold tracking-wide">
                                       <span className="material-icons text-xs">local_shipping</span>
-                                      LIVE
+                                      EN VIVO
                                     </span>
                                   ) : rate.rateType === 'free' ? (
                                     'Gratis'
@@ -474,9 +474,9 @@ export default function ShippingSettingsPage() {
                                 </td>
                                 <td className="px-3 py-2 text-muted-foreground">
                                   {rate.minDeliveryDays != null && rate.maxDeliveryDays != null
-                                    ? `${rate.minDeliveryDays}-${rate.maxDeliveryDays} days`
+                                    ? `${rate.minDeliveryDays}-${rate.maxDeliveryDays} días`
                                     : rate.minDeliveryDays != null
-                                    ? `${rate.minDeliveryDays}+ days`
+                                    ? `${rate.minDeliveryDays}+ días`
                                     : '--'}
                                 </td>
                                 <td className="px-3 py-2 text-muted-foreground">
@@ -626,7 +626,7 @@ export default function ShippingSettingsPage() {
                                 className={pInput}
                               />
                               <p className="text-[11px] text-muted-foreground">
-                                Examples: Priority, Ground, Express. Exact match against EasyPost service codes.
+                                Ejemplos: Priority, Ground, Express. Coincidencia exacta con los códigos de servicio de EasyPost.
                               </p>
                             </div>
                           </>
@@ -640,7 +640,7 @@ export default function ShippingSettingsPage() {
                             min="0"
                             value={rateForm.minDeliveryDays}
                             onChange={(e) => setRateForm((p) => ({ ...p, minDeliveryDays: e.target.value }))}
-                            placeholder="e.g. 3"
+                            placeholder="p. ej. 3"
                             className={pInput}
                           />
                         </div>
@@ -651,7 +651,7 @@ export default function ShippingSettingsPage() {
                             min="0"
                             value={rateForm.maxDeliveryDays}
                             onChange={(e) => setRateForm((p) => ({ ...p, maxDeliveryDays: e.target.value }))}
-                            placeholder="e.g. 7"
+                            placeholder="p. ej. 7"
                             className={pInput}
                           />
                         </div>
@@ -687,7 +687,7 @@ export default function ShippingSettingsPage() {
                           className={pBtnPrimary}
                         >
                           {saving && <span className="material-icons text-sm animate-spin">refresh</span>}
-                          {editingRate ? 'Actualizar' : 'Agregar'} Rate
+                          {editingRate ? 'Actualizar' : 'Agregar'} tarifa
                         </button>
                       </div>
                     </form>
@@ -697,7 +697,7 @@ export default function ShippingSettingsPage() {
                       className={pBtnSoft}
                     >
                       <span className="material-icons text-sm">add</span>
-                      Add Rate
+                      Agregar tarifa
                     </button>
                   )}
                 </div>

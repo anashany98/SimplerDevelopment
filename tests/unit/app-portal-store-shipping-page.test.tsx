@@ -153,7 +153,7 @@ describe('ShippingSettingsPage — empty state', () => {
   it('renders info banner about EasyPost', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Live carrier rates');
+      expect(container.textContent).toContain('Las tarifas en vivo de la transportista');
     });
   });
 
@@ -220,7 +220,7 @@ describe('ShippingSettingsPage — zone list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('0 rates');
+      expect(container.textContent).toContain('0 tarifas');
     });
   });
 
@@ -230,7 +230,7 @@ describe('ShippingSettingsPage — zone list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1 rate');
+      expect(container.textContent).toContain('1 tarifa');
     });
   });
 
@@ -240,7 +240,7 @@ describe('ShippingSettingsPage — zone list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('2 rates');
+      expect(container.textContent).toContain('2 tarifas');
     });
   });
 });
@@ -260,7 +260,7 @@ describe('ShippingSettingsPage — zone expand/collapse', () => {
     const header = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(header);
     await flush();
-    expect(container.textContent).toContain('Add Rate');
+    expect(container.textContent).toContain('Agregar tarifa');
   });
 
   it('clicking zone header again collapses it', async () => {
@@ -272,10 +272,10 @@ describe('ShippingSettingsPage — zone expand/collapse', () => {
     const header = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(header);
     await flush();
-    expect(container.textContent).toContain('Add Rate');
+    expect(container.textContent).toContain('Agregar tarifa');
     fireEvent.click(header);
     await flush();
-    expect(container.textContent).not.toContain('Add Rate');
+    expect(container.textContent).not.toContain('Agregar tarifa');
   });
 
   it('expanded zone with rates renders rate table headers', async () => {
@@ -542,7 +542,7 @@ describe('ShippingSettingsPage — create manual rate', () => {
     await flush();
     // Click "Add Rate"
     const addRateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Rate'),
+      (b) => b.textContent?.includes('Agregar tarifa'),
     ) as HTMLElement;
     fireEvent.click(addRateBtn);
     await flush();
@@ -687,7 +687,7 @@ describe('ShippingSettingsPage — create live carrier rate', () => {
     fireEvent.click(header);
     await flush();
     const addRateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Rate'),
+      (b) => b.textContent?.includes('Agregar tarifa'),
     ) as HTMLElement;
     fireEvent.click(addRateBtn);
     await flush();
@@ -930,7 +930,7 @@ describe('ShippingSettingsPage — rate table display', () => {
     await flush();
 
     expect(container.textContent).toContain('EasyPost');
-    expect(container.textContent).toContain('LIVE');
+    expect(container.textContent).toContain('EN VIVO');
   });
 
   it('renders free shipping label for free rate', async () => {
@@ -960,7 +960,7 @@ describe('ShippingSettingsPage — rate table display', () => {
     fireEvent.click(header);
     await flush();
 
-    expect(container.textContent).toContain('2-5 days');
+    expect(container.textContent).toContain('2-5 días');
   });
 
   it('renders min+ days when only min is set', async () => {
@@ -975,7 +975,7 @@ describe('ShippingSettingsPage — rate table display', () => {
     fireEvent.click(header);
     await flush();
 
-    expect(container.textContent).toContain('3+ days');
+    expect(container.textContent).toContain('3+ días');
   });
 
   it('renders -- for delivery when neither min nor max set', async () => {

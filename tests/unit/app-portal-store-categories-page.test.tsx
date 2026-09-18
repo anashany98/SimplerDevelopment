@@ -207,7 +207,7 @@ describe('StoreCategoriesPage', () => {
 
     it('renders product count', async () => {
       await renderPage();
-      expect(screen.getByText('5 products')).toBeTruthy();
+      expect(screen.getByText('5 productos')).toBeTruthy();
     });
 
     it('renders placeholder icon when no imageUrl', async () => {
@@ -243,7 +243,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('in Apparel')).toBeTruthy();
+      expect(screen.getByText('en Apparel')).toBeTruthy();
     });
 
     it('renders multiple categories', async () => {
@@ -311,7 +311,7 @@ describe('StoreCategoriesPage', () => {
     it('renders name, slug, description, imageUrl, parent inputs', async () => {
       await openCreateForm();
       expect(screen.getByPlaceholderText('p. ej., Camisetas')).toBeTruthy();
-      expect(screen.getByPlaceholderText('t-shirts')).toBeTruthy();
+      expect(screen.getByPlaceholderText('camisetas')).toBeTruthy();
       expect(screen.getByPlaceholderText('Descripción opcional')).toBeTruthy();
       expect(screen.getByPlaceholderText('https://...')).toBeTruthy();
       expect(screen.getByText('Ninguno (nivel superior)')).toBeTruthy();
@@ -322,7 +322,7 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'My Cool Category' },
       });
-      const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('camisetas') as HTMLInputElement;
       expect(slugInput.value).toBe('my-cool-category');
     });
 
@@ -335,7 +335,7 @@ describe('StoreCategoriesPage', () => {
       await waitFor(() => expect(screen.getByText('Editar categoría')).toBeTruthy());
 
       const nameInput = screen.getByPlaceholderText('p. ej., Camisetas') as HTMLInputElement;
-      const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('camisetas') as HTMLInputElement;
       const originalSlug = slugInput.value;
       fireEvent.change(nameInput, { target: { value: 'Changed Name' } });
       // Slug should NOT change when editing
@@ -397,10 +397,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('Categoría creada.')).toBeTruthy());
     });
 
@@ -414,10 +414,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('Slug already exists')).toBeTruthy());
     });
 
@@ -431,10 +431,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('No se pudo guardar.')).toBeTruthy());
     });
 
@@ -448,10 +448,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Caps' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'caps' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('Algo salió mal.')).toBeTruthy());
     });
 
@@ -470,12 +470,12 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Caps' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'caps' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => {
-        const submitBtn = screen.getByRole('button', { name: /Crear Category/i });
+        const submitBtn = screen.getByRole('button', { name: /Crear categoría/i });
         expect(submitBtn.querySelector('.animate-spin')).toBeTruthy();
       });
       resolve(makeRes({ success: true, data: baseCat }));
@@ -498,7 +498,7 @@ describe('StoreCategoriesPage', () => {
       await openEditForm();
       const nameInput = screen.getByPlaceholderText('p. ej., Camisetas') as HTMLInputElement;
       expect(nameInput.value).toBe('T-Shirts');
-      const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('camisetas') as HTMLInputElement;
       expect(slugInput.value).toBe('t-shirts');
     });
 
@@ -516,7 +516,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar categoría/i }));
       await waitFor(() => expect(screen.getByText('Categoría actualizada.')).toBeTruthy());
     });
 
@@ -528,7 +528,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar categoría/i }));
       await waitFor(() => expect(screen.getByText('Slug conflict')).toBeTruthy());
     });
 
@@ -540,7 +540,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar categoría/i }));
       await waitFor(() => expect(screen.getByText('Algo salió mal.')).toBeTruthy());
     });
 
@@ -552,9 +552,9 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar categoría/i }));
       await waitFor(() => expect(screen.getByText('Bad slug')).toBeTruthy());
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'new-slug' },
       });
       expect(screen.queryByText('Bad slug')).toBeNull();
@@ -576,10 +576,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Jackets' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'jackets' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('Categoría creada.')).toBeTruthy());
     });
 
@@ -656,7 +656,7 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hello, World!' },
       });
-      const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('camisetas') as HTMLInputElement;
       expect(slugInput.value).toBe('hello-world');
     });
 
@@ -665,7 +665,7 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Top  Hats  2025' },
       });
-      const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('camisetas') as HTMLInputElement;
       expect(slugInput.value).toBe('top-hats-2025');
     });
 
@@ -680,10 +680,10 @@ describe('StoreCategoriesPage', () => {
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Bad' },
       });
-      fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('camisetas'), {
         target: { value: 'bad' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear categoría/i }));
       await waitFor(() => expect(screen.getByText('Validation error')).toBeTruthy());
       // Typing in name field should clear error
       fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
