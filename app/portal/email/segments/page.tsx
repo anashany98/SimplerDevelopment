@@ -25,19 +25,19 @@ interface Tag {
 const SEGMENT_FIELDS = [
   { value: 'status', label: 'Estado del suscriptor' },
   { value: 'tag', label: 'Tiene etiqueta' },
-  { value: 'subscribed_days', label: 'Days Since Subscribed' },
-  { value: 'list', label: 'In List' },
+  { value: 'subscribed_days', label: 'Días desde la suscripción' },
+  { value: 'list', label: 'En la lista' },
   { value: 'opened_campaign', label: 'Campaña abierta' },
   { value: 'clicked_campaign', label: 'Campaña con clic' },
 ];
 
 const OPERATORS: Record<string, { value: string; label: string }[]> = {
-  status: [{ value: 'equals', label: 'is' }, { value: 'not_equals', label: 'is not' }],
-  tag: [{ value: 'has', label: 'has' }, { value: 'not_has', label: 'does not have' }],
-  subscribed_days: [{ value: 'gt', label: 'more than' }, { value: 'lt', label: 'less than' }],
-  list: [{ value: 'in', label: 'is in' }, { value: 'not_in', label: 'is not in' }],
-  opened_campaign: [{ value: 'yes', label: 'opened' }, { value: 'no', label: 'did not open' }],
-  clicked_campaign: [{ value: 'yes', label: 'clicked' }, { value: 'no', label: 'did not click' }],
+  status: [{ value: 'equals', label: 'es' }, { value: 'not_equals', label: 'no es' }],
+  tag: [{ value: 'has', label: 'tiene' }, { value: 'not_has', label: 'no tiene' }],
+  subscribed_days: [{ value: 'gt', label: 'más de' }, { value: 'lt', label: 'menos de' }],
+  list: [{ value: 'in', label: 'está en' }, { value: 'not_in', label: 'no está en' }],
+  opened_campaign: [{ value: 'yes', label: 'abrió' }, { value: 'no', label: 'no abrió' }],
+  clicked_campaign: [{ value: 'yes', label: 'hizo clic' }, { value: 'no', label: 'no hizo clic' }],
 };
 
 type TabType = 'segments' | 'tags';
@@ -139,11 +139,11 @@ export default function EmailSegmentsPage() {
       <div className="flex gap-1 border-b border-border mb-6">
         <button onClick={() => setTab('segments')} className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${tab === 'segments' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
           <span className="material-icons text-base align-text-bottom mr-1.5">filter_alt</span>
-          Segments ({segments.length})
+          Segmentos ({segments.length})
         </button>
         <button onClick={() => setTab('tags')} className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${tab === 'tags' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
           <span className="material-icons text-base align-text-bottom mr-1.5">label</span>
-          Tags ({tags.length})
+          Etiquetas ({tags.length})
         </button>
       </div>
 
@@ -161,10 +161,10 @@ export default function EmailSegmentsPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground">Nombre del segmento</label>
-                  <input value={segName} onChange={e => setSegName(e.target.value)} placeholder="e.g. Active Subscribers" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
+                  <input value={segName} onChange={e => setSegName(e.target.value)} placeholder="p. ej. Suscriptores activos" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground">Match</label>
+                  <label className="text-xs font-medium text-muted-foreground">Coincidencia</label>
                   <select value={segMatch} onChange={e => setSegMatch(e.target.value)} className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50">
                     <option value="all">Todas las reglas deben coincidir</option>
                     <option value="any">Cualquier regla puede coincidir</option>
@@ -173,7 +173,7 @@ export default function EmailSegmentsPage() {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-muted-foreground">Rules</label>
+                <label className="text-xs font-medium text-muted-foreground">Reglas</label>
                 <div className="space-y-2 mt-1">
                   {segRules.map((rule, i) => (
                     <div key={i} className="flex items-center gap-2 flex-wrap">
@@ -183,7 +183,7 @@ export default function EmailSegmentsPage() {
                       <select value={rule.operator} onChange={e => updateRule(i, 'operator', e.target.value)} className="text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50">
                         {(OPERATORS[rule.field] || OPERATORS.status).map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
-                      <input value={rule.value} onChange={e => updateRule(i, 'value', e.target.value)} placeholder="value" className="flex-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
+                      <input value={rule.value} onChange={e => updateRule(i, 'value', e.target.value)} placeholder="valor" className="flex-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" />
                       {segRules.length > 1 && (
                         <button type="button" onClick={() => removeRule(i)} className="p-1 text-muted-foreground hover:text-red-500">
                           <span className="material-icons text-base">close</span>
@@ -198,7 +198,7 @@ export default function EmailSegmentsPage() {
 
               <div className="flex gap-3">
                 <button type="submit" disabled={segSaving} className={`${pBtnPrimary}`}>
-                  {segSaving ? 'Creating...' : 'Create Segment'}
+                  {segSaving ? 'Creando...' : 'Crear segmento'}
                 </button>
                 <button type="button" onClick={() => setShowCreateSegment(false)} className={`${pBtnGhost}`}>Cancelar</button>
               </div>
@@ -219,8 +219,8 @@ export default function EmailSegmentsPage() {
                   {seg.description && <p className="text-xs text-muted-foreground mt-0.5">{seg.description}</p>}
                   <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
                     <span>{seg.rules.length} {seg.rules.length !== 1 ? 'reglas' : 'regla'}</span>
-                    <span>Match: {seg.matchType}</span>
-                    <span>{seg.subscriberCount} subscribers</span>
+                    <span>Coincidencia: {seg.matchType}</span>
+                    <span>{seg.subscriberCount} suscriptores</span>
                   </div>
                 </div>
                 <button onClick={() => handleDeleteSegment(seg.id)} className="p-1 text-muted-foreground hover:text-red-500">
@@ -238,14 +238,14 @@ export default function EmailSegmentsPage() {
           <form onSubmit={handleCreateTag} className="flex items-end gap-3">
             <div className="flex-1">
               <label className="text-xs font-medium text-muted-foreground">Nombre de la etiqueta</label>
-              <input value={newTagName} onChange={e => setNewTagName(e.target.value)} placeholder="e.g. VIP, Newsletter, Lead" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
+              <input value={newTagName} onChange={e => setNewTagName(e.target.value)} placeholder="p. ej. VIP, Boletín, Lead" className="w-full mt-1 text-sm bg-background border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50" required />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground">Color</label>
               <input type="color" value={newTagColor} onChange={e => setNewTagColor(e.target.value)} className="mt-1 h-[38px] w-12 rounded-lg border border-border cursor-pointer" />
             </div>
             <button type="submit" disabled={tagSaving} className={`${pBtnPrimary} whitespace-nowrap`}>
-              {tagSaving ? 'Adding...' : 'Add Tag'}
+              {tagSaving ? 'Añadiendo...' : 'Añadir etiqueta'}
             </button>
           </form>
 
