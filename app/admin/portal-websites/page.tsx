@@ -82,14 +82,14 @@ export default function AdminPortalWebsitesPage() {
   };
 
   const handleSave = async () => {
-    if (!form.clientId || !form.name) { setError('Client and name are required.'); return; }
+    if (!form.clientId || !form.name) { setError('El cliente y el nombre son obligatorios.'); return; }
     setSaving(true); setError('');
     const url = editSite ? `/api/admin/portal/websites/${editSite.id}` : '/api/admin/portal/websites';
     const method = editSite ? 'PATCH' : 'POST';
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message || 'Save failed'); return; }
+    if (!data.success) { setError(data.message || 'No se pudo guardar'); return; }
     if (editSite) {
       setWebsites(prev => prev.map(w => w.id === editSite.id ? { ...w, ...data.data } : w));
     } else {
@@ -122,7 +122,7 @@ export default function AdminPortalWebsitesPage() {
     // Confirm only when DISABLING — defensive cascade will flip the store back to Connect mode.
     if (!next) {
       const ok = window.confirm(
-        'This will force the site back to Stripe Connect mode and the tenant\'s BYOK keys will be ignored. Continue?',
+        'Esto forzará que el sitio vuelva al modo Stripe Connect y se ignorarán las claves BYOK del inquilino. ¿Continuar?',
       );
       if (!ok) return;
     }
@@ -151,15 +151,15 @@ export default function AdminPortalWebsitesPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Client Websites</h1>
-          <p className="text-muted-foreground text-sm mt-1">Websites managed through the client portal CMS.</p>
+          <h1 className="text-2xl font-bold text-foreground">Sitios web de clientes</h1>
+          <p className="text-muted-foreground text-sm mt-1">Sitios web gestionados a través del CMS del portal de clientes.</p>
         </div>
         <button
           onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          Add Website
+          Añadir sitio web
         </button>
       </div>
 
@@ -168,7 +168,7 @@ export default function AdminPortalWebsitesPage() {
         <span className="material-icons text-muted-foreground text-base">search</span>
         <input
           className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground"
-          placeholder="Search websites or clients..."
+          placeholder="Buscar sitios web o clientes..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -179,7 +179,7 @@ export default function AdminPortalWebsitesPage() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
             <span className="material-icons text-4xl mb-2">web</span>
-            <p className="text-sm">{search ? 'No websites match your search.' : 'No client websites yet.'}</p>
+            <p className="text-sm">{search ? 'No hay sitios web que coincidan con tu búsqueda.' : 'Aún no hay sitios web de clientes.'}</p>
           </div>
         ) : (
           <table className="w-full text-sm">
@@ -209,13 +209,13 @@ export default function AdminPortalWebsitesPage() {
                     {site.domain ? (
                       <span className="font-mono text-xs text-foreground">{site.domain}</span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">Not set</span>
+                      <span className="text-xs text-muted-foreground">Sin configurar</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
                     <button onClick={() => handleToggleActive(site)} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${site.active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                       <span className="material-icons text-xs">{site.active ? 'check_circle' : 'cancel'}</span>
-                      {site.active ? 'Active' : 'Inactive'}
+                      {site.active ? 'Activo' : 'Inactivo'}
                     </button>
                   </td>
                   <td className="px-4 py-3">
@@ -229,7 +229,7 @@ export default function AdminPortalWebsitesPage() {
                         ? 'bg-blue-100 text-blue-700'
                         : 'bg-gray-100 text-gray-600';
                       const pillIcon = active ? 'verified' : allowed ? 'lock_open' : 'lock';
-                      const pillLabel = active ? 'BYOK Active' : allowed ? 'BYOK Allowed' : 'Connect';
+                      const pillLabel = active ? 'BYOK activo' : allowed ? 'BYOK permitido' : 'Connect';
                       return (
                         <div className="flex items-center gap-2">
                           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${pillClass}`}>
@@ -243,7 +243,7 @@ export default function AdminPortalWebsitesPage() {
                               onChange={() => handleToggleByokAllowed(site)}
                               className="cursor-pointer"
                             />
-                            Allow BYOK
+                            Permitir BYOK
                           </label>
                         </div>
                       );
@@ -274,7 +274,7 @@ export default function AdminPortalWebsitesPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="bg-card border border-border rounded-xl w-full max-w-lg mx-4 shadow-xl">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">{editSite ? 'Edit Website' : 'Add Website'}</h2>
+              <h2 className="font-semibold text-foreground">{editSite ? 'Editar sitio web' : 'Añadir sitio web'}</h2>
               <button onClick={() => setShowForm(false)} className="p-2 rounded-md hover:bg-accent transition-colors text-muted-foreground">
                 <span className="material-icons text-base">close</span>
               </button>
@@ -287,23 +287,23 @@ export default function AdminPortalWebsitesPage() {
                 </div>
               )}
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Client *</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Cliente *</label>
                 <select
                   value={form.clientId}
                   onChange={e => setForm(f => ({ ...f, clientId: e.target.value }))}
                   disabled={!!editSite}
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary disabled:opacity-60"
                 >
-                  <option value="">Select a client...</option>
+                  <option value="">Selecciona un cliente...</option>
                   {clients.map(c => <option key={c.id} value={c.id}>{clientLabel(c)}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Website Name *</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre del sitio web *</label>
                 <input
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  placeholder="e.g. Acme Corp Main Site"
+                  placeholder="p. ej. Sitio principal de Acme"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
                 />
               </div>
@@ -334,7 +334,7 @@ export default function AdminPortalWebsitesPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
               >
                 {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                {editSite ? 'Save Changes' : 'Add Website'}
+                {editSite ? 'Guardar cambios' : 'Añadir sitio web'}
               </button>
             </div>
           </div>
@@ -347,9 +347,9 @@ export default function AdminPortalWebsitesPage() {
           <div className="bg-card border border-border rounded-xl p-6 w-full max-w-sm mx-4 shadow-xl space-y-4">
             <div className="flex items-center gap-3">
               <span className="material-icons text-red-500 text-2xl">warning</span>
-              <h2 className="font-semibold text-foreground">Delete website?</h2>
+              <h2 className="font-semibold text-foreground">¿Eliminar sitio web?</h2>
             </div>
-            <p className="text-sm text-muted-foreground">This will delete the website record. All posts belonging to this website will lose their website association.</p>
+            <p className="text-sm text-muted-foreground">Esto eliminará el registro del sitio web. Todas las publicaciones de este sitio web perderán su asociación con él.</p>
             <div className="flex justify-end gap-3">
               <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
               <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Eliminar</button>

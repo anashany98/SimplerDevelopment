@@ -31,11 +31,11 @@ interface Client {
 const categoryOptions = [
   { value: 'website', label: 'Sitio web' },
   { value: 'ecommerce', label: 'E-Commerce' },
-  { value: 'mobile', label: 'Mobile App' },
-  { value: 'maintenance', label: 'Maintenance' },
+  { value: 'mobile', label: 'App móvil' },
+  { value: 'maintenance', label: 'Mantenimiento' },
   { value: 'branding', label: 'Branding' },
-  { value: 'development', label: 'Development' },
-  { value: 'other', label: 'Other' },
+  { value: 'development', label: 'Desarrollo' },
+  { value: 'other', label: 'Otro' },
 ];
 
 const categoryIcon: Record<string, string> = {
@@ -111,9 +111,9 @@ function SuggestedProjectForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Estimated Price (USD)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Precio estimado (USD)</label>
         <input
-          type="number" min="0" step="0.01" placeholder="Leave blank = Quote on request"
+          type="number" min="0" step="0.01" placeholder="Déjalo en blanco = Cotización a petición"
           value={values.estimatedPrice}
           onChange={e => setValues(v => ({ ...v, estimatedPrice: e.target.value }))}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -121,9 +121,9 @@ function SuggestedProjectForm({
         <p className="text-xs text-muted-foreground mt-0.5">Déjalo en blanco para mostrar &quot;Cotización a petición&quot;</p>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Estimated Timeline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Plazo estimado</label>
         <input
-          type="text" placeholder="e.g. 2–4 weeks" value={values.estimatedTimeline}
+          type="text" placeholder="p. ej. 2–4 semanas" value={values.estimatedTimeline}
           onChange={e => setValues(v => ({ ...v, estimatedTimeline: e.target.value }))}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />
@@ -140,7 +140,7 @@ function SuggestedProjectForm({
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Display Order</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Orden de visualización</label>
         <input
           type="number" min="0" value={values.order}
           onChange={e => setValues(v => ({ ...v, order: e.target.value }))}
@@ -148,23 +148,23 @@ function SuggestedProjectForm({
         />
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Target Client</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Cliente destino</label>
         <select
           value={values.clientId}
           onChange={e => setValues(v => ({ ...v, clientId: e.target.value }))}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="">All clients (global)</option>
+          <option value="">Todos los clientes (global)</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.company ?? c.userName}</option>)}
         </select>
-        <p className="text-xs text-muted-foreground mt-0.5">Leave blank to show to all portal clients.</p>
+        <p className="text-xs text-muted-foreground mt-0.5">Déjalo en blanco para mostrarlo a todos los clientes del portal.</p>
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Features / Selling Points (one per line)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Características / Puntos de venta (uno por línea)</label>
         <textarea
           rows={4} value={values.features}
           onChange={e => setValues(v => ({ ...v, features: e.target.value }))}
-          placeholder={'Custom design\nMobile responsive\nSEO optimized'}
+          placeholder={'Diseño personalizado\nAdaptado a móvil\nOptimizado para SEO'}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
         />
       </div>
@@ -175,7 +175,7 @@ function SuggestedProjectForm({
             onChange={e => setValues(v => ({ ...v, active: e.target.checked }))}
             className="w-4 h-4 rounded border-border accent-primary"
           />
-          <span className="text-sm font-medium text-foreground">Active (visible to clients)</span>
+          <span className="text-sm font-medium text-foreground">Activo (visible para los clientes)</span>
         </label>
       </div>
 
@@ -249,7 +249,7 @@ export default function AdminSuggestedProjectsPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo crear'); return; }
     const client = clients.find(c => c.id === data.data.clientId);
     setItems(prev => [...prev, { ...data.data, clientCompany: client?.company ?? null, clientName: client?.userName ?? null }]);
     setShowCreate(false);
@@ -298,7 +298,7 @@ export default function AdminSuggestedProjectsPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed to save'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo guardar'); return; }
     const client = clients.find(c => c.id === data.data.clientId);
     setItems(prev => prev.map(i => i.id === editingId
       ? { ...data.data, clientCompany: client?.company ?? null, clientName: client?.userName ?? null }
@@ -307,7 +307,7 @@ export default function AdminSuggestedProjectsPage() {
   }
 
   async function deleteItem(id: number, title: string) {
-    if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    if (!window.confirm(`¿Eliminar "${title}"? Esta acción no se puede deshacer.`)) return;
     setDeleting(id);
     const res = await fetch(`/api/admin/portal/suggested-projects/${id}`, { method: 'DELETE' });
     const data = await res.json();
@@ -315,7 +315,7 @@ export default function AdminSuggestedProjectsPage() {
     if (data.success) {
       setItems(prev => prev.filter(i => i.id !== id));
     } else {
-      alert(data.message ?? 'Delete failed');
+      alert(data.message ?? 'No se pudo eliminar');
     }
   }
 
@@ -333,22 +333,22 @@ export default function AdminSuggestedProjectsPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Project Market</h1>
+          <h1 className="text-2xl font-bold text-foreground">Mercado de proyectos</h1>
           <p className="text-muted-foreground mt-1">
-            Create project suggestions shown to clients in their portal. Add a survey to gather project details.
+            Crea sugerencias de proyectos que se muestran a los clientes en su portal. Añade una encuesta para recopilar los detalles del proyecto.
           </p>
         </div>
         <button
           onClick={() => { setShowCreate(!showCreate); setEditingId(null); }}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
-          <span className="material-icons text-base">add</span>New Suggestion
+          <span className="material-icons text-base">add</span>Nueva sugerencia
         </button>
       </div>
 
       {showCreate && (
         <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Create Suggested Project</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Crear proyecto sugerido</h2>
           {error && (
             <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">{error}</div>
           )}
@@ -356,7 +356,7 @@ export default function AdminSuggestedProjectsPage() {
             values={form} setValues={setForm}
             surveyFields={createSurveyFields} setSurveyFields={setCreateSurveyFields}
             onSubmit={createItem} onCancel={() => { setShowCreate(false); setCreateSurveyFields([]); }}
-            submitLabel="Create" saving={saving} clients={clients}
+            submitLabel="Crear" saving={saving} clients={clients}
           />
         </div>
       )}
@@ -366,8 +366,8 @@ export default function AdminSuggestedProjectsPage() {
       ) : items.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">rocket_launch</span>
-          <h3 className="mt-4 font-semibold text-foreground">No suggested projects yet</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Create your first suggestion above.</p>
+          <h3 className="mt-4 font-semibold text-foreground">Aún no hay proyectos sugeridos</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Crea tu primera sugerencia arriba.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -375,7 +375,7 @@ export default function AdminSuggestedProjectsPage() {
             <div key={item.id} className={`bg-card border rounded-xl overflow-hidden ${item.active ? 'border-border' : 'border-border opacity-60'}`}>
               {editingId === item.id ? (
                 <div className="p-6">
-                  <h3 className="text-sm font-semibold text-foreground mb-4">Editing: {item.title}</h3>
+                  <h3 className="text-sm font-semibold text-foreground mb-4">Editando: {item.title}</h3>
                   {error && (
                     <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">{error}</div>
                   )}
@@ -383,7 +383,7 @@ export default function AdminSuggestedProjectsPage() {
                     values={editForm} setValues={setEditForm}
                     surveyFields={editSurveyFields} setSurveyFields={setEditSurveyFields}
                     onSubmit={saveEdit} onCancel={() => setEditingId(null)}
-                    submitLabel="Save Changes" saving={saving} clients={clients}
+                    submitLabel="Guardar cambios" saving={saving} clients={clients}
                   />
                 </div>
               ) : (
@@ -400,17 +400,17 @@ export default function AdminSuggestedProjectsPage() {
                           {(item.surveyFields ?? []).length > 0 && (
                             <span className="text-xs text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                               <span className="material-icons text-xs">assignment</span>
-                              {item.surveyFields.length} survey field{item.surveyFields.length !== 1 ? 's' : ''}
+                              {item.surveyFields.length} campo{item.surveyFields.length !== 1 ? 's' : ''} de encuesta
                             </span>
                           )}
                           {item.clientId ? (
                             <span className="text-xs text-purple-700 bg-purple-100 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                               <span className="material-icons text-xs">person</span>
-                              {item.clientCompany ?? item.clientName ?? `Client #${item.clientId}`}
+                              {item.clientCompany ?? item.clientName ?? `Cliente #${item.clientId}`}
                             </span>
                           ) : (
                             <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                              <span className="material-icons text-xs">public</span>All clients
+                              <span className="material-icons text-xs">public</span>Todos los clientes
                             </span>
                           )}
                         </div>
@@ -419,14 +419,14 @@ export default function AdminSuggestedProjectsPage() {
                         )}
                         <div className="mt-1 flex items-center gap-3 text-sm flex-wrap">
                           <span className="font-semibold text-foreground">
-                            {item.estimatedPrice ? formatCents(item.estimatedPrice) : 'Quote on request'}
+                            {item.estimatedPrice ? formatCents(item.estimatedPrice) : 'Cotización a petición'}
                           </span>
                           {item.estimatedTimeline && (
                             <span className="text-xs text-muted-foreground flex items-center gap-0.5">
                               <span className="material-icons text-xs">schedule</span>{item.estimatedTimeline}
                             </span>
                           )}
-                          <span className="text-xs text-muted-foreground">Order: {item.order}</span>
+                          <span className="text-xs text-muted-foreground">Orden: {item.order}</span>
                         </div>
                         {(item.features ?? []).length > 0 && (
                           <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5">
@@ -436,7 +436,7 @@ export default function AdminSuggestedProjectsPage() {
                               </span>
                             ))}
                             {(item.features ?? []).length > 4 && (
-                              <span className="text-xs text-muted-foreground">+{item.features.length - 4} more</span>
+                              <span className="text-xs text-muted-foreground">+{item.features.length - 4} más</span>
                             )}
                           </div>
                         )}
@@ -449,7 +449,7 @@ export default function AdminSuggestedProjectsPage() {
                           ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700'
                           : 'bg-gray-100 text-gray-500 hover:bg-green-100 hover:text-green-700'}`}
                       >
-                        {item.active ? 'Active' : 'Inactive'}
+                        {item.active ? 'Activo' : 'Inactivo'}
                       </button>
                       <button
                         onClick={() => startEdit(item)}
