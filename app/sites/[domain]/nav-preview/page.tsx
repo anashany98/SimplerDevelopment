@@ -72,7 +72,7 @@ export default function NavPreviewPage() {
           {branding?.logoUrl ? (
             <img src={branding.logoUrl} alt={branding.logoAlt || ''} style={{ height: 36, objectFit: 'contain' }} />
           ) : (
-            <div style={{ fontSize: 18, fontWeight: 700, color: textColor }}>Site Logo</div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: textColor }}>Logotipo del sitio</div>
           )}
 
           <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
@@ -112,7 +112,7 @@ export default function NavPreviewPage() {
 
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 1rem' }}>
         <div style={{ backgroundColor: 'rgba(0,0,0,0.04)', borderRadius: 12, padding: '4rem 2rem', textAlign: 'center' }}>
-          <p style={{ color: '#9ca3af', fontSize: 14 }}>Page content area</p>
+          <p style={{ color: '#9ca3af', fontSize: 14 }}>Área de contenido de la página</p>
         </div>
       </div>
     </div>

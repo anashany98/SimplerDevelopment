@@ -55,10 +55,10 @@ export function ProductDesignerClient({
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
           <span className="material-icons text-base">arrow_back</span>
-          Back to product
+          Volver al producto
         </Link>
         <div className="text-sm font-semibold truncate max-w-[60%] text-center">
-          Customizing — {productName}
+          Personalizando — {productName}
         </div>
         <div className="w-[120px]" />
       </header>

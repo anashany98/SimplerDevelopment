@@ -76,7 +76,7 @@ interface LayoutProps {
 export async function generateMetadata({ params }: { params: Promise<{ domain: string }> }): Promise<Metadata> {
   const { domain } = await params;
   const site = await getClientWebsiteByDomain(domain);
-  if (!site) return { title: 'Site Not Found' };
+  if (!site) return { title: 'Sitio no encontrado' };
 
   if (!site.publicAccess) {
     return {

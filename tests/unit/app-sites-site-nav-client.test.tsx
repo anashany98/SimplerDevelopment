@@ -243,25 +243,25 @@ describe('SiteNavClient', () => {
     renderNav({ navItems: [regularItem] });
 
     // Re-render to pick up the matchMedia change — act wraps the state update
-    const hamburger = screen.getByLabelText('Open menu');
+    const hamburger = screen.getByLabelText('Abrir menú');
     expect(hamburger).toBeTruthy();
 
     await act(async () => {
       fireEvent.click(hamburger);
     });
-    expect(screen.getByLabelText('Close menu')).toBeTruthy();
+    expect(screen.getByLabelText('Cerrar menú')).toBeTruthy();
 
     await act(async () => {
-      fireEvent.click(screen.getByLabelText('Close menu'));
+      fireEvent.click(screen.getByLabelText('Cerrar menú'));
     });
-    expect(screen.getByLabelText('Open menu')).toBeTruthy();
+    expect(screen.getByLabelText('Abrir menú')).toBeTruthy();
   });
 
   it('hamburger button is present in the DOM (aria-label attribute)', () => {
     renderNav();
     const buttons = document.querySelectorAll('button[aria-label]');
     const labels = Array.from(buttons).map((b) => b.getAttribute('aria-label'));
-    expect(labels.some((l) => l === 'Open menu' || l === 'Close menu')).toBe(true);
+    expect(labels.some((l) => l === 'Abrir menú' || l === 'Cerrar menú')).toBe(true);
   });
 
   // ── Desktop dropdown (classic template) ──────────────────────────────────
@@ -373,7 +373,7 @@ describe('SiteNavClient', () => {
     renderNav({ navItems: [parent] });
 
     // Open mobile menu first
-    const hamburger = screen.getByLabelText('Open menu');
+    const hamburger = screen.getByLabelText('Abrir menú');
     await act(async () => { fireEvent.click(hamburger); });
 
     // Accordion button for parent item
@@ -393,7 +393,7 @@ describe('SiteNavClient', () => {
     setMobile(true);
     renderNav({ navItems: [regularItem] });
 
-    const hamburger = screen.getByLabelText('Open menu');
+    const hamburger = screen.getByLabelText('Abrir menú');
     await act(async () => { fireEvent.click(hamburger); });
 
     // 'About' should appear as a link in mobile menu; multiple 'About' nodes
@@ -406,8 +406,8 @@ describe('SiteNavClient', () => {
     setMobile(true);
     renderNav({ navItems: [regularItem] });
 
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open menu')); });
-    expect(screen.getByLabelText('Close menu')).toBeTruthy();
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir menú')); });
+    expect(screen.getByLabelText('Cerrar menú')).toBeTruthy();
 
     // The mobile panel link has an onClick handler that closes the menu.
     // Both copies have onClick (desktop link does NOT; mobile link does).
@@ -418,7 +418,7 @@ describe('SiteNavClient', () => {
     // The desktop copy does not, but clicking it still won't hurt (no-op).
     // Click them all until one closes the menu.
     await act(async () => { fireEvent.click(allAbout[allAbout.length - 1]); });
-    expect(screen.getByLabelText('Open menu')).toBeTruthy();
+    expect(screen.getByLabelText('Abrir menú')).toBeTruthy();
   });
 
   // ── navTemplate variants ──────────────────────────────────────────────────
@@ -605,7 +605,7 @@ describe('SiteNavClient', () => {
   it('renders mobile footer CTA section when button items exist', async () => {
     setMobile(true);
     renderNav({ navItems: [buttonItem] });
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open menu')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir menú')); });
     // The footer CTA is the tenant's OWN button, not boilerplate copy
     expect(screen.getAllByText('Book Now').length).toBeGreaterThan(0);
   });
@@ -613,7 +613,7 @@ describe('SiteNavClient', () => {
   it('does NOT render mobile footer CTA section when no button items exist', async () => {
     setMobile(true);
     renderNav({ navItems: [regularItem] });
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open menu')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir menú')); });
     expect(screen.queryByText('Book Now')).toBeNull();
   });
 
@@ -623,7 +623,7 @@ describe('SiteNavClient', () => {
   it('never renders another brand\'s copy in the mobile footer', async () => {
     setMobile(true);
     renderNav({ navItems: [buttonItem] });
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open menu')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir menú')); });
     expect(screen.queryByText(/Slate Expert|launch your next project/i)).toBeNull();
   });
 });

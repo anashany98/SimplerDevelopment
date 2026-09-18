@@ -193,7 +193,7 @@ describe('PitchDeckPresentation', () => {
 
   it('renders an empty-state message when there are no slides', () => {
     render(<PitchDeckPresentation slides={[]} theme={baseTheme} title="empty-deck" />);
-    expect(screen.getByText(/No slides in this presentation/i)).toBeInTheDocument();
+    expect(screen.getByText(/No hay diapositivas en esta presentación/i)).toBeInTheDocument();
   });
 
   // --- Basic block rendering ------------------------------------------------
@@ -287,7 +287,7 @@ describe('PitchDeckPresentation', () => {
   it('shows the navigation hint on slide 0', () => {
     const slides = [blockSlide('s1'), blockSlide('s2')];
     render(<PitchDeckPresentation slides={slides} theme={baseTheme} title="d" />);
-    expect(screen.getByText(/Press arrow keys or spacebar/i)).toBeInTheDocument();
+    expect(screen.getByText(/Usa las flechas o la barra espaciadora/i)).toBeInTheDocument();
   });
 
   // --- Hash sync ------------------------------------------------------------
@@ -384,8 +384,8 @@ describe('PitchDeckPresentation', () => {
     );
     // Desktop arrows are conditionally rendered (absent); mobile footer arrows
     // are always rendered but disabled at the boundary. Assert via aria-labels.
-    const prevBtn = container.querySelector('[aria-label="Previous slide"]') as HTMLButtonElement | null;
-    const nextBtn = container.querySelector('[aria-label="Next slide"]') as HTMLButtonElement | null;
+    const prevBtn = container.querySelector('[aria-label="Diapositiva anterior"]') as HTMLButtonElement | null;
+    const nextBtn = container.querySelector('[aria-label="Diapositiva siguiente"]') as HTMLButtonElement | null;
     // The mobile-footer prev button exists but should be disabled on slide 0.
     expect(prevBtn).not.toBeNull();
     expect(prevBtn?.disabled).toBe(true);
@@ -416,7 +416,7 @@ describe('PitchDeckPresentation', () => {
     // Desktop next arrow is conditionally absent on the last slide; the mobile
     // footer next button is always rendered but disabled at the boundary.
     const nextBtns = Array.from(
-      container.querySelectorAll('[aria-label="Next slide"]'),
+      container.querySelectorAll('[aria-label="Diapositiva siguiente"]'),
     ) as HTMLButtonElement[];
     // All next buttons present should be disabled.
     expect(nextBtns.length).toBeGreaterThan(0);
@@ -622,8 +622,8 @@ describe('PitchDeckPresentation', () => {
       />,
     );
     // The contact slide should be on screen — its header reads "Tell us a bit"
-    expect(screen.getByText(/Tell us a bit about you/i)).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByText(/Cuéntanos un poco sobre ti/i)).toBeInTheDocument();
+    expect(screen.getByLabelText('Correo')).toBeInTheDocument();
   });
 
   it('validates the contact slide email on Next', () => {
@@ -647,10 +647,10 @@ describe('PitchDeckPresentation', () => {
     );
     // Find the contact slide's Next button (the only "Next" label button)
     const nextBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      (b.textContent || '').includes('Next'),
+      (b.textContent || '').includes('Siguiente'),
     )!;
     fireEvent.click(nextBtn);
-    expect(screen.getByText(/Please enter a valid email/i)).toBeInTheDocument();
+    expect(screen.getByText(/Introduce un correo electrónico válido/i)).toBeInTheDocument();
   });
 
   it('accepts a valid email on the contact slide and advances', () => {
@@ -672,14 +672,14 @@ describe('PitchDeckPresentation', () => {
         surveys={surveys}
       />,
     );
-    const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+    const emailInput = screen.getByLabelText('Correo') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'alice@example.com' } });
-    const nameInput = screen.getByLabelText('Name') as HTMLInputElement;
+    const nameInput = screen.getByLabelText('Nombre') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Alice' } });
-    const companyInput = screen.getByLabelText('Company') as HTMLInputElement;
+    const companyInput = screen.getByLabelText('Empresa') as HTMLInputElement;
     fireEvent.change(companyInput, { target: { value: 'Acme' } });
     const nextBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      (b.textContent || '').includes('Next'),
+      (b.textContent || '').includes('Siguiente'),
     )!;
     fireEvent.click(nextBtn);
     // Now on the first survey question
@@ -707,7 +707,7 @@ describe('PitchDeckPresentation', () => {
       />,
     );
     const backBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      (b.textContent || '').includes('Back'),
+      (b.textContent || '').includes('Atrás'),
     );
     expect(backBtn).toBeTruthy();
   });
@@ -854,7 +854,7 @@ describe('PitchDeckPresentation', () => {
       window.location.hash = '#3';
       window.dispatchEvent(new HashChangeEvent('hashchange'));
     });
-    await waitFor(() => expect(screen.getByText('Thank you!')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('¡Gracias!')).toBeInTheDocument());
   });
 
   it('renders the recommendation slide when survey.recommendation is set', async () => {
