@@ -16,43 +16,43 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
           value={block.overline || ''}
           onChange={(e) => onChange({ overline: e.target.value || undefined })}
           className={inputClass}
-          placeholder="e.g. OUR TEAM"
+          placeholder="p. ej. NUESTRO EQUIPO"
         />
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de la sección..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtítulo..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Bio Panel Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color del panel de biografía</label>
           <TokenColorPicker value={block.bioPanelColor || ''} onChange={(color) => onChange({ bioPanelColor: color || undefined })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Accent Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color de acento</label>
           <TokenColorPicker value={block.accentColor || ''} onChange={(color) => onChange({ accentColor: color || undefined })} />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Photo Filter (CSS)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Filtro de foto (CSS)</label>
         <input
           type="text"
           value={block.photoFilter || ''}
           onChange={(e) => onChange({ photoFilter: e.target.value || undefined })}
           className={inputClass}
-          placeholder="e.g. sepia(0.08)"
+          placeholder="p. ej. sepia(0.08)"
         />
       </div>
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground">Members</label>
+        <label className="block text-sm font-medium text-foreground">Miembros</label>
         {(block.members || []).map((member, i) => (
           <div key={member.id ?? i} className="space-y-1 p-2 rounded border border-border">
             <input
@@ -86,7 +86,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Credentials (optional)"
+              placeholder="Credenciales (opcional)"
             />
             <input
               type="url"
@@ -97,7 +97,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Photo URL"
+              placeholder="URL de la foto"
             />
             <textarea
               value={member.bio}
@@ -107,7 +107,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Bio"
+              placeholder="Biografía"
               rows={3}
             />
             <input
@@ -120,7 +120,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Specialties (comma-separated, optional)"
+              placeholder="Especialidades (separadas por comas, opcional)"
             />
             <button
               type="button"
@@ -134,7 +134,7 @@ export function TeamShowcaseBlockSettings({ block, onChange }: { block: TeamShow
           onClick={() => onChange({ members: [...(block.members || []), { id: `member-${Date.now()}`, name: '', title: '', photo: '', bio: '' }] })}
           className="w-full px-3 py-2 text-xs font-medium rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
         >
-          + Add Member
+          + Añadir miembro
         </button>
       </div>
     </div>
@@ -152,19 +152,19 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
           value={block.overline || ''}
           onChange={(e) => onChange({ overline: e.target.value || undefined })}
           className={inputClass}
-          placeholder="e.g. MEET THE TEAM"
+          placeholder="p. ej. CONOCE AL EQUIPO"
         />
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de la sección..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtítulo..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
@@ -181,24 +181,24 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Back BG Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color de fondo del reverso</label>
           <TokenColorPicker value={block.backBgColor || ''} onChange={(color) => onChange({ backBgColor: color || undefined })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Back Text Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color del texto del reverso</label>
           <TokenColorPicker value={block.backTextColor || ''} onChange={(color) => onChange({ backTextColor: color || undefined })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Name Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color del nombre</label>
           <TokenColorPicker value={block.nameColor || ''} onChange={(color) => onChange({ nameColor: color || undefined })} />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Title Color</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Color del cargo</label>
           <TokenColorPicker value={block.titleColor || ''} onChange={(color) => onChange({ titleColor: color || undefined })} />
         </div>
       </div>
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground">Members</label>
+        <label className="block text-sm font-medium text-foreground">Miembros</label>
         {(block.members || []).map((member, i) => (
           <div key={member.id ?? i} className="space-y-1 p-2 rounded border border-border">
             <input
@@ -232,7 +232,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Photo URL"
+              placeholder="URL de la foto"
             />
             <textarea
               value={member.bio}
@@ -242,7 +242,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Bio (front)"
+              placeholder="Biografía (anverso)"
               rows={2}
             />
             <input
@@ -254,7 +254,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Question (back)"
+              placeholder="Pregunta (reverso)"
             />
             <textarea
               value={member.answer}
@@ -264,7 +264,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
                 onChange({ members: next });
               }}
               className="w-full text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Answer (back)"
+              placeholder="Respuesta (reverso)"
               rows={2}
             />
             <button
@@ -279,7 +279,7 @@ export function TeamFlipGridBlockSettings({ block, onChange }: { block: TeamFlip
           onClick={() => onChange({ members: [...(block.members || []), { id: `tmember-${Date.now()}`, name: '', title: '', bio: '', photo: '', question: '', answer: '' }] })}
           className="w-full px-3 py-2 text-xs font-medium rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
         >
-          + Add Member
+          + Añadir miembro
         </button>
       </div>
     </div>

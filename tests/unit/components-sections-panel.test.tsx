@@ -126,7 +126,7 @@ describe('SectionsPanel — CTA block', () => {
 
   it('renders title via RichTextEditable and forwards onChange', () => {
     const { onChange } = renderPanel(baseCta);
-    const rte = screen.getByTestId('rte-CTA Title') as HTMLTextAreaElement;
+    const rte = screen.getByTestId('rte-Título del CTA') as HTMLTextAreaElement;
     expect(rte.value).toBe('Hello');
     fireEvent.change(rte, { target: { value: 'New Title' } });
     expect(onChange).toHaveBeenCalledWith({ title: 'New Title' });
@@ -134,21 +134,21 @@ describe('SectionsPanel — CTA block', () => {
 
   it('emits undefined for empty description (collapses to undefined)', () => {
     const { onChange } = renderPanel(baseCta);
-    const descRte = screen.getByTestId('rte-Optional description') as HTMLTextAreaElement;
+    const descRte = screen.getByTestId('rte-Descripción opcional') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ description: undefined });
   });
 
   it('keeps non-empty description string in onChange', () => {
     const { onChange } = renderPanel(baseCta);
-    const descRte = screen.getByTestId('rte-Optional description') as HTMLTextAreaElement;
+    const descRte = screen.getByTestId('rte-Descripción opcional') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'NEW' } });
     expect(onChange).toHaveBeenCalledWith({ description: 'NEW' });
   });
 
   it('changes backgroundStyle via select', () => {
     const { onChange } = renderPanel(baseCta);
-    const select = screen.getByDisplayValue('Gradient') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Degradado') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'solid' } });
     expect(onChange).toHaveBeenCalledWith({ backgroundStyle: 'solid' });
   });
@@ -173,7 +173,7 @@ describe('SectionsPanel — CTA block', () => {
   it('defaults backgroundStyle to gradient when block.backgroundStyle missing', () => {
     const noBg = { ...baseCta, backgroundStyle: undefined };
     renderPanel(noBg);
-    const select = screen.getByDisplayValue('Gradient') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Degradado') as HTMLSelectElement;
     expect(select.value).toBe('gradient');
   });
 });
@@ -191,28 +191,28 @@ describe('SectionsPanel — ServicesGrid block', () => {
 
   it('renders overline / title / description RTEs with starting values', () => {
     renderPanel(baseServices);
-    expect((screen.getByTestId('rte-OUR SERVICES') as HTMLTextAreaElement).value).toBe('O');
-    expect((screen.getByTestId('rte-Section title...') as HTMLTextAreaElement).value).toBe('T');
-    expect((screen.getByTestId('rte-Section description...') as HTMLTextAreaElement).value).toBe('D');
+    expect((screen.getByTestId('rte-NUESTROS SERVICIOS') as HTMLTextAreaElement).value).toBe('O');
+    expect((screen.getByTestId('rte-Título de la sección...') as HTMLTextAreaElement).value).toBe('T');
+    expect((screen.getByTestId('rte-Descripción de la sección...') as HTMLTextAreaElement).value).toBe('D');
   });
 
   it('updates columns via select (parses to number)', () => {
     const { onChange } = renderPanel(baseServices);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
 
   it('forwards accentColor changes via TokenColorPicker', () => {
     const { onChange } = renderPanel(baseServices);
-    const colorInput = screen.getByTestId('color-Accent Color') as HTMLInputElement;
+    const colorInput = screen.getByTestId('color-Color de acento') as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: 'token.brand' } });
     expect(onChange).toHaveBeenCalledWith({ accentColor: 'token.brand' });
   });
 
   it('emits undefined when clearing accent color', () => {
     const { onChange } = renderPanel({ ...baseServices, accentColor: 'foo' });
-    const colorInput = screen.getByTestId('color-Accent Color') as HTMLInputElement;
+    const colorInput = screen.getByTestId('color-Color de acento') as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ accentColor: undefined });
   });
@@ -221,14 +221,14 @@ describe('SectionsPanel — ServicesGrid block', () => {
 describe('SectionsPanel — Stats block', () => {
   it('updates columns', () => {
     const { onChange } = renderPanel({ id: 's1', type: 'stats', title: '', columns: 3 });
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '2' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 2 });
   });
 
   it('falls back to default columns=3 when not set', () => {
     renderPanel({ id: 's1', type: 'stats', title: '' });
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     expect(select.value).toBe('3');
   });
 });
@@ -245,8 +245,8 @@ describe('SectionsPanel — Testimonial block', () => {
 
   it('updates role and company via input', () => {
     const { onChange } = renderPanel(baseTestimonial);
-    const role = screen.getByPlaceholderText('Role...') as HTMLInputElement;
-    const company = screen.getByPlaceholderText('Company...') as HTMLInputElement;
+    const role = screen.getByPlaceholderText('Cargo...') as HTMLInputElement;
+    const company = screen.getByPlaceholderText('Empresa...') as HTMLInputElement;
     fireEvent.change(role, { target: { value: 'CEO' } });
     fireEvent.change(company, { target: { value: 'Acme' } });
     expect(onChange).toHaveBeenCalledWith({ role: 'CEO' });
@@ -255,12 +255,12 @@ describe('SectionsPanel — Testimonial block', () => {
 
   it('shows avatar selector button when no avatar set', () => {
     renderPanel(baseTestimonial);
-    expect(screen.getByText('Click to select avatar')).toBeTruthy();
+    expect(screen.getByText('Haz clic para seleccionar un avatar')).toBeTruthy();
   });
 
   it('shows Change + Remove buttons when avatar present', () => {
     const { onChange } = renderPanel({ ...baseTestimonial, avatar: 'https://av/i.png' });
-    expect(screen.getByText('Change Avatar')).toBeTruthy();
+    expect(screen.getByText('Cambiar avatar')).toBeTruthy();
     const remove = screen.getByText('Quitar');
     fireEvent.click(remove);
     expect(onChange).toHaveBeenCalledWith({ avatar: '' });
@@ -269,31 +269,31 @@ describe('SectionsPanel — Testimonial block', () => {
   it('opens MediaPicker modal when select-avatar button clicked', () => {
     renderPanel(baseTestimonial);
     // initially closed — no picker rendered
-    expect(screen.queryByTestId('media-picker-Select Avatar')).toBeNull();
-    fireEvent.click(screen.getByText('Click to select avatar'));
-    expect(screen.getByTestId('media-picker-Select Avatar')).toBeTruthy();
+    expect(screen.queryByTestId('media-picker-Seleccionar avatar')).toBeNull();
+    fireEvent.click(screen.getByText('Haz clic para seleccionar un avatar'));
+    expect(screen.getByTestId('media-picker-Seleccionar avatar')).toBeTruthy();
   });
 
   it('selecting media closes picker and emits avatar URL', () => {
     const { onChange } = renderPanel(baseTestimonial);
-    fireEvent.click(screen.getByText('Click to select avatar'));
-    const mpInput = screen.getByTestId('mp-input-Select Avatar') as HTMLInputElement;
+    fireEvent.click(screen.getByText('Haz clic para seleccionar un avatar'));
+    const mpInput = screen.getByTestId('mp-input-Seleccionar avatar') as HTMLInputElement;
     fireEvent.change(mpInput, { target: { value: 'https://uploaded.png' } });
     expect(onChange).toHaveBeenCalledWith({ avatar: 'https://uploaded.png' });
     // modal closes
-    expect(screen.queryByTestId('media-picker-Select Avatar')).toBeNull();
+    expect(screen.queryByTestId('media-picker-Seleccionar avatar')).toBeNull();
   });
 
   it('clicking modal backdrop closes picker', () => {
     renderPanel(baseTestimonial);
-    fireEvent.click(screen.getByText('Click to select avatar'));
-    expect(screen.getByTestId('media-picker-Select Avatar')).toBeTruthy();
+    fireEvent.click(screen.getByText('Haz clic para seleccionar un avatar'));
+    expect(screen.getByTestId('media-picker-Seleccionar avatar')).toBeTruthy();
     // backdrop is the overlay div; find it via the modal's parent
-    const backdrop = screen.getByTestId('media-picker-Select Avatar')
+    const backdrop = screen.getByTestId('media-picker-Seleccionar avatar')
       .closest('.fixed') as HTMLElement;
     expect(backdrop).toBeTruthy();
     fireEvent.click(backdrop);
-    expect(screen.queryByTestId('media-picker-Select Avatar')).toBeNull();
+    expect(screen.queryByTestId('media-picker-Seleccionar avatar')).toBeNull();
   });
 });
 
@@ -338,14 +338,14 @@ describe('SectionsPanel — SocialLinks block', () => {
 
   it('removes a link', () => {
     const { onChange } = renderPanel(baseSocial);
-    const removeBtn = screen.getByTitle('Remove link');
+    const removeBtn = screen.getByTitle('Eliminar enlace');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledWith({ links: [] });
   });
 
   it('adds a new link', () => {
     const { onChange } = renderPanel({ ...baseSocial, links: [] });
-    fireEvent.click(screen.getByText('+ Add Link'));
+    fireEvent.click(screen.getByText('+ Añadir enlace'));
     expect(onChange).toHaveBeenCalledWith({
       links: [{ platform: 'facebook', url: '' }],
     });
@@ -372,7 +372,7 @@ describe('SectionsPanel — LogoStrip block', () => {
 
   it('updates overline (collapses empty to undefined)', () => {
     const { onChange } = renderPanel(baseLogoStrip);
-    const overline = screen.getByPlaceholderText('e.g. TRUSTED BY 100+ TEAMS') as HTMLInputElement;
+    const overline = screen.getByPlaceholderText('p. ej. USADO POR MÁS DE 100 EQUIPOS') as HTMLInputElement;
     fireEvent.change(overline, { target: { value: 'NEW' } });
     expect(onChange).toHaveBeenCalledWith({ overline: 'NEW' });
     fireEvent.change(overline, { target: { value: '' } });
@@ -407,9 +407,9 @@ describe('SectionsPanel — LogoStrip block', () => {
 
   it('updates a logo entry (imageUrl, alt, link)', () => {
     const { onChange } = renderPanel(baseLogoStrip);
-    const img = screen.getByPlaceholderText('Image URL') as HTMLInputElement;
-    const alt = screen.getByPlaceholderText('Alt text') as HTMLInputElement;
-    const link = screen.getByPlaceholderText('Link URL (optional)') as HTMLInputElement;
+    const img = screen.getByPlaceholderText('URL de la imagen') as HTMLInputElement;
+    const alt = screen.getByPlaceholderText('Texto alternativo') as HTMLInputElement;
+    const link = screen.getByPlaceholderText('URL del enlace (opcional)') as HTMLInputElement;
     fireEvent.change(img, { target: { value: 'http://new.png' } });
     fireEvent.change(alt, { target: { value: 'NewCo' } });
     fireEvent.change(link, { target: { value: 'http://new' } });
@@ -426,7 +426,7 @@ describe('SectionsPanel — LogoStrip block', () => {
 
   it('clearing logo link emits undefined', () => {
     const { onChange } = renderPanel(baseLogoStrip);
-    const link = screen.getByPlaceholderText('Link URL (optional)') as HTMLInputElement;
+    const link = screen.getByPlaceholderText('URL del enlace (opcional)') as HTMLInputElement;
     fireEvent.change(link, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({
       logos: [{ id: 'l1', imageUrl: 'http://i.png', alt: 'Acme', link: undefined }],
@@ -441,7 +441,7 @@ describe('SectionsPanel — LogoStrip block', () => {
 
   it('adds a new logo', () => {
     const { onChange } = renderPanel({ ...baseLogoStrip, logos: [] });
-    fireEvent.click(screen.getByText('+ Add Logo'));
+    fireEvent.click(screen.getByText('+ Añadir logotipo'));
     expect(onChange).toHaveBeenCalledTimes(1);
     const arg = (onChange as any).mock.calls[0][0];
     expect(arg.logos).toHaveLength(1);
@@ -486,16 +486,16 @@ describe('SectionsPanel — MetricCards block', () => {
 
   it('updates a metric value/label/institution/logo/link/linkText', () => {
     const { onChange } = renderPanel(baseMetricCards);
-    fireEvent.change(screen.getByPlaceholderText('Big value e.g. "83%"'), { target: { value: '88%' } });
-    fireEvent.change(screen.getByPlaceholderText('Small label'), { target: { value: 'Better' } });
+    fireEvent.change(screen.getByPlaceholderText('Valor grande, p. ej. "83%"'), { target: { value: '88%' } });
+    fireEvent.change(screen.getByPlaceholderText('Etiqueta pequeña'), { target: { value: 'Better' } });
     // "Institution" is now labeled/placeholder'd "Footer text (optional)", and
     // the logo field is no longer a raw URL input — it's a "Select footer logo
     // (optional)" button that opens the MediaPicker modal.
-    fireEvent.change(screen.getByPlaceholderText('Footer text (optional)'), { target: { value: 'UCLA' } });
-    fireEvent.click(screen.getByText('Select footer logo (optional)'));
-    fireEvent.change(screen.getByTestId('mp-input-Select Footer Logo'), { target: { value: 'http://ucla.png' } });
-    fireEvent.change(screen.getByPlaceholderText('Link URL (optional)'), { target: { value: 'http://case' } });
-    fireEvent.change(screen.getByPlaceholderText('CTA text (default "Case Study")'), { target: { value: 'Read more' } });
+    fireEvent.change(screen.getByPlaceholderText('Texto del pie (opcional)'), { target: { value: 'UCLA' } });
+    fireEvent.click(screen.getByText('Seleccionar logotipo del pie (opcional)'));
+    fireEvent.change(screen.getByTestId('mp-input-Seleccionar logotipo del pie'), { target: { value: 'http://ucla.png' } });
+    fireEvent.change(screen.getByPlaceholderText('URL del enlace (opcional)'), { target: { value: 'http://case' } });
+    fireEvent.change(screen.getByPlaceholderText('Texto del CTA (predeterminado "Caso de éxito")'), { target: { value: 'Read more' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls).toContainEqual({ metrics: [{ id: 'm1', value: '88%', label: 'Up' }] });
@@ -508,7 +508,7 @@ describe('SectionsPanel — MetricCards block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ metrics: [] });
 
-    fireEvent.click(screen.getByText('+ Add Metric'));
+    fireEvent.click(screen.getByText('+ Añadir métrica'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.metrics).toHaveLength(2);
     expect(last.metrics[1]).toMatchObject({ value: '', label: '' });
@@ -539,22 +539,22 @@ describe('SectionsPanel — FlipCardGrid block', () => {
     fireEvent.change(screen.getByPlaceholderText('280px'), { target: { value: '320px' } });
     expect(onChange).toHaveBeenCalledWith({ cardHeight: '320px' });
 
-    fireEvent.change(screen.getByDisplayValue('Hover'), { target: { value: 'click' } });
+    fireEvent.change(screen.getByDisplayValue('Al pasar el cursor'), { target: { value: 'click' } });
     expect(onChange).toHaveBeenCalledWith({ flipTrigger: 'click' });
 
-    fireEvent.change(screen.getByDisplayValue('Horizontal (Y-axis)'), { target: { value: 'vertical' } });
+    fireEvent.change(screen.getByDisplayValue('Horizontal (eje Y)'), { target: { value: 'vertical' } });
     expect(onChange).toHaveBeenCalledWith({ flipAxis: 'vertical' });
   });
 
   it('updates frontTitle, backText, and back link fields of a card', () => {
     const { onChange } = renderPanel(baseFlipCardGrid);
-    fireEvent.change(screen.getByPlaceholderText('Front title'), { target: { value: 'NewFront' } });
-    fireEvent.change(screen.getByPlaceholderText('Back text'), { target: { value: 'NewBack' } });
-    fireEvent.change(screen.getByPlaceholderText('Front subtitle (optional)'), { target: { value: 'sub' } });
-    fireEvent.change(screen.getByPlaceholderText('Material Icon name (e.g. trending_up)'), { target: { value: 'star' } });
-    fireEvent.change(screen.getByPlaceholderText('Front image URL (optional)'), { target: { value: 'http://f.png' } });
-    fireEvent.change(screen.getByPlaceholderText('Back link URL (optional)'), { target: { value: 'http://b' } });
-    fireEvent.change(screen.getByPlaceholderText('Back link text (optional)'), { target: { value: 'Learn' } });
+    fireEvent.change(screen.getByPlaceholderText('Título del anverso'), { target: { value: 'NewFront' } });
+    fireEvent.change(screen.getByPlaceholderText('Texto del reverso'), { target: { value: 'NewBack' } });
+    fireEvent.change(screen.getByPlaceholderText('Subtítulo del anverso (opcional)'), { target: { value: 'sub' } });
+    fireEvent.change(screen.getByPlaceholderText('Nombre del icono Material (p. ej. trending_up)'), { target: { value: 'star' } });
+    fireEvent.change(screen.getByPlaceholderText('URL de la imagen del anverso (opcional)'), { target: { value: 'http://f.png' } });
+    fireEvent.change(screen.getByPlaceholderText('URL del enlace del reverso (opcional)'), { target: { value: 'http://b' } });
+    fireEvent.change(screen.getByPlaceholderText('Texto del enlace del reverso (opcional)'), { target: { value: 'Learn' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls).toContainEqual({
@@ -574,7 +574,7 @@ describe('SectionsPanel — FlipCardGrid block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ cards: [] });
 
-    fireEvent.click(screen.getByText('+ Add Card'));
+    fireEvent.click(screen.getByText('+ Añadir tarjeta'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.cards).toHaveLength(2);
     expect(last.cards[1]).toMatchObject({ frontTitle: '', backText: '' });
@@ -594,17 +594,17 @@ describe('SectionsPanel — Timeline block', () => {
 
   it('changes layout selector', () => {
     const { onChange } = renderPanel(baseTimeline);
-    const layout = screen.getByDisplayValue('Alternating (zigzag)') as HTMLSelectElement;
+    const layout = screen.getByDisplayValue('Alternado (zigzag)') as HTMLSelectElement;
     fireEvent.change(layout, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ layout: 'left' });
   });
 
   it('updates step number / icon / title / description', () => {
     const { onChange } = renderPanel(baseTimeline);
-    fireEvent.change(screen.getByPlaceholderText('Number (e.g. 01) — optional'), { target: { value: '02' } });
-    fireEvent.change(screen.getByPlaceholderText('Material Icon name (optional, alt to number)'), { target: { value: 'rocket' } });
-    fireEvent.change(screen.getByPlaceholderText('Step title'), { target: { value: 'New' } });
-    fireEvent.change(screen.getByPlaceholderText('Step description'), { target: { value: 'New desc' } });
+    fireEvent.change(screen.getByPlaceholderText('Número (p. ej. 01) — opcional'), { target: { value: '02' } });
+    fireEvent.change(screen.getByPlaceholderText('Nombre del icono Material (opcional, alternativa al número)'), { target: { value: 'rocket' } });
+    fireEvent.change(screen.getByPlaceholderText('Título del paso'), { target: { value: 'New' } });
+    fireEvent.change(screen.getByPlaceholderText('Descripción del paso'), { target: { value: 'New desc' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls).toContainEqual({ steps: [{ id: 's1', title: 'Step', description: 'Desc', number: '02' }] });
@@ -617,7 +617,7 @@ describe('SectionsPanel — Timeline block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ steps: [] });
 
-    fireEvent.click(screen.getByText('+ Add Step'));
+    fireEvent.click(screen.getByText('+ Añadir paso'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.steps).toHaveLength(2);
     expect(last.steps[1]).toMatchObject({ title: '', description: '' });
@@ -625,7 +625,7 @@ describe('SectionsPanel — Timeline block', () => {
 
   it('emits undefined when number is cleared', () => {
     const { onChange } = renderPanel(baseTimeline);
-    fireEvent.change(screen.getByPlaceholderText('Number (e.g. 01) — optional'), { target: { value: '' } });
+    fireEvent.change(screen.getByPlaceholderText('Número (p. ej. 01) — opcional'), { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({
       steps: [{ id: 's1', title: 'Step', description: 'Desc', number: undefined }],
     });
@@ -645,14 +645,14 @@ describe('SectionsPanel — TeamShowcase block', () => {
 
   it('updates photoFilter via input', () => {
     const { onChange } = renderPanel(baseTeamShowcase);
-    const filter = screen.getByPlaceholderText('e.g. sepia(0.08)') as HTMLInputElement;
+    const filter = screen.getByPlaceholderText('p. ej. sepia(0.08)') as HTMLInputElement;
     fireEvent.change(filter, { target: { value: 'sepia(0.2)' } });
     expect(onChange).toHaveBeenCalledWith({ photoFilter: 'sepia(0.2)' });
   });
 
   it('emits undefined when photoFilter is cleared', () => {
     const { onChange } = renderPanel({ ...baseTeamShowcase, photoFilter: 'sepia(0.2)' });
-    const filter = screen.getByPlaceholderText('e.g. sepia(0.08)') as HTMLInputElement;
+    const filter = screen.getByPlaceholderText('p. ej. sepia(0.08)') as HTMLInputElement;
     fireEvent.change(filter, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ photoFilter: undefined });
   });
@@ -661,9 +661,9 @@ describe('SectionsPanel — TeamShowcase block', () => {
     const { onChange } = renderPanel(baseTeamShowcase);
     fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Bob' } });
     fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'CTO' } });
-    fireEvent.change(screen.getByPlaceholderText('Credentials (optional)'), { target: { value: 'PhD' } });
-    fireEvent.change(screen.getByPlaceholderText('Photo URL'), { target: { value: 'http://b.png' } });
-    fireEvent.change(screen.getByPlaceholderText('Bio'), { target: { value: 'newbio' } });
+    fireEvent.change(screen.getByPlaceholderText('Credenciales (opcional)'), { target: { value: 'PhD' } });
+    fireEvent.change(screen.getByPlaceholderText('URL de la foto'), { target: { value: 'http://b.png' } });
+    fireEvent.change(screen.getByPlaceholderText('Biografía'), { target: { value: 'newbio' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls.find((c: any) => c.members?.[0]?.name === 'Bob')).toBeTruthy();
@@ -675,7 +675,7 @@ describe('SectionsPanel — TeamShowcase block', () => {
 
   it('parses comma-separated specialties into array', () => {
     const { onChange } = renderPanel(baseTeamShowcase);
-    fireEvent.change(screen.getByPlaceholderText('Specialties (comma-separated, optional)'), {
+    fireEvent.change(screen.getByPlaceholderText('Especialidades (separadas por comas, opcional)'), {
       target: { value: 'react, vite, ts' },
     });
     const last = (onChange as any).mock.calls.pop()[0];
@@ -687,7 +687,7 @@ describe('SectionsPanel — TeamShowcase block', () => {
       ...baseTeamShowcase,
       members: [{ ...baseTeamShowcase.members[0], specialties: ['x'] }],
     });
-    fireEvent.change(screen.getByPlaceholderText('Specialties (comma-separated, optional)'), {
+    fireEvent.change(screen.getByPlaceholderText('Especialidades (separadas por comas, opcional)'), {
       target: { value: '' },
     });
     const last = (onChange as any).mock.calls.pop()[0];
@@ -699,7 +699,7 @@ describe('SectionsPanel — TeamShowcase block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ members: [] });
 
-    fireEvent.click(screen.getByText('+ Add Member'));
+    fireEvent.click(screen.getByText('+ Añadir miembro'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.members).toHaveLength(2);
     expect(last.members[1]).toMatchObject({ name: '', title: '', photo: '', bio: '' });
@@ -729,10 +729,10 @@ describe('SectionsPanel — TeamFlipGrid block', () => {
     const { onChange } = renderPanel(baseTeamFlip);
     fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'A2' } });
     fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'T2' } });
-    fireEvent.change(screen.getByPlaceholderText('Photo URL'), { target: { value: 'http://x' } });
-    fireEvent.change(screen.getByPlaceholderText('Bio (front)'), { target: { value: 'NB' } });
-    fireEvent.change(screen.getByPlaceholderText('Question (back)'), { target: { value: 'Q2' } });
-    fireEvent.change(screen.getByPlaceholderText('Answer (back)'), { target: { value: 'A2!' } });
+    fireEvent.change(screen.getByPlaceholderText('URL de la foto'), { target: { value: 'http://x' } });
+    fireEvent.change(screen.getByPlaceholderText('Biografía (anverso)'), { target: { value: 'NB' } });
+    fireEvent.change(screen.getByPlaceholderText('Pregunta (reverso)'), { target: { value: 'Q2' } });
+    fireEvent.change(screen.getByPlaceholderText('Respuesta (reverso)'), { target: { value: 'A2!' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls.find((c: any) => c.members?.[0]?.name === 'A2')).toBeTruthy();
@@ -745,7 +745,7 @@ describe('SectionsPanel — TeamFlipGrid block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ members: [] });
 
-    fireEvent.click(screen.getByText('+ Add Member'));
+    fireEvent.click(screen.getByText('+ Añadir miembro'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.members).toHaveLength(2);
     expect(last.members[1]).toMatchObject({ name: '', title: '', bio: '', photo: '', question: '', answer: '' });
@@ -774,7 +774,7 @@ describe('SectionsPanel — BentoGrid block', () => {
   it('updates card title and lead', () => {
     const { onChange } = renderPanel(baseBento);
     fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'Title2' } });
-    fireEvent.change(screen.getByPlaceholderText('Lead/question (optional)'), { target: { value: 'L2' } });
+    fireEvent.change(screen.getByPlaceholderText('Entradilla/pregunta (opcional)'), { target: { value: 'L2' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls.find((c: any) => c.cards?.[0]?.title === 'Title2')).toBeTruthy();
@@ -783,7 +783,7 @@ describe('SectionsPanel — BentoGrid block', () => {
 
   it('parses items textarea (newline-separated) into array', () => {
     const { onChange } = renderPanel(baseBento);
-    fireEvent.change(screen.getByPlaceholderText('Bullet items (one per line)'), {
+    fireEvent.change(screen.getByPlaceholderText('Elementos de viñeta (uno por línea)'), {
       target: { value: 'one\ntwo\nthree' },
     });
     const last = (onChange as any).mock.calls.pop()[0];
@@ -792,9 +792,9 @@ describe('SectionsPanel — BentoGrid block', () => {
 
   it('updates card link/linkText and clearing emits undefined', () => {
     const { onChange } = renderPanel(baseBento);
-    fireEvent.change(screen.getByPlaceholderText('Link URL (optional)'), { target: { value: 'http://x' } });
-    fireEvent.change(screen.getByPlaceholderText('Link text (optional)'), { target: { value: 'Go' } });
-    fireEvent.change(screen.getByPlaceholderText('Link URL (optional)'), { target: { value: '' } });
+    fireEvent.change(screen.getByPlaceholderText('URL del enlace (opcional)'), { target: { value: 'http://x' } });
+    fireEvent.change(screen.getByPlaceholderText('Texto del enlace (opcional)'), { target: { value: 'Go' } });
+    fireEvent.change(screen.getByPlaceholderText('URL del enlace (opcional)'), { target: { value: '' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls.find((c: any) => c.cards?.[0]?.link === 'http://x')).toBeTruthy();
@@ -804,8 +804,8 @@ describe('SectionsPanel — BentoGrid block', () => {
 
   it('changes card variant and span', () => {
     const { onChange } = renderPanel(baseBento);
-    fireEvent.change(screen.getByDisplayValue('Dark'), { target: { value: 'light' } });
-    fireEvent.change(screen.getByPlaceholderText('Span'), { target: { value: '4' } });
+    fireEvent.change(screen.getByDisplayValue('Oscuro'), { target: { value: 'light' } });
+    fireEvent.change(screen.getByPlaceholderText('Columnas'), { target: { value: '4' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
     expect(calls.find((c: any) => c.cards?.[0]?.variant === 'light')).toBeTruthy();
@@ -817,7 +817,7 @@ describe('SectionsPanel — BentoGrid block', () => {
     fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ cards: [] });
 
-    fireEvent.click(screen.getByText('+ Add Card'));
+    fireEvent.click(screen.getByText('+ Añadir tarjeta'));
     const last = (onChange as any).mock.calls.pop()[0];
     expect(last.cards).toHaveLength(2);
     expect(last.cards[1]).toMatchObject({ title: '', items: [], variant: 'dark', span: 6 });
