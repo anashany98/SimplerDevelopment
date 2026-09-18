@@ -116,7 +116,7 @@ async function flush() {
 // Open the actions menu for the first row
 async function openActionMenu() {
   await renderPage();
-  const actionBtn = screen.getByLabelText('Actions');
+  const actionBtn = screen.getByLabelText('Acciones');
   fireEvent.click(actionBtn);
 }
 
@@ -417,13 +417,13 @@ describe('AdminSubscriptionsPage', () => {
     it('shows action menu when Actions button clicked', async () => {
       await openActionMenu();
       expect(screen.getByText('Change plan')).toBeTruthy();
-      expect(screen.getByText('Refund')).toBeTruthy();
-      expect(screen.getByText('Cancel')).toBeTruthy();
+      expect(screen.getByText('Reembolso')).toBeTruthy();
+      expect(screen.getByText('Cancelar')).toBeTruthy();
     });
 
     it('toggles menu closed when clicked again', async () => {
       await renderPage();
-      const actionBtn = screen.getByLabelText('Actions');
+      const actionBtn = screen.getByLabelText('Acciones');
       fireEvent.click(actionBtn);
       expect(screen.getByText('Change plan')).toBeTruthy();
       fireEvent.click(actionBtn);
@@ -437,7 +437,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      fireEvent.click(screen.getByLabelText('Actions'));
+      fireEvent.click(screen.getByLabelText('Acciones'));
       const cancelBtn = screen.getByRole('button', { name: /Cancel/ });
       expect(cancelBtn).toHaveProperty('disabled', true);
     });
@@ -448,13 +448,13 @@ describe('AdminSubscriptionsPage', () => {
   describe('cancel dialog', () => {
     it('opens cancel dialog when "Cancel" action clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => expect(screen.getByText('Cancel subscription')).toBeTruthy());
     });
 
     it('shows subscription details in dialog subtitle', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => {
         // The subtitle <p> contains "Acme Corp · Hosting Pro"
         const subtitle = document.querySelector('p.text-xs.text-muted-foreground') as HTMLElement;
@@ -465,7 +465,7 @@ describe('AdminSubscriptionsPage', () => {
 
     it('shows cancel description text', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() =>
         expect(screen.getByText(/schedules the Stripe subscription/)).toBeTruthy()
       );
@@ -473,27 +473,27 @@ describe('AdminSubscriptionsPage', () => {
 
     it('closes dialog when Close button clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByText('Cancel subscription'));
       // The "Close" text button is in the footer (not aria-label="Close")
-      const closeBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Close');
+      const closeBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Cerrar');
       fireEvent.click(closeBtns[0]);
       await waitFor(() => expect(screen.queryByText('Cancel subscription')).toBeNull());
     });
 
     it('closes dialog when X button clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByText('Cancel subscription'));
       // The X button has aria-label="Close" (icon-only button in dialog header)
-      const xBtn = screen.getAllByRole('button').find(b => b.getAttribute('aria-label') === 'Close');
+      const xBtn = screen.getAllByRole('button').find(b => b.getAttribute('aria-label') === 'Cerrar');
       if (xBtn) fireEvent.click(xBtn);
       await waitFor(() => expect(screen.queryByText('Cancel subscription')).toBeNull());
     });
 
     it('shows "Cancel at period end" submit button', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() =>
         expect(screen.getByRole('button', { name: 'Cancel at period end' })).toBeTruthy()
       );
@@ -506,7 +506,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
       fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
       await waitFor(() =>
@@ -521,7 +521,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
       fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
       await waitFor(() => expect(screen.getByText('Stripe error')).toBeTruthy());
@@ -534,7 +534,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
       fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
       await waitFor(() => expect(screen.getByText('Cancel failed')).toBeTruthy());
@@ -543,7 +543,7 @@ describe('AdminSubscriptionsPage', () => {
     it('does not submit if confirm() returns false', async () => {
       vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
       fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
       await flush();
@@ -656,33 +656,33 @@ describe('AdminSubscriptionsPage', () => {
   describe('refund dialog', () => {
     it('opens refund dialog when "Refund" action clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => expect(screen.getByText('Issue refund', { selector: 'h2' })).toBeTruthy());
     });
 
     it('loads invoices on refund dialog open', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => expect(screen.getByText(/INV-001/)).toBeTruthy());
     });
 
     it('shows invoice select with loaded invoices', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText('Invoice'));
       expect(screen.getByText('— Pick an invoice —')).toBeTruthy();
     });
 
     it('shows amount input field', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText('Amount (USD, optional)'));
       expect(screen.getByPlaceholderText('Leave blank for full refund')).toBeTruthy();
     });
 
     it('shows reason select field', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText('Reason (optional)'));
       expect(screen.getByText('Duplicate charge')).toBeTruthy();
       expect(screen.getByText('Fraudulent')).toBeTruthy();
@@ -695,7 +695,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() =>
         expect(screen.getByText('No invoices found for this client.')).toBeTruthy()
       );
@@ -703,7 +703,7 @@ describe('AdminSubscriptionsPage', () => {
 
     it('submit button is disabled when no invoice selected', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText('Issue refund', { selector: 'h2' }));
       // The submit button is disabled until an invoice is picked
       const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
@@ -718,7 +718,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       // Select the invoice
@@ -739,7 +739,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
@@ -755,7 +755,7 @@ describe('AdminSubscriptionsPage', () => {
 
     it('shows error toast when refund amount is invalid', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
@@ -778,7 +778,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
@@ -796,7 +796,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
@@ -810,7 +810,7 @@ describe('AdminSubscriptionsPage', () => {
     it('does not submit refund if confirm() returns false', async () => {
       vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
@@ -830,7 +830,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/no payment intent/));
       const option = screen.getByText(/no payment intent/).closest('option') as HTMLOptionElement;
       expect(option?.disabled).toBe(true);
@@ -847,7 +847,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
       fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
       await waitFor(() => screen.getByText(/Cancellation scheduled/));
