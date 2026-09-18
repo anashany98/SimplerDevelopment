@@ -506,7 +506,7 @@ describe('ProjectReportsTab — velocity chart', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Committed')).toBeTruthy();
-      expect(screen.getByText('Completed')).toBeTruthy();
+      expect(screen.getByText('Completado')).toBeTruthy();
     });
   });
 });
