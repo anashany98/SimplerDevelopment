@@ -150,7 +150,7 @@ describe('BrainGlossaryListPage — shell', () => {
   it('renders the subtitle text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Tenant-specific terminology');
+      expect(container.textContent).toContain('Terminología específica del cliente');
     });
   });
 
@@ -197,7 +197,7 @@ describe('BrainGlossaryListPage — loading state', () => {
     // Never resolve so we stay in loading state
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -523,7 +523,7 @@ describe('BrainGlossaryListPage — pagination', () => {
       expect(container.textContent).toContain('Page 1 of 2');
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Next'),
+        b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     await waitFor(() => {
@@ -541,7 +541,7 @@ describe('BrainGlossaryListPage — pagination', () => {
       expect(container.textContent).toContain('Page 2 of 2');
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Next'),
+        b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn?.disabled).toBe(true);
   });
