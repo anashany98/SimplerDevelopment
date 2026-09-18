@@ -145,7 +145,7 @@ describe('BrainTopicsAdminPage — shell', () => {
   it('renders the Topics heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Topics');
+      expect(container.textContent).toContain('Temas');
     });
   });
 
@@ -153,14 +153,14 @@ describe('BrainTopicsAdminPage — shell', () => {
     // Don't resolve fetch immediately — leave it pending.
     fetchMock.mockImplementation(() => new Promise(() => {}) as Promise<FetchResp>);
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 
   it('shows topic count once loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
       // 2 topics in defaultFlat
-      expect(container.textContent).toContain('2 topics');
+      expect(container.textContent).toContain('2 temas');
     });
   });
 
@@ -176,15 +176,15 @@ describe('BrainTopicsAdminPage — shell', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1 topic ·');
+      expect(container.textContent).toContain('1 tema ·');
     });
   });
 
   it('renders "New topic" and "Import from tags" buttons', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New topic');
-      expect(container.textContent).toContain('Import from tags');
+      expect(container.textContent).toContain('Nuevo tema');
+      expect(container.textContent).toContain('Importar desde etiquetas');
     });
   });
 
@@ -213,7 +213,7 @@ describe('BrainTopicsAdminPage — shell', () => {
     fetchMock.mockImplementation(async () => { throw 'raw string error'; });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -243,14 +243,14 @@ describe('BrainTopicsAdminPage — empty tree', () => {
   it('shows "Create your first topic" button in empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create your first topic');
+      expect(container.textContent).toContain('Crea tu primer tema');
     });
   });
 
   it('shows "import from existing tags" link in empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('import from existing tags');
+      expect(container.textContent).toContain('importa desde etiquetas existentes');
     });
   });
 });
@@ -276,7 +276,7 @@ describe('BrainTopicsAdminPage — populated tree', () => {
   it('shows right panel "Select a topic" message when none selected', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select a topic to see its details');
+      expect(container.textContent).toContain('Selecciona un tema para ver sus detalles');
     });
   });
 });
@@ -287,10 +287,10 @@ describe('BrainTopicsAdminPage — create root topic', () => {
   it('clicking "New topic" shows the inline input', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New topic');
+      expect(container.textContent).toContain('Nuevo tema');
     });
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -301,9 +301,9 @@ describe('BrainTopicsAdminPage — create root topic', () => {
 
   it('pressing Enter in the inline input calls POST /api/portal/brain/topics', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New topic'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo tema'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
@@ -326,9 +326,9 @@ describe('BrainTopicsAdminPage — create root topic', () => {
 
   it('pressing Escape dismisses the inline input without posting', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New topic'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo tema'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
@@ -342,9 +342,9 @@ describe('BrainTopicsAdminPage — create root topic', () => {
 
   it('blurring the input with a value submits the create call', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New topic'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo tema'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
@@ -362,9 +362,9 @@ describe('BrainTopicsAdminPage — create root topic', () => {
 
   it('blurring with empty input does NOT post', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New topic'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo tema'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
@@ -397,7 +397,7 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     await waitFor(() => expect(container.textContent).toContain('Aún no hay temas.'));
     // Use "Create your first topic" button in empty state
     const createBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create your first topic'),
+      b.textContent?.includes('Crea tu primer tema'),
     ) as HTMLButtonElement;
     fireEvent.click(createBtn);
     const input = await waitFor(
@@ -416,9 +416,9 @@ describe('BrainTopicsAdminPage — create root topic', () => {
 describe('ImportFromTagsWizard', () => {
   it('clicking "Import from tags" opens the wizard modal', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -428,9 +428,9 @@ describe('ImportFromTagsWizard', () => {
 
   it('wizard auto-runs a dry-run preview on open', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -446,13 +446,13 @@ describe('ImportFromTagsWizard', () => {
 
   it('shows zero-topics empty state when no tags to import', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No tags to import');
+      expect(container.textContent).toContain('No hay etiquetas que importar');
     });
   });
 
@@ -476,9 +476,9 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -507,14 +507,14 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('new');
-      expect(container.textContent).toContain('exists');
+      expect(container.textContent).toContain('nuevo');
+      expect(container.textContent).toContain('existente');
     });
   });
 
@@ -535,9 +535,9 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -549,9 +549,9 @@ describe('ImportFromTagsWizard', () => {
 
   it('Cancel button closes the wizard', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -568,9 +568,9 @@ describe('ImportFromTagsWizard', () => {
 
   it('clicking the backdrop closes the wizard', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => expect(container.textContent).toContain('Importar temas desde etiquetas'));
@@ -593,9 +593,9 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -624,20 +624,20 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
       expect(container.textContent).toContain('eng');
     });
     const runBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run import'),
+      b.textContent?.includes('Ejecutar importación'),
     ) as HTMLButtonElement;
     fireEvent.click(runBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import complete');
+      expect(container.textContent).toContain('Importación completada');
     });
   });
 
@@ -655,18 +655,18 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
-    await waitFor(() => expect(container.textContent).toContain('Run import'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecutar importación'));
     const runBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run import'),
+      b.textContent?.includes('Ejecutar importación'),
     ) as HTMLButtonElement;
     fireEvent.click(runBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import complete');
+      expect(container.textContent).toContain('Importación completada');
     });
     const doneBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Listo'),
@@ -679,16 +679,16 @@ describe('ImportFromTagsWizard', () => {
 
   it('tag prefix filter is sent in the request body', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Import from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar desde etiquetas'));
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import from tags'),
+      b.textContent?.includes('Importar desde etiquetas'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => expect(container.textContent).toContain('Importar temas desde etiquetas'));
-    const prefixInput = container.querySelector('input[placeholder*="leave empty"]') as HTMLInputElement;
+    const prefixInput = container.querySelector('input[placeholder*="dejar vacío"]') as HTMLInputElement;
     fireEvent.change(prefixInput, { target: { value: 'kb' } });
     const previewBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Preview' || b.textContent?.includes('Preview'),
+      b.textContent?.trim() === 'Vista previa' || b.textContent?.includes('Vista previa'),
     ) as HTMLButtonElement;
     fireEvent.click(previewBtn);
     await waitFor(() => {
@@ -711,9 +711,9 @@ describe('ImportFromTagsWizard', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('import from existing tags'));
+    await waitFor(() => expect(container.textContent).toContain('importa desde etiquetas existentes'));
     const link = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('import from existing tags'),
+      b.textContent?.includes('importa desde etiquetas existentes'),
     ) as HTMLButtonElement;
     fireEvent.click(link);
     await waitFor(() => {
@@ -860,7 +860,7 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     await openPanel(container);
     await waitFor(() => {
       expect(container.textContent).toContain('My Note');
-      expect(container.textContent).toContain('Notes');
+      expect(container.textContent).toContain('Notas');
     });
   });
 
@@ -869,7 +869,7 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     const { container } = renderPage();
     await openPanel(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Delete topic');
+      expect(container.textContent).toContain('Eliminar tema');
     });
   });
 
@@ -877,9 +877,9 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     setupWithTopicDetail();
     const { container } = renderPage();
     await openPanel(container);
-    await waitFor(() => expect(container.textContent).toContain('Delete topic'));
+    await waitFor(() => expect(container.textContent).toContain('Eliminar tema'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Delete topic'),
+      b.textContent?.includes('Eliminar tema'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -972,15 +972,15 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     setupWithTopicDetail();
     const { container } = renderPage();
     await openPanel(container);
-    await waitFor(() => expect(container.textContent).toContain('Delete topic'));
+    await waitFor(() => expect(container.textContent).toContain('Eliminar tema'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Delete topic'),
+      b.textContent?.includes('Eliminar tema'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
       // After delete, selected panel should go away (selectedId → null)
       // The detail panel is replaced by the "Select a topic" placeholder
-      expect(container.textContent).toContain('Select a topic to see its details');
+      expect(container.textContent).toContain('Selecciona un tema para ver sus detalles');
     });
   });
 });
@@ -1038,9 +1038,9 @@ describe('Reload behavior', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('2 topics'));
+    await waitFor(() => expect(container.textContent).toContain('2 temas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New topic'),
+      b.textContent?.includes('Nuevo tema'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
@@ -1049,7 +1049,7 @@ describe('Reload behavior', () => {
     fireEvent.change(input, { target: { value: 'New Root' } });
     fireEvent.keyDown(input, { key: 'Enter' });
     await waitFor(() => {
-      expect(container.textContent).toContain('3 topics');
+      expect(container.textContent).toContain('3 temas');
     });
   });
 });
@@ -1084,7 +1084,7 @@ describe('TopicDetailPanel — entities truncation', () => {
     await waitFor(() => expect(container.querySelector('[data-testid="tree-node-1"]')).toBeTruthy());
     fireEvent.click(container.querySelector('[data-testid="tree-node-1"]') as HTMLElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('…and 5 more');
+      expect(container.textContent).toContain('…y 5 más');
     });
   });
 });
