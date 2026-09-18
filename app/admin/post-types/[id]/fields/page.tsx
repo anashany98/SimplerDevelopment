@@ -35,8 +35,8 @@ const fieldTypes = [
   { value: 'email', label: 'Correo' },
   { value: 'image', label: 'URL de imagen' },
   { value: 'user_select', label: 'Selector de usuario' },
-  { value: 'repeater', label: 'Repeater' },
-  { value: 'group', label: 'Field Group' },
+  { value: 'repeater', label: 'Repetidor' },
+  { value: 'group', label: 'Grupo de campos' },
 ];
 
 export default function CustomFieldsPage() {
@@ -140,15 +140,15 @@ export default function CustomFieldsPage() {
         try {
           data = JSON.parse(text);
         } catch {
-          data = { error: `Request failed with status ${response.status}` };
+          data = { error: `Solicitud fallida con estado ${response.status}` };
         }
 
         console.error('API error:', data);
-        setError(data.error || 'Failed to save custom field');
+        setError(data.error || 'Error al guardar el campo personalizado');
       }
     } catch (error) {
       console.error('Request failed:', error);
-      setError('Network error: Failed to save custom field');
+      setError('Error de red: no se pudo guardar el campo personalizado');
     } finally {
       setSubmitting(false);
     }
@@ -172,7 +172,7 @@ export default function CustomFieldsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this custom field?')) return;
+    if (!confirm('¿Seguro que quieres eliminar este campo personalizado?')) return;
     const response = await fetch(`/api/custom-fields/${id}`, { method: 'DELETE' });
     if (response.ok) {
       fetchCustomFields();
@@ -218,10 +218,10 @@ export default function CustomFieldsPage() {
               className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 mb-2"
             >
               <span className="material-icons text-sm">arrow_back</span>
-              Back to Post Types
+              Volver a tipos de publicación
             </Link>
             <h1 className="text-3xl font-bold text-foreground">
-              Custom Fields: {postType.name}
+              Campos personalizados: {postType.name}
             </h1>
           </div>
           <button
@@ -250,7 +250,7 @@ export default function CustomFieldsPage() {
             }}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
           >
-            {showForm ? 'Cancel' : 'Add Custom Field'}
+            {showForm ? 'Cancelar' : 'Añadir campo personalizado'}
           </button>
         </div>
 
@@ -264,7 +264,7 @@ export default function CustomFieldsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground">Name *</label>
+                <label className="block text-sm font-medium text-foreground">Nombre *</label>
                 <input
                   type="text"
                   required
@@ -278,7 +278,7 @@ export default function CustomFieldsPage() {
                     }
                   }}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="e.g., Author Name"
+                  placeholder="p. ej., Nombre del autor"
                 />
               </div>
               <div>
@@ -289,14 +289,14 @@ export default function CustomFieldsPage() {
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="e.g., author_name"
+                  placeholder="p. ej., author_name"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground">Field Type *</label>
+                <label className="block text-sm font-medium text-foreground">Tipo de campo *</label>
                 <select
                   value={formData.fieldType}
                   onChange={(e) => setFormData({ ...formData, fieldType: e.target.value })}
@@ -322,30 +322,30 @@ export default function CustomFieldsPage() {
 
             {formData.fieldType === 'select' && (
               <div>
-                <label className="block text-sm font-medium text-foreground">Options (one per line)</label>
+                <label className="block text-sm font-medium text-foreground">Opciones (una por línea)</label>
                 <textarea
                   value={formData.optionsText}
                   onChange={(e) => setFormData({ ...formData, optionsText: e.target.value })}
                   rows={4}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="Option 1&#10;Option 2&#10;Option 3"
+                  placeholder="Opción 1&#10;Opción 2&#10;Opción 3"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-foreground">Help Text</label>
+              <label className="block text-sm font-medium text-foreground">Texto de ayuda</label>
               <input
                 type="text"
                 value={formData.helpText}
                 onChange={(e) => setFormData({ ...formData, helpText: e.target.value })}
                 className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                placeholder="Additional information about this field"
+                placeholder="Información adicional sobre este campo"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground">Default Value</label>
+              <label className="block text-sm font-medium text-foreground">Valor predeterminado</label>
               <input
                 type="text"
                 value={formData.defaultValue}
@@ -363,7 +363,7 @@ export default function CustomFieldsPage() {
                 className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
               />
               <label htmlFor="required" className="ml-2 block text-sm text-foreground">
-                Required field
+                Campo obligatorio
               </label>
             </div>
 
@@ -373,7 +373,7 @@ export default function CustomFieldsPage() {
                 disabled={submitting}
                 className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {submitting ? 'Saving...' : editingField ? 'Update Field' : 'Create Field'}
+                {submitting ? 'Guardando...' : editingField ? 'Actualizar campo' : 'Crear campo'}
               </button>
               <button
                 type="button"
@@ -421,7 +421,7 @@ export default function CustomFieldsPage() {
                             <div className="text-sm text-muted-foreground">{field.helpText}</div>
                           )}
                           {isContainer && (
-                            <div className="text-xs text-muted-foreground">{children.length} sub-field{children.length !== 1 ? 's' : ''}</div>
+                            <div className="text-xs text-muted-foreground">{children.length} subcampo{children.length !== 1 ? 's' : ''}</div>
                           )}
                         </div>
                       </div>
@@ -463,7 +463,7 @@ export default function CustomFieldsPage() {
                           }}
                           className="text-primary hover:text-primary/80"
                         >
-                          + Sub-field
+                          + Subcampo
                         </button>
                       )}
                       <button
@@ -524,7 +524,7 @@ export default function CustomFieldsPage() {
               {customFields.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
-                    No custom fields yet. Add your first custom field to get started!
+                    Aún no hay campos personalizados. ¡Añade tu primer campo para empezar!
                   </td>
                 </tr>
               )}
