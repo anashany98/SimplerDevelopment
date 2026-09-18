@@ -6,36 +6,36 @@ import type { AutomationPreset } from '@/components/portal/ProductAutomationSett
 const WEBSITE_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'form_to_crm',
-    name: 'Form Submission to CRM',
-    description: 'Automatically create a CRM contact when a visitor submits a form on your website',
+    name: 'Envío de formulario al CRM',
+    description: 'Crea automáticamente un contacto en el CRM cuando un visitante envía un formulario en tu web',
     icon: 'contact_page',
     trigger: { event: 'form.submitted' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New form submission from website', body: 'A visitor submitted a form on your website. Review the submission and follow up.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo envío de formulario desde la web', body: 'Un visitante ha enviado un formulario en tu web. Revisa el envío y haz seguimiento.' } }],
   },
   {
     key: 'order_to_crm',
-    name: 'Add Customer to CRM on Purchase',
-    description: 'Automatically track new customers in your CRM when they make a purchase',
+    name: 'Añadir cliente al CRM al comprar',
+    description: 'Registra automáticamente nuevos clientes en tu CRM cuando realizan una compra',
     icon: 'person_add',
     trigger: { event: 'order.paid' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New customer from store: {{event.customerEmail}}', body: 'A new customer ({{event.customerEmail}}) made a purchase. Add them to the CRM for follow-up and retention.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo cliente de la tienda: {{event.customerEmail}}', body: 'Un nuevo cliente ({{event.customerEmail}}) ha realizado una compra. Añádelo al CRM para seguimiento y retención.' } }],
   },
   {
     key: 'post_purchase_followup',
-    name: 'Post-Purchase Follow-up',
-    description: 'Create a follow-up task after a customer purchase for review requests or upsells',
+    name: 'Seguimiento postcompra',
+    description: 'Crea una tarea de seguimiento tras la compra de un cliente para pedir reseñas o vender productos complementarios',
     icon: 'follow_the_signs',
     trigger: { event: 'order.paid' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Follow up with customer: {{event.customerEmail}}', body: 'Customer {{event.customerEmail}} made a purchase. Schedule a follow-up to request a review or offer related products.' }, delay: 1209600 }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Seguimiento del cliente: {{event.customerEmail}}', body: 'El cliente {{event.customerEmail}} ha realizado una compra. Programa un seguimiento para pedir una reseña u ofrecer productos relacionados.' }, delay: 1209600 }],
     settings: [
       {
         key: 'followUpDelay',
-        label: 'Follow up after',
+        label: 'Hacer seguimiento después de',
         type: 'select',
         options: [
-          { value: '604800', label: '1 week' },
-          { value: '1209600', label: '2 weeks' },
-          { value: '2592000', label: '30 days' },
+          { value: '604800', label: '1 semana' },
+          { value: '1209600', label: '2 semanas' },
+          { value: '2592000', label: '30 días' },
         ],
         defaultValue: '1209600',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -50,7 +50,7 @@ export default function WebsiteAutomationSettings() {
       productScope="website"
       presets={WEBSITE_AUTOMATION_PRESETS}
       title="Automatizaciones"
-      description="Automate CRM workflows and customer follow-ups"
+      description="Automatiza flujos de trabajo del CRM y seguimientos de clientes"
     />
   );
 }

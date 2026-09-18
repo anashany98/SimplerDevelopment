@@ -26,7 +26,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
 
   async function handleCreate() {
     if (!name.trim()) {
-      setError('Give your site a name.');
+      setError('Ponle un nombre a tu sitio.');
       return;
     }
     setSaving(true);
@@ -39,12 +39,12 @@ export function WebsitesSetupForm({ onCreated }: Props) {
       });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message || 'Failed to create the site — try again.');
+        setError(data.message || 'No se pudo crear el sitio — inténtalo de nuevo.');
         return;
       }
       onCreated(data.data.id);
     } catch {
-      setError('Something went wrong — try again.');
+      setError('Algo salió mal — inténtalo de nuevo.');
     } finally {
       setSaving(false);
     }
@@ -55,7 +55,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
       <div>
         <p className="text-[14px] font-semibold leading-snug">Nombra tu primer sitio</p>
         <p className="text-[12.5px] text-muted-foreground mt-0.5">
-          Created right here — no need to leave setup. You can add a custom domain later.
+          Se crea aquí mismo — no hace falta salir de la configuración. Puedes añadir un dominio personalizado más tarde.
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
           onKeyDown={(e) => {
             if (e.key === 'Enter' && name.trim() && !saving) void handleCreate();
           }}
-          placeholder="Website name — e.g. Northwind Trading"
+          placeholder="Nombre del sitio — p. ej. Comercio Northwind"
           className="w-full rounded-lg border border-border bg-background px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-primary"
           data-testid="ob-setup-site-name"
         />
@@ -76,9 +76,9 @@ export function WebsitesSetupForm({ onCreated }: Props) {
             type="text"
             value={subdomain}
             onChange={(e) => setSubdomain(slugify(e.target.value, 63))}
-            placeholder={effectiveSubdomain || 'subdomain'}
+            placeholder={effectiveSubdomain || 'subdominio'}
             className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-primary"
-            aria-label="Subdomain"
+            aria-label="Subdominio"
           />
           <span className="text-[13px] text-muted-foreground whitespace-nowrap">· CRM AGENTS</span>
         </div>
@@ -103,7 +103,7 @@ export function WebsitesSetupForm({ onCreated }: Props) {
         ) : (
           <span className="material-icons text-[18px]">add_circle</span>
         )}
-        {saving ? 'Creating…' : 'Create site'}
+        {saving ? 'Creando…' : 'Crear sitio'}
       </button>
     </div>
   );

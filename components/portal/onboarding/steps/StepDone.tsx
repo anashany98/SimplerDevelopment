@@ -65,9 +65,9 @@ export function StepDone({ state, finish }: StepProps) {
         <span className="material-icons text-emerald-500" style={{ fontSize: 46 }}>auto_awesome</span>
       </motion.div>
 
-      <h2 className="text-[2.1rem] font-extrabold tracking-[-0.028em] leading-[1.06]">Nicely done.</h2>
+      <h2 className="text-[2.1rem] font-extrabold tracking-[-0.028em] leading-[1.06]">Bien hecho.</h2>
       <p className="mt-3 text-[15px] text-muted-foreground max-w-[46ch] mx-auto leading-relaxed">
-        Your workspace is dialed in.{firstFeature ? ` First stop: ${firstFeature.label}.` : ''} You can change anything from <strong>Settings → Branding</strong>.
+        Tu espacio de trabajo está listo.{firstFeature ? ` Primera parada: ${firstFeature.label}.` : ''} Puedes cambiar todo desde <strong>Ajustes → Branding</strong>.
       </p>
 
       {pickedMeta.length > 0 && (
@@ -91,7 +91,7 @@ export function StepDone({ state, finish }: StepProps) {
           data-testid="onboarding-done-go-dashboard"
           className={obPrimaryBtn}
         >
-          Take me to my dashboard
+          Llévame a mi panel
           <span className="material-icons text-[18px]">arrow_forward</span>
         </button>
       </div>

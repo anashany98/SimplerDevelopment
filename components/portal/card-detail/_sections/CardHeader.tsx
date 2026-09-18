@@ -65,16 +65,16 @@ export function CardHeader({
           </span>
           {card.key && <span className="font-mono text-muted-foreground">{card.key}</span>}
           {card.storyPoints != null && (
-            <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold" aria-label={`${card.storyPoints} story points`}>
+            <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold" aria-label={`${card.storyPoints} puntos de historia`}>
               {card.storyPoints} pts
             </span>
           )}
           {parent && (
             <span className="flex items-center gap-1 text-muted-foreground">
               <span className="material-icons text-xs">subdirectory_arrow_right</span>
-              <span>Parent: <span className="font-medium text-foreground">{parent.key ?? `#${parent.number ?? parent.id}`}</span> {parent.title}</span>
+              <span>Padre: <span className="font-medium text-foreground">{parent.key ?? `#${parent.number ?? parent.id}`}</span> {parent.title}</span>
               {canEdit && onClearParent && (
-                <button onClick={onClearParent} className="ml-1 hover:text-destructive" aria-label="Clear parent">
+                <button onClick={onClearParent} className="ml-1 hover:text-destructive" aria-label="Quitar padre">
                   <span className="material-icons text-xs">close</span>
                 </button>
               )}
@@ -83,7 +83,7 @@ export function CardHeader({
           {!parent && canEdit && onPickParent && (
             <button onClick={onPickParent} className="text-muted-foreground hover:text-primary flex items-center gap-1">
               <span className="material-icons text-xs">subdirectory_arrow_right</span>
-              Set parent
+              Definir padre
             </button>
           )}
         </div>
@@ -125,7 +125,7 @@ export function CardHeader({
           aria-label="Copiar enlace a esta tarjeta"
         >
           <span className="material-icons text-base">{copied ? 'check' : 'link'}</span>
-          <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy link'}</span>
+          <span className="hidden sm:inline">{copied ? 'Copiado' : 'Copiar enlace'}</span>
         </button>
       )}
       {toggleWatch && (
@@ -136,13 +136,13 @@ export function CardHeader({
               ? 'bg-primary/10 border-primary text-primary'
               : 'border-border text-muted-foreground hover:bg-accent hover:text-foreground'
           }`}
-          title={watching ? 'You are watching this card — click to unwatch' : 'Watch this card to receive alerts'}
+          title={watching ? 'Estás siguiendo esta tarjeta — haz clic para dejar de seguirla' : 'Sigue esta tarjeta para recibir avisos'}
           aria-pressed={!!watching}
         >
           <span className="material-icons text-base">
             {watching ? 'notifications_active' : 'notifications_none'}
           </span>
-          <span className="hidden sm:inline">{watching ? 'Watching' : 'Watch'}</span>
+          <span className="hidden sm:inline">{watching ? 'Siguiendo' : 'Seguir'}</span>
         </button>
       )}
       <button

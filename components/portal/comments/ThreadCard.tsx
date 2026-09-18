@@ -62,7 +62,7 @@ export interface ThreadCardProps {
 function relativeTime(d: Date | string): string {
   const ms = Math.max(0, Date.now() - new Date(d).getTime());
   const s = Math.floor(ms / 1000);
-  if (s < 60) return 'just now';
+  if (s < 60) return 'ahora mismo';
   const m = Math.floor(s / 60);
   if (m < 60) return `${m}m`;
   const h = Math.floor(m / 60);
@@ -70,8 +70,8 @@ function relativeTime(d: Date | string): string {
   const days = Math.floor(h / 24);
   if (days < 30) return `${days}d`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months}mo`;
-  return `${Math.floor(months / 12)}y`;
+  if (months < 12) return `${months} mes${months === 1 ? '' : 'es'}`;
+  return `${Math.floor(months / 12)} a`;
 }
 
 function anchorPreview(
@@ -81,18 +81,18 @@ function anchorPreview(
   if (!anchor) return null;
   if (anchor.blockId) {
     const label = resolveBlockLabel?.(anchor.blockId) ?? anchor.blockId;
-    return { icon: 'view_quilt', label: `On block ${label}` };
+    return { icon: 'view_quilt', label: `En el bloque ${label}` };
   }
   if (typeof anchor.slideIndex === 'number') {
-    return { icon: 'slideshow', label: `On slide ${anchor.slideIndex + 1}` };
+    return { icon: 'slideshow', label: `En la diapositiva ${anchor.slideIndex + 1}` };
   }
   if (anchor.fieldPath) {
-    return { icon: 'edit_note', label: `On field ${anchor.fieldPath}` };
+    return { icon: 'edit_note', label: `En el campo ${anchor.fieldPath}` };
   }
   if (typeof anchor.x === 'number' && typeof anchor.y === 'number') {
     return {
       icon: 'place',
-      label: `Pinned at ${Math.round(anchor.x)}, ${Math.round(anchor.y)}`,
+      label: `Fijado en ${Math.round(anchor.x)}, ${Math.round(anchor.y)}`,
     };
   }
   return null;
@@ -158,7 +158,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
     if (resolveAuthor) return resolveAuthor(id);
     const m = memberMap.get(id);
     if (m) return { name: m.name, avatar: m.avatar };
-    return { name: `User #${id}` };
+    return { name: `Usuario #${id}` };
   };
 
   const rootAuthor = author(thread.root.authorId);
@@ -215,8 +215,8 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
           type="button"
           onClick={() => setCollapsed((c) => !c)}
           className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded hover:bg-muted/50"
-          aria-label={collapsed ? 'Expand thread' : 'Collapse thread'}
-          title={collapsed ? 'Expand' : 'Collapse'}
+          aria-label={collapsed ? 'Expandir hilo' : 'Contraer hilo'}
+          title={collapsed ? 'Expandir' : 'Contraer'}
         >
           <span className="material-icons" style={{ fontSize: '18px' }}>
             {collapsed ? 'expand_more' : 'expand_less'}
@@ -248,7 +248,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
                     type="button"
                     onClick={() => void onDelete(r.id)}
                     className="opacity-0 group-hover:opacity-100 hover:opacity-100 text-muted-foreground hover:text-red-600 transition-opacity"
-                    title="Delete reply"
+                    title="Eliminar respuesta"
                   >
                     <span
                       className="material-icons"
@@ -285,7 +285,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
                 <span className="material-icons" style={{ fontSize: '14px' }}>
                   replay
                 </span>
-                Reopen
+                Reabrir
               </button>
             ) : (
               <button
@@ -296,7 +296,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
                 <span className="material-icons" style={{ fontSize: '14px' }}>
                   check_circle
                 </span>
-                Resolve
+                Resolver
               </button>
             )}
           </div>
@@ -305,7 +305,7 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
               type="button"
               onClick={() => void onDelete(thread.root.id)}
               className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
-              title="Delete thread"
+              title="Eliminar hilo"
             >
               <span className="material-icons" style={{ fontSize: '14px' }}>
                 delete_outline
@@ -319,9 +319,9 @@ export function ThreadCard(props: ThreadCardProps): JSX.Element {
         <div className="border-t border-border/50 p-2">
           <ComposeBox
             members={members}
-            placeholder="Reply…"
+            placeholder="Responder…"
             variant="compact"
-            submitLabel="Reply"
+            submitLabel="Responder"
             autoFocus
             onCancel={() => setComposerOpen(false)}
             onSubmit={async (body, ids) => {

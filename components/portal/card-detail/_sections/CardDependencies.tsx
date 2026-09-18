@@ -36,7 +36,7 @@ export function CardDependencies({
     <div>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Dependencies
+          Dependencias
         </h3>
         {canEdit && (
           <div className="relative">
@@ -45,7 +45,7 @@ export function CardDependencies({
               className="flex items-center gap-1 text-xs text-primary hover:text-primary/80"
             >
               <span className="material-icons text-sm">{showDepMenu ? 'close' : 'add_link'}</span>
-              {showDepMenu ? 'Cerrar' : 'Add blocker'}
+              {showDepMenu ? 'Cerrar' : 'Añadir bloqueador'}
             </button>
             {showDepMenu && (
               <div className="absolute right-0 top-full mt-1 z-20 bg-popover border border-border rounded-lg shadow-lg w-72 max-h-64 overflow-y-auto">
@@ -68,7 +68,7 @@ export function CardDependencies({
                 ))}
                 {candidates.length === 0 && (
                   <p className="text-xs text-muted-foreground italic p-3">
-                    No other cards to depend on.
+                    No hay otras tarjetas de las que depender.
                   </p>
                 )}
               </div>
@@ -79,7 +79,7 @@ export function CardDependencies({
       {blockers.length > 0 && (
         <>
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-            Blocked by
+            Bloqueada por
           </p>
           <ul className="space-y-1 mb-2">
             {blockers.map(b => (
@@ -97,7 +97,7 @@ export function CardDependencies({
                   <button
                     onClick={() => removeBlocker(b.id)}
                     className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
-                    aria-label="Remove blocker"
+                    aria-label="Quitar bloqueador"
                   >
                     <span className="material-icons text-sm">close</span>
                   </button>
@@ -110,7 +110,7 @@ export function CardDependencies({
       {blocking.length > 0 && (
         <>
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 mt-2">
-            Blocking
+            Bloquea a
           </p>
           <ul className="space-y-1">
             {blocking.map(b => (

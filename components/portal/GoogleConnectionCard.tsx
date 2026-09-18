@@ -26,8 +26,8 @@ export default function GoogleConnectionCard({
   const [message, setMessage] = useState(() => {
     if (typeof window === 'undefined') return '';
     const params = new URLSearchParams(window.location.search);
-    if (params.get('google') === 'connected') return 'Google account connected successfully.';
-    if (params.get('google') === 'error') return 'Failed to connect Google account.';
+    if (params.get('google') === 'connected') return 'Cuenta de Google conectada correctamente.';
+    if (params.get('google') === 'error') return 'No se pudo conectar la cuenta de Google.';
     return '';
   });
 
@@ -64,7 +64,7 @@ export default function GoogleConnectionCard({
       const json = await res.json();
       if (json.success) {
         setStatus({ connected: false, gscSiteUrl: null, gaPropertyId: null, gaMeasurementId: null });
-        setMessage('Google account disconnected.');
+        setMessage('Cuenta de Google desconectada.');
       }
     } finally {
       setDisconnecting(false);
@@ -79,7 +79,7 @@ export default function GoogleConnectionCard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="material-icons text-muted-foreground text-lg">monitoring</span>
-          <h3 className="font-semibold text-sm text-foreground">Google Integrations</h3>
+          <h3 className="font-semibold text-sm text-foreground">Integraciones de Google</h3>
         </div>
         {status?.connected && (
           <button
@@ -87,13 +87,13 @@ export default function GoogleConnectionCard({
             disabled={disconnecting}
             className="text-xs text-muted-foreground hover:text-red-600 transition-colors disabled:opacity-50"
           >
-            Disconnect Google
+            Desconectar Google
           </button>
         )}
       </div>
 
       {message && (
-        <p className={`text-sm ${message.includes('success') || message.includes('connected') ? 'text-green-600' : 'text-red-600'}`}>
+        <p className={`text-sm ${message.includes('conectad') || message.includes('correctamente') ? 'text-green-600' : 'text-red-600'}`}>
           {message}
         </p>
       )}
@@ -108,7 +108,7 @@ export default function GoogleConnectionCard({
             className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
           >
             <span className="material-icons text-base">login</span>
-            Connect Google Account
+            Conectar cuenta de Google
           </a>
         </>
       ) : (

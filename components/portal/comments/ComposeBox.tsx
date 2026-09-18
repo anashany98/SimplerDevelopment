@@ -94,10 +94,10 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
     members,
     onSubmit,
     initialValue = '',
-    placeholder = 'Add a comment…',
+    placeholder = 'Añade un comentario…',
     variant = 'full',
     className = '',
-    submitLabel = 'Comment',
+    submitLabel = 'Comentar',
     resetOnSubmit = true,
     onCancel,
     autoFocus = false,
@@ -199,7 +199,7 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
       setMentionStart(null);
       setMentionQuery('');
     } catch (e) {
-      setError((e as Error).message || 'Failed to submit');
+      setError((e as Error).message || 'No se pudo enviar');
     } finally {
       setSubmitting(false);
     }
@@ -281,7 +281,7 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
             <kbd className="rounded border px-1 font-mono text-[10px]">
               Enter
             </kbd>{' '}
-            to submit
+            para enviar
           </span>
           <div className="flex items-center gap-2">
             {onCancel ? (
@@ -306,7 +306,7 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
                   >
                     progress_activity
                   </span>
-                  Sending…
+                  Enviando…
                 </>
               ) : (
                 submitLabel

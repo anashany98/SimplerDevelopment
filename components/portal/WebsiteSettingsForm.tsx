@@ -75,10 +75,10 @@ export default function WebsiteSettingsForm({
       });
       const json = await res.json();
       if (json.success) {
-        setMessage('Settings saved.');
+        setMessage('Ajustes guardados.');
         router.refresh();
       } else {
-        setMessage(json.message || 'Failed to save.');
+        setMessage(json.message || 'No se pudo guardar.');
       }
     } finally {
       setSaving(false);
@@ -94,7 +94,7 @@ export default function WebsiteSettingsForm({
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="website-settings-name" className="block text-sm font-medium text-foreground mb-1.5">Website name</label>
+          <label htmlFor="website-settings-name" className="block text-sm font-medium text-foreground mb-1.5">Nombre de la web</label>
           <input
             id="website-settings-name"
             value={name}
@@ -115,13 +115,13 @@ export default function WebsiteSettingsForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">Subdomain</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Subdominio</label>
           <div className="flex items-center gap-0">
             <div className="flex items-center px-3 py-2.5 bg-background border border-border rounded-l-lg flex-1 focus-within:border-primary transition-colors">
               <input
                 value={sub}
                 onChange={e => handleSubChange(e.target.value)}
-                placeholder="my-site"
+                placeholder="mi-sitio"
                 className="bg-transparent outline-none flex-1 text-sm text-foreground font-mono"
               />
             </div>
@@ -136,11 +136,11 @@ export default function WebsiteSettingsForm({
       {/* Public Access Toggle */}
       <div className="flex items-center justify-between py-3 border-t border-border">
         <div>
-          <label id="public-access-label" className="block text-sm font-medium text-foreground">Public access</label>
+          <label id="public-access-label" className="block text-sm font-medium text-foreground">Acceso público</label>
           <p className="text-xs text-muted-foreground mt-0.5">
             {publicAccess
-              ? 'Site is publicly accessible and indexable by search engines.'
-              : 'Site is gated. Public visitors see a "coming soon" page. Search engines are blocked.'}
+              ? 'La web es de acceso público y los buscadores pueden indexarla.'
+              : 'La web está restringida. Los visitantes ven una página de "próximamente". Los buscadores están bloqueados.'}
           </p>
         </div>
         <button
@@ -159,9 +159,9 @@ export default function WebsiteSettingsForm({
       <div className="py-3 border-t border-border space-y-2">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <label className="block text-sm font-medium text-foreground">Preview access code</label>
+            <label className="block text-sm font-medium text-foreground">Código de acceso de vista previa</label>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Optional. Share this code with stakeholders so they can preview the site at{' '}
+              Opcional. Comparte este código con las partes interesadas para que puedan previsualizar la web en{' '}
               <span className="font-mono">tu portal de CRM AGENTS</span> mientras siga protegido.
             </p>
           </div>
@@ -171,7 +171,7 @@ export default function WebsiteSettingsForm({
             className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-muted/50 transition-colors"
           >
             <span className="material-icons text-sm">refresh</span>
-            Generate
+            Generar
           </button>
         </div>
         <input
@@ -190,10 +190,10 @@ export default function WebsiteSettingsForm({
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? 'Guardando...' : 'Guardar cambios'}
         </button>
         {message && (
-          <p className={`text-sm ${message.includes('saved') ? 'text-green-600' : 'text-red-600'}`}>
+          <p className={`text-sm ${message.includes('guardados') ? 'text-green-600' : 'text-red-600'}`}>
             {message}
           </p>
         )}

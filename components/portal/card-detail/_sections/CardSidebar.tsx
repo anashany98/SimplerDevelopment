@@ -56,7 +56,7 @@ export function CardSidebar({
 
       <div>
         <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-          Assignees
+          Asignados
         </label>
         <div className="space-y-1.5">
           {assignees.map(a => (
@@ -69,7 +69,7 @@ export function CardSidebar({
                 <button
                   onClick={() => removeAssignee(a.id)}
                   className="text-muted-foreground hover:text-destructive"
-                  aria-label={`Remove ${a.name}`}
+                  aria-label={`Quitar a ${a.name}`}
                 >
                   <span className="material-icons text-sm">close</span>
                 </button>
@@ -88,7 +88,7 @@ export function CardSidebar({
                 <span className="material-icons text-sm">
                   {showAssigneeMenu ? 'close' : 'person_add'}
                 </span>
-                {showAssigneeMenu ? 'Cerrar' : 'Add'}
+                {showAssigneeMenu ? 'Cerrar' : 'Añadir'}
               </button>
               {showAssigneeMenu && (
                 <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-popover border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
@@ -138,7 +138,7 @@ export function CardSidebar({
 
       <div>
         <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-          Story points
+          Puntos de historia
         </label>
         {canEdit ? (
           <div className="flex flex-wrap gap-1">
@@ -152,7 +152,7 @@ export function CardSidebar({
                     ? 'bg-primary text-primary-foreground border-primary'
                     : 'bg-background text-foreground border-border hover:border-primary/50'
                 }`}
-                aria-label={`${p} points${card.storyPoints === p ? ' (selected, click to clear)' : ''}`}
+                aria-label={`${p} puntos${card.storyPoints === p ? ' (seleccionado, haz clic para quitar)' : ''}`}
               >
                 {p}
               </button>
@@ -161,7 +161,7 @@ export function CardSidebar({
               onClick={() => saveField('storyPoints', null)}
               disabled={savingField === 'storyPoints' || card.storyPoints == null}
               className="min-w-[28px] h-7 px-1.5 rounded text-xs font-medium border border-border bg-background text-muted-foreground hover:text-destructive hover:border-destructive disabled:opacity-30 disabled:cursor-not-allowed"
-              aria-label="Clear points"
+              aria-label="Quitar puntos"
             >
               —
             </button>
@@ -175,7 +175,7 @@ export function CardSidebar({
 
       <div>
         <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-          Workflow state
+          Estado del flujo
         </label>
         {canEdit ? (
           <select
@@ -218,7 +218,7 @@ export function CardSidebar({
 
       <div>
         <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-          Due Date
+          Fecha de vencimiento
         </label>
         {canEdit ? (
           <input
@@ -250,7 +250,7 @@ export function CardSidebar({
                   disabled={deleting}
                   className="flex-1 px-2 py-1.5 bg-destructive text-destructive-foreground rounded text-xs font-medium hover:bg-destructive/90 disabled:opacity-50"
                 >
-                  {deleting ? 'Deleting…' : 'Eliminar'}
+                  {deleting ? 'Eliminando…' : 'Eliminar'}
                 </button>
                 <button
                   onClick={() => setConfirmDelete(false)}

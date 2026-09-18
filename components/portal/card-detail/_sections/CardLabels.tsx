@@ -35,7 +35,7 @@ export function CardLabels({
   return (
     <div>
       <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-        Labels
+        Etiquetas
       </h3>
       <div className="flex flex-wrap items-center gap-1.5">
         {labels.map(l => (
@@ -49,7 +49,7 @@ export function CardLabels({
               <button
                 onClick={() => toggleLabel(l)}
                 className="hover:opacity-70"
-                aria-label={`Remove ${l.name}`}
+                aria-label={`Quitar ${l.name}`}
               >
                 <span className="material-icons text-xs">close</span>
               </button>
@@ -66,14 +66,14 @@ export function CardLabels({
               className="flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:border-primary"
             >
               <span className="material-icons text-xs">{showLabelMenu ? 'close' : 'add'}</span>
-              {showLabelMenu ? 'Cerrar' : 'Add label'}
+              {showLabelMenu ? 'Cerrar' : 'Añadir etiqueta'}
             </button>
             {showLabelMenu && (
               <div className="absolute top-full left-0 mt-1 z-20 bg-popover border border-border rounded-lg shadow-lg w-64 p-2 space-y-2">
                 <div className="max-h-48 overflow-y-auto space-y-0.5">
                   {projectLabels.length === 0 && (
                     <p className="text-xs text-muted-foreground italic p-2">
-                      No labels yet. Create one below.
+                      Aún no hay etiquetas. Crea una abajo.
                     </p>
                   )}
                   {projectLabels.map(l => {

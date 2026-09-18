@@ -40,7 +40,7 @@ export function CreatePageIntroCard({
               type="text"
               value={formData.title}
               onChange={handleTitleChange}
-              placeholder="e.g. About Us, Contact, Services"
+              placeholder="p. ej. Sobre nosotros, Contacto, Servicios"
               className="mt-1.5 block w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary outline-none"
               autoFocus
             />
@@ -48,14 +48,14 @@ export function CreatePageIntroCard({
 
           {/* Slug */}
           <label className="block">
-            <span className="text-sm font-medium text-foreground">URL Slug</span>
+            <span className="text-sm font-medium text-foreground">Slug de URL</span>
             <div className="mt-1.5 flex items-center gap-0 rounded-lg border border-border overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
               <span className="px-3 py-2.5 bg-muted text-xs text-muted-foreground border-r border-border shrink-0">/</span>
               <input
                 type="text"
                 value={formData.slug}
                 onChange={(e) => setFormData(prev => ({ ...prev, slug: sanitizeSlugInput(e.target.value) }))}
-                placeholder="auto-generated-from-title"
+                placeholder="generado-automaticamente-desde-el-titulo"
                 className="block w-full bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none"
               />
             </div>
@@ -80,7 +80,7 @@ export function CreatePageIntroCard({
             className="w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             <span className="material-icons text-lg">save</span>
-            {loading ? 'Creating...' : 'Create & Open Editor'}
+            {loading ? 'Creando…' : 'Crear y abrir el editor'}
           </button>
         </div>
       </div>

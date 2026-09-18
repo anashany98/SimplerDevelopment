@@ -30,78 +30,78 @@ const SCOPE_GROUPS: ScopeGroup[] = [
   {
     label: 'Contenido',
     scopes: [
-      { value: 'sites:read', label: 'Read websites & pages' },
-      { value: 'sites:write', label: 'Write websites & pages' },
-      { value: 'media:read', label: 'Read media library' },
-      { value: 'media:write', label: 'Upload to media library' },
-      { value: 'decks:read', label: 'Read pitch decks' },
-      { value: 'decks:write', label: 'Write pitch decks' },
-      { value: 'email:read', label: 'Read email campaigns' },
-      { value: 'email:write', label: 'Write email campaigns' },
-      { value: 'email:send', label: 'Send email campaigns' },
+      { value: 'sites:read', label: 'Leer sitios web y páginas' },
+      { value: 'sites:write', label: 'Escribir sitios web y páginas' },
+      { value: 'media:read', label: 'Leer biblioteca multimedia' },
+      { value: 'media:write', label: 'Subir a la biblioteca multimedia' },
+      { value: 'decks:read', label: 'Leer presentaciones' },
+      { value: 'decks:write', label: 'Escribir presentaciones' },
+      { value: 'email:read', label: 'Leer campañas de email' },
+      { value: 'email:write', label: 'Escribir campañas de email' },
+      { value: 'email:send', label: 'Enviar campañas de email' },
     ],
   },
   {
-    label: 'Work management',
+    label: 'Gestión de trabajo',
     scopes: [
-      { value: 'projects:read', label: 'Read projects & cards' },
-      { value: 'projects:write', label: 'Write projects & cards' },
-      { value: 'tickets:read', label: 'Read support tickets' },
-      { value: 'tickets:write', label: 'Write support tickets' },
+      { value: 'projects:read', label: 'Leer proyectos y tarjetas' },
+      { value: 'projects:write', label: 'Escribir proyectos y tarjetas' },
+      { value: 'tickets:read', label: 'Leer tickets de soporte' },
+      { value: 'tickets:write', label: 'Escribir tickets de soporte' },
     ],
   },
   {
-    label: 'CRM & engagement',
+    label: 'CRM e interacción',
     scopes: [
-      { value: 'crm:read', label: 'Read contacts & deals' },
-      { value: 'crm:write', label: 'Write contacts & deals' },
-      { value: 'bookings:read', label: 'Read bookings' },
-      { value: 'bookings:write', label: 'Write bookings' },
-      { value: 'surveys:read', label: 'Read surveys' },
-      { value: 'surveys:write', label: 'Write surveys' },
+      { value: 'crm:read', label: 'Leer contactos y negocios' },
+      { value: 'crm:write', label: 'Escribir contactos y negocios' },
+      { value: 'bookings:read', label: 'Leer reservas' },
+      { value: 'bookings:write', label: 'Escribir reservas' },
+      { value: 'surveys:read', label: 'Leer encuestas' },
+      { value: 'surveys:write', label: 'Escribir encuestas' },
     ],
   },
   {
-    label: 'Commerce',
+    label: 'Comercio',
     scopes: [
-      { value: 'store:read', label: 'Read store (products, orders, customers)' },
-      { value: 'store:write', label: 'Write store' },
-      { value: 'services:read', label: 'Read services' },
-      { value: 'services:write', label: 'Write services' },
+      { value: 'store:read', label: 'Leer tienda (productos, pedidos, clientes)' },
+      { value: 'store:write', label: 'Escribir tienda' },
+      { value: 'services:read', label: 'Leer servicios' },
+      { value: 'services:write', label: 'Escribir servicios' },
     ],
   },
   {
-    label: 'Configuration',
+    label: 'Configuración',
     scopes: [
-      { value: 'branding:read', label: 'Read branding' },
-      { value: 'branding:write', label: 'Write branding' },
-      { value: 'team:read', label: 'Read team members' },
-      { value: 'team:write', label: 'Invite & manage team' },
-      { value: 'profile:read', label: 'Read my profile' },
-      { value: 'profile:write', label: 'Update my profile' },
-      { value: 'integrations:read', label: 'Read integrations (Google Workspace)' },
-      { value: 'integrations:write', label: 'Disconnect integrations' },
-      { value: 'automations:read', label: 'Read automations' },
-      { value: 'automations:write', label: 'Write automations' },
-      { value: 'billing:read', label: 'Read billing' },
-      { value: 'ai:read', label: 'Read AI usage & features' },
+      { value: 'branding:read', label: 'Leer marca' },
+      { value: 'branding:write', label: 'Escribir marca' },
+      { value: 'team:read', label: 'Leer miembros del equipo' },
+      { value: 'team:write', label: 'Invitar y gestionar el equipo' },
+      { value: 'profile:read', label: 'Leer mi perfil' },
+      { value: 'profile:write', label: 'Actualizar mi perfil' },
+      { value: 'integrations:read', label: 'Leer integraciones (Google Workspace)' },
+      { value: 'integrations:write', label: 'Desconectar integraciones' },
+      { value: 'automations:read', label: 'Leer automatizaciones' },
+      { value: 'automations:write', label: 'Escribir automatizaciones' },
+      { value: 'billing:read', label: 'Leer facturación' },
+      { value: 'ai:read', label: 'Leer uso y funciones de IA' },
     ],
   },
   {
     label: 'Company Brain',
-    description: 'Access to notes, contacts, meetings, tasks, and AI knowledge base.',
+    description: 'Acceso a notas, contactos, reuniones, tareas y la base de conocimiento de IA.',
     scopes: [
-      { value: 'brain:read', label: 'Read Brain (notes, contacts, meetings, tasks)' },
-      { value: 'brain:write', label: 'Write Brain (create/update notes, tasks, meetings)' },
-      { value: 'brain:approve', label: 'Approve / reject Brain review items' },
+      { value: 'brain:read', label: 'Leer Brain (notas, contactos, reuniones, tareas)' },
+      { value: 'brain:write', label: 'Escribir Brain (crear/actualizar notas, tareas, reuniones)' },
+      { value: 'brain:approve', label: 'Aprobar / rechazar elementos de revisión de Brain' },
     ],
   },
   {
-    label: 'Approvals',
-    description: 'Required to approve or reject staged changes created by other keys.',
+    label: 'Aprobaciones',
+    description: 'Necesario para aprobar o rechazar cambios preparados por otras claves.',
     scopes: [
-      { value: 'approvals:read', label: 'Read staged changes (list / view)' },
-      { value: 'approvals:manage', label: 'Approve / reject staged changes' },
+      { value: 'approvals:read', label: 'Leer cambios preparados (listar / ver)' },
+      { value: 'approvals:manage', label: 'Aprobar / rechazar cambios preparados' },
     ],
   },
 ];
@@ -112,8 +112,8 @@ interface McpApiKeysManagerProps {
 }
 
 export default function McpApiKeysManager({
-  heading = 'API Keys',
-  subheading = 'Use these keys to authenticate the CRM AGENTS MCP server. Connect from Claude Desktop, Claude Code, ChatGPT, or any MCP-compatible client to control your portal programmatically.',
+  heading = 'Claves de API',
+  subheading = 'Usa estas claves para autenticar el servidor MCP de CRM AGENTS. Conéctate desde Claude Desktop, Claude Code, ChatGPT o cualquier cliente compatible con MCP para controlar tu portal por programación.',
 }: McpApiKeysManagerProps) {
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [loading, setLoading] = useState(true);
@@ -139,16 +139,16 @@ export default function McpApiKeysManager({
 
   async function handleCreate() {
     setError(null);
-    if (!name.trim()) { setError('Name required'); return; }
+    if (!name.trim()) { setError('Nombre obligatorio'); return; }
     const scopes = fullAccess ? ['*'] : selectedScopes;
-    if (scopes.length === 0) { setError('Pick at least one scope'); return; }
+    if (scopes.length === 0) { setError('Selecciona al menos un permiso'); return; }
     const res = await fetch('/api/portal/api-keys', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: name.trim(), scopes, requireCmsApproval }),
     });
     const json = await res.json();
-    if (!json.success) { setError(json.message ?? 'Failed to create key'); return; }
+    if (!json.success) { setError(json.message ?? 'No se pudo crear la clave'); return; }
     setNewKey(json.data.key);
     setNewKeyFullAccess(scopes.includes('*'));
     setName('');
@@ -160,7 +160,7 @@ export default function McpApiKeysManager({
   }
 
   async function handleRevoke(id: number) {
-    if (!confirm('Revoke this API key? Clients using it will lose access immediately.')) return;
+    if (!confirm('¿Revocar esta clave de API? Los clientes que la usen perderán el acceso de inmediato.')) return;
     await fetch(`/api/portal/api-keys?id=${id}`, { method: 'DELETE' });
     load();
   }
@@ -185,7 +185,7 @@ export default function McpApiKeysManager({
           className="inline-flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90"
         >
           <span className="material-icons text-base">add</span>
-          New key
+          Nueva clave
         </button>
       </div>
 
@@ -193,12 +193,12 @@ export default function McpApiKeysManager({
         <div className="rounded-md border border-amber-400 bg-amber-50 dark:bg-amber-950/20 p-4 space-y-2">
           <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-medium">
             <span className="material-icons text-base">warning</span>
-            Save this key now — it won&apos;t be shown again
+            Guarda esta clave ahora: no se volverá a mostrar
           </div>
           {newKeyFullAccess && (
             <p className="text-xs text-amber-800 dark:text-amber-300 flex items-start gap-1">
               <span className="material-icons text-sm leading-none mt-0.5">gpp_maybe</span>
-              <span>This key has <strong>full access (*)</strong> — it can perform every action on your portal. Treat it like a password and revoke it immediately if it leaks.</span>
+              <span>Esta clave tiene <strong>acceso completo (*)</strong>: puede realizar cualquier acción en tu portal. Trátala como una contraseña y revócala de inmediato si se filtra.</span>
             </p>
           )}
           <code className="block w-full p-2 bg-background border border-border rounded text-xs break-all">
@@ -213,7 +213,7 @@ export default function McpApiKeysManager({
               onClick={() => setNewKey(null)}
               className="text-xs px-2 py-1 border border-border rounded hover:bg-muted"
             >
-              I&apos;ve saved it
+              Ya la he guardado
             </button>
           </div>
         </div>
@@ -226,13 +226,13 @@ export default function McpApiKeysManager({
             <input
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="e.g. Claude Desktop – personal"
+              placeholder="p. ej. Claude Desktop – personal"
               className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Scopes</label>
+            <label className="block text-sm font-medium mb-2">Permisos</label>
             <label className="flex items-start gap-2 text-sm p-2 rounded border border-border bg-muted/30">
               <input
                 type="checkbox"
@@ -243,10 +243,10 @@ export default function McpApiKeysManager({
               <div>
                 <div className="flex items-center gap-2">
                   <code className="text-xs px-1.5 py-0.5 bg-background border border-border rounded">*</code>
-                  <span className="font-medium">Full access</span>
+                  <span className="font-medium">Acceso completo</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Grant every action across the portal. Uncheck to pick specific scopes.
+                  Otorga todas las acciones del portal. Desmarca para elegir permisos concretos.
                 </p>
               </div>
             </label>
@@ -254,7 +254,7 @@ export default function McpApiKeysManager({
             {fullAccess && (
               <div className="mt-2 flex items-start gap-2 rounded-md border border-amber-400 bg-amber-50 dark:bg-amber-950/20 p-2 text-xs text-amber-800 dark:text-amber-300">
                 <span className="material-icons text-sm leading-none mt-0.5">warning</span>
-                <span>This key will be able to perform <strong>every action</strong> on your portal — content, CRM, team, billing reads, and Company Brain data. Prefer selecting only the scopes the integration needs.</span>
+                <span>Esta clave podrá realizar <strong>todas las acciones</strong> en tu portal: contenido, CRM, equipo, lecturas de facturación y datos de Company Brain. Es mejor seleccionar solo los permisos que necesite la integración.</span>
               </div>
             )}
 
@@ -288,7 +288,7 @@ export default function McpApiKeysManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">CMS approval</label>
+            <label className="block text-sm font-medium mb-1">Aprobación de CMS</label>
             <label className="flex items-start gap-2 text-sm">
               <input
                 type="checkbox"
@@ -297,10 +297,10 @@ export default function McpApiKeysManager({
                 className="mt-0.5"
               />
               <div>
-                <div className="font-medium">Require approval for CMS writes</div>
+                <div className="font-medium">Requerir aprobación para escrituras en el CMS</div>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Staged writes to posts, decks, proposals, and email campaigns will wait for an
-                  admin to approve them before taking effect. Reads are unaffected.
+                  Las escrituras preparadas en entradas, presentaciones, propuestas y campañas de email esperarán a que un
+                  administrador las apruebe antes de aplicarse. Las lecturas no se ven afectadas.
                 </p>
               </div>
             </label>
@@ -312,7 +312,7 @@ export default function McpApiKeysManager({
               onClick={handleCreate}
               className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium"
             >
-              Generate key
+              Generar clave
             </button>
             <button
               onClick={() => setShowCreate(false)}
@@ -328,10 +328,10 @@ export default function McpApiKeysManager({
           <thead className="bg-muted/50">
             <tr className="text-left">
               <th className="px-3 py-2 font-medium">Nombre</th>
-              <th className="px-3 py-2 font-medium">Key</th>
-              <th className="px-3 py-2 font-medium">Scopes</th>
-              <th className="px-3 py-2 font-medium">Mode</th>
-              <th className="px-3 py-2 font-medium">Last used</th>
+              <th className="px-3 py-2 font-medium">Clave</th>
+              <th className="px-3 py-2 font-medium">Permisos</th>
+              <th className="px-3 py-2 font-medium">Modo</th>
+              <th className="px-3 py-2 font-medium">Último uso</th>
               <th className="px-3 py-2 font-medium">Estado</th>
               <th className="px-3 py-2"></th>
             </tr>
@@ -341,7 +341,7 @@ export default function McpApiKeysManager({
               <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && keys.length === 0 && (
-              <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">No API keys yet</td></tr>
+              <tr><td colSpan={7} className="px-3 py-4 text-center text-muted-foreground">Aún no hay claves de API</td></tr>
             )}
             {keys.map(k => (
               <tr key={k.id} className="border-t border-border">
@@ -352,7 +352,7 @@ export default function McpApiKeysManager({
                     {k.scopes.map(s => s === '*' ? (
                       <span key={s} className="inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded border border-amber-400/40 bg-amber-500/10 text-amber-700 dark:text-amber-400">
                         <span className="material-icons text-[14px] leading-none">warning</span>
-                        Full access
+                        Acceso completo
                       </span>
                     ) : (
                       <code key={s} className="text-xs px-1.5 py-0.5 bg-muted rounded">{s}</code>
@@ -363,18 +363,18 @@ export default function McpApiKeysManager({
                   {k.requireCmsApproval ? (
                     <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded">
                       <span className="material-icons text-[14px] leading-none">verified_user</span>
-                      Requires approval
+                      Requiere aprobación
                     </span>
                   ) : (
-                    <span className="text-xs text-muted-foreground">Direct</span>
+                    <span className="text-xs text-muted-foreground">Directo</span>
                   )}
                 </td>
                 <td className="px-3 py-2 text-muted-foreground">
-                  {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : 'Never'}
+                  {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : 'Nunca'}
                 </td>
                 <td className="px-3 py-2">
                   {k.revokedAt ? (
-                    <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revoked</span>
+                    <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revocada</span>
                   ) : k.active ? (
                     <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Activo</span>
                   ) : (
@@ -387,7 +387,7 @@ export default function McpApiKeysManager({
                       onClick={() => handleRevoke(k.id)}
                       className="text-xs text-destructive hover:underline"
                     >
-                      Revoke
+                      Revocar
                     </button>
                   )}
                 </td>

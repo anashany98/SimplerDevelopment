@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const DEFAULT_COLUMNS = [
-  { name: 'To Do', order: 1 },
-  { name: 'In Progress', order: 2 },
-  { name: 'Done', order: 3, isDone: true },
+  { name: 'Por hacer', order: 1 },
+  { name: 'En curso', order: 2 },
+  { name: 'Hecho', order: 3, isDone: true },
 ];
 
 /**
@@ -29,11 +29,11 @@ export default function SetUpBoardButton({ projectId }: { projectId: number }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(col),
         });
-        if (!res.ok) throw new Error(`Failed to create column "${col.name}"`);
+        if (!res.ok) throw new Error(`No se pudo crear la columna "${col.name}"`);
       }
       router.refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to set up the board');
+      setError(e instanceof Error ? e.message : 'No se pudo configurar el tablero');
       setBusy(false);
     }
   };
@@ -46,7 +46,7 @@ export default function SetUpBoardButton({ projectId }: { projectId: number }) {
         className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
       >
         <span className="material-icons text-base">dashboard_customize</span>
-        {busy ? 'Setting up…' : 'Set up board'}
+        {busy ? 'Configurando…' : 'Configurar tablero'}
       </button>
       {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
     </div>

@@ -131,7 +131,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
           </span>
         </span>
         <span className="font-extrabold text-[15px] tracking-[-0.01em]">
-          {isSummaryScreen ? 'Also activated' : segment.title}
+          {isSummaryScreen ? 'También activados' : segment.title}
         </span>
         {isMultiple && (
           <span className="ml-auto flex gap-1.5">
@@ -172,7 +172,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] font-semibold leading-snug">{entry?.name ?? key}</p>
                   <p className="text-[12.5px] text-muted-foreground mt-0.5">
-                    Activated — needs a bit more setup when you&apos;re ready.
+                    Activado — necesita algo más de configuración cuando quieras.
                   </p>
                 </div>
                 <span className="material-icons text-[18px] text-muted-foreground shrink-0">
@@ -189,7 +189,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center gap-3.5 rounded-[13px] border border-emerald-400/40 bg-emerald-50/60 dark:bg-emerald-950/20 px-[15px] py-[13px]">
             <span
-              aria-label={`${segment.actions[0]?.label ?? segment.title} complete`}
+              aria-label={`${segment.actions[0]?.label ?? segment.title} completado`}
               className="shrink-0 grid h-[22px] w-[22px] place-items-center rounded-[7px] border-[1.7px]"
               style={{ background: '#10b981', borderColor: '#10b981', color: '#fff' }}
             >
@@ -203,7 +203,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
             </div>
           </div>
           <p className="text-[12.5px] text-muted-foreground px-1 pt-0.5">
-            Create your first survey whenever you need it — Surveys is in your sidebar.
+            Crea tu primera encuesta cuando la necesites — Encuestas está en tu barra lateral.
           </p>
         </div>
       ) : (
@@ -226,7 +226,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
               >
                 {/* Auto-detected status (pre-credited steps start done — never 0%) */}
                 <span
-                  aria-label={done ? `${action.label} complete` : `${action.label} pending`}
+                  aria-label={done ? `${action.label} completado` : `${action.label} pendiente`}
                   className="shrink-0 grid h-[22px] w-[22px] place-items-center rounded-[7px] border-[1.7px]"
                   style={{
                     background: done ? '#10b981' : undefined,
@@ -248,7 +248,7 @@ export function StepModuleSetup({ state, next }: StepProps) {
 
           {hiddenCount > 0 && (
             <p className="text-[12.5px] text-muted-foreground px-1 pt-0.5">
-              Publishing your first page, navigation, and the rest — you can do this once you&apos;re in.
+              Publicar tu primera página, la navegación y lo demás — podrás hacerlo cuando entres.
             </p>
           )}
         </div>
@@ -261,14 +261,14 @@ export function StepModuleSetup({ state, next }: StepProps) {
           onClick={() => next({})}
           className={obGhostBtn}
         >
-          Skip module
+          Omitir módulo
         </button>
         <button
           type="button"
           onClick={handleContinue}
           className={obPrimaryBtn}
         >
-          {currentSegmentIndex < totalSegments - 1 ? 'Next module' : 'Continue'}
+          {currentSegmentIndex < totalSegments - 1 ? 'Siguiente módulo' : 'Continuar'}
           <span className="material-icons text-[18px]">arrow_forward</span>
         </button>
       </div>

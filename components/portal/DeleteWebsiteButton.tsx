@@ -27,11 +27,11 @@ export default function DeleteWebsiteButton({
       if (json.success) {
         router.push('/portal/websites');
       } else {
-        setError(json.message || 'Failed to delete website.');
+        setError(json.message || 'No se pudo eliminar el sitio web.');
         setDeleting(false);
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
       setDeleting(false);
     }
   };
@@ -40,27 +40,27 @@ export default function DeleteWebsiteButton({
     <div className="bg-card border border-red-500/30 rounded-xl p-5 space-y-4">
       <div className="flex items-center gap-3">
         <span className="material-icons text-red-500 text-lg">warning</span>
-        <h3 className="font-semibold text-sm text-red-500">Danger Zone</h3>
+        <h3 className="font-semibold text-sm text-red-500">Zona de peligro</h3>
       </div>
 
       {!confirming ? (
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-foreground font-medium">Delete this website</p>
+            <p className="text-sm text-foreground font-medium">Eliminar este sitio web</p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Permanently delete {siteName} and all its content. This cannot be undone.
+              Elimina {siteName} y todo su contenido de forma permanente. Esta acción no se puede deshacer.
             </p>
           </div>
           <button
             onClick={() => setConfirming(true)}
             className="px-4 py-2 border border-red-500/50 text-red-500 rounded-lg text-sm font-medium hover:bg-red-500/10 transition-colors"
           >
-            Delete Website
+            Eliminar sitio web
           </button>
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-sm text-foreground">Tipo<span className="font-mono font-semibold text-red-500">{siteName}</span> to confirm deletion.
+          <p className="text-sm text-foreground">Escribe<span className="font-mono font-semibold text-red-500">{siteName}</span> para confirmar la eliminación.
           </p>
           <input
             value={confirmText}
@@ -75,7 +75,7 @@ export default function DeleteWebsiteButton({
               disabled={confirmText !== siteName || deleting}
               className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50 transition-colors"
             >
-              {deleting ? 'Deleting...' : 'Permanently Delete'}
+              {deleting ? 'Eliminando...' : 'Eliminar definitivamente'}
             </button>
             <button
               onClick={() => { setConfirming(false); setConfirmText(''); setError(''); }}

@@ -214,10 +214,10 @@ export default function GaAnalyticsDashboard({
       if (json.success) {
         setReport(json.data);
       } else {
-        setError(json.message || 'Failed to load analytics');
+        setError(json.message || 'No se pudieron cargar las analíticas');
       }
     } catch {
-      setError('Failed to load analytics data');
+      setError('No se pudieron cargar los datos de analíticas');
     } finally {
       setLoading(false);
     }
@@ -233,10 +233,10 @@ export default function GaAnalyticsDashboard({
         if (json.success) {
           setReport(json.data);
         } else {
-          setError(json.message || 'Failed to load analytics');
+          setError(json.message || 'No se pudieron cargar las analíticas');
         }
       } catch {
-        setError('Failed to load analytics data');
+        setError('No se pudieron cargar los datos de analíticas');
       } finally {
         setLoading(false);
       }
@@ -249,7 +249,7 @@ export default function GaAnalyticsDashboard({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="material-icons text-green-600 text-base">check_circle</span>
-          <span className="text-sm text-foreground font-medium">{propertyId.replace('properties/', 'Property ')}</span>
+          <span className="text-sm text-foreground font-medium">{propertyId.replace('properties/', 'Propiedad ')}</span>
           {measurementId && (
             <span className="text-xs text-muted-foreground font-mono bg-muted px-1.5 py-0.5 rounded">
               {measurementId}
@@ -277,7 +277,7 @@ export default function GaAnalyticsDashboard({
       {loading && (
         <div className="flex items-center gap-2 py-8 justify-center text-muted-foreground">
           <span className="material-icons text-base animate-spin">refresh</span>
-          <span className="text-sm">Loading analytics...</span>
+          <span className="text-sm">Cargando analíticas...</span>
         </div>
       )}
 
@@ -299,39 +299,39 @@ export default function GaAnalyticsDashboard({
           {/* Metric cards */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <MetricCard
-              label="Users"
+              label="Usuarios"
               value={report.metrics.users.value}
               change={report.metrics.users.change}
               icon="person"
             />
             <MetricCard
-              label="Sessions"
+              label="Sesiones"
               value={report.metrics.sessions.value}
               change={report.metrics.sessions.change}
               icon="ads_click"
             />
             <MetricCard
-              label="Page Views"
+              label="Páginas vistas"
               value={report.metrics.pageViews.value}
               change={report.metrics.pageViews.change}
               icon="visibility"
             />
             <MetricCard
-              label="Bounce Rate"
+              label="Tasa de rebote"
               value={report.metrics.bounceRate.value}
               change={report.metrics.bounceRate.change}
               icon="trending_down"
               format="percent"
             />
             <MetricCard
-              label="Avg. Duration"
+              label="Duración media"
               value={report.metrics.avgSessionDuration.value}
               change={report.metrics.avgSessionDuration.change}
               icon="schedule"
               format="duration"
             />
             <MetricCard
-              label="Engagement"
+              label="Interacción"
               value={report.metrics.engagementRate.value}
               change={report.metrics.engagementRate.change}
               icon="favorite"
@@ -345,11 +345,11 @@ export default function GaAnalyticsDashboard({
               <div className="flex items-center gap-6 mb-3">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2.5 h-0.5 rounded bg-primary" />
-                  <span className="text-xs text-muted-foreground">Page Views</span>
+                  <span className="text-xs text-muted-foreground">Páginas vistas</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2.5 h-0.5 rounded bg-blue-500" />
-                  <span className="text-xs text-muted-foreground">Users</span>
+                  <span className="text-xs text-muted-foreground">Usuarios</span>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
@@ -380,7 +380,7 @@ export default function GaAnalyticsDashboard({
               <div className="bg-card border border-border rounded-lg p-4">
                 <h4 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
                   <span className="material-icons text-muted-foreground text-sm">article</span>
-                  Top Pages
+                  Páginas principales
                 </h4>
                 <div className="space-y-1.5">
                   {report.topPages.map((page) => (
@@ -395,8 +395,8 @@ export default function GaAnalyticsDashboard({
                         {page.path}
                       </span>
                       <div className="flex items-center gap-3 text-muted-foreground shrink-0">
-                        <span>{formatNumber(page.pageViews)} views</span>
-                        <span>{formatNumber(page.users)} users</span>
+                        <span>{formatNumber(page.pageViews)} vistas</span>
+                        <span>{formatNumber(page.users)} usuarios</span>
                       </div>
                     </div>
                   ))}
@@ -409,7 +409,7 @@ export default function GaAnalyticsDashboard({
               <div className="bg-card border border-border rounded-lg p-4">
                 <h4 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
                   <span className="material-icons text-muted-foreground text-sm">traffic</span>
-                  Traffic Sources
+                  Fuentes de tráfico
                 </h4>
                 <div className="space-y-2">
                   {report.trafficSources.map((source) => {
@@ -465,7 +465,7 @@ export default function GaAnalyticsDashboard({
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
             >
               <span className="material-icons text-xs">open_in_new</span>
-              View full report in Google Analytics
+              Ver informe completo en Google Analytics
             </a>
           </div>
         </>

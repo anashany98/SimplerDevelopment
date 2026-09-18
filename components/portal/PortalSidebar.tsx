@@ -361,7 +361,7 @@ export default function PortalSidebar({
           {priceLabel && (
             <span className="text-xs font-semibold text-primary opacity-0 translate-x-2 group-hover/lock:opacity-100 group-hover/lock:translate-x-0 transition-all duration-200 shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
               {priceLabel}
-              <span className="font-normal text-[10px] text-muted-foreground">/mo</span>
+              <span className="font-normal text-[10px] text-muted-foreground">/mes</span>
             </span>
           )}
           <span className="material-icons text-base shrink-0">lock</span>
@@ -461,7 +461,7 @@ export default function PortalSidebar({
             onClick={onCloseMobile}
             className="lg:hidden p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
             title="Cerrar"
-            aria-label="Close navigation"
+            aria-label="Cerrar navegación"
           >
             <span className="material-icons text-lg">close</span>
           </button>
@@ -479,7 +479,7 @@ export default function PortalSidebar({
           <SidebarCreditBadge collapsed={collapsed} onNavigate={onCloseMobile} />
           <button
             onClick={cycleTheme}
-            title={collapsed ? `${themeLabel[theme]} mode` : undefined}
+            title={collapsed ? `Modo ${themeLabel[theme].toLowerCase()}` : undefined}
             className="flex items-center gap-3 w-full px-3 py-2 rounded-md text-[13.5px] text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group-data-[collapsed=true]/sb:lg:justify-center group-data-[collapsed=true]/sb:lg:px-0"
           >
             <span className="material-icons text-xl shrink-0">{themeIcon[theme]}</span>
@@ -489,7 +489,7 @@ export default function PortalSidebar({
 
           <button
             onClick={async () => { await fetch('/api/portal/sign-out', { method: 'POST' }); await signOut({ callbackUrl: '/portal/login' }); }}
-            title={collapsed ? 'Sign out' : undefined}
+            title={collapsed ? 'Cerrar sesión' : undefined}
             className="flex items-center gap-3 w-full px-3 py-2 rounded-md text-[13.5px] text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group-data-[collapsed=true]/sb:lg:justify-center group-data-[collapsed=true]/sb:lg:px-0"
           >
             <span className="material-icons text-xl shrink-0">logout</span>
@@ -526,7 +526,7 @@ export default function PortalSidebar({
             </div>
             <div className="mb-1.5">
               <span className="text-xl font-bold text-foreground">${Math.round(d.monthlyPriceCents / 100)}</span>
-              <span className="text-xs font-normal text-muted-foreground">/mo</span>
+              <span className="text-xs font-normal text-muted-foreground">/mes</span>
             </div>
             <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{d.tagline}</p>
             {d.features.length > 0 && (
@@ -545,7 +545,7 @@ export default function PortalSidebar({
               className="flex items-center justify-center gap-1 w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2 hover:bg-primary/90 transition-colors"
               style={agencyActiveStyle}
             >
-              Add to plan
+              Añadir al plan
               <span className="material-icons text-sm">arrow_forward</span>
             </Link>
           </div>

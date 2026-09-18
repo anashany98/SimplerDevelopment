@@ -40,11 +40,11 @@ function AssigneePicker({
 
   return (
     <div>
-      <span className="block text-[11px] text-muted-foreground mb-1">Waiting on</span>
+      <span className="block text-[11px] text-muted-foreground mb-1">En espera de</span>
       <div className="space-y-1.5">
         {assigneeIds.map((id) => {
           const m = members.find((x) => x.userId === id);
-          const label = m ? memberLabel(m) : 'Unknown member';
+          const label = m ? memberLabel(m) : 'Miembro desconocido';
           return (
             <div key={id} className="flex items-center gap-2 text-xs">
               <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-semibold text-primary shrink-0">
@@ -56,7 +56,7 @@ function AssigneePicker({
                   type="button"
                   onClick={() => onChange(assigneeIds.filter((v) => v !== id))}
                   className="text-muted-foreground hover:text-destructive"
-                  aria-label={`Remove ${label}`}
+                  aria-label={`Quitar ${label}`}
                 >
                   <span className="material-icons text-sm">close</span>
                 </button>
@@ -77,7 +77,7 @@ function AssigneePicker({
               className="w-full flex items-center justify-center gap-1 px-2 py-1 rounded border border-dashed border-border text-xs text-muted-foreground hover:text-foreground hover:border-primary"
             >
               <span className="material-icons text-sm">{open ? 'close' : 'person_add'}</span>
-              {open ? 'Close' : 'Add'}
+              {open ? 'Cerrar' : 'Añadir'}
             </button>
             {open && (
               <div className="absolute top-full left-0 right-0 mt-1 z-20 bg-popover border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
@@ -94,7 +94,7 @@ function AssigneePicker({
                 ))}
                 {candidates.length === 0 && (
                   <p className="text-xs text-muted-foreground italic p-3">
-                    {members.length === 0 ? 'No project members' : 'No one left to add'}
+                    {members.length === 0 ? 'Sin miembros del proyecto' : 'No queda nadie por añadir'}
                   </p>
                 )}
               </div>
@@ -144,7 +144,7 @@ export function NodeInspector({
             </div>
           </div>
           <div>
-            <label htmlFor="node-model" className="block text-[11px] text-muted-foreground mb-1">Model</label>
+            <label htmlFor="node-model" className="block text-[11px] text-muted-foreground mb-1">Modelo</label>
             <select
               id="node-model"
               value={data.model ?? 'sonnet'}
@@ -158,13 +158,13 @@ export function NodeInspector({
             </select>
           </div>
           <div>
-            <label htmlFor="node-role" className="block text-[11px] text-muted-foreground mb-1">Role note</label>
+            <label htmlFor="node-role" className="block text-[11px] text-muted-foreground mb-1">Nota del rol</label>
             <input
               id="node-role"
               value={data.role ?? ''}
               onChange={(e) => onChange({ role: e.target.value })}
               disabled={!canEdit}
-              placeholder="What this agent owns in the flow"
+              placeholder="Qué posee este agente en el flujo"
               className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70"
             />
           </div>
@@ -177,7 +177,7 @@ export function NodeInspector({
             value={data.description ?? ''}
             onChange={(e) => onChange({ description: e.target.value })}
             disabled={!canEdit}
-            placeholder="What happens at this step"
+            placeholder="Qué ocurre en este paso"
             className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70"
           />
         </div>
@@ -189,7 +189,7 @@ export function NodeInspector({
       {outgoingCount > 1 && (
         <div>
           <label htmlFor="node-fanout" className="block text-[11px] text-muted-foreground mb-1">
-            Branching ({outgoingCount} outgoing)
+            Ramificación ({outgoingCount} salientes)
           </label>
           <select
             id="node-fanout"
@@ -198,13 +198,13 @@ export function NodeInspector({
             disabled={!canEdit}
             className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70"
           >
-            <option value="all">Run all branches (parallel)</option>
-            <option value="one">Take one branch (exclusive)</option>
+            <option value="all">Ejecutar todas las ramas (en paralelo)</option>
+            <option value="one">Tomar una rama (exclusiva)</option>
           </select>
           <p className="mt-1 text-[11px] text-muted-foreground">
             {(data.fanOut ?? 'all') === 'all'
-              ? 'Every connector out of this node is followed.'
-              : 'Exactly one connector is taken — the connector labels become the choices.'}
+              ? 'Se sigue cada conector que sale de este nodo.'
+              : 'Se toma exactamente un conector — las etiquetas de los conectores se convierten en las opciones.'}
           </p>
         </div>
       )}
@@ -220,7 +220,7 @@ export function NodeInspector({
 
       <div>
         <label htmlFor="node-prompt" className="block text-[11px] text-muted-foreground mb-1">
-          {data.kind === 'human' ? 'Review instructions' : 'Prompt'}
+          {data.kind === 'human' ? 'Instrucciones de revisión' : 'Prompt'}
         </label>
         <textarea
           id="node-prompt"
@@ -229,8 +229,8 @@ export function NodeInspector({
           disabled={!canEdit}
           rows={4}
           placeholder={data.kind === 'human'
-            ? 'What the reviewer should check before signing off'
-            : 'Instructions this node runs with — stored on the flow (a future runtime will use it)'}
+            ? 'Qué debe comprobar el revisor antes de dar el visto bueno'
+            : 'Instrucciones con las que se ejecuta este nodo — se guardan en el flujo (un futuro runtime las usará)'}
           className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70 resize-y"
         />
       </div>
@@ -242,7 +242,7 @@ export function NodeInspector({
           onChange={(e) => onChange({ entryPoint: e.target.checked })}
           disabled={!canEdit}
         />
-        Entry point
+        Punto de entrada
       </label>
 
       {canEdit && (
@@ -252,7 +252,7 @@ export function NodeInspector({
           className="w-full inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs rounded border border-border hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/20"
         >
           <span className="material-icons text-sm">delete</span>
-          Delete node
+          Eliminar nodo
         </button>
       )}
     </div>
@@ -281,12 +281,12 @@ export function EdgeInspector({
           value={label}
           onChange={(e) => onChange({ label: e.target.value })}
           disabled={!canEdit}
-          placeholder="e.g. approved, needs revision"
+          placeholder="p. ej. aprobado, necesita revisión"
           className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70"
         />
       </div>
       <div>
-        <label htmlFor="edge-kind" className="block text-[11px] text-muted-foreground mb-1">Kind</label>
+        <label htmlFor="edge-kind" className="block text-[11px] text-muted-foreground mb-1">Tipo</label>
         <select
           id="edge-kind"
           value={kind}
@@ -294,8 +294,8 @@ export function EdgeInspector({
           disabled={!canEdit}
           className="w-full text-xs px-2 py-1.5 border border-border rounded bg-background disabled:opacity-70"
         >
-          <option value="handoff">Handoff</option>
-          <option value="dependency">Dependency</option>
+          <option value="handoff">Traspaso</option>
+          <option value="dependency">Dependencia</option>
         </select>
       </div>
       {canEdit && (
@@ -305,7 +305,7 @@ export function EdgeInspector({
           className="w-full inline-flex items-center justify-center gap-1 px-2 py-1.5 text-xs rounded border border-border hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/20"
         >
           <span className="material-icons text-sm">delete</span>
-          Delete connector
+          Eliminar conector
         </button>
       )}
     </div>
