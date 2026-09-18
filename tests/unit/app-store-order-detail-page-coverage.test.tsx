@@ -148,7 +148,7 @@ describe('OrderDetailPage — not-found state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Order not found.');
+      expect(container.textContent).toContain('Pedido no encontrado.');
     });
   });
 
@@ -156,7 +156,7 @@ describe('OrderDetailPage — not-found state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: null }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Order not found.');
+      expect(container.textContent).toContain('Pedido no encontrado.');
     });
   });
 
@@ -164,7 +164,7 @@ describe('OrderDetailPage — not-found state', () => {
     fetchMock.mockRejectedValue(new Error('network'));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Order not found.');
+      expect(container.textContent).toContain('Pedido no encontrado.');
     });
   });
 });
@@ -177,7 +177,7 @@ describe('OrderDetailPage — main render', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const link = container.querySelector('a[href*="/store/orders"]') as HTMLAnchorElement;
     expect(link).toBeTruthy();
-    expect(link.textContent).toContain('Orders');
+    expect(link.textContent).toContain('Pedidos');
   });
 
   it('renders order number and status badge', async () => {
@@ -206,7 +206,7 @@ describe('OrderDetailPage — main render', () => {
   it('shows "Same as shipping" when billing address is null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).toContain('Same as shipping');
+    expect(container.textContent).toContain('Igual que el envío');
   });
 
   it('renders order items with product name and price', async () => {
@@ -230,13 +230,13 @@ describe('OrderDetailPage — main render', () => {
   it('does not render discount row when discountCents is 0', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).not.toContain('Discount');
+    expect(container.textContent).not.toContain('Descuento');
   });
 
   it('renders discount row when discountCents > 0', async () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: baseOrder({ discountCents: 200 }) }));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Discount'));
+    await waitFor(() => expect(container.textContent).toContain('Descuento'));
     expect(container.textContent).toContain('-$2.00');
   });
 
@@ -256,7 +256,7 @@ describe('OrderDetailPage — main render', () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: baseOrder({ shippingAddress: null }) }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).toContain('No shipping address');
+    expect(container.textContent).toContain('Sin dirección de envío');
   });
 
   it('renders all section headings', async () => {
@@ -313,7 +313,7 @@ describe('OrderDetailPage — updateStatus', () => {
     fireEvent.click(findBtn(container, 'Update')!);
     await waitFor(() => {
       expect(putCalled).toBe(true);
-      expect(container.textContent).toContain('Status updated.');
+      expect(container.textContent).toContain('Estado actualizado.');
     });
   });
 
@@ -346,7 +346,7 @@ describe('OrderDetailPage — updateStatus', () => {
     fireEvent.change(select, { target: { value: 'cancelled' } });
     await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
     fireEvent.click(findBtn(container, 'Update')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to update status.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar el estado.'));
   });
 
   it('shows "Something went wrong." when status PUT throws', async () => {
@@ -360,7 +360,7 @@ describe('OrderDetailPage — updateStatus', () => {
     fireEvent.change(select, { target: { value: 'processing' } });
     await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
     fireEvent.click(findBtn(container, 'Update')!);
-    await waitFor(() => expect(container.textContent).toContain('Something went wrong.'));
+    await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
   it('clears statusNote on successful update', async () => {
@@ -370,7 +370,7 @@ describe('OrderDetailPage — updateStatus', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    const noteInput = container.querySelector('input[placeholder="Add a note..."]') as HTMLInputElement;
+    const noteInput = container.querySelector('input[placeholder="Escribe una nota…"]') as HTMLInputElement;
     fireEvent.change(noteInput, { target: { value: 'My note' } });
     expect(noteInput.value).toBe('My note');
     const select = container.querySelector('select') as HTMLSelectElement;
@@ -398,7 +398,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     fireEvent.click(findBtn(container, 'Save Tracking')!);
     await waitFor(() => {
       expect(putCalled).toBe(true);
-      expect(container.textContent).toContain('Fulfillment updated.');
+      expect(container.textContent).toContain('Preparación actualizada.');
     });
   });
 
@@ -425,7 +425,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Save Tracking')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to update.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar.'));
   });
 
   it('shows "Something went wrong." when fulfillment PUT throws', async () => {
@@ -436,7 +436,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Save Tracking')!);
-    await waitFor(() => expect(container.textContent).toContain('Something went wrong.'));
+    await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
   it('populates tracking inputs from loaded order', async () => {
@@ -492,7 +492,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     await waitFor(() => {
       expect(statusBody).toBeTruthy();
       expect((statusBody as { status: string }).status).toBe('shipped');
-      expect(container.textContent).toContain('Order marked as shipped.');
+      expect(container.textContent).toContain('Pedido marcado como enviado.');
     });
   });
 
@@ -511,12 +511,12 @@ describe('OrderDetailPage — markAsShipped', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const inputs = Array.from(container.querySelectorAll('input')) as HTMLInputElement[];
-    const trackInput = inputs.find((i) => i.placeholder === 'Enter tracking number') as HTMLInputElement;
+    const trackInput = inputs.find((i) => i.placeholder === 'Ingresa el número de rastreo') as HTMLInputElement;
     fireEvent.change(trackInput, { target: { value: 'TRACK123' } });
     fireEvent.click(findBtn(container, 'Mark as Shipped')!);
     await waitFor(() => {
       expect(fulfillmentCalled).toBe(true);
-      expect(container.textContent).toContain('Order marked as shipped.');
+      expect(container.textContent).toContain('Pedido marcado como enviado.');
     });
   });
 
@@ -543,7 +543,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Mark as Shipped')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to update.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar.'));
   });
 
   it('shows "Something went wrong." when markAsShipped throws', async () => {
@@ -554,7 +554,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Mark as Shipped')!);
-    await waitFor(() => expect(container.textContent).toContain('Something went wrong.'));
+    await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 });
 
@@ -577,7 +577,7 @@ describe('OrderDetailPage — saveNotes', () => {
     fireEvent.click(findBtn(container, 'Save Notes')!);
     await waitFor(() => {
       expect(patchCalled).toBe(true);
-      expect(container.textContent).toContain('Notes saved.');
+      expect(container.textContent).toContain('Notas guardadas.');
     });
   });
 
@@ -600,7 +600,7 @@ describe('OrderDetailPage — saveNotes', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Save Notes')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to save notes.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudieron guardar las notas.'));
   });
 
   it('shows "Something went wrong." when PATCH throws', async () => {
@@ -611,7 +611,7 @@ describe('OrderDetailPage — saveNotes', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Save Notes')!);
-    await waitFor(() => expect(container.textContent).toContain('Something went wrong.'));
+    await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
   it('populates notes textarea from loaded order', async () => {
@@ -680,7 +680,7 @@ describe('OrderDetailPage — computeRates', () => {
     fireEvent.click(findBtn(container, 'Compute Rates')!);
     await waitFor(() => {
       expect(container.textContent).toContain('12');
-      expect(container.textContent).toContain('Parcel');
+      expect(container.textContent).toContain('Paquete');
     });
   });
 
@@ -697,7 +697,7 @@ describe('OrderDetailPage — computeRates', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Compute Rates')!);
-    await waitFor(() => expect(container.textContent).toContain('No rates returned'));
+    await waitFor(() => expect(container.textContent).toContain('No se devolvieron tarifas para este envío.'));
   });
 
   it('shows label error when computeRates returns success:false', async () => {
@@ -723,7 +723,7 @@ describe('OrderDetailPage — computeRates', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Compute Rates')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to compute rates.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudieron calcular las tarifas.'));
   });
 
   it('shows "Failed to compute rates." when computeRates throws', async () => {
@@ -734,7 +734,7 @@ describe('OrderDetailPage — computeRates', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     fireEvent.click(findBtn(container, 'Compute Rates')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to compute rates.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudieron calcular las tarifas.'));
   });
 
   it('shows singular day estimate for 1 day delivery', async () => {
@@ -830,7 +830,7 @@ describe('OrderDetailPage — buyLabel', () => {
     const { container } = renderPage();
     await loadRates(container);
     fireEvent.click(findBtn(container, 'Buy Label')!);
-    await waitFor(() => expect(container.textContent).toContain('Label purchased.'));
+    await waitFor(() => expect(container.textContent).toContain('Etiqueta comprada.'));
   });
 
   it('shows label error when buy fails with message', async () => {
@@ -846,7 +846,7 @@ describe('OrderDetailPage — buyLabel', () => {
     const { container } = renderPage();
     await loadRates(container);
     fireEvent.click(findBtn(container, 'Buy Label')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to purchase label.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo comprar la etiqueta.'));
   });
 
   it('shows "Failed to purchase label." when buy throws', async () => {
@@ -854,7 +854,7 @@ describe('OrderDetailPage — buyLabel', () => {
     const { container } = renderPage();
     await loadRates(container);
     fireEvent.click(findBtn(container, 'Buy Label')!);
-    await waitFor(() => expect(container.textContent).toContain('Failed to purchase label.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo comprar la etiqueta.'));
   });
 
   it('can change rate selection before buying', async () => {
@@ -944,7 +944,7 @@ describe('OrderDetailPage — refundLabel', () => {
         ([url, init]) => url.includes('/label') && (init as RequestInit | undefined)?.method === 'DELETE',
       );
       expect(deleteCalls.length).toBeGreaterThan(0);
-      expect(container.textContent).toContain('Label refund requested.');
+      expect(container.textContent).toContain('Reembolso de etiqueta solicitado.');
     });
   });
 
@@ -982,7 +982,7 @@ describe('OrderDetailPage — refundLabel', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('View Label'));
     await act(async () => { fireEvent.click(findBtn(container, 'Refund Label')!); });
-    await waitFor(() => expect(container.textContent).toContain('Failed to refund label.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo reembolsar la etiqueta.'));
   });
 
   it('shows "Failed to refund label." when DELETE throws', async () => {
@@ -994,7 +994,7 @@ describe('OrderDetailPage — refundLabel', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('View Label'));
     await act(async () => { fireEvent.click(findBtn(container, 'Refund Label')!); });
-    await waitFor(() => expect(container.textContent).toContain('Failed to refund label.'));
+    await waitFor(() => expect(container.textContent).toContain('No se pudo reembolsar la etiqueta.'));
   });
 
   it('renders tracking number as plain text when no trackingUrl', async () => {
@@ -1097,7 +1097,7 @@ describe('OrderDetailPage — status history', () => {
   it('shows "No status changes recorded." when history is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).toContain('No status changes recorded.');
+    expect(container.textContent).toContain('No hay cambios de estado registrados.');
   });
 
   it('renders status history events with status badge and date', async () => {
