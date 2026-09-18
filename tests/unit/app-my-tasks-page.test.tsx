@@ -150,7 +150,7 @@ describe('MyTasksPage — shell', () => {
     setupResponse();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('My Tasks');
+      expect(container.textContent).toContain('Mis tareas');
     });
   });
 
@@ -357,7 +357,7 @@ describe('MyTasksPage — filter chip interactions', () => {
   it('clicks the Kanban source chip → router.replace with source=kanban', async () => {
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const kanbanBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       /Kanban\s*$/.test((b.textContent || '').trim()) || (b.textContent || '').trim().endsWith('Kanban'),
     ) as HTMLButtonElement;
@@ -371,7 +371,7 @@ describe('MyTasksPage — filter chip interactions', () => {
     searchParamsValue = new URLSearchParams('projectIds=5');
     setupResponse({ projectsAvailable: [{ id: 5, name: 'P5', projectKey: null }] });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const brainBtn = Array.from(container.querySelectorAll('button')).find((b) => {
       const t = (b.textContent || '').trim();
       return t.endsWith('Brain') && !t.includes('Project');
@@ -388,7 +388,7 @@ describe('MyTasksPage — filter chip interactions', () => {
     searchParamsValue = new URLSearchParams('source=brain');
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const allBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       (b.textContent || '').trim() === 'All',
     ) as HTMLButtonElement;
@@ -401,7 +401,7 @@ describe('MyTasksPage — filter chip interactions', () => {
   it('toggles a priority chip on', async () => {
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const highBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim() === 'high',
     ) as HTMLButtonElement;
@@ -414,7 +414,7 @@ describe('MyTasksPage — filter chip interactions', () => {
     searchParamsValue = new URLSearchParams('priorities=high');
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const highBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim() === 'high',
     ) as HTMLButtonElement;
@@ -426,9 +426,9 @@ describe('MyTasksPage — filter chip interactions', () => {
   it('clicks the Overdue button toggles overdue=1', async () => {
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const overdueBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      /Overdue/.test(b.textContent || ''),
+      /Atrasado/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     fireEvent.click(overdueBtn);
     await waitFor(() => expect(replaceMock).toHaveBeenCalled());
@@ -438,7 +438,7 @@ describe('MyTasksPage — filter chip interactions', () => {
   it('toggles Hide completed checkbox to openOnly=0', async () => {
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     const cb = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     expect(cb).toBeTruthy();
     fireEvent.click(cb);
@@ -481,7 +481,7 @@ describe('MyTasksPage — filter chip interactions', () => {
       projectsAvailable: [{ id: 7, name: 'Awesome', projectKey: 'AW' }],
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     // The Awesome chip should NOT render
     expect(container.textContent).not.toContain('Awesome');
   });
@@ -511,7 +511,7 @@ describe('MyTasksPage — filter chip interactions', () => {
   it('does not render Clear filters when no filters active', async () => {
     setupResponse();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('My Tasks'));
+    await waitFor(() => expect(container.textContent).toContain('Mis tareas'));
     expect(container.textContent).not.toContain('Clear filters');
   });
 });
