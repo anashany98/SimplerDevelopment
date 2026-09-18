@@ -93,12 +93,12 @@ describe('DynamicPanel — dispatcher', () => {
 
   it('dispatches accordion blocks', () => {
     renderPanel({ id: 'ac1', type: 'accordion', title: '', items: [] });
-    expect(screen.getByText(/Use the controls in the editor/)).toBeTruthy();
+    expect(screen.getByText(/Usa los controles del editor/)).toBeTruthy();
   });
 
   it('dispatches product-grid blocks', () => {
     renderPanel({ id: 'pg1', type: 'product-grid' });
-    expect(screen.getByText('Sort By')).toBeTruthy();
+    expect(screen.getByText('Ordenar por')).toBeTruthy();
   });
 
   it('dispatches featured-products blocks', () => {
@@ -108,7 +108,7 @@ describe('DynamicPanel — dispatcher', () => {
 
   it('dispatches product-categories blocks', () => {
     renderPanel({ id: 'pc1', type: 'product-categories' });
-    expect(screen.getByText('Layout')).toBeTruthy();
+    expect(screen.getByText('Diseño')).toBeTruthy();
   });
 
   it('dispatches shopping-cart blocks', () => {
@@ -332,7 +332,7 @@ describe('DynamicPanel — FeaturedContentBlockSettings', () => {
 
   it('changes imagePosition via select', () => {
     const { onChange } = renderPanel(baseFeatured);
-    const select = screen.getByDisplayValue('Right') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Derecha') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ imagePosition: 'left' });
   });
@@ -361,7 +361,7 @@ describe('DynamicPanel — FeaturedContentBlockSettings', () => {
   it('shows Change Image and Remove buttons when imageUrl set', () => {
     const { onChange } = renderPanel({ ...baseFeatured, imageUrl: 'https://img.com/existing.jpg' });
     expect(screen.getByText('Change Image')).toBeTruthy();
-    const removeBtn = screen.getByText('Remove');
+    const removeBtn = screen.getByText('Quitar');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledWith({ imageUrl: '' });
   });
@@ -407,7 +407,7 @@ describe('DynamicPanel — AccordionBlockSettings', () => {
 
   it('shows instruction text about editor controls', () => {
     renderPanel(baseAccordion);
-    expect(screen.getByText(/Use the controls in the editor/)).toBeTruthy();
+    expect(screen.getByText(/Usa los controles del editor/)).toBeTruthy();
   });
 });
 
@@ -810,7 +810,7 @@ describe('DynamicPanel — StoreBannerBlockSettings', () => {
       backgroundImage: 'https://img.com/bg.jpg',
     });
     expect(screen.getByText('Change')).toBeTruthy();
-    const removeBtn = screen.getByText('Remove');
+    const removeBtn = screen.getByText('Quitar');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledWith({ backgroundImage: '' });
   });
