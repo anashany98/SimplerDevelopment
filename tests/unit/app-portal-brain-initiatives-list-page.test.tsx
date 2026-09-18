@@ -156,7 +156,7 @@ describe('InitiativesListPage — loading', () => {
   it('shows "Loading" text while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -244,7 +244,7 @@ describe('InitiativesListPage — empty state', () => {
   it('shows "No initiatives yet." text when empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No initiatives yet');
+      expect(container.textContent).toContain('Aún no hay iniciativas');
     });
   });
 
@@ -384,7 +384,7 @@ describe('InitiativesListPage — priority filter', () => {
   it('renders "All priorities" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All priorities');
+      expect(container.textContent).toContain('Todas las prioridades');
     });
   });
 
@@ -393,7 +393,7 @@ describe('InitiativesListPage — priority filter', () => {
     await waitFor(() => expect(container.textContent).toContain('Initiatives'));
     const selects = Array.from(container.querySelectorAll('select')) as HTMLSelectElement[];
     const prioritySelect = selects.find((s) =>
-      Array.from(s.options).some((o) => o.text === 'All priorities'),
+      Array.from(s.options).some((o) => o.text === 'Todas las prioridades'),
     );
     expect(prioritySelect).toBeTruthy();
     const opts = Array.from(prioritySelect!.options).map((o) => o.value);
@@ -405,10 +405,10 @@ describe('InitiativesListPage — priority filter', () => {
 
   it('changing priority dropdown calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('All priorities'));
+    await waitFor(() => expect(container.textContent).toContain('Todas las prioridades'));
     const selects = Array.from(container.querySelectorAll('select')) as HTMLSelectElement[];
     const prioritySelect = selects.find((s) =>
-      Array.from(s.options).some((o) => o.text === 'All priorities'),
+      Array.from(s.options).some((o) => o.text === 'Todas las prioridades'),
     ) as HTMLSelectElement;
     fireEvent.change(prioritySelect, { target: { value: 'high' } });
     expect(replaceMock).toHaveBeenCalled();
@@ -535,7 +535,7 @@ describe('InitiativesListPage — clear filters button', () => {
     await waitFor(() => expect(container.textContent).toContain('Initiatives'));
     // No priority/owner/hasOpenGoals/targetDateBefore → no Clear button
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear'),
+      (b) => b.textContent?.includes('Limpiar'),
     );
     expect(clearBtn).toBeUndefined();
   });
@@ -545,7 +545,7 @@ describe('InitiativesListPage — clear filters button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Clear'),
+        (b) => b.textContent?.includes('Limpiar'),
       );
       expect(clearBtn).toBeTruthy();
     });
@@ -556,7 +556,7 @@ describe('InitiativesListPage — clear filters button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Clear'),
+        (b) => b.textContent?.includes('Limpiar'),
       );
       expect(clearBtn).toBeTruthy();
     });
@@ -567,7 +567,7 @@ describe('InitiativesListPage — clear filters button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Clear'),
+        (b) => b.textContent?.includes('Limpiar'),
       );
       expect(clearBtn).toBeTruthy();
     });
@@ -578,12 +578,12 @@ describe('InitiativesListPage — clear filters button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Clear'),
+        (b) => b.textContent?.includes('Limpiar'),
       );
       expect(clearBtn).toBeTruthy();
     });
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear'),
+      (b) => b.textContent?.includes('Limpiar'),
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -597,7 +597,7 @@ describe('InitiativesListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Project Alpha'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     );
     expect(prevBtn).toBeUndefined();
   });
@@ -607,7 +607,7 @@ describe('InitiativesListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Project Alpha'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn).toBeTruthy();
     expect(prevBtn.disabled).toBe(false);
@@ -624,7 +624,7 @@ describe('InitiativesListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const nextBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Next'),
+        (b) => b.textContent?.includes('Siguiente'),
       ) as HTMLButtonElement;
       expect(nextBtn).toBeTruthy();
       expect(nextBtn.disabled).toBe(false);
@@ -642,12 +642,12 @@ describe('InitiativesListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const nextBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Next'),
+        (b) => b.textContent?.includes('Siguiente'),
       );
       expect(nextBtn).toBeTruthy();
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -658,7 +658,7 @@ describe('InitiativesListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Project Alpha'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     expect(replaceMock).toHaveBeenCalled();
