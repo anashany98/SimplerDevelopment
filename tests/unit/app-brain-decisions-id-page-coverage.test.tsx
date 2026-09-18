@@ -680,7 +680,7 @@ describe('DecisionDetailPage — context section', () => {
     await waitFor(() => {
       // Should have a Show button since context > 400 chars
       const showBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Show') && !b.textContent?.includes('Hide'),
+        (b) => b.textContent?.includes('Mostrar') && !b.textContent?.includes('Ocultar'),
       );
       expect(showBtn).toBeTruthy();
     });
@@ -695,7 +695,7 @@ describe('DecisionDetailPage — context section', () => {
     let showBtn: HTMLButtonElement | undefined;
     await waitFor(() => {
       showBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Show') && !b.textContent?.includes('Hide'),
+        (b) => b.textContent?.includes('Mostrar') && !b.textContent?.includes('Ocultar'),
       ) as HTMLButtonElement | undefined;
       expect(showBtn).toBeTruthy();
     });
@@ -744,7 +744,7 @@ describe('DecisionDetailPage — alternatives section', () => {
     // expand a generous timeout to absorb CI shard contention.
     const findShowBtn = () =>
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Show') && !b.textContent?.includes('Hide'),
+        (b) => b.textContent?.includes('Mostrar') && !b.textContent?.includes('Ocultar'),
       );
     await waitFor(() => expect(findShowBtn()).toBeTruthy());
     await act(async () => { fireEvent.click(findShowBtn() as HTMLButtonElement); });
@@ -1090,7 +1090,7 @@ describe('DecisionDetailPage — reject flow', () => {
     });
     // Cancel
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1244,15 +1244,15 @@ describe('DecisionDetailPage — Section collapse/expand', () => {
       Array.from(container.querySelectorAll('button')).find(
         (b) => b.textContent?.includes(want) && !b.textContent?.includes(not),
       ) as HTMLButtonElement | undefined;
-    await waitFor(() => expect(findBtn('Show', 'Hide')).toBeTruthy());
-    await act(async () => { fireEvent.click(findBtn('Show', 'Hide')!); });
+    await waitFor(() => expect(findBtn('Mostrar', 'Ocultar')).toBeTruthy());
+    await act(async () => { fireEvent.click(findBtn('Mostrar', 'Ocultar')!); });
     await waitFor(
-      () => expect(findBtn('Hide', 'Show')).toBeTruthy(),
+      () => expect(findBtn('Ocultar', 'Mostrar')).toBeTruthy(),
       { timeout: 3000 },
     );
-    await act(async () => { fireEvent.click(findBtn('Hide', 'Show')!); });
+    await act(async () => { fireEvent.click(findBtn('Ocultar', 'Mostrar')!); });
     await waitFor(
-      () => expect(findBtn('Show', 'Hide')).toBeTruthy(),
+      () => expect(findBtn('Mostrar', 'Ocultar')).toBeTruthy(),
       { timeout: 3000 },
     );
   });
