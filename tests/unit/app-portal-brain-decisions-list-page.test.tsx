@@ -155,7 +155,7 @@ describe('DecisionsListPage — loading', () => {
   it('shows spinner while decisions fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading decisions');
+    expect(container.textContent).toContain('Cargando decisiones');
   });
 
   it('shows progress_activity icon in loading state', () => {
@@ -219,7 +219,7 @@ describe('DecisionsListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -316,7 +316,7 @@ describe('DecisionsListPage — header', () => {
   it('renders "Decisions" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Decisions');
+      expect(container.textContent).toContain('Decisiones');
     });
   });
 
@@ -339,7 +339,7 @@ describe('DecisionsListPage — header', () => {
 // ─── Status filter pills ───────────────────────────────────────────────────
 
 describe('DecisionsListPage — status filter pills', () => {
-  const statuses = ['Todos', 'Accepted', 'Proposed', 'Superseded', 'Rechazado'];
+  const statuses = ['Todos', 'Aceptado', 'Propuesto', 'Sustituido', 'Rechazado'];
 
   statuses.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -352,7 +352,7 @@ describe('DecisionsListPage — status filter pills', () => {
 
   it('clicking "All" pill calls router.replace to update URL', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     // "All" status pill — textContent includes icon name + "All"
     // The reversibility buttons also have "All" — distinguish by finding the one with an icon class
     // that wraps text "All" among the status filter row. Use data-stable text includes.
@@ -366,10 +366,10 @@ describe('DecisionsListPage — status filter pills', () => {
 
   it('clicking "Proposed" pill calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     // Pills render an icon + label; match by textContent inclusion and exclude other status pills
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Proposed') && !b.textContent?.includes('Superseded'),
+      (b) => b.textContent?.includes('Propuesto') && !b.textContent?.includes('Sustituido'),
     ) as HTMLButtonElement;
     expect(btn).toBeTruthy();
     fireEvent.click(btn);
@@ -382,16 +382,16 @@ describe('DecisionsListPage — status filter pills', () => {
 describe('DecisionsListPage — reversibility filter', () => {
   it('renders All, One-way and Two-way reversibility buttons', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
-    expect(container.textContent).toContain('One-way');
-    expect(container.textContent).toContain('Two-way');
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
+    expect(container.textContent).toContain('Irreversible');
+    expect(container.textContent).toContain('Reversible');
   });
 
   it('clicking "One-way" calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'One-way',
+      (b) => b.textContent?.trim() === 'Irreversible',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     expect(replaceMock).toHaveBeenCalled();
@@ -399,9 +399,9 @@ describe('DecisionsListPage — reversibility filter', () => {
 
   it('clicking "Two-way" calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Two-way',
+      (b) => b.textContent?.trim() === 'Reversible',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     expect(replaceMock).toHaveBeenCalled();
@@ -457,14 +457,14 @@ describe('DecisionsListPage — decision maker dropdown', () => {
 describe('DecisionsListPage — date filters', () => {
   it('renders a "From" date input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     const inputs = Array.from(container.querySelectorAll('input[type="date"]'));
     expect(inputs.length).toBeGreaterThanOrEqual(2);
   });
 
   it('changing "From" date calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     const inputs = Array.from(container.querySelectorAll('input[type="date"]')) as HTMLInputElement[];
     fireEvent.change(inputs[0], { target: { value: '2025-01-01' } });
     expect(replaceMock).toHaveBeenCalled();
@@ -472,7 +472,7 @@ describe('DecisionsListPage — date filters', () => {
 
   it('changing "To" date calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
     const inputs = Array.from(container.querySelectorAll('input[type="date"]')) as HTMLInputElement[];
     fireEvent.change(inputs[1], { target: { value: '2025-12-31' } });
     expect(replaceMock).toHaveBeenCalled();
@@ -485,13 +485,13 @@ describe('DecisionsListPage — superseded only checkbox', () => {
   it('renders the "Superseded only" checkbox label', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Superseded only');
+      expect(container.textContent).toContain('Solo sustituidas');
     });
   });
 
   it('toggling the checkbox calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Superseded only'));
+    await waitFor(() => expect(container.textContent).toContain('Solo sustituidas'));
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     expect(replaceMock).toHaveBeenCalled();
@@ -503,15 +503,15 @@ describe('DecisionsListPage — superseded only checkbox', () => {
 describe('DecisionsListPage — clear filters button', () => {
   it('does NOT render "Clear filters" when no secondary filters are active', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Decisions'));
-    expect(container.textContent).not.toContain('Clear filters');
+    await waitFor(() => expect(container.textContent).toContain('Decisiones'));
+    expect(container.textContent).not.toContain('Limpiar filtros');
   });
 
   it('renders "Clear filters" when reversibility filter is active', async () => {
     searchParamsMap = { reversibility: 'one_way' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear filters');
+      expect(container.textContent).toContain('Limpiar filtros');
     });
   });
 
@@ -519,7 +519,7 @@ describe('DecisionsListPage — clear filters button', () => {
     searchParamsMap = { dateFrom: '2025-01-01' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear filters');
+      expect(container.textContent).toContain('Limpiar filtros');
     });
   });
 
@@ -527,16 +527,16 @@ describe('DecisionsListPage — clear filters button', () => {
     searchParamsMap = { supersededOnly: 'true' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear filters');
+      expect(container.textContent).toContain('Limpiar filtros');
     });
   });
 
   it('clicking "Clear filters" calls router.replace', async () => {
     searchParamsMap = { reversibility: 'one_way' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Clear filters'));
+    await waitFor(() => expect(container.textContent).toContain('Limpiar filtros'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear filters'),
+      (b) => b.textContent?.includes('Limpiar filtros'),
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -549,7 +549,7 @@ describe('DecisionsListPage — pagination', () => {
   it('renders "Page 1" label on the default view', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1');
+      expect(container.textContent).toContain('Página 1');
     });
   });
 
@@ -615,14 +615,14 @@ describe('DecisionsListPage — pagination', () => {
     searchParamsMap = { page: '1' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2');
+      expect(container.textContent).toContain('Página 2');
     });
   });
 
   it('Previous button is enabled on page > 0', async () => {
     searchParamsMap = { page: '1' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 2'));
+    await waitFor(() => expect(container.textContent).toContain('Página 2'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
@@ -632,7 +632,7 @@ describe('DecisionsListPage — pagination', () => {
   it('clicking Previous on page 1 calls router.replace', async () => {
     searchParamsMap = { page: '1' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 2'));
+    await waitFor(() => expect(container.textContent).toContain('Página 2'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;

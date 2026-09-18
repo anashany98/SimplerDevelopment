@@ -140,13 +140,13 @@ export default function BrainGlossaryListPage() {
       const r = await fetch(`/api/portal/brain/glossary?${qs.toString()}`);
       const json: ListResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load glossary.');
+        setError(json.message || 'No se pudo cargar el glosario.');
       } else {
         setItems(json.data?.items ?? []);
         setTotal(json.data?.total ?? 0);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -174,15 +174,15 @@ export default function BrainGlossaryListPage() {
   const groups = useMemo(() => {
     const map = new Map<string, GlossaryTermCardData[]>();
     for (const item of items) {
-      const key = item.category?.trim() || 'Uncategorized';
+      const key = item.category?.trim() || 'Sin categoría';
       const arr = map.get(key) ?? [];
       arr.push(item);
       map.set(key, arr);
     }
-    // Sort group keys: real categories alpha first, "Uncategorized" last.
+    // Sort group keys: real categories alpha first, "Sin categoría" last.
     const sorted = Array.from(map.entries()).sort(([a], [b]) => {
-      if (a === 'Uncategorized') return 1;
-      if (b === 'Uncategorized') return -1;
+      if (a === 'Sin categoría') return 1;
+      if (b === 'Sin categoría') return -1;
       return a.localeCompare(b);
     });
     // Each group's items are already alpha-sorted by term server-side.
@@ -198,7 +198,7 @@ export default function BrainGlossaryListPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">menu_book</span>
-            Glossary
+            Glosario
           </span>
         }
         subtitle="Terminología específica del cliente. La usan Preguntar, las sugerencias de IA y las referencias en línea."
@@ -206,7 +206,7 @@ export default function BrainGlossaryListPage() {
           <>
             <button type="button" onClick={() => setBulkOpen(true)} className={pBtnGhost}>
               <span className="material-icons text-base">upload</span>
-              Bulk import
+              Importar en bloque
             </button>
             <Link href="/portal/brain/glossary/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>Nuevo término</Link>
@@ -230,7 +230,7 @@ export default function BrainGlossaryListPage() {
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
-                {s}
+                {s === 'active' ? 'Activos' : s === 'deprecated' ? 'Obsoletos' : 'Todos'}
               </button>
             ))}
           </div>
@@ -258,7 +258,7 @@ export default function BrainGlossaryListPage() {
             className={pSelect}
           >
             <option value="">Todos los propietarios</option>
-            {users.map(u => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
+            {users.map(u => <option key={u.id} value={u.id}>{u.name ?? `Usuario #${u.id}`}</option>)}
           </select>
         </div>
 
@@ -288,7 +288,7 @@ export default function BrainGlossaryListPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load glossary
+            No se pudo cargar el glosario
           </div>
           <p>{error}</p>
         </div>
@@ -299,13 +299,13 @@ export default function BrainGlossaryListPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">menu_book</span>
           <h2 className="text-base font-semibold text-foreground mb-1">
             {searchParam || categoryParam || ownerParam || statusParam !== 'active'
-              ? 'No matching terms.'
-              : 'No glossary terms yet.'}
+              ? 'No hay términos que coincidan.'
+              : 'Aún no hay términos en el glosario.'}
           </h2>
           <p className="text-xs text-muted-foreground mb-4">
             {searchParam || categoryParam || ownerParam || statusParam !== 'active'
-              ? 'Try clearing filters.'
-              : 'Start by adding your most-confused acronym.'}
+              ? 'Prueba a quitar los filtros.'
+              : 'Empieza añadiendo el acrónimo que más dudas genera.'}
           </p>
           <Link href="/portal/brain/glossary/new" className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>Nuevo término</Link>
@@ -342,7 +342,7 @@ export default function BrainGlossaryListPage() {
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-3 border-t border-border text-xs">
               <span className="text-muted-foreground">
-                Page {pageParam} of {totalPages} · {total} term{total === 1 ? '' : 's'}
+                Página {pageParam} de {totalPages} · {total} término{total === 1 ? '' : 's'}
               </span>
               <div className="flex items-center gap-1">
                 <button
@@ -352,7 +352,7 @@ export default function BrainGlossaryListPage() {
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span className="material-icons text-base">chevron_left</span>
-                  Prev
+                  Anterior
                 </button>
                 <button
                   type="button"
