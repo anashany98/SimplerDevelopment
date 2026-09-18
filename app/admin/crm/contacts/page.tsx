@@ -56,16 +56,16 @@ export default function CrmContactsPage() {
             <Link href="/admin/crm" className="text-muted-foreground hover:text-foreground transition-colors">
               <span className="material-icons text-sm">arrow_back</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground">CRM Contacts</h1>
+            <h1 className="text-2xl font-bold text-foreground">Contactos del CRM</h1>
           </div>
-          <p className="text-muted-foreground mt-1">All contacts across every client account.</p>
+          <p className="text-muted-foreground mt-1">Todos los contactos de todas las cuentas de cliente.</p>
         </div>
         <form onSubmit={handleSearch} className="flex gap-2">
           <div className="relative">
             <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">search</span>
             <input
               type="text"
-              placeholder="Search contacts..."
+              placeholder="Buscar contactos..."
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
               className="pl-9 pr-4 py-2 text-sm border border-border rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -76,13 +76,13 @@ export default function CrmContactsPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading contacts...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando contactos...</div>
       ) : contacts.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">person_off</span>
-          <h3 className="mt-4 font-semibold text-foreground">No contacts found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron contactos</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {search ? 'Try a different search term.' : 'No CRM contacts have been created yet.'}
+            {search ? 'Prueba con otro término de búsqueda.' : 'Todavía no se ha creado ningún contacto del CRM.'}
           </p>
         </div>
       ) : (
@@ -97,7 +97,7 @@ export default function CrmContactsPage() {
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fuente</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Contacted</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Último contacto</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

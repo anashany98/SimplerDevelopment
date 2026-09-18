@@ -49,9 +49,9 @@ export default function CrmContractsPage() {
             <Link href="/admin/crm" className="text-muted-foreground hover:text-foreground transition-colors">
               <span className="material-icons text-sm">arrow_back</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground">CRM Contracts</h1>
+            <h1 className="text-2xl font-bold text-foreground">Contratos del CRM</h1>
           </div>
-          <p className="text-muted-foreground mt-1">All contracts across every client account.</p>
+          <p className="text-muted-foreground mt-1">Todos los contratos de todas las cuentas de cliente.</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {['all', 'draft', 'sent', 'partially_signed', 'fully_executed', 'voided', 'expired'].map(s => (
@@ -69,13 +69,13 @@ export default function CrmContractsPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading contracts...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando contratos...</div>
       ) : contracts.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">gavel</span>
-          <h3 className="mt-4 font-semibold text-foreground">No contracts found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron contratos</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {filter !== 'all' ? `No ${filter.replace('_', ' ')} contracts.` : 'No CRM contracts have been created yet.'}
+            {filter !== 'all' ? `No hay contratos en estado ${filter.replace('_', ' ')}.` : 'Todavía no se ha creado ningún contrato del CRM.'}
           </p>
         </div>
       ) : (
@@ -87,7 +87,7 @@ export default function CrmContractsPage() {
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Signers</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Firmantes</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Creado</th>
                 </tr>
               </thead>

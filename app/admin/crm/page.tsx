@@ -44,7 +44,7 @@ export default function CrmDashboardPage() {
   if (loading) {
     return (
       <div className="p-6 max-w-7xl mx-auto">
-        <div className="text-center py-20 text-muted-foreground">Loading CRM dashboard...</div>
+        <div className="text-center py-20 text-muted-foreground">Cargando panel de CRM...</div>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function CrmDashboardPage() {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">error_outline</span>
-          <h3 className="mt-4 font-semibold text-foreground">Failed to load dashboard</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se pudo cargar el panel</h3>
         </div>
       </div>
     );
@@ -73,17 +73,17 @@ export default function CrmDashboardPage() {
     (data.contractsByStatus['partially_signed'] ?? 0);
 
   const navLinks = [
-    { href: '/admin/crm/contacts', icon: 'contacts', label: 'Contactos', desc: 'Manage all CRM contacts' },
-    { href: '/admin/crm/companies', icon: 'business', label: 'Empresas', desc: 'View companies across clients' },
-    { href: '/admin/crm/deals', icon: 'handshake', label: 'Negocios', desc: 'Track deal pipelines' },
-    { href: '/admin/crm/proposals', icon: 'description', label: 'Propuestas', desc: 'Monitor proposals' },
-    { href: '/admin/crm/contracts', icon: 'gavel', label: 'Contratos', desc: 'Track contract signings' },
+    { href: '/admin/crm/contacts', icon: 'contacts', label: 'Contactos', desc: 'Gestiona todos los contactos del CRM' },
+    { href: '/admin/crm/companies', icon: 'business', label: 'Empresas', desc: 'Consulta las empresas de todos los clientes' },
+    { href: '/admin/crm/deals', icon: 'handshake', label: 'Negocios', desc: 'Sigue los pipelines de negocios' },
+    { href: '/admin/crm/proposals', icon: 'description', label: 'Propuestas', desc: 'Supervisa las propuestas' },
+    { href: '/admin/crm/contracts', icon: 'gavel', label: 'Contratos', desc: 'Sigue las firmas de contratos' },
   ];
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">CRM Dashboard</h1>
+        <h1 className="text-2xl font-bold text-foreground">Panel de CRM</h1>
         <p className="text-muted-foreground mt-1">Resumen de contactos, negocios, propuestas y contratos de todos los clientes.</p>
       </div>
 
@@ -95,7 +95,7 @@ export default function CrmDashboardPage() {
               <span className="material-icons text-blue-600">contacts</span>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Total Contacts</p>
+              <p className="text-sm text-muted-foreground">Contactos totales</p>
               <p className="text-2xl font-bold text-foreground">{data.totalContacts}</p>
             </div>
           </div>
@@ -107,9 +107,9 @@ export default function CrmDashboardPage() {
               <span className="material-icons text-green-600">handshake</span>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Open Deals</p>
+              <p className="text-sm text-muted-foreground">Negocios abiertos</p>
               <p className="text-2xl font-bold text-foreground">{openDeals.count}</p>
-              <p className="text-xs text-muted-foreground">{formatCents(openDeals.value)} pipeline</p>
+              <p className="text-xs text-muted-foreground">{formatCents(openDeals.value)} en pipeline</p>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function CrmDashboardPage() {
               <span className="material-icons text-purple-600">description</span>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Proposals Sent</p>
+              <p className="text-sm text-muted-foreground">Propuestas enviadas</p>
               <p className="text-2xl font-bold text-foreground">{proposalsSent}</p>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function CrmDashboardPage() {
               <span className="material-icons text-orange-600">gavel</span>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Contracts Pending</p>
+              <p className="text-sm text-muted-foreground">Contratos pendientes</p>
               <p className="text-2xl font-bold text-foreground">{contractsPending}</p>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function CrmDashboardPage() {
       {/* Deal Pipeline + Proposal Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-card border border-border rounded-xl p-5">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Deal Pipeline</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Pipeline de negocios</h2>
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
               <div className="flex items-center gap-2">
@@ -150,27 +150,27 @@ export default function CrmDashboardPage() {
                 <span className="text-sm font-medium text-blue-700">Abierto</span>
               </div>
               <div className="text-right">
-                <span className="text-sm font-bold text-blue-700">{openDeals.count} deals</span>
+                <span className="text-sm font-bold text-blue-700">{openDeals.count} negocios</span>
                 <span className="text-xs text-blue-600 ml-2">{formatCents(openDeals.value)}</span>
               </div>
             </div>
             <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="material-icons text-green-600 text-sm">check_circle</span>
-                <span className="text-sm font-medium text-green-700">Won</span>
+                <span className="text-sm font-medium text-green-700">Ganados</span>
               </div>
               <div className="text-right">
-                <span className="text-sm font-bold text-green-700">{wonDeals.count} deals</span>
+                <span className="text-sm font-bold text-green-700">{wonDeals.count} negocios</span>
                 <span className="text-xs text-green-600 ml-2">{formatCents(wonDeals.value)}</span>
               </div>
             </div>
             <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
               <div className="flex items-center gap-2">
                 <span className="material-icons text-red-600 text-sm">cancel</span>
-                <span className="text-sm font-medium text-red-700">Lost</span>
+                <span className="text-sm font-medium text-red-700">Perdidos</span>
               </div>
               <div className="text-right">
-                <span className="text-sm font-bold text-red-700">{lostDeals.count} deals</span>
+                <span className="text-sm font-bold text-red-700">{lostDeals.count} negocios</span>
                 <span className="text-xs text-red-600 ml-2">{formatCents(lostDeals.value)}</span>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function CrmDashboardPage() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-5">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Proposal Status</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Estado de las propuestas</h2>
           <div className="space-y-2">
             {['draft', 'sent', 'viewed', 'accepted', 'declined', 'expired'].map(s => {
               const ct = data.proposalsByStatus[s] ?? 0;
@@ -199,7 +199,7 @@ export default function CrmDashboardPage() {
               );
             })}
             {Object.values(data.proposalsByStatus).every(v => v === 0) && (
-              <p className="text-sm text-muted-foreground text-center py-4">No proposals yet</p>
+              <p className="text-sm text-muted-foreground text-center py-4">Aún no hay propuestas</p>
             )}
           </div>
         </div>
@@ -207,11 +207,11 @@ export default function CrmDashboardPage() {
 
       {/* Recent Activities */}
       <div className="bg-card border border-border rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Recent Activities</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Actividades recientes</h2>
         {data.recentActivities.length === 0 ? (
           <div className="text-center py-8">
             <span className="material-icons text-4xl text-muted-foreground">event_note</span>
-            <p className="text-sm text-muted-foreground mt-2">No recent activities</p>
+            <p className="text-sm text-muted-foreground mt-2">No hay actividades recientes</p>
           </div>
         ) : (
           <div className="divide-y divide-border">
@@ -223,7 +223,7 @@ export default function CrmDashboardPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">{a.title}</p>
                   <p className="text-xs text-muted-foreground">
-                    {a.clientCompany ?? 'Unknown client'} &middot; {new Date(a.createdAt).toLocaleDateString()}
+                    {a.clientCompany ?? 'Cliente desconocido'} &middot; {new Date(a.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${a.completedAt ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>

@@ -57,9 +57,9 @@ export default function CrmDealsPage() {
             <Link href="/admin/crm" className="text-muted-foreground hover:text-foreground transition-colors">
               <span className="material-icons text-sm">arrow_back</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground">CRM Deals</h1>
+            <h1 className="text-2xl font-bold text-foreground">Negocios del CRM</h1>
           </div>
-          <p className="text-muted-foreground mt-1">All deals across every client pipeline.</p>
+          <p className="text-muted-foreground mt-1">Todos los negocios de todos los pipelines de clientes.</p>
         </div>
         <div className="flex items-center gap-2">
           {['all', 'open', 'won', 'lost'].map(s => (
@@ -79,27 +79,27 @@ export default function CrmDealsPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-sm text-muted-foreground">Pipeline Value</p>
+          <p className="text-sm text-muted-foreground">Valor del pipeline</p>
           <p className="text-xl font-bold text-foreground">{formatCents(pipelineValue)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-sm text-muted-foreground">Won Value</p>
+          <p className="text-sm text-muted-foreground">Valor ganado</p>
           <p className="text-xl font-bold text-green-600">{formatCents(wonValue)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-sm text-muted-foreground">Lost Deals</p>
+          <p className="text-sm text-muted-foreground">Negocios perdidos</p>
           <p className="text-xl font-bold text-red-600">{lostCount}</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading deals...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando negocios...</div>
       ) : deals.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">handshake</span>
-          <h3 className="mt-4 font-semibold text-foreground">No deals found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron negocios</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {filter !== 'all' ? `No ${filter} deals.` : 'No CRM deals have been created yet.'}
+            {filter !== 'all' ? `No hay negocios en estado ${filter}.` : 'Todavía no se ha creado ningún negocio del CRM.'}
           </p>
         </div>
       ) : (
@@ -110,13 +110,13 @@ export default function CrmDealsPage() {
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Valor</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contacto</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Empresa</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Stage</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Etapa</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pipeline</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prioridad</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Close Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha de cierre</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                 </tr>
               </thead>
