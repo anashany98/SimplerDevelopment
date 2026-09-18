@@ -207,7 +207,7 @@ describe('BrainDocumentEditPage — loading state', () => {
   it('shows loading spinner while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 
   it('shows progress_activity icon in loading state', () => {
@@ -326,7 +326,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
   it('renders "Edit draft" heading after load', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit draft');
+      expect(container.textContent).toContain('Editar borrador');
     });
   });
 
@@ -418,7 +418,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
       const allLinks = Array.from(
         container.querySelectorAll('a[href="/portal/brain/documents/1"]'),
       ) as HTMLAnchorElement[];
-      const viewLink = allLinks.find((l) => l.textContent?.includes('View'));
+      const viewLink = allLinks.find((l) => l.textContent?.includes('Ver'));
       expect(viewLink).toBeTruthy();
     });
   });
@@ -427,7 +427,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -623,7 +623,7 @@ describe('BrainDocumentEditPage — publish button state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       ) as HTMLButtonElement;
       expect(btn).toBeTruthy();
       expect(btn.disabled).toBe(true);
@@ -634,7 +634,7 @@ describe('BrainDocumentEditPage — publish button state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       ) as HTMLButtonElement;
       expect(btn).toBeTruthy();
       expect(btn.disabled).toBe(false);
@@ -649,7 +649,7 @@ async function clickPublishButton(container: HTMLElement) {
   let publishBtn: HTMLButtonElement;
   await waitFor(() => {
     publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish') && !b.textContent?.includes('Publishing') && !(b as HTMLButtonElement).disabled,
+      (b) => b.textContent?.includes('Publicar') && !b.textContent?.includes('Publishing') && !(b as HTMLButtonElement).disabled,
     ) as HTMLButtonElement;
     expect(publishBtn).toBeTruthy();
   });
@@ -740,8 +740,8 @@ describe('BrainDocumentEditPage — publish flow', () => {
     let publishBtn: HTMLButtonElement;
     await waitFor(() => {
       publishBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'publishPublish' ||
-               (b.textContent?.includes('Publish') && !(b as HTMLButtonElement).disabled),
+        (b) => b.textContent?.trim() === 'publishPublicar' ||
+               (b.textContent?.includes('Publicar') && !(b as HTMLButtonElement).disabled),
       ) as HTMLButtonElement;
       expect(publishBtn).toBeTruthy();
     });
@@ -821,7 +821,7 @@ describe('BrainDocumentEditPage — markdown editor', () => {
   it('renders "Changes save automatically" hint text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Changes save automatically');
+      expect(container.textContent).toContain('Changes save automátically');
     });
   });
 });
