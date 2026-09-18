@@ -145,7 +145,7 @@ describe('CardArtifacts', () => {
   it('renders the empty-state copy when loaded with no artifacts and picker closed', () => {
     const { container, getByText } = render(<CardArtifacts {...baseProps} />);
     expect(container.textContent).toContain('Artifacts');
-    expect(getByText('No artifacts linked.')).toBeTruthy();
+    expect(getByText('Sin artefactos vinculados.')).toBeTruthy();
     // canEdit=true should expose the open-picker button (currently shows "Link Artifact")
     expect(container.textContent).toContain('Link Artifact');
   });
@@ -176,7 +176,7 @@ describe('CardArtifacts', () => {
     );
 
     // Filter buttons rendered for every ARTIFACT_LABELS key plus "All".
-    expect(getByText('All')).toBeTruthy();
+    expect(getByText('Todos')).toBeTruthy();
     // "Website" appears as a filter button AND as a row label suffix — both fine.
     expect(getAllByText('Website').length).toBeGreaterThanOrEqual(1);
     expect(getAllByText('Pitch Deck').length).toBeGreaterThanOrEqual(1);
@@ -264,7 +264,7 @@ describe('CardArtifacts', () => {
     expect(baseProps.toggleArtifactPin).toHaveBeenCalledWith(7, false);
 
     // Remove button calls removeArtifact with the row id.
-    fireEvent.click(getByTitle('Remove'));
+    fireEvent.click(getByTitle('Quitar'));
     expect(baseProps.removeArtifact).toHaveBeenCalledWith(7);
   });
 
@@ -354,7 +354,7 @@ describe('CardSidebar', () => {
   it('renders the empty-assignee fallback when no one is assigned', () => {
     const { container } = render(<CardSidebar {...baseProps} />);
     expect(container.textContent).toContain('Assignees');
-    expect(container.textContent).toContain('No one assigned');
+    expect(container.textContent).toContain('Sin asignar');
   });
 
   it('renders an editable priority select that fires saveField on change', () => {
@@ -411,15 +411,15 @@ describe('CardSidebar', () => {
     const { container, rerender, getByText } = render(<CardSidebar {...baseProps} />);
 
     // Initial render shows "Delete card" trigger.
-    fireEvent.click(getByText(/Delete card/));
+    fireEvent.click(getByText(/Eliminar tarjeta/));
     expect(baseProps.setConfirmDelete).toHaveBeenCalledWith(true);
 
     // Switch into confirmDelete state and verify destructive copy + buttons.
     rerender(<CardSidebar {...baseProps} confirmDelete={true} />);
-    expect(container.textContent).toContain('Delete this card?');
-    fireEvent.click(getByText('Delete'));
+    expect(container.textContent).toContain('¿Eliminar esta tarjeta?');
+    fireEvent.click(getByText('Eliminar'));
     expect(baseProps.removeCard).toHaveBeenCalledTimes(1);
-    fireEvent.click(getByText('Cancel'));
+    fireEvent.click(getByText('Cancelar'));
     expect(baseProps.setConfirmDelete).toHaveBeenCalledWith(false);
   });
 
@@ -479,7 +479,7 @@ describe('CardSidebar', () => {
         showAssigneeMenu={true}
       />,
     );
-    expect(container.textContent).toContain('No one left to add');
+    expect(container.textContent).toContain('No hay nadie mas que añadir');
   });
 
   it('toggles the watch button copy based on the watching prop', () => {
@@ -549,7 +549,7 @@ describe('TaxonomySection', () => {
     const { Wrapper } = harness(makePost());
     const { container } = render(<Wrapper />);
     expect(container.textContent).toContain('Categories');
-    expect(container.textContent).toContain('Tags');
+    expect(container.textContent).toContain('Etiquetas');
   });
 
   it('opens the dropdown on focus and lists all available items', () => {
@@ -559,7 +559,7 @@ describe('TaxonomySection', () => {
     ];
     const { Wrapper } = harness(makePost(), { cats });
     const { container, getByPlaceholderText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i);
+    const input = getByPlaceholderText(/Buscar o añadir categories/i);
     fireEvent.focus(input);
     expect(container.textContent).toContain('News');
     expect(container.textContent).toContain('Updates');
@@ -572,7 +572,7 @@ describe('TaxonomySection', () => {
     ];
     const { ref, Wrapper } = harness(makePost(), { cats });
     const { container, getByPlaceholderText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i) as HTMLInputElement;
+    const input = getByPlaceholderText(/Buscar o añadir categories/i) as HTMLInputElement;
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'New' } });
     expect(container.textContent).toContain('News');
@@ -590,7 +590,7 @@ describe('TaxonomySection', () => {
     const cats: TaxonomyItem[] = [{ id: 1, name: 'News', slug: 'news' }];
     const { Wrapper } = harness(makePost(), { cats });
     const { container, getByPlaceholderText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i);
+    const input = getByPlaceholderText(/Buscar o añadir categories/i);
     fireEvent.focus(input);
     expect(container.textContent).toContain('News');
     fireEvent.keyDown(input, { key: 'Escape' });
@@ -603,7 +603,7 @@ describe('TaxonomySection', () => {
     createCategoryMock.mockResolvedValue({ id: 99, name: 'Brand New', slug: 'brand-new' });
     const { ref, Wrapper } = harness(makePost());
     const { container, getByPlaceholderText, getByText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i);
+    const input = getByPlaceholderText(/Buscar o añadir categories/i);
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'Brand New!' } });
     // Create option text uses the trimmed query.
@@ -624,7 +624,7 @@ describe('TaxonomySection', () => {
     const cats: TaxonomyItem[] = [{ id: 1, name: 'News', slug: 'news' }];
     const { Wrapper } = harness(makePost(), { cats });
     const { container, getByPlaceholderText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i);
+    const input = getByPlaceholderText(/Buscar o añadir categories/i);
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'news' } });
     expect(container.textContent).not.toContain('Add "news"');
@@ -635,7 +635,7 @@ describe('TaxonomySection', () => {
     const { ref, Wrapper } = harness(makePost());
     const { getAllByPlaceholderText } = render(<Wrapper />);
     // Second input == Tags
-    const tagsInput = getAllByPlaceholderText(/Search or add tags/i)[0];
+    const tagsInput = getAllByPlaceholderText(/Buscar o añadir etiquetas/i)[0];
     await act(async () => {
       fireEvent.focus(tagsInput);
       fireEvent.change(tagsInput, { target: { value: 'urgent' } });
@@ -674,7 +674,7 @@ describe('TaxonomySection', () => {
     createCategoryMock.mockResolvedValue(null);
     const { ref, Wrapper } = harness(makePost());
     const { getByPlaceholderText, getByText } = render(<Wrapper />);
-    const input = getByPlaceholderText(/Search or add categories/i);
+    const input = getByPlaceholderText(/Buscar o añadir categories/i);
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'ghost' } });
     await act(async () => {
@@ -769,7 +769,7 @@ describe('SettingsSlideOver', () => {
     const { getByText, container } = render(<Wrapper />);
     fireEvent.click(getByText('Taxonomy'));
     expect(container.textContent).toContain('Categories');
-    expect(container.textContent).toContain('Tags');
+    expect(container.textContent).toContain('Etiquetas');
   });
 
   it('loads custom field defs+values lazily when Custom Fields tab is activated', async () => {
