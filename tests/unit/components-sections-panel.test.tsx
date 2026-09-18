@@ -261,7 +261,7 @@ describe('SectionsPanel — Testimonial block', () => {
   it('shows Change + Remove buttons when avatar present', () => {
     const { onChange } = renderPanel({ ...baseTestimonial, avatar: 'https://av/i.png' });
     expect(screen.getByText('Change Avatar')).toBeTruthy();
-    const remove = screen.getByText('Remove');
+    const remove = screen.getByText('Quitar');
     fireEvent.click(remove);
     expect(onChange).toHaveBeenCalledWith({ avatar: '' });
   });
@@ -312,7 +312,7 @@ describe('SectionsPanel — SocialLinks block', () => {
     fireEvent.change(sizeSelect, { target: { value: '40' } });
     expect(onChange).toHaveBeenCalledWith({ iconSize: 40 });
 
-    const alignSelect = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const alignSelect = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     fireEvent.change(alignSelect, { target: { value: 'right' } });
     expect(onChange).toHaveBeenCalledWith({ alignment: 'right' });
   });
@@ -385,11 +385,11 @@ describe('SectionsPanel — LogoStrip block', () => {
     fireEvent.change(cols, { target: { value: '8' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 8 });
 
-    const gap = screen.getByDisplayValue('Large') as HTMLSelectElement;
+    const gap = screen.getByDisplayValue('Grande') as HTMLSelectElement;
     fireEvent.change(gap, { target: { value: 'sm' } });
     expect(onChange).toHaveBeenCalledWith({ gap: 'sm' });
 
-    const align = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const align = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     fireEvent.change(align, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ alignment: 'left' });
 
@@ -435,7 +435,7 @@ describe('SectionsPanel — LogoStrip block', () => {
 
   it('removes a logo', () => {
     const { onChange } = renderPanel(baseLogoStrip);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ logos: [] });
   });
 
@@ -505,7 +505,7 @@ describe('SectionsPanel — MetricCards block', () => {
 
   it('removes a metric and adds a new metric', () => {
     const { onChange } = renderPanel(baseMetricCards);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ metrics: [] });
 
     fireEvent.click(screen.getByText('+ Add Metric'));
@@ -571,7 +571,7 @@ describe('SectionsPanel — FlipCardGrid block', () => {
 
   it('removes a card and adds a new card', () => {
     const { onChange } = renderPanel(baseFlipCardGrid);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ cards: [] });
 
     fireEvent.click(screen.getByText('+ Add Card'));
@@ -614,7 +614,7 @@ describe('SectionsPanel — Timeline block', () => {
 
   it('removes a step and adds a new step', () => {
     const { onChange } = renderPanel(baseTimeline);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ steps: [] });
 
     fireEvent.click(screen.getByText('+ Add Step'));
@@ -659,8 +659,8 @@ describe('SectionsPanel — TeamShowcase block', () => {
 
   it('updates member name/title/credentials/photo/bio', () => {
     const { onChange } = renderPanel(baseTeamShowcase);
-    fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'Bob' } });
-    fireEvent.change(screen.getByPlaceholderText('Title'), { target: { value: 'CTO' } });
+    fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Bob' } });
+    fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'CTO' } });
     fireEvent.change(screen.getByPlaceholderText('Credentials (optional)'), { target: { value: 'PhD' } });
     fireEvent.change(screen.getByPlaceholderText('Photo URL'), { target: { value: 'http://b.png' } });
     fireEvent.change(screen.getByPlaceholderText('Bio'), { target: { value: 'newbio' } });
@@ -696,7 +696,7 @@ describe('SectionsPanel — TeamShowcase block', () => {
 
   it('removes a member and adds a new one', () => {
     const { onChange } = renderPanel(baseTeamShowcase);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ members: [] });
 
     fireEvent.click(screen.getByText('+ Add Member'));
@@ -727,8 +727,8 @@ describe('SectionsPanel — TeamFlipGrid block', () => {
 
   it('updates member name / title / photo / bio / question / answer', () => {
     const { onChange } = renderPanel(baseTeamFlip);
-    fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'A2' } });
-    fireEvent.change(screen.getByPlaceholderText('Title'), { target: { value: 'T2' } });
+    fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'A2' } });
+    fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'T2' } });
     fireEvent.change(screen.getByPlaceholderText('Photo URL'), { target: { value: 'http://x' } });
     fireEvent.change(screen.getByPlaceholderText('Bio (front)'), { target: { value: 'NB' } });
     fireEvent.change(screen.getByPlaceholderText('Question (back)'), { target: { value: 'Q2' } });
@@ -742,7 +742,7 @@ describe('SectionsPanel — TeamFlipGrid block', () => {
 
   it('removes / adds a member', () => {
     const { onChange } = renderPanel(baseTeamFlip);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ members: [] });
 
     fireEvent.click(screen.getByText('+ Add Member'));
@@ -773,7 +773,7 @@ describe('SectionsPanel — BentoGrid block', () => {
 
   it('updates card title and lead', () => {
     const { onChange } = renderPanel(baseBento);
-    fireEvent.change(screen.getByPlaceholderText('Title'), { target: { value: 'Title2' } });
+    fireEvent.change(screen.getByPlaceholderText('Título'), { target: { value: 'Title2' } });
     fireEvent.change(screen.getByPlaceholderText('Lead/question (optional)'), { target: { value: 'L2' } });
 
     const calls = (onChange as any).mock.calls.map((c: any[]) => c[0]);
@@ -814,7 +814,7 @@ describe('SectionsPanel — BentoGrid block', () => {
 
   it('removes / adds a card', () => {
     const { onChange } = renderPanel(baseBento);
-    fireEvent.click(screen.getByText('Remove'));
+    fireEvent.click(screen.getByText('Quitar'));
     expect(onChange).toHaveBeenCalledWith({ cards: [] });
 
     fireEvent.click(screen.getByText('+ Add Card'));
