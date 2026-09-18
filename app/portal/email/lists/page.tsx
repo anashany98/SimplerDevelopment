@@ -139,7 +139,7 @@ export default function PortalEmailListsPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'Error'); return; }
     setLists(prev => [{ ...data.data, subscriberCount: 0 }, ...prev]);
     setShowForm(false);
     setForm({ name: '', description: '' });
@@ -157,7 +157,7 @@ export default function PortalEmailListsPage() {
     });
     const data = await res.json();
     setSubSaving(false);
-    if (!data.success) { setSubError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setSubError(data.message ?? 'Error'); return; }
     // Refetch the current page so the new subscriber appears in the right
     // slot (sort order is subscribed_at desc → newest on page 1).
     setLists(prev => prev.map(l => l.id === selectedList.id ? { ...l, subscriberCount: l.subscriberCount + 1 } : l));
@@ -233,7 +233,7 @@ export default function PortalEmailListsPage() {
               <label className="block text-sm font-medium text-foreground mb-1">Nombre *</label>
               <input required value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                 className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="e.g. Newsletter" />
+                placeholder="p. ej. Newsletter" />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
@@ -244,7 +244,7 @@ export default function PortalEmailListsPage() {
           </div>
           <div className="flex gap-2">
             <button type="submit" disabled={saving} className={pBtnPrimary}>
-              {saving ? 'Creating…' : 'Create List'}
+              {saving ? 'Creando…' : 'Crear lista'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className={pBtnGhost}>Cancelar</button>
           </div>
@@ -288,7 +288,7 @@ export default function PortalEmailListsPage() {
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-border flex items-center justify-between">
             <h2 className="font-semibold text-foreground">
-              {selectedList ? `${selectedList.name}` : 'Select a list'}
+              {selectedList ? `${selectedList.name}` : 'Selecciona una lista'}
             </h2>
             {selectedList && (
               <button onClick={() => setShowCsv(!showCsv)} className="flex items-center gap-1 text-xs text-primary hover:underline">
@@ -313,7 +313,7 @@ export default function PortalEmailListsPage() {
                   <div className="flex gap-2">
                     <button onClick={importCsv} disabled={importing || !csvText.trim()}
                       className={`${pBtnPrimary} text-xs`}>
-                      {importing ? 'Importing…' : 'Importar'}
+                      {importing ? 'Importando…' : 'Importar'}
                     </button>
                     <button onClick={() => { setShowCsv(false); setCsvText(''); }} className={`${pBtnGhost} text-xs`}>Cancelar</button>
                   </div>
@@ -349,9 +349,9 @@ export default function PortalEmailListsPage() {
                 >
                   <option value="">Todos los estados</option>
                   <option value="active">Activo</option>
-                  <option value="unsubscribed">Unsubscribed</option>
-                  <option value="bounced">Bounced</option>
-                  <option value="complained">Complained</option>
+                  <option value="unsubscribed">Desuscrito</option>
+                  <option value="bounced">Rebotado</option>
+                  <option value="complained">Reclamado</option>
                 </select>
               </div>
 
@@ -359,7 +359,7 @@ export default function PortalEmailListsPage() {
                 <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
               ) : subscribers.length === 0 ? (
                 <p className="p-6 text-sm text-muted-foreground">
-                  {subSearchDebounced || subStatus ? 'No subscribers match.' : 'No subscribers yet.'}
+                  {subSearchDebounced || subStatus ? 'Ningún suscriptor coincide.' : 'Aún no hay suscriptores.'}
                 </p>
               ) : (
                 // Server-páginated — at most `subLimit` rows in the DOM at
@@ -389,7 +389,7 @@ export default function PortalEmailListsPage() {
               {subTotal > subLimit && (
                 <div className="flex items-center justify-between px-4 py-3 border-t border-border text-xs text-muted-foreground">
                   <span>
-                    Page {subPage} of {Math.max(1, Math.ceil(subTotal / subLimit))} · {subTotal.toLocaleString()} total
+                    Página {subPage} de {Math.max(1, Math.ceil(subTotal / subLimit))} · {subTotal.toLocaleString()} total
                   </span>
                   <div className="flex gap-1">
                     <button
@@ -398,7 +398,7 @@ export default function PortalEmailListsPage() {
                       disabled={subPage <= 1 || subLoading}
                       className="px-2 py-1 border border-border rounded hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      Prev
+                      Anterior
                     </button>
                     <button
                       type="button"

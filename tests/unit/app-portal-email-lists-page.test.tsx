@@ -183,7 +183,7 @@ describe('PortalEmailListsPage — initial render', () => {
   it('shows "Select a list" placeholder in subscriber pane', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select a list');
+      expect(container.textContent).toContain('Selecciona una lista');
     });
   });
 
@@ -301,10 +301,10 @@ describe('PortalEmailListsPage — create list form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
     await waitFor(() => expect(container.textContent).toContain('Crear lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Newsletter' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -328,10 +328,10 @@ describe('PortalEmailListsPage — create list form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
     await waitFor(() => expect(container.textContent).toContain('Crear lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -356,13 +356,13 @@ describe('PortalEmailListsPage — create list form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
     await waitFor(() => expect(container.textContent).toContain('Crear lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
-    expect(container.textContent).toContain('Creating');
+    expect(container.textContent).toContain('Creando');
     resolvePost(makeRes({ success: true, data: { id: 1, name: 'Test' } }));
   });
 });
@@ -454,7 +454,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers yet.');
+      expect(container.textContent).toContain('Aún no hay suscriptores.');
     });
   });
 
@@ -807,8 +807,8 @@ describe('PortalEmailListsPage — pagination', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1');
-      expect(container.textContent).toContain('Prev');
+      expect(container.textContent).toContain('Página 1');
+      expect(container.textContent).toContain('Anterior');
       expect(container.textContent).toContain('Siguiente');
     });
   });
@@ -832,7 +832,7 @@ describe('PortalEmailListsPage — pagination', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('user1@example.com');
     });
-    expect(container.textContent).not.toContain('Prev');
+    expect(container.textContent).not.toContain('Anterior');
     expect(container.textContent).not.toContain('Next');
   });
 
@@ -852,9 +852,9 @@ describe('PortalEmailListsPage — pagination', () => {
       (el) => el.textContent?.includes('BigList'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Prev'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Prev',
+      (b) => b.textContent?.trim() === 'Anterior',
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(true);
   });
@@ -883,7 +883,7 @@ describe('PortalEmailListsPage — pagination', () => {
       fireEvent.click(nextBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2');
+      expect(container.textContent).toContain('Página 2');
     });
   });
 });
@@ -945,7 +945,7 @@ describe('PortalEmailListsPage — search and status filter', () => {
     vi.advanceTimersByTime(300);
     vi.useRealTimers();
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers match.');
+      expect(container.textContent).toContain('Ningún suscriptor coincide.');
     });
   });
 

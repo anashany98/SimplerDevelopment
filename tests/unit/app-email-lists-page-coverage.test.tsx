@@ -185,7 +185,7 @@ describe('PortalEmailListsPage — initial render', () => {
 
   it('shows "Select a list" prompt in subscriber pane before selection', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('Select a list');
+    expect(container.textContent).toContain('Selecciona una lista');
     expect(container.textContent).toContain('Haz clic en una lista para ver');
   });
 });
@@ -199,7 +199,7 @@ describe('PortalEmailListsPage — create list form', () => {
     // The heading h3 "Create List" appears inside the form
     const heading = container.querySelector('h3');
     expect(heading?.textContent).toContain('Crear lista');
-    expect(screen.getByPlaceholderText('e.g. Newsletter')).toBeTruthy();
+    expect(screen.getByPlaceholderText('p. ej. Newsletter')).toBeTruthy();
   });
 
   it('Cancel button closes the form', async () => {
@@ -214,7 +214,7 @@ describe('PortalEmailListsPage — create list form', () => {
   it('typing in name/description updates the inputs', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Nueva lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     const descInput = container.querySelector('input[placeholder="Opcional"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'My List' } });
     fireEvent.change(descInput, { target: { value: 'A desc' } });
@@ -225,7 +225,7 @@ describe('PortalEmailListsPage — create list form', () => {
   it('successful create adds the list to the UI and closes the form', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Nueva lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'My List' } });
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
@@ -245,7 +245,7 @@ describe('PortalEmailListsPage — create list form', () => {
     });
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Nueva lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Newsletter' } });
     fireEvent.submit(container.querySelector('form') as HTMLFormElement);
     await waitFor(() => {
@@ -264,11 +264,11 @@ describe('PortalEmailListsPage — create list form', () => {
     });
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Nueva lista'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     fireEvent.submit(container.querySelector('form') as HTMLFormElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed');
+      expect(container.textContent).toContain('Error');
     });
   });
 });
@@ -342,7 +342,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers yet');
+      expect(container.textContent).toContain('Aún no hay suscriptores');
     });
   });
 
@@ -356,11 +356,11 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
     // Set a search so the "no match" branch fires
-    await waitFor(() => expect(container.textContent).toContain('No subscribers yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay suscriptores'));
     const searchInput = container.querySelector('input[type="search"]') as HTMLInputElement;
     fireEvent.change(searchInput, { target: { value: 'xyz' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers match');
+      expect(container.textContent).toContain('Ningún suscriptor coincide');
     });
   });
 
@@ -392,7 +392,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of');
+      expect(container.textContent).toContain('Página 1 de');
       expect(container.textContent).toContain('120');
     });
   });
@@ -481,7 +481,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     fireEvent.change(emailInput, { target: { value: 'x@test.com' } });
     fireEvent.submit(emailInput.closest('form') as HTMLFormElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed');
+      expect(container.textContent).toContain('Error');
     });
   });
 });
@@ -547,7 +547,7 @@ describe('PortalEmailListsPage — search and status filter', () => {
     });
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de'));
     // Advance to page 2
     const nextBtn = Array.from(container.querySelectorAll('button')).find(b =>
       b.textContent?.trim() === 'Siguiente',
@@ -588,7 +588,7 @@ describe('PortalEmailListsPage — subscriber pagination', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Prev');
+      expect(container.textContent).toContain('Anterior');
       expect(container.textContent).toContain('Siguiente');
     });
   });
@@ -597,9 +597,9 @@ describe('PortalEmailListsPage — subscriber pagination', () => {
     seedPaginated();
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
-    await waitFor(() => expect(container.textContent).toContain('Prev'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Prev',
+      b.textContent?.trim() === 'Anterior',
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(true);
   });
@@ -625,7 +625,7 @@ describe('PortalEmailListsPage — subscriber pagination', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Newsletter'));
     await waitFor(() => expect(screen.getByText('alice@example.com')).toBeTruthy());
-    expect(container.textContent).not.toContain('Prev');
+    expect(container.textContent).not.toContain('Anterior');
     expect(container.textContent).not.toContain('Siguiente');
   });
 
@@ -635,7 +635,7 @@ describe('PortalEmailListsPage — subscriber pagination', () => {
     fireEvent.click(screen.getByText('Newsletter'));
     await waitFor(() => {
       // 120 total / 50 limit = 3 pages (Math.ceil)
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
   });
 });
@@ -866,7 +866,7 @@ describe('PortalEmailListsPage — delete list', () => {
       expect(screen.queryByText('Newsletter')).toBeNull();
     });
     // Subscriber pane should show "Select a list" again
-    expect(container.textContent).toContain('Select a list');
+    expect(container.textContent).toContain('Selecciona una lista');
   });
 
   it('does not clear subscriber pane when a different (non-selected) list is deleted', async () => {
