@@ -64,6 +64,14 @@
 # volume) — container restarts AND image redeploys of unchanged code come up
 # in ~1 min. A real code change rebuilds — that is the deploy window on a
 # 2-vCPU box, so redeploy code changes off-hours.
+#
+# Backups: the `backup` service runs pg_dump daily into the
+# `simplerdev-backups` volume (retention via BACKUP_RETENTION_DAYS, default
+# 14 days; runs one dump immediately on boot). Restore from that container's
+# terminal (Coolify UI -> container shell):
+#   ls /backups
+#   gunzip -c /backups/simplerdev-<ts>.sql.gz | psql -h db -U postgres -d simplerdev
+# Off-site copies (S3) are a planned follow-up — the volume lives on this VPS.
 # ─────────────────────────────────────────────────────────────────────────────
 
 services:
@@ -309,6 +317,46 @@ services:
         limits:
           memory: 384M
 
+  backup:
+    # Daily logical backup of the `db` database: pg_dump | gzip into the
+    # `simplerdev-backups` volume, keeping BACKUP_RETENTION_DAYS of history.
+    # First dump runs immediately on boot, then every BACKUP_INTERVAL_SECONDS
+    # (default 24 h). Restore instructions live in this file's header comment.
+    image: postgres:16-alpine
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATABASE: simplerdev
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+      BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
+    volumes:
+      - simplerdev-backups:/backups
+    command: >
+      sh -lc "mkdir -p /backups &&
+      while true; do
+        ts=$$(date -u +%Y%m%d-%H%M%S);
+        out=/backups/simplerdev-$${ts}.sql.gz;
+        if pg_dump --no-owner --no-privileges > /tmp/backup.sql && [ -s /tmp/backup.sql ] && gzip -9 < /tmp/backup.sql > $${out}.part; then
+          mv $${out}.part $${out};
+          echo backup-ok:$${out};
+        else
+          echo backup-failed:$${ts};
+          rm -f $${out}.part;
+        fi;
+        rm -f /tmp/backup.sql;
+        find /backups -maxdepth 1 -name 'simplerdev-*.sql.gz' -mtime +$${BACKUP_RETENTION_DAYS} -delete;
+        sleep $${BACKUP_INTERVAL_SECONDS};
+      done"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 volumes:
   simplerdev-pgdata:
   simplerdev-app-node-modules:
@@ -316,3 +364,4 @@ volumes:
   simplerdev-app-next:
   simplerdev-realtime-root-node-modules:
   simplerdev-realtime-node-modules:
+  simplerdev-backups:
