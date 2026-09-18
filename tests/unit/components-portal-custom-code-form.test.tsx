@@ -106,7 +106,7 @@ async function mountAndWait(props: React.ComponentProps<typeof CustomCodeForm> =
 describe('CustomCodeForm — initial load', () => {
   it('renders the default title', async () => {
     await mountAndWait();
-    expect(screen.getByText('Custom CSS & JavaScript')).toBeInTheDocument();
+    expect(screen.getByText('CSS y JavaScript personalizados')).toBeInTheDocument();
   });
 
   it('renders a custom title when provided', async () => {
@@ -138,7 +138,7 @@ describe('CustomCodeForm — initial load', () => {
   it('shows fallback error when GET response has no message', async () => {
     setupFetch({ getBody: { success: false } });
     await mountAndWait();
-    expect(screen.getByText('Failed to load custom code.')).toBeInTheDocument();
+    expect(screen.getByText('No se pudo cargar el código personalizado.')).toBeInTheDocument();
   });
 
   it('shows error when GET throws a network error', async () => {
@@ -189,13 +189,13 @@ describe('CustomCodeForm — CSS / JS tab switching', () => {
     const jsBtn = screen.getByRole('button', { name: /^JavaScript$/i });
     fireEvent.click(jsBtn);
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
-    expect(textarea.placeholder).toContain('Custom JS');
+    expect(textarea.placeholder).toContain('JS personalizado');
   });
 
   it('shows CSS placeholder text on CSS textarea', async () => {
     await mountAndWait();
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
-    expect(textarea.placeholder).toContain('Custom CSS');
+    expect(textarea.placeholder).toContain('CSS personalizado');
   });
 });
 
@@ -208,14 +208,14 @@ function getDraftTabBtn() {
   // (the icon span's text "edit" + the label "Draft").
   const allBtns = screen.getAllByRole('button');
   return allBtns.find(
-    (b) => b.className.includes('rounded-t-md') && b.textContent?.includes('Draft') && !b.textContent?.includes('Save'),
+    (b) => b.className.includes('rounded-t-md') && b.textContent?.includes('Borrador') && !b.textContent?.includes('Guardar'),
   )!;
 }
 
 function getLiveTabBtn() {
   const allBtns = screen.getAllByRole('button');
   return allBtns.find(
-    (b) => b.className.includes('rounded-t-md') && b.textContent?.includes('Live'),
+    (b) => b.className.includes('rounded-t-md') && b.textContent?.includes('En vivo'),
   )!;
 }
 
@@ -223,7 +223,7 @@ function getLiveTabBtn() {
 function getPublishBtn() {
   const allBtns = screen.getAllByRole('button');
   return allBtns.find(
-    (b) => b.textContent?.includes('Publish') && !b.textContent?.includes('unpublished'),
+    (b) => b.textContent?.includes('Publicar') && !b.textContent?.includes('sin publicar'),
   )!;
 }
 
@@ -238,10 +238,10 @@ describe('CustomCodeForm — draft/live tabs', () => {
     await mountAndWait({ endpoint: ENDPOINT, supportsDrafts: false });
     const allBtns = screen.getAllByRole('button');
     const draftTab = allBtns.find(
-      (b) => b.textContent?.trim().startsWith('Draft') && b.className.includes('rounded-t-md'),
+      (b) => b.textContent?.trim().startsWith('Borrador') && b.className.includes('rounded-t-md'),
     );
     const liveTab = allBtns.find(
-      (b) => b.textContent?.trim() === 'Live' && b.className.includes('rounded-t-md'),
+      (b) => b.textContent?.trim() === 'En vivo' && b.className.includes('rounded-t-md'),
     );
     expect(draftTab).toBeUndefined();
     expect(liveTab).toBeUndefined();
@@ -266,12 +266,12 @@ describe('CustomCodeForm — draft/live tabs', () => {
   it('shows read-only note when viewing Live tab', async () => {
     await mountAndWait();
     fireEvent.click(getLiveTabBtn());
-    expect(screen.getByText(/Currently serving on the public site/i)).toBeInTheDocument();
+    expect(screen.getByText(/Actualmente en el sitio público/i)).toBeInTheDocument();
   });
 
   it('shows editing note on Draft tab', async () => {
     await mountAndWait();
-    expect(screen.getByText(/Edits stage here until you publish/i)).toBeInTheDocument();
+    expect(screen.getByText(/Los cambios se guardan aquí hasta que publiques/i)).toBeInTheDocument();
   });
 });
 
@@ -283,7 +283,7 @@ describe('CustomCodeForm — dirty state', () => {
     await mountAndWait();
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'body { margin: 0; }' } });
-    expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
+    expect(screen.getByText('Cambios sin guardar')).toBeInTheDocument();
   });
 
   it('shows "Unsaved changes" after editing JS textarea', async () => {
@@ -291,17 +291,17 @@ describe('CustomCodeForm — dirty state', () => {
     fireEvent.click(screen.getByRole('button', { name: /^JavaScript$/i }));
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'console.log("hi")' } });
-    expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
+    expect(screen.getByText('Cambios sin guardar')).toBeInTheDocument();
   });
 
   it('does not show "Unsaved changes" when content is unchanged', async () => {
     await mountAndWait();
-    expect(screen.queryByText('Unsaved changes')).toBeNull();
+    expect(screen.queryByText('Cambios sin guardar')).toBeNull();
   });
 
   it('Save draft button is disabled when no dirty state', async () => {
     await mountAndWait();
-    const saveBtn = screen.getByRole('button', { name: /Save draft/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar borrador/i });
     expect(saveBtn).toBeDisabled();
   });
 
@@ -309,7 +309,7 @@ describe('CustomCodeForm — dirty state', () => {
     await mountAndWait();
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.foo { color: red; }' } });
-    const saveBtn = screen.getByRole('button', { name: /Save draft/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar borrador/i });
     expect(saveBtn).not.toBeDisabled();
   });
 });
@@ -323,7 +323,7 @@ describe('CustomCodeForm — saveDraft', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'body {}' } });
 
-    const saveBtn = screen.getByRole('button', { name: /Save draft/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar borrador/i });
     await act(async () => { fireEvent.click(saveBtn); });
 
     await waitFor(() => {
@@ -342,9 +342,9 @@ describe('CustomCodeForm — saveDraft', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.a {}' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar borrador/i }));
     });
-    await waitFor(() => expect(screen.getByText('Draft saved')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Borrador guardado')).toBeInTheDocument());
   });
 
   it('shows error when PUT returns success=false', async () => {
@@ -353,7 +353,7 @@ describe('CustomCodeForm — saveDraft', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.b {}' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar borrador/i }));
     });
     await waitFor(() => expect(screen.getByText('Quota exceeded')).toBeInTheDocument());
   });
@@ -364,9 +364,9 @@ describe('CustomCodeForm — saveDraft', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.c {}' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar borrador/i }));
     });
-    await waitFor(() => expect(screen.getByText('Save failed.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('No se pudo guardar.')).toBeInTheDocument());
   });
 
   it('shows error when PUT throws', async () => {
@@ -380,7 +380,7 @@ describe('CustomCodeForm — saveDraft', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.d {}' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar borrador/i }));
     });
     await waitFor(() => expect(screen.getByText('PUT network error')).toBeInTheDocument());
   });
@@ -396,10 +396,10 @@ describe('CustomCodeForm — saveDraft', () => {
     // The accessible name includes the material-icon span text "save" + "Save",
     // so use a text-content filter to find it reliably.
     const allBtns = screen.getAllByRole('button');
-    const saveBtn = allBtns.find((b) => b.textContent?.includes('Save') && !b.textContent?.includes('draft'));
+    const saveBtn = allBtns.find((b) => b.textContent?.includes('Guardar') && !b.textContent?.includes('borrador'));
     expect(saveBtn).toBeTruthy();
     await act(async () => { fireEvent.click(saveBtn!); });
-    await waitFor(() => expect(screen.getByText('Saved')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Guardado')).toBeInTheDocument());
   });
 });
 
@@ -442,7 +442,7 @@ describe('CustomCodeForm — publishDraft', () => {
     });
     await mountAndWait();
     await act(async () => { fireEvent.click(getPublishBtn()); });
-    await waitFor(() => expect(screen.getByText('Published to live')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Publicado')).toBeInTheDocument());
   });
 
   it('does not POST when user cancels confirm dialog', async () => {
@@ -483,7 +483,7 @@ describe('CustomCodeForm — publishDraft', () => {
     // When supportsDrafts=false the Publish button is not rendered at all.
     const allBtns = screen.getAllByRole('button');
     const publishBtn = allBtns.find(
-      (b) => b.textContent?.includes('Publish') && !b.textContent?.includes('unpublished'),
+      (b) => b.textContent?.includes('Publicar') && !b.textContent?.includes('sin publicar'),
     );
     expect(publishBtn).toBeUndefined();
   });
@@ -507,7 +507,7 @@ describe('CustomCodeForm — discardDraft', () => {
   it('POSTs to /discard when Discard draft is clicked and confirmed', async () => {
     withDraft();
     await mountAndWait();
-    const discardBtn = screen.getByRole('button', { name: /Discard draft/i });
+    const discardBtn = screen.getByRole('button', { name: /Descartar borrador/i });
     await act(async () => { fireEvent.click(discardBtn); });
     await waitFor(() => {
       const postCall = (global.fetch as any).mock.calls.find(
@@ -521,16 +521,16 @@ describe('CustomCodeForm — discardDraft', () => {
     withDraft();
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Discard draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Descartar borrador/i }));
     });
-    await waitFor(() => expect(screen.getByText('Draft discarded')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Borrador descartado')).toBeInTheDocument());
   });
 
   it('does not POST when user cancels confirm', async () => {
     withDraft();
     (window.confirm as any).mockReturnValueOnce(false);
     await mountAndWait();
-    const discardBtn = screen.getByRole('button', { name: /Discard draft/i });
+    const discardBtn = screen.getByRole('button', { name: /Descartar borrador/i });
     await act(async () => { fireEvent.click(discardBtn); });
     const postCall = (global.fetch as any).mock.calls.find(
       (c: any[]) => typeof c[0] === 'string' && c[0].endsWith('/discard'),
@@ -551,14 +551,14 @@ describe('CustomCodeForm — discardDraft', () => {
     });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Discard draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Descartar borrador/i }));
     });
     await waitFor(() => expect(screen.getByText('Cannot discard')).toBeInTheDocument());
   });
 
   it('Discard draft button is absent when no hasDraft', async () => {
     await mountAndWait();
-    expect(screen.queryByRole('button', { name: /Discard draft/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Descartar borrador/i })).toBeNull();
   });
 });
 
@@ -576,7 +576,7 @@ describe('CustomCodeForm — draft metadata', () => {
       }),
     });
     await mountAndWait();
-    expect(screen.getByText(/Draft has unpublished changes/i)).toBeInTheDocument();
+    expect(screen.getByText(/El borrador tiene cambios sin publicar/i)).toBeInTheDocument();
   });
 
   it('does not show "Draft has unpublished changes" when draft matches live', async () => {
@@ -589,7 +589,7 @@ describe('CustomCodeForm — draft metadata', () => {
       }),
     });
     await mountAndWait();
-    expect(screen.queryByText(/Draft has unpublished changes/i)).toBeNull();
+    expect(screen.queryByText(/El borrador tiene cambios sin publicar/i)).toBeNull();
   });
 
   it('shows "Drafted by" metadata row when hasDraft and draftUpdatedAt exists', async () => {
@@ -625,12 +625,12 @@ describe('CustomCodeForm — draft metadata', () => {
       }),
     });
     await mountAndWait();
-    expect(screen.getByText('unknown')).toBeInTheDocument();
+    expect(screen.getByText('desconocido')).toBeInTheDocument();
   });
 
   it('does not show "Drafted by" row when hasDraft=false', async () => {
     await mountAndWait();
-    expect(screen.queryByText(/Drafted by/i)).toBeNull();
+    expect(screen.queryByText(/Borrador de/i)).toBeNull();
   });
 });
 
@@ -651,31 +651,31 @@ describe('CustomCodeForm — relativeTime display', () => {
   it('shows "just now" for a very recent draft', async () => {
     withDraftAt(new Date(Date.now() - 5000).toISOString());
     await mountAndWait();
-    expect(screen.getByText('just now')).toBeInTheDocument();
+    expect(screen.getByText('ahora mismo')).toBeInTheDocument();
   });
 
   it('shows "X minutes ago" for a draft a few minutes old', async () => {
     withDraftAt(new Date(Date.now() - 3 * 60 * 1000).toISOString());
     await mountAndWait();
-    expect(screen.getByText('3 minutes ago')).toBeInTheDocument();
+    expect(screen.getByText('hace 3 minutos')).toBeInTheDocument();
   });
 
   it('shows "1 minute ago" (singular) for exactly 1 minute', async () => {
     withDraftAt(new Date(Date.now() - 65 * 1000).toISOString());
     await mountAndWait();
-    expect(screen.getByText('1 minute ago')).toBeInTheDocument();
+    expect(screen.getByText('hace 1 minuto')).toBeInTheDocument();
   });
 
   it('shows "X hours ago" for a draft a few hours old', async () => {
     withDraftAt(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
     await mountAndWait();
-    expect(screen.getByText('2 hours ago')).toBeInTheDocument();
+    expect(screen.getByText('hace 2 horas')).toBeInTheDocument();
   });
 
   it('shows "X days ago" for a draft several days old', async () => {
     withDraftAt(new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString());
     await mountAndWait();
-    expect(screen.getByText('5 days ago')).toBeInTheDocument();
+    expect(screen.getByText('hace 5 días')).toBeInTheDocument();
   });
 
   it('shows locale date string for a draft older than 30 days', async () => {
@@ -684,8 +684,8 @@ describe('CustomCodeForm — relativeTime display', () => {
     await mountAndWait();
     // The component calls toLocaleDateString() — any non-relative string is fine.
     // We just check "just now", "ago", etc. are NOT shown.
-    expect(screen.queryByText(/ago/i)).toBeNull();
-    expect(screen.queryByText('just now')).toBeNull();
+    expect(screen.queryByText(/minuto|hora|día/i)).toBeNull();
+    expect(screen.queryByText('ahora mismo')).toBeNull();
   });
 });
 
@@ -696,7 +696,7 @@ describe('CustomCodeForm — button state while viewing Live tab', () => {
   it('Save draft button is disabled when on Live tab (showingLive=true)', async () => {
     await mountAndWait();
     fireEvent.click(getLiveTabBtn());
-    const saveBtn = screen.getByRole('button', { name: /Save draft/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar borrador/i });
     expect(saveBtn).toBeDisabled();
   });
 });
@@ -711,8 +711,8 @@ describe('CustomCodeForm — toast appearance', () => {
     const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '.toast-test {}' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save draft/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar borrador/i }));
     });
-    await waitFor(() => expect(screen.getByText('Draft saved')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Borrador guardado')).toBeInTheDocument());
   });
 });

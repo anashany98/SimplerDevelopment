@@ -78,7 +78,7 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
           type="text"
           value={newKeyName}
           onChange={e => setNewKeyName(e.target.value)}
-          placeholder="Key name (e.g. Production)"
+          placeholder="Nombre de la clave (p. ej. Producción)"
           className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm"
           onKeyDown={e => e.key === 'Enter' && createKey()}
         />
@@ -87,13 +87,13 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
           disabled={creating || !newKeyName.trim()}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
-          {creating ? 'Creating...' : 'Create Key'}
+          {creating ? 'Creando...' : 'Crear clave'}
         </button>
       </div>
 
       {/* Scopes — none selected = full access */}
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-        <span>Scopes:</span>
+        <span>Ámbitos:</span>
         {(['content:read', 'store:read'] as const).map(s => (
           <label key={s} className="flex items-center gap-1.5 cursor-pointer">
             <input type="checkbox" checked={scopes.includes(s)} onChange={() => toggleScope(s)} />
@@ -103,7 +103,7 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
         {scopes.length === 0 && (
           <span className="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400">
             <span className="material-icons text-[14px] leading-none">warning</span>
-            none selected = full access — this key can do everything on this site
+            ninguno seleccionado = acceso total — esta clave puede hacer todo en este sitio
           </span>
         )}
       </div>
@@ -113,21 +113,21 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
         <div className="p-4 bg-green-50 border border-green-200 rounded-xl dark:bg-green-900/20 dark:border-green-800">
           <p className="text-sm font-medium text-green-800 dark:text-green-300 mb-2">
             <span className="material-icons text-base align-middle mr-1">key</span>
-            API key created! Copy it now -- it won&apos;t be shown again.
+            ¡Clave API creada! Cópiala ahora; no se volverá a mostrar.
           </p>
           <div className="flex items-center gap-2">
             <code className="flex-1 text-xs bg-white dark:bg-black/20 p-2 rounded border font-mono break-all">
               {createdKey}
             </code>
             <button onClick={copyKey} className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700">
-              {copied ? 'Copied!' : 'Copy'}
+              {copied ? '¡Copiada!' : 'Copiar'}
             </button>
           </div>
           <button
             onClick={() => setCreatedKey(null)}
             className="text-xs text-green-600 dark:text-green-400 mt-2 hover:underline"
           >
-            Dismiss
+            Descartar
           </button>
         </div>
       )}
@@ -151,17 +151,17 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
               </div>
               <div className="text-right shrink-0">
                 <p className="text-xs text-muted-foreground">
-                  {key.lastUsedAt ? `Last used ${new Date(key.lastUsedAt).toLocaleDateString()}` : 'Never used'}
+                  {key.lastUsedAt ? `Último uso ${new Date(key.lastUsedAt).toLocaleDateString()}` : 'Nunca usada'}
                 </p>
                 <p className="text-xs text-muted-foreground/60">
-                  Created {new Date(key.createdAt).toLocaleDateString()}
+                  Creada {new Date(key.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <button
                 onClick={() => revokeKey(key.id)}
                 className="text-xs text-red-500 hover:text-red-600 font-medium"
               >
-                Revoke
+                Revocar
               </button>
             </div>
           ))}
@@ -170,7 +170,7 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
 
       {/* SDK usage hint */}
       <div className="p-4 bg-muted/50 rounded-xl">
-        <p className="text-xs font-medium text-foreground mb-2">Quick Start</p>
+        <p className="text-xs font-medium text-foreground mb-2">Inicio rápido</p>
         <pre className="text-xs text-muted-foreground font-mono overflow-x-auto">{`npm install @simplerdevelopment/sdk
 
 import { SimplerDevelopment } from '@simplerdevelopment/sdk';

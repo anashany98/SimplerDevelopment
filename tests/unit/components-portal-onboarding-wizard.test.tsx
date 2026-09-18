@@ -197,63 +197,63 @@ describe('OnboardingWizard', () => {
   it('shows correct title for welcome step', () => {
     global.fetch = makeFetchMock('welcome');
     render(<OnboardingWizard initialState={makeState('welcome')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Welcome');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Bienvenido');
   });
 
   it('shows correct title for about-you step', () => {
     global.fetch = makeFetchMock('about-you');
     render(<OnboardingWizard initialState={makeState('about-you')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('About you');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Sobre ti');
   });
 
   it('shows correct title for about-company step', () => {
     global.fetch = makeFetchMock('about-company');
     render(<OnboardingWizard initialState={makeState('about-company')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('About your company');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Sobre tu empresa');
   });
 
   it('uses activation language and passes self-hosted mode to billing steps', () => {
     global.fetch = makeFetchMock('payment');
     render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled={false} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Activate your tools');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Activa tus herramientas');
     expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('false');
   });
 
   it('keeps trial language when Stripe is configured', () => {
     global.fetch = makeFetchMock('payment');
     render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Start your free trial');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Empieza tu prueba gratuita');
     expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('true');
   });
 
   it('shows correct title for brand-vibe step', () => {
     global.fetch = makeFetchMock('brand-vibe');
     render(<OnboardingWizard initialState={makeState('brand-vibe')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Your brand vibe');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('El estilo de tu marca');
   });
 
   it('shows correct title for mission step', () => {
     global.fetch = makeFetchMock('mission');
     render(<OnboardingWizard initialState={makeState('mission')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('What do you do?');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¿A qué te dedicas?');
   });
 
   it('shows correct title for features step', () => {
     global.fetch = makeFetchMock('features');
     render(<OnboardingWizard initialState={makeState('features')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('What brings you here?');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¿Qué te trae por aquí?');
   });
 
   it('shows correct title for power-up step', () => {
     global.fetch = makeFetchMock('power-up');
     render(<OnboardingWizard initialState={makeState('power-up')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Power up with Claude');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Poténciate con Claude');
   });
 
   it("shows correct title for done step", () => {
     global.fetch = makeFetchMock('done');
     render(<OnboardingWizard initialState={makeState('done')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe("You're all set!");
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¡Todo listo!');
   });
 
   // ── step index + progress ────────────────────────────────────────────────
@@ -262,21 +262,21 @@ describe('OnboardingWizard', () => {
     global.fetch = makeFetchMock('welcome');
     render(<OnboardingWizard initialState={makeState('welcome')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 1 of 8');
+    expect(label.textContent).toContain('Paso 1 de 8');
   });
 
   it('shows Step 2 of 8 on about-you', () => {
     global.fetch = makeFetchMock('about-you');
     render(<OnboardingWizard initialState={makeState('about-you')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 2 of 8');
+    expect(label.textContent).toContain('Paso 2 de 8');
   });
 
   it('shows Step 8 of 8 on done', () => {
     global.fetch = makeFetchMock('done');
     render(<OnboardingWizard initialState={makeState('done')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 8 of 8');
+    expect(label.textContent).toContain('Paso 8 de 8');
   });
 
   // ── step body: each step renders its stub ────────────────────────────────

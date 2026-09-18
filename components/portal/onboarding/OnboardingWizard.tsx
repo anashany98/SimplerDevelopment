@@ -33,18 +33,18 @@ const STEP_META: Record<
   OnboardingStep,
   { title: string; subtitle: string; rail: string; icon: string; eyebrow: string }
 > = {
-  welcome: { title: 'Welcome', subtitle: 'Two minutes to a personalized setup.', rail: 'Welcome', icon: 'waving_hand', eyebrow: 'Welcome' },
-  'about-you': { title: 'About you', subtitle: 'Just the basics — you can change anything later.', rail: 'About you', icon: 'person', eyebrow: 'About you' },
-  'about-company': { title: 'About your company', subtitle: 'Tells us how to size things for you.', rail: 'Your company', icon: 'business', eyebrow: 'About you' },
-  'choose-modules': { title: 'Pick your tools', subtitle: 'Only pay for what you need — add more any time.', rail: 'Choose plan', icon: 'widgets', eyebrow: 'Your plan' },
-  payment: { title: 'Start your free trial', subtitle: '14 days free, cancel any time.', rail: 'Payment', icon: 'credit_card', eyebrow: 'Your plan' },
-  'module-setup': { title: 'Get started', subtitle: 'A few quick first steps for each module you unlocked.', rail: 'Quick setup', icon: 'checklist', eyebrow: 'Quick setup' },
-  'brand-vibe': { title: 'Your brand vibe', subtitle: 'We use this to draft content that sounds like you.', rail: 'Brand vibe', icon: 'palette', eyebrow: 'Your brand' },
-  mission: { title: 'What do you do?', subtitle: 'One sentence — your AI assistant will lean on this.', rail: 'Your mission', icon: 'flag', eyebrow: 'Your brand' },
-  features: { title: 'What brings you here?', subtitle: "Pick what you want to explore first — we'll tailor your setup around it.", rail: 'Your goals', icon: 'interests', eyebrow: 'Your goals' },
-  upsell: { title: 'Supercharge your plan', subtitle: 'Modules other teams like yours add first.', rail: 'Add-ons', icon: 'auto_awesome', eyebrow: 'Add-ons' },
-  'power-up': { title: 'Power up with Claude', subtitle: 'Optional, but the magic happens when you wire this up.', rail: 'Power up', icon: 'bolt', eyebrow: 'Power up' },
-  done: { title: "You're all set!", subtitle: 'Welcome to CRM AGENTS.', rail: 'Done', icon: 'celebration', eyebrow: 'All set' },
+  welcome: { title: 'Bienvenido', subtitle: 'Dos minutos para una configuración personalizada.', rail: 'Bienvenido', icon: 'waving_hand', eyebrow: 'Bienvenido' },
+  'about-you': { title: 'Sobre ti', subtitle: 'Solo lo básico — puedes cambiarlo todo después.', rail: 'Sobre ti', icon: 'person', eyebrow: 'Sobre ti' },
+  'about-company': { title: 'Sobre tu empresa', subtitle: 'Nos dice cómo dimensionar las cosas para ti.', rail: 'Tu empresa', icon: 'business', eyebrow: 'Sobre ti' },
+  'choose-modules': { title: 'Elige tus herramientas', subtitle: 'Paga solo por lo que necesitas — añade más cuando quieras.', rail: 'Elige plan', icon: 'widgets', eyebrow: 'Tu plan' },
+  payment: { title: 'Empieza tu prueba gratuita', subtitle: '14 días gratis, cancela cuando quieras.', rail: 'Pago', icon: 'credit_card', eyebrow: 'Tu plan' },
+  'module-setup': { title: 'Empecemos', subtitle: 'Unos primeros pasos rápidos para cada módulo que desbloqueaste.', rail: 'Configuración rápida', icon: 'checklist', eyebrow: 'Configuración rápida' },
+  'brand-vibe': { title: 'El estilo de tu marca', subtitle: 'Lo usamos para redactar contenido que suene a ti.', rail: 'Estilo de marca', icon: 'palette', eyebrow: 'Tu marca' },
+  mission: { title: '¿A qué te dedicas?', subtitle: 'Una frase — tu asistente de IA se apoyará en esto.', rail: 'Tu misión', icon: 'flag', eyebrow: 'Tu marca' },
+  features: { title: '¿Qué te trae por aquí?', subtitle: 'Elige lo que quieras explorar primero — adaptaremos tu configuración a ello.', rail: 'Tus objetivos', icon: 'interests', eyebrow: 'Tus objetivos' },
+  upsell: { title: 'Potencia tu plan', subtitle: 'Los módulos que otros equipos como el tuyo añaden primero.', rail: 'Complementos', icon: 'auto_awesome', eyebrow: 'Complementos' },
+  'power-up': { title: 'Poténciate con Claude', subtitle: 'Opcional, pero la magia ocurre cuando lo conectas.', rail: 'Poténciate', icon: 'bolt', eyebrow: 'Poténciate' },
+  done: { title: '¡Todo listo!', subtitle: 'Bienvenido a CRM AGENTS.', rail: 'Listo', icon: 'celebration', eyebrow: 'Todo listo' },
 };
 
 function getStepMeta(step: OnboardingStep, stripeEnabled: boolean) {
@@ -52,20 +52,20 @@ function getStepMeta(step: OnboardingStep, stripeEnabled: boolean) {
   if (step === 'choose-modules') {
     return {
       ...STEP_META[step],
-      title: 'Choose your tools',
-      subtitle: 'Everything is included on this self-hosted instance.',
-      rail: 'Choose tools',
-      eyebrow: 'Your tools',
+      title: 'Elige tus herramientas',
+      subtitle: 'Todo está incluido en esta instancia autoalojada.',
+      rail: 'Elige herramientas',
+      eyebrow: 'Tus herramientas',
     };
   }
   if (step === 'payment') {
     return {
       ...STEP_META[step],
-      title: 'Activate your tools',
-      subtitle: 'No subscription or card required.',
-      rail: 'Activate',
+      title: 'Activa tus herramientas',
+      subtitle: 'No se requiere suscripción ni tarjeta.',
+      rail: 'Activar',
       icon: 'check_circle',
-      eyebrow: 'Your tools',
+      eyebrow: 'Tus herramientas',
     };
   }
   return STEP_META[step];
@@ -142,10 +142,10 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
         body: JSON.stringify({ step: opts.step, answers: opts.patch }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message ?? 'Failed to save');
+      if (!json.success) throw new Error(json.message ?? 'No se pudo guardar');
       setState(json.data as OnboardingState);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      setError(e instanceof Error ? e.message : 'No se pudo guardar');
     } finally {
       setSaving(false);
     }
@@ -262,7 +262,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
 
           <div className="mb-4 mt-7 flex items-center gap-2.5 font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/50">
             <span className="auth-dot inline-block h-[7px] w-[7px] rounded-full bg-emerald-400 shadow-[0_0_10px_#34d399]" />
-            Get set up
+            Configúrate
           </div>
 
           <ol className="min-h-0 flex-1 space-y-0.5 overflow-y-auto">
@@ -304,7 +304,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
 
           <div className="mt-5 border-t border-white/10 pt-4">
             <div className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/45">
-              Step {Math.min(stepIndex + 1, totalSteps)} of {totalSteps} · {Math.round(progress)}%
+              Paso {Math.min(stepIndex + 1, totalSteps)} de {totalSteps} · {Math.round(progress)}%
             </div>
             <div className="mt-2.5 h-[5px] overflow-hidden rounded bg-white/10">
               <motion.div
@@ -326,7 +326,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
           <div
             className="absolute inset-x-0 top-0 z-20 h-1 animate-pulse bg-primary"
             role="progressbar"
-            aria-label="Saving"
+            aria-label="Guardando"
             data-testid="onboarding-saving-indicator"
           />
         )}
@@ -338,7 +338,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
           <div className="flex-1">
             <div className="mb-1.5 flex items-center justify-between text-[11px] text-muted-foreground">
               <span data-testid="onboarding-step-label">
-                Step {Math.min(stepIndex + 1, totalSteps)} of {totalSteps}
+                Paso {Math.min(stepIndex + 1, totalSteps)} de {totalSteps}
               </span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -367,7 +367,7 @@ export default function OnboardingWizard({ initialState, stripeEnabled = true }:
             data-testid="onboarding-skip-all"
             className="absolute right-5 top-4 z-10 whitespace-nowrap text-[12.5px] font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Skip setup
+            Omitir configuración
           </button>
         )}
 

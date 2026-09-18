@@ -276,7 +276,7 @@ describe('CustomFieldsSection: group fields', () => {
       ],
     });
     expect(screen.getByText('SEO')).toBeTruthy();
-    expect(screen.getByText('1 field')).toBeTruthy();
+    expect(screen.getByText('1 campo')).toBeTruthy();
   });
 
   it('uses pluralized "fields" label when zero or more than one child', () => {
@@ -285,7 +285,7 @@ describe('CustomFieldsSection: group fields', () => {
         makeDef({ id: 10, name: 'Empty', slug: 'empty', fieldType: 'group' }),
       ],
     });
-    expect(screen.getByText('0 fields')).toBeTruthy();
+    expect(screen.getByText('0 campos')).toBeTruthy();
   });
 
   it('shows the empty-group message when group has no children', () => {
@@ -351,7 +351,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }, { label: 'b' }]) },
     });
-    expect(screen.getByText('2 rows')).toBeTruthy();
+    expect(screen.getByText('2 filas')).toBeTruthy();
     expect(screen.getByDisplayValue('a')).toBeTruthy();
     expect(screen.getByDisplayValue('b')).toBeTruthy();
   });
@@ -364,7 +364,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: '{not json' },
     });
-    expect(screen.getByText('0 rows')).toBeTruthy();
+    expect(screen.getByText('0 filas')).toBeTruthy();
   });
 
   it('falls back to empty rows when JSON parses but is not an array', () => {
@@ -375,7 +375,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: '{"foo":"bar"}' },
     });
-    expect(screen.getByText('0 rows')).toBeTruthy();
+    expect(screen.getByText('0 filas')).toBeTruthy();
   });
 
   it('renders empty-repeater message when no sub-fields are defined', () => {
@@ -395,7 +395,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }]) },
     });
-    expect(screen.getByText('1 row')).toBeTruthy();
+    expect(screen.getByText('1 fila')).toBeTruthy();
   });
 
   it('collapses and re-expands the repeater on header click', () => {
@@ -421,7 +421,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       updateCustomFieldValue: update,
     });
-    fireEvent.click(screen.getByRole('button', { name: /Add Row/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir fila/ }));
     expect(update).toHaveBeenCalledWith(20, JSON.stringify([{}]));
   });
 
@@ -435,7 +435,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }, { label: 'b' }]) },
       updateCustomFieldValue: update,
     });
-    const removeButtons = screen.getAllByTitle('Remove row');
+    const removeButtons = screen.getAllByTitle('Eliminar fila');
     fireEvent.click(removeButtons[0]);
     expect(update).toHaveBeenCalledWith(20, JSON.stringify([{ label: 'b' }]));
   });
@@ -507,7 +507,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     ]);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => {
-      expect(screen.getByText(/not found/)).toBeTruthy();
+      expect(screen.getByText(/no existe/)).toBeTruthy();
     });
   });
 
@@ -531,7 +531,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     // finally{} still flips loading -> false, and postTypeId stays null,
     // so we land on the "post type not found" branch.
     await waitFor(() => {
-      expect(screen.getByText(/not found/)).toBeTruthy();
+      expect(screen.getByText(/no existe/)).toBeTruthy();
     });
   });
 
@@ -555,7 +555,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
       expect(screen.getByText('Tags Group')).toBeTruthy();
     });
     expect(screen.getByText('Author')).toBeTruthy();
-    expect(screen.getByText('1 sub-field')).toBeTruthy();
+    expect(screen.getByText('1 subcampo')).toBeTruthy();
   });
 });
 
@@ -576,14 +576,14 @@ describe('ManageCustomFieldsModal: add-field form', () => {
   it('opens the form when Add Field is clicked', async () => {
     await openModalWithEmptyFields();
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    expect(screen.getByText('New Field')).toBeTruthy();
-    expect(screen.getByPlaceholderText('e.g. Author Name')).toBeTruthy();
+    expect(screen.getByText('Nuevo campo')).toBeTruthy();
+    expect(screen.getByPlaceholderText('p. ej. Nombre del autor')).toBeTruthy();
   });
 
   it('auto-derives slug from name when creating', async () => {
     await openModalWithEmptyFields();
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    const name = screen.getByPlaceholderText('e.g. Author Name') as HTMLInputElement;
+    const name = screen.getByPlaceholderText('p. ej. Nombre del autor') as HTMLInputElement;
     fireEvent.change(name, { target: { value: 'Hello World!' } });
     const slug = screen.getByPlaceholderText('author_name') as HTMLInputElement;
     expect(slug.value).toBe('hello_world');
@@ -600,18 +600,18 @@ describe('ManageCustomFieldsModal: add-field form', () => {
   it('shows the options textarea only for fieldType=select', async () => {
     await openModalWithEmptyFields();
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    expect(screen.queryByPlaceholderText(/Option 1/)).toBeNull();
+    expect(screen.queryByPlaceholderText(/Opción 1/)).toBeNull();
     const selects = screen.getAllByRole('combobox');
     const typeSelect = selects[0] as HTMLSelectElement;
     fireEvent.change(typeSelect, { target: { value: 'select' } });
-    expect(screen.getByPlaceholderText(/Option 1/)).toBeTruthy();
+    expect(screen.getByPlaceholderText(/Opción 1/)).toBeTruthy();
   });
 
   it('closes the form when Cancel is clicked', async () => {
     await openModalWithEmptyFields();
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
     fireEvent.click(screen.getByRole('button', { name: /Cancel/ }));
-    expect(screen.queryByText('New Field')).toBeNull();
+    expect(screen.queryByText('Nuevo campo')).toBeNull();
   });
 
   it('toggles the required checkbox', async () => {
@@ -661,8 +661,8 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true, setCustomFieldsLoaded });
     await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(createdCalled).toBe(true));
     await waitFor(() => expect(setCustomFieldsLoaded).toHaveBeenCalledWith(false));
   });
@@ -684,11 +684,11 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Tier' } });
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Tier' } });
     const typeSelect = screen.getAllByRole('combobox')[0];
     fireEvent.change(typeSelect, { target: { value: 'select' } });
-    fireEvent.change(screen.getByPlaceholderText(/Option 1/), { target: { value: 'a\nb\n  c  ' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    fireEvent.change(screen.getByPlaceholderText(/Opción 1/), { target: { value: 'a\nb\n  c  ' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(body).not.toBeNull());
     expect((body as { options: unknown }).options).toEqual(['a', 'b', 'c']);
   });
@@ -705,8 +705,8 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(screen.getByText('Slug taken')).toBeTruthy());
   });
 
@@ -727,9 +727,9 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
-    await waitFor(() => expect(screen.getByText('Failed to save')).toBeTruthy());
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
+    await waitFor(() => expect(screen.getByText('No se pudo guardar')).toBeTruthy());
   });
 
   it('shows a network-error message when fetch throws', async () => {
@@ -744,9 +744,9 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
-    await waitFor(() => expect(screen.getByText('Network error')).toBeTruthy());
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
+    await waitFor(() => expect(screen.getByText('Error de red')).toBeTruthy());
   });
 
   it('populates the form when editing an existing field', async () => {
@@ -775,10 +775,10 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Edit Field')).toBeTruthy();
-    expect((screen.getByPlaceholderText('e.g. Author Name') as HTMLInputElement).value).toBe('Author');
+    expect(screen.getByText('Editar campo')).toBeTruthy();
+    expect((screen.getByPlaceholderText('p. ej. Nombre del autor') as HTMLInputElement).value).toBe('Author');
     expect((screen.getByPlaceholderText('author_name') as HTMLInputElement).value).toBe('author');
-    expect((screen.getByPlaceholderText(/Option 1/) as HTMLTextAreaElement).value).toBe('a\nb');
+    expect((screen.getByPlaceholderText(/Opción 1/) as HTMLTextAreaElement).value).toBe('a\nb');
     expect((screen.getByLabelText('Obligatorio') as HTMLInputElement).checked).toBe(true);
   });
 
@@ -809,7 +809,7 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
     fireEvent.click(screen.getByTitle('Editar'));
-    fireEvent.click(screen.getByRole('button', { name: /Update Field/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Actualizar campo/ }));
     await waitFor(() => expect(putCalled).toBe(true));
   });
 
@@ -918,7 +918,7 @@ describe('ManageCustomFieldsModal: sub-field flows + close', () => {
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Group A')).toBeTruthy());
     fireEvent.click(screen.getByTitle('Añadir subcampo'));
-    expect(screen.getByText('New Sub-field')).toBeTruthy();
+    expect(screen.getByText('Nuevo subcampo')).toBeTruthy();
     // Sub-field type select must not include repeater/group
     const optValues = Array.from(screen.getAllByRole('combobox')[0].querySelectorAll('option')).map((o) => (o as HTMLOptionElement).value);
     expect(optValues).not.toContain('repeater');
