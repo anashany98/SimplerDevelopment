@@ -392,7 +392,7 @@ describe('lib/visual-editor/protocol', () => {
       sendToIframe(iframe, 'MY_TYPE', { x: 1 });
       expect(postMessage).toHaveBeenCalledTimes(1);
       const [msg, targetOrigin] = postMessage.mock.calls[0];
-      expect(targetOrigin).toBe('*');
+      expect(targetOrigin).toBe('http://localhost:3000');
       expect(msg).toMatchObject({
         source: 'sd-editor-parent',
         type: 'MY_TYPE',
@@ -431,7 +431,7 @@ describe('lib/visual-editor/protocol', () => {
         sendToParent('CHILD_TYPE', { z: 3 });
         expect(postMessage).toHaveBeenCalledTimes(1);
         const [msg, targetOrigin] = postMessage.mock.calls[0];
-        expect(targetOrigin).toBe('*');
+        expect(targetOrigin).toBe('http://localhost:3000');
         expect(msg).toMatchObject({
           source: 'sd-editor-iframe',
           type: 'CHILD_TYPE',
