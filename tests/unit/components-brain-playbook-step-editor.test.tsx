@@ -340,7 +340,7 @@ describe('PlaybookStepEditor — StepConfigForm kind=note', () => {
     // Note kind has a Title input and a Body textarea
     const labels = Array.from(document.querySelectorAll('span.text-\\[11px\\]'));
     const texts = labels.map((l) => l.textContent ?? '');
-    expect(texts.some((t) => t === 'Title')).toBe(true);
+    expect(texts.some((t) => t === 'Título')).toBe(true);
     expect(texts.some((t) => t.includes('Body'))).toBe(true);
   });
 
