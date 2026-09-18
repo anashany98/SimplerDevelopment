@@ -406,7 +406,7 @@ describe('BrainCalendarPage — month navigation', () => {
     fireEvent.click(navButtons[2]); // next
     await waitFor(() => expect(fetchMock.mock.calls.length).toBeGreaterThan(before));
     const todayBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Today',
+      (b) => b.textContent?.trim() === 'Hoy',
     ) as HTMLButtonElement;
     fireEvent.click(todayBtn);
     await waitFor(() => {
@@ -569,7 +569,7 @@ describe('NewEventModal', () => {
   it('does not POST when title is empty (Create button disabled)', async () => {
     const { container } = await openModal();
     const submit = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create event'),
+      (b) => b.textContent?.includes('Crear evento'),
     ) as HTMLButtonElement;
     expect(submit.disabled).toBe(true);
   });
@@ -607,7 +607,7 @@ describe('NewEventModal', () => {
     const title = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(title, { target: { value: 'My new event' } });
     const submit = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create event'),
+      (b) => b.textContent?.includes('Crear evento'),
     ) as HTMLButtonElement;
     fireEvent.click(submit);
     await waitFor(() => {
@@ -636,7 +636,7 @@ describe('NewEventModal', () => {
     fireEvent.change(container.querySelector('input[type="text"]')!, { target: { value: 'Some' } });
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Create event'),
+        b.textContent?.includes('Crear evento'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
@@ -658,7 +658,7 @@ describe('NewEventModal', () => {
     fireEvent.change(container.querySelector('input[type="text"]')!, { target: { value: 'X' } });
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Create event'),
+        b.textContent?.includes('Crear evento'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
@@ -669,7 +669,7 @@ describe('NewEventModal', () => {
   it('cancels via the Cancel button', async () => {
     const { container } = await openModal();
     const cancel = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancel);
     await waitFor(() => {
@@ -704,7 +704,7 @@ describe('NewEventModal', () => {
     fireEvent.click(container.querySelector('input[type="checkbox"]') as HTMLInputElement);
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Create event'),
+        b.textContent?.includes('Crear evento'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
@@ -738,7 +738,7 @@ describe('NewEventModal', () => {
     });
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Create event'),
+        b.textContent?.includes('Crear evento'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
@@ -764,7 +764,7 @@ describe('NewEventModal', () => {
     fireEvent.change(container.querySelector('input[type="text"]')!, { target: { value: 'Blank desc' } });
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Create event'),
+        b.textContent?.includes('Crear evento'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
@@ -832,7 +832,7 @@ describe('EventDetailModal', () => {
 
   it('renders the "Synced from Google Calendar." note when source=google', async () => {
     const { container } = await openDetail(makeEventDetail({ id: 33, source: 'google' }));
-    expect(container.textContent).toContain('Synced from Google Calendar');
+    expect(container.textContent).toContain('Sincronizado con Google Calendar');
   });
 
   it('does NOT render the description block when description is null', async () => {
@@ -846,7 +846,7 @@ describe('EventDetailModal', () => {
   it('clicking Delete with confirm=true triggers DELETE /events/N', async () => {
     const { container } = await openDetail(makeEventDetail({ id: 33, title: 'ToDelete' }));
     const del = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('Delete'),
+      b.textContent?.trim().includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(del);
     await waitFor(() => {
@@ -863,7 +863,7 @@ describe('EventDetailModal', () => {
     vi.stubGlobal('confirm', vi.fn(() => false) as any);
     const { container } = await openDetail(makeEventDetail({ id: 33, title: 'NotDeleted' }));
     const del = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('Delete'),
+      b.textContent?.trim().includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(del);
     await waitFor(() => {
@@ -892,7 +892,7 @@ describe('EventDetailModal', () => {
     const { container } = await openDetail(makeEventDetail({ id: 33, title: 'Refreshable' }));
     const before = fetchMock.mock.calls.length;
     const refresh = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Refresh',
+      b.textContent?.trim() === 'Actualizar',
     ) as HTMLButtonElement;
     fireEvent.click(refresh);
     await waitFor(() => {
