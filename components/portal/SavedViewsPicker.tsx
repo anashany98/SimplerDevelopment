@@ -73,7 +73,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
   };
 
   const onDelete = async (viewId: number) => {
-    if (!confirm('Delete this view?')) return;
+    if (!confirm('¿Eliminar esta vista?')) return;
     const res = await fetch(`/api/portal/saved-views/${viewId}`, { method: 'DELETE' });
     if ((await res.json()).success) {
       if (activeId === viewId) setActiveId(null);
@@ -95,7 +95,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
         }}
         className="px-3 py-1.5 rounded border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
       >
-        <option value="">No view</option>
+        <option value="">Sin vista</option>
         {views.map(v => (
           <option key={v.id} value={v.id}>
             {v.userId === null ? '🌐 ' : ''}{v.name}
@@ -107,7 +107,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
         <button
           onClick={() => onDelete(activeId)}
           className="text-xs text-muted-foreground hover:text-destructive"
-          title="Delete view"
+          title="Eliminar vista"
         >
           <span className="material-icons text-sm">delete_outline</span>
         </button>
@@ -118,7 +118,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
         className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium border border-border text-muted-foreground hover:bg-accent"
       >
         <span className="material-icons text-sm">{showSaveForm ? 'close' : 'bookmark_add'}</span>
-        {showSaveForm ? 'Cancel' : 'Save view'}
+        {showSaveForm ? 'Cancelar' : 'Guardar vista'}
       </button>
 
       {showSaveForm && (
@@ -126,7 +126,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
           <input
             type="text"
             required
-            placeholder="View name"
+            placeholder="Nombre de la vista"
             value={newName}
             onChange={e => setNewName(e.target.value)}
             className="px-2 py-1 rounded border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 w-44"
@@ -134,7 +134,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
           {canShare && (
             <label className="flex items-center gap-1 text-xs text-muted-foreground cursor-pointer">
               <input type="checkbox" checked={newShared} onChange={e => setNewShared(e.target.checked)} className="accent-primary" />
-              Share with team
+              Compartir con el equipo
             </label>
           )}
           <button
@@ -142,7 +142,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
             disabled={saving}
             className="px-3 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
           >
-            {saving ? '…' : 'Save'}
+            {saving ? '…' : 'Guardar'}
           </button>
         </form>
       )}

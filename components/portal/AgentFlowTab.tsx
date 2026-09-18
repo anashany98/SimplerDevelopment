@@ -295,10 +295,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           setFlows(list);
           setSelectedFlowId((prev) => (prev != null ? prev : (list[0]?.id ?? null)));
         } else {
-          setError(extractError(res, 'Failed to load flows'));
+          setError(extractError(res, 'No se pudieron cargar los flujos'));
         }
       })
-      .catch(() => { if (!cancelled) setError('Failed to load flows'); })
+      .catch(() => { if (!cancelled) setError('No se pudieron cargar los flujos'); })
       .finally(() => { if (!cancelled) setFlowsLoading(false); });
     return () => { cancelled = true; };
   }, [projectId]);
@@ -328,10 +328,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           setDescription(data.description ?? '');
           setStatus(data.status);
         } else {
-          setError(extractError(res, 'Failed to load flow'));
+          setError(extractError(res, 'No se pudo cargar el flujo'));
         }
       })
-      .catch(() => { if (!cancelled) setError('Failed to load flow'); })
+      .catch(() => { if (!cancelled) setError('No se pudo cargar el flujo'); })
       .finally(() => { if (!cancelled) setFlowLoading(false); });
     return () => { cancelled = true; };
   }, [projectId, selectedFlowId]);
@@ -389,7 +389,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
     const position = rfInstance
       ? rfInstance.screenToFlowPosition({ x: 280, y: 220 })
       : { x: 200 + Math.random() * 150, y: 150 + Math.random() * 150 };
-    const data: AgentFlowNodeData = { kind: 'step', agentType: null, label: 'Free step' };
+    const data: AgentFlowNodeData = { kind: 'step', agentType: null, label: 'Paso libre' };
     setNodes((nds) => nds.concat({ id: newNodeId(), position, data, type: 'default', style: nodeStyle(data) }));
   }, [rfInstance, canEdit]);
 
@@ -398,7 +398,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
     const position = rfInstance
       ? rfInstance.screenToFlowPosition({ x: 280, y: 220 })
       : { x: 200 + Math.random() * 150, y: 150 + Math.random() * 150 };
-    const data: AgentFlowNodeData = { kind: 'human', agentType: null, label: 'Human approval', assigneeIds: [] };
+    const data: AgentFlowNodeData = { kind: 'human', agentType: null, label: 'Aprobación humana', assigneeIds: [] };
     setNodes((nds) => nds.concat({ id: newNodeId(), position, data, type: 'default', style: nodeStyle(data) }));
   }, [rfInstance, canEdit]);
 
@@ -442,7 +442,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
 
   const handleCreateFlow = useCallback(async () => {
     if (!canEdit) return;
-    const flowName = window.prompt('Name this flow', 'New flow');
+    const flowName = window.prompt('Pon un nombre a este flujo', 'Nuevo flujo');
     if (!flowName || !flowName.trim()) return;
     setCreating(true);
     setError(null);
@@ -457,10 +457,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
         setFlows((prev) => [{ id: created.id, name: created.name, status: created.status, updatedAt: created.updatedAt, nodeCount: 0, edgeCount: 0 }, ...prev]);
         setSelectedFlowId(created.id);
       } else {
-        setError(extractError(res, 'Failed to create flow'));
+        setError(extractError(res, 'No se pudo crear el flujo'));
       }
     } catch {
-      setError('Failed to create flow');
+      setError('No se pudo crear el flujo');
     } finally {
       setCreating(false);
     }
@@ -487,10 +487,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           ? { ...f, name: updated.name, status: updated.status, updatedAt: updated.updatedAt, nodeCount: outNodes.length, edgeCount: outEdges.length }
           : f)));
       } else {
-        setError(extractError(res, 'Failed to save flow'));
+        setError(extractError(res, 'No se pudo guardar el flujo'));
       }
     } catch {
-      setError('Failed to save flow');
+      setError('No se pudo guardar el flujo');
     } finally {
       setSaving(false);
     }
@@ -498,7 +498,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
 
   const handleDeleteFlow = useCallback(async () => {
     if (!flow || !canEdit) return;
-    if (!window.confirm(`Delete "${flow.name}"? This cannot be undone.`)) return;
+    if (!window.confirm(`¿Eliminar "${flow.name}"? Esta acción no se puede deshacer.`)) return;
     setDeleting(true);
     setError(null);
     try {
@@ -508,10 +508,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
         setFlows(remaining);
         setSelectedFlowId(remaining[0]?.id ?? null);
       } else {
-        setError(extractError(res, 'Failed to delete flow'));
+        setError(extractError(res, 'No se pudo eliminar el flujo'));
       }
     } catch {
-      setError('Failed to delete flow');
+      setError('No se pudo eliminar el flujo');
     } finally {
       setDeleting(false);
     }
@@ -524,7 +524,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
     return (
       <div className="p-8 text-sm text-muted-foreground">
         <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
-        Loading workflow designer...
+        Cargando el diseñador de flujos...
       </div>
     );
   }
@@ -535,7 +535,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-red-300 bg-red-50 text-red-800 dark:border-red-700 dark:bg-red-900/20 dark:text-red-200 text-xs">
           <span className="material-icons text-base shrink-0">error</span>
           <span className="flex-1">{error}</span>
-          <button type="button" onClick={() => setError(null)} className="hover:underline">Dismiss</button>
+          <button type="button" onClick={() => setError(null)} className="hover:underline">Descartar</button>
         </div>
       )}
 
@@ -547,10 +547,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
         <select
           value={selectedFlowId ?? ''}
           onChange={(e) => setSelectedFlowId(e.target.value ? parseInt(e.target.value, 10) : null)}
-          aria-label="Select flow"
+          aria-label="Seleccionar flujo"
           className="text-sm px-2 py-1.5 border border-border rounded-lg bg-background min-w-[160px]"
         >
-          {flows.length === 0 && <option value="">No flows yet</option>}
+          {flows.length === 0 && <option value="">Aún no hay flujos</option>}
           {flows.map((f) => (
             <option key={f.id} value={f.id}>{f.name}</option>
           ))}
@@ -564,7 +564,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
             className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-muted disabled:opacity-60"
           >
             <span className="material-icons text-sm">add</span>
-            {creating ? 'Creating...' : 'New flow'}
+            {creating ? 'Creando...' : 'Nuevo flujo'}
           </button>
         )}
 
@@ -574,14 +574,14 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={!canEdit}
-              aria-label="Flow name"
+              aria-label="Nombre del flujo"
               className="text-sm font-semibold bg-transparent border border-transparent hover:border-border focus:border-border rounded px-2 py-1 outline-none flex-1 min-w-[160px] disabled:opacity-70"
             />
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as AgentFlowStatus)}
               disabled={!canEdit}
-              aria-label="Flow status"
+              aria-label="Estado del flujo"
               className="text-xs px-2 py-1 border border-border rounded bg-background disabled:opacity-70"
             >
               <option value="draft">Borrador</option>
@@ -597,7 +597,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
                   className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
                 >
                   <span className="material-icons text-sm">save</span>
-                  {saving ? 'Saving...' : 'Save'}
+                  {saving ? 'Guardando...' : 'Guardar'}
                 </button>
                 <button
                   type="button"
@@ -622,7 +622,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           disabled={!canEdit}
           rows={2}
           maxLength={5000}
-          aria-label="Flow description"
+          aria-label="Descripción del flujo"
           placeholder="Para qué es este flujo: cuándo ejecutarlo, qué produce (opcional)"
           className="w-full text-xs px-2 py-1.5 border border-border rounded-lg bg-background text-muted-foreground disabled:opacity-70 resize-y"
         />
@@ -633,11 +633,11 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
           <div className="text-center p-8">
             <span className="material-icons text-5xl text-muted-foreground">account_tree</span>
             <h3 className="mt-4 font-semibold text-foreground">
-              {flowLoading ? 'Loading flow…' : 'No workflows yet'}
+              {flowLoading ? 'Cargando flujo…' : 'Aún no hay flujos de trabajo'}
             </h3>
             {!flowLoading && (
               <p className="mt-2 text-sm text-muted-foreground">
-                {canEdit ? 'Create a flow to start designing an agent pipeline.' : 'No agent flows have been designed for this project yet.'}
+                {canEdit ? 'Crea un flujo para empezar a diseñar un pipeline de agentes.' : 'Todavía no se ha diseñado ningún flujo de agentes para este proyecto.'}
               </p>
             )}
           </div>
@@ -649,10 +649,10 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
             {!canEdit && (
               <div className="text-[11px] text-muted-foreground mb-2 flex items-center gap-1">
                 <span className="material-icons text-sm">visibility</span>
-                Read-only
+                Solo lectura
               </div>
             )}
-            <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Step</h3>
+            <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Paso</h3>
             <div className="space-y-1 mb-4">
               <button
                 type="button"
@@ -661,7 +661,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
                 className="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-left rounded hover:bg-muted transition-colors disabled:opacity-50 disabled:hover:bg-transparent"
               >
                 <span className="material-icons text-base text-primary">bolt</span>
-                <span>Free step</span>
+                <span>Paso libre</span>
               </button>
               {/* Not under a department — a human node is explicitly not an
                   agent persona; the point is that no model runs it. */}
@@ -672,7 +672,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
                 className="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-left rounded hover:bg-muted transition-colors disabled:opacity-50 disabled:hover:bg-transparent"
               >
                 <span className="material-icons text-base text-amber-500">how_to_reg</span>
-                <span>Human approval</span>
+                <span>Aprobación humana</span>
               </button>
             </div>
             {DEPARTMENTS.map((dept) => (
@@ -769,7 +769,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
               />
             ) : (
               <p className="text-xs text-muted-foreground">
-                Click a node or connector to edit its details. {canEdit && 'Drag from a node handle to connect two steps.'}
+                Haz clic en un nodo o conector para editar sus detalles. {canEdit && 'Arrastra desde un conector del nodo para unir dos pasos.'}
               </p>
             )}
           </div>

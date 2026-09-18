@@ -158,7 +158,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (!json.success) throw new Error(json.error || 'update_failed');
       setExperiment(prev => ({ ...prev, ...json.data, startedAt: json.data.startedAt?.toString?.() ?? prev.startedAt, endedAt: json.data.endedAt?.toString?.() ?? prev.endedAt }));
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Save failed');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo guardar');
     } finally {
       setSavingId(null);
     }
@@ -173,7 +173,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       try {
         parsed = JSON.parse(raw);
       } catch {
-        setErrorMsg(`Invalid JSON in variant "${variantKey}"`);
+        setErrorMsg(`JSON no válido en la variante "${variantKey}"`);
         setSavingId(null);
         return;
       }
@@ -188,7 +188,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (!json.success) throw new Error(json.error || 'update_failed');
       setVariants(prev => prev.map(v => v.key === variantKey ? { ...v, blockTreeOverride: parsed } : v));
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Save failed');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo guardar');
     } finally {
       setSavingId(null);
     }
@@ -209,7 +209,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (Number.isFinite(n) && n > 0) numericSplit[k] = n;
     }
     if (Object.keys(numericSplit).length === 0) {
-      setErrorMsg('Split must include at least one positive weight');
+      setErrorMsg('El reparto debe incluir al menos un peso positivo');
       return;
     }
     await updateExperiment({ variantSplit: numericSplit });
@@ -287,15 +287,15 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (!json.success) {
         const err = json.error || 'add_failed';
         const friendly = err === 'no_keys_available'
-          ? 'Maximum 26 variants reached.'
+          ? 'Máximo de 26 variantes alcanzado.'
           : err === 'duplicate_key'
-            ? 'That variant key already exists.'
-            : `Add variant failed: ${err}`;
+            ? 'Esa clave de variante ya existe.'
+            : `No se pudo añadir la variante: ${err}`;
         throw new Error(friendly);
       }
       await refetchExperiment();
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Add variant failed');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo añadir la variante');
     } finally {
       setSavingId(null);
     }
@@ -312,17 +312,17 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (!json.success) {
         const err = json.error || 'delete_failed';
         const friendly = err === 'control_protected'
-          ? 'The control variant cannot be removed.'
+          ? 'La variante de control no se puede eliminar.'
           : err === 'min_two_variants'
-            ? 'An experiment must have at least 2 variants.'
+            ? 'Un experimento debe tener al menos 2 variantes.'
             : err === 'experiment_running'
-              ? 'Stop the experiment before removing a variant.'
-              : `Remove variant failed: ${err}`;
+              ? 'Detén el experimento antes de eliminar una variante.'
+              : `No se pudo eliminar la variante: ${err}`;
         throw new Error(friendly);
       }
       await refetchExperiment();
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Remove variant failed');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo eliminar la variante');
     } finally {
       setSavingId(null);
     }
@@ -333,7 +333,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
     const current = variants.find(v => v.key === variantKey);
     if (!current) return;
     if (!trimmed) {
-      setErrorMsg('Variant label cannot be empty.');
+      setErrorMsg('La etiqueta de la variante no puede estar vacía.');
       setLabelDraft(prev => ({ ...prev, [variantKey]: null }));
       return;
     }
@@ -354,7 +354,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       setVariants(prev => prev.map(v => v.key === variantKey ? { ...v, label: trimmed } : v));
       setLabelDraft(prev => ({ ...prev, [variantKey]: null }));
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Rename failed');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo renombrar');
     } finally {
       setSavingId(null);
     }
@@ -371,7 +371,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       if (!json.success) throw new Error(json.error || 'delete_failed');
       router.push('/portal/experiments');
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Delete failed');
+      setDeleteError(err instanceof Error ? err.message : 'No se pudo eliminar');
       setDeleting(false);
     }
   };
@@ -381,12 +381,12 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
     setEditingName(false);
     if (!trimmed) {
       setNameDraft(experiment.name);
-      setErrorMsg('Name cannot be empty');
+      setErrorMsg('El nombre no puede estar vacío');
       return;
     }
     if (trimmed.length > 255) {
       setNameDraft(experiment.name);
-      setErrorMsg('Name must be 255 characters or fewer');
+      setErrorMsg('El nombre debe tener 255 caracteres o menos');
       return;
     }
     if (trimmed === experiment.name) return;
@@ -401,7 +401,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Link href="/portal/experiments" className="hover:underline">Experiments</Link>
+        <Link href="/portal/experiments" className="hover:underline">Experimentos</Link>
         <span className="material-icons text-base">chevron_right</span>
         <span className="text-foreground">{experiment.name}</span>
       </div>
@@ -435,7 +435,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                   setNameDraft(experiment.name);
                   setEditingName(true);
                 }}
-                title="Click to edit name"
+                title="Haz clic para editar el nombre"
               >
                 {experiment.name}
               </span>
@@ -461,7 +461,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
               disabled={savingId === 'experiment'}
               className="text-xs px-3 py-1 rounded border border-border hover:bg-accent disabled:opacity-50"
             >
-              {t === 'running' ? 'Start' : t === 'completed' ? 'Stop' : t === 'archived' ? 'Archive' : t === 'draft' ? 'Reopen' : t}
+              {t === 'running' ? 'Iniciar' : t === 'completed' ? 'Detener' : t === 'archived' ? 'Archivar' : t === 'draft' ? 'Reabrir' : t}
             </button>
           ))}
           <button
@@ -477,7 +477,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
       ) : null}
 
       <section className="rounded-lg border border-border bg-card p-6 space-y-3">
-        <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Hypothesis</h2>
+        <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Hipótesis</h2>
         <textarea
           className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground"
           rows={3}
@@ -485,29 +485,29 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
           onBlur={e => {
             if (e.target.value !== (experiment.hypothesis ?? '')) updateExperiment({ hypothesis: e.target.value });
           }}
-          placeholder="What do you expect this test to prove? e.g. 'Reframing the hero CTA from value-first to action-first will lift signups by 10%.'"
+          placeholder="¿Qué esperas que demuestre esta prueba? P. ej., «Reformular el CTA hero de valor primero a acción primero aumentará los registros un 10 %.»"
         />
       </section>
 
       <section className="rounded-lg border border-border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Goal</h2>
+          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Objetivo</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="text-sm">
-            <span className="block text-foreground mb-1">Metric</span>
+            <span className="block text-foreground mb-1">Métrica</span>
             <select
               className="w-full border border-border rounded-md px-3 py-2 bg-background text-foreground"
               value={experiment.goalMetric}
               onChange={e => updateExperiment({ goalMetric: e.target.value })}
             >
-              <option value="page_view">Page view</option>
-              <option value="cta_click">CTA click</option>
-              <option value="form_submit">Form submit</option>
+              <option value="page_view">Vista de página</option>
+              <option value="cta_click">Clic en CTA</option>
+              <option value="form_submit">Envío de formulario</option>
             </select>
           </label>
           <label className="text-sm">
-            <span className="block text-foreground mb-1">Selector / target</span>
+            <span className="block text-foreground mb-1">Selector / destino</span>
             <input
               type="text"
               className="w-full border border-border rounded-md px-3 py-2 font-mono bg-background text-foreground"
@@ -520,21 +520,21 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
           </label>
         </div>
         <p className="text-xs text-muted-foreground">
-          For <code>page_view</code>, the goal fires automátically on render. For clicks/submits, set a CSS selector matching the target element.
+          Para <code>page_view</code>, el objetivo se dispara automáticamente al renderizar. Para clics/envíos, define un selector CSS que coincida con el elemento de destino.
         </p>
       </section>
 
       <section className="rounded-lg border border-border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Traffic split</h2>
+          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Reparto de tráfico</h2>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground">saved total: {splitTotal}%</span>
+            <span className="text-xs text-muted-foreground">total guardado: {splitTotal}%</span>
             <button
               type="button"
               onClick={rebalanceEven}
               className="text-xs text-primary hover:underline"
             >
-              Rebalance to even
+              Equilibrar a partes iguales
             </button>
           </div>
         </div>
@@ -557,7 +557,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
         {draftSplitTotal !== 100 ? (
           <p className="text-xs text-amber-600 dark:text-amber-500 flex items-center gap-1">
             <span className="material-icons text-base">warning</span>
-            Total must equal 100% — rebalance or adjust (currently {draftSplitTotal}%).
+            Total debe ser 100% — equilibra o ajusta (actualmente {draftSplitTotal}%).
           </p>
         ) : null}
         <button
@@ -565,13 +565,13 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
           disabled={savingId === 'experiment'}
           className="text-sm px-3 py-1.5 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          Save split
+          Guardar reparto
         </button>
       </section>
 
       <section className="rounded-lg border border-border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Variants</h2>
+          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Variantes</h2>
         </div>
         <div className="space-y-4">
           {variants.map(v => {
@@ -580,12 +580,12 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
             const wouldDropBelowMin = variants.length <= 2;
             const removeDisabled = isControl || wouldDropBelowMin || isRunning;
             const removeTitle = isControl
-              ? 'The control variant cannot be removed.'
+              ? 'La variante de control no se puede eliminar.'
               : wouldDropBelowMin
-                ? 'An experiment must have at least 2 variants.'
+                ? 'Un experimento debe tener al menos 2 variantes.'
                 : isRunning
-                  ? 'Stop the experiment before removing a variant.'
-                  : 'Remove variant';
+                  ? 'Detén el experimento antes de eliminar una variante.'
+                  : 'Eliminar variante';
             const editing = labelDraft[v.key] !== undefined && labelDraft[v.key] !== null;
             return (
               <div key={v.id} className="border border-border rounded-md p-4">
@@ -614,7 +614,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                       <button
                         type="button"
                         className="text-sm text-foreground hover:text-primary inline-flex items-center gap-1 group"
-                        title="Click to edit label"
+                        title="Haz clic para editar la etiqueta"
                         onClick={() => setLabelDraft(prev => ({ ...prev, [v.key]: v.label }))}
                       >
                         {v.label}
@@ -629,7 +629,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                       className="text-xs px-2 py-1 rounded border border-border hover:bg-accent"
                       onClick={() => seedFromPost(v.key)}
                     >
-                      Seed from {target.kindLabel.toLowerCase()}
+                      Rellenar desde {target.kindLabel.toLowerCase()}
                     </button>
                     <button
                       type="button"
@@ -637,7 +637,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                       disabled={savingId === `variant-${v.key}`}
                       onClick={() => saveVariant(v.key)}
                     >
-                      {savingId === `variant-${v.key}` ? 'Saving…' : 'Save'}
+                      {savingId === `variant-${v.key}` ? 'Guardando…' : 'Guardar'}
                     </button>
                     <button
                       type="button"
@@ -656,7 +656,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                   onChange={json => setVariantJson(prev => ({ ...prev, [v.key]: json }))}
                   kindLabel={target.kindLabel}
                   disabled={experiment.status === 'running'}
-                  placeholder={v.key === 'a' ? 'Leave blank to use the live page content.' : undefined}
+                  placeholder={v.key === 'a' ? 'Déjalo en blanco para usar el contenido de la página en vivo.' : undefined}
                 />
               </div>
             );
@@ -670,17 +670,17 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
             className="text-sm px-3 py-1.5 rounded border border-primary text-primary hover:bg-primary/10 disabled:opacity-50 inline-flex items-center gap-1"
           >
             <span className="material-icons text-base">add</span>
-            {savingId === 'add-variant' ? 'Adding…' : 'Add variant'}
+            {savingId === 'add-variant' ? 'Añadiendo…' : 'Añadir variante'}
           </button>
           {variants.length >= 26 ? (
-            <span className="ml-3 text-xs text-muted-foreground">Maximum 26 variants reached.</span>
+            <span className="ml-3 text-xs text-muted-foreground">Máximo de 26 variantes alcanzado.</span>
           ) : null}
         </div>
       </section>
 
       <section className="rounded-lg border border-border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Results</h2>
+          <h2 className="text-sm font-semibold uppercase text-muted-foreground tracking-wide">Resultados</h2>
           <button
             onClick={fetchResults}
             className="text-xs px-3 py-1 rounded border border-border hover:bg-accent"
@@ -695,8 +695,8 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
               <thead className="text-xs uppercase text-muted-foreground">
                 <tr>
                   <th className="text-left py-2">Variante</th>
-                  <th className="text-right py-2">Views</th>
-                  <th className="text-right py-2">Goals</th>
+                  <th className="text-right py-2">Visitas</th>
+                  <th className="text-right py-2">Objetivos</th>
                   <th className="text-right py-2">Conv.</th>
                 </tr>
               </thead>
@@ -713,12 +713,12 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
             </table>
             {results.comparisons.length > 0 ? (
               <div>
-                <h3 className="text-xs uppercase text-muted-foreground mt-4 mb-2">Significance vs control</h3>
+                <h3 className="text-xs uppercase text-muted-foreground mt-4 mb-2">Significancia frente al control</h3>
                 <table className="w-full text-sm">
                   <thead className="text-xs uppercase text-muted-foreground">
                     <tr>
                       <th className="text-left py-2">Variante</th>
-                      <th className="text-right py-2">Lift</th>
+                      <th className="text-right py-2">Incremento</th>
                       <th className="text-right py-2">z</th>
                       <th className="text-right py-2">p</th>
                       <th className="text-right py-2">Sig.</th>
@@ -746,7 +746,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                           ? 'text-amber-500 dark:text-amber-400'
                           : 'text-muted-foreground/50';
                       const title = tooSmall
-                        ? `Not enough data — need at least ${MIN_SAMPLE_PER_ARM} visitors per arm`
+                        ? `Datos insuficientes — se necesitan al menos ${MIN_SAMPLE_PER_ARM} visitantes por rama`
                         : undefined;
                       return (
                         <tr key={c.variantKey} className="border-t border-border">
@@ -775,11 +775,11 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
           <div className="bg-card border border-border rounded-xl p-6 max-w-md w-full space-y-4">
             <h3 className="font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons text-destructive">delete_forever</span>
-              Delete Experiment
+              Eliminar experimento
             </h3>
             <p className="text-sm text-muted-foreground">
-              Are you sure you want to delete{' '}
-              <strong className="text-foreground">{experiment.name}</strong>? Events and assignments will be removed. This cannot be undone.
+              ¿Seguro que quieres eliminar{' '}
+              <strong className="text-foreground">{experiment.name}</strong>? Se eliminarán los eventos y las asignaciones. Esta acción no se puede deshacer.
             </p>
             {deleteError && (
               <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
@@ -801,7 +801,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                 {deleting ? (
                   <>
                     <span className="material-icons text-base animate-spin">progress_activity</span>
-                    Deleting…
+                    Eliminando…
                   </>
                 ) : (
                   <>

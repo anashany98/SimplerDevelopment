@@ -179,7 +179,7 @@ describe('ExperimentDetailClient — initial render', () => {
 
   it('renders the hypothesis section', () => {
     const { container } = renderComponent();
-    expect(container.textContent).toContain('Hypothesis');
+    expect(container.textContent).toContain('Hipótesis');
   });
 
   it('renders the hypothesis text in the textarea', () => {
@@ -196,7 +196,7 @@ describe('ExperimentDetailClient — initial render', () => {
 
   it('renders the traffic split section', () => {
     const { container } = renderComponent();
-    expect(container.textContent).toContain('Traffic split');
+    expect(container.textContent).toContain('Reparto de tráfico');
   });
 
   it('renders number inputs for each variant split key', () => {
@@ -240,7 +240,7 @@ describe('ExperimentDetailClient — initial render', () => {
 
   it('renders the Results section heading', () => {
     const { container } = renderComponent();
-    expect(container.textContent).toContain('Results');
+    expect(container.textContent).toContain('Resultados');
   });
 
   it('fetches results on mount', async () => {
@@ -264,7 +264,7 @@ describe('ExperimentDetailClient — status transitions', () => {
   it('shows Start button when status is draft', () => {
     const { container } = renderComponent({ status: 'draft' });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Start',
+      b => b.textContent?.trim() === 'Iniciar',
     );
     expect(btn).toBeTruthy();
   });
@@ -272,7 +272,7 @@ describe('ExperimentDetailClient — status transitions', () => {
   it('shows Archive button when status is draft', () => {
     const { container } = renderComponent({ status: 'draft' });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Archive',
+      b => b.textContent?.trim() === 'Archivar',
     );
     expect(btn).toBeTruthy();
   });
@@ -280,7 +280,7 @@ describe('ExperimentDetailClient — status transitions', () => {
   it('shows Stop button when status is running', () => {
     const { container } = renderComponent({ status: 'running' });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Stop',
+      b => b.textContent?.trim() === 'Detener',
     );
     expect(btn).toBeTruthy();
   });
@@ -288,7 +288,7 @@ describe('ExperimentDetailClient — status transitions', () => {
   it('shows Reopen button when status is archived', () => {
     const { container } = renderComponent({ status: 'archived' });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Reopen',
+      b => b.textContent?.trim() === 'Reabrir',
     );
     expect(btn).toBeTruthy();
   });
@@ -303,7 +303,7 @@ describe('ExperimentDetailClient — status transitions', () => {
 
     const { container } = renderComponent({ status: 'draft' });
     const startBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Start',
+      b => b.textContent?.trim() === 'Iniciar',
     );
     await act(async () => {
       fireEvent.click(startBtn!);
@@ -328,7 +328,7 @@ describe('ExperimentDetailClient — status transitions', () => {
 
     const { container } = renderComponent({ status: 'draft' });
     const startBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Start',
+      b => b.textContent?.trim() === 'Iniciar',
     );
     await act(async () => {
       fireEvent.click(startBtn!);
@@ -344,7 +344,7 @@ describe('ExperimentDetailClient — status transitions', () => {
 describe('ExperimentDetailClient — name editing', () => {
   it('shows an input when the name span is clicked', () => {
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     expect(nameSpan).toBeTruthy();
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
@@ -361,7 +361,7 @@ describe('ExperimentDetailClient — name editing', () => {
     }) as typeof global.fetch;
 
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Renamed' } });
@@ -380,7 +380,7 @@ describe('ExperimentDetailClient — name editing', () => {
 
   it('cancels editing on Escape key and restores original name', () => {
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Discarded' } });
@@ -392,7 +392,7 @@ describe('ExperimentDetailClient — name editing', () => {
 
   it('shows error when empty name is saved on blur', async () => {
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '' } });
@@ -400,13 +400,13 @@ describe('ExperimentDetailClient — name editing', () => {
       fireEvent.blur(input);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Name cannot be empty');
+      expect(container.textContent).toContain('El nombre no puede estar vacío');
     });
   });
 
   it('shows error when name exceeds 255 chars', async () => {
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'x'.repeat(256) } });
@@ -414,13 +414,13 @@ describe('ExperimentDetailClient — name editing', () => {
       fireEvent.blur(input);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('255 characters or fewer');
+      expect(container.textContent).toContain('255 caracteres o menos');
     });
   });
 
   it('does not call PATCH when name is unchanged', async () => {
     const { container } = renderComponent();
-    const nameSpan = container.querySelector('span[title="Click to edit name"]');
+    const nameSpan = container.querySelector('span[title="Haz clic para editar el nombre"]');
     fireEvent.click(nameSpan!);
     const input = container.querySelector('input[maxlength="255"]') as HTMLInputElement;
     // Value is already 'My Experiment', no change
@@ -462,8 +462,8 @@ describe('ExperimentDetailClient — delete flow', () => {
   it('opens the confirmation dialog when Delete button is clicked', () => {
     const { container } = renderComponent();
     triggerDelete(container);
-    expect(container.textContent).toContain('Delete Experiment');
-    expect(container.textContent).toContain('Are you sure');
+    expect(container.textContent).toContain('Eliminar experimento');
+    expect(container.textContent).toContain('Seguro que quieres eliminar');
   });
 
   it('closes the dialog when Cancel is clicked', () => {
@@ -474,7 +474,7 @@ describe('ExperimentDetailClient — delete flow', () => {
     );
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn!);
-    expect(container.textContent).not.toContain('Are you sure');
+    expect(container.textContent).not.toContain('Seguro que quieres eliminar');
   });
 
   it('calls DELETE and redirects on confirm', async () => {
@@ -527,7 +527,7 @@ describe('ExperimentDetailClient — delete flow', () => {
 describe('ExperimentDetailClient — traffic split', () => {
   it('renders saved split total', () => {
     const { container } = renderComponent({ variantSplit: { a: 50, b: 50 } });
-    expect(container.textContent).toContain('saved total: 100%');
+    expect(container.textContent).toContain('total guardado: 100%');
   });
 
   it('shows a warning when draft total is not 100', () => {
@@ -535,13 +535,13 @@ describe('ExperimentDetailClient — traffic split', () => {
     const inputs = container.querySelectorAll('input[type="number"]');
     // Change variant b to 10, making total 80
     fireEvent.change(inputs[1], { target: { value: '10' } });
-    expect(container.textContent).toContain('Total must equal 100%');
+    expect(container.textContent).toContain('Total debe ser 100%');
   });
 
   it('does not show the warning when total equals 100', () => {
     const { container } = renderComponent({ variantSplit: { a: 50, b: 50 } });
     // Already 50+50=100
-    expect(container.textContent).not.toContain('Total must equal 100%');
+    expect(container.textContent).not.toContain('Total debe ser 100%');
   });
 
   it('calls PATCH with numeric split on Save split click', async () => {
@@ -554,7 +554,7 @@ describe('ExperimentDetailClient — traffic split', () => {
 
     const { container } = renderComponent();
     const saveSplitBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Save split',
+      b => b.textContent?.trim() === 'Guardar reparto',
     );
     await act(async () => {
       fireEvent.click(saveSplitBtn!);
@@ -575,20 +575,20 @@ describe('ExperimentDetailClient — traffic split', () => {
     fireEvent.change(inputs[0], { target: { value: '0' } });
     fireEvent.change(inputs[1], { target: { value: '0' } });
     const saveSplitBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Save split',
+      b => b.textContent?.trim() === 'Guardar reparto',
     );
     await act(async () => {
       fireEvent.click(saveSplitBtn!);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('at least one positive weight');
+      expect(container.textContent).toContain('al menos un peso positivo');
     });
   });
 
   it('rebalance button distributes weights evenly', () => {
     const { container } = renderComponent({ variantSplit: { a: 80, b: 20 } });
     const rebalanceBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Rebalance'),
+      b => b.textContent?.includes('Equilibrar'),
     );
     fireEvent.click(rebalanceBtn!);
     const inputs = container.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>;
@@ -603,7 +603,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
   it('renders Save button per variant', () => {
     const { container } = renderComponent();
     const saveBtns = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.trim() === 'Save',
+      b => b.textContent?.trim() === 'Guardar',
     );
     expect(saveBtns.length).toBeGreaterThanOrEqual(2);
   });
@@ -618,7 +618,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
 
     const { container } = renderComponent();
     const saveBtns = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.trim() === 'Save',
+      b => b.textContent?.trim() === 'Guardar',
     );
     await act(async () => {
       fireEvent.click(saveBtns[0]);
@@ -650,14 +650,14 @@ describe('ExperimentDetailClient — variant JSON save', () => {
     fireEvent.change(variantTextareas[0], { target: { value: '{ invalid json' } });
     // Save buttons: index 0 = variant a, index 1 = variant b (the one we edited).
     const saveBtns = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.trim() === 'Save',
+      b => b.textContent?.trim() === 'Guardar',
     );
     expect(saveBtns.length).toBeGreaterThanOrEqual(2);
     await act(async () => {
       fireEvent.click(saveBtns[1]); // variant b's Save
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid JSON');
+      expect(container.textContent).toContain('JSON no válido');
     });
   });
 
@@ -671,7 +671,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
 
     const { container } = renderComponent();
     const saveBtns = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.trim() === 'Save',
+      b => b.textContent?.trim() === 'Guardar',
     );
     await act(async () => {
       fireEvent.click(saveBtns[0]);
@@ -684,7 +684,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
   it('Seed from page button populates textarea with target content', async () => {
     const { container } = renderComponent();
     const seedBtns = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Seed from'),
+      b => b.textContent?.includes('Rellenar desde'),
     );
     expect(seedBtns.length).toBeGreaterThanOrEqual(1);
     // Before seeding, variant a shows the empty placeholder (no Advanced toggle for it).
@@ -734,7 +734,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
   it('renders Add variant button', () => {
     const { container } = renderComponent();
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Add variant'),
+      b => b.textContent?.includes('Añadir variante'),
     );
     expect(addBtn).toBeTruthy();
   });
@@ -761,7 +761,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
 
     const { container } = renderComponent();
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Add variant'),
+      b => b.textContent?.includes('Añadir variante'),
     );
     await act(async () => {
       fireEvent.click(addBtn!);
@@ -786,13 +786,13 @@ describe('ExperimentDetailClient — add/remove variant', () => {
 
     const { container } = renderComponent();
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Add variant'),
+      b => b.textContent?.includes('Añadir variante'),
     );
     await act(async () => {
       fireEvent.click(addBtn!);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Maximum 26 variants');
+      expect(container.textContent).toContain('Máximo de 26 variantes');
     });
   });
 
@@ -800,7 +800,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
     const { container } = renderComponent();
     // The remove button for variant 'a' should be disabled
     const removeButtons = Array.from(container.querySelectorAll('button[aria-label]')).filter(
-      b => b.getAttribute('aria-label')?.includes('cannot be removed'),
+      b => b.getAttribute('aria-label')?.includes('no se puede eliminar'),
     );
     expect(removeButtons.length).toBeGreaterThanOrEqual(1);
     expect((removeButtons[0] as HTMLButtonElement).disabled).toBe(true);
@@ -810,8 +810,8 @@ describe('ExperimentDetailClient — add/remove variant', () => {
     const { container } = renderComponent();
     // With exactly 2 variants, remove should be disabled for both
     const removeButtons = Array.from(container.querySelectorAll('button')).filter(
-      b => b.getAttribute('aria-label')?.includes('cannot be removed') ||
-        b.getAttribute('aria-label')?.includes('at least 2'),
+      b => b.getAttribute('aria-label')?.includes('no se puede eliminar') ||
+        b.getAttribute('aria-label')?.includes('al menos 2'),
     );
     expect(removeButtons.length).toBeGreaterThanOrEqual(1);
   });
@@ -823,7 +823,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
     const removeButtons = Array.from(container.querySelectorAll('button')).filter(
       b => {
         const lbl = b.getAttribute('aria-label') ?? '';
-        return lbl.includes('cannot be removed') || lbl.includes('at least 2') || lbl.includes('Stop the experiment');
+        return lbl.includes('no se puede eliminar') || lbl.includes('al menos 2') || lbl.includes('Detén el experimento');
       },
     );
     // Both variants should have a disabled remove
@@ -845,7 +845,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
       />,
     );
     const runningRemoveBtn = Array.from(container2.querySelectorAll('button')).find(
-      b => b.getAttribute('aria-label')?.includes('Stop the experiment'),
+      b => b.getAttribute('aria-label')?.includes('Detén el experimento'),
     );
     expect(runningRemoveBtn).toBeTruthy();
     expect((runningRemoveBtn as HTMLButtonElement).disabled).toBe(true);
@@ -884,7 +884,7 @@ describe('ExperimentDetailClient — add/remove variant', () => {
     );
     // Find enabled remove button
     const removeButtons = Array.from(container.querySelectorAll('button')).filter(
-      b => b.getAttribute('aria-label')?.includes('Remove variant') && !(b as HTMLButtonElement).disabled,
+      b => b.getAttribute('aria-label')?.includes('Eliminar variante') && !(b as HTMLButtonElement).disabled,
     );
     expect(removeButtons.length).toBeGreaterThanOrEqual(1);
     await act(async () => {
@@ -922,13 +922,13 @@ describe('ExperimentDetailClient — add/remove variant', () => {
       />,
     );
     const removeButtons = Array.from(container.querySelectorAll('button')).filter(
-      b => b.getAttribute('aria-label')?.includes('Remove variant') && !(b as HTMLButtonElement).disabled,
+      b => b.getAttribute('aria-label')?.includes('Eliminar variante') && !(b as HTMLButtonElement).disabled,
     );
     await act(async () => {
       fireEvent.click(removeButtons[0]);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('control variant cannot be removed');
+      expect(container.textContent).toContain('variante de control no se puede eliminar');
     });
   });
 });
@@ -943,7 +943,7 @@ describe('ExperimentDetailClient — variant label editing', () => {
 
   it('clicking label button shows an input for editing', () => {
     const { container } = renderComponent();
-    const labelBtns = Array.from(container.querySelectorAll('button[title="Click to edit label"]'));
+    const labelBtns = Array.from(container.querySelectorAll('button[title="Haz clic para editar la etiqueta"]'));
     expect(labelBtns.length).toBeGreaterThanOrEqual(1);
     fireEvent.click(labelBtns[0]);
     const input = getLabelInput(container);
@@ -952,7 +952,7 @@ describe('ExperimentDetailClient — variant label editing', () => {
 
   it('Escape key in label input cancels editing', () => {
     const { container } = renderComponent();
-    const labelBtns = Array.from(container.querySelectorAll('button[title="Click to edit label"]'));
+    const labelBtns = Array.from(container.querySelectorAll('button[title="Haz clic para editar la etiqueta"]'));
     fireEvent.click(labelBtns[0]);
     const input = getLabelInput(container);
     expect(input).toBeTruthy();
@@ -970,7 +970,7 @@ describe('ExperimentDetailClient — variant label editing', () => {
     }) as typeof global.fetch;
 
     const { container } = renderComponent();
-    const labelBtns = Array.from(container.querySelectorAll('button[title="Click to edit label"]'));
+    const labelBtns = Array.from(container.querySelectorAll('button[title="Haz clic para editar la etiqueta"]'));
     fireEvent.click(labelBtns[0]);
     const input = getLabelInput(container);
     expect(input).toBeTruthy();
@@ -990,7 +990,7 @@ describe('ExperimentDetailClient — variant label editing', () => {
 
   it('empty label shows an error and cancels edit', async () => {
     const { container } = renderComponent();
-    const labelBtns = Array.from(container.querySelectorAll('button[title="Click to edit label"]'));
+    const labelBtns = Array.from(container.querySelectorAll('button[title="Haz clic para editar la etiqueta"]'));
     fireEvent.click(labelBtns[0]);
     const input = getLabelInput(container);
     expect(input).toBeTruthy();
@@ -999,13 +999,13 @@ describe('ExperimentDetailClient — variant label editing', () => {
       fireEvent.blur(input);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('label cannot be empty');
+      expect(container.textContent).toContain('etiqueta de la variante no puede estar vacía');
     });
   });
 
   it('unchanged label cancels edit silently without PATCH', async () => {
     const { container } = renderComponent();
-    const labelBtns = Array.from(container.querySelectorAll('button[title="Click to edit label"]'));
+    const labelBtns = Array.from(container.querySelectorAll('button[title="Haz clic para editar la etiqueta"]'));
     fireEvent.click(labelBtns[0]);
     const input = getLabelInput(container);
     expect(input).toBeTruthy();
@@ -1267,7 +1267,7 @@ describe('ExperimentDetailClient — results display', () => {
 
     const { container } = renderComponent();
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Significance vs control');
+      expect(container.textContent).not.toContain('Significancia frente al control');
     });
   });
 });
@@ -1296,9 +1296,9 @@ describe('ExperimentDetailClient — add variant at limit', () => {
       />,
     );
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Add variant'),
+      b => b.textContent?.includes('Añadir variante'),
     ) as HTMLButtonElement;
     expect(addBtn.disabled).toBe(true);
-    expect(container.textContent).toContain('Maximum 26 variants reached');
+    expect(container.textContent).toContain('Máximo de 26 variantes alcanzado');
   });
 });
