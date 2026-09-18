@@ -58,7 +58,7 @@ interface BillingModeResponse {
 function formatLimit(value: number | string | undefined): string {
   if (value === undefined || value === null) return '—';
   if (typeof value === 'string') return value;
-  if (value >= 9_000) return 'Unlimited';
+  if (value >= 9_000) return 'Ilimitado';
   return value.toLocaleString();
 }
 
@@ -114,7 +114,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       .then(([planData, modeData]) => {
         if (cancelled) return;
         if (!planData.success) {
-          setError(planData.message ?? 'Failed to load plan');
+          setError(planData.message ?? 'No se pudo cargar el plan');
           setLoading(false);
           return;
         }
@@ -165,7 +165,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       });
       const data = await res.json() as { success: boolean; message?: string };
       if (!data.success) {
-        setBillingError(data.message ?? 'Action failed');
+        setBillingError(data.message ?? 'La acción falló');
         return;
       }
       // Refetch read-model
@@ -193,7 +193,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       });
       const data = await res.json() as BillingModeResponse;
       if (!data.success) {
-        setError(data.message ?? 'Failed to update billing mode');
+        setError(data.message ?? 'No se pudo actualizar el modo de facturación');
         return;
       }
       if (data.data) {
@@ -221,7 +221,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message ?? 'Failed to update plan');
+        setError(data.message ?? 'No se pudo actualizar el plan');
         return;
       }
       // Refresh active state by re-fetching to avoid local-state drift.
@@ -238,7 +238,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
   }
 
   if (loading) {
-    return <div className="p-6 text-sm text-muted-foreground">Loading plan…</div>;
+    return <div className="p-6 text-sm text-muted-foreground">Cargando plan…</div>;
   }
 
   return (
@@ -248,9 +248,9 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
           <span className="material-icons text-base align-middle">arrow_back</span>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Subscription plan</h1>
+          <h1 className="text-2xl font-bold text-foreground">Plan de suscripción</h1>
           <p className="text-sm text-muted-foreground">
-            Assign a bundled monthly tier. AI usage runs on the client&apos;s own Anthropic / OpenAI key (BYOK).
+            Asigna un nivel mensual agrupado. El uso de IA se ejecuta con la clave de Anthropic / OpenAI del propio cliente (BYOK).
           </p>
         </div>
       </div>
@@ -264,7 +264,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       {savedAt && (
         <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-md px-4 py-3">
           <span className="material-icons text-base">check_circle</span>
-          Plan updated.
+          Plan actualizado.
         </div>
       )}
 
@@ -273,16 +273,16 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
         <div className="bg-card border border-border rounded-lg p-5 space-y-4">
           <div className="flex items-center gap-2">
             <span className="material-icons text-xl text-primary">account_balance_wallet</span>
-            <h2 className="text-base font-semibold text-foreground">Billing mode</h2>
+            <h2 className="text-base font-semibold text-foreground">Modo de facturación</h2>
           </div>
 
           {/* Segmented control */}
           <div className="inline-flex rounded-md border border-border overflow-hidden text-sm">
             {(
               [
-                { value: 'agency' as const, label: 'Agency-managed', description: 'Legacy managed; module gating is bypassed.' },
-                { value: 'saas' as const, label: 'SaaS', description: 'Client pays per-module subscriptions with usage overage.' },
-                { value: 'byok' as const, label: 'BYOK', description: 'Client brings their own API keys; metered costs are waived.' },
+                { value: 'agency' as const, label: 'Gestionado por la agencia', description: 'Gestión heredada; el control de módulos se omite.' },
+                { value: 'saas' as const, label: 'SaaS', description: 'El cliente paga suscripciones por módulo con exceso de uso.' },
+                { value: 'byok' as const, label: 'BYOK', description: 'El cliente aporta sus propias claves de API; los costes medidos se eximen.' },
               ] as const
             ).map((opt, idx, arr) => {
               const isActive = billingMode === opt.value;
@@ -308,9 +308,9 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
 
           {/* Description of current selection */}
           <p className="text-xs text-muted-foreground">
-            {billingMode === 'agency' && 'Legacy managed; module gating is bypassed.'}
-            {billingMode === 'saas' && 'Client pays per-module subscriptions with usage overage.'}
-            {billingMode === 'byok' && 'Client brings their own API keys; metered costs are waived.'}
+            {billingMode === 'agency' && 'Gestión heredada; el control de módulos se omite.'}
+            {billingMode === 'saas' && 'El cliente paga suscripciones por módulo con exceso de uso.'}
+            {billingMode === 'byok' && 'El cliente aporta sus propias claves de API; los costes medidos se eximen.'}
           </p>
 
           {/* BYOK provider checklist — only shown in byok mode */}
@@ -318,7 +318,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
             <div className="border-t border-border pt-4 space-y-2">
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <span className="material-icons text-base">vpn_key</span>
-                Required API keys
+                Claves de API requeridas
               </div>
               <ul className="space-y-1.5">
                 {byokStatus.requiredProviders.map((provider) => {
@@ -347,11 +347,11 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
         <div className="flex items-center gap-3">
           <span className="material-icons text-2xl text-primary">card_membership</span>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Current tier</p>
-            <p className="text-lg font-semibold text-foreground">{active ? active.name : 'No tier assigned'}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide">Nivel actual</p>
+            <p className="text-lg font-semibold text-foreground">{active ? active.name : 'Sin nivel asignado'}</p>
             {active?.startDate && (
               <p className="text-xs text-muted-foreground">
-                Started {new Date(active.startDate).toLocaleDateString()}
+                Iniciado el {new Date(active.startDate).toLocaleDateString()}
               </p>
             )}
           </div>
@@ -363,7 +363,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
             className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 disabled:opacity-50"
           >
             <span className="material-icons text-base">cancel</span>
-            {saving === 'cancel' ? 'Cancelling…' : 'Cancel tier'}
+            {saving === 'cancel' ? 'Cancelando…' : 'Cancelar nivel'}
           </button>
         )}
       </div>
@@ -372,7 +372,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       {catalog.length === 0 ? (
         <div className="bg-card border border-border rounded-lg p-8 text-center text-sm text-muted-foreground">
           <span className="material-icons text-3xl text-muted-foreground mb-2 block">inventory_2</span>
-          No pricing tiers in the catalog. Run <code className="bg-muted px-1.5 py-0.5 rounded text-xs">tsx scripts/seed-pricing-tiers.ts</code> first.
+          No hay niveles de precios en el catálogo. Ejecuta <code className="bg-muted px-1.5 py-0.5 rounded text-xs">tsx scripts/seed-pricing-tiers.ts</code> primero.
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -392,29 +392,29 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 <p className="text-sm text-muted-foreground mt-1 min-h-[3rem]">{tier.description ?? ''}</p>
                 <div className="mt-3 flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-foreground">${(tier.price / 100).toFixed(0)}</span>
-                  <span className="text-sm text-muted-foreground">/{tier.billingCycle ?? 'month'}</span>
+                  <span className="text-sm text-muted-foreground">/{tier.billingCycle ?? 'mes'}</span>
                 </div>
 
                 {/* Usage limits */}
                 <div className="mt-4 space-y-1.5 text-xs">
                   <div className="flex items-center justify-between border-b border-border pb-1">
-                    <span className="text-muted-foreground">Sites</span>
+                    <span className="text-muted-foreground">Sitios</span>
                     <span className="font-medium text-foreground">{formatLimit(tier.usageLimits?.sites as number)}</span>
                   </div>
                   <div className="flex items-center justify-between border-b border-border pb-1">
-                    <span className="text-muted-foreground">Seats</span>
+                    <span className="text-muted-foreground">Puestos</span>
                     <span className="font-medium text-foreground">{formatLimit(tier.usageLimits?.seats as number)}</span>
                   </div>
                   <div className="flex items-center justify-between border-b border-border pb-1">
-                    <span className="text-muted-foreground">CRM contacts</span>
+                    <span className="text-muted-foreground">Contactos del CRM</span>
                     <span className="font-medium text-foreground">{formatLimit(tier.usageLimits?.contacts as number)}</span>
                   </div>
                   <div className="flex items-center justify-between border-b border-border pb-1">
-                    <span className="text-muted-foreground">Brain storage</span>
+                    <span className="text-muted-foreground">Almacenamiento de Brain</span>
                     <span className="font-medium text-foreground">{tier.usageLimits?.brainGb ? `${tier.usageLimits.brainGb} GB` : '—'}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Automations</span>
+                    <span className="text-muted-foreground">Automatizaciones</span>
                     <span className="font-medium text-foreground">{formatLimit(tier.usageLimits?.automations as number)}</span>
                   </div>
                 </div>
@@ -437,7 +437,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                     disabled={saving !== null || isActive}
                     className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 ${isActive ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'bg-primary text-primary-foreground hover:bg-primary/90'}`}
                   >
-                    {isActive ? 'Current plan' : isSaving ? 'Switching…' : (active ? 'Switch to this tier' : 'Assign tier')}
+                    {isActive ? 'Plan actual' : isSaving ? 'Cambiando…' : (active ? 'Cambiar a este nivel' : 'Asignar nivel')}
                   </button>
                 </div>
               </div>
@@ -448,12 +448,12 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
 
       {/* ── Billing & Plan management ───────────────────────────── */}
       {billingLoading ? (
-        <div className="p-4 text-sm text-muted-foreground">Loading billing data…</div>
+        <div className="p-4 text-sm text-muted-foreground">Cargando datos de facturación…</div>
       ) : billing ? (
         <div className="space-y-4">
           <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-xl text-primary">receipt_long</span>
-            Billing &amp; Plan
+            Facturación y plan
           </h2>
 
           {billingError && (
@@ -463,33 +463,33 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
             </div>
           )}
 
-          {/* 1. Plan summary */}
+          {/* 1. Resumen del plan */}
           <div className="bg-card border border-border rounded-lg p-5 space-y-2">
             <div className="flex items-center gap-2 mb-3">
               <span className="material-icons text-xl text-primary">summarize</span>
-              <h3 className="text-sm font-semibold text-foreground">Plan summary</h3>
+              <h3 className="text-sm font-semibold text-foreground">Resumen del plan</h3>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Gross MRR</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">MRR bruto</p>
                 <p className="font-semibold text-foreground">{formatCents(billing.grossMrrCents)}</p>
               </div>
               {billing.discountPercent > 0 && (
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Volume discount</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Descuento por volumen</p>
                   <p className="font-semibold text-foreground">{billing.discountPercent}%</p>
                 </div>
               )}
               {(billing.compDiscountPercent ?? 0) > 0 && (
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Comp discount</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Descuento compensatorio</p>
                   <p className="font-semibold text-foreground">
                     {billing.compDiscountPercent}% (−{formatCents(billing.compDiscountCents)})
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Net MRR</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">MRR neto</p>
                 <p className="font-semibold text-foreground">{formatCents(billing.netMrrCents)}</p>
               </div>
             </div>
@@ -499,22 +499,22 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
           <div className="bg-card border border-border rounded-lg p-5 space-y-3">
             <div className="flex items-center gap-2">
               <span className="material-icons text-xl text-primary">extension</span>
-              <h3 className="text-sm font-semibold text-foreground">Modules</h3>
+              <h3 className="text-sm font-semibold text-foreground">Módulos</h3>
             </div>
 
             {billing.bundle ? (
               <div className="flex items-center gap-2 text-sm">
                 <span className="material-icons text-base text-green-600">check_circle</span>
-                <span className="text-foreground font-medium">On the Everything bundle</span>
-                <span className="text-muted-foreground">— all modules included ({formatCents(billing.bundle.priceCents)}/mo)</span>
+                <span className="text-foreground font-medium">En el paquete Everything</span>
+                <span className="text-muted-foreground">— todos los módulos incluidos ({formatCents(billing.bundle.priceCents)}/mes)</span>
               </div>
             ) : billing.modules.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No active modules.</p>
+              <p className="text-sm text-muted-foreground">No hay módulos activos.</p>
             ) : (
               <ul className="space-y-1.5">
                 {billing.modules.map((mod) => (
                   <li key={mod.clientServiceId} className="flex items-center justify-between text-sm">
-                    <span className="text-foreground">{mod.name} <span className="text-muted-foreground">({formatCents(mod.priceCents)}/mo)</span></span>
+                    <span className="text-foreground">{mod.name} <span className="text-muted-foreground">({formatCents(mod.priceCents)}/mes)</span></span>
                     <button
                       onClick={() => billingAction({ action: 'remove-module', clientServiceId: mod.clientServiceId })}
                       disabled={billingInFlight}
@@ -546,10 +546,10 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                     }}
                     disabled={billingInFlight}
                   >
-                    <option value="">Add module…</option>
+                    <option value="">Añadir módulo…</option>
                     {available.map((d) => (
                       <option key={d.slug} value={d.slug}>
-                        {d.name} ({formatCents(d.monthlyPriceCents)}/mo)
+                        {d.name} ({formatCents(d.monthlyPriceCents)}/mes)
                       </option>
                     ))}
                   </select>
@@ -566,7 +566,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                   className="flex items-center gap-1 text-sm text-primary hover:underline disabled:opacity-50"
                 >
                   <span className="material-icons text-base">star</span>
-                  Switch to Everything bundle
+                  Cambiar al paquete Everything
                 </button>
               </div>
             )}
@@ -576,25 +576,25 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
           <div className="bg-card border border-border rounded-lg p-5 space-y-3">
             <div className="flex items-center gap-2">
               <span className="material-icons text-xl text-primary">group</span>
-              <h3 className="text-sm font-semibold text-foreground">Seats</h3>
+              <h3 className="text-sm font-semibold text-foreground">Puestos</h3>
             </div>
             <div className="grid grid-cols-3 gap-3 text-sm">
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Derived</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Derivados</p>
                 <p className="font-semibold text-foreground">{billing.seats.derived}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Override</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Anulación</p>
                 <p className="font-semibold text-foreground">{billing.seats.override != null ? billing.seats.override : '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Effective</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Efectivos</p>
                 <p className="font-semibold text-foreground">{billing.seats.effective}</p>
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              {billing.seats.included} included · {billing.seats.additional} additional ·{' '}
-              {formatCents(billing.seats.perSeatCents)}/seat → {formatCents(billing.seats.seatTotalCents)} seat charge
+              {billing.seats.included} incluidos · {billing.seats.additional} adicionales ·{' '}
+              {formatCents(billing.seats.perSeatCents)}/puesto → {formatCents(billing.seats.seatTotalCents)} de cargo por puestos
             </p>
             <div className="flex items-center gap-2">
               <input
@@ -602,7 +602,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 min="0"
                 value={seatsInput}
                 onChange={(e) => setSeatsInput(e.target.value)}
-                placeholder="Override seat count"
+                placeholder="Anular número de puestos"
                 className="w-40 text-sm border border-border rounded-md px-2 py-1.5 bg-background text-foreground"
               />
               <button
@@ -613,7 +613,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 disabled={billingInFlight}
                 className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
               >
-                Set
+                Definir
               </button>
               <button
                 onClick={() => { setSeatsInput(''); billingAction({ action: 'set-seats', override: null }); }}
@@ -623,15 +623,15 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
             </div>
           </div>
 
-          {/* 4. Comp discount */}
+          {/* 4. Descuento compensatorio */}
           <div className="bg-card border border-border rounded-lg p-5 space-y-3">
             <div className="flex items-center gap-2">
               <span className="material-icons text-xl text-primary">discount</span>
-              <h3 className="text-sm font-semibold text-foreground">Comp discount</h3>
+              <h3 className="text-sm font-semibold text-foreground">Descuento compensatorio</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              Current: {billing.compDiscountPercent != null ? `${billing.compDiscountPercent}%` : 'None'}
-              {(billing.compDiscountPercent ?? 0) > 0 && ` (−${formatCents(billing.compDiscountCents)}/mo)`}
+              Actual: {billing.compDiscountPercent != null ? `${billing.compDiscountPercent}%` : 'Ninguno'}
+              {(billing.compDiscountPercent ?? 0) > 0 && ` (−${formatCents(billing.compDiscountCents)}/mes)`}
             </p>
             <div className="flex items-center gap-2">
               <input
@@ -652,7 +652,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 disabled={billingInFlight}
                 className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
               >
-                Set
+                Definir
               </button>
               <button
                 onClick={() => { setCompInput(''); billingAction({ action: 'set-comp', percent: null }); }}
@@ -666,13 +666,13 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
           <div className="bg-card border border-border rounded-lg p-5 space-y-3">
             <div className="flex items-center gap-2">
               <span className="material-icons text-xl text-primary">vpn_key</span>
-              <h3 className="text-sm font-semibold text-foreground">BYOK eligibility</h3>
+              <h3 className="text-sm font-semibold text-foreground">Elegibilidad de BYOK</h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              Effective: <span className="font-medium text-foreground">{billing.byokEligible ? 'Eligible' : 'Not eligible'}</span>
+              Efectivo: <span className="font-medium text-foreground">{billing.byokEligible ? 'Eligible' : 'Not eligible'}</span>
               {billing.byokEligibleOverride !== null && (
                 <span className="ml-2 text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded">
-                  override: {billing.byokEligibleOverride ? 'Granted' : 'Revoked'}
+                  override: {billing.byokEligibleOverride ? 'Concedida' : 'Revocada'}
                 </span>
               )}
             </p>
@@ -683,7 +683,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted disabled:opacity-50 flex items-center gap-1"
               >
                 <span className="material-icons text-sm">check_circle</span>
-                Grant
+                Conceder
               </button>
               <button
                 onClick={() => billingAction({ action: 'set-byok', override: false })}
@@ -691,7 +691,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted disabled:opacity-50 flex items-center gap-1"
               >
                 <span className="material-icons text-sm">block</span>
-                Revoke
+                Revocar
               </button>
               <button
                 onClick={() => billingAction({ action: 'set-byok', override: null })}
@@ -699,7 +699,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted disabled:opacity-50 flex items-center gap-1"
               >
                 <span className="material-icons text-sm">settings_backup_restore</span>
-                Use default
+                Usar predeterminado
               </button>
             </div>
           </div>
@@ -707,8 +707,8 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
       ) : null}
 
       <p className="text-xs text-muted-foreground">
-        Switching tiers cancels the prior tier&apos;s <code className="bg-muted px-1 rounded">client_services</code> row and creates a new active row.
-        Per-service add-ons (domain, hosting, etc.) are not affected.
+        Cambiar de nivel cancela la <code className="bg-muted px-1 rounded">client_services</code> fila del nivel anterior y crea una nueva fila activa.
+        Los complementos por servicio (dominio, hosting, etc.) no se ven afectados.
       </p>
     </div>
   );

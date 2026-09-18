@@ -73,7 +73,7 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'Error'); return; }
     const refreshRes = await fetch('/api/admin/portal/clients');
     const refreshData = await refreshRes.json();
     setClients(refreshData.data ?? []);
@@ -85,7 +85,7 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
 
   const columns: Array<Column<Client>> = [
     {
-      key: 'client', header: 'Client',
+      key: 'client', header: 'Cliente',
       render: (c) => (
         <div className="flex items-center gap-3 min-w-0">
           <span className="w-8 h-8 rounded-[7px] grid place-items-center text-white font-mono font-semibold text-[13px] shrink-0" style={{ background: logoColor(c.id) }}>{initial(c)}</span>
@@ -96,19 +96,19 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
         </div>
       ),
     },
-    { key: 'company', header: 'Company', render: (c) => <span className="text-muted-foreground">{c.company ?? '—'}</span> },
+    { key: 'company', header: 'Empresa', render: (c) => <span className="text-muted-foreground">{c.company ?? '—'}</span> },
     {
-      key: 'status', header: 'Status',
+      key: 'status', header: 'Estado',
       render: (c) => (
         <span className="inline-flex items-center gap-2 text-[12.5px]">
           <StatusDot tone={c.userActive ? 'ok' : 'neutral'} />
-          {c.userActive ? 'Active' : 'Inactive'}
+          {c.userActive ? 'Activo' : 'Inactivo'}
         </span>
       ),
     },
-    { key: 'services', header: 'Services', align: 'center', render: (c) => num(c.activeServices) },
-    { key: 'sites', header: 'Sites', align: 'center', render: (c) => num(c.websiteCount) },
-    { key: 'projects', header: 'Projects', align: 'center', render: (c) => num(c.activeProjects) },
+    { key: 'services', header: 'Servicios', align: 'center', render: (c) => num(c.activeServices) },
+    { key: 'sites', header: 'Sitios', align: 'center', render: (c) => num(c.websiteCount) },
+    { key: 'projects', header: 'Proyectos', align: 'center', render: (c) => num(c.activeProjects) },
     {
       key: 'tickets', header: 'Tickets', align: 'center',
       render: (c) => c.openTickets > 0
@@ -116,22 +116,22 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
         : <span className="font-mono tabular-nums text-muted-foreground">0</span>,
     },
     { key: 'mrr', header: 'MRR', align: 'right', render: (c) => <span className={`font-mono tabular-nums ${c.mrr > 0 ? 'text-foreground' : 'text-muted-foreground'}`}>{c.mrr > 0 ? formatCents(c.mrr) : '—'}</span> },
-    { key: 'revenue', header: 'Revenue', align: 'right', render: (c) => <span className="font-mono tabular-nums text-foreground">{c.totalRevenue > 0 ? formatCents(c.totalRevenue) : '—'}</span> },
-    { key: 'joined', header: 'Joined', align: 'right', render: (c) => <span className="font-mono text-[12px] text-muted-foreground">{new Date(c.createdAt).toLocaleDateString()}</span> },
+    { key: 'revenue', header: 'Ingresos', align: 'right', render: (c) => <span className="font-mono tabular-nums text-foreground">{c.totalRevenue > 0 ? formatCents(c.totalRevenue) : '—'}</span> },
+    { key: 'joined', header: 'Alta', align: 'right', render: (c) => <span className="font-mono text-[12px] text-muted-foreground">{new Date(c.createdAt).toLocaleDateString()}</span> },
     { key: 'go', header: '', align: 'right', render: (c) => <Link href={`/admin/clients/${c.id}`} className="text-muted-foreground hover:text-foreground"><span className="material-icons text-[18px] align-middle">chevron_right</span></Link> },
   ];
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Clients" subtitle="Every tenant across the platform.">
-        <Button variant="primary" icon="add" onClick={() => setShowForm((v) => !v)}>New client</Button>
+      <PageHeader title="Clientes" subtitle="Todos los inquilinos de la plataforma.">
+        <Button variant="primary" icon="add" onClick={() => setShowForm((v) => !v)}>Nuevo cliente</Button>
       </PageHeader>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Stat icon="business" label="Active clients" value={activeCount} sub={`${clients.length} total`} />
-        <Stat icon="trending_up" label="Total MRR" value={formatCents(totalMrr)} />
-        <Stat icon="payments" label="Lifetime revenue" value={formatCents(totalRevenue)} />
-        <Stat icon="support_agent" label="Open tickets" value={openTickets} tone={openTickets > 0 ? 'bad' : undefined} />
+        <Stat icon="business" label="Clientes activos" value={activeCount} sub={`${clients.length} en total`} />
+        <Stat icon="trending_up" label="MRR total" value={formatCents(totalMrr)} />
+        <Stat icon="payments" label="Ingresos totales" value={formatCents(totalRevenue)} />
+        <Stat icon="support_agent" label="Tickets abiertos" value={openTickets} tone={openTickets > 0 ? 'bad' : undefined} />
       </div>
 
       <div className="flex items-center gap-3 flex-wrap mt-4 mb-3">
@@ -144,13 +144,13 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
             { value: 'inactive', label: 'Inactivo', count: clients.length - activeCount },
           ]}
         />
-        <SearchField value={search} onChange={setSearch} placeholder="Filter clients…" className="min-w-[220px]" />
-        <span className="ml-auto text-xs text-muted-foreground font-mono">{filtered.length} shown</span>
+        <SearchField value={search} onChange={setSearch} placeholder="Filtrar clientes…" className="min-w-[220px]" />
+        <span className="ml-auto text-xs text-muted-foreground font-mono">{filtered.length} mostrados</span>
       </div>
 
       {showForm && (
         <div className="mb-3">
-          <Panel title="Create client account">
+          <Panel title="Crear cuenta de cliente">
             <form method="post" onSubmit={createClient} className="p-4">
               {error && (
                 <div className="mb-4 p-3 rounded-[5px] text-[13px] flex items-center gap-2" style={{ color: 'var(--admin-bad)', background: 'var(--admin-bad-bg)' }}>
@@ -160,17 +160,17 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Nombre" required><input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} /></Field>
                 <Field label="Correo" required><input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls} /></Field>
-                <Field label="Password" required><input type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className={inputCls} /></Field>
+                <Field label="Contraseña" required><input type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className={inputCls} /></Field>
                 <Field label="Empresa"><input type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className={inputCls} /></Field>
                 <Field label="Teléfono"><input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputCls} /></Field>
                 <Field label="Sitio web"><input type="url" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} className={inputCls} /></Field>
                 <div className="sm:col-span-2">
-                  <Field label="Internal notes"><textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className={`${inputCls} resize-none`} /></Field>
+                  <Field label="Notas internas"><textarea rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className={`${inputCls} resize-none`} /></Field>
                 </div>
               </div>
               <div className="flex justify-end gap-2 mt-4">
                 <Button onClick={() => setShowForm(false)}>Cancelar</Button>
-                <Button type="submit" variant="primary" icon={saving ? 'hourglass_empty' : 'check'} disabled={saving}>{saving ? 'Saving…' : 'Create client'}</Button>
+                <Button type="submit" variant="primary" icon={saving ? 'hourglass_empty' : 'check'} disabled={saving}>{saving ? 'Guardando…' : 'Crear cliente'}</Button>
               </div>
             </form>
           </Panel>
@@ -184,9 +184,9 @@ export function AdminClientsView({ initialClients }: { initialClients: Client[] 
         empty={
           <EmptyState
             icon="business"
-            title={search ? 'No matching clients' : 'No clients yet'}
-            message={search ? 'Try a different search term.' : 'When you onboard your first tenant, they’ll show up here.'}
-            action={!search ? <Button variant="primary" icon="add" onClick={() => setShowForm(true)}>New client</Button> : undefined}
+            title={search ? 'No hay clientes coincidentes' : 'Aún no hay clientes'}
+            message={search ? 'Prueba con otro término de búsqueda.' : 'Cuando des de alta a tu primer inquilino, aparecerá aquí.'}
+            action={!search ? <Button variant="primary" icon="add" onClick={() => setShowForm(true)}>Nuevo cliente</Button> : undefined}
           />
         }
       />
