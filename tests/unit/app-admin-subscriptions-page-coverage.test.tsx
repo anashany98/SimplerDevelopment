@@ -382,7 +382,7 @@ describe('AdminSubscriptionsPage — status filter tabs', () => {
 
 describe('AdminSubscriptionsPage — action menu', () => {
   async function openActionMenu(container: HTMLElement) {
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     expect(actionsBtn).toBeTruthy();
     fireEvent.click(actionsBtn);
     await waitFor(() => {
@@ -394,14 +394,14 @@ describe('AdminSubscriptionsPage — action menu', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
     await openActionMenu(container);
-    expect(container.textContent).toContain('Refund');
-    expect(container.textContent).toContain('Cancel');
+    expect(container.textContent).toContain('Reembolso');
+    expect(container.textContent).toContain('Cancelar');
   });
 
   it('closes action menu on second click of Actions button', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
     await waitFor(() => expect(container.textContent).toContain('Change plan'));
     // Simulate outside click to close
@@ -426,11 +426,11 @@ describe('AdminSubscriptionsPage — action menu', () => {
 
 describe('AdminSubscriptionsPage — Cancel dialog', () => {
   async function openCancelDialog(container: HTMLElement) {
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
-    await waitFor(() => expect(container.textContent).toContain('Cancel'));
+    await waitFor(() => expect(container.textContent).toContain('Cancelar'));
     const cancelBtn = Array.from(container.querySelectorAll('.z-20 button')).find(
-      (b) => b.textContent?.includes('Cancel'),
+      (b) => b.textContent?.includes('Cancelar'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(cancelBtn);
@@ -449,7 +449,7 @@ describe('AdminSubscriptionsPage — Cancel dialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
     await openCancelDialog(container);
-    const closeBtn = container.querySelector('button[aria-label="Close"]') as HTMLButtonElement;
+    const closeBtn = container.querySelector('button[aria-label="Cerrar"]') as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
       expect(container.querySelector('.fixed.inset-0')).toBeNull();
@@ -551,7 +551,7 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
 
   async function openChangePlanDialog(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
     await waitFor(() => expect(container.textContent).toContain('Change plan'));
     const changePlanBtn = Array.from(container.querySelectorAll('.z-20 button')).find(
@@ -691,11 +691,11 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
 
   async function openRefundDialog(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
-    await waitFor(() => expect(container.textContent).toContain('Refund'));
+    await waitFor(() => expect(container.textContent).toContain('Reembolso'));
     const refundBtn = Array.from(container.querySelectorAll('.z-20 button')).find(
-      (b) => b.textContent?.includes('Refund'),
+      (b) => b.textContent?.includes('Reembolso'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(refundBtn);
@@ -930,11 +930,11 @@ describe('AdminSubscriptionsPage — Toast', () => {
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
 
     // Trigger a toast via cancel
-    const actionsBtn = container.querySelector('button[aria-label="Actions"]') as HTMLButtonElement;
+    const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
-    await waitFor(() => expect(container.textContent).toContain('Cancel'));
+    await waitFor(() => expect(container.textContent).toContain('Cancelar'));
     const cancelBtn = Array.from(container.querySelectorAll('.z-20 button')).find(
-      (b) => b.textContent?.includes('Cancel'),
+      (b) => b.textContent?.includes('Cancelar'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(cancelBtn);
