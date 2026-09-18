@@ -148,7 +148,7 @@ describe('StatusSection', () => {
     const { container } = render(
       <StatusSection formData={makePost()} setFormData={setFormData} />,
     );
-    expect(container.textContent).toContain('Status');
+    expect(container.textContent).toContain('Estado');
     const select = container.querySelector('select') as HTMLSelectElement;
     expect(select).toBeTruthy();
     const options = Array.from(select.querySelectorAll('option')).map((o) => ({
@@ -156,8 +156,8 @@ describe('StatusSection', () => {
       label: o.textContent,
     }));
     expect(options).toEqual([
-      { value: 'draft', label: 'Draft' },
-      { value: 'published', label: 'Published' },
+      { value: 'draft', label: 'Borrador' },
+      { value: 'published', label: 'Publicado' },
     ]);
   });
 
