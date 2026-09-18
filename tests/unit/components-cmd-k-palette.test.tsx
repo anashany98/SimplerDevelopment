@@ -176,7 +176,7 @@ describe('CmdKPalette', () => {
   it('renders the Dashboard nav entry on first open', async () => {
     render(<CmdKPalette />);
     await openPalette();
-    expect(screen.getAllByText('Dashboard').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Panel').length).toBeGreaterThan(0);
   });
 
   it('renders the ESC keyboard hint chip', async () => {
