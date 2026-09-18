@@ -257,7 +257,7 @@ describe('NoteEditorPane — loading state', () => {
 
   it('shows the loading spinner while fetching', () => {
     render(<NoteEditorPane noteId={1} />);
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/Cargando/i)).toBeInTheDocument();
   });
 
   it('does NOT render title input while loading', () => {
