@@ -162,7 +162,7 @@ describe('DataviewBlock — error states', () => {
       json: () => Promise.resolve(OK_RESPONSE),
     } as Response);
 
-    fireEvent.click(screen.getByRole('button', { name: /retry/i }));
+    fireEvent.click(screen.getByRole('button', { name: /reintentar/i }));
     await screen.findByText('Dataview');
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
