@@ -463,7 +463,7 @@ describe('WebhookConsole — deliveries panel', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('No delivery attempts recorded yet.')).toBeTruthy();
+      expect(screen.getByText('Aún no se han registrado intentos de entrega.')).toBeTruthy();
     });
   });
 
@@ -476,12 +476,12 @@ describe('WebhookConsole — deliveries panel', () => {
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
     });
-    await waitFor(() => screen.getByText('No delivery attempts recorded yet.'));
+    await waitFor(() => screen.getByText('Aún no se han registrado intentos de entrega.'));
 
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Hide/i }));
     });
-    expect(screen.queryByText('No delivery attempts recorded yet.')).toBeNull();
+    expect(screen.queryByText('Aún no se han registrado intentos de entrega.')).toBeNull();
   });
 
   it('shows delivery rows when API returns data', async () => {
@@ -535,7 +535,7 @@ describe('WebhookConsole — deliveries panel', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Failed to load deliveries.')).toBeTruthy();
+      expect(screen.getByText('No se pudieron cargar las entregas.')).toBeTruthy();
     });
   });
 
@@ -553,7 +553,7 @@ describe('WebhookConsole — deliveries panel', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Failed to load deliveries.')).toBeTruthy();
+      expect(screen.getByText('No se pudieron cargar las entregas.')).toBeTruthy();
     });
   });
 
@@ -567,7 +567,7 @@ describe('WebhookConsole — deliveries panel', () => {
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
     });
-    await waitFor(() => screen.getByText('No delivery attempts recorded yet.'));
+    await waitFor(() => screen.getByText('Aún no se han registrado intentos de entrega.'));
 
     const callCountAfterFirstOpen = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.filter(
       (c: unknown[]) => typeof c[0] === 'string' && (c[0] as string).includes('/deliveries'),
@@ -637,10 +637,10 @@ describe('WebhookConsole — multi-row + combined filters', () => {
     });
     await waitFor(() => screen.getByText('survey.submitted'));
 
-    expect(screen.getByText('When')).toBeTruthy();
+    expect(screen.getByText('Cuándo')).toBeTruthy();
     expect(screen.getByText('Event')).toBeTruthy();
     // 'Status' also appears in the main webhook table header — getAllByText handles duplicate
-    expect(screen.getAllByText('Status').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText('Estado').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('Error')).toBeTruthy();
   });
 
