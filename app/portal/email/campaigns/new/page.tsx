@@ -80,7 +80,7 @@ export default function NewPortalCampaignPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed to create campaign'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo crear la campaña'); return; }
     router.push(`/portal/email/campaigns/${data.data.id}`);
   }
 
@@ -161,7 +161,7 @@ export default function NewPortalCampaignPage() {
             ) : (
               <span className="material-icons text-base">save</span>
             )}
-            {saving ? 'Saving...' : 'Save Campaign'}
+            {saving ? 'Guardando...' : 'Guardar campaña'}
           </button>
         </div>
       </div>
@@ -213,7 +213,7 @@ export default function NewPortalCampaignPage() {
                       <span className="material-icons text-sm">campaign</span>Campaña</div>
                     <div>
                       <label className={labelClass}>Nombre *</label>
-                      <input value={form.name} onChange={set('name')} className={inputClass} placeholder="e.g. March Newsletter" />
+                      <input value={form.name} onChange={set('name')} className={inputClass} placeholder="p. ej. Boletín de marzo" />
                     </div>
                     <div>
                       <label className={labelClass}>Línea de asunto *</label>
@@ -343,13 +343,13 @@ function createEmailBlock(type: BlockType, order: number): Block {
 
   switch (type) {
     case 'text':
-      return { ...base, type: 'text', content: 'Start writing your email content...', alignment: 'left', size: 'base' };
+      return { ...base, type: 'text', content: 'Empieza a escribir el contenido de tu correo...', alignment: 'left', size: 'base' };
     case 'heading':
-      return { ...base, type: 'heading', content: 'Email Heading', level: 2, alignment: 'left' };
+      return { ...base, type: 'heading', content: 'Título del correo', level: 2, alignment: 'left' };
     case 'image':
       return { ...base, type: 'image', url: '', alt: '', width: 'full', alignment: 'center' };
     case 'button':
-      return { ...base, type: 'button', text: 'Click Here', url: '', variant: 'primary', size: 'md', alignment: 'center' };
+      return { ...base, type: 'button', text: 'Haz clic aquí', url: '', variant: 'primary', size: 'md', alignment: 'center' };
     case 'spacer':
       return { ...base, type: 'spacer', height: 'md' };
     case 'divider':
@@ -360,7 +360,7 @@ function createEmailBlock(type: BlockType, order: number): Block {
         { id: `col-${Date.now()}-2`, width: 50, blocks: [] },
       ], gap: 'md' };
     case 'quote':
-      return { ...base, type: 'quote', content: 'Add a memorable quote...', author: '' };
+      return { ...base, type: 'quote', content: 'Añade una cita memorable...', author: '' };
     case 'section':
       return { ...base, type: 'section', blocks: [] };
     case 'social-links':
@@ -370,6 +370,6 @@ function createEmailBlock(type: BlockType, order: number): Block {
     case 'email-footer':
       return { ...base, type: 'email-footer', showUnsubscribe: true };
     default:
-      return { ...base, type: 'text', content: 'New block', alignment: 'left', size: 'base' };
+      return { ...base, type: 'text', content: 'Nuevo bloque', alignment: 'left', size: 'base' };
   }
 }

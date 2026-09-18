@@ -9,36 +9,36 @@ import { pCard, pInput } from '@/components/portal/portal-ui';
 const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'welcome_email',
-    name: 'Welcome Email',
-    description: 'Send a welcome message when a new subscriber joins a list',
+    name: 'Email de bienvenida',
+    description: 'Envía un mensaje de bienvenida cuando un nuevo suscriptor se une a una lista',
     icon: 'waving_hand',
     trigger: { event: 'email.subscriber.added' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New subscriber: {{event.email}}', body: 'A new subscriber ({{event.email}}) has joined your mailing list.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo suscriptor: {{event.email}}', body: 'Un nuevo suscriptor ({{event.email}}) se ha unido a tu lista de correo.' } }],
   },
   {
     key: 'unsubscribe_notification',
-    name: 'Unsubscribe Notification',
-    description: 'Get notified when someone unsubscribes from your list',
+    name: 'Notificación de baja',
+    description: 'Recibe un aviso cuando alguien se da de baja de tu lista',
     icon: 'notifications',
     trigger: { event: 'email.subscriber.unsubscribed' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Subscriber unsubscribed: {{event.email}}', body: '{{event.email}} has unsubscribed from your mailing list.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Suscriptor dado de baja: {{event.email}}', body: '{{event.email}} se ha dado de baja de tu lista de correo.' } }],
   },
   {
     key: 'campaign_sent_report',
-    name: 'Campaign Sent Report',
-    description: 'Create a follow-up task when a campaign is sent for tracking results',
+    name: 'Informe de campaña enviada',
+    description: 'Crea una tarea de seguimiento cuando se envía una campaña para medir resultados',
     icon: 'assessment',
     trigger: { event: 'email.campaign.sent' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Review results: {{event.name}}', body: 'Campaign "{{event.name}}" has been sent. Check engagement metrics in 24-48 hours.' }, delay: 86400 }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Revisar resultados: {{event.name}}', body: 'La campaña "{{event.name}}" se ha enviado. Revisa las métricas de interacción en 24-48 horas.' }, delay: 86400 }],
     settings: [
       {
         key: 'reportDelay',
         label: 'Revisar resultados después de',
         type: 'select',
         options: [
-          { value: '86400', label: '1 day' },
-          { value: '172800', label: '2 days' },
-          { value: '604800', label: '1 week' },
+          { value: '86400', label: '1 día' },
+          { value: '172800', label: '2 días' },
+          { value: '604800', label: '1 semana' },
         ],
         defaultValue: '86400',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -47,28 +47,28 @@ const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
   },
   {
     key: 'subscriber_to_crm',
-    name: 'Add Subscribers to CRM',
-    description: 'Automatically create a CRM contact when someone subscribes to your list',
+    name: 'Añadir suscriptores al CRM',
+    description: 'Crea automáticamente un contacto del CRM cuando alguien se suscribe a tu lista',
     icon: 'person_add',
     trigger: { event: 'email.subscriber.added' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New email subscriber for CRM: {{event.email}}', body: 'Consider adding {{event.email}} as a CRM contact for nurturing.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo suscriptor para el CRM: {{event.email}}', body: 'Considera añadir a {{event.email}} como contacto del CRM para nutrirlo.' } }],
   },
   {
     key: 're_engagement',
-    name: 'Re-engagement Reminder',
-    description: 'Get a reminder to send a re-engagement campaign to inactive subscribers',
+    name: 'Recordatorio de reactivación',
+    description: 'Recibe un recordatorio para enviar una campaña de reactivación a suscriptores inactivos',
     icon: 'refresh',
     trigger: { event: 'email.campaign.sent' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Re-engagement opportunity', body: 'Review non-openers from your recent campaign "{{event.name}}" and consider a targeted follow-up.' }, delay: 604800 }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Oportunidad de reactivación', body: 'Revisa a quienes no abrieron tu campaña reciente "{{event.name}}" y considera un seguimiento específico.' }, delay: 604800 }],
     settings: [
       {
         key: 'reEngageDelay',
         label: 'Recordar después de',
         type: 'select',
         options: [
-          { value: '259200', label: '3 days' },
-          { value: '604800', label: '1 week' },
-          { value: '1209600', label: '2 weeks' },
+          { value: '259200', label: '3 días' },
+          { value: '604800', label: '1 semana' },
+          { value: '1209600', label: '2 semanas' },
         ],
         defaultValue: '604800',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -125,7 +125,7 @@ export default function EmailSettingsPage() {
           productScope="email"
           presets={EMAIL_AUTOMATION_PRESETS}
           title="Automatizaciones de email"
-          description="Automate subscriber engagement and campaign follow-ups"
+          description="Automatiza la interacción con los suscriptores y el seguimiento de campañas"
         />
       </div>
     </div>

@@ -22,10 +22,10 @@ interface Template {
 
 const CATEGORIES = [
   { value: 'all', label: 'Todas las plantillas' },
-  { value: 'welcome', label: 'Welcome' },
-  { value: 'newsletter', label: 'Newsletter' },
-  { value: 'promotion', label: 'Promotion' },
-  { value: 'transactional', label: 'Transactional' },
+  { value: 'welcome', label: 'Bienvenida' },
+  { value: 'newsletter', label: 'Boletín' },
+  { value: 'promotion', label: 'Promoción' },
+  { value: 'transactional', label: 'Transaccional' },
   { value: 'custom', label: 'Personalizado' },
 ];
 
@@ -162,7 +162,7 @@ export default function EmailTemplatesPage() {
           </div>
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className={pBtnPrimary}>
-              {saving ? 'Saving...' : 'Create Template'}
+              {saving ? 'Guardando...' : 'Crear plantilla'}
             </button>
             <button type="button" onClick={() => setShowCreate(false)} className={pBtnGhost}>Cancelar</button>
           </div>
@@ -205,7 +205,7 @@ export default function EmailTemplatesPage() {
                 <div className="flex items-center justify-between mt-3">
                   <span className="text-[10px] text-muted-foreground px-2 py-0.5 bg-muted rounded-full">{t.category}</span>
                   <div className="flex items-center gap-1">
-                    <span className="text-xs text-muted-foreground">{t.usageCount} uses</span>
+                    <span className="text-xs text-muted-foreground">{t.usageCount} usos</span>
                     {!t.isGlobal && (
                       <button onClick={() => handleDelete(t.id)} className="p-1 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
                         <span className="material-icons text-base">delete_outline</span>

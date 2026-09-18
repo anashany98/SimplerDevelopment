@@ -312,7 +312,7 @@ describe('PortalCampaignDetailPage — initial render', () => {
 
   it('renders Send Now button for draft campaigns', async () => {
     await renderPage();
-    expect(screen.getByText('Send Now')).toBeTruthy();
+    expect(screen.getByText('Enviar ahora')).toBeTruthy();
   });
 
   it('does not render Edit button for sent campaigns', async () => {
@@ -378,7 +378,7 @@ describe('PortalCampaignDetailPage — stats panel', () => {
     const { container } = await renderPage({ status: 'draft' });
     // "Sent" stat card label shouldn't appear (Send Now button might but not the stat label)
     const statLabels = Array.from(container.querySelectorAll('.bg-card .text-xs'));
-    expect(statLabels.some(el => el.textContent === 'Sent')).toBe(false);
+    expect(statLabels.some(el => el.textContent === 'Enviados')).toBe(false);
   });
 });
 
@@ -394,7 +394,7 @@ describe('PortalCampaignDetailPage — tab switching', () => {
   it('clicking "sends" tab renders the send log', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('sends'));
-    expect(container.textContent).toContain('Send Log');
+    expect(container.textContent).toContain('Registro de envíos');
     expect(container.textContent).toContain('alice@example.com');
   });
 
@@ -462,7 +462,7 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
   it('clicking Edit opens the edit form with current subject', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    expect(container.textContent).toContain('Edit Content');
+    expect(container.textContent).toContain('Editar contenido');
   });
 
   it('edit form shows subject and preview text inputs', async () => {
@@ -477,18 +477,18 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
   it('clicking Cancel closes the edit form', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
     fireEvent.click(screen.getByText('Cancelar'));
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
   it('clicking Save Changes calls PATCH and closes edit mode on success', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
       const patchCall = fetchMock.mock.calls.find(
         ([u, init]) => typeof u === 'string' && u.includes('/api/portal/email/campaigns/') && init?.method === 'PATCH',
@@ -496,7 +496,7 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
       expect(patchCall).toBeTruthy();
     });
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
@@ -509,8 +509,8 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
     });
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
       expect(container.textContent).toContain('Save failed error');
     });
@@ -525,17 +525,17 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
     });
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Save failed');
+      expect(container.textContent).toContain('No se pudo guardar');
     });
   });
 
   it('content tab shows textarea for HTML content in non-block mode', async () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
     fireEvent.click(screen.getByText('content'));
     const textareas = container.querySelectorAll('textarea');
     expect(textareas.length).toBeGreaterThan(0);
@@ -586,7 +586,7 @@ describe('PortalCampaignDetailPage — edit flow (block content)', () => {
 
   it('renders "Send test" button when draft + block content', async () => {
     await renderPage(blockCampaign);
-    expect(screen.getByText('Send test')).toBeTruthy();
+    expect(screen.getByText('Enviar prueba')).toBeTruthy();
   });
 });
 
@@ -596,7 +596,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
   it('does not send when confirm is cancelled', async () => {
     confirmMock.mockReturnValue(false);
     await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     expect(fetchMock.mock.calls.filter(
       ([u, init]) => typeof u === 'string' && u.includes('/send') && init?.method === 'POST',
     ).length).toBe(0);
@@ -605,10 +605,10 @@ describe('PortalCampaignDetailPage — send campaign', () => {
   it('calls send endpoint and shows the queued banner on confirm (PUX-046)', async () => {
     confirmMock.mockReturnValue(true);
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Queued');
-      expect(container.textContent).toContain('95 subscribers in the background');
+      expect(container.textContent).toContain('En cola');
+      expect(container.textContent).toContain('95 suscriptores en segundo plano');
     });
   });
 
@@ -621,9 +621,9 @@ describe('PortalCampaignDetailPage — send campaign', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
-      expect(container.textContent).toContain('sending to 100 subscribers');
+      expect(container.textContent).toContain('enviando a 100 suscriptores');
       expect(container.textContent).not.toContain('Sent successfully');
     });
   });
@@ -637,7 +637,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
       expect(alertMock).toHaveBeenCalledWith('Send error!');
     });
@@ -645,7 +645,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
 
   it('Send Now also renders for scheduled campaigns', async () => {
     await renderPage({ status: 'scheduled' });
-    expect(screen.getByText('Send Now')).toBeTruthy();
+    expect(screen.getByText('Enviar ahora')).toBeTruthy();
   });
 });
 
@@ -679,24 +679,24 @@ describe('PortalCampaignDetailPage — send test email', () => {
   it('shows "Test sent to" banner on success', async () => {
     makeBlockCampaignMock();
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test sent to me@example.com');
+      expect(container.textContent).toContain('Prueba enviada a me@example.com');
     });
   });
 
   it('closing the test result banner clears it', async () => {
     makeBlockCampaignMock();
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
-    await waitFor(() => expect(container.textContent).toContain('Test sent to'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
+    await waitFor(() => expect(container.textContent).toContain('Prueba enviada a'));
     // Find the close button in the blue banner
     const closeBtns = Array.from(container.querySelectorAll('button')).filter(b =>
       b.querySelector('.material-icons')?.textContent === 'close',
     );
     fireEvent.click(closeBtns[0]);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Test sent to');
+      expect(container.textContent).not.toContain('Prueba enviada a');
     });
   });
 
@@ -705,25 +705,25 @@ describe('PortalCampaignDetailPage — send test email', () => {
       makeRes({ success: true, data: { testSent: { ok: false, to: 'fail@example.com' } } }),
     );
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test failed to send to fail@example.com');
+      expect(container.textContent).toContain('No se pudo enviar la prueba a fail@example.com');
     });
   });
 
   it('shows "Test rendered" when testSent data is absent', async () => {
     makeBlockCampaignMock(() => makeRes({ success: true, data: {} }));
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test rendered (no recipient)');
+      expect(container.textContent).toContain('Prueba renderizada (sin destinatario)');
     });
   });
 
   it('shows error message when preview API fails', async () => {
     makeBlockCampaignMock(() => makeRes({ success: false, message: 'Preview error' }));
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
       expect(container.textContent).toContain('Preview error');
     });
@@ -736,9 +736,9 @@ describe('PortalCampaignDetailPage — send test email', () => {
       useBlockEditor: true,
     };
     const { container } = await renderPage(noblockCampaign as Partial<typeof baseCampaign>);
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('No blocks to render');
+      expect(container.textContent).toContain('No hay bloques que renderizar');
     });
   });
 });

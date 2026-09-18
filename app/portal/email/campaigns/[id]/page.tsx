@@ -206,7 +206,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
     });
     const data = await res.json();
     setEditSaving(false);
-    if (!data.success) { setEditError(data.message ?? 'Save failed'); return; }
+    if (!data.success) { setEditError(data.message ?? 'No se pudo guardar'); return; }
     setCampaign(prev => prev ? {
       ...prev,
       ...editForm,
@@ -238,7 +238,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       ? editBlocks
       : campaign.contentBlocks ?? campaign.blockContent?.blocks ?? [];
     if (!blocks || blocks.length === 0) {
-      setTestResult('No blocks to render');
+      setTestResult('No hay bloques que renderizar');
       setSendingTest(false);
       return;
     }
@@ -256,15 +256,15 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
     const data = await res.json();
     setSendingTest(false);
     if (!data.success) {
-      setTestResult(data.message ?? 'Failed to send test');
+      setTestResult(data.message ?? 'No se pudo enviar la prueba');
       return;
     }
     if (data.data?.testSent?.ok) {
-      setTestResult(`Test sent to ${data.data.testSent.to}`);
+      setTestResult(`Prueba enviada a ${data.data.testSent.to}`);
     } else if (data.data?.testSent) {
-      setTestResult(`Test failed to send to ${data.data.testSent.to}`);
+      setTestResult(`No se pudo enviar la prueba a ${data.data.testSent.to}`);
     } else {
-      setTestResult('Test rendered (no recipient)');
+      setTestResult('Prueba renderizada (sin destinatario)');
     }
   }
 
@@ -320,13 +320,13 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
                   title="Enviar el correo renderizado a tu propia dirección"
                 >
                   <span className="material-icons text-base">science</span>
-                  {sendingTest ? 'Sending…' : 'Send test'}
+                  {sendingTest ? 'Enviando…' : 'Enviar prueba'}
                 </button>
               )}
               {(campaign.status === 'draft' || campaign.status === 'scheduled') && (
                 <button onClick={sendCampaign} disabled={sending} className={`${pBtnPrimary} disabled:opacity-50`}>
                   <span className="material-icons text-base">{sending ? 'hourglass_empty' : 'send'}</span>
-                  {sending ? 'Sending…' : 'Send Now'}
+                  {sending ? 'Enviando…' : 'Enviar ahora'}
                 </button>
               )}
             </div>
@@ -336,7 +336,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
 
       {sendResult && (
         <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm px-4 py-3 rounded-lg">
-          Queued — sending to {sendResult.totalTargets} subscriber{sendResult.totalTargets === 1 ? '' : 's'} in the background.
+          En cola — enviando a {sendResult.totalTargets} suscriptor{sendResult.totalTargets === 1 ? '' : 'es'} en segundo plano.
         </div>
       )}
 
@@ -353,10 +353,10 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       {campaign.status === 'sent' && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: 'Sent', value: campaign.totalSent, icon: 'send' },
+            { label: 'Enviados', value: campaign.totalSent, icon: 'send' },
             { label: 'Tasa de apertura', value: `${openRate}%`, icon: 'drafts' },
             { label: 'Tasa de clics', value: `${clickRate}%`, icon: 'touch_app' },
-            { label: 'Bounce Rate', value: `${bounceRate}%`, icon: 'error_outline' },
+            { label: 'Tasa de rebote', value: `${bounceRate}%`, icon: 'error_outline' },
           ].map(stat => (
             <div key={stat.label} className="bg-card border border-border rounded-2xl p-4">
               <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
@@ -424,7 +424,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       {tab === 'content' && (
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <h3 className="font-semibold text-foreground">{editing ? 'Edit Content' : 'Vista previa del correo'}</h3>
+            <h3 className="font-semibold text-foreground">{editing ? 'Editar contenido' : 'Vista previa del correo'}</h3>
             {editing && hasBlockContent && (
               <button type="button" onClick={() => setShowPreview(!showPreview)}
                 className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors ${showPreview ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}>
@@ -509,7 +509,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
               <div className="flex gap-2 p-5 pt-0">
                 <button type="button" onClick={saveEdit} disabled={editSaving}
                   className={`${pBtnPrimary} disabled:opacity-50`}>
-                  {editSaving ? 'Saving...' : 'Save Changes'}
+                  {editSaving ? 'Guardando...' : 'Guardar cambios'}
                 </button>
                 <button type="button" onClick={() => setEditing(false)}
                   className={pBtnGhost}>Cancelar</button>
@@ -527,7 +527,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       {tab === 'sends' && (
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
-            <h3 className="font-semibold text-foreground">Send Log ({sends.length})</h3>
+            <h3 className="font-semibold text-foreground">Registro de envíos ({sends.length})</h3>
           </div>
           {sends.length === 0 ? (
             <p className="p-6 text-sm text-muted-foreground">Aún no hay envíos registrados.</p>
@@ -535,11 +535,11 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Recipient</th>
+                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Destinatario</th>
                   <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Enviado</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Opened</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clicked</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Bounced</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Abierto</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clic</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Rebotado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
