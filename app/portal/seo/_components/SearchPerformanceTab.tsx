@@ -25,9 +25,9 @@ interface Props {
 // GscImportResult['skipped'] is a terse enum from lib/seo/gsc.ts, not
 // user-facing copy — map it before it hits the screen.
 const SKIP_MESSAGES: Record<string, string> = {
-  'not-linked': "This project isn't linked to a hosted website, so it can't import from Search Console.",
-  'not-connected': "Google isn't connected for this project's hosted website yet.",
-  'up-to-date': 'Already up to date — nothing new to import.',
+  'not-linked': 'Este proyecto no está vinculado a un sitio web alojado, así que no puede importar desde Search Console.',
+  'not-connected': 'Google aún no está conectado para el sitio web alojado de este proyecto.',
+  'up-to-date': 'Ya está actualizado: no hay nada nuevo que importar.',
 };
 
 export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
@@ -44,12 +44,12 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
       const res = await fetch(`/api/portal/seo/projects/${projectId}/search-performance`);
       const json = await res.json();
       if (!json.success) {
-        setError(json.message || 'Failed to load Search Console data.');
+        setError(json.message || 'No se pudieron cargar los datos de Search Console.');
         return;
       }
       onDataChange(json.data);
     } catch {
-      setError('Network error loading Search Console data.');
+      setError('Error de red al cargar los datos de Search Console.');
     } finally {
       setLoading(false);
     }
@@ -70,7 +70,7 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
       const res = await fetch(`/api/portal/seo/projects/${projectId}/gsc-import`, { method: 'POST' });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setImportError(json.message || 'Failed to import Search Console data.');
+        setImportError(json.message || 'No se pudieron importar los datos de Search Console.');
         return;
       }
       const result = json.data as GscImportResult;
@@ -79,12 +79,12 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
       } else {
         const { queries, pages } = result.imported;
         setImportNote(
-          `Imported ${queries.toLocaleString()} ${queries === 1 ? 'query' : 'queries'} across ${pages.toLocaleString()} ${pages === 1 ? 'page' : 'pages'}.`,
+          `Se importaron ${queries.toLocaleString()} ${queries === 1 ? 'consulta' : 'consultas'} en ${pages.toLocaleString()} ${pages === 1 ? 'página' : 'páginas'}.`,
         );
       }
       await fetchData();
     } catch {
-      setImportError('Network error starting import.');
+      setImportError('Error de red al iniciar la importación.');
     } finally {
       setImporting(false);
     }
@@ -104,9 +104,9 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
       <div className={`${pCard} p-10 text-center max-w-xl mx-auto`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">link_off</span>
         <p className="text-sm text-muted-foreground">
-          Search Console insights need this project linked to a hosted website with Google connected, under
-          Website settings → Google → Search Console. Projects tracking an external domain that isn&apos;t hosted here
-          can&apos;t make that connection today.
+          Los datos de Search Console necesitan que este proyecto esté vinculado a un sitio web alojado con
+          Google conectado, en Ajustes del sitio → Google → Search Console. Los proyectos que siguen un dominio externo
+          que no está alojado aquí no pueden establecer esa conexión hoy.
         </p>
       </div>
     );
@@ -118,20 +118,20 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
         <div>
           <span className="material-icons text-4xl text-muted-foreground/50 mb-2">query_stats</span>
           <p className="text-sm text-muted-foreground">
-            This project is connected to Search Console{data.siteUrl ? ` (${data.siteUrl})` : ''}, but no data has
-            been imported yet.
+            Este proyecto está conectado a Search Console{data.siteUrl ? ` (${data.siteUrl})` : ''}, pero todavía no se
+            han importado datos.
           </p>
         </div>
         <button type="button" onClick={importNow} disabled={importing} className={`${pBtnPrimary} mx-auto`}>
           {importing ? (
             <>
               <span className="material-icons text-base animate-spin">progress_activity</span>
-              Importing…
+                Importando…
             </>
           ) : (
             <>
               <span className="material-icons text-base">sync</span>
-              Import now
+                Importar ahora
             </>
           )}
         </button>
@@ -150,19 +150,19 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
           <p className="text-sm font-mono text-muted-foreground truncate" title={data.siteUrl ?? undefined}>
             {data.siteUrl}
           </p>
-          <p className="text-xs text-muted-foreground mt-0.5">Data through {data.lastDate}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Datos hasta {data.lastDate}</p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
           <button type="button" onClick={importNow} disabled={importing || loading} className={pBtnGhost}>
             {importing ? (
               <>
                 <span className="material-icons text-base animate-spin">progress_activity</span>
-                Importing…
+              Importando…
               </>
             ) : (
               <>
                 <span className="material-icons text-base">sync</span>
-                Import now
+              Importar ahora
               </>
             )}
           </button>
@@ -178,25 +178,25 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
               <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">
                 {overview.totals.clicks.toLocaleString()}
               </p>
-              <p className="text-xs text-muted-foreground">Clicks</p>
+              <p className="text-xs text-muted-foreground">Clics</p>
             </div>
             <div className={pCardPad}>
               <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">
                 {overview.totals.impressions.toLocaleString()}
               </p>
-              <p className="text-xs text-muted-foreground">Impressions</p>
+              <p className="text-xs text-muted-foreground">Impresiones</p>
             </div>
             <div className={pCardPad}>
               <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">
                 {formatPct(overview.totals.avgCtr)}
               </p>
-              <p className="text-xs text-muted-foreground">Avg CTR</p>
+              <p className="text-xs text-muted-foreground">CTR medio</p>
             </div>
             <div className={pCardPad}>
               <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">
                 {formatPosition(overview.totals.avgPosition)}
               </p>
-              <p className="text-xs text-muted-foreground">Avg position</p>
+              <p className="text-xs text-muted-foreground">Posición media</p>
             </div>
           </div>
 

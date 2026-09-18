@@ -70,7 +70,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!startUrl.trim()) {
-      setSubmitError('A website URL is required.');
+      setSubmitError('Se requiere una URL de sitio web.');
       return;
     }
 
@@ -92,14 +92,14 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
       const json = await res.json();
       if (!res.ok || !json.success) {
         // Surfaces the API's 400 (invalid URL) / 409 (duplicate domain) message verbatim.
-        setSubmitError(json.message || 'Failed to create project.');
+        setSubmitError(json.message || 'No se pudo crear el proyecto.');
         setSubmitting(false);
         return;
       }
       onCreated();
       router.push(`/portal/seo/${json.data.id}`);
     } catch {
-      setSubmitError('Network error. Please try again.');
+      setSubmitError('Error de red. Inténtalo de nuevo.');
       setSubmitting(false);
     }
   }
@@ -112,7 +112,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-primary">travel_explore</span>
-            New SEO project
+            Nuevo proyecto SEO
           </h3>
           <button
             type="button"
@@ -127,7 +127,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="seo-start-url" className="block text-xs font-medium text-muted-foreground mb-1">
-              Website URL
+              URL del sitio web
             </label>
             <input
               id="seo-start-url"
@@ -142,7 +142,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
 
           <div>
             <label htmlFor="seo-project-name" className="block text-xs font-medium text-muted-foreground mb-1">
-              Project name <span className="text-muted-foreground/60">(optional)</span>
+              Nombre del proyecto <span className="text-muted-foreground/60">(opcional)</span>
             </label>
             <input
               id="seo-project-name"
@@ -156,7 +156,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
           {!websitesLoading && websites.length > 0 && (
             <div>
               <label htmlFor="seo-website" className="block text-xs font-medium text-muted-foreground mb-1">
-                Link to a hosted website <span className="text-muted-foreground/60">(optional)</span>
+                Vincular a un sitio alojado <span className="text-muted-foreground/60">(opcional)</span>
               </label>
               <select
                 id="seo-website"
@@ -164,7 +164,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
                 onChange={(e) => setWebsiteId(e.target.value)}
                 className={pSelect}
               >
-                <option value="">None — external domain</option>
+                <option value="">Ninguno — dominio externo</option>
                 {websites.map((w) => (
                   <option key={w.id} value={w.id}>
                     {w.name}
@@ -182,13 +182,13 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
               aria-expanded={advancedOpen}
             >
               <span className="material-icons text-sm">{advancedOpen ? 'expand_less' : 'expand_more'}</span>
-              Advanced crawl settings
+              Ajustes avanzados de rastreo
             </button>
             {advancedOpen && (
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div>
                   <label htmlFor="seo-max-pages" className="block text-xs font-medium text-muted-foreground mb-1">
-                    Max pages
+                    Máx. páginas
                   </label>
                   <input
                     id="seo-max-pages"
@@ -202,7 +202,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
                 </div>
                 <div>
                   <label htmlFor="seo-max-depth" className="block text-xs font-medium text-muted-foreground mb-1">
-                    Max depth
+                    Profundidad máx.
                   </label>
                   <input
                     id="seo-max-depth"
@@ -235,12 +235,12 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
               {submitting ? (
                 <>
                   <span className="material-icons animate-spin text-base">progress_activity</span>
-                  Creating…
+                  Creando…
                 </>
               ) : (
                 <>
                   <span className="material-icons text-base">add</span>
-                  Create project
+                  Crear proyecto
                 </>
               )}
             </button>

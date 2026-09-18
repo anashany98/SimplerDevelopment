@@ -48,7 +48,7 @@ export default function GaPropertyPicker({
           setError(json.message);
         }
       })
-      .catch(() => setError('Failed to load Analytics properties'))
+      .catch(() => setError('No se pudieron cargar las propiedades de Analytics'))
       .finally(() => setLoading(false));
   }, [siteId, currentPropertyId]);
 
@@ -65,7 +65,7 @@ export default function GaPropertyPicker({
       if (json.success) onConnected();
       else setError(json.message);
     } catch {
-      setError('Failed to connect Analytics');
+      setError('No se pudo conectar Analytics');
     } finally {
       setSaving(false);
     }
@@ -84,7 +84,7 @@ export default function GaPropertyPicker({
       if (json.success) onConnected();
       else setError(json.message);
     } catch {
-      setError('Failed to create Analytics property');
+      setError('No se pudo crear la propiedad de Analytics');
     } finally {
       setSaving(false);
     }
@@ -113,14 +113,14 @@ export default function GaPropertyPicker({
             <span className="material-icons text-xs">
               {showDashboard ? 'expand_less' : 'expand_more'}
             </span>
-            {showDashboard ? 'Collapse' : 'Show analytics'}
+            {showDashboard ? 'Contraer' : 'Mostrar analíticas'}
           </button>
           <button
             onClick={handleDisconnect}
             disabled={saving}
             className="text-xs text-muted-foreground hover:text-red-600 transition-colors disabled:opacity-50"
           >
-            Disconnect
+            Desconectar
           </button>
         </div>
 
@@ -141,7 +141,7 @@ export default function GaPropertyPicker({
     return (
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span className="material-icons text-base animate-spin">refresh</span>
-        Loading Analytics properties...
+        Cargando propiedades de Analytics...
       </div>
     );
   }
@@ -157,13 +157,13 @@ export default function GaPropertyPicker({
           className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm hover:bg-primary/20 transition-colors disabled:opacity-50"
         >
           <span className="material-icons text-base">add</span>
-          Create new property for {websiteName}
+          Crear nueva propiedad para {websiteName}
         </button>
       )}
 
       {properties.length > 0 && (
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Or select an existing property:</p>
+          <p className="text-xs text-muted-foreground">O selecciona una propiedad existente:</p>
           {properties.slice(0, 10).map((p) => (
             <button
               key={p.name}
@@ -180,11 +180,11 @@ export default function GaPropertyPicker({
 
       {accounts.length === 0 && properties.length === 0 && !error && (
         <p className="text-sm text-muted-foreground">
-          No Google Analytics accounts found. Create one at{' '}
+          No se encontraron cuentas de Google Analytics. Crea una en{' '}
           <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">
             analytics.google.com
           </a>{' '}
-          first.
+          primero.
         </p>
       )}
     </div>

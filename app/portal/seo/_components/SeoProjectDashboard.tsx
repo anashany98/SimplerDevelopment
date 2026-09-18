@@ -21,12 +21,12 @@ import { HistoryTab } from './HistoryTab';
 type Tab = 'recommendations' | 'overview' | 'issues' | 'pages' | 'search' | 'history';
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'recommendations', label: 'Do next', icon: 'checklist' },
-  { id: 'overview', label: 'Overview', icon: 'dashboard' },
-  { id: 'issues', label: 'Issues', icon: 'fact_check' },
+  { id: 'recommendations', label: 'Qué hacer ahora', icon: 'checklist' },
+  { id: 'overview', label: 'Resumen', icon: 'dashboard' },
+  { id: 'issues', label: 'Problemas', icon: 'fact_check' },
   { id: 'pages', label: 'Páginas', icon: 'description' },
   { id: 'search', label: 'Buscar', icon: 'query_stats' },
-  { id: 'history', label: 'History', icon: 'history' },
+  { id: 'history', label: 'Historial', icon: 'history' },
 ];
 
 export default function SeoProjectDashboard({ projectId }: { projectId: number }) {
@@ -51,13 +51,13 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
       const json = await res.json();
       if (!json.success) {
         if (res.status === 404) setMissing(true);
-        setError(json.message || 'Failed to load project.');
+        setError(json.message || 'No se pudo cargar el proyecto.');
         return;
       }
       setError('');
       setProject(json.data);
     } catch {
-      setError('Network error loading project.');
+      setError('Error de red al cargar el proyecto.');
     }
   }, [projectId]);
 
@@ -98,12 +98,12 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
       const res = await fetch(`/api/portal/seo/projects/${projectId}/crawl`, { method: 'POST' });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setRunError(json.message || 'Failed to start audit.');
+        setRunError(json.message || 'No se pudo iniciar la auditoría.');
       } else {
         await fetchProject();
       }
     } catch {
-      setRunError('Network error starting audit.');
+      setRunError('Error de red al iniciar la auditoría.');
     } finally {
       setStarting(false);
     }
@@ -115,7 +115,7 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
         <span className="material-icons text-4xl text-muted-foreground mb-2">search_off</span>
         <h1 className="font-display text-lg font-extrabold text-foreground mb-2">Proyecto no encontrado</h1>
         <Link href="/portal/seo" className="text-primary hover:underline text-sm">
-          Back to SEO Intelligence
+          Volver a SEO Intelligence
         </Link>
       </div>
     );
@@ -147,7 +147,7 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
             <div className="flex items-center gap-3 mt-2">
               {active && <RunStatusPill status={latestRun.status} />}
               <span className="text-xs text-muted-foreground">
-                Last crawl: {relativeTime(latestRun.finishedAt ?? latestRun.createdAt)}
+                Último rastreo: {relativeTime(latestRun.finishedAt ?? latestRun.createdAt)}
               </span>
             </div>
           )}
@@ -160,12 +160,12 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
               {active || starting ? (
                 <>
                   <span className="material-icons text-base animate-spin">progress_activity</span>
-                  {active ? 'Auditing…' : 'Starting…'}
+                  {active ? 'Auditando…' : 'Iniciando…'}
                 </>
               ) : (
                 <>
                   <span className="material-icons text-base">play_arrow</span>
-                  Run audit
+                  Ejecutar auditoría
                 </>
               )}
             </button>
