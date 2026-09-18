@@ -103,7 +103,7 @@ describe('OAuthClientsManager — initial load', () => {
     let resolveLoad!: (v: unknown) => void;
     global.fetch = vi.fn().mockReturnValue(new Promise(r => { resolveLoad = r; }));
     render(<OAuthClientsManager />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
     await act(async () => {
       resolveLoad({ json: async () => ({ success: true, data: [] }) });
     });
@@ -195,7 +195,7 @@ describe('OAuthClientsManager — client list', () => {
     global.fetch = mockLoadSuccess([makeClient()]);
     await renderAndWait();
     expect(screen.getByText('Rotate secret')).toBeInTheDocument();
-    expect(screen.getByText('Delete')).toBeInTheDocument();
+    expect(screen.getByText('Eliminar')).toBeInTheDocument();
   });
 
   it('renders multiple clients', async () => {
@@ -232,7 +232,7 @@ describe('OAuthClientsManager — create form', () => {
 
   it('hides create form on Cancel', async () => {
     await openCreateForm();
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     expect(screen.queryByPlaceholderText('e.g. My Integration App')).not.toBeInTheDocument();
   });
 
@@ -596,7 +596,7 @@ describe('OAuthClientsManager — delete client', () => {
     global.fetch = fetchFn;
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText(/No OAuth apps yet/)).toBeInTheDocument();
@@ -608,7 +608,7 @@ describe('OAuthClientsManager — delete client', () => {
     const fetchFn = vi.fn().mockResolvedValue({ json: async () => ({ success: true, data: [toApiRow(makeClient())] }) });
     global.fetch = fetchFn;
     await renderAndWait();
-    fireEvent.click(screen.getByText('Delete'));
+    fireEvent.click(screen.getByText('Eliminar'));
     await waitFor(() => {
       const deleteCalls = fetchFn.mock.calls.filter((c) => {
         const opts = c[1] as { method?: string } | undefined;
@@ -624,7 +624,7 @@ describe('OAuthClientsManager — delete client', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: false, message: 'Delete failed' }) });
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText('Delete failed')).toBeInTheDocument();
@@ -637,7 +637,7 @@ describe('OAuthClientsManager — delete client', () => {
       .mockRejectedValueOnce(new Error('Delete error'));
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText('Delete error')).toBeInTheDocument();
@@ -676,7 +676,7 @@ describe('OAuthClientsManager — clipboard copy', () => {
       fireEvent.click(screen.getByText('Create app'));
     });
     await waitFor(() => screen.getByText('copy_this_id'));
-    const copyBtns = screen.getAllByText('Copy');
+    const copyBtns = screen.getAllByText('Copiar');
     fireEvent.click(copyBtns[0]);
     expect(writeText).toHaveBeenCalledWith('copy_this_id');
   });
