@@ -272,24 +272,24 @@ describe('IconPicker', () => {
 describe('resolvePortalTitle', () => {
   it('resolves exact-match top-level routes', () => {
     expect(resolvePortalTitle('/portal')).toBe('Portal');
-    expect(resolvePortalTitle('/portal/dashboard')).toBe('Dashboard');
-    expect(resolvePortalTitle('/portal/approvals')).toBe('Approvals');
+    expect(resolvePortalTitle('/portal/dashboard')).toBe('Panel');
+    expect(resolvePortalTitle('/portal/approvals')).toBe('Aprobaciones');
   });
 
   it('resolves parameterised routes', () => {
     expect(resolvePortalTitle('/portal/projects/42')).toBe('Proyecto');
     expect(resolvePortalTitle('/portal/projects')).toBe('Proyectos');
     expect(resolvePortalTitle('/portal/crm/contacts/9')).toBe('Contacto');
-    expect(resolvePortalTitle('/portal/websites/1/posts/2/edit')).toBe('Edit Post');
+    expect(resolvePortalTitle('/portal/websites/1/posts/2/edit')).toBe('Editar entrada');
   });
 
   it('prefers more-specific patterns over broader ones (order matters)', () => {
     // /communications/:id/review is more specific than /communications/:id
     expect(resolvePortalTitle('/portal/brain/communications/15/review')).toBe(
-      'Review Communication',
+      'Revisar comunicación',
     );
-    expect(resolvePortalTitle('/portal/brain/communications/15')).toBe('Communication');
-    expect(resolvePortalTitle('/portal/brain/communications')).toBe('Communications');
+    expect(resolvePortalTitle('/portal/brain/communications/15')).toBe('Comunicación');
+    expect(resolvePortalTitle('/portal/brain/communications')).toBe('Comunicaciones');
   });
 
   it('falls back to the nav label for routes the table never got', () => {
@@ -323,7 +323,7 @@ describe('PortalTitle component', () => {
 
   it('sets document.title using the default app name when white-label is off', () => {
     render(<PortalTitle />);
-    expect(document.title).toBe('Dashboard | CRM AGENTS');
+    expect(document.title).toBe('Panel | CRM AGENTS');
   });
 
   it('uses the agency name when white-label is enabled', () => {
@@ -331,7 +331,7 @@ describe('PortalTitle component', () => {
     agencyState.whiteLabelEnabled = true;
     pathnameRef.current = '/portal/approvals';
     render(<PortalTitle />);
-    expect(document.title).toBe('Approvals | Acme Co');
+    expect(document.title).toBe('Aprobaciones | Acme Co');
   });
 
   it('falls back to the default app when white-label is enabled but agencyName is empty', () => {

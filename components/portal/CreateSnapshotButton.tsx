@@ -17,8 +17,8 @@ export default function CreateSnapshotButton({ siteId, siteName }: CreateSnapsho
 
   async function handleClick() {
     if (busy) return;
-    const defaultName = siteName ? `${siteName} snapshot` : 'Site snapshot';
-    const name = window.prompt('Snapshot name', defaultName);
+    const defaultName = siteName ? `${siteName} instantánea` : 'Instantánea de la web';
+    const name = window.prompt('Nombre de la instantánea', defaultName);
     if (!name) return;
 
     setBusy(true);
@@ -30,12 +30,12 @@ export default function CreateSnapshotButton({ siteId, siteName }: CreateSnapsho
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        alert(`Export failed: ${data.message || 'unknown error'}`);
+        alert(`Error al exportar: ${data.message || 'error desconocido'}`);
         return;
       }
       router.push('/portal/snapshots');
     } catch (err) {
-      alert(`Export failed: ${err instanceof Error ? err.message : 'unknown error'}`);
+      alert(`Error al exportar: ${err instanceof Error ? err.message : 'error desconocido'}`);
     } finally {
       setBusy(false);
     }
@@ -47,10 +47,10 @@ export default function CreateSnapshotButton({ siteId, siteName }: CreateSnapsho
       onClick={handleClick}
       disabled={busy}
       className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-      title="Save this site as a portable snapshot"
+      title="Guardar esta web como instantánea portátil"
     >
       <span className="material-icons text-base">photo_library</span>
-      {busy ? 'Saving…' : 'Create snapshot'}
+      {busy ? 'Guardando…' : 'Crear instantánea'}
     </button>
   );
 }

@@ -148,7 +148,7 @@ describe('PayInvoiceButton', () => {
 describe('CreateSnapshotButton', () => {
   it('renders the trigger with the photo_library icon and default label', () => {
     render(<CreateSnapshotButton siteId={11} />);
-    const btn = screen.getByRole('button', { name: /Create snapshot/i });
+    const btn = screen.getByRole('button', { name: /Crear instantánea/i });
     expect(btn).toBeTruthy();
     const icon = btn.querySelector('.material-icons');
     expect(icon?.textContent).toBe('photo_library');
@@ -161,10 +161,10 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={22} siteName="MySite" />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
-    expect(promptSpy).toHaveBeenCalledWith('Snapshot name', 'MySite snapshot');
+    expect(promptSpy).toHaveBeenCalledWith('Nombre de la instantánea', 'MySite instantánea');
     expect(fetchSpy).not.toHaveBeenCalled();
     expect(routerPush).not.toHaveBeenCalled();
   });
@@ -175,7 +175,7 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={101} siteName="Acme" />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
     expect((globalThis as any).fetch).toHaveBeenCalledWith(
@@ -201,11 +201,11 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={2} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
     await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Export failed: boom');
+      expect(alertSpy).toHaveBeenCalledWith('Error al exportar: boom');
     });
     expect(routerPush).not.toHaveBeenCalled();
   });
@@ -214,9 +214,9 @@ describe('CreateSnapshotButton', () => {
     const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue(null);
     render(<CreateSnapshotButton siteId={3} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
-    expect(promptSpy).toHaveBeenCalledWith('Snapshot name', 'Site snapshot');
+    expect(promptSpy).toHaveBeenCalledWith('Nombre de la instantánea', 'Instantánea de la web');
   });
 });
 
