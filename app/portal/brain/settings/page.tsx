@@ -19,19 +19,19 @@ interface SettingsResponse {
 }
 
 const CONFIDENTIALITY_OPTIONS = [
-  { id: 'standard', label: 'Standard', help: 'Visible to all team members.' },
-  { id: 'restricted', label: 'Restricted', help: 'Visible to admins and explicitly granted members.' },
-  { id: 'confidential', label: 'Confidential', help: 'Visible to owner and admins only. Recommended for compliance-sensitive industries.' },
+  { id: 'standard', label: 'Estándar', help: 'Visible para todos los miembros del equipo.' },
+  { id: 'restricted', label: 'Restringido', help: 'Visible para administradores y miembros con permiso explícito.' },
+  { id: 'confidential', label: 'Confidencial', help: 'Visible solo para el propietario y los administradores. Recomendado para sectores con requisitos de cumplimiento.' },
 ] as const;
 
 const MODULE_OPTIONS: { id: keyof BrainEnabledModules; label: string; help: string }[] = [
-  { id: 'meetings', label: 'Communications', help: 'Ingest communication transcripts, emails, and pasted notes. AI summarises, human approves.' },
-  { id: 'tasks', label: 'Tareas', help: 'Brain-flavoured tasks with promotion to project boards.' },
-  { id: 'calendar', label: 'Calendario', help: 'Month view of tasks, communications, relationship reviews, and free-form scheduled events. Phase C will add Google Calendar sync.' },
-  { id: 'knowledge', label: 'Knowledge', help: 'Free-form notes linked to relationships, deals, contacts, or communications — pinnable, taggable, searchable.' },
-  { id: 'prospects', label: 'Prospectos', help: 'Stale-prospect detection over CRM deals.' },
-  { id: 'ask', label: 'Ask Brain', help: 'Conversational query layer with citations.' },
-  { id: 'automations', label: 'Automatizaciones', help: 'Cross-product rules that fire on events (booking, survey, deal, task) and act on your behalf — NLP-built or template-installed.' },
+  { id: 'meetings', label: 'Comunicaciones', help: 'Ingiere transcripciones de comunicaciones, correos y notas pegadas. La IA resume, una persona aprueba.' },
+  { id: 'tasks', label: 'Tareas', help: 'Tareas propias del cerebro con promoción a los tableros de proyectos.' },
+  { id: 'calendar', label: 'Calendario', help: 'Vista mensual de tareas, comunicaciones, revisiones de relaciones y eventos programados de forma libre. La fase C añadirá la sincronización con Google Calendar.' },
+  { id: 'knowledge', label: 'Conocimiento', help: 'Notas de formato libre vinculadas a relaciones, oportunidades, contactos o comunicaciones — fijables, etiquetables y buscables.' },
+  { id: 'prospects', label: 'Prospectos', help: 'Detección de prospectos inactivos sobre las oportunidades del CRM.' },
+  { id: 'ask', label: 'Preguntar al cerebro', help: 'Capa de consulta conversacional con citas.' },
+  { id: 'automations', label: 'Automatizaciones', help: 'Reglas transversales que se activan ante eventos (reserva, encuesta, oportunidad, tarea) y actúan en tu nombre — creadas con NLP o instaladas desde plantillas.' },
 ];
 
 export default function BrainSettingsPage() {
@@ -50,14 +50,14 @@ export default function BrainSettingsPage() {
       const r = await fetch('/api/portal/brain/settings');
       const json: SettingsResponse = await r.json();
       if (!r.ok || !json.success || !json.data) {
-        setError(json.message || 'Failed to load settings.');
+        setError(json.message || 'No se pudieron cargar los ajustes.');
       } else {
         setProfile(json.data.profile);
         setTemplate(json.data.template);
         setAvailableTemplates(json.data.availableTemplates);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -76,14 +76,14 @@ export default function BrainSettingsPage() {
       });
       const json: SettingsResponse = await r.json();
       if (!r.ok || !json.success || !json.data) {
-        setError(json.message || 'Failed to save.');
+        setError(json.message || 'No se pudieron guardar los cambios.');
         return;
       }
       setProfile(json.data.profile);
       setTemplate(json.data.template);
       setSavedAt(Date.now());
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSaving(false);
     }
@@ -100,7 +100,7 @@ export default function BrainSettingsPage() {
     return (
       <div className="max-w-3xl mx-auto py-12">
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
-          {error || 'Settings unavailable.'}
+          {error || 'Ajustes no disponibles.'}
         </div>
       </div>
     );
@@ -128,15 +128,15 @@ export default function BrainSettingsPage() {
       {savedAt && !error && (
         <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-sm text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
           <span className="material-icons text-base">check_circle</span>
-          Saved.
+          Guardado.
         </div>
       )}
 
       {/* Enable / disable */}
       <Section title="Estado" icon="power_settings_new">
         <Row
-          label="Company Brain enabled"
-          help="Disable to hide Brain from the sidebar and pause processing."
+          label="Company Brain activado"
+          help="Desactívalo para ocultar Brain de la barra lateral y pausar el procesamiento."
           labelId="brain-enabled-label"
         >
           <Toggle
@@ -149,8 +149,8 @@ export default function BrainSettingsPage() {
       </Section>
 
       {/* Identity */}
-      <Section title="Identity" icon="badge">
-        <Row label="Display name" help="Shown at the top of the Brain dashboard." htmlFor="brain-display-name">
+      <Section title="Identidad" icon="badge">
+        <Row label="Nombre visible" help="Se muestra en la parte superior del panel de Brain." htmlFor="brain-display-name">
           <NameField
             id="brain-display-name"
             value={profile.name}
@@ -164,17 +164,17 @@ export default function BrainSettingsPage() {
           tenant and authorizes the ingest — anyone with the address can drop
           mail into the brain. Treat it like a shared secret. */}
       {profile.emailIngestToken && (
-        <Section title="Inbound email" icon="mark_email_read">
+        <Section title="Correo entrante" icon="mark_email_read">
           <p className="text-xs text-muted-foreground mb-3">
-            Forward or BCC any email to the address below to add it as a communication in your Brain.
-            Attachments are stored automátically.
+            Reenvía o pon en CCO cualquier correo a la dirección de abajo para añadirlo como comunicación en tu Brain.
+            Los archivos adjuntos se almacenan automáticamente.
           </p>
-          <Row label="Brain email address">
+          <Row label="Dirección de correo del Brain">
             <EmailIngestField token={profile.emailIngestToken} />
           </Row>
           <Row
-            label="Auto-process on arrival"
-            help="Run the full AI pipeline (attachment analysis, link previews, transcript summary) automátically when an email lands. Off by default — communications stay in Draft until you click Process."
+            label="Procesar automáticamente al recibir"
+            help="Ejecuta automáticamente todo el pipeline de IA (análisis de adjuntos, vistas previas de enlaces, resumen de transcripción) cuando llega un correo. Desactivado por defecto — las comunicaciones permanecen en Borrador hasta que hagas clic en Procesar."
             labelId="auto-process-email-label"
           >
             <Toggle
@@ -186,7 +186,7 @@ export default function BrainSettingsPage() {
           </Row>
           <Row
             label="Vinculación automática con el CRM"
-            help="When an email is processed, also: upsert the sender as a CRM contact, link the email to a CRM company on unambiguous domain match, and propose contact classification, deal links, and brain-aware action items in the review queue. Requires Auto-process on arrival."
+            help="Cuando se procesa un correo, además: da de alta al remitente como contacto del CRM, vincula el correo a una empresa del CRM cuando el dominio coincide de forma inequívoca, y propone la clasificación de contactos, vínculos con oportunidades y elementos de acción con conocimiento del cerebro en la cola de revisión. Requiere Procesar automáticamente al recibir."
             labelId="auto-link-crm-label"
           >
             <Toggle
@@ -200,9 +200,9 @@ export default function BrainSettingsPage() {
       )}
 
       {/* Industry template */}
-      <Section title="Industry template" icon="apartment">
+      <Section title="Plantilla del sector" icon="apartment">
         <p className="text-xs text-muted-foreground mb-3">
-          Sets default relationship types, service lines, and compliance defaults. Switching template won&apos;t overwrite custom service lines.
+          Define los tipos de relación, las líneas de servicio y los valores de cumplimiento por defecto. Cambiar de plantilla no sobrescribe las líneas de servicio personalizadas.
         </p>
         <div className="grid gap-2">
           {availableTemplates.map((t) => (
@@ -228,15 +228,15 @@ export default function BrainSettingsPage() {
         </div>
         {template && (
           <div className="mt-3 text-xs text-muted-foreground">
-            <strong>Relationship types:</strong> {template.relationshipTypes.map(r => r.label).join(', ') || '—'}
+            <strong>Tipos de relación:</strong> {template.relationshipTypes.map(r => r.label).join(', ') || '—'}
           </div>
         )}
       </Section>
 
       {/* Confidentiality */}
-      <Section title="Default confidentiality" icon="lock">
+      <Section title="Confidencialidad por defecto" icon="lock">
         <p className="text-xs text-muted-foreground mb-3">
-          New communications, notes, and documents inherit this confidentiality level by default.
+          Las comunicaciones, notas y documentos nuevos heredan este nivel de confidencialidad por defecto.
         </p>
         <div className="grid gap-2">
           {CONFIDENTIALITY_OPTIONS.map((opt) => (
@@ -263,9 +263,9 @@ export default function BrainSettingsPage() {
       </Section>
 
       {/* Modules */}
-      <Section title="Enabled modules" icon="extension">
+      <Section title="Módulos activados" icon="extension">
         <p className="text-xs text-muted-foreground mb-3">
-          Toggle which Brain modules are available. Disabled modules don&apos;t appear in navigation.
+          Activa o desactiva qué módulos del Brain están disponibles. Los módulos desactivados no aparecen en la navegación.
         </p>
         <div className="space-y-2">
           {MODULE_OPTIONS.map((m) => (
@@ -282,9 +282,9 @@ export default function BrainSettingsPage() {
       </Section>
 
       {/* Service lines */}
-      <Section title="Service lines" icon="category">
+      <Section title="Líneas de servicio" icon="category">
         <p className="text-xs text-muted-foreground mb-3">
-          Used to categorize relationships and prospects. One per line.
+          Se usan para categorizar relaciones y prospectos. Una por línea.
         </p>
         <ServiceLinesField
           value={profile.serviceLines}
@@ -295,18 +295,18 @@ export default function BrainSettingsPage() {
 
       {/* Retention policy. Anchor `retention` is linked from the trash banner
           in components/brain/NoteListPane.tsx — keep the id stable. */}
-      <Section title="Retention policy" icon="schedule">
+      <Section title="Política de retención" icon="schedule">
         <div id="retention" className="scroll-mt-24 space-y-3 text-xs text-muted-foreground">
           <p>
-            <strong className="text-foreground">Trashed notes</strong> — deleting a
-            note from the knowledge IDE moves it to trash. Trashed notes stay
-            recoverable until you click <strong className="text-foreground">Vaciar papelera</strong> on the trash tab. There is no automátic purge today.
+            <strong className="text-foreground">Notas en la papelera</strong> — eliminar una
+            nota desde el IDE de conocimiento la mueve a la papelera. Las notas en la papelera siguen siendo
+            recuperables hasta que hagas clic en <strong className="text-foreground">Vaciar papelera</strong> en la pestaña de la papelera. Hoy no hay purga automática.
           </p>
           <p>
-            Trashed notes that have been in trash for longer than{' '}
-            <strong className="text-foreground">90 days</strong> are automátically
-            purged by a daily background job. You can still empty the trash
-            manually at any time to reclaim attachment storage sooner.
+            Las notas que llevan en la papelera más de{' '}
+            <strong className="text-foreground">90 días</strong> se purgan automáticamente
+            mediante un proceso en segundo plano diario. Aún puedes vaciar la papelera
+            manualmente en cualquier momento para recuperar antes el almacenamiento de adjuntos.
           </p>
           <p>
             <strong className="text-foreground">Al vaciar la papelera se elimina:</strong>{' '}
@@ -316,7 +316,7 @@ export default function BrainSettingsPage() {
             <code className="px-1 rounded bg-muted">trash_emptied</code>.
           </p>
           <p className="italic">
-            Active (non-trashed) notes are never auto-deleted.
+            Las notas activas (no enviadas a la papelera) nunca se eliminan automáticamente.
           </p>
         </div>
         {/*
@@ -455,7 +455,7 @@ function EmailIngestField({ token }: { token: string }) {
         className={`${pBtnGhost} shrink-0`}
       >
         <span className="material-icons text-sm">{copied ? 'check' : 'content_copy'}</span>
-        {copied ? 'Copied' : 'Copy'}
+        {copied ? 'Copiado' : 'Copiar'}
       </button>
     </div>
   );
@@ -474,14 +474,14 @@ function ServiceLinesField({ value, onSave, disabled }: { value: string[]; onSav
         disabled={disabled}
         rows={Math.max(4, parsed.length + 1)}
         className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15 disabled:opacity-50"
-        placeholder="e.g. Investments &amp; Planning"
+        placeholder="p. ej. Inversiones y planificación"
       />
       <button
         onClick={() => dirty && onSave(parsed)}
         disabled={disabled || !dirty}
         className={pBtnPrimary}
       >
-        Save service lines
+        Guardar líneas de servicio
       </button>
     </div>
   );
