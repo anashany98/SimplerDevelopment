@@ -204,7 +204,7 @@ describe('BrainNoteDetailPage — loading state', () => {
     // Never resolve the fetch
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading note');
+    expect(container.textContent).toContain('Cargando nota');
   });
 
   it('shows the progress_activity icon in loading state', async () => {
@@ -221,7 +221,7 @@ describe('BrainNoteDetailPage — invalid note id', () => {
     capturedParamId = 'abc';
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid note id');
+      expect(container.textContent).toContain('Id de nota no válido');
     });
   });
 
@@ -247,7 +247,7 @@ describe('BrainNoteDetailPage — error states', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Note not found.');
+      expect(container.textContent).toContain('Nota no encontrada.');
     });
   });
 
@@ -299,7 +299,7 @@ describe('BrainNoteDetailPage — error states', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -310,7 +310,7 @@ describe('BrainNoteDetailPage — successful render', () => {
   it('renders the title input with note title value', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+      const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
       expect(titleInput).toBeTruthy();
       expect(titleInput.value).toBe('Test Note');
     });
@@ -319,7 +319,7 @@ describe('BrainNoteDetailPage — successful render', () => {
   it('renders the Knowledge back button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Knowledge');
+      expect(container.textContent).toContain('Conocimiento');
     });
   });
 
@@ -383,7 +383,7 @@ describe('BrainNoteDetailPage — panel tabs', () => {
     await waitFor(() => expect(container.querySelector('[data-testid="note-outline-panel"]')).toBeTruthy());
 
     const tabs = Array.from(container.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
-    const backlinksTab = tabs.find((t) => t.textContent?.includes('Backlinks')) as HTMLButtonElement;
+    const backlinksTab = tabs.find((t) => t.textContent?.includes('Retroenlaces')) as HTMLButtonElement;
     fireEvent.click(backlinksTab);
 
     await waitFor(() => {
@@ -397,7 +397,7 @@ describe('BrainNoteDetailPage — panel tabs', () => {
     await waitFor(() => expect(container.querySelector('[data-testid="note-outline-panel"]')).toBeTruthy());
 
     const tabs = Array.from(container.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
-    const fieldsTab = tabs.find((t) => t.textContent?.includes('Fields')) as HTMLButtonElement;
+    const fieldsTab = tabs.find((t) => t.textContent?.includes('Campos')) as HTMLButtonElement;
     fireEvent.click(fieldsTab);
 
     await waitFor(() => {
@@ -411,10 +411,10 @@ describe('BrainNoteDetailPage — panel tabs', () => {
     await waitFor(() => expect(container.querySelector('[data-testid="note-outline-panel"]')).toBeTruthy());
 
     const tabs = Array.from(container.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
-    const backlinksTab = tabs.find((t) => t.textContent?.includes('Backlinks')) as HTMLButtonElement;
+    const backlinksTab = tabs.find((t) => t.textContent?.includes('Retroenlaces')) as HTMLButtonElement;
     fireEvent.click(backlinksTab);
 
-    const outlineTab = tabs.find((t) => t.textContent?.includes('Outline')) as HTMLButtonElement;
+    const outlineTab = tabs.find((t) => t.textContent?.includes('Esquema')) as HTMLButtonElement;
     fireEvent.click(outlineTab);
 
     await waitFor(() => {
@@ -427,7 +427,7 @@ describe('BrainNoteDetailPage — panel tabs', () => {
     await waitFor(() => expect(container.querySelector('[data-testid="note-outline-panel"]')).toBeTruthy());
 
     const tabs = Array.from(container.querySelectorAll('[role="tab"]')) as HTMLButtonElement[];
-    const outlineTab = tabs.find((t) => t.textContent?.includes('Outline')) as HTMLButtonElement;
+    const outlineTab = tabs.find((t) => t.textContent?.includes('Esquema')) as HTMLButtonElement;
     expect(outlineTab.getAttribute('aria-selected')).toBe('true');
   });
 });
@@ -438,11 +438,11 @@ describe('BrainNoteDetailPage — dirty state', () => {
   it('editing the title marks the form dirty and enables Save', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+      const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
       expect(titleInput.value).toBe('Test Note');
     });
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Updated Title' } });
 
     await waitFor(() => {
@@ -455,13 +455,13 @@ describe('BrainNoteDetailPage — dirty state', () => {
 
   it('shows "Unsaved changes" text when dirty', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Changed' } });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Unsaved changes');
+      expect(container.textContent).toContain('Cambios sin guardar');
     });
   });
 });
@@ -471,9 +471,9 @@ describe('BrainNoteDetailPage — dirty state', () => {
 describe('BrainNoteDetailPage — manual save', () => {
   it('clicking Save calls PATCH with title and body', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'New Title' } });
 
     await waitFor(() => {
@@ -501,9 +501,9 @@ describe('BrainNoteDetailPage — manual save', () => {
 
   it('shows "Saved" status after a successful save', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'A new title' } });
 
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
@@ -514,7 +514,7 @@ describe('BrainNoteDetailPage — manual save', () => {
     fireEvent.click(saveBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Saved');
+      expect(container.textContent).toContain('Guardado');
     });
   });
 
@@ -527,9 +527,9 @@ describe('BrainNoteDetailPage — manual save', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Modified' } });
 
     await waitFor(() => {
@@ -551,9 +551,9 @@ describe('BrainNoteDetailPage — manual save', () => {
 
   it('shows "Title is required." error when trying to save empty title', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     // Clear title to make it empty (dirty but invalid)
     fireEvent.change(titleInput, { target: { value: '' } });
 
@@ -574,7 +574,7 @@ describe('BrainNoteDetailPage — manual save', () => {
     fireEvent.click(editor); // triggers onSave -> save()
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Title is required.');
+      expect(container.textContent).toContain('El título es obligatorio.');
     });
   });
 });
@@ -591,9 +591,9 @@ describe('SaveStatus indicators', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
-    const titleInput = container.querySelector('input[aria-label="Note title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[aria-label="Título de la nota"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'X' } });
 
     // Trigger save via editor click (onSave)
@@ -686,10 +686,10 @@ describe('BrainNoteDetailPage — create note', () => {
 describe('BrainNoteDetailPage — back navigation', () => {
   it('clicking the Knowledge back button calls router.push', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.querySelector('input[aria-label="Note title"]')).toBeTruthy());
+    await waitFor(() => expect(container.querySelector('input[aria-label="Título de la nota"]')).toBeTruthy());
 
     const backBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Knowledge') && !b.closest('[data-testid]'),
+      (b) => b.textContent?.includes('Conocimiento') && !b.closest('[data-testid]'),
     ) as HTMLButtonElement;
 
     expect(backBtn).toBeTruthy();

@@ -29,11 +29,11 @@ interface NoteOption { id: number; title: string }
 const CATEGORIES: BrainDocumentCategory[] = ['sop', 'policy', 'guide', 'reference', 'announcement', 'other'];
 const CATEGORY_LABEL: Record<BrainDocumentCategory, string> = {
   sop: 'SOP',
-  policy: 'Policy',
-  guide: 'Guide',
-  reference: 'Reference',
-  announcement: 'Announcement',
-  other: 'Other',
+  policy: 'Política',
+  guide: 'Guía',
+  reference: 'Referencia',
+  announcement: 'Anuncio',
+  other: 'Otro',
 };
 
 export default function BrainDocumentNewPage() {
@@ -104,7 +104,7 @@ export default function BrainDocumentNewPage() {
     e.preventDefault();
     setError(null);
     if (!title.trim() && !pickedNoteId) {
-      setError('Title is required (or pick a source note to inherit its title).');
+      setError('El título es obligatorio (o elige una nota de origen para heredar su título).');
       return;
     }
     setSubmitting(true);
@@ -120,7 +120,7 @@ export default function BrainDocumentNewPage() {
         });
         const json = await r.json();
         if (!r.ok || !json.success) {
-          setError(json.message || 'Promote failed.');
+          setError(json.message || 'No se pudo promover.');
           return;
         }
         const docId = json.data?.document?.id;
@@ -142,13 +142,13 @@ export default function BrainDocumentNewPage() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Create failed.');
+        setError(json.message || 'No se pudo crear.');
         return;
       }
       const docId = json.data?.document?.id;
       router.push(`/portal/brain/documents/${docId}/edit`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -159,7 +159,7 @@ export default function BrainDocumentNewPage() {
       <nav className="text-xs text-muted-foreground flex items-center gap-1">
         <Link href="/portal/brain/documents" className="hover:text-foreground inline-flex items-center gap-0.5">
           <span className="material-icons text-sm">description</span>
-          Documents
+          Documentos
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
         <span>Nuevo</span>
@@ -170,7 +170,7 @@ export default function BrainDocumentNewPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">add</span>
-            New document
+            Nuevo documento
           </span>
         }
         subtitle="Empieza un nuevo SOP o promueve una nota existente a un documento versionado."
@@ -184,7 +184,7 @@ export default function BrainDocumentNewPage() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={useNoteSource ? 'Optional — leave blank to use the note title' : 'e.g., Customer onboarding SOP'}
+            placeholder={useNoteSource ? 'Opcional — déjalo en blanco para usar el título de la nota' : 'p. ej., SOP de incorporación de clientes'}
             className={pInput}
           />
         </div>
@@ -203,16 +203,16 @@ export default function BrainDocumentNewPage() {
           </div>
 
           <div>
-            <label htmlFor="doc-conf" className="block text-xs font-medium text-foreground mb-1">Confidentiality</label>
+            <label htmlFor="doc-conf" className="block text-xs font-medium text-foreground mb-1">Confidencialidad</label>
             <select
               id="doc-conf"
               value={confidentialityLevel}
               onChange={(e) => setConfidentialityLevel(e.target.value as 'standard' | 'restricted' | 'confidential')}
               className={pSelect}
             >
-              <option value="standard">Standard</option>
-              <option value="restricted">Restricted</option>
-              <option value="confidential">Confidential</option>
+              <option value="standard">Estándar</option>
+              <option value="restricted">Restringido</option>
+              <option value="confidential">Confidencial</option>
             </select>
           </div>
         </div>
@@ -225,13 +225,13 @@ export default function BrainDocumentNewPage() {
             onChange={(e) => setOwnerId(e.target.value ? parseInt(e.target.value, 10) : null)}
             className={pSelect}
           >
-            <option value="">— Unassigned —</option>
-            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
+            <option value="">— Sin asignar —</option>
+            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `Usuario #${u.id}`}</option>)}
           </select>
         </div>
 
         <div>
-          <span className="block text-xs font-medium text-foreground mb-1">Default topics (optional)</span>
+          <span className="block text-xs font-medium text-foreground mb-1">Temas predeterminados (opcional)</span>
           <TopicPicker
             selectedTopicIds={defaultTopicIds}
             onChange={setDefaultTopicIds}
@@ -253,7 +253,7 @@ export default function BrainDocumentNewPage() {
               className="h-4 w-4 rounded border-border accent-primary"
             />
             <span className="material-icons text-base text-muted-foreground">file_upload</span>
-            Seed this document from an existing note
+            Crear este documento a partir de una nota existente
           </label>
 
           {useNoteSource && (
@@ -269,10 +269,10 @@ export default function BrainDocumentNewPage() {
                 {noteSearchLoading ? (
                   <div className="text-center py-4 text-xs text-muted-foreground inline-flex items-center gap-1.5">
                     <span className="material-icons animate-spin text-sm">progress_activity</span>
-                    Searching…
+                    Buscando…
                   </div>
                 ) : noteOptions.length === 0 ? (
-                  <p className="text-center py-4 text-xs text-muted-foreground">No notes found.</p>
+                  <p className="text-center py-4 text-xs text-muted-foreground">No se encontraron notas.</p>
                 ) : (
                   <ul className="divide-y divide-border">
                     {noteOptions.map((n) => (
@@ -284,7 +284,7 @@ export default function BrainDocumentNewPage() {
                             pickedNoteId === n.id ? 'bg-primary/10' : ''
                           }`}
                         >
-                          {n.title || `Note #${n.id}`}
+                          {n.title || `Nota #${n.id}`}
                         </button>
                       </li>
                     ))}
@@ -305,7 +305,7 @@ export default function BrainDocumentNewPage() {
           <Link href="/portal/brain/documents" className={pBtnGhost}>Cancelar</Link>
           <button type="submit" disabled={submitting} className={pBtnPrimary}>
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creating…</>
+              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creando…</>
               : <><span className="material-icons text-base">add</span>Crear y abrir el editor</>}
           </button>
         </div>
