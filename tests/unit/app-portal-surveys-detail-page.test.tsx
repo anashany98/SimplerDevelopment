@@ -265,7 +265,7 @@ describe('SurveyDetailPage', () => {
     it('renders survey-not-found message when survey is null after load', () => {
       useSurveyReturnValue = makeUseSurveyValue({ loading: false, survey: null });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Survey not found');
+      expect(container.textContent).toContain('Encuesta no encontrada');
     });
 
     it('renders a Back to Surveys link when survey is null', () => {
@@ -362,7 +362,7 @@ describe('SurveyDetailPage', () => {
   describe('tab navigation', () => {
     it('clicking Edit tab renders EditTab panel', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       expect(screen.getByTestId('edit-tab')).toBeTruthy();
       expect(screen.queryByTestId('overview-tab')).toBeNull();
     });
@@ -541,7 +541,7 @@ describe('SurveyDetailPage', () => {
       // The share tab is only rendered when survey is loaded, so just verify
       // no crash when the page itself is null-guarded (not-found branch renders)
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Survey not found');
+      expect(container.textContent).toContain('Encuesta no encontrada');
       expect(navigator.clipboard.writeText).not.toHaveBeenCalled();
     });
   });
