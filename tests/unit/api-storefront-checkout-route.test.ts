@@ -52,10 +52,13 @@ interface DbState {
   // If true, the next db.insert() will throw.
   insertShouldThrow: boolean;
   // The route runs a PROJECTION pre-check on storeSettings before
-  // resolveSiteStripe (db.select({enabled, stripeMode, ...})). Projection
-  // selects do NOT consume the queue: they return this row (default =
-  // enabled Connect store). Set to [] to simulate "no store row" (404).
-  projectionRow?: unknown;
+  // resolveSiteStripe (db.select({enabled, stripeMode, ...})). ONLY that one
+  // select is special-cased: it returns this row (default = enabled Connect
+  // store) WITHOUT consuming the queue. Every other select — including the
+  // cartItems / shippingRates / productDesigns / orders object-projection
+  // selects and the resolver's full-row storeSettings read — consumes the
+  // next queued row-set. Set to [] to simulate "no store row" (404).
+  projectionRow?: unknown[];
 }
 
 const dbState: DbState = {
@@ -137,16 +140,26 @@ vi.mock('@/lib/automation/event-bus', () => ({
 
 vi.mock('@/lib/db', () => {
   function makeSelectChain(selectArgs: unknown[] = []) {
-    // The route's storeSettings pre-check is a PROJECTION select
-    // (db.select({enabled, ...})). resolveSiteStripe() re-queries
-    // storeSettings with a FULL-ROW select. Only the projection select on
-    // storeSettings returns the canned row without consuming the queue;
-    // every other select (including the resolver's full-row storeSettings
-    // select) consumes the next queued row-set.
+    // The storeSettings pre-check is identified by its projection values: the
+    // schema mock renders every column access as `${table}.${column}`, so only
+    // the pre-check projects `storeSettings.*`. A blanket "first arg is an
+    // object" test also swallowed the cartItems / shippingRates /
+    // productDesigns / orders object-projection selects, which must consume the
+    // queued rows instead.
+    const projection = selectArgs[0];
     const isStoreSettingsProjection =
-      selectArgs.length > 0 && selectArgs[0] && typeof selectArgs[0] === 'object';
+      !!projection &&
+      typeof projection === 'object' &&
+      Object.values(projection).some(
+        (v) => typeof v === 'string' && v.startsWith('storeSettings.'),
+      );
     let rows: unknown[] = isStoreSettingsProjection
-      ? [{ enabled: true, stripeMode: 'connect', stripeAccountId: 'acct_test_123', stripeOnboardingComplete: true }]
+      ? (dbState.projectionRow ?? [{
+          enabled: true,
+          stripeMode: 'connect',
+          stripeAccountId: 'acct_test_123',
+          stripeOnboardingComplete: true,
+        }])
       : dbState.selectQueue.shift() ?? [];
     const chain: Record<string, unknown> = {};
     const passthrough = [
