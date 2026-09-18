@@ -77,9 +77,9 @@ export default function AdminBookingPage() {
   }, []);
 
   const statCards = [
-    { label: 'Total Pages', value: stats.totalPages, icon: 'calendar_month' },
-    { label: 'Active Pages', value: stats.activePages, icon: 'event_available' },
-    { label: 'Upcoming Bookings', value: stats.totalUpcoming, icon: 'event_upcoming' },
+    { label: 'Páginas totales', value: stats.totalPages, icon: 'calendar_month' },
+    { label: 'Páginas activas', value: stats.activePages, icon: 'event_available' },
+    { label: 'Reservas próximas', value: stats.totalUpcoming, icon: 'event_upcoming' },
   ];
 
   return (
@@ -98,7 +98,7 @@ export default function AdminBookingPage() {
                 tab === t ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
-              {t === 'pages' ? 'Pages' : 'Upcoming'}
+              {t === 'pages' ? 'Páginas' : 'Próximas'}
             </button>
           ))}
         </div>
@@ -107,7 +107,7 @@ export default function AdminBookingPage() {
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
           <span className="material-icons animate-spin text-3xl">autorenew</span>
-          <p className="mt-2">Loading booking data...</p>
+          <p className="mt-2">Cargando datos de reservas...</p>
         </div>
       ) : (
         <>
@@ -130,7 +130,7 @@ export default function AdminBookingPage() {
               {pages.length === 0 ? (
                 <div className="bg-card border border-border rounded-xl p-12 text-center">
                   <span className="material-icons text-5xl text-muted-foreground">calendar_month</span>
-                  <h3 className="mt-4 font-semibold text-foreground">No booking pages</h3>
+                  <h3 className="mt-4 font-semibold text-foreground">No hay páginas de reservas</h3>
                   <p className="text-muted-foreground mt-1 text-sm">Las páginas de reservas aparecerán aquí una vez que los clientes las creen.</p>
                 </div>
               ) : (
@@ -141,10 +141,10 @@ export default function AdminBookingPage() {
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Calendar Sync</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Sincronización de calendario</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Bookings</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Upcoming</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Reservas totales</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Próximas</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -152,12 +152,12 @@ export default function AdminBookingPage() {
                         <tr key={page.id} className="hover:bg-muted/30 transition-colors">
                           <td className="px-4 py-3 font-medium text-foreground">{page.title}</td>
                           <td className="px-4 py-3 text-muted-foreground">{page.company ?? page.clientName}</td>
-                          <td className="px-4 py-3 text-muted-foreground">{page.duration} mins</td>
+                          <td className="px-4 py-3 text-muted-foreground">{page.duration} min</td>
                           <td className="px-4 py-3">
                             {page.googleCalendarSync ? (
                               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                                 <span className="material-icons text-sm mr-1">sync</span>
-                                Synced
+                                Sincronizado
                               </span>
                             ) : (
                               <span className="text-xs text-muted-foreground">--</span>
@@ -169,7 +169,7 @@ export default function AdminBookingPage() {
                                 ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                                 : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
                             }`}>
-                              {page.active ? 'Active' : 'Inactive'}
+                              {page.active ? 'Activa' : 'Inactiva'}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-muted-foreground">{page.totalBookings}</td>
@@ -188,7 +188,7 @@ export default function AdminBookingPage() {
               {upcoming.length === 0 ? (
                 <div className="bg-card border border-border rounded-xl p-12 text-center">
                   <span className="material-icons text-5xl text-muted-foreground">event_busy</span>
-                  <h3 className="mt-4 font-semibold text-foreground">No upcoming bookings</h3>
+                  <h3 className="mt-4 font-semibold text-foreground">No hay reservas próximas</h3>
                   <p className="text-muted-foreground mt-1 text-sm">Las próximas reservas de los siguientes 30 días aparecerán aquí.</p>
                 </div>
               ) : (
@@ -196,10 +196,10 @@ export default function AdminBookingPage() {
                   <table className="w-full text-sm">
                     <thead className="bg-muted/50 border-b border-border">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date / Time</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Guest Name</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Guest Email</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Booking Page</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha / hora</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre del invitado</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Email del invitado</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Página de reservas</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Teléfono</th>

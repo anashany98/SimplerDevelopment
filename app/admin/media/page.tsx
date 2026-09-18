@@ -60,12 +60,12 @@ export default function MediaLibraryPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Media Library</h1>
+          <h1 className="text-3xl font-bold text-foreground">Biblioteca de medios</h1>
           <button
             onClick={() => setShowUpload(true)}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
           >
-            Upload Media
+            Subir medios
           </button>
         </div>
 
@@ -73,7 +73,7 @@ export default function MediaLibraryPage() {
         <div className="bg-card border border-border p-4 rounded-lg shadow space-y-4">
           <input
             type="text"
-            placeholder="Search by filename, alt text, or caption..."
+            placeholder="Busca por nombre de archivo, texto alternativo o pie de foto..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -118,7 +118,7 @@ export default function MediaLibraryPage() {
               className="px-4 py-2 text-sm border border-border rounded-md disabled:opacity-50 hover:bg-accent"
             >Anterior</button>
             <span className="px-4 py-2 text-sm">
-              {offset + 1} - {Math.min(offset + limit, total)} of {total}
+              {offset + 1} - {Math.min(offset + limit, total)} de {total}
             </span>
             <button
               disabled={offset + limit >= total}

@@ -34,9 +34,9 @@ interface RotatedSecret {
 }
 
 function methodLabel(m: AuthMethod): string {
-  if (m === 'none') return 'Public (PKCE)';
-  if (m === 'client_secret_basic') return 'Confidential — Basic';
-  return 'Confidential — Post';
+  if (m === 'none') return 'Público (PKCE)';
+  if (m === 'client_secret_basic') return 'Confidencial — Basic';
+  return 'Confidencial — Post';
 }
 
 export default function AdminOAuthClientsPage() {
@@ -83,7 +83,7 @@ export default function AdminOAuthClientsPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'Error'); return; }
     setCreatedSecret(data.data as CreatedClient);
     setShowForm(false);
     setForm({ client_name: '', redirect_uris: '', token_endpoint_auth_method: 'client_secret_basic', client_uri: '' });
@@ -91,23 +91,23 @@ export default function AdminOAuthClientsPage() {
   }
 
   async function rotateSecret(row: OAuthClientRow) {
-    if (!confirm(`Rotate secret for "${row.clientName}"? The old secret will stop working immediately.`)) return;
+    if (!confirm(`¿Rotar el secreto de "${row.clientName}"? El secreto anterior dejará de funcionar de inmediato.`)) return;
     const res = await fetch(`/api/admin/oauth-clients/${row.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'rotate_secret' }),
     });
     const data = await res.json();
-    if (!data.success) { alert(data.message ?? 'Rotation failed'); return; }
+    if (!data.success) { alert(data.message ?? 'No se pudo rotar'); return; }
     setRotatedSecret(data.data as RotatedSecret);
     await load();
   }
 
   async function deleteClient(row: OAuthClientRow) {
-    if (!confirm(`Delete OAuth client "${row.clientName}"? All issued tokens will be invalidated.`)) return;
+    if (!confirm(`¿Eliminar el cliente OAuth "${row.clientName}"? Todos los tokens emitidos quedarán invalidados.`)) return;
     const res = await fetch(`/api/admin/oauth-clients/${row.id}`, { method: 'DELETE' });
     const data = await res.json();
-    if (!data.success) { alert(data.message ?? 'Delete failed'); return; }
+    if (!data.success) { alert(data.message ?? 'No se pudo eliminar'); return; }
     await load();
   }
 
@@ -119,11 +119,11 @@ export default function AdminOAuthClientsPage() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">OAuth Clients</h1>
+          <h1 className="text-2xl font-bold text-foreground">Clientes OAuth</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Issue and manage OAuth credentials for server-to-server integrations.
-            Public PKCE clients (Claude Desktop, Cursor, etc.) register themselves
-            via <code className="text-xs bg-muted px-1 py-0.5 rounded">/oauth/register</code> and don&apos;t appear here unless created manually.
+            Emite y gestiona credenciales OAuth para integraciones servidor a servidor.
+            Los clientes públicos PKCE (Claude Desktop, Cursor, etc.) se registran solos
+            vía <code className="text-xs bg-muted px-1 py-0.5 rounded">/oauth/register</code> y no aparecen aquí salvo que se creen manualmente.
           </p>
         </div>
         <button
@@ -131,7 +131,7 @@ export default function AdminOAuthClientsPage() {
           className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90"
         >
           <span className="material-icons text-sm align-middle mr-1">add</span>
-          New confidential client
+          Nuevo cliente confidencial
         </button>
       </div>
 
@@ -141,16 +141,16 @@ export default function AdminOAuthClientsPage() {
             <span className="material-icons text-amber-600">warning</span>
             <div className="flex-1">
               <div className="font-semibold text-foreground">
-                Copy the client_secret now — it will not be shown again
+                Copia el client_secret ahora — no se volverá a mostrar
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                After you close this banner, only its SHA-256 hash remains. Use the rotate action if you lose it.
+                Cuando cierres este aviso, solo quedará su hash SHA-256. Usa la acción de rotar si lo pierdes.
               </p>
             </div>
             <button
               onClick={() => setCreatedSecret(null)}
               className="text-muted-foreground hover:text-foreground"
-              aria-label="Dismiss"
+              aria-label="Descartar"
             >
               <span className="material-icons text-sm">close</span>
             </button>
@@ -175,9 +175,9 @@ export default function AdminOAuthClientsPage() {
           <div className="flex items-start gap-2">
             <span className="material-icons text-amber-600">warning</span>
             <div className="flex-1">
-              <div className="font-semibold text-foreground">New client_secret — copy it now</div>
+              <div className="font-semibold text-foreground">Nuevo client_secret — cópialo ahora</div>
               <p className="text-xs text-muted-foreground mt-1">
-                The previous secret is invalid as of {new Date(rotatedSecret.client_secret_rotated_at).toLocaleString()}.
+                El secreto anterior no es válido desde {new Date(rotatedSecret.client_secret_rotated_at).toLocaleString()}.
               </p>
             </div>
             <button onClick={() => setRotatedSecret(null)} className="text-muted-foreground hover:text-foreground">
@@ -199,18 +199,18 @@ export default function AdminOAuthClientsPage() {
       {showForm && (
         <form onSubmit={createClient} className="rounded-lg border border-border bg-card p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Client name</label>
+            <label className="block text-sm font-medium mb-1">Nombre del cliente</label>
             <input
               type="text"
               required
               value={form.client_name}
               onChange={e => setForm({ ...form, client_name: e.target.value })}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-              placeholder="e.g. n8n production"
+              placeholder="p. ej. n8n producción"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Redirect URIs</label>
+            <label className="block text-sm font-medium mb-1">URIs de redirección</label>
             <textarea
               required
               rows={3}
@@ -222,18 +222,18 @@ export default function AdminOAuthClientsPage() {
             <p className="text-xs text-muted-foreground mt-1">Uno por línea. Debe usar https, http://localhost o un esquema nativo.</p>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Token endpoint auth method</label>
+            <label className="block text-sm font-medium mb-1">Método de autenticación del endpoint de token</label>
             <select
               value={form.token_endpoint_auth_method}
               onChange={e => setForm({ ...form, token_endpoint_auth_method: e.target.value as AuthMethod })}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
             >
               <option value="client_secret_basic">client_secret_basic (Authorization: Basic)</option>
-              <option value="client_secret_post">client_secret_post (request body)</option>
+              <option value="client_secret_post">client_secret_post (cuerpo de la solicitud)</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Client URI (optional)</label>
+            <label className="block text-sm font-medium mb-1">URI del cliente (opcional)</label>
             <input
               type="url"
               value={form.client_uri}
@@ -249,7 +249,7 @@ export default function AdminOAuthClientsPage() {
               disabled={saving}
               className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
             >
-              {saving ? 'Creating…' : 'Create client & reveal secret'}
+              {saving ? 'Creando…' : 'Crear cliente y mostrar secreto'}
             </button>
             <button
               type="button"
@@ -266,9 +266,9 @@ export default function AdminOAuthClientsPage() {
             <tr>
               <th className="px-4 py-2 font-medium">Nombre</th>
               <th className="px-4 py-2 font-medium">client_id</th>
-              <th className="px-4 py-2 font-medium">Auth method</th>
-              <th className="px-4 py-2 font-medium">Secret</th>
-              <th className="px-4 py-2 font-medium">Redirect URIs</th>
+              <th className="px-4 py-2 font-medium">Método de autenticación</th>
+              <th className="px-4 py-2 font-medium">Secreto</th>
+              <th className="px-4 py-2 font-medium">URIs de redirección</th>
               <th className="px-4 py-2 font-medium">Creado</th>
               <th className="px-4 py-2 font-medium text-right">Acciones</th>
             </tr>
@@ -278,7 +278,7 @@ export default function AdminOAuthClientsPage() {
               <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && clients.length === 0 && (
-              <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">No OAuth clients yet.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">Aún no hay clientes OAuth.</td></tr>
             )}
             {clients.map(c => (
               <tr key={c.id} className="border-t border-border">
@@ -302,9 +302,9 @@ export default function AdminOAuthClientsPage() {
                       <button
                         onClick={() => rotateSecret(c)}
                         className="text-xs rounded border border-border px-2 py-1 hover:bg-muted"
-                        title="Rotate client_secret"
+                        title="Rotar client_secret"
                       >
-                        Rotate
+                        Rotar
                       </button>
                     )}
                     <button

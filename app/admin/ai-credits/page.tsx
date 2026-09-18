@@ -78,22 +78,22 @@ export default function AdminAiCreditsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">AI Credits</h1>
+        <h1 className="text-2xl font-bold text-foreground">Créditos de IA</h1>
         <p className="text-muted-foreground mt-1">Supervisa los saldos de créditos de IA y el uso de todos los clientes.</p>
       </div>
 
       {/* Summary cards */}
       <div className="grid sm:grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Total Pool Balance</p>
+          <p className="text-sm text-muted-foreground">Saldo total</p>
           <p className="text-2xl font-bold text-foreground mt-1">{formatNumber(summary.totalBalance)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Monthly Grants</p>
+          <p className="text-sm text-muted-foreground">Asignaciones mensuales</p>
           <p className="text-2xl font-bold text-foreground mt-1">{formatNumber(summary.totalMonthlyGrants)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Pay-as-you-go Clients</p>
+          <p className="text-sm text-muted-foreground">Clientes de pago por uso</p>
           <p className="text-2xl font-bold text-foreground mt-1">{Number(summary.payAsYouGoClients)}</p>
         </div>
       </div>
@@ -112,14 +112,14 @@ export default function AdminAiCreditsPage() {
             tab === 'ledger' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          Ledger
+          Registro
         </button>
       </div>
 
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
           <span className="material-icons animate-spin text-3xl">progress_activity</span>
-          <p className="mt-2">Loading AI credits...</p>
+          <p className="mt-2">Cargando créditos de IA...</p>
         </div>
       ) : tab === 'overview' ? (
         <div className="space-y-6">
@@ -127,21 +127,21 @@ export default function AdminAiCreditsPage() {
           {balances.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">account_balance_wallet</span>
-              <h3 className="mt-4 font-semibold text-foreground">No credit balances</h3>
-              <p className="text-sm text-muted-foreground mt-1">No clients have AI credit balances yet.</p>
+              <h3 className="mt-4 font-semibold text-foreground">No hay saldos de créditos</h3>
+              <p className="text-sm text-muted-foreground mt-1">Ningún cliente tiene saldo de créditos de IA todavía.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Client Balances</h2>
+                <h2 className="font-semibold text-foreground">Saldos por cliente</h2>
               </div>
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Saldo</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Monthly Grant</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pay-as-you-go</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Asignación mensual</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pago por uso</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
@@ -163,7 +163,7 @@ export default function AdminAiCreditsPage() {
                           href={`/admin/clients/${b.clientId}`}
                           className="text-primary hover:underline text-xs font-medium"
                         >
-                          View Client
+                          Ver cliente
                         </a>
                       </td>
                     </tr>
@@ -176,15 +176,15 @@ export default function AdminAiCreditsPage() {
           {/* Packages section */}
           {packages.length > 0 && (
             <div>
-              <h2 className="font-semibold text-foreground mb-3">Credit Packages</h2>
+              <h2 className="font-semibold text-foreground mb-3">Paquetes de créditos</h2>
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {packages.map(pkg => (
                   <div key={pkg.id} className="bg-card border border-border rounded-xl p-5 space-y-2">
                     <h3 className="font-semibold text-foreground">{pkg.name}</h3>
-                    <p className="text-2xl font-bold text-foreground">{formatNumber(pkg.tokens)} <span className="text-sm font-normal text-muted-foreground">credits</span></p>
+                    <p className="text-2xl font-bold text-foreground">{formatNumber(pkg.tokens)} <span className="text-sm font-normal text-muted-foreground">créditos</span></p>
                     <p className="text-sm text-muted-foreground">{formatCents(pkg.price)}</p>
                     <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-medium ${pkg.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                      {pkg.active ? 'Active' : 'Inactive'}
+                      {pkg.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </div>
                 ))}
@@ -198,13 +198,13 @@ export default function AdminAiCreditsPage() {
           {ledger.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">receipt_long</span>
-              <h3 className="mt-4 font-semibold text-foreground">No transactions</h3>
-              <p className="text-sm text-muted-foreground mt-1">No AI credit transactions recorded yet.</p>
+              <h3 className="mt-4 font-semibold text-foreground">No hay transacciones</h3>
+              <p className="text-sm text-muted-foreground mt-1">Todavía no se han registrado transacciones de créditos de IA.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Recent Transactions</h2>
+                <h2 className="font-semibold text-foreground">Transacciones recientes</h2>
               </div>
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
@@ -242,15 +242,15 @@ export default function AdminAiCreditsPage() {
           {/* Packages section */}
           {packages.length > 0 && (
             <div>
-              <h2 className="font-semibold text-foreground mb-3">Credit Packages</h2>
+              <h2 className="font-semibold text-foreground mb-3">Paquetes de créditos</h2>
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {packages.map(pkg => (
                   <div key={pkg.id} className="bg-card border border-border rounded-xl p-5 space-y-2">
                     <h3 className="font-semibold text-foreground">{pkg.name}</h3>
-                    <p className="text-2xl font-bold text-foreground">{formatNumber(pkg.tokens)} <span className="text-sm font-normal text-muted-foreground">credits</span></p>
+                    <p className="text-2xl font-bold text-foreground">{formatNumber(pkg.tokens)} <span className="text-sm font-normal text-muted-foreground">créditos</span></p>
                     <p className="text-sm text-muted-foreground">{formatCents(pkg.price)}</p>
                     <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-medium ${pkg.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                      {pkg.active ? 'Active' : 'Inactive'}
+                      {pkg.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </div>
                 ))}

@@ -68,7 +68,7 @@ export default function AdminPortalTicketsPage() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Support Tickets</h1>
+          <h1 className="text-2xl font-bold text-foreground">Tickets de soporte</h1>
           <p className="text-muted-foreground text-sm mt-0.5">Gestiona todas las solicitudes de soporte de clientes en la plataforma.</p>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function AdminPortalTicketsPage() {
         <StatCard icon="inbox" label="Abierto" value={openCount} color={openCount > 0 ? 'text-blue-600' : undefined} />
         <StatCard icon="pending" label="En progreso" value={inProgressCount} color="text-yellow-600" />
         <StatCard icon="priority_high" label="Urgente" value={urgentCount} color={urgentCount > 0 ? 'text-red-600' : undefined} urgent={urgentCount > 0} />
-        <StatCard icon="confirmation_number" label="Total Tickets" value={tickets.length} />
+        <StatCard icon="confirmation_number" label="Tickets totales" value={tickets.length} />
       </div>
 
       {/* Filters */}
@@ -87,7 +87,7 @@ export default function AdminPortalTicketsPage() {
           <span className="material-icons text-muted-foreground text-base">search</span>
           <input
             className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground"
-            placeholder="Search tickets..."
+            placeholder="Buscar tickets..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -101,7 +101,7 @@ export default function AdminPortalTicketsPage() {
                 statusFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
-              {s === 'all' ? 'All' : s.replace('_', ' ')}
+              {s === 'all' ? 'Todos' : s.replace('_', ' ')}
             </button>
           ))}
         </div>
@@ -127,9 +127,9 @@ export default function AdminPortalTicketsPage() {
       ) : filtered.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">support_agent</span>
-          <h3 className="mt-4 font-semibold text-foreground">No tickets found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron tickets</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            {search || statusFilter !== 'all' ? 'Try adjusting your filters.' : 'No support tickets have been submitted.'}
+            {search || statusFilter !== 'all' ? 'Prueba a ajustar los filtros.' : 'No se ha enviado ningún ticket de soporte.'}
           </p>
         </div>
       ) : (
@@ -188,7 +188,7 @@ export default function AdminPortalTicketsPage() {
                         >
                           <option value="open">Abierto</option>
                           <option value="in_progress">En progreso</option>
-                          <option value="waiting">Waiting</option>
+                          <option value="waiting">En espera</option>
                           <option value="resolved">Resuelto</option>
                           <option value="closed">Cerrado</option>
                         </select>

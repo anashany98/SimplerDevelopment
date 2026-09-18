@@ -26,7 +26,7 @@ interface UnifiedApprovalRow {
 const SOURCE_CONFIG: Record<ApprovalSource, { label: string; color: string; icon: string }> = {
   mcp:     { label: 'MCP',     color: 'bg-purple-100 text-purple-700', icon: 'smart_toy' },
   brain:   { label: 'Brain',   color: 'bg-indigo-100 text-indigo-700', icon: 'psychology' },
-  service: { label: 'Service', color: 'bg-blue-100 text-blue-700',    icon: 'storefront' },
+  service: { label: 'Servicio', color: 'bg-blue-100 text-blue-700',    icon: 'storefront' },
   project: { label: 'Proyecto', color: 'bg-amber-100 text-amber-700',  icon: 'rocket_launch' },
 };
 
@@ -34,16 +34,16 @@ function timeAgo(iso: string): string {
   const now = Date.now();
   const then = new Date(iso).getTime();
   const seconds = Math.max(0, Math.floor((now - then) / 1000));
-  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 60) return `hace ${seconds} s`;
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `hace ${minutes} min`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
+  if (days < 30) return `hace ${days} días`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months}mo ago`;
-  return `${Math.floor(months / 12)}y ago`;
+  if (months < 12) return `hace ${months} meses`;
+  return `hace ${Math.floor(months / 12)} años`;
 }
 
 export default function AdminApprovalsPage() {
@@ -58,9 +58,9 @@ export default function AdminApprovalsPage() {
       const res = await fetch('/api/admin/approvals');
       const data = await res.json();
       if (data.success) setRows(data.data ?? []);
-      else setError(data.message ?? 'Failed to load approvals');
+      else setError(data.message ?? 'No se pudieron cargar las aprobaciones');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load approvals');
+      setError(e instanceof Error ? e.message : 'No se pudieron cargar las aprobaciones');
     } finally {
       setLoading(false);
     }
@@ -102,9 +102,9 @@ export default function AdminApprovalsPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Approvals</h1>
+          <h1 className="text-2xl font-bold text-foreground">Aprobaciones</h1>
           <p className="text-muted-foreground mt-1">
-            Unified inbox: pending MCP changes, Brain AI proposals, service requests, and project requests across all clients. Oldest first.
+            Bandeja unificada: cambios de MCP pendientes, propuestas de Brain AI, solicitudes de servicio y solicitudes de proyecto de todos los clientes. Los más antiguos primero.
           </p>
         </div>
         <button
@@ -138,12 +138,12 @@ export default function AdminApprovalsPage() {
       )}
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading approvals...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando aprobaciones...</div>
       ) : rows.length === 0 ? (
         <div className="text-center py-16 border border-dashed border-border rounded-xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2">inbox</span>
-          <p className="text-foreground font-medium">No pending approvals</p>
-          <p className="text-sm text-muted-foreground mt-1">You&rsquo;re all caught up.</p>
+          <p className="text-foreground font-medium">No hay aprobaciones pendientes</p>
+          <p className="text-sm text-muted-foreground mt-1">Estás al día.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -152,7 +152,7 @@ export default function AdminApprovalsPage() {
             const approveKey = `${row.source}:${row.id}:approve`;
             const rejectKey = `${row.source}:${row.id}:reject`;
             const isActing = actingKey === approveKey || actingKey === rejectKey;
-            const clientLabel = row.clientCompany?.trim() || row.clientUserName?.trim() || row.clientUserEmail || `Client #${row.clientId}`;
+            const clientLabel = row.clientCompany?.trim() || row.clientUserName?.trim() || row.clientUserEmail || `Cliente #${row.clientId}`;
 
             return (
               <div
@@ -188,7 +188,7 @@ export default function AdminApprovalsPage() {
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-medium hover:bg-green-700 disabled:opacity-50"
                   >
                     <span className="material-icons text-sm">check_circle</span>
-                    {actingKey === approveKey ? 'Approving...' : 'Approve'}
+                    {actingKey === approveKey ? 'Aprobando...' : 'Aprobar'}
                   </button>
                   <button
                     onClick={() => void act(row, 'reject')}
@@ -196,7 +196,7 @@ export default function AdminApprovalsPage() {
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border bg-card text-xs font-medium text-foreground hover:bg-accent disabled:opacity-50"
                   >
                     <span className="material-icons text-sm">cancel</span>
-                    {actingKey === rejectKey ? 'Rejecting...' : 'Reject'}
+                    {actingKey === rejectKey ? 'Rechazando...' : 'Rechazar'}
                   </button>
                 </div>
               </div>

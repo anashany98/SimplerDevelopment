@@ -21,9 +21,9 @@ export default function AdminError({
           <span className="material-icons text-destructive text-2xl">error_outline</span>
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Something went wrong</h2>
+          <h2 className="text-lg font-semibold text-foreground">Algo salió mal</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            An unexpected error occurred in the admin panel.
+            Se produjo un error inesperado en el panel de administración.
           </p>
           {error.digest && (
             <p className="text-xs text-muted-foreground mt-2 font-mono bg-muted px-2 py-1 rounded inline-block">
@@ -37,14 +37,14 @@ export default function AdminError({
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-base">refresh</span>
-            Try again
+            Reintentar
           </button>
           <Link
             href="/admin"
             className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
           >
             <span className="material-icons text-base">home</span>
-            Admin home
+            Inicio de administración
           </Link>
         </div>
       </div>
