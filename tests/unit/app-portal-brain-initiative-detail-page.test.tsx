@@ -234,7 +234,7 @@ describe('InitiativeDetailPage — loading', () => {
   it('shows loading spinner while data is fetching', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -489,7 +489,7 @@ describe('InitiativeDetailPage — action buttons (non-terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -555,7 +555,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Edit',
+      (b) => b.textContent?.trim() === 'Editar',
     );
     expect(btn).toBeUndefined();
   });
@@ -565,7 +565,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Close',
+      (b) => b.textContent?.trim() === 'Cerrar',
     );
     expect(btn).toBeUndefined();
   });
@@ -634,7 +634,7 @@ describe('InitiativeDetailPage — close panel', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const closeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Close'),
+      (b) => b.textContent?.includes('Cerrar'),
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
@@ -646,7 +646,7 @@ describe('InitiativeDetailPage — close panel', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const closeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Close'),
+      (b) => b.textContent?.includes('Cerrar'),
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
@@ -668,7 +668,7 @@ describe('InitiativeDetailPage — close panel', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const closeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Close'),
+      (b) => b.textContent?.includes('Cerrar'),
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
@@ -991,7 +991,7 @@ describe('InitiativeDetailPage — goals section', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No goals yet'));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
@@ -1005,7 +1005,7 @@ describe('InitiativeDetailPage — goals section', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No goals yet'));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
@@ -1013,7 +1013,7 @@ describe('InitiativeDetailPage — goals section', () => {
     });
     // The AddGoalForm has its own Cancel button
     const cancelBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     );
     fireEvent.click(cancelBtns[cancelBtns.length - 1]);
     await waitFor(() => {
@@ -1027,7 +1027,7 @@ describe('InitiativeDetailPage — goals section', () => {
 describe('InitiativeDetailPage — AddGoalForm', () => {
   async function openAddGoalForm(container: HTMLElement) {
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
