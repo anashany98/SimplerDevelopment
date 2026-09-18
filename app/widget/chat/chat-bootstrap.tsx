@@ -215,7 +215,7 @@ export default function ChatBootstrap({
     return (
       <button
         type="button"
-        aria-label="Open chat"
+        aria-label="Abrir chat"
         onClick={() => setOpen(true)}
         style={{
           position: 'fixed',

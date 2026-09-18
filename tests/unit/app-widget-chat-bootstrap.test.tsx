@@ -147,7 +147,7 @@ function deliverSession(session: typeof sessionData = sessionData) {
 // Open the widget and deliver the session a verified host loader would send.
 async function openAndFlush() {
   const result = renderWidget();
-  await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+  await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
   await act(async () => { deliverSession(); });
   await flush();
   return result;
@@ -179,7 +179,7 @@ describe('ChatBootstrap', () => {
 
   it('renders the open-chat button initially (closed state)', () => {
     renderWidget();
-    expect(screen.getByLabelText('Open chat')).toBeTruthy();
+    expect(screen.getByLabelText('Abrir chat')).toBeTruthy();
   });
 
   it('does not render the chat panel when closed', () => {
@@ -195,7 +195,7 @@ describe('ChatBootstrap', () => {
 
   it('applies default primary color #0070f3 as rgb to bubble before session', () => {
     renderWidget();
-    const btn = screen.getByLabelText('Open chat') as HTMLButtonElement;
+    const btn = screen.getByLabelText('Abrir chat') as HTMLButtonElement;
     // jsdom converts hex to rgb
     expect(btn.style.background).toMatch(/0070f3|0, 112, 243/);
   });
@@ -244,7 +244,7 @@ describe('ChatBootstrap', () => {
     await openAndFlush();
     await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
-    expect(screen.getByLabelText('Open chat')).toBeTruthy();
+    expect(screen.getByLabelText('Abrir chat')).toBeTruthy();
     expect(screen.queryByText('Chat en vivo')).toBeNull();
   });
 
@@ -267,7 +267,7 @@ describe('ChatBootstrap', () => {
 
   it('does not show greeting message when greetingMessage is null', async () => {
     renderWidget();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
     await act(async () => { deliverSession({ ...sessionData, greetingMessage: null }); });
     expect(screen.queryByText('Hello! How can I help you?')).toBeNull();
   });
@@ -281,7 +281,7 @@ describe('ChatBootstrap', () => {
 
   it('shows an error sent by the verified host loader', async () => {
     renderWidget();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
     await act(async () => {
       window.dispatchEvent(new MessageEvent('message', {
         origin: HOST_ORIGIN,
@@ -294,7 +294,7 @@ describe('ChatBootstrap', () => {
 
   it('rejects a session message from another origin', async () => {
     renderWidget();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
     await act(async () => {
       window.dispatchEvent(new MessageEvent('message', {
         origin: 'https://attacker.example',
@@ -311,7 +311,7 @@ describe('ChatBootstrap', () => {
     const startsAfterFirst = postMessageMock.mock.calls.filter(([message]) => message.type === 'sd-chat:start').length;
     await act(async () => { fireEvent.click(screen.getByLabelText('Cerrar chat')); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
     await flush();
     const startsAfterSecond = postMessageMock.mock.calls.filter(([message]) => message.type === 'sd-chat:start').length;
     expect(startsAfterSecond).toBe(startsAfterFirst);
@@ -400,7 +400,7 @@ describe('ChatBootstrap', () => {
   it('input is disabled before session is established', async () => {
     globalThis.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof fetch;
     renderWidget();
-    await act(async () => { fireEvent.click(screen.getByLabelText('Open chat')); });
+    await act(async () => { fireEvent.click(screen.getByLabelText('Abrir chat')); });
     // Deliberately no flush — session never resolves
     const input = screen.getByPlaceholderText('Escribe un mensaje…') as HTMLInputElement;
     expect(input.disabled).toBe(true);
@@ -576,7 +576,7 @@ describe('ChatBootstrap', () => {
 
   it('greeting message appears after opening (waitFor variant)', async () => {
     renderWidget();
-    fireEvent.click(screen.getByLabelText('Open chat'));
+    fireEvent.click(screen.getByLabelText('Abrir chat'));
     await act(async () => { deliverSession(); });
     await waitFor(() => {
       expect(screen.getByText('Hello! How can I help you?')).toBeTruthy();

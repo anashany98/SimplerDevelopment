@@ -6,7 +6,7 @@
 import type { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'Live chat',
+  title: 'Chat en vivo',
   robots: { index: false, follow: false },
 };
 
