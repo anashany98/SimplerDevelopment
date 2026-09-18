@@ -172,7 +172,7 @@ describe('ThreadCard', () => {
 
   it('shows "Resolved" badge when thread is resolved', () => {
     render(<ThreadCard {...defaultProps({ thread: makeThread({ resolved: true }) })} />);
-    expect(screen.getByText('Resolved')).toBeInTheDocument();
+    expect(screen.getByText('Resuelto')).toBeInTheDocument();
   });
 
   it('does not show "Resolved" badge when thread is not resolved', () => {
