@@ -44,27 +44,27 @@ beforeEach(() => {
 describe('Channels settings Meta configuration', () => {
   it('renders provider configuration in Channels and keeps Connect disabled until configured', async () => {
     await act(async () => { render(<ChannelsSettingsPage />); });
-    expect(await screen.findByRole('heading', { name: 'Meta app configuration' })).toBeTruthy();
-    expect(screen.getByLabelText('Meta App Secret')).toHaveAttribute('type', 'password');
-    expect(screen.getByLabelText('Webhook verify token')).toHaveAttribute('type', 'password');
-    for (const button of screen.getAllByRole('button', { name: 'Connect' })) expect(button).toBeDisabled();
+    expect(await screen.findByRole('heading', { name: 'Configuración de la app de Meta' })).toBeTruthy();
+    expect(screen.getByLabelText('Secreto de la app de Meta')).toHaveAttribute('type', 'password');
+    expect(screen.getByLabelText('Token de verificación del webhook')).toHaveAttribute('type', 'password');
+    for (const button of screen.getAllByRole('button', { name: 'Conectar' })) expect(button).toBeDisabled();
     expect(screen.getByText('http://localhost:3000/api/portal/channels/meta/callback')).toBeTruthy();
   });
 
   it('saves through the tenant API, enables Connect, and clears secret inputs', async () => {
     await act(async () => { render(<ChannelsSettingsPage />); });
-    await screen.findByRole('heading', { name: 'Meta app configuration' });
-    fireEvent.change(screen.getByLabelText('Meta App ID'), { target: { value: '1234567890' } });
-    fireEvent.change(screen.getByLabelText('Login configuration ID'), { target: { value: '9876543210' } });
-    fireEvent.change(screen.getByLabelText('Meta App Secret'), { target: { value: '0123456789abcdef0123456789abcdef' } });
-    fireEvent.change(screen.getByLabelText('Webhook verify token'), { target: { value: 'a-private-verify-token' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save configuration' }));
+    await screen.findByRole('heading', { name: 'Configuración de la app de Meta' });
+    fireEvent.change(screen.getByLabelText('ID de la app de Meta'), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText('ID de configuración de inicio de sesión'), { target: { value: '9876543210' } });
+    fireEvent.change(screen.getByLabelText('Secreto de la app de Meta'), { target: { value: '0123456789abcdef0123456789abcdef' } });
+    fireEvent.change(screen.getByLabelText('Token de verificación del webhook'), { target: { value: 'a-private-verify-token' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar configuración' }));
 
-    await screen.findByText('Meta configuration saved securely. You can now connect WhatsApp.');
-    expect(screen.getByLabelText('Meta App Secret')).toHaveValue('');
-    expect(screen.getByLabelText('Webhook verify token')).toHaveValue('');
+    await screen.findByText('Configuración de Meta guardada de forma segura. Ya puedes conectar WhatsApp.');
+    expect(screen.getByLabelText('Secreto de la app de Meta')).toHaveValue('');
+    expect(screen.getByLabelText('Token de verificación del webhook')).toHaveValue('');
     await waitFor(() => {
-      for (const button of screen.getAllByRole('button', { name: 'Connect' })) expect(button).toBeEnabled();
+      for (const button of screen.getAllByRole('button', { name: 'Conectar' })) expect(button).toBeEnabled();
     });
     const putCall = vi.mocked(globalThis.fetch).mock.calls.find(([, init]) => init?.method === 'PUT');
     expect(putCall).toBeTruthy();

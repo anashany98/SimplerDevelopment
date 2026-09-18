@@ -109,7 +109,7 @@ function formatMeterLabel(meter: DomainMeter): string {
     ? meter.unit
     : `${meter.overageUnitSize.toLocaleString()} ${meter.unit}`;
   const overageDollars = (meter.overageRateCents / 100).toFixed(2);
-  return `${included} ${meter.unit}/mo included, then $${overageDollars} per ${overageUnit}`;
+  return `${included} ${meter.unit}/mes incluidos, luego $${overageDollars} por ${overageUnit}`;
 }
 
 // ── Module Card ───────────────────────────────────────────────────────────────
@@ -153,7 +153,7 @@ function ModuleCard({
     stateLabel = (
       <span className="inline-flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
         <span className="material-icons text-sm">all_inclusive</span>
-        Included in bundle
+        Incluido en el pack
       </span>
     );
   } else if (isActive && mod.selfServe) {
@@ -168,7 +168,7 @@ function ModuleCard({
           disabled={cancelling === mod.clientServiceId}
           className={`${pBtnGhost} w-full mt-3`}
         >
-          {cancelling === mod.clientServiceId ? 'Removing…' : 'Remove'}
+          {cancelling === mod.clientServiceId ? 'Quitando…' : 'Quitar'}
         </button>
       );
     }
@@ -176,7 +176,7 @@ function ModuleCard({
     stateLabel = (
       <span className="inline-flex items-center gap-1 text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium">
         <span className="material-icons text-sm">manage_accounts</span>
-        Managed
+        Gestionado
       </span>
     );
   } else if (!isAgency && mod.purchasable) {
@@ -186,7 +186,7 @@ function ModuleCard({
         disabled={subscribing === mod.slug}
         className={`${pBtnPrimary} w-full mt-3`}
       >
-        {subscribing === mod.slug ? 'Redirecting…' : 'Subscribe'}
+        {subscribing === mod.slug ? 'Redirigiendo…' : 'Suscribirse'}
       </button>
     );
   } else if (!isAgency && !mod.purchasable) {
@@ -204,7 +204,7 @@ function ModuleCard({
     billingMode === 'byok' &&
     mod.meters.length > 0 &&
     mod.meters.every((m) => m.waivedForByok)
-      ? 'Usage runs on your own API keys — no usage fees.'
+      ? 'El uso va con tus propias claves de API, sin costes de uso.'
       : null;
 
   return (
@@ -230,7 +230,7 @@ function ModuleCard({
       {/* Price */}
       <div className="flex items-baseline gap-1 mb-4">
         <span className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{formatCents(mod.monthlyPriceCents)}</span>
-        <span className="text-sm text-muted-foreground">/mo</span>
+        <span className="text-sm text-muted-foreground">/mes</span>
       </div>
 
       {/* Feature bullets */}
@@ -292,7 +292,7 @@ function BillingPlansInner() {
       .then((r) => r.json() as Promise<ModulesResponse>)
       .then((d) => {
         if (cancelled) return;
-        if (!d.success) { setError(d.message ?? 'Failed to load modules'); setLoading(false); return; }
+        if (!d.success) { setError(d.message ?? 'No se pudieron cargar los módulos'); setLoading(false); return; }
         setData(d.data ?? null);
         setLoading(false);
       })
@@ -329,11 +329,11 @@ function BillingPlansInner() {
           body: JSON.stringify({ slug }),
         });
         const json = await res.json();
-        if (!json.success) { setActionError(json.message ?? 'Checkout failed.'); setSubscribing(null); return; }
+        if (!json.success) { setActionError(json.message ?? 'El pago ha fallado.'); setSubscribing(null); return; }
         window.location.href = json.data.url;
         return;
       }
-      setActionError(addJson.message ?? 'Subscribe failed.');
+      setActionError(addJson.message ?? 'No se pudo completar la suscripción.');
       setSubscribing(null);
     } catch (err) {
       setActionError(String(err));
@@ -349,7 +349,7 @@ function BillingPlansInner() {
         method: 'POST',
       });
       const json = await res.json();
-      if (!json.success) { setActionError(json.message ?? 'Cancel failed.'); setCancelling(null); return; }
+      if (!json.success) { setActionError(json.message ?? 'No se pudo cancelar.'); setCancelling(null); return; }
       // Refresh data
       const refreshed = await fetch('/api/portal/billing/modules').then((r) => r.json() as Promise<ModulesResponse>);
       if (refreshed.success && refreshed.data) setData(refreshed.data);
@@ -361,7 +361,7 @@ function BillingPlansInner() {
   }
 
   if (loading) {
-    return <div className="p-6 text-sm text-muted-foreground">Loading plans…</div>;
+    return <div className="p-6 text-sm text-muted-foreground">Cargando planes…</div>;
   }
 
   if (error) {
@@ -401,7 +401,7 @@ function BillingPlansInner() {
           <span className="material-icons text-base align-middle">arrow_back</span>
         </Link>
         <div>
-          <h1 className="text-2xl font-display font-extrabold tracking-[-0.01em] text-foreground">Plans &amp; Modules</h1>
+          <h1 className="text-2xl font-display font-extrabold tracking-[-0.01em] text-foreground">Planes y módulos</h1>
           <p className="text-sm text-muted-foreground">Suscríbete a módulos individuales o consigue todo de una vez.</p>
         </div>
       </div>
@@ -410,13 +410,13 @@ function BillingPlansInner() {
       {statusParam === 'success' && (
         <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-md px-4 py-3">
           <span className="material-icons text-base">check_circle</span>
-          Subscription active — welcome aboard!
+          Suscripción activa: ¡te damos la bienvenida!
         </div>
       )}
       {statusParam === 'cancelled' && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted border border-border rounded-md px-4 py-3">
           <span className="material-icons text-base">info</span>
-          Checkout cancelled. No changes were made.
+          Pago cancelado. No se ha hecho ningún cambio.
         </div>
       )}
       {actionError && (
@@ -433,7 +433,7 @@ function BillingPlansInner() {
           <div>
             <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Todo está incluido en tu plan gestionado</p>
             <p className="text-sm text-muted-foreground">
-              Your plan is managed by CRM AGENTS. Contact us to make changes.
+              Tu plan lo gestiona CRM AGENTS. Contacta con nosotros para hacer cambios.
             </p>
           </div>
         </div>
@@ -458,7 +458,7 @@ function BillingPlansInner() {
                   ].join(' ')}
                 >
                   <span className="material-icons text-sm">{unlocked ? 'check_circle' : 'lock'}</span>
-                  {t.minModules}+ modules → {t.percentOff}% off
+                  {t.minModules}+ módulos → {t.percentOff}% dto.
                 </span>
               );
             })}
@@ -466,16 +466,16 @@ function BillingPlansInner() {
           <p className="text-xs text-muted-foreground mt-2">
             {currentVolumeTier ? (
               <span className="text-primary font-medium">
-                You have {activeModuleCount} modules — {currentVolumeTier.percentOff}% volume discount unlocked.
+                Tienes {activeModuleCount} módulos: descuento por volumen del {currentVolumeTier.percentOff}% desbloqueado.
               </span>
             ) : (
-              <span>You have {activeModuleCount} module{activeModuleCount === 1 ? '' : 's'}.</span>
+              <span>Tienes {activeModuleCount} módulo{activeModuleCount === 1 ? '' : 's'}.</span>
             )}
             {upcomingVolumeTier && (
               <>
-                {' '}Add{' '}
-                <strong className="text-foreground">{upcomingVolumeTier.minModules - activeModuleCount} more</strong>{' '}
-                to reach {upcomingVolumeTier.percentOff}% off.
+                {' '}Añade{' '}
+                <strong className="text-foreground">{upcomingVolumeTier.minModules - activeModuleCount} más</strong>{' '}
+                para alcanzar el {upcomingVolumeTier.percentOff}% dto.
               </>
             )}
           </p>
@@ -487,34 +487,34 @@ function BillingPlansInner() {
         <div className="rounded-2xl border border-border bg-muted/30 px-5 py-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="material-icons text-base text-primary">groups</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Team seats</h2>
+            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Asientos de equipo</h2>
           </div>
           <p className="text-sm text-foreground mb-1">
-            {seats.count} seat{seats.count !== 1 ? 's' : ''} —{' '}
-            {INCLUDED_SEATS} included
-            {seats.additional > 0 && `, ${seats.additional} additional`}
+            {seats.count} asiento{seats.count !== 1 ? 's' : ''} —{' '}
+            {INCLUDED_SEATS} incluidos
+            {seats.additional > 0 && `, ${seats.additional} de más`}
           </p>
           <div className="flex items-baseline gap-4 text-xs text-muted-foreground flex-wrap">
             <span>
-              Per additional seat:{' '}
-              <span className="font-medium text-foreground">{formatCents(seats.perSeatCents)}/mo</span>
+              Por asiento adicional:{' '}
+              <span className="font-medium text-foreground">{formatCents(seats.perSeatCents)}/mes</span>
               {seats.perSeatCents < seats.moduleSubtotalCents && (
-                <span className="ml-1">(capped at ${SEAT_PRICE_CAP_CENTS / 100})</span>
+                <span className="ml-1">(limitado a ${SEAT_PRICE_CAP_CENTS / 100})</span>
               )}
             </span>
             {seats.additional > 0 && (
               <span>
-                Seat total:{' '}
-                <span className="font-semibold text-foreground">{formatCents(seats.seatTotalCents)}/mo</span>
+                Total de asientos:{' '}
+                <span className="font-semibold text-foreground">{formatCents(seats.seatTotalCents)}/mes</span>
               </span>
             )}
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            Each additional{' '}
+            Cada{' '}
             <Link href="/portal/settings/team" className="underline hover:text-foreground transition-colors">
-              team member
+              miembro del equipo
             </Link>{' '}
-            is billed your module total, capped at ${SEAT_PRICE_CAP_CENTS / 100}/seat, starting when they accept their invite.
+            adicional se factura al total de tus módulos, con un límite de ${SEAT_PRICE_CAP_CENTS / 100}/asiento, desde que acepta su invitación.
           </p>
         </div>
       )}
@@ -534,7 +534,7 @@ function BillingPlansInner() {
                 {bundleSavings > 0 && !bundleActive && (
                   <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
                     <span className="material-icons text-sm">savings</span>
-                    Save {formatCents(bundleSavings)}/mo vs buying separately
+                    Ahorra {formatCents(bundleSavings)}/mes frente a comprarlos por separado
                   </span>
                 )}
               </div>
@@ -546,10 +546,10 @@ function BillingPlansInner() {
             <div className="text-right">
               <div className="flex items-baseline gap-1">
                 <span className="text-3xl font-display font-extrabold tracking-[-0.02em] text-foreground">{formatCents(bundle.monthlyPriceCents)}</span>
-                <span className="text-sm text-muted-foreground">/mo</span>
+                <span className="text-sm text-muted-foreground">/mes</span>
               </div>
               {bundleSavings > 0 && (
-                <p className="text-xs text-muted-foreground line-through">{formatCents(sumModulePrices)}/mo</p>
+                <p className="text-xs text-muted-foreground line-through">{formatCents(sumModulePrices)}/mes</p>
               )}
             </div>
 
@@ -561,10 +561,10 @@ function BillingPlansInner() {
                     disabled={cancelling === bundle.clientServiceId}
                     className={pBtnGhost}
                   >
-                    {cancelling === bundle.clientServiceId ? 'Cancelling…' : 'Cancel at period end'}
+                    {cancelling === bundle.clientServiceId ? 'Cancelando…' : 'Cancelar al final del periodo'}
                   </button>
                 ) : (
-                  <span className="text-sm text-muted-foreground">Managed</span>
+                  <span className="text-sm text-muted-foreground">Gestionado</span>
                 )
               ) : bundle.purchasable ? (
                 <button
@@ -572,7 +572,7 @@ function BillingPlansInner() {
                   disabled={subscribing === bundle.slug}
                   className={pBtnPrimary}
                 >
-                  {subscribing === bundle.slug ? 'Redirecting…' : 'Subscribe to everything'}
+                  {subscribing === bundle.slug ? 'Redirigiendo…' : 'Suscribirse a todo'}
                 </button>
               ) : (
                 <p
@@ -590,13 +590,13 @@ function BillingPlansInner() {
       {bundleActive && (
         <div className="flex items-center gap-2 text-sm text-primary bg-primary/5 border border-primary/20 rounded-md px-4 py-3">
           <span className="material-icons text-base">all_inclusive</span>
-          All modules are included in your bundle subscription.
+          Todos los módulos están incluidos en tu suscripción al pack.
         </div>
       )}
 
       {/* Module grid */}
       <div>
-        <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground mb-4">Individual modules</h2>
+        <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground mb-4">Módulos individuales</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {modules.map((mod) => (
             <ModuleCard
@@ -624,17 +624,17 @@ function BillingPlansInner() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-base font-semibold text-foreground">Usa tu propia clave de IA (BYOK)</h3>
-              <span className="text-xs font-medium text-primary">Contact sales →</span>
+              <span className="text-xs font-medium text-primary">Habla con ventas →</span>
             </div>
             <p className="text-sm text-muted-foreground mt-0.5">
-              Spend AI tokens at cost on your own provider key, plus white-label &amp; governance. Custom pricing — email us to set it up.
+              Gasta tokens de IA a coste con tu propia clave de proveedor, además de marca blanca y gobernanza. Precio personalizado: escríbenos para configurarlo.
             </p>
           </div>
         </a>
       )}
 
       <p className="text-xs text-muted-foreground pb-4">
-        Subscriptions are billed monthly via Stripe. You can cancel at any time; access continues until the end of the billing period.
+        Las suscripciones se facturan mensualmente a través de Stripe. Puedes cancelar en cualquier momento; el acceso continúa hasta el final del periodo de facturación.
       </p>
     </div>
   );
@@ -643,7 +643,7 @@ function BillingPlansInner() {
 // useSearchParams() requires a Suspense boundary in App Router.
 export default function BillingPlansPage() {
   return (
-    <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading plans…</div>}>
+    <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Cargando planes…</div>}>
       <BillingPlansInner />
     </Suspense>
   );

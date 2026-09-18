@@ -95,21 +95,21 @@ afterEach(() => {
 describe('WebhookConsole — empty states', () => {
   it('shows "No webhooks configured" when rows is empty', () => {
     render(<WebhookConsole rows={[]} />);
-    expect(screen.getByText('No webhooks configured')).toBeTruthy();
+    expect(screen.getByText('No hay webhooks configurados')).toBeTruthy();
   });
 
   it('shows filter-mismatch message when rows exist but filters exclude all', () => {
     const row = makeRow({ enabled: true });
     render(<WebhookConsole rows={[row]} />);
     // Switch to "disabled" filter so the enabled row is excluded
-    fireEvent.click(screen.getByRole('button', { name: /disabled/i }));
-    expect(screen.getByText(/No webhooks match the current filters/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /inactivos/i }));
+    expect(screen.getByText(/Ningún webhook coincide con los filtros actuales/)).toBeTruthy();
   });
 
   it('shows count "0 of 1" when filter excludes the only row', () => {
     render(<WebhookConsole rows={[makeRow({ enabled: true })]} />);
-    fireEvent.click(screen.getByRole('button', { name: /disabled/i }));
-    expect(screen.getByText('0 of 1')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /inactivos/i }));
+    expect(screen.getByText('0 de 1')).toBeTruthy();
   });
 });
 
@@ -122,10 +122,10 @@ describe('WebhookConsole — source filter chips', () => {
     render(<WebhookConsole rows={[]} />);
     // Source filter buttons include a Material Icon span whose text is prepended to
     // the accessible name by the browser: "folder_specialProject", "pollSurvey", etc.
-    expect(screen.getByRole('button', { name: /All sources/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /folder_specialProject/ })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /pollSurvey/ })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /languageSite/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Todas las fuentes/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /folder_specialProyecto/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /pollEncuesta/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /languageSitio/ })).toBeTruthy();
   });
 
   it('filters to only project rows when Project chip clicked', () => {
@@ -134,7 +134,7 @@ describe('WebhookConsole — source filter chips', () => {
       makeRow({ source: 'survey', id: 2, sourceLabel: 'S-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /folder_specialProject/ }));
+    fireEvent.click(screen.getByRole('button', { name: /folder_specialProyecto/ }));
     expect(screen.getByText('P-Row')).toBeTruthy();
     expect(screen.queryByText('S-Row')).toBeNull();
   });
@@ -145,7 +145,7 @@ describe('WebhookConsole — source filter chips', () => {
       makeRow({ source: 'survey', id: 2, sourceLabel: 'S-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /pollSurvey/ }));
+    fireEvent.click(screen.getByRole('button', { name: /pollEncuesta/ }));
     expect(screen.getByText('S-Row')).toBeTruthy();
     expect(screen.queryByText('P-Row')).toBeNull();
   });
@@ -156,8 +156,8 @@ describe('WebhookConsole — source filter chips', () => {
       makeRow({ source: 'survey', id: 2, sourceLabel: 'S-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /folder_specialProject/ }));
-    fireEvent.click(screen.getByRole('button', { name: /All sources/i }));
+    fireEvent.click(screen.getByRole('button', { name: /folder_specialProyecto/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Todas las fuentes/i }));
     expect(screen.getByText('P-Row')).toBeTruthy();
     expect(screen.getByText('S-Row')).toBeTruthy();
   });
@@ -166,9 +166,9 @@ describe('WebhookConsole — source filter chips', () => {
 describe('WebhookConsole — status filter chips', () => {
   it('renders Any status, enabled, disabled buttons', () => {
     render(<WebhookConsole rows={[]} />);
-    expect(screen.getByRole('button', { name: /Any status/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^enabled$/i })).toBeTruthy();
-    expect(screen.getByRole('button', { name: /^disabled$/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Cualquier estado/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^activos$/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /^inactivos$/i })).toBeTruthy();
   });
 
   it('shows only enabled rows when enabled filter active', () => {
@@ -177,7 +177,7 @@ describe('WebhookConsole — status filter chips', () => {
       makeRow({ id: 2, enabled: false, sourceLabel: 'Dis-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /^enabled$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^activos$/i }));
     expect(screen.getByText('En-Row')).toBeTruthy();
     expect(screen.queryByText('Dis-Row')).toBeNull();
   });
@@ -188,7 +188,7 @@ describe('WebhookConsole — status filter chips', () => {
       makeRow({ id: 2, enabled: false, sourceLabel: 'Dis-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /^disabled$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^inactivos$/i }));
     expect(screen.getByText('Dis-Row')).toBeTruthy();
     expect(screen.queryByText('En-Row')).toBeNull();
   });
@@ -197,7 +197,7 @@ describe('WebhookConsole — status filter chips', () => {
 describe('WebhookConsole — failing-only filter', () => {
   it('renders "Failing only" toggle button', () => {
     render(<WebhookConsole rows={[]} />);
-    expect(screen.getByRole('button', { name: /Failing only/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Solo con errores/i })).toBeTruthy();
   });
 
   it('hides non-failing rows when Failing only is toggled', () => {
@@ -206,7 +206,7 @@ describe('WebhookConsole — failing-only filter', () => {
       makeRow({ id: 2, failing: false, sourceLabel: 'Ok-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /Failing only/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Solo con errores/i }));
     expect(screen.getByText('Bad-Row')).toBeTruthy();
     expect(screen.queryByText('Ok-Row')).toBeNull();
   });
@@ -217,8 +217,8 @@ describe('WebhookConsole — failing-only filter', () => {
       makeRow({ id: 2, failing: false, sourceLabel: 'Ok-Row' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /Failing only/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Failing only/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Solo con errores/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Solo con errores/i }));
     expect(screen.getByText('Bad-Row')).toBeTruthy();
     expect(screen.getByText('Ok-Row')).toBeTruthy();
   });
@@ -263,22 +263,22 @@ describe('WebhookConsole — row rendering', () => {
 
   it('shows "Enabled" badge when webhook is enabled', () => {
     render(<WebhookConsole rows={[makeRow({ enabled: true })]} />);
-    expect(screen.getByText('Enabled')).toBeTruthy();
+    expect(screen.getByText('Activo')).toBeTruthy();
   });
 
   it('shows "Disabled" badge when webhook is disabled', () => {
     render(<WebhookConsole rows={[makeRow({ enabled: false })]} />);
-    expect(screen.getByText('Disabled')).toBeTruthy();
+    expect(screen.getByText('Inactivo')).toBeTruthy();
   });
 
   it('shows Failing badge when failing=true', () => {
     render(<WebhookConsole rows={[makeRow({ failing: true })]} />);
-    expect(screen.getByText('Failing')).toBeTruthy();
+    expect(screen.getByText('Con errores')).toBeTruthy();
   });
 
   it('does not show Failing badge when failing=false', () => {
     render(<WebhookConsole rows={[makeRow({ failing: false })]} />);
-    expect(screen.queryByText('Failing')).toBeNull();
+    expect(screen.queryByText('Con errores')).toBeNull();
   });
 
   it('renders event badges for up to 3 events', () => {
@@ -295,12 +295,12 @@ describe('WebhookConsole — row rendering', () => {
 
   it('shows "all" when events array is empty', () => {
     render(<WebhookConsole rows={[makeRow({ events: [] })]} />);
-    expect(screen.getByText('all')).toBeTruthy();
+    expect(screen.getByText('todos')).toBeTruthy();
   });
 
   it('shows "Never" for null lastDeliveryAt', () => {
     render(<WebhookConsole rows={[makeRow({ lastDeliveryAt: null })]} />);
-    expect(screen.getByText('Never')).toBeTruthy();
+    expect(screen.getByText('Nunca')).toBeTruthy();
   });
 
   it('shows "HTTP —" when lastStatus is null', () => {
@@ -316,7 +316,7 @@ describe('WebhookConsole — row rendering', () => {
   it('shows count "N of M" in the filter bar', () => {
     const rows = [makeRow({ id: 1 }), makeRow({ id: 2 })];
     render(<WebhookConsole rows={rows} />);
-    expect(screen.getByText('2 of 2')).toBeTruthy();
+    expect(screen.getByText('2 de 2')).toBeTruthy();
   });
 });
 
@@ -327,7 +327,7 @@ describe('WebhookConsole — row rendering', () => {
 describe('WebhookConsole — copy URL', () => {
   it('calls clipboard.writeText with the webhook URL', async () => {
     render(<WebhookConsole rows={[makeRow()]} />);
-    const copyBtn = screen.getByTitle('Copy URL');
+    const copyBtn = screen.getByTitle('Copiar URL');
     await act(async () => { fireEvent.click(copyBtn); });
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('https://example.com/hook');
   });
@@ -341,7 +341,7 @@ describe('WebhookConsole — rotate secret', () => {
   it('does NOT call fetch when confirm is cancelled', async () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
     render(<WebhookConsole rows={[makeRow()]} />);
-    const rotateBtn = screen.getByRole('button', { name: /Rotate secret/i });
+    const rotateBtn = screen.getByRole('button', { name: /Rotar secreto/i });
     await act(async () => { fireEvent.click(rotateBtn); });
     // Only the deliveries fetch should ever fire — rotate fetch must not be called
     const rotateCalls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.filter(
@@ -359,13 +359,13 @@ describe('WebhookConsole — rotate secret', () => {
     }) as unknown as typeof fetch;
 
     render(<WebhookConsole rows={[makeRow()]} />);
-    const rotateBtn = screen.getByRole('button', { name: /Rotate secret/i });
+    const rotateBtn = screen.getByRole('button', { name: /Rotar secreto/i });
     await act(async () => { fireEvent.click(rotateBtn); });
 
     await waitFor(() => {
       expect(screen.getByText('newsecret-xyz')).toBeTruthy();
     });
-    expect(screen.getByText(/New signing secret/)).toBeTruthy();
+    expect(screen.getByText(/Nuevo secreto de firma/)).toBeTruthy();
   });
 
   it('shows error message when rotate API returns !ok', async () => {
@@ -378,7 +378,7 @@ describe('WebhookConsole — rotate secret', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Rotate secret/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Rotar secreto/i }));
     });
 
     await waitFor(() => {
@@ -396,7 +396,7 @@ describe('WebhookConsole — rotate secret', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Rotate secret/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Rotar secreto/i }));
     });
 
     await waitFor(() => {
@@ -414,7 +414,7 @@ describe('WebhookConsole — rotate secret', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Rotate secret/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Rotar secreto/i }));
     });
 
     await waitFor(() => {
@@ -433,11 +433,11 @@ describe('WebhookConsole — rotate secret', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: /Rotate secret/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Rotar secreto/i }));
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Rotating…')).toBeTruthy();
+      expect(screen.getByText('Rotando…')).toBeTruthy();
     });
 
     // Resolve to clean up
@@ -459,7 +459,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -474,12 +474,12 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
     await waitFor(() => screen.getByText('Aún no se han registrado intentos de entrega.'));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Hide/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Ocultar/i }));
     });
     expect(screen.queryByText('Aún no se han registrado intentos de entrega.')).toBeNull();
   });
@@ -495,7 +495,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -516,7 +516,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -531,7 +531,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -549,7 +549,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -565,7 +565,7 @@ describe('WebhookConsole — deliveries panel', () => {
     render(<WebhookConsole rows={[makeRow()]} />);
     // Open
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
     await waitFor(() => screen.getByText('Aún no se han registrado intentos de entrega.'));
 
@@ -574,9 +574,9 @@ describe('WebhookConsole — deliveries panel', () => {
     ).length;
 
     // Close then re-open
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Hide/i })); });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Ocultar/i })); });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     const callCountAfterSecondOpen = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.filter(
@@ -589,10 +589,10 @@ describe('WebhookConsole — deliveries panel', () => {
   it('shows "no delivery log" message when hasDeliveryLog=false', async () => {
     render(<WebhookConsole rows={[makeRow({ hasDeliveryLog: false })]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText(/Delivery log is not yet recorded/i)).toBeTruthy();
+      expect(screen.getByText(/registro de entregas aún no está disponible/i)).toBeTruthy();
     });
   });
 
@@ -606,7 +606,7 @@ describe('WebhookConsole — deliveries panel', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
 
     await waitFor(() => {
@@ -633,12 +633,12 @@ describe('WebhookConsole — multi-row + combined filters', () => {
 
     render(<WebhookConsole rows={[makeRow()]} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Deliveries/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Entregas/i }));
     });
     await waitFor(() => screen.getByText('survey.submitted'));
 
     expect(screen.getByText('Cuándo')).toBeTruthy();
-    expect(screen.getByText('Event')).toBeTruthy();
+    expect(screen.getByText('Evento')).toBeTruthy();
     // 'Status' also appears in the main webhook table header — getAllByText handles duplicate
     expect(screen.getAllByText('Estado').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('Error')).toBeTruthy();
@@ -651,8 +651,8 @@ describe('WebhookConsole — multi-row + combined filters', () => {
       makeRow({ source: 'survey', id: 3, enabled: true, sourceLabel: 'S-En' }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /folder_specialProject/ }));
-    fireEvent.click(screen.getByRole('button', { name: /^enabled$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /folder_specialProyecto/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^activos$/i }));
     expect(screen.getByText('P-En')).toBeTruthy();
     expect(screen.queryByText('P-Dis')).toBeNull();
     expect(screen.queryByText('S-En')).toBeNull();
@@ -665,7 +665,7 @@ describe('WebhookConsole — multi-row + combined filters', () => {
       makeRow({ source: 'survey', id: 3 }),
     ];
     render(<WebhookConsole rows={rows} />);
-    fireEvent.click(screen.getByRole('button', { name: /folder_specialProject/ }));
-    expect(screen.getByText('2 of 3')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /folder_specialProyecto/ }));
+    expect(screen.getByText('2 de 3')).toBeTruthy();
   });
 });
