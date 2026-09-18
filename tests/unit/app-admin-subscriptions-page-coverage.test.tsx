@@ -163,7 +163,7 @@ describe('AdminSubscriptionsPage — loading state', () => {
   it('shows spinner while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading subscriptions');
+    expect(container.textContent).toContain('Cargando suscripciones');
   });
 });
 
@@ -173,17 +173,17 @@ describe('AdminSubscriptionsPage — renders after load', () => {
   it('renders page heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Subscriptions');
+      expect(container.textContent).toContain('Suscripciones');
     });
   });
 
   it('renders summary cards', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active Subscriptions');
+      expect(container.textContent).toContain('Suscripciones activas');
       expect(container.textContent).toContain('MRR');
-      expect(container.textContent).toContain('Annual Revenue');
-      expect(container.textContent).toContain('Suspended');
+      expect(container.textContent).toContain('Ingresos anuales');
+      expect(container.textContent).toContain('Suspendidas');
     });
   });
 
@@ -269,8 +269,8 @@ describe('AdminSubscriptionsPage — empty state', () => {
     fetchMock.mockImplementation(async () => makeRes({ data: [] }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscriptions found');
-      expect(container.textContent).toContain('No client subscriptions yet.');
+      expect(container.textContent).toContain('No se encontraron suscripciones');
+      expect(container.textContent).toContain('Aún no hay suscripciones de clientes.');
     });
   });
 });
@@ -373,7 +373,7 @@ describe('AdminSubscriptionsPage — status filter tabs', () => {
     fireEvent.click(pendingTab);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('No pending subscriptions.');
+      expect(container.textContent).toContain('No hay suscripciones en estado pending.');
     });
   });
 });
@@ -386,7 +386,7 @@ describe('AdminSubscriptionsPage — action menu', () => {
     expect(actionsBtn).toBeTruthy();
     fireEvent.click(actionsBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Change plan');
+      expect(container.textContent).toContain('Cambiar plan');
     });
   }
 
@@ -403,11 +403,11 @@ describe('AdminSubscriptionsPage — action menu', () => {
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
     const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
-    await waitFor(() => expect(container.textContent).toContain('Change plan'));
+    await waitFor(() => expect(container.textContent).toContain('Cambiar plan'));
     // Simulate outside click to close
     fireEvent.click(window);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Change plan');
+      expect(container.textContent).not.toContain('Cambiar plan');
     });
   });
 
@@ -418,7 +418,7 @@ describe('AdminSubscriptionsPage — action menu', () => {
     // Clicking inside the menu div should NOT close it
     const menuDiv = container.querySelector('.z-20') as HTMLDivElement;
     fireEvent.click(menuDiv);
-    expect(container.textContent).toContain('Change plan');
+    expect(container.textContent).toContain('Cambiar plan');
   });
 });
 
@@ -435,14 +435,14 @@ describe('AdminSubscriptionsPage — Cancel dialog', () => {
     await act(async () => {
       fireEvent.click(cancelBtn);
     });
-    await waitFor(() => expect(container.textContent).toContain('Cancel subscription'));
+    await waitFor(() => expect(container.textContent).toContain('Cancelar suscripción'));
   }
 
   it('opens cancel dialog and shows period-end description', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
     await openCancelDialog(container);
-    expect(container.textContent).toContain('No immediate cut-off');
+    expect(container.textContent).toContain('Sin corte inmediato');
   });
 
   it('closes dialog when Close button clicked', async () => {
@@ -472,14 +472,14 @@ describe('AdminSubscriptionsPage — Cancel dialog', () => {
     await openCancelDialog(container);
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel at period end'),
+      (b) => b.textContent?.includes('Cancelar al final del periodo'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Cancellation scheduled');
+      expect(container.textContent).toContain('Cancelación programada');
     });
   });
 
@@ -499,7 +499,7 @@ describe('AdminSubscriptionsPage — Cancel dialog', () => {
     await openCancelDialog(container);
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel at period end'),
+      (b) => b.textContent?.includes('Cancelar al final del periodo'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
@@ -518,7 +518,7 @@ describe('AdminSubscriptionsPage — Cancel dialog', () => {
     await openCancelDialog(container);
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel at period end'),
+      (b) => b.textContent?.includes('Cancelar al final del periodo'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
@@ -553,14 +553,14 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Acme Corp'));
     const actionsBtn = container.querySelector('button[aria-label="Acciones"]') as HTMLButtonElement;
     fireEvent.click(actionsBtn);
-    await waitFor(() => expect(container.textContent).toContain('Change plan'));
+    await waitFor(() => expect(container.textContent).toContain('Cambiar plan'));
     const changePlanBtn = Array.from(container.querySelectorAll('.z-20 button')).find(
-      (b) => b.textContent?.includes('Change plan'),
+      (b) => b.textContent?.includes('Cambiar plan'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(changePlanBtn);
     });
-    await waitFor(() => expect(container.textContent).toContain('Target plan'));
+    await waitFor(() => expect(container.textContent).toContain('Plan de destino'));
   }
 
   it('opens change-plan dialog and loads service catalog', async () => {
@@ -577,9 +577,9 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     const { container } = renderPage();
     await openChangePlanDialog(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Proration');
-      expect(container.textContent).toContain('Prorate the change');
-      expect(container.textContent).toContain('No proration');
+      expect(container.textContent).toContain('Prorrateo');
+      expect(container.textContent).toContain('Prorratear el cambio');
+      expect(container.textContent).toContain('Sin prorrateo');
     });
   });
 
@@ -592,7 +592,7 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     // We look for it by role and text since disabled is set via `newPriceId` being empty
     // The button is disabled={submitting || !newPriceId} — but we can still find it
     const dialogBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Change plan' && b.closest('.fixed'),
+      (b) => b.textContent?.trim() === 'Cambiar plan' && b.closest('.fixed'),
     ) as HTMLButtonElement;
     // Trigger click regardless of disabled to exercise the guard in submitChangePlan
     // (in jsdom, clicking a disabled button doesn't fire onClick, so we call the
@@ -618,14 +618,14 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Change plan' && b.closest('.fixed'),
+      (b) => b.textContent?.trim() === 'Cambiar plan' && b.closest('.fixed'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Plan changed');
+      expect(container.textContent).toContain('Plan cambiado');
     });
   });
 
@@ -642,7 +642,7 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Change plan' && b.closest('.fixed'),
+      (b) => b.textContent?.trim() === 'Cambiar plan' && b.closest('.fixed'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
@@ -657,7 +657,7 @@ describe('AdminSubscriptionsPage — Change plan dialog', () => {
     setupChangePlanFetch();
     const { container } = renderPage();
     await openChangePlanDialog(container);
-    await waitFor(() => expect(container.textContent).toContain('Proration'));
+    await waitFor(() => expect(container.textContent).toContain('Prorrateo'));
 
     const selects = container.querySelectorAll('select');
     const prorationSelect = selects[1] as HTMLSelectElement;
@@ -700,7 +700,7 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     await act(async () => {
       fireEvent.click(refundBtn);
     });
-    await waitFor(() => expect(container.textContent).toContain('Issue refund'));
+    await waitFor(() => expect(container.textContent).toContain('Emitir reembolso'));
   }
 
   it('opens refund dialog and loads invoices', async () => {
@@ -717,7 +717,7 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     const { container } = renderPage();
     await openRefundDialog(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('No invoices found');
+      expect(container.textContent).toContain('No se encontraron facturas');
     });
   });
 
@@ -728,7 +728,7 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('INV-001'));
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     expect(submitBtn).toBeTruthy();
     expect(submitBtn.disabled).toBe(true);
@@ -755,14 +755,14 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Refund amount must be a positive number');
+      expect(container.textContent).toContain('El importe del reembolso debe ser un número positivo');
     });
   });
 
@@ -783,14 +783,14 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Refund amount must be a positive number');
+      expect(container.textContent).toContain('El importe del reembolso debe ser un número positivo');
     });
   });
 
@@ -806,14 +806,14 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Refund issued');
+      expect(container.textContent).toContain('Reembolso emitido');
       expect(container.textContent).toContain('succeeded');
     });
   });
@@ -835,14 +835,14 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Refund issued');
+      expect(container.textContent).toContain('Reembolso emitido');
     });
   });
 
@@ -858,7 +858,7 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
@@ -882,7 +882,7 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     });
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Issue refund',
+      (b) => b.textContent?.trim() === 'Emitir reembolso',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
@@ -899,9 +899,9 @@ describe('AdminSubscriptionsPage — Refund dialog', () => {
     await openRefundDialog(container);
     await waitFor(() => expect(container.textContent).toContain('INV-001'));
 
-    expect(container.textContent).toContain('Duplicate charge');
-    expect(container.textContent).toContain('Fraudulent');
-    expect(container.textContent).toContain('Requested by customer');
+    expect(container.textContent).toContain('Cargo duplicado');
+    expect(container.textContent).toContain('Fraudulento');
+    expect(container.textContent).toContain('Solicitado por el cliente');
 
     const selects = container.querySelectorAll('select');
     const reasonSelect = selects[selects.length - 1] as HTMLSelectElement;
@@ -939,23 +939,23 @@ describe('AdminSubscriptionsPage — Toast', () => {
     await act(async () => {
       fireEvent.click(cancelBtn);
     });
-    await waitFor(() => expect(container.textContent).toContain('Cancel subscription'));
+    await waitFor(() => expect(container.textContent).toContain('Cancelar suscripción'));
 
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel at period end'),
+      (b) => b.textContent?.includes('Cancelar al final del periodo'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(submitBtn);
     });
-    await waitFor(() => expect(container.textContent).toContain('Cancellation scheduled'));
+    await waitFor(() => expect(container.textContent).toContain('Cancelación programada'));
 
     // Dismiss
-    const dismissBtn = container.querySelector('button[aria-label="Dismiss"]') as HTMLButtonElement;
+    const dismissBtn = container.querySelector('button[aria-label="Descartar"]') as HTMLButtonElement;
     expect(dismissBtn).toBeTruthy();
     fireEvent.click(dismissBtn);
 
     await waitFor(() => {
-      expect(container.querySelector('button[aria-label="Dismiss"]')).toBeNull();
+      expect(container.querySelector('button[aria-label="Descartar"]')).toBeNull();
     });
   });
 });
@@ -1004,7 +1004,7 @@ describe('AdminSubscriptionsPage — summary stats edge cases', () => {
     fetchMock.mockImplementation(async () => makeRes({ data: null }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscriptions found');
+      expect(container.textContent).toContain('No se encontraron suscripciones');
     });
   });
 });
