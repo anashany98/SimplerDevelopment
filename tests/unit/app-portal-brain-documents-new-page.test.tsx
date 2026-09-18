@@ -171,14 +171,14 @@ describe('BrainDocumentNewPage — basic render', () => {
   it('renders "Create & open editor" submit button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create');
+      expect(container.textContent).toContain('Crear');
     });
   });
 
   it('renders description sub-text about promoting notes', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('promote an existing note');
+      expect(container.textContent).toContain('promueve una nota existente');
     });
   });
 });
@@ -553,7 +553,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     await waitFor(() => expect(container.textContent).toContain('New document'));
     // note search input only appears after checking the box
     const noteSearchInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder?.toLowerCase().includes('search notes'),
+      (i) => (i as HTMLInputElement).placeholder?.toLowerCase().includes('buscar notas'),
     );
     expect(noteSearchInput).toBeUndefined();
   });
@@ -565,7 +565,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -577,9 +577,9 @@ describe('BrainDocumentNewPage — source-note section', () => {
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder*="Search notes"]') ??
+      expect(container.querySelector('input[placeholder*="Buscar notas"]') ??
         Array.from(container.querySelectorAll('input')).find(
-          (i) => i.placeholder?.toLowerCase().includes('search notes'),
+          (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
         ),
       ).toBeTruthy();
     });
@@ -587,7 +587,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeUndefined();
     });
@@ -598,7 +598,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -624,7 +624,7 @@ describe('BrainDocumentNewPage — note search results', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -697,7 +697,7 @@ describe('BrainDocumentNewPage — note search results', () => {
     await openNoteSection(container);
     vi.useFakeTimers();
     const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-      (i) => i.placeholder?.toLowerCase().includes('search notes'),
+      (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(noteSearchInput, { target: { value: 'onboarding' } });
