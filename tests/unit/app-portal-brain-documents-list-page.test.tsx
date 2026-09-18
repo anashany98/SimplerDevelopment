@@ -148,7 +148,7 @@ describe('BrainDocumentsListPage — loading', () => {
   it('shows loading spinner while data is fetching', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -329,7 +329,7 @@ describe('BrainDocumentsListPage — category filter', () => {
       const catSelect = container.querySelector('#doc-cat-f') as HTMLSelectElement;
       expect(catSelect).toBeTruthy();
       const opts = Array.from(catSelect.options).map((o) => o.text);
-      expect(opts).toContain('All categories');
+      expect(opts).toContain('Todas las categorías');
     });
   });
 
@@ -388,7 +388,7 @@ describe('BrainDocumentsListPage — owner filter', () => {
       const ownerSelect = container.querySelector('#doc-owner-f') as HTMLSelectElement;
       expect(ownerSelect).toBeTruthy();
       const opts = Array.from(ownerSelect.options).map((o) => o.text);
-      expect(opts).toContain('All owners');
+      expect(opts).toContain('Todos los propietarios');
     });
   });
 
@@ -473,7 +473,7 @@ describe('BrainDocumentsListPage — search input', () => {
     await waitFor(() => {
       const input = container.querySelector('#doc-search') as HTMLInputElement;
       expect(input).toBeTruthy();
-      expect(input.placeholder).toContain('Search');
+      expect(input.placeholder).toContain('Buscar');
     });
   });
 
@@ -768,7 +768,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     );
     expect(nextBtn).toBeUndefined();
   });
@@ -798,7 +798,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn).toBeTruthy();
     expect(nextBtn.disabled).toBe(false);
@@ -835,7 +835,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     await waitFor(() => {
