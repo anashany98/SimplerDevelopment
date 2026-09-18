@@ -310,7 +310,7 @@ describe('CustomDomainForm — domain list', () => {
 
   it('renders "Pending" badge for non-verified domain', () => {
     mountWith([makeDomain({ status: 'pending' })]);
-    expect(screen.getByText('Pending')).toBeInTheDocument();
+    expect(screen.getByText('Pendiente')).toBeInTheDocument();
   });
 
   it('renders multiple domains', () => {
