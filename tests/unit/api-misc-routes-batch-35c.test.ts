@@ -87,6 +87,18 @@ vi.mock('@/lib/db/schema', () => {
   return out;
 });
 
+// Billing was removed (2026-08): the route short-circuits with 403 when
+// PAYMENTS_DISABLED is true. The gate is mocked open here so the tests below
+// can exercise the route logic (including Stripe plumbing) with all original
+// assertions intact (same pattern as api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 vi.mock('@/lib/db', () => {
   function tableName(t: unknown): string {
     if (t && typeof t === 'object' && '_name' in t) {
