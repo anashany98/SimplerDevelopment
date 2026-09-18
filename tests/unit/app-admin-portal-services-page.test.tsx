@@ -124,7 +124,7 @@ describe('AdminPortalServicesPage — initial render', () => {
 
   it('renders the Services Catalog heading', async () => {
     await renderAndLoad([]);
-    expect(screen.getByText('Services Catalog')).toBeInTheDocument();
+    expect(screen.getByText('Catálogo de servicios')).toBeInTheDocument();
   });
 
   it('renders descriptive subtitle text', async () => {
@@ -134,7 +134,7 @@ describe('AdminPortalServicesPage — initial render', () => {
 
   it('shows empty state when no services exist', async () => {
     await renderAndLoad([]);
-    expect(screen.getByText('No services yet. Create one above.')).toBeInTheDocument();
+    expect(screen.getByText('Aún no hay servicios. Crea uno arriba.')).toBeInTheDocument();
   });
 
   it('renders a service card after load', async () => {
@@ -189,34 +189,34 @@ describe('AdminPortalServicesPage — service list', () => {
     expect(screen.getByText('A')).toBeInTheDocument();
     expect(screen.getByText('D')).toBeInTheDocument();
     // 5th feature is collapsed into "+N more"
-    expect(screen.getByText('+1 more')).toBeInTheDocument();
+    expect(screen.getByText('+1 más')).toBeInTheDocument();
   });
 
   it('shows Active badge for active service', async () => {
     await renderAndLoad([makeService({ active: true })]);
-    expect(screen.getByText('Active')).toBeInTheDocument();
+    expect(screen.getByText('Activo')).toBeInTheDocument();
   });
 
   it('shows Inactive badge for inactive service', async () => {
     await renderAndLoad([makeService({ active: false })]);
-    expect(screen.getByText('Inactive')).toBeInTheDocument();
+    expect(screen.getByText('Inactivo')).toBeInTheDocument();
   });
 
   it('renders survey fields count badge when service has survey fields', async () => {
     await renderAndLoad([makeService({
       surveyFields: [{ id: 'f1', type: 'text', label: 'Name', placeholder: '', helpText: '', required: true, options: [], order: 0 }],
     })]);
-    expect(screen.getByText(/1 survey field/)).toBeInTheDocument();
+    expect(screen.getByText(/1 campo de encuesta/)).toBeInTheDocument();
   });
 
   it('shows Stripe synced badge when stripeProductId is set', async () => {
     await renderAndLoad([makeService({ stripeProductId: 'prod_abc' })]);
-    expect(screen.getByText(/Stripe synced/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sincronizado con Stripe/i)).toBeInTheDocument();
   });
 
   it('shows No Stripe product badge when stripeProductId is null', async () => {
     await renderAndLoad([makeService({ stripeProductId: null })]);
-    expect(screen.getByText(/No Stripe product/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sin producto en Stripe/i)).toBeInTheDocument();
   });
 
   it('shows stripePriceId in mono text when present', async () => {
@@ -243,42 +243,42 @@ describe('AdminPortalServicesPage — create form', () => {
 
   it('shows create form when New Service button is clicked', async () => {
     await renderAndLoad([]);
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     // Both the h2 heading and submit button say "Create Service"
-    expect(screen.getAllByText('Create Service').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Crear servicio').length).toBeGreaterThan(0);
   });
 
   it('hides create form when Cancel is clicked', async () => {
     await renderAndLoad([]);
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     fireEvent.click(screen.getByRole('button', { name: /^Cancelar$/ }));
     // After cancel the h2 heading is gone
-    expect(screen.queryByRole('heading', { name: /Create Service/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /Crear servicio/ })).not.toBeInTheDocument();
   });
 
   it('shows create form when New Service clicked again if already closed', async () => {
     await renderAndLoad([]);
     // toggle on
-    fireEvent.click(screen.getByText('New Service'));
-    expect(screen.getByRole('heading', { name: /Create Service/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Nuevo servicio'));
+    expect(screen.getByRole('heading', { name: /Crear servicio/ })).toBeInTheDocument();
     // toggle off
-    fireEvent.click(screen.getByText('New Service'));
-    expect(screen.queryByRole('heading', { name: /Create Service/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('Nuevo servicio'));
+    expect(screen.queryByRole('heading', { name: /Crear servicio/ })).not.toBeInTheDocument();
   });
 
   it('renders all form fields in create form', async () => {
     await renderAndLoad([]);
-    fireEvent.click(screen.getByText('New Service'));
-    expect(screen.getByText('Service Name')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Nuevo servicio'));
+    expect(screen.getByText('Nombre del servicio')).toBeInTheDocument();
     expect(screen.getByText('Categoría')).toBeInTheDocument();
-    expect(screen.getByText('Price (USD)')).toBeInTheDocument();
-    expect(screen.getByText('Billing Cycle')).toBeInTheDocument();
-    expect(screen.getByText('Features (one per line)')).toBeInTheDocument();
+    expect(screen.getByText('Precio (USD)')).toBeInTheDocument();
+    expect(screen.getByText('Ciclo de facturación')).toBeInTheDocument();
+    expect(screen.getByText('Características (una por línea)')).toBeInTheDocument();
   });
 
   it('renders SurveyBuilder inside create form', async () => {
     await renderAndLoad([]);
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     expect(screen.getByTestId('survey-builder')).toBeInTheDocument();
   });
 
@@ -310,7 +310,7 @@ describe('AdminPortalServicesPage — create form', () => {
     await act(async () => { render(<AdminPortalServicesPage />); });
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     fireEvent.change(getNameInput(), { target: { value: 'New Dev Service' } });
     fireEvent.change(getPriceInput(), { target: { value: '99.99' } });
 
@@ -330,7 +330,7 @@ describe('AdminPortalServicesPage — create form', () => {
     await act(async () => { render(<AdminPortalServicesPage />); });
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     fireEvent.change(getNameInput(), { target: { value: 'Dup Service' } });
     fireEvent.change(getPriceInput(), { target: { value: '10' } });
 
@@ -350,7 +350,7 @@ describe('AdminPortalServicesPage — create form', () => {
     await act(async () => { render(<AdminPortalServicesPage />); });
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     fireEvent.change(getNameInput(), { target: { value: 'X' } });
     fireEvent.change(getPriceInput(), { target: { value: '5' } });
 
@@ -358,7 +358,7 @@ describe('AdminPortalServicesPage — create form', () => {
       fireEvent.click(getSubmitBtn());
     });
     await waitFor(() => {
-      expect(screen.getByText('Failed')).toBeInTheDocument();
+      expect(screen.getByText('No se pudo crear')).toBeInTheDocument();
     });
   });
 
@@ -371,7 +371,7 @@ describe('AdminPortalServicesPage — create form', () => {
     await act(async () => { render(<AdminPortalServicesPage />); });
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
-    fireEvent.click(screen.getByText('New Service'));
+    fireEvent.click(screen.getByText('Nuevo servicio'));
     fireEvent.change(getNameInput(), { target: { value: 'Test' } });
     fireEvent.change(getPriceInput(), { target: { value: '1' } });
 
@@ -405,7 +405,7 @@ describe('AdminPortalServicesPage — edit form', () => {
     await renderWithService();
     const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
-    expect(screen.getByText(/Editing: Website Maintenance/)).toBeInTheDocument();
+    expect(screen.getByText(/Editando: Website Maintenance/)).toBeInTheDocument();
   });
 
   it('pre-fills service name in edit form', async () => {
@@ -446,7 +446,7 @@ describe('AdminPortalServicesPage — edit form', () => {
     fireEvent.change(nameInput, { target: { value: 'Updated Service' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar cambios/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Updated Service')).toBeInTheDocument();
@@ -463,7 +463,7 @@ describe('AdminPortalServicesPage — edit form', () => {
 
     fireEvent.click(screen.getByTitle('Editar'));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar cambios/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Update conflict')).toBeInTheDocument();
@@ -480,19 +480,19 @@ describe('AdminPortalServicesPage — edit form', () => {
 
     fireEvent.click(screen.getByTitle('Editar'));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar cambios/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText('Failed to save')).toBeInTheDocument();
+      expect(screen.getByText('No se pudo guardar')).toBeInTheDocument();
     });
   });
 
   it('closes edit form when Cancel is clicked', async () => {
     await renderWithService();
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText(/Editing:/)).toBeInTheDocument();
+    expect(screen.getByText(/Editando:/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /^Cancelar$/ }));
-    expect(screen.queryByText(/Editing:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Editando:/)).not.toBeInTheDocument();
   });
 
   it('closing edit form reverts to service card view', async () => {
@@ -544,7 +544,7 @@ describe('AdminPortalServicesPage — delete', () => {
     });
     await waitFor(() => {
       expect(screen.queryByText('Website Maintenance')).not.toBeInTheDocument();
-      expect(screen.getByText('No services yet. Create one above.')).toBeInTheDocument();
+      expect(screen.getByText('Aún no hay servicios. Crea uno arriba.')).toBeInTheDocument();
     });
   });
 
@@ -616,7 +616,7 @@ describe('AdminPortalServicesPage — toggle active', () => {
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Active'));
+      fireEvent.click(screen.getByText('Activo'));
     });
     await waitFor(() => {
       const patchCalls = (fetchMock.mock.calls as [string, RequestInit][]).filter(c => {
@@ -637,10 +637,10 @@ describe('AdminPortalServicesPage — toggle active', () => {
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Active'));
+      fireEvent.click(screen.getByText('Activo'));
     });
     await waitFor(() => {
-      expect(screen.getByText('Inactive')).toBeInTheDocument();
+      expect(screen.getByText('Inactivo')).toBeInTheDocument();
     });
   });
 
@@ -654,7 +654,7 @@ describe('AdminPortalServicesPage — toggle active', () => {
     await waitFor(() => expect(screen.queryByText('Cargando...')).not.toBeInTheDocument());
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Inactive'));
+      fireEvent.click(screen.getByText('Inactivo'));
     });
     await waitFor(() => {
       const patchCalls = (fetchMock.mock.calls as [string, RequestInit][]).filter(c => c[1]?.method === 'PATCH');

@@ -80,7 +80,7 @@ export default function AdminPortalServicesPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo crear'); return; }
     setServices(prev => [...prev, data.data]);
     setShowCreateForm(false);
     setForm({ ...emptyForm });
@@ -122,13 +122,13 @@ export default function AdminPortalServicesPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed to save'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo guardar'); return; }
     setServices(prev => prev.map(s => s.id === editingId ? data.data : s));
     setEditingId(null);
   }
 
   async function deleteService(id: number, name: string) {
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    if (!window.confirm(`¿Eliminar "${name}"? Esta acción no se puede deshacer.`)) return;
     setDeleting(id);
     const res = await fetch(`/api/admin/portal/services/${id}`, { method: 'DELETE' });
     const data = await res.json();
@@ -136,7 +136,7 @@ export default function AdminPortalServicesPage() {
     if (data.success) {
       setServices(prev => prev.filter(s => s.id !== id));
     } else {
-      alert(data.message ?? 'Delete failed');
+      alert(data.message ?? 'No se pudo eliminar');
     }
   }
 
@@ -163,7 +163,7 @@ export default function AdminPortalServicesPage() {
   ) => (
     <form onSubmit={onSubmit} className="grid sm:grid-cols-2 gap-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Service Name <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-medium text-foreground mb-1">Nombre del servicio <span className="text-destructive">*</span></label>
         <input type="text" required value={values.name} onChange={e => setValues({ ...values, name: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
       </div>
@@ -171,10 +171,10 @@ export default function AdminPortalServicesPage() {
         <label className="block text-sm font-medium text-foreground mb-1">Categoría<span className="text-destructive">*</span></label>
         <select value={values.category} onChange={e => setValues({ ...values, category: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-          <option value="domain">Domain (White Label)</option>
+          <option value="domain">Dominio (White Label)</option>
           <option value="hosting">Hosting (Railway White Label)</option>
-          <option value="development">Development</option>
-          <option value="maintenance">Maintenance</option>
+          <option value="development">Desarrollo</option>
+          <option value="maintenance">Mantenimiento</option>
           <option value="plugins">Plugins</option>
         </select>
       </div>
@@ -184,18 +184,18 @@ export default function AdminPortalServicesPage() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Price (USD) <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-medium text-foreground mb-1">Precio (USD) <span className="text-destructive">*</span></label>
         <input type="number" required min="0" step="0.01" placeholder="0.00" value={values.price}
           onChange={e => setValues({ ...values, price: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Billing Cycle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Ciclo de facturación</label>
         <select value={values.billingCycle} onChange={e => setValues({ ...values, billingCycle: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-          <option value="once">One-time</option>
-          <option value="monthly">Monthly</option>
-          <option value="annually">Annually</option>
+          <option value="once">Pago único</option>
+          <option value="monthly">Mensual</option>
+          <option value="annually">Anual</option>
         </select>
       </div>
       <div className="sm:col-span-2">
@@ -206,9 +206,9 @@ export default function AdminPortalServicesPage() {
         <p className="text-xs text-muted-foreground mt-0.5">Déjalo en blanco para crear automáticamente un producto y precio de Stripe cuando Stripe esté configurado.</p>
       </div>
       <div className="sm:col-span-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Features (one per line)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Características (una por línea)</label>
         <textarea rows={4} value={feats} onChange={e => setFeats(e.target.value)}
-          placeholder={'Custom domain setup\nSSL certificate included\nDNS management'}
+          placeholder={'Configuración de dominio personalizado\nCertificado SSL incluido\nGestión de DNS'}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
       </div>
 
@@ -231,25 +231,25 @@ export default function AdminPortalServicesPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Services Catalog</h1>
+          <h1 className="text-2xl font-bold text-foreground">Catálogo de servicios</h1>
           <p className="text-muted-foreground mt-1">Gestiona servicios y sus formularios de solicitud. Añade una encuesta para que los clientes completen los detalles al solicitar un servicio.</p>
         </div>
         <button onClick={() => { setShowCreateForm(!showCreateForm); setEditingId(null); }}
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-          <span className="material-icons text-base">add</span>New Service
+          <span className="material-icons text-base">add</span>Nuevo servicio
         </button>
       </div>
 
       {showCreateForm && (
         <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Create Service</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Crear servicio</h2>
           {error && <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">{error}</div>}
           {serviceForm(
             form, setForm,
             featuresInput, setFeaturesInput,
             createSurveyFields, setCreateSurveyFields,
             createService, () => { setShowCreateForm(false); setCreateSurveyFields([]); },
-            'Create Service',
+            'Crear servicio',
           )}
         </div>
       )}
@@ -257,21 +257,21 @@ export default function AdminPortalServicesPage() {
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">Cargando...</div>
       ) : services.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">No services yet. Create one above.</div>
+        <div className="text-center py-12 text-muted-foreground">Aún no hay servicios. Crea uno arriba.</div>
       ) : (
         <div className="space-y-4">
           {services.map(svc => (
             <div key={svc.id} className={`bg-card border rounded-xl overflow-hidden ${svc.active ? 'border-border' : 'border-border opacity-60'}`}>
               {editingId === svc.id ? (
                 <div className="p-6">
-                  <h3 className="text-sm font-semibold text-foreground mb-4">Editing: {svc.name}</h3>
+                  <h3 className="text-sm font-semibold text-foreground mb-4">Editando: {svc.name}</h3>
                   {error && <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">{error}</div>}
                   {serviceForm(
                     editForm, setEditForm,
                     editFeaturesInput, setEditFeaturesInput,
                     editSurveyFields, setEditSurveyFields,
                     saveEdit, () => setEditingId(null),
-                    'Save Changes',
+                    'Guardar cambios',
                   )}
                 </div>
               ) : (
@@ -286,16 +286,16 @@ export default function AdminPortalServicesPage() {
                           {(svc.surveyFields ?? []).length > 0 && (
                             <span className="text-xs text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                               <span className="material-icons text-xs">assignment</span>
-                              {svc.surveyFields.length} survey field{svc.surveyFields.length !== 1 ? 's' : ''}
+                              {svc.surveyFields.length} campo{svc.surveyFields.length !== 1 ? 's' : ''} de encuesta
                             </span>
                           )}
                           {svc.stripeProductId ? (
                             <span className="text-xs text-green-700 bg-green-100 px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                              <span className="material-icons text-xs">check_circle</span>Stripe synced
+                              <span className="material-icons text-xs">check_circle</span>Sincronizado con Stripe
                             </span>
                           ) : (
                             <span className="text-xs text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                              <span className="material-icons text-xs">warning</span>No Stripe product
+                              <span className="material-icons text-xs">warning</span>Sin producto en Stripe
                             </span>
                           )}
                         </div>
@@ -317,7 +317,7 @@ export default function AdminPortalServicesPage() {
                               </span>
                             ))}
                             {(svc.features ?? []).length > 4 && (
-                              <span className="text-xs text-muted-foreground">+{svc.features.length - 4} more</span>
+                              <span className="text-xs text-muted-foreground">+{svc.features.length - 4} más</span>
                             )}
                           </div>
                         )}
@@ -326,7 +326,7 @@ export default function AdminPortalServicesPage() {
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <button onClick={() => toggleActive(svc.id, !svc.active)}
                         className={`text-xs px-2 py-0.5 rounded-full font-medium transition-colors ${svc.active ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700' : 'bg-gray-100 text-gray-500 hover:bg-green-100 hover:text-green-700'}`}>
-                        {svc.active ? 'Active' : 'Inactive'}
+                        {svc.active ? 'Activo' : 'Inactivo'}
                       </button>
                       <button onClick={() => startEdit(svc)}
                         className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"

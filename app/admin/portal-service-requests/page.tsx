@@ -23,7 +23,7 @@ interface ServiceRequest {
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: string }> = {
   pending:  { label: 'Pendiente',  color: 'bg-amber-100 text-amber-700',  icon: 'hourglass_empty' },
-  reviewed: { label: 'Reviewed', color: 'bg-blue-100 text-blue-700',    icon: 'visibility' },
+  reviewed: { label: 'Revisado', color: 'bg-blue-100 text-blue-700',    icon: 'visibility' },
   approved: { label: 'Aprobado', color: 'bg-green-100 text-green-700',  icon: 'check_circle' },
   rejected: { label: 'Rechazado', color: 'bg-red-100 text-red-700',      icon: 'cancel' },
 };
@@ -31,7 +31,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: string
 const STATUSES = Object.keys(STATUS_CONFIG);
 
 function formatDate(s: string) {
-  return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(s).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 export default function AdminServiceRequestsPage() {
@@ -99,7 +99,7 @@ export default function AdminServiceRequestsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Service Requests</h1>
+        <h1 className="text-2xl font-bold text-foreground">Solicitudes de servicio</h1>
         <p className="text-muted-foreground mt-1">Solicitudes de clientes para servicios. Revisa las respuestas y actualiza el estado.</p>
       </div>
 
@@ -129,7 +129,7 @@ export default function AdminServiceRequestsPage() {
       <div className="flex items-center gap-2 flex-wrap">
         <button onClick={() => setFilterStatus('all')}
           className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
-          All ({requests.length})
+          Todas ({requests.length})
         </button>
         {STATUSES.map(s => (
           <button key={s} onClick={() => setFilterStatus(s)}
@@ -145,19 +145,19 @@ export default function AdminServiceRequestsPage() {
       ) : fetchError ? (
         <div className="bg-card border border-border rounded-lg p-8 text-center space-y-3">
           <span className="material-icons text-destructive text-3xl">error_outline</span>
-          <p className="text-sm font-medium text-foreground">Failed to load service requests</p>
+          <p className="text-sm font-medium text-foreground">No se pudieron cargar las solicitudes</p>
           <p className="text-xs text-muted-foreground font-mono">{fetchError}</p>
           <button
             onClick={loadRequests}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-base">refresh</span>
-            Try again
+            Reintentar
           </button>
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
-          {filterStatus === 'all' ? 'No service requests yet.' : `No ${filterStatus} requests.`}
+          {filterStatus === 'all' ? 'Aún no hay solicitudes de servicio.' : 'No hay solicitudes que coincidan con el filtro.'}
         </div>
       ) : (
         <div className="space-y-3">
@@ -206,7 +206,7 @@ export default function AdminServiceRequestsPage() {
                     <button
                       onClick={() => setExpandedId(isExpanded ? null : req.id)}
                       className="p-1.5 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-                      title={isExpanded ? 'Collapse' : 'View details'}
+                      title={isExpanded ? 'Contraer' : 'Ver detalles'}
                     >
                       <span className="material-icons text-base">{isExpanded ? 'expand_less' : 'expand_more'}</span>
                     </button>
@@ -227,7 +227,7 @@ export default function AdminServiceRequestsPage() {
                     {/* Survey answers */}
                     {hasAnswers && (
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Survey Answers</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Respuestas de la encuesta</p>
                         <div className="space-y-2">
                           {Object.entries(req.answers!).map(([key, val]) => (
                             <div key={key} className="bg-card border border-border rounded-lg px-4 py-3">
@@ -244,13 +244,13 @@ export default function AdminServiceRequestsPage() {
                     {/* Admin notes */}
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Admin Notes</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Notas internas</p>
                         {!isEditingNotes && (
                           <button
                             onClick={() => setEditingNotes(prev => ({ ...prev, [req.id]: req.adminNotes ?? '' }))}
                             className="text-xs text-primary hover:underline"
                           >
-                            {req.adminNotes ? 'Edit' : 'Add notes'}
+                            {req.adminNotes ? 'Editar' : 'Añadir notas'}
                           </button>
                         )}
                       </div>
@@ -261,12 +261,12 @@ export default function AdminServiceRequestsPage() {
                             value={editingNotes[req.id]}
                             onChange={e => setEditingNotes(prev => ({ ...prev, [req.id]: e.target.value }))}
                             className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                            placeholder="Internal notes — not visible to client"
+                            placeholder="Notas internas — no visibles para el cliente"
                           />
                           <div className="flex gap-2">
                             <button onClick={() => saveNotes(req)} disabled={savingId === req.id}
                               className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
-                              {savingId === req.id ? 'Saving...' : 'Save Notes'}
+                              {savingId === req.id ? 'Guardando...' : 'Guardar notas'}
                             </button>
                             <button onClick={() => setEditingNotes(prev => { const n = { ...prev }; delete n[req.id]; return n; })}
                               className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
@@ -275,7 +275,7 @@ export default function AdminServiceRequestsPage() {
                       ) : req.adminNotes ? (
                         <p className="text-sm text-foreground bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 whitespace-pre-wrap">{req.adminNotes}</p>
                       ) : (
-                        <p className="text-xs text-muted-foreground italic">No notes yet.</p>
+                        <p className="text-xs text-muted-foreground italic">Sin notas todavía.</p>
                       )}
                     </div>
                   </div>

@@ -150,7 +150,7 @@ export default function AdminAIConversationsPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">AI Conversations</h1>
+        <h1 className="text-2xl font-bold text-foreground">Conversaciones de IA</h1>
         <p className="text-muted-foreground mt-1">Supervisa las sesiones de chat de IA de los clientes, márcalas para revisión e inyecta respuestas.</p>
       </div>
 
@@ -161,7 +161,7 @@ export default function AdminAIConversationsPage() {
           <div className="flex gap-2">
             <input
               type="text"
-              placeholder="Search clients…"
+              placeholder="Buscar clientes…"
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="flex-1 px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -179,7 +179,7 @@ export default function AdminAIConversationsPage() {
             {loading ? (
               <p className="text-sm text-muted-foreground text-center py-8">Cargando…</p>
             ) : filtered.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No conversations.</p>
+              <p className="text-sm text-muted-foreground text-center py-8">No hay conversaciones.</p>
             ) : (
               filtered.map(conv => (
                 <button
@@ -192,7 +192,7 @@ export default function AdminAIConversationsPage() {
                     {conv.flagged && <span className="material-icons text-red-500 text-base shrink-0">flag</span>}
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5 truncate">
-                    {conv.clientCompany ?? conv.clientUserName ?? conv.clientUserEmail ?? 'Unknown client'}
+                    {conv.clientCompany ?? conv.clientUserName ?? conv.clientUserEmail ?? 'Cliente desconocido'}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-muted-foreground">
@@ -234,14 +234,14 @@ export default function AdminAIConversationsPage() {
                     className={`flex items-center gap-1 px-3 py-1.5 rounded-lg border text-sm font-medium transition-colors ${selectedConv?.flagged ? 'bg-red-100 border-red-300 text-red-700 hover:bg-red-50' : 'border-border text-muted-foreground hover:bg-accent'}`}
                   >
                     <span className="material-icons text-base">{selectedConv?.flagged ? 'flag' : 'outlined_flag'}</span>
-                    {selectedConv?.flagged ? 'Flagged' : 'Flag'}
+                    {selectedConv?.flagged ? 'Marcada' : 'Marcar'}
                   </button>
                   <button
                     onClick={() => setShowInjectModal(true)}
                     className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
                   >
                     <span className="material-icons text-base">reply</span>
-                    Inject Reply
+                    Inyectar respuesta
                   </button>
                 </div>
               </div>
@@ -249,13 +249,13 @@ export default function AdminAIConversationsPage() {
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-5 space-y-4">
                 {loadingMessages ? (
-                  <p className="text-sm text-muted-foreground text-center py-8">Loading messages…</p>
+                  <p className="text-sm text-muted-foreground text-center py-8">Cargando mensajes…</p>
                 ) : (
                   selectedMessages.map((msg, i) => (
                     <div key={msg.id ?? i} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
                       <div className="flex items-center gap-2">
                         <span className={`text-xs font-medium ${msg.role === 'user' ? 'text-primary' : msg.injectedBy ? 'text-amber-600' : 'text-muted-foreground'}`}>
-                          {msg.role === 'user' ? 'Client' : msg.injectedBy ? `Staff (${msg.injectedByName ?? 'Admin'})` : 'AI'}
+                          {msg.role === 'user' ? 'Cliente' : msg.injectedBy ? `Equipo (${msg.injectedByName ?? 'Admin'})` : 'IA'}
                         </span>
                         <span className="text-xs text-muted-foreground">{new Date(msg.createdAt).toLocaleTimeString()}</span>
                         {msg.outputTokens > 0 && (
@@ -275,7 +275,7 @@ export default function AdminAIConversationsPage() {
                             className="text-xs text-primary flex items-center gap-1 mb-1"
                           >
                             <span className="material-icons text-xs">search</span>
-                            Tools used: {msg.toolCalls.map(tc => TOOL_LABELS[tc.name] ?? tc.name).join(', ')}
+                            Herramientas usadas: {msg.toolCalls.map(tc => TOOL_LABELS[tc.name] ?? tc.name).join(', ')}
                             <span className="material-icons text-xs">{expandedTools.has(msg.id) ? 'expand_less' : 'expand_more'}</span>
                           </button>
                           {expandedTools.has(msg.id) && (
@@ -309,20 +309,20 @@ export default function AdminAIConversationsPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-card border border-border rounded-2xl w-full max-w-lg p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">Inject Reply</h2>
+              <h2 className="text-lg font-semibold text-foreground">Inyectar respuesta</h2>
               <button onClick={() => setShowInjectModal(false)} className="text-muted-foreground hover:text-foreground">
                 <span className="material-icons">close</span>
               </button>
             </div>
             <p className="text-sm text-muted-foreground">
-              This message will appear in the client&apos;s chat as a reply from the CRM AGENTS team.
+              Este mensaje aparecerá en el chat del cliente como respuesta del equipo de CRM AGENTS.
             </p>
             <textarea
               autoFocus
               rows={5}
               value={injectMessage}
               onChange={e => setInjectMessage(e.target.value)}
-              placeholder="Type your reply…"
+              placeholder="Escribe tu respuesta…"
               className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             />
             <div className="flex justify-end gap-3">
@@ -332,7 +332,7 @@ export default function AdminAIConversationsPage() {
                 disabled={injecting || !injectMessage.trim()}
                 className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
               >
-                {injecting ? <><span className="material-icons text-base animate-spin">refresh</span>Sending…</> : 'Send Reply'}
+                {injecting ? <><span className="material-icons text-base animate-spin">refresh</span>Enviando…</> : 'Enviar respuesta'}
               </button>
             </div>
           </div>

@@ -62,12 +62,12 @@ export default function AdminPortalInvoicesPage() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Invoices</h1>
+          <h1 className="text-2xl font-bold text-foreground">Facturas</h1>
           <p className="text-muted-foreground text-sm mt-0.5">Gestiona la facturación y pagos de clientes en la plataforma.</p>
         </div>
         <Link href="/admin/portal-invoices/new"
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-          <span className="material-icons text-base">add</span>New Invoice
+          <span className="material-icons text-base">add</span>Nueva factura
         </Link>
       </div>
 
@@ -76,14 +76,14 @@ export default function AdminPortalInvoicesPage() {
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-orange-600">account_balance_wallet</span>
-            <span className="text-xs text-muted-foreground font-medium">Outstanding</span>
+            <span className="text-xs text-muted-foreground font-medium">Pendiente</span>
           </div>
           <p className="text-2xl font-bold text-orange-600">{formatCents(totalOutstanding)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-green-600">payments</span>
-            <span className="text-xs text-muted-foreground font-medium">Total Collected</span>
+            <span className="text-xs text-muted-foreground font-medium">Total cobrado</span>
           </div>
           <p className="text-2xl font-bold text-green-600">{formatCents(totalPaid)}</p>
         </div>
@@ -97,7 +97,7 @@ export default function AdminPortalInvoicesPage() {
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-muted-foreground">edit_note</span>
-            <span className="text-xs text-muted-foreground font-medium">Drafts</span>
+            <span className="text-xs text-muted-foreground font-medium">Borradores</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{draftCount}</p>
         </div>
@@ -109,7 +109,7 @@ export default function AdminPortalInvoicesPage() {
           <span className="material-icons text-muted-foreground text-base">search</span>
           <input
             className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground"
-            placeholder="Search invoices..."
+            placeholder="Buscar facturas..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -136,13 +136,13 @@ export default function AdminPortalInvoicesPage() {
       ) : filtered.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">receipt_long</span>
-          <h3 className="mt-4 font-semibold text-foreground">No invoices found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se han encontrado facturas</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            {search || statusFilter !== 'all' ? 'Try adjusting your filters.' : 'Create your first invoice.'}
+            {search || statusFilter !== 'all' ? 'Prueba a ajustar los filtros.' : 'Crea tu primera factura.'}
           </p>
           {!search && statusFilter === 'all' && (
             <Link href="/admin/portal-invoices/new" className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium">
-              Create First Invoice
+              Crear primera factura
             </Link>
           )}
         </div>
@@ -152,12 +152,12 @@ export default function AdminPortalInvoicesPage() {
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Invoice</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Factura</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Vence</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Paid</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pagado</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
@@ -206,7 +206,7 @@ export default function AdminPortalInvoicesPage() {
                           >
                             <option value="draft">Borrador</option>
                             <option value="sent">Enviado</option>
-                            <option value="paid">Paid</option>
+                            <option value="paid">Pagado</option>
                             <option value="overdue">Atrasado</option>
                             <option value="cancelled">Cancelado</option>
                           </select>
