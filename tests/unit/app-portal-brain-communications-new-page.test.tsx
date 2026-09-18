@@ -88,7 +88,7 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders the page heading "New note"', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
   });
 
@@ -103,8 +103,8 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders section headings: Source, Details, Participants, Transcript', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Source');
-      expect(container.textContent).toContain('Details');
+      expect(container.textContent).toContain('Fuente');
+      expect(container.textContent).toContain('Detalles');
       expect(container.textContent).toContain('Participants');
       expect(container.textContent).toContain('Transcript');
     });
@@ -114,7 +114,7 @@ describe('NewBrainMeetingPage — initial render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Save as draft');
-      expect(container.textContent).toContain('Save and process with AI');
+      expect(container.textContent).toContain('Guardar y procesar con IA');
     });
   });
 
@@ -123,7 +123,7 @@ describe('NewBrainMeetingPage — initial render', () => {
     await waitFor(() => {
       const buttons = Array.from(container.querySelectorAll('button'));
       const draftBtn = buttons.find((b) => b.textContent?.includes('Save as draft'));
-      const processBtn = buttons.find((b) => b.textContent?.includes('Save and process'));
+      const processBtn = buttons.find((b) => b.textContent?.includes('Guardar y procesar'));
       expect(draftBtn?.disabled).toBe(true);
       expect(processBtn?.disabled).toBe(true);
     });
@@ -176,7 +176,7 @@ describe('NewBrainMeetingPage — adapter loading', () => {
     const { container } = renderPage();
     // Should render page without crashing; no adapter buttons
     await waitFor(() => {
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
   });
 
@@ -265,7 +265,7 @@ describe('NewBrainMeetingPage — form fields', () => {
     fireEvent.change(textarea, { target: { value: 'some content' } });
     const buttons = Array.from(container.querySelectorAll('button'));
     const draftBtn = buttons.find((b) => b.textContent?.includes('Save as draft'));
-    const processBtn = buttons.find((b) => b.textContent?.includes('Save and process'));
+    const processBtn = buttons.find((b) => b.textContent?.includes('Guardar y procesar'));
     expect(draftBtn?.disabled).toBe(false);
     expect(processBtn?.disabled).toBe(false);
   });
@@ -277,7 +277,7 @@ describe('NewBrainMeetingPage — participants', () => {
   it('renders one participant row by default', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      const nameInputs = container.querySelectorAll('input[placeholder="Name"]');
+      const nameInputs = container.querySelectorAll('input[placeholder="Nombre"]');
       expect(nameInputs.length).toBe(1);
     });
   });
@@ -290,7 +290,7 @@ describe('NewBrainMeetingPage — participants', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      const nameInputs = container.querySelectorAll('input[placeholder="Name"]');
+      const nameInputs = container.querySelectorAll('input[placeholder="Nombre"]');
       expect(nameInputs.length).toBe(2);
     });
   });
@@ -312,22 +312,22 @@ describe('NewBrainMeetingPage — participants', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      expect(container.querySelectorAll('input[placeholder="Name"]').length).toBe(2);
+      expect(container.querySelectorAll('input[placeholder="Nombre"]').length).toBe(2);
     });
     const removeButtons = container.querySelectorAll('button[aria-label="Remove participant"]');
     fireEvent.click(removeButtons[0]);
     await waitFor(() => {
-      expect(container.querySelectorAll('input[placeholder="Name"]').length).toBe(1);
+      expect(container.querySelectorAll('input[placeholder="Nombre"]').length).toBe(1);
     });
   });
 
   it('updates participant name field', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      const nameInput = container.querySelector('input[placeholder="Name"]');
+      const nameInput = container.querySelector('input[placeholder="Nombre"]');
       expect(nameInput).toBeTruthy();
     });
-    const nameInput = container.querySelector('input[placeholder="Name"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Nombre"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Alice' } });
     expect(nameInput.value).toBe('Alice');
   });
@@ -542,7 +542,7 @@ describe('NewBrainMeetingPage — submit as draft', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('textarea')).toBeTruthy());
     // Fill participant name
-    const nameInput = container.querySelector('input[placeholder="Name"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Nombre"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Bob' } });
     const emailInput = container.querySelector('input[placeholder="email@example.com"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'bob@example.com' } });
@@ -575,7 +575,7 @@ describe('NewBrainMeetingPage — save and process with AI', () => {
     await waitFor(() => expect(container.querySelector('textarea')).toBeTruthy());
     typeTranscript(container);
     const processBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save and process'),
+      (b) => b.textContent?.includes('Guardar y procesar'),
     ) as HTMLButtonElement;
     fireEvent.click(processBtn);
     await waitFor(() => {
@@ -589,7 +589,7 @@ describe('NewBrainMeetingPage — save and process with AI', () => {
     await waitFor(() => expect(container.querySelector('textarea')).toBeTruthy());
     typeTranscript(container);
     const processBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save and process'),
+      (b) => b.textContent?.includes('Guardar y procesar'),
     ) as HTMLButtonElement;
     fireEvent.click(processBtn);
     await waitFor(() => {
@@ -614,7 +614,7 @@ describe('NewBrainMeetingPage — save and process with AI', () => {
     await waitFor(() => expect(container.querySelector('textarea')).toBeTruthy());
     typeTranscript(container);
     const processBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save and process'),
+      (b) => b.textContent?.includes('Guardar y procesar'),
     ) as HTMLButtonElement;
     fireEvent.click(processBtn);
     await waitFor(() => {
@@ -640,7 +640,7 @@ describe('NewBrainMeetingPage — save and process with AI', () => {
     await waitFor(() => expect(container.querySelector('textarea')).toBeTruthy());
     typeTranscript(container);
     const processBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save and process'),
+      (b) => b.textContent?.includes('Guardar y procesar'),
     ) as HTMLButtonElement;
     fireEvent.click(processBtn);
     await waitFor(() => {
@@ -667,7 +667,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     ) as HTMLButtonElement;
     fireEvent.click(linkBtn);
     await waitFor(() => {
-      const searchInput = container.querySelector('input[placeholder="Search companies or deals…"]');
+      const searchInput = container.querySelector('input[placeholder="Buscar empresas u oportunidades…"]');
       expect(searchInput).toBeTruthy();
     });
   });
@@ -680,7 +680,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     ) as HTMLButtonElement;
     fireEvent.click(linkBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Cancel');
+      expect(container.textContent).toContain('Cancelar');
     });
   });
 
@@ -692,10 +692,10 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     ) as HTMLButtonElement;
     fireEvent.click(linkBtn);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Search companies or deals…"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Buscar empresas u oportunidades…"]')).toBeTruthy();
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -807,7 +807,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     fireEvent.click(acmeBtn);
     await waitFor(() => {
       expect(container.textContent).toContain('company');
-      expect(container.textContent).toContain('Clear');
+      expect(container.textContent).toContain('Limpiar');
     });
   });
 
@@ -838,9 +838,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       (b) => b.textContent?.includes('Acme Corp'),
     ) as HTMLButtonElement;
     fireEvent.click(acmeBtn);
-    await waitFor(() => expect(container.textContent).toContain('Clear'));
+    await waitFor(() => expect(container.textContent).toContain('Limpiar'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear'),
+      (b) => b.textContent?.includes('Limpiar'),
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     await waitFor(() => {
