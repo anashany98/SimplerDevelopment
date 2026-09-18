@@ -244,7 +244,7 @@ describe('PlaybookRunDetailPage — loading', () => {
   it('shows "Loading" text while fetch is pending', () => {
     fetchMock.mockImplementation(async () => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -663,7 +663,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Retry'),
+        (b) => b.textContent?.includes('Reintentar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -673,7 +673,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Run'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Retry'),
+      (b) => b.textContent?.includes('Reintentar'),
     );
     expect(btn).toBeUndefined();
   });
