@@ -168,7 +168,7 @@ describe('ButtonBlockSettings', () => {
 
   it('updates size via select', () => {
     const { onChange } = renderPanel(baseButton);
-    const select = screen.getByDisplayValue('Medium') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Media') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lg' } });
     expect(onChange).toHaveBeenCalledWith({ size: 'lg' });
   });
@@ -217,7 +217,7 @@ describe('ButtonBlockSettings', () => {
 
   it('updates hoverEffect via select', () => {
     const { onChange } = renderPanel(baseButton);
-    const select = screen.getByDisplayValue('None') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Ninguno') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lift' } });
     expect(onChange).toHaveBeenCalledWith({ hoverEffect: 'lift' });
   });
@@ -239,7 +239,7 @@ describe('ButtonBlockSettings', () => {
 
   it('defaults size to md when not set', () => {
     renderPanel({ ...baseButton, size: undefined });
-    const select = screen.getByDisplayValue('Medium') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Media') as HTMLSelectElement;
     expect(select.value).toBe('md');
   });
 });
@@ -580,7 +580,7 @@ describe('SurveyInputBlockSettings', () => {
 
   it('shows options section when fieldType is select', () => {
     renderPanel({ ...baseInput, fieldType: 'select', options: ['a', 'b'] });
-    expect(screen.getByText('Options')).toBeTruthy();
+    expect(screen.getByText('Opciones')).toBeTruthy();
   });
 
   it('updates option value', () => {
@@ -629,7 +629,7 @@ describe('SurveyInputBlockSettings', () => {
 
   it('does not show options for non-option types (text)', () => {
     renderPanel(baseInput);
-    expect(screen.queryByText('Options')).toBeNull();
+    expect(screen.queryByText('Opciones')).toBeNull();
   });
 
   it('does not show slider config for non-slider types (text)', () => {
@@ -656,7 +656,7 @@ describe('EmailHeaderBlockSettings', () => {
     renderPanel(baseEmailHeader);
     expect(screen.getByDisplayValue('https://logo.png')).toBeTruthy();
     expect(screen.getByDisplayValue('180')).toBeTruthy();
-    expect(screen.getByDisplayValue('Center')).toBeTruthy();
+    expect(screen.getByDisplayValue('Centrado')).toBeTruthy();
     expect(screen.getByDisplayValue('Tagline text')).toBeTruthy();
   });
 
@@ -680,7 +680,7 @@ describe('EmailHeaderBlockSettings', () => {
 
   it('updates alignment via select', () => {
     const { onChange } = renderPanel(baseEmailHeader);
-    const select = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ alignment: 'left' });
   });
@@ -701,7 +701,7 @@ describe('EmailHeaderBlockSettings', () => {
 
   it('defaults alignment to center when not set', () => {
     renderPanel({ ...baseEmailHeader, alignment: undefined });
-    const select = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     expect(select.value).toBe('center');
   });
 });
