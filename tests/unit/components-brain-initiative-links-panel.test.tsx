@@ -114,7 +114,7 @@ describe('InitiativeLinksPanel — empty state', () => {
 
   it('renders a "Link" button', () => {
     renderPanel([]);
-    expect(screen.getByText('Link')).toBeInTheDocument();
+    expect(screen.getByText('Enlace')).toBeInTheDocument();
   });
 });
 
@@ -299,7 +299,7 @@ describe('InitiativeLinksPanel — unlink', () => {
 describe('InitiativeLinksPanel — picker dialog open/close', () => {
   it('opens the picker dialog when "Link" button is clicked', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('Link an entity')).toBeInTheDocument(),
     );
@@ -307,9 +307,9 @@ describe('InitiativeLinksPanel — picker dialog open/close', () => {
 
   it('closes the picker dialog when the X (Close) button is clicked', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
-    await waitFor(() => screen.getByLabelText('Close'));
-    fireEvent.click(screen.getByLabelText('Close'));
+    fireEvent.click(screen.getByText('Enlace'));
+    await waitFor(() => screen.getByLabelText('Cerrar'));
+    fireEvent.click(screen.getByLabelText('Cerrar'));
     await waitFor(() =>
       expect(screen.queryByText('Link an entity')).not.toBeInTheDocument(),
     );
@@ -317,9 +317,9 @@ describe('InitiativeLinksPanel — picker dialog open/close', () => {
 
   it('closes the picker dialog when Cancel is clicked', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
-    await waitFor(() => screen.getByText('Cancel'));
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Enlace'));
+    await waitFor(() => screen.getByText('Cancelar'));
+    fireEvent.click(screen.getByText('Cancelar'));
     await waitFor(() =>
       expect(screen.queryByText('Link an entity')).not.toBeInTheDocument(),
     );
@@ -327,7 +327,7 @@ describe('InitiativeLinksPanel — picker dialog open/close', () => {
 
   it('dialog shows descriptive subtitle text', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(
         screen.getByText(/Attach a task, note, meeting/i),
@@ -344,7 +344,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
   it('shows "No tasks found." when fetch returns empty data', async () => {
     mockFetch({ success: true, data: [] });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
     );
@@ -356,7 +356,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
       data: [{ id: 5, title: 'Task Five', status: 'open' }],
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('Task Five')).toBeInTheDocument(),
     );
@@ -368,7 +368,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
       data: [{ id: 5, title: 'Task Five', status: 'in_progress' }],
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('in_progress')).toBeInTheDocument(),
     );
@@ -380,7 +380,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
       data: [{ id: 5, title: 'Picked Task', status: 'open' }],
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Picked Task');
     fireEvent.click(option.closest('button')!);
     await waitFor(() => {
@@ -391,7 +391,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
   it('shows "No decisions found." and brain-restructure hint for decision type', async () => {
     // decision/topic return [] unconditionally (brain-restructure branch)
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'decision' } });
     await waitFor(() => {
@@ -404,7 +404,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
 
   it('shows "No topics found." and brain-restructure hint for topic type', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'topic' } });
     await waitFor(() => {
@@ -423,21 +423,21 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
 describe('InitiativeLinksPanel — picker dialog note and pinned fields', () => {
   it('renders the Note (optional) input', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() => screen.getByText('Link an entity'));
     expect(screen.getByPlaceholderText('Why is this linked?')).toBeInTheDocument();
   });
 
   it('renders the "Pin this link" checkbox', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() => screen.getByText('Pin this link'));
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
   });
 
   it('note input accepts text input', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() => screen.getByPlaceholderText('Why is this linked?'));
     const noteInput = screen.getByPlaceholderText('Why is this linked?');
     fireEvent.change(noteInput, { target: { value: 'strategic alignment' } });
@@ -446,7 +446,7 @@ describe('InitiativeLinksPanel — picker dialog note and pinned fields', () => 
 
   it('pinned checkbox toggles', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() => screen.getByRole('checkbox'));
     const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     expect(checkbox.checked).toBe(false);
@@ -472,7 +472,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
   it('submit button is disabled when no option is picked', async () => {
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await screen.findByText('Task Nine'); // wait for load — no option picked yet
     const submitBtn = findDialogSubmitBtn(container);
     expect(submitBtn).not.toBeNull();
@@ -482,7 +482,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
   it('submit button is enabled after picking an option', async () => {
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([], vi.fn(), 42);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Task Nine');
     fireEvent.click(option.closest('button')!);
     const submitBtn = findDialogSubmitBtn(container);
@@ -494,7 +494,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
     const onChanged = vi.fn();
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([], onChanged, 42);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Task Nine');
     fireEvent.click(option.closest('button')!);
     // Now set up POST response
@@ -512,7 +512,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
   it('shows error when POST returns ok=false', async () => {
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([], vi.fn(), 42);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Task Nine');
     fireEvent.click(option.closest('button')!);
     mockFetch({ success: false, message: 'Link failed' }, false);
@@ -527,7 +527,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
   it('shows fallback error when POST ok=false with no message', async () => {
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([], vi.fn(), 42);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Task Nine');
     fireEvent.click(option.closest('button')!);
     mockFetch({ success: false }, false);
@@ -542,7 +542,7 @@ describe('InitiativeLinksPanel — picker dialog submit', () => {
   it('shows network error when POST throws', async () => {
     mockFetch({ success: true, data: [{ id: 9, title: 'Task Nine', status: 'open' }] });
     const { container } = renderPanel([], vi.fn(), 42);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const option = await screen.findByText('Task Nine');
     fireEvent.click(option.closest('button')!);
     mockFetchReject('net error');
@@ -566,7 +566,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: [{ id: 1, title: 'Build feature', status: 'in_progress' }],
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     // task is the default type
     await waitFor(() =>
       expect(screen.getByText('Build feature')).toBeInTheDocument(),
@@ -580,7 +580,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 2, title: 'Meeting notes' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'note' } });
     await waitFor(() =>
@@ -594,7 +594,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 3 }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'note' } });
     await waitFor(() =>
@@ -608,7 +608,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 4, title: 'Board Meeting', meetingDate: '2025-03-15T00:00:00Z' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'meeting' } });
     await waitFor(() =>
@@ -622,7 +622,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 5, title: 'No Date Meeting', meetingDate: null }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'meeting' } });
     await waitFor(() =>
@@ -636,7 +636,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 10, title: 'ACME Deal', stage: 'proposal' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'crm_deal' } });
     await waitFor(() =>
@@ -651,7 +651,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 11, title: '', stage: 'discovery' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'crm_deal' } });
     await waitFor(() =>
@@ -665,7 +665,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 20, name: 'Globex Corp', website: 'https://globex.com' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'crm_company' } });
     await waitFor(() =>
@@ -680,7 +680,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 21, name: 'Initech', website: null, domain: 'initech.com' }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'crm_company' } });
     await waitFor(() =>
@@ -694,7 +694,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       data: { items: [{ id: 22, name: '', website: null, domain: null }] },
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'crm_company' } });
     await waitFor(() =>
@@ -705,7 +705,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
   it('returns empty list for "decision" type (brain-restructure pending)', async () => {
     // decision returns [] regardless of fetch — no fetch needed
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'decision' } });
     await waitFor(() =>
@@ -715,7 +715,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
 
   it('returns empty list for "topic" type (brain-restructure pending)', async () => {
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'topic' } });
     await waitFor(() =>
@@ -726,7 +726,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
   it('returns empty options when task fetch returns ok=false', async () => {
     mockFetch({ success: false }, false);
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
     );
@@ -735,7 +735,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
   it('returns empty options when task fetch throws', async () => {
     mockFetchReject('connection refused');
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
       expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
     );
@@ -750,7 +750,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
       ],
     });
     renderPanel([]);
-    fireEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Enlace'));
     // Wait for initial load with both items
     await screen.findByText('Alpha Task');
     expect(screen.getByText('Beta Task')).toBeInTheDocument();
@@ -807,7 +807,7 @@ describe('InitiativeLinksPanel — picker type selector covers all entity types'
   for (const { value, label } of expectedTypes) {
     it(`type selector includes "${label}" (value="${value}")`, async () => {
       renderPanel([]);
-      fireEvent.click(screen.getByText('Link'));
+      fireEvent.click(screen.getByText('Enlace'));
       const select = await screen.findByRole('combobox');
       const option = select.querySelector(`option[value="${value}"]`);
       expect(option).not.toBeNull();
