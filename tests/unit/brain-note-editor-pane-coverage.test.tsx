@@ -238,7 +238,7 @@ describe('NoteEditorPane — loading state', () => {
     (global as unknown as { fetch: () => Promise<never> }).fetch = vi.fn(() => new Promise(() => {}));
     render(<NoteEditorPane noteId={1} />);
     // Loading state is visible immediately before the fetch settles.
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/cargando/i)).toBeInTheDocument();
   });
 });
 
