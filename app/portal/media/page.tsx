@@ -186,7 +186,7 @@ export default function PortalMediaPage() {
       const res = await fetch(`${base}/${detail.id}/replace`, { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        alert(json.message || 'Replace failed');
+        alert(json.message || 'El reemplazo falló');
         return;
       }
       setDetail({
@@ -283,7 +283,7 @@ export default function PortalMediaPage() {
           className={pInput}
         />
         <div className="flex gap-2 flex-wrap items-center">
-          {['all', 'image', 'video', 'application'].map(type => (
+          {([['all', 'Todo'], ['image', 'Imagen'], ['video', 'Vídeo'], ['application', 'Documento']] as const).map(([type, label]) => (
             <button
               key={type}
               onClick={() => { setFilter(type); setOffset(0); }}
@@ -293,7 +293,7 @@ export default function PortalMediaPage() {
                   : 'bg-accent text-muted-foreground hover:text-foreground'
               }`}
             >
-              {type.charAt(0).toUpperCase() + type.slice(1)}
+              {label}
             </button>
           ))}
           {brandingProfiles.length > 0 && (
@@ -554,7 +554,7 @@ export default function PortalMediaPage() {
                 </div>
               ) : (
                 <div className="space-y-1 text-sm">
-                  {detail.alt && <p><span className="font-medium">Alt:</span> {detail.alt}</p>}
+                  {detail.alt && <p><span className="font-medium">Texto alternativo:</span> {detail.alt}</p>}
                   {detail.caption && <p><span className="font-medium">Pie:</span> {detail.caption}</p>}
                 </div>
               )}

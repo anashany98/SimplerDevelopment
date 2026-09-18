@@ -202,7 +202,7 @@ describe('PortalMediaPage — filters', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Image',
+      b.textContent?.trim() === 'Imagen',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -215,7 +215,7 @@ describe('PortalMediaPage — filters', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Video',
+      b.textContent?.trim() === 'Vídeo',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -228,7 +228,7 @@ describe('PortalMediaPage — filters', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Application',
+      b.textContent?.trim() === 'Documento',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -242,12 +242,12 @@ describe('PortalMediaPage — filters', () => {
     await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     // First switch to Image
     const imgBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Image',
+      b.textContent?.trim() === 'Imagen',
     ) as HTMLButtonElement;
     fireEvent.click(imgBtn);
     // Now click All
     const allBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'All',
+      b.textContent?.trim() === 'Todo',
     ) as HTMLButtonElement;
     fireEvent.click(allBtn);
     await waitFor(() => {
