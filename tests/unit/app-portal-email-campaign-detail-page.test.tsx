@@ -305,7 +305,7 @@ describe('PortalCampaignDetailPage — loading', () => {
   it('shows loading indicator while data is fetching', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -319,7 +319,7 @@ describe('PortalCampaignDetailPage — not found', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Campaign not found');
+      expect(container.textContent).toContain('Campaña no encontrada.');
     });
   });
 });
@@ -485,8 +485,8 @@ describe('PortalCampaignDetailPage — stats section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Sent');
-      expect(container.textContent).toContain('Open Rate');
-      expect(container.textContent).toContain('Click Rate');
+      expect(container.textContent).toContain('Tasa de apertura');
+      expect(container.textContent).toContain('Tasa de clics');
       expect(container.textContent).toContain('Bounce Rate');
     });
   });
@@ -575,7 +575,7 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Email Preview');
+      expect(container.textContent).toContain('Vista previa del correo');
     });
   });
 
@@ -619,7 +619,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Reply-To');
+      expect(container.textContent).toContain('Correo de respuesta');
       expect(container.textContent).toContain('—');
     });
   });
@@ -641,7 +641,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
   it('shows Unsubscribes count', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Unsubscribes');
+      expect(container.textContent).toContain('Cancelaciones de suscripción');
     });
   });
 
@@ -649,7 +649,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // sentAt is null → rendered as dash
-      expect(container.textContent).toContain('Sent At');
+      expect(container.textContent).toContain('Enviado el');
     });
   });
 
@@ -673,7 +673,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
   it('shows editor row with "Template / HTML" when useBlockEditor=false and status=draft', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Template / HTML');
+      expect(container.textContent).toContain('Plantilla / HTML');
     });
   });
 
@@ -687,7 +687,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Block builder');
+      expect(container.textContent).toContain('Constructor de bloques');
     });
   });
 
@@ -704,7 +704,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('sent'));
-    expect(container.textContent).not.toContain('Template / HTML');
+    expect(container.textContent).not.toContain('Plantilla / HTML');
   });
 });
 
@@ -718,9 +718,9 @@ describe('PortalCampaignDetailPage — toggleUseBlockEditor', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Switch to block builder'));
+    await waitFor(() => expect(container.textContent).toContain('Cambiar a constructor de bloques'));
     const toggleBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Switch to'),
+      (b) => b.textContent?.includes('Cambiar a'),
     ) as HTMLButtonElement;
     fireEvent.click(toggleBtn);
     await waitFor(() => {
@@ -755,7 +755,7 @@ describe('PortalCampaignDetailPage — content tab (view mode)', () => {
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Email Preview');
+      expect(container.textContent).toContain('Vista previa del correo');
     });
   });
 });
@@ -1219,7 +1219,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('No sends recorded yet');
+      expect(container.textContent).toContain('Aún no hay envíos registrados.');
     });
   });
 
