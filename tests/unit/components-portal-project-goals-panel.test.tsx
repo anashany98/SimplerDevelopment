@@ -83,7 +83,7 @@ describe('ProjectGoalsPanel — initial states', () => {
     fetchSpy.mockReturnValueOnce(new Promise(() => {}));
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
   });
 
   it('shows empty state text when no goals exist', async () => {
@@ -242,7 +242,7 @@ describe('ProjectGoalsPanel — canEdit=false', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
     // No delete button (title="Delete")
-    expect(screen.queryByTitle('Delete')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Eliminar')).not.toBeInTheDocument();
     // No update-current-value input (title="Update current value...")
     expect(screen.queryByTitle(/Update current value/)).not.toBeInTheDocument();
   });
@@ -458,7 +458,7 @@ describe('ProjectGoalsPanel — delete goal', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     expect(confirmSpy).toHaveBeenCalledWith('Delete this goal?');
     await waitFor(() => {
@@ -480,7 +480,7 @@ describe('ProjectGoalsPanel — delete goal', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     // Only the initial load fetch should have been called
     expect(fetchSpy).toHaveBeenCalledTimes(1);
