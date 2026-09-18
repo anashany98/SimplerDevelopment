@@ -119,7 +119,7 @@ describe('BrainTemplatesPage — shell', () => {
   it('renders the Note Templates heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Note Templates');
+      expect(container.textContent).toContain('Plantillas de notas');
     });
   });
 
@@ -141,7 +141,7 @@ describe('BrainTemplatesPage — shell', () => {
   it('renders the Templates section header', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Templates');
+      expect(container.textContent).toContain('Plantillas');
     });
   });
 });
@@ -155,7 +155,7 @@ describe('BrainTemplatesPage — loading', () => {
       () => new Promise((res) => { resolve = res; }) as any,
     );
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading templates');
+    expect(container.textContent).toContain('Cargando plantillas');
     resolve(makeRes({ success: true, data: { items: [] } }));
   });
 
@@ -214,7 +214,7 @@ describe('BrainTemplatesPage — empty list', () => {
     setupList([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No templates yet');
+      expect(container.textContent).toContain('Aún no hay plantillas');
     });
   });
 
@@ -231,7 +231,7 @@ describe('BrainTemplatesPage — empty list', () => {
     setupList([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create your first template');
+      expect(container.textContent).toContain('Crea tu primera plantilla');
     });
   });
 
@@ -276,7 +276,7 @@ describe('BrainTemplatesPage — list with templates', () => {
     setupList([makeTpl(1, { enabled: false })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('off');
+      expect(container.textContent).toContain('desactivada');
     });
   });
 
@@ -365,7 +365,7 @@ describe('BrainTemplatesPage — selecting a template', () => {
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Save changes');
+      expect(container.textContent).toContain('Guardar cambios');
     });
   });
 
@@ -391,7 +391,7 @@ describe('BrainTemplatesPage — selecting a template', () => {
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Try it');
+      expect(container.textContent).toContain('Probar');
     });
   });
 
@@ -415,54 +415,54 @@ describe('BrainTemplatesPage — new template mode', () => {
   it('opens new template form when "New template" is clicked', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
       expect(container.textContent).toContain('Nueva plantilla');
-      expect(container.textContent).toContain('Create template');
+      expect(container.textContent).toContain('Crear plantilla');
     });
   });
 
   it('shows "Create template" button in new mode', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Create template');
+      expect(container.textContent).toContain('Crear plantilla');
     });
   });
 
   it('does NOT show "Try it" button in new mode', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Create template');
+      expect(container.textContent).toContain('Crear plantilla');
     });
-    expect(container.textContent).not.toContain('Try it');
+    expect(container.textContent).not.toContain('Probar');
   });
 
   it('does NOT show "Delete" button in new mode', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Create template');
+      expect(container.textContent).toContain('Crear plantilla');
     });
     // The Delete button is absent in new mode
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -474,9 +474,9 @@ describe('BrainTemplatesPage — new template mode', () => {
   it('opens new mode via "Create your first template" button', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Create your first template'));
+    await waitFor(() => expect(container.textContent).toContain('Crea tu primera plantilla'));
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create your first template'),
+      b.textContent?.includes('Crea tu primera plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -491,7 +491,7 @@ describe('BrainTemplatesPage — variable hints', () => {
   it('shows variable hints when form is open', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
@@ -512,14 +512,14 @@ describe('BrainTemplatesPage — trigger buttons', () => {
   it('shows all 4 trigger options in the form', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
       expect(container.textContent).toContain('Manual');
-      expect(container.textContent).toContain('Daily');
+      expect(container.textContent).toContain('Diaria');
       expect(container.textContent).toContain('Reunión');
       expect(container.textContent).toContain('Slash');
     });
@@ -528,15 +528,15 @@ describe('BrainTemplatesPage — trigger buttons', () => {
   it('clicking a trigger button changes the active trigger', async () => {
     setupList([]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
-    await waitFor(() => expect(container.textContent).toContain('Daily'));
+    await waitFor(() => expect(container.textContent).toContain('Diaria'));
     // Click Daily trigger
     const dailyBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Daily'),
+      b.textContent?.includes('Diaria'),
     ) as HTMLButtonElement;
     fireEvent.click(dailyBtn);
     // The "Daily" button should now have the active class
@@ -550,12 +550,12 @@ describe('BrainTemplatesPage — trigger buttons', () => {
 
 describe('BrainTemplatesPage — form validation', () => {
   async function openNewForm(container: HTMLElement) {
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create template'));
+    await waitFor(() => expect(container.textContent).toContain('Crear plantilla'));
   }
 
   it('shows error when name is empty on save', async () => {
@@ -563,11 +563,11 @@ describe('BrainTemplatesPage — form validation', () => {
     const { container } = renderPage();
     await openNewForm(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Name is required.');
+      expect(container.textContent).toContain('El nombre es obligatorio.');
     });
   });
 
@@ -578,11 +578,11 @@ describe('BrainTemplatesPage — form validation', () => {
     const input = container.querySelector('#tpl-name') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'x'.repeat(151) } });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Name must be 150 characters or fewer.');
+      expect(container.textContent).toContain('El nombre debe tener 150 caracteres o menos.');
     });
   });
 
@@ -593,11 +593,11 @@ describe('BrainTemplatesPage — form validation', () => {
     const input = container.querySelector('#tpl-name') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Valid Name' } });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Body cannot be empty.');
+      expect(container.textContent).toContain('El cuerpo no puede estar vacío.');
     });
   });
 });
@@ -621,12 +621,12 @@ describe('BrainTemplatesPage — save success', () => {
       return makeRes({ success: true, data: { items: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create template'));
+    await waitFor(() => expect(container.textContent).toContain('Crear plantilla'));
     fireEvent.change(container.querySelector('#tpl-name') as HTMLInputElement, {
       target: { value: 'Brand New' },
     });
@@ -634,7 +634,7 @@ describe('BrainTemplatesPage — save success', () => {
       target: { value: 'Template body' },
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -664,7 +664,7 @@ describe('BrainTemplatesPage — save success', () => {
     const nameInput = container.querySelector('#tpl-name') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New Name' } });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save changes'),
+      b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -680,12 +680,12 @@ describe('BrainTemplatesPage — save success', () => {
 
 describe('BrainTemplatesPage — save errors', () => {
   async function openNewFormAndFillValid(container: HTMLElement) {
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create template'));
+    await waitFor(() => expect(container.textContent).toContain('Crear plantilla'));
     fireEvent.change(container.querySelector('#tpl-name') as HTMLInputElement, {
       target: { value: 'Valid Name' },
     });
@@ -704,11 +704,11 @@ describe('BrainTemplatesPage — save errors', () => {
     const { container } = renderPage();
     await openNewFormAndFillValid(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('A template with that name already exists.');
+      expect(container.textContent).toContain('Ya existe una plantilla con ese nombre.');
     });
   });
 
@@ -722,7 +722,7 @@ describe('BrainTemplatesPage — save errors', () => {
     const { container } = renderPage();
     await openNewFormAndFillValid(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -738,7 +738,7 @@ describe('BrainTemplatesPage — save errors', () => {
     const { container } = renderPage();
     await openNewFormAndFillValid(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create template'),
+      b.textContent?.includes('Crear plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -864,7 +864,7 @@ describe('BrainTemplatesPage — try it', () => {
       b.textContent?.includes(tpl.name),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Try it'));
+    await waitFor(() => expect(container.textContent).toContain('Probar'));
   }
 
   it('navigates to the new knowledge note on success', async () => {
@@ -878,7 +878,7 @@ describe('BrainTemplatesPage — try it', () => {
     const { container } = renderPage();
     await selectExistingTemplate(container, tpl);
     const tryBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Try it'),
+      b.textContent?.includes('Probar'),
     ) as HTMLButtonElement;
     fireEvent.click(tryBtn);
     await waitFor(() => {
@@ -897,7 +897,7 @@ describe('BrainTemplatesPage — try it', () => {
     const { container } = renderPage();
     await selectExistingTemplate(container, tpl);
     const tryBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Try it'),
+      b.textContent?.includes('Probar'),
     ) as HTMLButtonElement;
     fireEvent.click(tryBtn);
     await waitFor(() => {
@@ -916,11 +916,11 @@ describe('BrainTemplatesPage — try it', () => {
     const { container } = renderPage();
     await selectExistingTemplate(container, tpl);
     const tryBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Try it'),
+      b.textContent?.includes('Probar'),
     ) as HTMLButtonElement;
     fireEvent.click(tryBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Try-it failed');
+      expect(container.textContent).toContain('No se pudo aplicar');
     });
   });
 
@@ -935,7 +935,7 @@ describe('BrainTemplatesPage — try it', () => {
     const { container } = renderPage();
     await selectExistingTemplate(container, tpl);
     const tryBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Try it'),
+      b.textContent?.includes('Probar'),
     ) as HTMLButtonElement;
     fireEvent.click(tryBtn);
     await waitFor(() => {
@@ -948,12 +948,12 @@ describe('BrainTemplatesPage — try it', () => {
 
 describe('BrainTemplatesPage — form field interactions', () => {
   async function openNew(container: HTMLElement) {
-    await waitFor(() => expect(container.textContent).toContain('No templates yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay plantillas'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create template'));
+    await waitFor(() => expect(container.textContent).toContain('Crear plantilla'));
   }
 
   it('typing in name field updates the input value', async () => {

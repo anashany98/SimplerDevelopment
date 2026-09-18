@@ -265,7 +265,7 @@ describe('PlaybookRunDetailPage — error state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }, false, 500));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load run');
+      expect(container.textContent).toContain('No se pudo cargar la ejecución');
     });
   });
 
@@ -292,7 +292,7 @@ describe('PlaybookRunDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -318,14 +318,14 @@ describe('PlaybookRunDetailPage — error state', () => {
     fetchMock.mockImplementation(async () => new Promise(() => {}));
     const { container } = renderPage('not-a-number');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid run id');
+      expect(container.textContent).toContain('ID de ejecución no válido');
     });
   });
 
   it('shows "Invalid run id" for id=0', async () => {
     const { container } = renderPage('0');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid run id');
+      expect(container.textContent).toContain('ID de ejecución no válido');
     });
   });
 });
@@ -360,21 +360,21 @@ describe('PlaybookRunDetailPage — populated state', () => {
   it('renders "started by user #N" when startedBy is set', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('started by user #3');
+      expect(container.textContent).toContain('iniciado por el usuario #3');
     });
   });
 
   it('renders "started" relative time when startedAt is set', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('started');
+      expect(container.textContent).toContain('iniciado');
     });
   });
 
   it('does NOT render duration when completedAt is null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Run'));
-    expect(container.textContent).not.toContain('duration');
+    expect(container.textContent).not.toContain('duración');
   });
 
   it('renders duration when both startedAt and completedAt are set', async () => {
@@ -391,7 +391,7 @@ describe('PlaybookRunDetailPage — populated state', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('duration');
+      expect(container.textContent).toContain('duración');
     });
   });
 
@@ -410,14 +410,14 @@ describe('PlaybookRunDetailPage — context section', () => {
   it('renders "Context" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Context');
+      expect(container.textContent).toContain('Contexto');
     });
   });
 
   it('shows "No context variables" message when context is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No context variables were seeded for this run');
+      expect(container.textContent).toContain('No se definieron variables de contexto para esta ejecución');
     });
   });
 
@@ -439,7 +439,7 @@ describe('PlaybookRunDetailPage — steps section', () => {
   it('renders "Steps" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Steps');
+      expect(container.textContent).toContain('Pasos');
     });
   });
 
@@ -535,7 +535,7 @@ describe('PlaybookRunDetailPage — links section', () => {
   it('does NOT render links section when links array is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Run'));
-    expect(container.textContent).not.toContain('Linked entities');
+    expect(container.textContent).not.toContain('Entidades vinculadas');
   });
 
   it('renders "Linked entities" section when links are present', async () => {
@@ -544,7 +544,7 @@ describe('PlaybookRunDetailPage — links section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Linked entities');
+      expect(container.textContent).toContain('Entidades vinculadas');
     });
   });
 
@@ -581,14 +581,14 @@ describe('PlaybookRunDetailPage — abort reason', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('No longer needed');
-      expect(container.textContent).toContain('Aborted:');
+      expect(container.textContent).toContain('Abortado:');
     });
   });
 
   it('does NOT render abortReason box when abortReason is null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Run'));
-    expect(container.textContent).not.toContain('Aborted:');
+    expect(container.textContent).not.toContain('Abortado:');
   });
 });
 
@@ -599,7 +599,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Advance'),
+        (b) => b.textContent?.includes('Avanzar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -610,7 +610,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Advance'),
+        (b) => b.textContent?.includes('Avanzar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -621,7 +621,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Run'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Advance'),
+      (b) => b.textContent?.includes('Avanzar'),
     );
     expect(btn).toBeUndefined();
   });
@@ -685,7 +685,7 @@ describe('PlaybookRunDetailPage — action buttons', () => {
       expect(container.querySelector('button[title]')).toBeTruthy();
     });
     const advanceBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Advance'),
+      (b) => b.textContent?.includes('Avanzar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(advanceBtn); });
     await waitFor(() => {
@@ -740,9 +740,9 @@ describe('PlaybookRunDetailPage — action buttons', () => {
       return makeRes(makeDetailRes());
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Advance'));
+    await waitFor(() => expect(container.textContent).toContain('Avanzar'));
     const advanceBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Advance'),
+      (b) => b.textContent?.includes('Avanzar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(advanceBtn); });
     await waitFor(() => {
@@ -767,13 +767,13 @@ describe('PlaybookRunDetailPage — API fetch shape', () => {
   it('refetches after advance succeeds', async () => {
     fetchMock.mockResolvedValue(makeRes(makeDetailRes()));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Advance'));
+    await waitFor(() => expect(container.textContent).toContain('Avanzar'));
     const callsBefore = fetchMock.mock.calls.filter((c) =>
       String(c[0]).includes('/api/portal/brain/playbook-runs/5') &&
       !(c[1] as RequestInit | undefined)?.method,
     ).length;
     const advanceBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Advance'),
+      (b) => b.textContent?.includes('Avanzar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(advanceBtn); });
     await waitFor(() => {

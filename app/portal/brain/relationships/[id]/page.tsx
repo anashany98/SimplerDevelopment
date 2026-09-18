@@ -61,13 +61,13 @@ export default function RelationshipDetailPage() {
       const r = await fetch(`/api/portal/brain/relationships/${overlayId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load.');
+        setError(json.message || 'No se pudo cargar.');
       } else {
         setData(json.data);
         setError(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -83,17 +83,17 @@ export default function RelationshipDetailPage() {
     });
     const json = await r.json();
     if (!r.ok || !json.success) {
-      setError(json.message || 'Failed to save.');
+      setError(json.message || 'No se pudo guardar.');
       return;
     }
     setData((d) => d ? { ...d, overlay: { ...d.overlay, ...json.data } } : d);
   };
 
   const remove = async () => {
-    if (!confirm('Delete this relationship overlay? The underlying CRM record is unaffected.')) return;
+    if (!confirm('¿Eliminar esta superposición de relación? El registro subyacente del CRM no se modifica.')) return;
     const r = await fetch(`/api/portal/brain/relationships/${overlayId}`, { method: 'DELETE' });
     const json = await r.json().catch(() => ({}));
-    if (!r.ok || !json.success) { setError(json.message || 'Failed to delete.'); return; }
+    if (!r.ok || !json.success) { setError(json.message || 'No se pudo eliminar.'); return; }
     router.push('/portal/brain/relationships');
   };
 
@@ -107,7 +107,7 @@ export default function RelationshipDetailPage() {
     return (
       <div className="max-w-5xl mx-auto py-12">
         <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-3 text-sm text-destructive">
-          {error || 'Relationship not found.'}
+          {error || 'Relación no encontrada.'}
         </div>
       </div>
     );
@@ -132,14 +132,14 @@ export default function RelationshipDetailPage() {
           <span className="flex items-center gap-2 flex-wrap">
             <Link href="/portal/brain/relationships" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
               <span className="material-icons text-sm">arrow_back</span>
-              All relationships
+              Todas las relaciones
             </Link>
             <span>·</span>
             <span>{overlay.relationshipType.replace(/_/g, ' ')}</span>
             <span>·</span>
             <Link href={crmHref} className="hover:text-primary inline-flex items-center gap-0.5">
               <span className="material-icons text-sm">open_in_new</span>
-              View in CRM
+              Ver en el CRM
             </Link>
             {underlying.industry && <><span>·</span><span>{underlying.industry}</span></>}
             {underlying.secondaryName && <><span>·</span><span>{underlying.secondaryName}</span></>}
@@ -165,10 +165,10 @@ export default function RelationshipDetailPage() {
       <div className="grid md:grid-cols-3 gap-4">
         <Stat label="Tareas abiertas" value={tasks.filter((t) => t.status !== 'done').length} icon="checklist" />
         <Stat label="Notas" value={meetings.length} icon="forum" />
-        <Stat label="Linked contacts" value={contacts.length} icon="people" />
+        <Stat label="Contactos vinculados" value={contacts.length} icon="people" />
       </div>
 
-      <Section title="Snapshot" icon="dashboard">
+      <Section title="Instantánea" icon="dashboard">
         <div className="grid sm:grid-cols-2 gap-3">
           <Field label="Prioridad" htmlFor="relationship-priority">
             <select
@@ -180,7 +180,7 @@ export default function RelationshipDetailPage() {
               <option value="low">Baja</option>
               <option value="medium">Media</option>
               <option value="high">Alta</option>
-              <option value="critical">Critical</option>
+              <option value="critical">Crítica</option>
             </select>
           </Field>
           <Field label="Estado" htmlFor="relationship-status">
@@ -191,7 +191,7 @@ export default function RelationshipDetailPage() {
               className={pSelect}
             >
               <option value="active">Activo</option>
-              <option value="paused">Paused</option>
+              <option value="paused">En pausa</option>
               <option value="archived">Archivado</option>
             </select>
           </Field>
@@ -204,7 +204,7 @@ export default function RelationshipDetailPage() {
               className={pInput}
             />
           </Field>
-          <Field label="Stale after (days)">
+          <Field label="Obsoleta tras (días)">
             <input
               type="number"
               min={1}
@@ -270,7 +270,7 @@ export default function RelationshipDetailPage() {
       </Section>
 
       <Section
-        title="Recent notes"
+        title="Notas recientes"
         icon="forum"
         action={<Link href="/portal/brain/communications/new" className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"><span className="material-icons text-sm">add</span>Nuevo</Link>}
       >

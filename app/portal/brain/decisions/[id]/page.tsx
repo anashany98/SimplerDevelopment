@@ -89,15 +89,15 @@ const STATUS_STYLES: Record<BrainDecisionStatus, string> = {
 };
 
 const STATUS_LABEL: Record<BrainDecisionStatus, string> = {
-  accepted: 'Accepted',
-  proposed: 'Proposed',
-  superseded: 'Superseded',
-  rejected: 'Rejected',
+  accepted: 'Aceptada',
+  proposed: 'Propuesta',
+  superseded: 'Sustituida',
+  rejected: 'Rechazada',
 };
 
 const REVERSIBILITY_LABEL: Record<BrainDecisionReversibility, string> = {
-  one_way: 'One-way door',
-  two_way: 'Two-way door',
+  one_way: 'Puerta de un solo sentido',
+  two_way: 'Puerta de doble sentido',
 };
 
 const REVERSIBILITY_ICON: Record<BrainDecisionReversibility, string> = {
@@ -137,7 +137,7 @@ export default function DecisionDetailPage() {
 
   const load = useCallback(async () => {
     if (!Number.isFinite(id)) {
-      setError('Invalid decision id');
+      setError('ID de decisión no válido');
       setLoading(false);
       return;
     }
@@ -168,7 +168,7 @@ export default function DecisionDetailPage() {
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -268,7 +268,7 @@ export default function DecisionDetailPage() {
         setEditSubmitting(false);
         await load();
       } catch (err) {
-        setEditSubmitError(err instanceof Error ? err.message : 'Network error');
+        setEditSubmitError(err instanceof Error ? err.message : 'Error de red');
         setEditSubmitting(false);
       }
     },
@@ -292,7 +292,7 @@ export default function DecisionDetailPage() {
       }
       router.push('/portal/brain/decisions');
     } catch (err) {
-      setRejectError(err instanceof Error ? err.message : 'Network error');
+      setRejectError(err instanceof Error ? err.message : 'Error de red');
       setRejecting(false);
     }
   }, [id, rejectReason, router]);
@@ -301,7 +301,7 @@ export default function DecisionDetailPage() {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
         <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading decision…
+        Cargando decisión…
       </div>
     );
   }
@@ -312,13 +312,13 @@ export default function DecisionDetailPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load decision
+            No se pudo cargar la decisión
           </div>
           <p>{error}</p>
         </div>
         <Link href="/portal/brain/decisions" className="text-sm text-primary hover:underline inline-flex items-center gap-1">
           <span className="material-icons text-base">arrow_back</span>
-          Back to decisions
+          Volver a decisiones
         </Link>
       </div>
     );
@@ -328,10 +328,10 @@ export default function DecisionDetailPage() {
   const decisionMakerName = d.decisionMakerId
     ? team.find((m) => m.userId === d.decisionMakerId)?.name
       ?? team.find((m) => m.userId === d.decisionMakerId)?.email
-      ?? `User #${d.decisionMakerId}`
-    : 'Unspecified';
+      ?? `Usuario #${d.decisionMakerId}`
+    : 'Sin especificar';
 
-  const decidedAtNice = new Date(d.decidedAt).toLocaleDateString('en-US', {
+  const decidedAtNice = new Date(d.decidedAt).toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -360,20 +360,20 @@ export default function DecisionDetailPage() {
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">edit</span>
-              Edit decision
+              Editar decisión
             </span>
           }
           subtitle={
             <>
-              Rationale, decision text, and reversibility are immutable — to change those,{' '}
+              La justificación, el texto de la decisión y la reversibilidad son inmutables; para cambiarlos,{' '}
               <button
                 type="button"
                 onClick={() => router.push(`/portal/brain/decisions/new?supersedes=${id}`)}
                 className="underline hover:text-foreground"
               >
-                supersede this decision
+                sustituye esta decisión
               </button>{' '}
-              instead.
+              en su lugar.
             </>
           }
         />
@@ -381,7 +381,7 @@ export default function DecisionDetailPage() {
           mode="edit"
           initial={initial}
           cancelHref={`/portal/brain/decisions/${id}`}
-          submitLabel="Save changes"
+          submitLabel="Guardar cambios"
           onSubmit={handleEditSubmit}
           submitting={editSubmitting}
           submitError={editSubmitError}
@@ -394,7 +394,7 @@ export default function DecisionDetailPage() {
         <div className="border-t border-border pt-4">
           <div className="text-sm font-medium text-foreground mb-2 flex items-center gap-1.5">
             <span className="material-icons text-base text-primary">sell</span>
-            Topics
+            Temas
           </div>
           <TopicPicker
             selectedTopicIds={topicIdsDraft}
@@ -416,7 +416,7 @@ export default function DecisionDetailPage() {
             className={pBtnGhost}
           >
             <span className="material-icons text-base">close</span>
-            Cancel edit
+            Cancelar edición
           </button>
         </div>
       </div>
@@ -428,7 +428,7 @@ export default function DecisionDetailPage() {
       {/* Back link */}
       <Link href="/portal/brain/decisions" className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
         <span className="material-icons text-base">arrow_back</span>
-        Decisions
+        Decisiones
       </Link>
 
       {/* Header */}
@@ -483,7 +483,7 @@ export default function DecisionDetailPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">history</span>
-                Supersede
+                Sustituir
               </button>
             )}
             {d.status !== 'rejected' && (
@@ -493,7 +493,7 @@ export default function DecisionDetailPage() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-xl border border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10"
               >
                 <span className="material-icons text-base">cancel</span>
-                Reject
+                Rechazar
               </button>
             )}
           </div>
@@ -505,16 +505,16 @@ export default function DecisionDetailPage() {
         <div className="bg-rose-500/5 border border-rose-500/30 rounded-2xl p-4 space-y-3">
           <div className="flex items-center gap-2 text-sm text-rose-700 dark:text-rose-400 font-medium">
             <span className="material-icons text-base">warning</span>
-            Reject this decision?
+            ¿Rechazar esta decisión?
           </div>
           <p className="text-xs text-muted-foreground">
-            Soft-rejects the decision (status → rejected). The row stays in history; you can&apos;t hard-delete it.
+            Descarta la decisión (estado → rechazada). La fila permanece en el historial; no se puede eliminar por completo.
           </p>
           <input
             type="text"
             value={rejectReason}
             onChange={(e) => setRejectReason(e.target.value)}
-            placeholder="Reason (optional)"
+            placeholder="Motivo (opcional)"
             className={pInput}
           />
           {rejectError && (
@@ -531,7 +531,7 @@ export default function DecisionDetailPage() {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-xl bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-50"
             >
               {rejecting && <span className="material-icons animate-spin text-base">progress_activity</span>}
-              Confirm reject
+              Confirmar rechazo
             </button>
             <button
               type="button"
@@ -548,7 +548,7 @@ export default function DecisionDetailPage() {
         <div className="flex items-center gap-1.5 flex-wrap">
           <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
             <span className="material-icons text-[14px] leading-none">sell</span>
-            Topics:
+            Temas:
           </span>
           {topicSummaries.map((t) => (
             <span
@@ -572,7 +572,7 @@ export default function DecisionDetailPage() {
       {d.context && (
         <Section
           icon="info"
-          title="Context"
+          title="Contexto"
           collapsible={(d.context.length ?? 0) > 400}
           collapsed={collapsedContext}
           onToggle={() => setCollapsedContext((v) => !v)}
@@ -585,13 +585,13 @@ export default function DecisionDetailPage() {
       <section className="bg-primary/5 border border-primary/20 rounded-2xl p-5">
         <div className="text-xs font-medium text-primary mb-2 flex items-center gap-1.5 uppercase tracking-wide">
           <span className="material-icons text-base">check_circle</span>
-          Decision
+          Decisión
         </div>
         <p className="text-base font-medium text-foreground whitespace-pre-wrap">{d.decision}</p>
       </section>
 
       {/* Rationale */}
-      <Section icon="psychology" title="Rationale">
+      <Section icon="psychology" title="Justificación">
         <p className="text-sm text-foreground whitespace-pre-wrap">{d.rationale}</p>
       </Section>
 
@@ -599,7 +599,7 @@ export default function DecisionDetailPage() {
       {d.alternativesConsidered && (
         <Section
           icon="alt_route"
-          title="Alternatives considered"
+          title="Alternativas consideradas"
           collapsible
           collapsed={collapsedAlternatives}
           onToggle={() => setCollapsedAlternatives((v) => !v)}
@@ -612,7 +612,7 @@ export default function DecisionDetailPage() {
       <AnchorsRow row={d} />
 
       {/* Supersede chain */}
-      <Section icon="history" title="Supersede chain">
+      <Section icon="history" title="Cadena de sustituciones">
         <DecisionSupersedeChain
           ancestors={data.ancestors}
           current={{ id: d.id, title: d.title, decidedAt: d.decidedAt, status: d.status }}
@@ -668,14 +668,14 @@ function Section({
 
 function AnchorsRow({ row }: { row: DecisionDetailRow }) {
   const anchors: Array<{ icon: string; label: string; href: string | null }> = [];
-  if (row.meetingId) anchors.push({ icon: 'event', label: `Meeting #${row.meetingId}`, href: null });
-  if (row.noteId) anchors.push({ icon: 'description', label: `Note #${row.noteId}`, href: `/portal/brain/knowledge?id=${row.noteId}` });
-  if (row.companyId) anchors.push({ icon: 'business', label: `Company #${row.companyId}`, href: `/portal/crm/companies/${row.companyId}` });
-  if (row.dealId) anchors.push({ icon: 'handshake', label: `Deal #${row.dealId}`, href: `/portal/crm/deals/${row.dealId}` });
+  if (row.meetingId) anchors.push({ icon: 'event', label: `Reunión #${row.meetingId}`, href: null });
+  if (row.noteId) anchors.push({ icon: 'description', label: `Nota #${row.noteId}`, href: `/portal/brain/knowledge?id=${row.noteId}` });
+  if (row.companyId) anchors.push({ icon: 'business', label: `Empresa #${row.companyId}`, href: `/portal/crm/companies/${row.companyId}` });
+  if (row.dealId) anchors.push({ icon: 'handshake', label: `Oportunidad #${row.dealId}`, href: `/portal/crm/deals/${row.dealId}` });
   if (anchors.length === 0) return null;
 
   return (
-    <Section icon="anchor" title="Anchors">
+    <Section icon="anchor" title="Anclas">
       <div className="flex items-center gap-2 flex-wrap">
         {anchors.map((a, i) => {
           const inner = (

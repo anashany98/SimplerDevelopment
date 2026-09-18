@@ -233,7 +233,7 @@ describe('DecisionDetailPage — loading state', () => {
   it('shows loading spinner before data resolves', () => {
     fetchMock.mockImplementation(() => new Promise(() => { /* pending */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -243,7 +243,7 @@ describe('DecisionDetailPage — invalid id', () => {
   it('shows error for non-numeric id', async () => {
     const { container } = renderPageWithId('abc');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid decision id');
+      expect(container.textContent).toContain('ID de decisión no válido');
     });
   });
 
@@ -281,7 +281,7 @@ describe('DecisionDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn");
+      expect(container.textContent).toContain('No se pudo cargar la decisión');
     });
   });
 
@@ -308,7 +308,7 @@ describe('DecisionDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -380,7 +380,7 @@ describe('DecisionDetailPage — successful render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -393,7 +393,7 @@ describe('DecisionDetailPage — successful render', () => {
       expect(container.textContent).toContain('Test Decision');
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Reject'),
+      (b) => b.textContent?.trim().includes('Rechazar'),
     );
     expect(btn).toBeFalsy();
   });
@@ -403,10 +403,10 @@ describe('DecisionDetailPage — successful render', () => {
 
 describe('DecisionDetailPage — status chips', () => {
   it.each([
-    ['accepted', 'Accepted'],
-    ['proposed', 'Proposed'],
-    ['superseded', 'Superseded'],
-    ['rejected', 'Rejected'],
+    ['accepted', 'Aceptada'],
+    ['proposed', 'Propuesta'],
+    ['superseded', 'Sustituida'],
+    ['rejected', 'Rechazada'],
   ] as const)('renders %s status as "%s"', async (status, label) => {
     setupDefault({ status });
     const { container } = renderPage();
@@ -419,7 +419,7 @@ describe('DecisionDetailPage — status chips', () => {
     setupDefault({ reversibility: 'two_way' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Two-way door');
+      expect(container.textContent).toContain('Puerta de doble sentido');
     });
   });
 
@@ -427,7 +427,7 @@ describe('DecisionDetailPage — status chips', () => {
     setupDefault({ reversibility: 'one_way' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('One-way door');
+      expect(container.textContent).toContain('Puerta de un solo sentido');
     });
   });
 });
@@ -471,7 +471,7 @@ describe('DecisionDetailPage — Supersede button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Supersede'),
+        (b) => b.textContent?.includes('Sustituir'),
       );
       expect(btn).toBeTruthy();
     });
@@ -484,7 +484,7 @@ describe('DecisionDetailPage — Supersede button', () => {
       expect(container.textContent).toContain('Test Decision');
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Supersede'),
+      (b) => b.textContent?.includes('Sustituir'),
     );
     expect(btn).toBeFalsy();
   });
@@ -494,7 +494,7 @@ describe('DecisionDetailPage — Supersede button', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Supersede'),
+        (b) => b.textContent?.includes('Sustituir'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -513,7 +513,7 @@ describe('DecisionDetailPage — decision maker', () => {
     setupDefault({ decisionMakerId: null });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Unspecified');
+      expect(container.textContent).toContain('Sin especificar');
     });
   });
 
@@ -576,7 +576,7 @@ describe('DecisionDetailPage — decision maker', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 
@@ -620,7 +620,7 @@ describe('DecisionDetailPage — topic chips', () => {
       expect(container.textContent).toContain('Test Decision');
     });
     // No sell icon for Topics label should appear
-    expect(container.textContent).not.toContain('Topics:');
+    expect(container.textContent).not.toContain('Temas:');
   });
 
   it('topic chips show topic icon and name', async () => {
@@ -720,14 +720,14 @@ describe('DecisionDetailPage — alternatives section', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Test Decision');
     });
-    expect(container.textContent).not.toContain('Alternatives considered');
+    expect(container.textContent).not.toContain('Alternativas consideradas');
   });
 
   it('renders Alternatives section when present', async () => {
     setupDefault({ alternativesConsidered: 'Option B was considered but too expensive.' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Alternatives considered');
+      expect(container.textContent).toContain('Alternativas consideradas');
     });
   });
 
@@ -735,7 +735,7 @@ describe('DecisionDetailPage — alternatives section', () => {
     setupDefault({ alternativesConsidered: 'Option B' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Alternatives considered');
+      expect(container.textContent).toContain('Alternativas consideradas');
     });
     // The section starts collapsed when alternativesConsidered has content.
     // Wait for the Show toggle to be present, then re-query it fresh right
@@ -764,14 +764,14 @@ describe('DecisionDetailPage — AnchorsRow', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Test Decision');
     });
-    expect(container.textContent).not.toContain('Anchors');
+    expect(container.textContent).not.toContain('Anclas');
   });
 
   it('renders Anchors section with meetingId', async () => {
     setupDefault({ meetingId: 42 });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Meeting #42');
+      expect(container.textContent).toContain('Reunión #42');
     });
   });
 
@@ -779,7 +779,7 @@ describe('DecisionDetailPage — AnchorsRow', () => {
     setupDefault({ noteId: 7 });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Note #7');
+      expect(container.textContent).toContain('Nota #7');
       const link = container.querySelector('a[href*="/portal/brain/knowledge"]');
       expect(link).toBeTruthy();
     });
@@ -789,7 +789,7 @@ describe('DecisionDetailPage — AnchorsRow', () => {
     setupDefault({ companyId: 3 });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Company #3');
+      expect(container.textContent).toContain('Empresa #3');
       const link = container.querySelector('a[href*="/portal/crm/companies"]');
       expect(link).toBeTruthy();
     });
@@ -799,7 +799,7 @@ describe('DecisionDetailPage — AnchorsRow', () => {
     setupDefault({ dealId: 9 });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Deal #9');
+      expect(container.textContent).toContain('Oportunidad #9');
       const link = container.querySelector('a[href*="/portal/crm/deals"]');
       expect(link).toBeTruthy();
     });
@@ -838,7 +838,7 @@ describe('DecisionDetailPage — edit flow', () => {
     });
     // Click Cancel edit
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel edit'),
+      (b) => b.textContent?.includes('Cancelar edición'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(cancelBtn); });
     await waitFor(() => {
@@ -960,7 +960,7 @@ describe('DecisionDetailPage — edit flow', () => {
     });
     // Click the "supersede this decision" button in the edit header
     const supersedeInEdit = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('supersede this decision'),
+      (b) => b.textContent?.includes('sustituye esta decisión'),
     ) as HTMLButtonElement | undefined;
     if (supersedeInEdit) {
       fireEvent.click(supersedeInEdit);
@@ -1067,12 +1067,12 @@ describe('DecisionDetailPage — reject flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
   });
 
@@ -1081,12 +1081,12 @@ describe('DecisionDetailPage — reject flow', () => {
     // Open
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
     // Cancel
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
@@ -1094,7 +1094,7 @@ describe('DecisionDetailPage — reject flow', () => {
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Reject this decision?');
+      expect(container.textContent).not.toContain('¿Rechazar esta decisión?');
     });
   });
 
@@ -1102,14 +1102,14 @@ describe('DecisionDetailPage — reject flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
-    const input = container.querySelector('input[placeholder="Reason (optional)"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder="Motivo (opcional)"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Not viable' } });
     expect(input.value).toBe('Not viable');
   });
@@ -1133,15 +1133,15 @@ describe('DecisionDetailPage — reject flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     fireEvent.click(confirmBtn);
     await waitFor(() => {
@@ -1168,15 +1168,15 @@ describe('DecisionDetailPage — reject flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     fireEvent.click(confirmBtn);
     await waitFor(() => {
@@ -1203,15 +1203,15 @@ describe('DecisionDetailPage — reject flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const rejectBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Reject'),
+        (b) => b.textContent?.trim().includes('Rechazar'),
       ) as HTMLButtonElement;
       fireEvent.click(rejectBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     fireEvent.click(confirmBtn);
     await waitFor(() => {

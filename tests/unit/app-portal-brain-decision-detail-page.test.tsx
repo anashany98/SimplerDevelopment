@@ -220,7 +220,7 @@ describe('DecisionDetailPage — loading', () => {
   it('shows loading text while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 
   it('shows progress_activity icon in loading state', () => {
@@ -289,14 +289,14 @@ describe('DecisionDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
   it('shows "Invalid decision id" for non-numeric id', async () => {
     const { container } = renderPage('notanid');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid decision id');
+      expect(container.textContent).toContain('ID de decisión no válido');
     });
   });
 
@@ -377,10 +377,10 @@ describe('DecisionDetailPage — loaded state (decision fields)', () => {
 
 describe('DecisionDetailPage — status chip variants', () => {
   const statusVariants: Array<[string, string]> = [
-    ['accepted', 'Accepted'],
-    ['proposed', 'Proposed'],
-    ['superseded', 'Superseded'],
-    ['rejected', 'Rejected'],
+    ['accepted', 'Aceptada'],
+    ['proposed', 'Propuesta'],
+    ['superseded', 'Sustituida'],
+    ['rejected', 'Rechazada'],
   ];
 
   statusVariants.forEach(([status, label]) => {
@@ -409,14 +409,14 @@ describe('DecisionDetailPage — reversibility chip', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('One-way door');
+      expect(container.textContent).toContain('Puerta de un solo sentido');
     });
   });
 
   it('renders "Two-way door" for two_way reversibility', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Two-way door');
+      expect(container.textContent).toContain('Puerta de doble sentido');
     });
   });
 
@@ -546,7 +546,7 @@ describe('DecisionDetailPage — alternatives considered', () => {
   it('does NOT render alternatives section when null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
-    expect(container.textContent).not.toContain('Alternatives considered');
+    expect(container.textContent).not.toContain('Alternativas consideradas');
   });
 
   it('renders alternatives section when provided', async () => {
@@ -558,7 +558,7 @@ describe('DecisionDetailPage — alternatives considered', () => {
     const { container } = renderPage();
     // Section header is always shown; content is collapsed by default when alternatives are present.
     await waitFor(() => {
-      expect(container.textContent).toContain('Alternatives considered');
+      expect(container.textContent).toContain('Alternativas consideradas');
     });
     // Expand the section to reveal the content.
     const showBtn = Array.from(container.querySelectorAll('button')).find(
@@ -618,7 +618,7 @@ describe('DecisionDetailPage — topics chips', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Topics:');
+      expect(container.textContent).toContain('Temas:');
     });
   });
 });
@@ -629,7 +629,7 @@ describe('DecisionDetailPage — anchors row', () => {
   it('does NOT render anchors section when all anchor IDs are null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
-    expect(container.textContent).not.toContain('Anchors');
+    expect(container.textContent).not.toContain('Anclas');
   });
 
   it('renders meeting anchor (no link)', async () => {
@@ -640,7 +640,7 @@ describe('DecisionDetailPage — anchors row', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Meeting #10');
+      expect(container.textContent).toContain('Reunión #10');
     });
   });
 
@@ -654,7 +654,7 @@ describe('DecisionDetailPage — anchors row', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/knowledge?id=7"]');
       expect(link).toBeTruthy();
-      expect(container.textContent).toContain('Note #7');
+      expect(container.textContent).toContain('Nota #7');
     });
   });
 
@@ -668,7 +668,7 @@ describe('DecisionDetailPage — anchors row', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/crm/companies/3"]');
       expect(link).toBeTruthy();
-      expect(container.textContent).toContain('Company #3');
+      expect(container.textContent).toContain('Empresa #3');
     });
   });
 
@@ -682,7 +682,7 @@ describe('DecisionDetailPage — anchors row', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/crm/deals/5"]');
       expect(link).toBeTruthy();
-      expect(container.textContent).toContain('Deal #5');
+      expect(container.textContent).toContain('Oportunidad #5');
     });
   });
 });
@@ -704,7 +704,7 @@ describe('DecisionDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Supersede'),
+        (b) => b.textContent?.includes('Sustituir'),
       );
       expect(btn).toBeTruthy();
     });
@@ -719,7 +719,7 @@ describe('DecisionDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Supersede'),
+      (b) => b.textContent?.includes('Sustituir'),
     );
     expect(btn).toBeFalsy();
   });
@@ -728,7 +728,7 @@ describe('DecisionDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reject'),
+        (b) => b.textContent?.includes('Rechazar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -741,9 +741,9 @@ describe('DecisionDetailPage — action buttons', () => {
       return makeRes(makeDetailResponse({ status: 'rejected' }));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rejected'));
+    await waitFor(() => expect(container.textContent).toContain('Rechazada'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reject'),
+      (b) => b.textContent?.includes('Rechazar'),
     );
     expect(btn).toBeFalsy();
   });
@@ -752,12 +752,12 @@ describe('DecisionDetailPage — action buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Supersede'),
+        (b) => b.textContent?.includes('Sustituir'),
       );
       expect(btn).toBeTruthy();
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Supersede'),
+      (b) => b.textContent?.includes('Sustituir'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     expect(pushMock).toHaveBeenCalledWith('/portal/brain/decisions/new?supersedes=42');
@@ -769,11 +769,11 @@ describe('DecisionDetailPage — action buttons', () => {
 describe('DecisionDetailPage — reject confirm dialog', () => {
   async function openRejectDialog(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reject'),
+      (b) => b.textContent?.includes('Rechazar'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Reject this decision?');
+      expect(container.textContent).toContain('¿Rechazar esta decisión?');
     });
   }
 
@@ -781,7 +781,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
-    expect(container.textContent).toContain('Reject this decision?');
+    expect(container.textContent).toContain('¿Rechazar esta decisión?');
   });
 
   it('closes reject dialog when Cancel is clicked', async () => {
@@ -793,7 +793,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Reject this decision?');
+      expect(container.textContent).not.toContain('¿Rechazar esta decisión?');
     });
   });
 
@@ -801,7 +801,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
-    const input = container.querySelector('input[placeholder="Reason (optional)"]');
+    const input = container.querySelector('input[placeholder="Motivo (opcional)"]');
     expect(input).toBeTruthy();
   });
 
@@ -810,7 +810,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(confirmBtn); });
     await waitFor(() => {
@@ -826,10 +826,10 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
-    const input = container.querySelector('input[placeholder="Reason (optional)"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder="Motivo (opcional)"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'No longer needed' } });
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(confirmBtn); });
     await waitFor(() => {
@@ -855,7 +855,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(confirmBtn); });
     await waitFor(() => {
@@ -874,7 +874,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Confirm reject'),
+      (b) => b.textContent?.includes('Confirmar rechazo'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(confirmBtn); });
     await waitFor(() => {
@@ -906,7 +906,7 @@ describe('DecisionDetailPage — edit mode', () => {
     ) as HTMLButtonElement;
     fireEvent.click(editBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit decision');
+      expect(container.textContent).toContain('Editar decisión');
     });
   });
 
@@ -933,7 +933,7 @@ describe('DecisionDetailPage — edit mode', () => {
       expect(container.querySelector('[data-testid="decision-form"]')).toBeTruthy();
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel edit'),
+      (b) => b.textContent?.includes('Cancelar edición'),
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -950,10 +950,10 @@ describe('DecisionDetailPage — edit mode', () => {
     ) as HTMLButtonElement;
     fireEvent.click(editBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('supersede this decision');
+      expect(container.textContent).toContain('sustituye esta decisión');
     });
     const supersedeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('supersede this decision'),
+      (b) => b.textContent?.includes('sustituye esta decisión'),
     ) as HTMLButtonElement;
     fireEvent.click(supersedeBtn);
     expect(pushMock).toHaveBeenCalledWith('/portal/brain/decisions/new?supersedes=42');
@@ -965,7 +965,7 @@ describe('DecisionDetailPage — edit mode', () => {
 describe('DecisionDetailPage — edit submit', () => {
   async function openEditMode(container: HTMLElement) {
     const editBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Edit') && !b.textContent?.includes('Edit decision'),
+      (b) => b.textContent?.includes('Edit') && !b.textContent?.includes('Editar decisión'),
     ) as HTMLButtonElement;
     fireEvent.click(editBtn);
     await waitFor(() => {
@@ -1076,7 +1076,7 @@ describe('DecisionDetailPage — decision maker display', () => {
   it('shows "Unspecified" when decisionMakerId is null', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Unspecified');
+      expect(container.textContent).toContain('Sin especificar');
     });
   });
 
@@ -1122,7 +1122,7 @@ describe('DecisionDetailPage — decision maker display', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 });
