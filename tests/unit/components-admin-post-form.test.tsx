@@ -169,7 +169,7 @@ describe('PostForm — create mode', () => {
   it('shows "Create Post" submit button in create mode', async () => {
     render(<PostForm mode="create" />);
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Create Post/i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Crear entrada/i })).toBeTruthy(),
     );
   });
 
@@ -183,7 +183,7 @@ describe('PostForm — create mode', () => {
 
   it('renders form element in create mode', async () => {
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
     // The form tag is present — title is managed as state via handleTitleChange
     expect(document.querySelector('form')).toBeTruthy();
     // The layout title span starts empty for a new post
@@ -197,10 +197,10 @@ describe('PostForm — create mode', () => {
         post={{ id: 1, title: 'Original', slug: 'original', postType: 'blog', content: '', published: false }}
       />,
     );
-    await waitFor(() => screen.getByRole('button', { name: /Update Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Actualizar entrada/i }));
     // Edit mode: slug stays as 'original' even when title changes
     // We verify the Update Post button shows (confirming edit mode branch)
-    expect(screen.getByRole('button', { name: /Update Post/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Actualizar entrada/i })).toBeTruthy();
   });
 });
 
@@ -219,7 +219,7 @@ describe('PostForm — edit mode', () => {
 
   it('renders "Update Post" button in edit mode', async () => {
     render(<PostForm mode="edit" post={existingPost} />);
-    await waitFor(() => expect(screen.getByRole('button', { name: /Update Post/i })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('button', { name: /Actualizar entrada/i })).toBeTruthy());
   });
 
   it('initializes form with existing post title via layout title display', async () => {
@@ -270,7 +270,7 @@ describe('PostForm — edit mode', () => {
 describe('PostForm — handleSubmit (create)', () => {
   it('POSTs to /api/posts and redirects on success', async () => {
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -295,7 +295,7 @@ describe('PostForm — handleSubmit (create)', () => {
     }) as any;
 
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -314,13 +314,13 @@ describe('PostForm — handleSubmit (create)', () => {
     }) as any;
 
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
     });
 
-    await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Failed to save post'));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('No se pudo guardar la entrada'));
     alertSpy.mockRestore();
   });
 
@@ -333,13 +333,13 @@ describe('PostForm — handleSubmit (create)', () => {
     }) as any;
 
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
     });
 
-    await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('An error occurred'));
+    await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Se ha producido un error'));
     alertSpy.mockRestore();
   });
 
@@ -354,12 +354,12 @@ describe('PostForm — handleSubmit (create)', () => {
     }) as any;
 
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     act(() => { fireEvent.submit(document.querySelector('form')!); });
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Saving\.\.\./i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Guardando\.\.\./i })).toBeTruthy(),
     );
 
     // Resolve and clean up
@@ -379,7 +379,7 @@ describe('PostForm — handleSubmit (edit)', () => {
 
   it('PUTs to /api/posts/:id and redirects on success', async () => {
     render(<PostForm mode="edit" post={existingPost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Update Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Actualizar entrada/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -396,7 +396,7 @@ describe('PostForm — handleSubmit (edit)', () => {
 
   it('sends content as raw text when contentMode is raw', async () => {
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     // Switch to raw mode via the PostFormInner stub
     fireEvent.click(screen.getByTestId('set-raw-mode'));
@@ -420,7 +420,7 @@ describe('PostForm — handleSubmit (edit)', () => {
 
   it('serializes blocks to JSON when contentMode is blocks', async () => {
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     await act(async () => { fireEvent.submit(document.querySelector('form')!); });
 
@@ -513,7 +513,7 @@ describe('PostForm — editor mode switching', () => {
     fireEvent.click(screen.getByTestId('set-raw-mode'));
     const textarea = document.querySelector('textarea#content') as HTMLTextAreaElement;
     expect(textarea).toBeTruthy();
-    expect(textarea.placeholder).toContain('Post content');
+    expect(textarea.placeholder).toContain('Contenido de la entrada');
   });
 
   it('shows classic BlockEditor when mode is classic', async () => {
@@ -587,7 +587,7 @@ describe('PostForm — fetch error handling', () => {
 describe('PostForm — title input and slug generation', () => {
   it('updates title via the title input and auto-generates slug in create mode', async () => {
     render(<PostForm mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Post/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear entrada/i }));
 
     // The layout title reflects formData.title
     const titleInput = document.querySelector('input[placeholder="Post title"]') as HTMLInputElement

@@ -81,7 +81,7 @@ describe('DeletePostButton', () => {
 
   it('renders the Delete label initially', () => {
     render(<DeletePostButton postId={42} />);
-    expect(screen.getByRole('button')).toHaveTextContent('Delete');
+    expect(screen.getByRole('button')).toHaveTextContent('Eliminar');
   });
 
   it('does nothing when confirm is rejected', async () => {
@@ -112,7 +112,7 @@ describe('DeletePostButton', () => {
     await act(async () => {
       fireEvent.click(screen.getByRole('button'));
     });
-    expect(alertSpy).toHaveBeenCalledWith('Failed to delete post');
+    expect(alertSpy).toHaveBeenCalledWith('No se pudo eliminar la entrada');
     expect(refreshMock).not.toHaveBeenCalled();
   });
 
@@ -124,7 +124,7 @@ describe('DeletePostButton', () => {
     await act(async () => {
       fireEvent.click(screen.getByRole('button'));
     });
-    expect(alertSpy).toHaveBeenCalledWith('An error occurred');
+    expect(alertSpy).toHaveBeenCalledWith('Se ha producido un error');
   });
 });
 
