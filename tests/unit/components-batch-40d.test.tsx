@@ -227,8 +227,8 @@ describe('CreateSnapshotButton', () => {
 describe('EnableBrainBanner', () => {
   it('renders the call-to-action heading and an Enable button', () => {
     render(<EnableBrainBanner />);
-    expect(screen.getByText(/Turn this dashboard into a command center/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Enable Company Brain/i })).toBeTruthy();
+    expect(screen.getByText(/Convierte este panel en un centro de mando/i)).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Activar Cerebro de empresa/i })).toBeTruthy();
   });
 
   it('renders a "Learn more" link to /portal/brain', () => {
@@ -241,7 +241,7 @@ describe('EnableBrainBanner', () => {
     mockFetchOnce({ success: true });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     expect((globalThis as any).fetch).toHaveBeenCalledWith(
       '/api/portal/brain/settings',
@@ -263,7 +263,7 @@ describe('EnableBrainBanner', () => {
     });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('No quota')).toBeTruthy();
@@ -275,7 +275,7 @@ describe('EnableBrainBanner', () => {
     (globalThis as any).fetch = vi.fn().mockRejectedValueOnce(new Error('Network down'));
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Network down')).toBeTruthy();
@@ -289,10 +289,10 @@ describe('EnableBrainBanner', () => {
     });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText(/Failed to enable Company Brain/i)).toBeTruthy();
+      expect(screen.getByText(/No se ha podido activar el Cerebro de empresa/i)).toBeTruthy();
     });
   });
 });
