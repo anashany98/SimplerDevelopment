@@ -185,7 +185,7 @@ describe('GlossaryTermForm — initial render (create)', () => {
   it('does not render Cancel button when onCancel not provided', () => {
     const { container } = renderCreate();
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeUndefined();
   });
@@ -193,7 +193,7 @@ describe('GlossaryTermForm — initial render (create)', () => {
   it('renders Cancel button when onCancel is provided', () => {
     const { container } = renderCreate({ onCancel: vi.fn() });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeTruthy();
   });
@@ -835,7 +835,7 @@ describe('GlossaryTermForm — cancel button', () => {
     const onCancel = vi.fn();
     const { container } = renderCreate({ onCancel });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     )!;
     fireEvent.click(cancelBtn);
     expect(onCancel).toHaveBeenCalledOnce();
