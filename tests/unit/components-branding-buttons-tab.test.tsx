@@ -90,22 +90,22 @@ function renderTab(profileOverrides: Partial<ProfileData> = {}) {
 describe('ButtonsTab — basic render', () => {
   it('renders the Button Style heading', () => {
     renderTab();
-    expect(screen.getByText('Button Style')).toBeInTheDocument();
+    expect(screen.getByText('Estilo de botones')).toBeInTheDocument();
   });
 
   it('renders the "Default Variant" label', () => {
     renderTab();
-    expect(screen.getByText('Default Variant')).toBeInTheDocument();
+    expect(screen.getByText('Variante predeterminada')).toBeInTheDocument();
   });
 
   it('renders the "Button Border Radius" label', () => {
     renderTab();
-    expect(screen.getByText('Button Border Radius')).toBeInTheDocument();
+    expect(screen.getByText('Radio del borde del botón')).toBeInTheDocument();
   });
 
   it('renders the "Button Presets" heading', () => {
     renderTab();
-    expect(screen.getByText('Button Presets')).toBeInTheDocument();
+    expect(screen.getByText('Preajustes de botones')).toBeInTheDocument();
   });
 
   it('renders the Preview section label', () => {
@@ -116,7 +116,7 @@ describe('ButtonsTab — basic render', () => {
   it('renders "Add preset" button', () => {
     renderTab();
     // Use getByRole to avoid matching the empty-state p tag that also contains "Add preset"
-    expect(screen.getByRole('button', { name: /Add preset/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir preajuste/i })).toBeInTheDocument();
   });
 });
 
@@ -173,39 +173,39 @@ describe('ButtonsTab — variant selector', () => {
 describe('ButtonsTab — border radius presets', () => {
   it('renders all four radius preset buttons', () => {
     renderTab();
-    expect(screen.getByText('Sharp')).toBeInTheDocument();
-    expect(screen.getByText('Subtle')).toBeInTheDocument();
-    expect(screen.getByText('Rounded')).toBeInTheDocument();
-    expect(screen.getByText('Pill')).toBeInTheDocument();
+    expect(screen.getByText('Angular')).toBeInTheDocument();
+    expect(screen.getByText('Sutil')).toBeInTheDocument();
+    expect(screen.getByText('Redondeado')).toBeInTheDocument();
+    expect(screen.getByText('Pastilla')).toBeInTheDocument();
   });
 
   it('calls updateButtonStyle with borderRadius=0px when Sharp clicked', () => {
     renderTab();
-    fireEvent.click(screen.getByText('Sharp'));
+    fireEvent.click(screen.getByText('Angular'));
     expect(updateButtonStyle).toHaveBeenCalledWith({ borderRadius: '0px' });
   });
 
   it('calls updateButtonStyle with borderRadius=4px when Subtle clicked', () => {
     renderTab();
-    fireEvent.click(screen.getByText('Subtle'));
+    fireEvent.click(screen.getByText('Sutil'));
     expect(updateButtonStyle).toHaveBeenCalledWith({ borderRadius: '4px' });
   });
 
   it('calls updateButtonStyle with borderRadius=8px when Rounded clicked', () => {
     renderTab();
-    fireEvent.click(screen.getByText('Rounded'));
+    fireEvent.click(screen.getByText('Redondeado'));
     expect(updateButtonStyle).toHaveBeenCalledWith({ borderRadius: '8px' });
   });
 
   it('calls updateButtonStyle with borderRadius=9999px when Pill clicked', () => {
     renderTab();
-    fireEvent.click(screen.getByText('Pill'));
+    fireEvent.click(screen.getByText('Pastilla'));
     expect(updateButtonStyle).toHaveBeenCalledWith({ borderRadius: '9999px' });
   });
 
   it('highlights the active radius preset', () => {
     renderTab({ buttonStyle: { borderRadius: '8px' } });
-    const rounded = screen.getByText('Rounded').closest('button')!;
+    const rounded = screen.getByText('Redondeado').closest('button')!;
     expect(rounded.className).toContain('border-primary');
   });
 });
@@ -292,12 +292,12 @@ describe('ButtonsTab — button preview', () => {
   it('renders Primary Button preview element', () => {
     renderTab();
     // Multiple "Primary Button" texts exist (multiple preview buttons); just check at least one
-    expect(screen.getAllByText('Primary Button').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Botón primario').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders Secondary Button preview element', () => {
     renderTab();
-    expect(screen.getAllByText('Secondary Button').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Botón secundario').length).toBeGreaterThanOrEqual(1);
   });
 
   it('shows "Outline" label in preview when variant is filled', () => {
@@ -319,12 +319,12 @@ describe('ButtonsTab — button preview', () => {
 describe('ButtonsTab — button presets empty state', () => {
   it('shows empty-state message when there are no presets', () => {
     renderTab({ buttonPresets: [] });
-    expect(screen.getByText(/No presets yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Aún no hay preajustes/i)).toBeInTheDocument();
   });
 
   it('does not show empty-state message when presets exist', () => {
     renderTab({ buttonPresets: [makePreset()] });
-    expect(screen.queryByText(/No presets yet/i)).toBeNull();
+    expect(screen.queryByText(/Aún no hay preajustes/i)).toBeNull();
   });
 });
 
@@ -335,38 +335,38 @@ describe('ButtonsTab — button presets empty state', () => {
 describe('ButtonsTab — addPreset', () => {
   it('calls setButtonPresets with a new preset when "Add preset" is clicked', () => {
     renderTab({ buttonPresets: [] });
-    fireEvent.click(screen.getByRole('button', { name: /Add preset/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir preajuste/i }));
     expect(setButtonPresets).toHaveBeenCalledOnce();
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg).toHaveLength(1);
-    expect(arg[0].name).toBe('Primary');
+    expect(arg[0].name).toBe('Primario');
   });
 
   it('names the first preset "Primary"', () => {
     renderTab({ buttonPresets: [] });
-    fireEvent.click(screen.getByRole('button', { name: /Add preset/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir preajuste/i }));
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
-    expect(arg[0].name).toBe('Primary');
+    expect(arg[0].name).toBe('Primario');
   });
 
   it('names additional presets "Preset N"', () => {
     const existing = [makePreset({ id: 'p1', name: 'Primary' })];
     renderTab({ buttonPresets: existing });
-    fireEvent.click(screen.getByRole('button', { name: /Add preset/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir preajuste/i }));
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
-    expect(arg[1].name).toBe('Preset 2');
+    expect(arg[1].name).toBe('Preajuste 2');
   });
 
   it('new preset has backgroundColor=brand.primary', () => {
     renderTab({ buttonPresets: [] });
-    fireEvent.click(screen.getByRole('button', { name: /Add preset/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir preajuste/i }));
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg[0].backgroundColor).toBe('brand.primary');
   });
 
   it('new preset has color=#ffffff', () => {
     renderTab({ buttonPresets: [] });
-    fireEvent.click(screen.getByRole('button', { name: /Add preset/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir preajuste/i }));
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg[0].color).toBe('#ffffff');
   });
@@ -621,7 +621,7 @@ describe('ButtonsTab — PresetPreview sentinel resolution', () => {
     });
     // PresetPreview span shows "Button" when name is falsy
     const spans = document.querySelectorAll('span');
-    const previewSpan = Array.from(spans).find((s) => s.textContent === 'Button');
+    const previewSpan = Array.from(spans).find((s) => s.textContent === 'Botón');
     expect(previewSpan).toBeTruthy();
   });
 });

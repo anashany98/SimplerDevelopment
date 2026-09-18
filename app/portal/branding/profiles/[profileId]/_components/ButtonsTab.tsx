@@ -19,7 +19,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
         : `preset_${Math.random().toString(36).slice(2, 11)}`;
     const newPreset: ButtonPreset = {
       id,
-      name: existing.length === 0 ? 'Primary' : `Preset ${existing.length + 1}`,
+      name: existing.length === 0 ? 'Primario' : `Preajuste ${existing.length + 1}`,
       backgroundColor: 'brand.primary',
       color: '#ffffff',
       borderRadius: 'brand.btnRadius',
@@ -53,13 +53,13 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
       <div>
         <h2 className="text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
           <span className="material-icons text-base">smart_button</span>
-          Button Style
+          Estilo de botones
         </h2>
         <p className="text-sm text-muted-foreground mb-4">Estilo predeterminado de botones y CTA en todos los bloques.</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className={LABEL_CLASS}>Default Variant</label>
+            <label className={LABEL_CLASS}>Variante predeterminada</label>
             <div className="flex gap-2">
               {(['filled', 'outline'] as const).map((v) => (
                 <button
@@ -78,7 +78,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
             </div>
           </div>
           <div>
-            <label className={LABEL_CLASS}>Button Border Radius</label>
+            <label className={LABEL_CLASS}>Radio del borde del botón</label>
             <input
               type="text"
               value={profile.buttonStyle?.borderRadius || ''}
@@ -92,10 +92,10 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {[
-            { value: '0px', label: 'Sharp' },
-            { value: '4px', label: 'Subtle' },
-            { value: '8px', label: 'Rounded' },
-            { value: '9999px', label: 'Pill' },
+            { value: '0px', label: 'Angular' },
+            { value: '4px', label: 'Sutil' },
+            { value: '8px', label: 'Redondeado' },
+            { value: '9999px', label: 'Pastilla' },
           ].map((opt) => (
             <button
               key={opt.value}
@@ -124,7 +124,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Primary Button */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-foreground">Primary Button</h3>
+          <h3 className="text-sm font-semibold text-foreground">Botón primario</h3>
           <div>
             <label className={LABEL_CLASS}>Fondo</label>
             <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
             </div>
           </div>
           <div>
-            <label className={LABEL_CLASS}>Text Color</label>
+            <label className={LABEL_CLASS}>Color del texto</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -162,7 +162,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
             </div>
           </div>
           <div>
-            <label className={LABEL_CLASS}>Hover Background</label>
+            <label className={LABEL_CLASS}>Fondo al pasar el cursor</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -183,7 +183,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
 
         {/* Secondary Button */}
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-foreground">Secondary Button</h3>
+          <h3 className="text-sm font-semibold text-foreground">Botón secundario</h3>
           <div>
             <label className={LABEL_CLASS}>Fondo</label>
             <div className="flex items-center gap-2">
@@ -203,7 +203,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
             </div>
           </div>
           <div>
-            <label className={LABEL_CLASS}>Text Color</label>
+            <label className={LABEL_CLASS}>Color del texto</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -221,7 +221,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
             </div>
           </div>
           <div>
-            <label className={LABEL_CLASS}>Hover Background</label>
+            <label className={LABEL_CLASS}>Fondo al pasar el cursor</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -263,7 +263,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   : '2px solid transparent',
             }}
           >
-            Primary Button
+            Botón primario
           </button>
           <button
             className="px-5 py-2.5 text-sm font-medium transition-colors"
@@ -283,7 +283,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   : '2px solid transparent',
             }}
           >
-            Secondary Button
+            Botón secundario
           </button>
           <span className="text-xs text-muted-foreground mx-2">|</span>
           <span className="text-[11px] text-muted-foreground">
@@ -307,7 +307,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   : '2px solid transparent',
             }}
           >
-            Primary Button
+            Botón primario
           </button>
         </div>
       </div>
@@ -317,24 +317,24 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
         <div className="flex items-baseline justify-between mb-1">
           <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-base">collections_bookmark</span>
-            Button Presets
+            Preajustes de botones
           </h2>
           <button
             onClick={addPreset}
             className="text-xs font-medium text-primary hover:text-primary/80 inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">add_circle_outline</span>
-            Add preset
+            Añadir preajuste
           </button>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          Named button styles that editors can select from the CMS. Values accept brand sentinels (
-          {`"brand.primary"`}) so presets track palette changes.
+          Estilos de botón con nombre que los editores pueden seleccionar en el CMS. Los valores aceptan centinelas de marca (
+          {`"brand.primary"`}) para que los preajustes sigan los cambios de paleta.
         </p>
 
         {(profile.buttonPresets ?? []).length === 0 && (
           <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-            <p className="text-sm text-muted-foreground">No presets yet. Click {`"Add preset"`} to define one.</p>
+            <p className="text-sm text-muted-foreground">Aún no hay preajustes. Haz clic en {`"Añadir preajuste"`} para crear uno.</p>
           </div>
         )}
 
@@ -347,7 +347,7 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                   value={preset.name}
                   onChange={(e) => updatePreset(preset.id, { name: e.target.value })}
                   className="flex-1 bg-transparent text-sm font-medium text-foreground outline-none focus:ring-0 border-none"
-                  placeholder="Preset name"
+                  placeholder="Nombre del preajuste"
                 />
                 <button
                   onClick={() => movePreset(preset.id, -1)}
@@ -379,43 +379,43 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                     label="Fondo"
                     value={preset.backgroundColor}
                     onChange={(v) => updatePreset(preset.id, { backgroundColor: v })}
-                    placeholder="brand.primary or #hex"
+                    placeholder="brand.primary o #hex"
                   />
                   <PresetField
-                    label="Text color"
+                    label="Color del texto"
                     value={preset.color}
                     onChange={(v) => updatePreset(preset.id, { color: v })}
                     placeholder="#ffffff"
                   />
                   <PresetField
-                    label="Hover background"
+                    label="Fondo al pasar el cursor"
                     value={preset.hoverBackgroundColor}
                     onChange={(v) => updatePreset(preset.id, { hoverBackgroundColor: v })}
-                    placeholder="optional"
+                      placeholder="opcional"
                   />
                   <PresetField
-                    label="Border radius"
+                    label="Radio del borde"
                     value={preset.borderRadius}
                     onChange={(v) => updatePreset(preset.id, { borderRadius: v })}
-                    placeholder="8px or brand.btnRadius"
+                      placeholder="8px o brand.btnRadius"
                   />
                 </div>
                 <div className="space-y-3">
                   <PresetField
-                    label="Border color"
+                    label="Color del borde"
                     value={preset.borderColor}
                     onChange={(v) => updatePreset(preset.id, { borderColor: v })}
-                    placeholder="optional"
+                      placeholder="opcional"
                   />
                   <div className="grid grid-cols-2 gap-2">
                     <PresetField
-                      label="Border width"
+                      label="Ancho del borde"
                       value={preset.borderWidth}
                       onChange={(v) => updatePreset(preset.id, { borderWidth: v })}
                       placeholder="1px"
                     />
                     <div>
-                      <label className={LABEL_CLASS}>Border style</label>
+                      <label className={LABEL_CLASS}>Estilo del borde</label>
                       <select
                         value={preset.borderStyle ?? ''}
                         onChange={(e) =>
@@ -427,21 +427,21 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                       >
                         <option value="">—</option>
                         <option value="solid">Sólido</option>
-                        <option value="dashed">Dashed</option>
-                        <option value="dotted">Dotted</option>
+                        <option value="dashed">Discontinuo</option>
+                        <option value="dotted">Punteado</option>
                         <option value="none">Ninguno</option>
                       </select>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <PresetField
-                      label="Font weight"
+                      label="Grosor de la fuente"
                       value={preset.fontWeight}
                       onChange={(v) => updatePreset(preset.id, { fontWeight: v })}
                       placeholder="500"
                     />
                     <div>
-                      <label className={LABEL_CLASS}>Text transform</label>
+                      <label className={LABEL_CLASS}>Transformación de texto</label>
                       <select
                         value={preset.textTransform ?? ''}
                         onChange={(e) =>
@@ -453,9 +453,9 @@ export function ButtonsTab({ profile, updateButtonStyle, setButtonPresets }: Pro
                       >
                         <option value="">—</option>
                         <option value="none">Ninguno</option>
-                        <option value="uppercase">UPPERCASE</option>
-                        <option value="lowercase">lowercase</option>
-                        <option value="capitalize">Capitalize</option>
+                        <option value="uppercase">MAYÚSCULAS</option>
+                        <option value="lowercase">minúsculas</option>
+                        <option value="capitalize">Capitalizar</option>
                       </select>
                     </div>
                   </div>
@@ -561,5 +561,5 @@ function PresetPreview({
     cursor: 'default',
   };
 
-  return <span style={style}>{preset.name || 'Button'}</span>;
+  return <span style={style}>{preset.name || 'Botón'}</span>;
 }

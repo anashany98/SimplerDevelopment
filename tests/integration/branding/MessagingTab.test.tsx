@@ -25,10 +25,10 @@ describe('MessagingTab', () => {
       />,
     );
 
-    expect(screen.getByRole('heading', { name: /Company Identity/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Brand Voice/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Key Messaging/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Social Proof/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Identidad de la empresa/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Voz de marca/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Mensajes clave/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Prueba social/i })).toBeInTheDocument();
   });
 
   it('emits updateMessaging when company name and mission are edited', () => {
@@ -45,7 +45,7 @@ describe('MessagingTab', () => {
     fireEvent.change(companyName, { target: { value: 'Acme' } });
     expect(updateMessaging).toHaveBeenCalledWith('companyName', 'Acme');
 
-    const mission = screen.getByPlaceholderText("What is your company's mission?") as HTMLTextAreaElement;
+    const mission = screen.getByPlaceholderText("¿Cuál es la misión de tu empresa?") as HTMLTextAreaElement;
     fireEvent.change(mission, { target: { value: 'Make things simpler.' } });
     expect(updateMessaging).toHaveBeenCalledWith('missionStatement', 'Make things simpler.');
   });
@@ -60,7 +60,7 @@ describe('MessagingTab', () => {
       />,
     );
 
-    const input = screen.getByPlaceholderText(/Add a differentiator/i) as HTMLInputElement;
+    const input = screen.getByPlaceholderText(/Añadir un diferenciador/i) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Owns the pipeline' } });
     fireEvent.keyDown(input, { key: 'Enter' });
 
@@ -77,10 +77,10 @@ describe('MessagingTab', () => {
       />,
     );
 
-    const buttons = screen.getAllByTitle('Rewrite with AI');
+    const buttons = screen.getAllByTitle('Reescribir con IA');
     expect(buttons.length).toBeGreaterThan(0);
     // Mission Statement is the first textarea-with-rewrite in Company Identity.
     fireEvent.click(buttons[0]);
-    expect(openRewrite).toHaveBeenCalledWith('missionStatement', 'Mission Statement');
+    expect(openRewrite).toHaveBeenCalledWith('missionStatement', 'Declaración de misión');
   });
 });
