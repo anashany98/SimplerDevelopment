@@ -7,12 +7,12 @@ import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pCardPad, pInput, pSelect } from '@/components/portal/portal-ui';
 
 const durationOptions = [
-  { value: 15, label: '15 minutes' },
-  { value: 30, label: '30 minutes' },
-  { value: 45, label: '45 minutes' },
-  { value: 60, label: '60 minutes' },
-  { value: 90, label: '90 minutes' },
-  { value: 120, label: '120 minutes' },
+  { value: 15, label: '15 minutos' },
+  { value: 30, label: '30 minutos' },
+  { value: 45, label: '45 minutos' },
+  { value: 60, label: '60 minutos' },
+  { value: 90, label: '90 minutos' },
+  { value: 120, label: '120 minutos' },
 ];
 
 export default function NewBookingPage() {
@@ -54,7 +54,7 @@ export default function NewBookingPage() {
 
       router.push(`/portal/tools/booking/${data.data.id}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setLoading(false);
     }
   }
@@ -87,7 +87,7 @@ export default function NewBookingPage() {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. 30-Minute Consultation"
+              placeholder="p. ej., Consulta de 30 minutos"
               className={pInput}
               required
               disabled={loading}
@@ -95,7 +95,7 @@ export default function NewBookingPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Descripción<span className="font-normal text-muted-foreground ml-1">(optional)</span>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Descripción<span className="font-normal text-muted-foreground ml-1">(opcional)</span>
             </label>
             <textarea
               value={description}
@@ -125,7 +125,7 @@ export default function NewBookingPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Timezone</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Zona horaria</label>
             <input
               type="text"
               value={timezone}
@@ -135,7 +135,7 @@ export default function NewBookingPage() {
               disabled={loading}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              IANA timezone identifier (e.g. America/Chicago, Europe/London)
+              Identificador de zona horaria IANA (p. ej. America/Chicago, Europe/London)
             </p>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function NewBookingPage() {
           {loading ? (
             <>
               <span className="material-icons animate-spin text-lg">autorenew</span>
-              Creating...
+              Creando...
             </>
           ) : (
             <>

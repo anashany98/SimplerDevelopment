@@ -72,7 +72,7 @@ export default function BookingCheckinPage() {
         setError(data.message);
       }
     } catch {
-      setError('Failed to process check-in');
+      setError('No se pudo procesar el registro de llegada');
     } finally {
       setChecking(false);
     }
@@ -127,9 +127,9 @@ export default function BookingCheckinPage() {
               <span className="material-icons text-2xl text-green-600">check_circle</span>
             </div>
             <div>
-              <p className="font-semibold text-green-800 dark:text-green-300">{result.guestName} checked in</p>
+              <p className="font-semibold text-green-800 dark:text-green-300">{result.guestName} registrado</p>
               <p className="text-sm text-green-600 dark:text-green-400">
-                {result.pageTitle}{result.groupSize > 1 ? ` (${result.groupSize} guests)` : ''}
+                {result.pageTitle}{result.groupSize > 1 ? ` (${result.groupSize} invitados)` : ''}
               </p>
             </div>
           </div>
@@ -178,7 +178,7 @@ export default function BookingCheckinPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
                     {b.guestName}
-                    {b.groupSize > 1 && <span className="text-muted-foreground font-normal"> ({b.groupSize} guests)</span>}
+                    {b.groupSize > 1 && <span className="text-muted-foreground font-normal"> ({b.groupSize} invitados)</span>}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {formatTime(b.startTime)} - {formatTime(b.endTime)} &middot; {b.pageTitle}

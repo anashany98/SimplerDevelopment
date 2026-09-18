@@ -91,7 +91,7 @@ export default function CustomFieldsPage() {
     setError('');
 
     if (isNaN(postTypeId)) {
-      setError('Invalid post type ID');
+      setError('ID de tipo de publicación no válido');
       return;
     }
 

@@ -14,8 +14,8 @@ interface PrefRow {
 // NOTIFICATION_TYPES tuple in lib/db/schema/crm.ts.
 const TYPE_META: Record<string, { label: string; hint: string; icon: string }> = {
   mention: {
-    label: '@-mentions',
-    hint: 'When a teammate mentions you in a deal comment.',
+    label: '@-menciones',
+    hint: 'Cuando un compañero te menciona en un comentario de un negocio.',
     icon: 'alternate_email',
   },
   deal_stage_changed: {
@@ -39,13 +39,13 @@ const TYPE_META: Record<string, { label: string; hint: string; icon: string }> =
     icon: 'person_add',
   },
   proposal_viewed: {
-    label: 'Proposal viewed',
-    hint: 'A client opened a proposal you sent.',
+    label: 'Propuesta vista',
+    hint: 'Un cliente abrió una propuesta que le enviaste.',
     icon: 'visibility',
   },
   document_comment_mention: {
-    label: 'Document comment mention',
-    hint: 'You were mentioned in a document comment thread.',
+    label: 'Mención en comentario de documento',
+    hint: 'Te mencionaron en un hilo de comentarios de un documento.',
     icon: 'comment',
   },
   task_assigned: {
@@ -123,10 +123,10 @@ export default function NotificationPreferencesPage() {
       });
       const data = await res.json();
       if (!data.success) {
-        setMessage({ type: 'error', text: data.message || 'Could not save.' });
+        setMessage({ type: 'error', text: data.message || 'No se pudo guardar.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error. Please try again.' });
+      setMessage({ type: 'error', text: 'Error de red. Inténtalo de nuevo.' });
     } finally {
       setSavingType(null);
     }
@@ -146,9 +146,9 @@ export default function NotificationPreferencesPage() {
         <div>
           <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Preferencias de notificaciones</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Elige cómo recibir cada tipo de notificación. <strong>Instant</strong> shows
-            la verás en tu panel al instante. <strong>Daily digest</strong> la agrupa en un
-            correo diario. <strong>Desactivado</strong> la silencia por completo.
+            Elige cómo recibir cada tipo de notificación. <strong>Inmediata</strong> la ves
+            en tu panel al instante. <strong>Resumen diario</strong> la agrupa en un
+            correo diario. <strong>Desactivada</strong> la silencia por completo.
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function NotificationPreferencesPage() {
                 </div>
                 <div
                   role="radiogroup"
-                  aria-label={`Delivery for ${meta.label}`}
+                  aria-label={`Entrega para ${meta.label}`}
                   className="flex gap-1 shrink-0 self-start sm:self-auto"
                 >
                   {DELIVERY_OPTIONS.map((opt) => {

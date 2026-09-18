@@ -27,7 +27,7 @@ export default function NewTicketPage() {
     setLoading(false);
 
     if (!data.success) {
-      setError(data.message ?? 'Failed to create ticket.');
+      setError(data.message ?? 'No se pudo crear el ticket.');
     } else {
       router.push(`/portal/tickets/${data.data.id}`);
     }
@@ -42,7 +42,7 @@ export default function NewTicketPage() {
         actions={
           <Link href="/portal/tickets" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
-            All Tickets
+            Todos los tickets
           </Link>
         }
       />
@@ -78,8 +78,8 @@ export default function NewTicketPage() {
                 className={pSelect}
               >
                 <option value="general">General</option>
-                <option value="billing">Billing</option>
-                <option value="technical">Technical</option>
+                <option value="billing">Facturación</option>
+                <option value="technical">Técnico</option>
                 <option value="domain">Dominio</option>
                 <option value="hosting">Hosting</option>
               </select>
@@ -107,7 +107,7 @@ export default function NewTicketPage() {
               onChange={(e) => setForm({ ...form, body: e.target.value })}
               required
               rows={6}
-              placeholder="Provide as much detail as possible..."
+              placeholder="Describe el problema con el mayor detalle posible..."
               className={`${pInput} resize-y`}
             />
           </div>
@@ -120,9 +120,9 @@ export default function NewTicketPage() {
               className={pBtnPrimary}
             >
               {loading ? (
-                <><span className="material-icons text-base animate-spin">refresh</span>Submitting...</>
+                <><span className="material-icons text-base animate-spin">refresh</span>Enviando...</>
               ) : (
-                <><span className="material-icons text-base">send</span>Submit Ticket</>
+                <><span className="material-icons text-base">send</span>Enviar ticket</>
               )}
             </button>
           </div>
