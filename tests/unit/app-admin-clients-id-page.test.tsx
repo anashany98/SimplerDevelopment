@@ -291,7 +291,7 @@ async function renderPage(id = '1') {
   const result = render(<ClientDetailPage params={makeParams(id)} />);
   // Wait for initial client fetch to resolve
   await waitFor(() => {
-    expect(screen.queryByText('Loading…')).toBeNull();
+    expect(screen.queryByText('Cargando…')).toBeNull();
   });
   return result;
 }
@@ -306,7 +306,7 @@ describe('ClientDetailPage', () => {
   describe('initial load', () => {
     it('renders loading state initially', () => {
       const result = render(<ClientDetailPage params={makeParams('1')} />);
-      expect(result.container.textContent).toContain('Loading');
+      expect(result.container.textContent).toContain('Cargando');
     });
 
     it('renders client header after fetch', async () => {
@@ -354,13 +354,13 @@ describe('ClientDetailPage', () => {
   describe('overview tab', () => {
     it('renders all overview rows', async () => {
       await renderPage();
-      expect(screen.getByText('Name')).toBeTruthy();
-      expect(screen.getByText('Email')).toBeTruthy();
-      expect(screen.getByText('Company')).toBeTruthy();
-      expect(screen.getByText('Phone')).toBeTruthy();
-      expect(screen.getByText('Website')).toBeTruthy();
-      expect(screen.getByText('Status')).toBeTruthy();
-      expect(screen.getByText('Notes')).toBeTruthy();
+      expect(screen.getByText('Nombre')).toBeTruthy();
+      expect(screen.getByText('Correo')).toBeTruthy();
+      expect(screen.getByText('Empresa')).toBeTruthy();
+      expect(screen.getByText('Teléfono')).toBeTruthy();
+      expect(screen.getByText('Sitio web')).toBeTruthy();
+      expect(screen.getByText('Estado')).toBeTruthy();
+      expect(screen.getByText('Notas')).toBeTruthy();
       expect(screen.getByText('Active')).toBeTruthy();
     });
 
@@ -603,7 +603,7 @@ describe('ClientDetailPage', () => {
       await waitFor(() => expect(screen.getByText('pending.test')).toBeTruthy());
       fireEvent.click(screen.getByText('pending.test'));
       await waitFor(() => expect(screen.getByText('DNS Records')).toBeTruthy());
-      const copyBtns = screen.getAllByTitle('Copy');
+      const copyBtns = screen.getAllByTitle('Copiar');
       fireEvent.click(copyBtns[0]);
       expect((navigator.clipboard.writeText as any)).toHaveBeenCalled();
     });
@@ -614,7 +614,7 @@ describe('ClientDetailPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
       await waitFor(() => expect(screen.getByText('Current period totals')).toBeTruthy());
-      await waitFor(() => expect(screen.getAllByText('1,234').length).toBeGreaterThan(0));
+      await waitFor(() => expect(screen.getAllByText('1234').length).toBeGreaterThan(0));
       expect(screen.getByText('567')).toBeTruthy();
     });
 
@@ -630,7 +630,7 @@ describe('ClientDetailPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
       await waitFor(() => expect(screen.getByText('Rollup preview (dry run)')).toBeTruthy());
-      expect(screen.getByText('11,840')).toBeTruthy();
+      expect(screen.getByText('11.840')).toBeTruthy();
     });
 
     it('shows rollup history', async () => {
@@ -700,7 +700,7 @@ describe('ClientDetailPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
       await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      const pauseBtn = screen.getByTitle('Pause');
+      const pauseBtn = screen.getByTitle('Pausar');
       fireEvent.click(pauseBtn);
       await flush();
     });
@@ -718,7 +718,7 @@ describe('ClientDetailPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
       await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
       await flush();
       expect(confirmMock).toHaveBeenCalled();
@@ -847,7 +847,7 @@ describe('ClientDetailPage', () => {
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       fireEvent.click(screen.getByRole('button', { name: /New List/ }));
       fireEvent.change(screen.getByPlaceholderText('List name'), { target: { value: 'My List' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Create' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
       await flush();
     });
 
@@ -866,10 +866,10 @@ describe('ClientDetailPage', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       fireEvent.click(screen.getAllByText('Newsletter')[0]);
-      await waitFor(() => expect(screen.getByPlaceholderText('Email')).toBeTruthy());
-      fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'new@x.com' } });
-      fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'New' } });
-      const form = screen.getByPlaceholderText('Email').closest('form') as HTMLFormElement;
+      await waitFor(() => expect(screen.getByPlaceholderText('Correo')).toBeTruthy());
+      fireEvent.change(screen.getByPlaceholderText('Correo'), { target: { value: 'new@x.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'New' } });
+      const form = screen.getByPlaceholderText('Correo').closest('form') as HTMLFormElement;
       fireEvent.submit(form);
       await flush();
     });
