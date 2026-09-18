@@ -60,7 +60,7 @@ export default function EmailListsPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setError(data.message ?? 'Error'); return; }
     setLists(prev => [{ ...data.data, subscriberCount: 0 }, ...prev]);
     setShowForm(false);
     setForm({ name: '', description: '' });
@@ -78,21 +78,21 @@ export default function EmailListsPage() {
     });
     const data = await res.json();
     setSubSaving(false);
-    if (!data.success) { setSubError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setSubError(data.message ?? 'Error'); return; }
     setSubscribers(prev => [...prev, data.data]);
     setLists(prev => prev.map(l => l.id === selectedList.id ? { ...l, subscriberCount: l.subscriberCount + 1 } : l));
     setSubForm({ email: '', name: '' });
   }
 
   async function removeSubscriber(id: number) {
-    if (!confirm('Remove this subscriber?')) return;
+    if (!confirm('¿Eliminar este suscriptor?')) return;
     await fetch(`/api/admin/email/subscribers?id=${id}`, { method: 'DELETE' });
     setSubscribers(prev => prev.filter(s => s.id !== id));
     if (selectedList) setLists(prev => prev.map(l => l.id === selectedList.id ? { ...l, subscriberCount: Math.max(0, l.subscriberCount - 1) } : l));
   }
 
   async function deleteList(id: number) {
-    if (!confirm('Delete this list and all its subscribers?')) return;
+    if (!confirm('¿Eliminar esta lista y todos sus suscriptores?')) return;
     await fetch(`/api/admin/email/lists/${id}`, { method: 'DELETE' });
     setLists(prev => prev.filter(l => l.id !== id));
     if (selectedList?.id === id) setSelectedList(null);
@@ -113,8 +113,8 @@ export default function EmailListsPage() {
             <span className="material-icons text-base">arrow_back</span>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Subscriber Lists</h1>
-            <p className="text-muted-foreground mt-0.5 text-sm">Manage email lists and subscribers.</p>
+            <h1 className="text-2xl font-bold text-foreground">Listas de suscriptores</h1>
+            <p className="text-muted-foreground mt-0.5 text-sm">Gestiona listas de correo y suscriptores.</p>
           </div>
         </div>
         <button
@@ -122,23 +122,23 @@ export default function EmailListsPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          New List
+          Nueva lista
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={createList} className="bg-card border border-border rounded-lg p-5 space-y-4">
-          <h3 className="font-semibold text-foreground">Create List</h3>
+          <h3 className="font-semibold text-foreground">Crear lista</h3>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Name *</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Nombre *</label>
               <input
                 required
                 value={form.name}
                 onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                 className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="e.g. Newsletter"
+                placeholder="p. ej. Newsletter"
               />
             </div>
             <div>
@@ -153,7 +153,7 @@ export default function EmailListsPage() {
           </div>
           <div className="flex gap-2">
             <button type="submit" disabled={saving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-              {saving ? 'Creating…' : 'Create List'}
+              {saving ? 'Creando…' : 'Crear lista'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
           </div>
@@ -164,12 +164,12 @@ export default function EmailListsPage() {
         {/* Lists */}
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
-            <h2 className="font-semibold text-foreground">Lists</h2>
+            <h2 className="font-semibold text-foreground">Listas</h2>
           </div>
           {loading ? (
             <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : lists.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">No lists yet.</p>
+            <p className="p-6 text-sm text-muted-foreground">Aún no hay listas.</p>
           ) : (
             <div className="divide-y divide-border">
               {lists.map(list => (
@@ -180,7 +180,7 @@ export default function EmailListsPage() {
                 >
                   <div>
                     <p className="font-medium text-sm text-foreground">{list.name}</p>
-                    <p className="text-xs text-muted-foreground">{list.subscriberCount} subscriber{list.subscriberCount !== 1 ? 's' : ''}</p>
+                    <p className="text-xs text-muted-foreground">{list.subscriberCount} suscriptor{list.subscriberCount !== 1 ? 'es' : ''}</p>
                   </div>
                   <button
                     onClick={e => { e.stopPropagation(); deleteList(list.id); }}
@@ -198,7 +198,7 @@ export default function EmailListsPage() {
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
             <h2 className="font-semibold text-foreground">
-              {selectedList ? `${selectedList.name} — Subscribers` : 'Select a list'}
+              {selectedList ? `${selectedList.name} — Suscriptores` : 'Selecciona una lista'}
             </h2>
           </div>
           {!selectedList ? (
@@ -217,7 +217,7 @@ export default function EmailListsPage() {
                 <input
                   value={subForm.name}
                   onChange={e => setSubForm(p => ({ ...p, name: e.target.value }))}
-                  placeholder="Name (optional)"
+                  placeholder="Nombre (opcional)"
                   className="w-32 border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button type="submit" disabled={subSaving} className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 disabled:opacity-50">
@@ -228,7 +228,7 @@ export default function EmailListsPage() {
               {subLoading ? (
                 <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
               ) : subscribers.length === 0 ? (
-                <p className="p-6 text-sm text-muted-foreground">No subscribers yet.</p>
+                <p className="p-6 text-sm text-muted-foreground">Aún no hay suscriptores.</p>
               ) : (
                 <div className="divide-y divide-border max-h-96 overflow-y-auto">
                   {subscribers.map(s => (

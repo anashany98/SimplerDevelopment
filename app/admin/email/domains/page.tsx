@@ -93,7 +93,7 @@ export default function EmailDomainsPage() {
     });
     const data = await res.json();
     setAdding(false);
-    if (!data.success) { setAddError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setAddError(data.message ?? 'Error'); return; }
     setNewDomain('');
     setShowAddForm(false);
     await loadDomains();
@@ -129,7 +129,7 @@ export default function EmailDomainsPage() {
   }
 
   async function deleteDomain(id: string, name: string) {
-    if (!confirm(`Remove domain "${name}" from Resend? This cannot be undone.`)) return;
+    if (!confirm(`¿Eliminar el dominio "${name}" de Resend? Esta acción no se puede deshacer.`)) return;
     await fetch(`/api/admin/email/domains/${id}`, { method: 'DELETE' });
     setDomains(prev => prev.filter(d => d.id !== id));
     if (selected?.id === id) setSelected(null);
@@ -147,9 +147,9 @@ export default function EmailDomainsPage() {
             <span className="material-icons text-base">arrow_back</span>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Sending Domains</h1>
+            <h1 className="text-2xl font-bold text-foreground">Dominios de envío</h1>
             <p className="text-muted-foreground text-sm mt-0.5">
-              Verify domains to send email from your own address.
+              Verifica dominios para enviar correo desde tu propia dirección.
             </p>
           </div>
         </div>
@@ -158,16 +158,16 @@ export default function EmailDomainsPage() {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          Add Domain
+          Añadir dominio
         </button>
       </div>
 
       {showAddForm && (
         <form onSubmit={addDomain} className="bg-card border border-border rounded-lg p-5 space-y-4">
-          <h3 className="font-semibold text-foreground">Add a Domain</h3>
+          <h3 className="font-semibold text-foreground">Añadir un dominio</h3>
           <p className="text-sm text-muted-foreground">
-            Enter the domain you want to send from (e.g. <code className="bg-muted px-1 rounded text-xs">yourdomain.com</code>).
-            We&apos;ll generate the DNS records you need to add.
+            Introduce el dominio desde el que quieres enviar (p. ej. <code className="bg-muted px-1 rounded text-xs">yourdomain.com</code>).
+            Generaremos los registros DNS que necesitas añadir.
           </p>
           {addError && <p className="text-sm text-red-600">{addError}</p>}
           <div className="flex gap-3">
@@ -180,7 +180,7 @@ export default function EmailDomainsPage() {
             />
             <button type="submit" disabled={adding}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-              {adding ? 'Adding…' : 'Add Domain'}
+              {adding ? 'Añadiendo…' : 'Añadir dominio'}
             </button>
             <button type="button" onClick={() => setShowAddForm(false)}
               className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
@@ -192,14 +192,14 @@ export default function EmailDomainsPage() {
         {/* Domain list */}
         <div className="lg:col-span-2 bg-card border border-border rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
-            <h2 className="font-semibold text-foreground">Domains</h2>
+            <h2 className="font-semibold text-foreground">Dominios</h2>
           </div>
           {loading ? (
             <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : domains.length === 0 ? (
             <div className="p-10 text-center">
               <span className="material-icons text-3xl text-muted-foreground mb-2 block">domain</span>
-              <p className="text-sm text-muted-foreground">No domains added yet.</p>
+              <p className="text-sm text-muted-foreground">Aún no hay dominios añadidos.</p>
             </div>
           ) : (
             <div className="divide-y divide-border">
@@ -264,7 +264,7 @@ export default function EmailDomainsPage() {
                       className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
                     >
                       <span className="material-icons text-base">{verifying ? 'hourglass_empty' : 'verified'}</span>
-                      {verifying ? 'Checking…' : 'Verify Now'}
+                      {verifying ? 'Comprobando…' : 'Verificar ahora'}
                     </button>
                   )}
                 </div>
@@ -275,13 +275,13 @@ export default function EmailDomainsPage() {
                 <div className="bg-card border border-border rounded-lg overflow-hidden">
                   <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold text-foreground">DNS Records</h3>
+                      <h3 className="font-semibold text-foreground">Registros DNS</h3>
                       <p className="text-xs text-muted-foreground mt-0.5">Añádelos a tu registrador de dominio y haz clic en Verificar ahora.</p>
                     </div>
                     {selected.status !== 'verified' && (
                       <div className="flex items-center gap-1.5 text-xs text-yellow-600 bg-yellow-50 px-2.5 py-1.5 rounded-md">
                         <span className="material-icons text-sm">warning</span>
-                        Pending DNS
+                        DNS pendiente
                       </div>
                     )}
                   </div>
@@ -322,7 +322,7 @@ export default function EmailDomainsPage() {
                                 </button>
                               </div>
                               {record.priority !== undefined && (
-                                <p className="text-muted-foreground mt-0.5">Priority: {record.priority}</p>
+                                <p className="text-muted-foreground mt-0.5">Prioridad: {record.priority}</p>
                               )}
                             </td>
                             <td className="px-4 py-3 text-center">
@@ -338,7 +338,7 @@ export default function EmailDomainsPage() {
                   </div>
                   <div className="px-5 py-3 bg-muted/20 border-t border-border">
                     <p className="text-xs text-muted-foreground">
-                      DNS changes can take up to 72 hours to propagate. Click &quot;Verify Now&quot; after adding the records.
+                      Los cambios de DNS pueden tardar hasta 72 horas en propagarse. Haz clic en &quot;Verificar ahora&quot; después de añadir los registros.
                     </p>
                   </div>
                 </div>
@@ -348,15 +348,15 @@ export default function EmailDomainsPage() {
               {selected.status === 'verified' && (
                 <div className="bg-card border border-border rounded-lg overflow-hidden">
                   <div className="px-5 py-4 border-b border-border">
-                    <h3 className="font-semibold text-foreground">Tracking Settings</h3>
+                    <h3 className="font-semibold text-foreground">Ajustes de seguimiento</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Track opens and clicks. Pixel and link URLs will use your domain.
+                      Registra aperturas y clics. El píxel y las URL de los enlaces usarán tu dominio.
                     </p>
                   </div>
                   <div className="divide-y divide-border">
                     {[
-                      { key: 'openTracking' as const, label: 'Open Tracking', description: 'Track when recipients open your emails via a 1×1 pixel.' },
-                      { key: 'clickTracking' as const, label: 'Click Tracking', description: 'Wrap links to track when recipients click them.' },
+                      { key: 'openTracking' as const, label: 'Seguimiento de aperturas', description: 'Registra cuándo abren los destinatarios tus correos mediante un píxel de 1×1.' },
+                      { key: 'clickTracking' as const, label: 'Seguimiento de clics', description: 'Envuelve los enlaces para registrar cuándo hacen clic los destinatarios.' },
                     ].map(({ key, label, description }) => (
                       <div key={key} className="flex items-center justify-between px-5 py-4">
                         <div>
@@ -381,13 +381,13 @@ export default function EmailDomainsPage() {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 space-y-2">
                   <div className="flex items-center gap-2 text-blue-800">
                     <span className="material-icons text-base">info</span>
-                    <p className="text-sm font-medium">Next steps</p>
+                    <p className="text-sm font-medium">Pasos siguientes</p>
                   </div>
                   <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
-                    <li>Copy each DNS record above and add it to your domain registrar (GoDaddy, Namecheap, Cloudflare, etc.)</li>
+                    <li>Copia cada registro DNS de arriba y añádelo a tu registrador de dominios (GoDaddy, Namecheap, Cloudflare, etc.)</li>
                     <li>Espera a que se propague el DNS: suele tardar unos minutos, hasta 72 horas</li>
-                    <li>Click <strong>Verify Now</strong> to check if the records are live</li>
-                    <li>Once verified, enable open/click tracking and set this domain as your From address in campaigns</li>
+                    <li>Haz clic en <strong>Verificar ahora</strong> para comprobar si los registros están activos</li>
+                    <li>Una vez verificado, activa el seguimiento de aperturas y clics y define este dominio como tu dirección de remitente en las campañas</li>
                   </ol>
                 </div>
               )}

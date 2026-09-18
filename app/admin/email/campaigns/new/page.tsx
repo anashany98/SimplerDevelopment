@@ -48,7 +48,7 @@ export default function NewCampaignPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed to create campaign'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo crear la campaña'); return; }
     router.push(`/admin/email/campaigns/${data.data.id}`);
   }
 
@@ -61,7 +61,7 @@ export default function NewCampaignPage() {
         <Link href="/admin/email/campaigns" className="text-muted-foreground hover:text-foreground">
           <span className="material-icons text-base">arrow_back</span>
         </Link>
-        <h1 className="text-2xl font-bold text-foreground">New Campaign</h1>
+        <h1 className="text-2xl font-bold text-foreground">Nueva campaña</h1>
       </div>
 
       <form onSubmit={save} className="space-y-6">
@@ -71,19 +71,19 @@ export default function NewCampaignPage() {
 
         {/* Basics */}
         <div className="bg-card border border-border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-foreground">Campaign Details</h2>
+          <h2 className="font-semibold text-foreground">Detalles de la campaña</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className={labelClass}>Internal Name *</label>
-              <input required value={form.name} onChange={set('name')} className={inputClass} placeholder="e.g. March Newsletter 2026" />
-              <p className="text-xs text-muted-foreground mt-1">Only visible to you, not to recipients.</p>
+              <label className={labelClass}>Nombre interno *</label>
+              <input required value={form.name} onChange={set('name')} className={inputClass} placeholder="p. ej. Newsletter de marzo de 2026" />
+              <p className="text-xs text-muted-foreground mt-1">Solo visible para ti, no para los destinatarios.</p>
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Subject Line *</label>
-              <input required value={form.subject} onChange={set('subject')} className={inputClass} placeholder="What's your email about?" />
+              <label className={labelClass}>Asunto *</label>
+              <input required value={form.subject} onChange={set('subject')} className={inputClass} placeholder="¿De qué trata tu correo?" />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Preview Text</label>
+              <label className={labelClass}>Texto de vista previa</label>
               <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Resumen breve que los clientes de correo muestran tras el asunto" />
             </div>
           </div>
@@ -91,19 +91,19 @@ export default function NewCampaignPage() {
 
         {/* Sender */}
         <div className="bg-card border border-border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-foreground">Sender</h2>
+          <h2 className="font-semibold text-foreground">Remitente</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>From Name *</label>
-              <input required value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="e.g. CRM AGENTS" />
+              <label className={labelClass}>Nombre del remitente *</label>
+              <input required value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="p. ej. CRM AGENTS" />
             </div>
             <div>
-              <label className={labelClass}>From Email *</label>
+              <label className={labelClass}>Email del remitente *</label>
               <input required type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hello@yourdomain.com" />
               <p className="text-xs text-muted-foreground mt-1">Debe ser un dominio Resend verificado.</p>
             </div>
             <div>
-              <label className={labelClass}>Reply-To</label>
+              <label className={labelClass}>Responder a</label>
               <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Opcional" />
             </div>
           </div>
@@ -111,18 +111,18 @@ export default function NewCampaignPage() {
 
         {/* List */}
         <div className="bg-card border border-border rounded-lg p-5 space-y-4">
-          <h2 className="font-semibold text-foreground">Recipients</h2>
+          <h2 className="font-semibold text-foreground">Destinatarios</h2>
           <div>
-            <label className={labelClass}>Subscriber List *</label>
+            <label className={labelClass}>Lista de suscriptores *</label>
             <select required value={form.listId} onChange={set('listId')} className={inputClass}>
-              <option value="">Select a list…</option>
+              <option value="">Selecciona una lista…</option>
               {lists.map(l => (
-                <option key={l.id} value={l.id}>{l.name} ({l.subscriberCount} subscribers)</option>
+                <option key={l.id} value={l.id}>{l.name} ({l.subscriberCount} suscriptores)</option>
               ))}
             </select>
             {lists.length === 0 && (
               <p className="text-xs text-muted-foreground mt-1">
-                No lists found. <Link href="/admin/email/lists" className="text-primary hover:underline">Create one first.</Link>
+                No se encontraron listas. <Link href="/admin/email/lists" className="text-primary hover:underline">Crea una primero.</Link>
               </p>
             )}
           </div>
@@ -131,14 +131,14 @@ export default function NewCampaignPage() {
         {/* Content */}
         <div className="bg-card border border-border rounded-lg p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-foreground">Email Content (HTML)</h2>
+            <h2 className="font-semibold text-foreground">Contenido del correo (HTML)</h2>
             <button
               type="button"
               onClick={() => setPreview(!preview)}
               className="flex items-center gap-1 text-sm text-primary hover:underline"
             >
               <span className="material-icons text-sm">{preview ? 'code' : 'preview'}</span>
-              {preview ? 'Edit' : 'Preview'}
+              {preview ? 'Editar' : 'Vista previa'}
             </button>
           </div>
           {preview ? (
@@ -153,11 +153,11 @@ export default function NewCampaignPage() {
               onChange={set('htmlContent')}
               rows={16}
               className={`${inputClass} font-mono text-xs`}
-              placeholder={`<h1>Hello {{name}},</h1>\n<p>Your email content here...</p>`}
+              placeholder={`<h1>Hola {{name}},</h1>\n<p>Tu contenido de correo aquí...</p>`}
             />
           )}
           <p className="text-xs text-muted-foreground">
-            Write HTML directly. An unsubscribe footer and wrapper are added automatically.
+            Escribe HTML directamente. Se añaden automáticamente un pie de baja y un contenedor.
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export default function NewCampaignPage() {
             disabled={saving}
             className="px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
           >
-            {saving ? 'Saving…' : 'Save Campaign'}
+            {saving ? 'Guardando…' : 'Guardar campaña'}
           </button>
           <Link href="/admin/email/campaigns" className="px-5 py-2.5 border border-border rounded-lg text-sm text-muted-foreground hover:bg-accent">Cancelar</Link>
         </div>
