@@ -25,13 +25,13 @@ export default function LoginPage() {
     if (result.success) {
       router.push('/account');
     } else {
-      setError(result.message ?? 'Login failed');
+      setError(result.message ?? 'No se pudo iniciar sesión');
     }
   }
 
   return (
     <div className="max-w-md mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Sign In</h1>
+      <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Iniciar sesión</h1>
       <p className="text-gray-500 text-center text-sm mb-8">Inicia sesión en tu cuenta para ver pedidos, lista de deseos y más.</p>
 
       <form method="post" onSubmit={handleSubmit} className="space-y-4">
@@ -42,22 +42,22 @@ export default function LoginPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1">Correo</label>
           <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            placeholder="you@example.com" />
+            placeholder="tu@ejemplo.com" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
           <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            placeholder="Enter your password" />
+            placeholder="Introduce tu contraseña" />
         </div>
         <button type="submit" disabled={submitting}
           className="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 disabled:opacity-50 transition-colors">
-          {submitting ? 'Signing in...' : 'Sign In'}
+          {submitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
         </button>
       </form>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Don&apos;t have an account? <Link href="/account/register" className="text-gray-900 font-medium hover:underline">Create one</Link>
+        ¿No tienes cuenta? <Link href="/account/register" className="text-gray-900 font-medium hover:underline">Crea una</Link>
       </p>
     </div>
   );
