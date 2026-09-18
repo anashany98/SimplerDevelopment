@@ -134,7 +134,7 @@ describe('BrainTemplatesPage — shell', () => {
   it('renders the "New template" button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New template');
+      expect(container.textContent).toContain('Nueva plantilla');
     });
   });
 
@@ -239,7 +239,7 @@ describe('BrainTemplatesPage — empty list', () => {
     setupList([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select a template to edit');
+      expect(container.textContent).toContain('Selecciona una plantilla para editar');
     });
   });
 });
@@ -310,7 +310,7 @@ describe('BrainTemplatesPage — selecting a template', () => {
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit template');
+      expect(container.textContent).toContain('Editar plantilla');
     });
   });
 
@@ -404,7 +404,7 @@ describe('BrainTemplatesPage — selecting a template', () => {
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Delete');
+      expect(container.textContent).toContain('Eliminar');
     });
   });
 });
@@ -417,11 +417,11 @@ describe('BrainTemplatesPage — new template mode', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New template'),
+      b.textContent?.includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('New template');
+      expect(container.textContent).toContain('Nueva plantilla');
       expect(container.textContent).toContain('Create template');
     });
   });
@@ -431,7 +431,7 @@ describe('BrainTemplatesPage — new template mode', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -444,7 +444,7 @@ describe('BrainTemplatesPage — new template mode', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -458,7 +458,7 @@ describe('BrainTemplatesPage — new template mode', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -466,7 +466,7 @@ describe('BrainTemplatesPage — new template mode', () => {
     });
     // The Delete button is absent in new mode
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Delete',
+      b.textContent?.trim() === 'Eliminar',
     );
     expect(deleteBtn).toBeFalsy();
   });
@@ -480,7 +480,7 @@ describe('BrainTemplatesPage — new template mode', () => {
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('New template');
+      expect(container.textContent).toContain('Nueva plantilla');
     });
   });
 });
@@ -493,7 +493,7 @@ describe('BrainTemplatesPage — variable hints', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -514,13 +514,13 @@ describe('BrainTemplatesPage — trigger buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
       expect(container.textContent).toContain('Manual');
       expect(container.textContent).toContain('Daily');
-      expect(container.textContent).toContain('Meeting');
+      expect(container.textContent).toContain('Reunión');
       expect(container.textContent).toContain('Slash');
     });
   });
@@ -530,7 +530,7 @@ describe('BrainTemplatesPage — trigger buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => expect(container.textContent).toContain('Daily'));
@@ -552,7 +552,7 @@ describe('BrainTemplatesPage — form validation', () => {
   async function openNewForm(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => expect(container.textContent).toContain('Create template'));
@@ -623,7 +623,7 @@ describe('BrainTemplatesPage — save success', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => expect(container.textContent).toContain('Create template'));
@@ -660,7 +660,7 @@ describe('BrainTemplatesPage — save success', () => {
       b.textContent?.includes('Old Name'),
     ) as HTMLButtonElement;
     fireEvent.click(listBtn);
-    await waitFor(() => expect(container.textContent).toContain('Edit template'));
+    await waitFor(() => expect(container.textContent).toContain('Editar plantilla'));
     const nameInput = container.querySelector('#tpl-name') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New Name' } });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -682,7 +682,7 @@ describe('BrainTemplatesPage — save errors', () => {
   async function openNewFormAndFillValid(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => expect(container.textContent).toContain('Create template'));
@@ -765,7 +765,7 @@ describe('BrainTemplatesPage — delete', () => {
       b.textContent?.includes(name),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Edit template'));
+    await waitFor(() => expect(container.textContent).toContain('Editar plantilla'));
   }
 
   it('Delete button is rendered, enabled, and not disabled for an existing template', async () => {
@@ -773,6 +773,8 @@ describe('BrainTemplatesPage — delete', () => {
     // jsdom's window.confirm cannot be reliably stubbed to return true in this env;
     // the confirm-accepted → DELETE flow is covered by the delete error tests below
     // which override confirm via vi.stubGlobal before component render.
+    // Declined confirm for this test: the click must not fire a DELETE request.
+    confirmResult = false;
     const tpl = makeTpl(7, { name: 'To Delete' });
     setupWithTemplate(tpl);
     const { container } = renderPage();
@@ -780,7 +782,7 @@ describe('BrainTemplatesPage — delete', () => {
     const allBtns = Array.from(container.querySelectorAll('button'));
     const deleteBtn = allBtns.find((b) => {
       const text = b.textContent ?? '';
-      return /delete/i.test(text) && !text.toLowerCase().includes('template') && !text.toLowerCase().includes('save') && !text.toLowerCase().includes('create');
+      return /eliminar/i.test(text) && !text.toLowerCase().includes('template') && !text.toLowerCase().includes('save') && !text.toLowerCase().includes('create');
     }) as HTMLButtonElement;
     expect(deleteBtn).toBeTruthy();
     expect(deleteBtn.disabled).toBe(false);
@@ -801,7 +803,7 @@ describe('BrainTemplatesPage — delete', () => {
     await selectTemplate(container, 'Keep Me');
     const callsBefore = fetchMock.mock.calls.length;
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('Delete'),
+      b.textContent?.trim().includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     // No new fetch calls
@@ -823,7 +825,7 @@ describe('BrainTemplatesPage — delete', () => {
     const { container } = renderPage();
     await selectTemplate(container, 'Error Template');
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('Delete'),
+      b.textContent?.trim().includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -843,7 +845,7 @@ describe('BrainTemplatesPage — delete', () => {
     const { container } = renderPage();
     await selectTemplate(container, 'Throw Template');
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('Delete'),
+      b.textContent?.trim().includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -948,7 +950,7 @@ describe('BrainTemplatesPage — form field interactions', () => {
   async function openNew(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('No templates yet'));
     const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim().includes('New template'),
+      b.textContent?.trim().includes('Nueva plantilla'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => expect(container.textContent).toContain('Create template'));
