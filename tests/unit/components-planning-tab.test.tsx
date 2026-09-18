@@ -243,7 +243,7 @@ describe('PlanningTab — initial render', () => {
   it('renders the empty state when no sprints exist', async () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container } = await renderAndWait();
-    expect(container.textContent).toContain('No sprints yet');
+    expect(container.textContent).toContain('Aún no hay sprints');
     expect(container.textContent).toContain('Create a sprint to start planning work.');
   });
 
@@ -275,7 +275,7 @@ describe('PlanningTab — renders sprints + backlog from fetched dataset', () =>
     });
     const { container } = await renderAndWait();
     expect(container.textContent).toContain('Q1 Sprint');
-    expect(container.textContent).toContain('Active');
+    expect(container.textContent).toContain('Activo');
     expect(container.textContent).toContain('2 cards');
   });
 
@@ -337,7 +337,7 @@ describe('PlanningTab — backlog panel filters', () => {
     const { container, getByText } = await renderAndWait();
     act(() => fireEvent.click(getByText('Bug')));
     expect(container.textContent).not.toContain('A task card');
-    act(() => fireEvent.click(getByText('All')));
+    act(() => fireEvent.click(getByText('Todos')));
     expect(container.textContent).toContain('A task card');
     expect(container.textContent).toContain('A bug card');
   });
@@ -367,7 +367,7 @@ describe('PlanningTab — backlog panel filters', () => {
   it('shows "No cards match the current filters." when the dock is empty', async () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container } = await renderAndWait();
-    expect(container.textContent).toContain('No cards match the current filters.');
+    expect(container.textContent).toContain('Ninguna tarjeta coincide con los filtros actuales.');
   });
 });
 
@@ -375,11 +375,11 @@ describe('PlanningTab — create sprint form', () => {
   it('toggles the create-sprint form open and closed', async () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container, getByText } = await renderAndWait();
-    expect(container.textContent).not.toContain('Create Sprint');
+    expect(container.textContent).not.toContain('Crear sprint');
     act(() => fireEvent.click(getByText('New Sprint')));
-    expect(container.textContent).toContain('Create Sprint');
-    act(() => fireEvent.click(getByText('Cancel')));
-    expect(container.textContent).not.toContain('Create Sprint');
+    expect(container.textContent).toContain('Crear sprint');
+    act(() => fireEvent.click(getByText('Cancelar')));
+    expect(container.textContent).not.toContain('Crear sprint');
   });
 
   it('submits the form and posts the sprint to the API', async () => {
@@ -435,7 +435,7 @@ describe('PlanningTab — Planner / Roadmap view toggle', () => {
   it('shows the Planner view by default', async () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container, queryByTestId } = await renderAndWait();
-    expect(container.textContent).toContain('No sprints yet');
+    expect(container.textContent).toContain('Aún no hay sprints');
     expect(queryByTestId('roadmap-stub')).toBeNull();
   });
 
@@ -446,12 +446,12 @@ describe('PlanningTab — Planner / Roadmap view toggle', () => {
       fireEvent.click(getByText('Roadmap'));
     });
     expect(queryByTestId('roadmap-stub')).toBeTruthy();
-    expect(container.textContent).not.toContain('No sprints yet');
+    expect(container.textContent).not.toContain('Aún no hay sprints');
     act(() => {
       fireEvent.click(getByText('Planner'));
     });
     expect(queryByTestId('roadmap-stub')).toBeNull();
-    expect(container.textContent).toContain('No sprints yet');
+    expect(container.textContent).toContain('Aún no hay sprints');
   });
 
   it('hides the "New Sprint" button while in Roadmap view', async () => {
