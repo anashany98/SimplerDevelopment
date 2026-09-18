@@ -41,8 +41,8 @@ export default function NewSurveyPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!title.trim()) { setError('Title is required'); return; }
-    if (fields.length === 0) { setError('Add at least one question'); return; }
+    if (!title.trim()) { setError('El título es obligatorio'); return; }
+    if (fields.length === 0) { setError('Añade al menos una pregunta'); return; }
 
     setSaving(true);
     setError('');
@@ -53,7 +53,7 @@ export default function NewSurveyPage() {
       body: JSON.stringify({ title, description, fields, requireEmail, color }),
     });
     const data = await res.json();
-    if (!data.success) { setError(data.message || 'Failed to create survey'); setSaving(false); return; }
+    if (!data.success) { setError(data.message || 'No se pudo crear la encuesta'); setSaving(false); return; }
 
     router.push(`/portal/surveys/${data.data.id}`);
   }
@@ -66,11 +66,11 @@ export default function NewSurveyPage() {
       <PortalPageHeader
         eyebrow="Encuestas"
         title="Nueva encuesta"
-        subtitle={step === 'choose' ? 'Start from a template or build from scratch' : 'Design your survey and add questions'}
+        subtitle={step === 'choose' ? 'Empieza con una plantilla o créala desde cero' : 'Diseña tu encuesta y añade preguntas'}
         actions={
           <Link href="/portal/surveys" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
-            Back to Surveys
+            Volver a encuestas
           </Link>
         }
       />
@@ -119,9 +119,9 @@ export default function NewSurveyPage() {
                         <p className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">{tpl.name}</p>
                         <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{tpl.description}</p>
                         <p className="text-xs text-muted-foreground mt-1.5">
-                          {tpl.fields.filter(f => f.type !== 'heading' && f.type !== 'page_break').length} questions
+                          {tpl.fields.filter(f => f.type !== 'heading' && f.type !== 'page_break').length} preguntas
                           {tpl.fields.some(f => f.type === 'page_break') && (
-                            <> &middot; {tpl.fields.filter(f => f.type === 'page_break').length + 1} pages</>
+                            <> &middot; {tpl.fields.filter(f => f.type === 'page_break').length + 1} páginas</>
                           )}
                         </p>
                       </div>
@@ -144,14 +144,14 @@ export default function NewSurveyPage() {
             className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
           >
             <span className="material-icons text-sm">arrow_back</span>
-            Change template
+            Cambiar plantilla
           </button>
 
           {/* Basic Info */}
           <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
             <h2 className={`${pSectionTitle} flex items-center gap-2`}>
               <span className="material-icons text-primary">info</span>
-              Survey Details
+              Detalles de la encuesta
             </h2>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Título</label>
@@ -159,12 +159,12 @@ export default function NewSurveyPage() {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Customer Satisfaction Survey"
+                placeholder="p. ej. Encuesta de satisfacción del cliente"
                 className={pInput}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Description (optional)</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Descripción (opcional)</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -183,7 +183,7 @@ export default function NewSurveyPage() {
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={requireEmail} onChange={(e) => setRequireEmail(e.target.checked)} className="rounded border-border" />
-                <span className="text-sm text-foreground">Require respondent email</span>
+                <span className="text-sm text-foreground">Solicitar el correo del encuestado</span>
               </label>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function NewSurveyPage() {
           <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
             <h2 className={`${pSectionTitle} flex items-center gap-2`}>
               <span className="material-icons text-primary">quiz</span>
-              Questions
+              Preguntas
             </h2>
             <SurveyBuilder fields={fields} onChange={setFields} />
           </div>
@@ -206,7 +206,7 @@ export default function NewSurveyPage() {
               className={pBtnPrimary}
             >
               {saving ? (
-                <><span className="material-icons text-lg animate-spin">progress_activity</span>Creating...</>
+                <><span className="material-icons text-lg animate-spin">progress_activity</span>Creando...</>
               ) : (
                 <><span className="material-icons text-lg">add_circle</span>Crear encuesta</>
               )}
