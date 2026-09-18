@@ -579,7 +579,7 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText(/mysite\.simplerdevelopment\.com\/portal/)).toBeTruthy();
+      expect(screen.getByText(/mysite · CRM AGENTS \/portal/)).toBeTruthy();
     });
   });
 
@@ -631,7 +631,7 @@ describe('ProfileSettingsPage', () => {
     await waitFor(() => { expect(screen.getByText('My Site')).toBeTruthy(); });
     await act(async () => { fireEvent.click(screen.getByText('My Site')); });
     await flush();
-    expect(screen.getByText(/Subdominio del portal establecido en mysite\.simplerdevelopment.com/)).toBeTruthy();
+    expect(screen.getByText(/Subdominio del portal establecido en mysite · CRM AGENTS/)).toBeTruthy();
   });
 
   it('shows error when POST /api/portal/default-website fails', async () => {
@@ -851,8 +851,8 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText(/acme\.simplerdevelopment\.com/)).toBeTruthy();
-      expect(screen.getByText(/beta\.simplerdevelopment\.com/)).toBeTruthy();
+      expect(screen.getByText(/acme · CRM AGENTS/)).toBeTruthy();
+      expect(screen.getByText(/beta · CRM AGENTS/)).toBeTruthy();
     });
   });
 
@@ -874,7 +874,7 @@ describe('ProfileSettingsPage', () => {
     await flush();
     await waitFor(() => { expect(screen.getByText('Beta Corp')).toBeTruthy(); });
     // Beta has null subdomain — no beta.simplerdevelopment.com text
-    expect(screen.queryByText(/beta\.simplerdevelopment\.com/)).toBeNull();
+    expect(screen.queryByText(/beta · CRM AGENTS/)).toBeNull();
   });
 
   it('renders the first letter of company name as avatar in Portal predeterminado section', async () => {
