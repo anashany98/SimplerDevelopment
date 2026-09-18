@@ -105,7 +105,7 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() =>
-        expect(screen.getByText(/Set a startDate and endDate/)).toBeTruthy(),
+        expect(screen.getByText(/Define startDate y endDate/)).toBeTruthy(),
       );
     });
 
@@ -190,8 +190,8 @@ describe('ProjectRoadmapTab', () => {
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() => {
         expect(screen.getByText('Planning')).toBeTruthy();
-        expect(screen.getByText('Active')).toBeTruthy();
-        expect(screen.getByText('Completed')).toBeTruthy();
+        expect(screen.getByText('Activo')).toBeTruthy();
+        expect(screen.getByText('Completado')).toBeTruthy();
         expect(screen.getByText('Open card due')).toBeTruthy();
         expect(screen.getByText('Done card')).toBeTruthy();
       });
