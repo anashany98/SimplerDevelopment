@@ -131,7 +131,7 @@ export async function updateSurvey(
     body: JSON.stringify(updates),
   });
   const data = await res.json();
-  if (!data.success) return { success: false, message: data.message || 'Failed to save' };
+  if (!data.success) return { success: false, message: data.message || 'No se pudo guardar' };
   return { success: true, data: data.data as Survey };
 }
 

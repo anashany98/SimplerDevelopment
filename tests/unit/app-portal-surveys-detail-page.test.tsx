@@ -341,9 +341,9 @@ describe('SurveyDetailPage', () => {
     });
 
     it('renders success banner when successMsg is set', () => {
-      useSurveyReturnValue = makeUseSurveyValue({ successMsg: 'Saved' });
+      useSurveyReturnValue = makeUseSurveyValue({ successMsg: 'Guardado' });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Saved');
+      expect(container.textContent).toContain('Guardado');
     });
 
     it('does not render success banner when successMsg is empty', () => {

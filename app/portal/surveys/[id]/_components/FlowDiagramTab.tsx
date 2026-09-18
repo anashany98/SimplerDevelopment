@@ -81,17 +81,17 @@ export default function FlowDiagramTab({ fields }: Props) {
           <div>
             <h3 className="font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons text-primary">account_tree</span>
-              Page Flow
+              Flujo de páginas
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {graph.pages.length} pages, {graph.edges.length} connection
-              {graph.edges.length === 1 ? '' : 's'}
+              {graph.pages.length} páginas, {graph.edges.length} conexión
+              {graph.edges.length === 1 ? '' : 'es'}
               {graph.orphans.size > 0 && (
                 <>
                   {' '}
                   &middot;{' '}
                   <span className="text-red-600 dark:text-red-400 font-medium">
-                    {graph.orphans.size} unreachable
+                    {graph.orphans.size} sin acceso
                   </span>
                 </>
               )}
@@ -106,7 +106,7 @@ export default function FlowDiagramTab({ fields }: Props) {
             height={svgHeight}
             viewBox={`0 0 ${svgWidth} ${svgHeight}`}
             role="img"
-            aria-label="Survey flow diagram"
+            aria-label="Diagrama de flujo de la encuesta"
             className="mx-auto block"
           >
             <defs>
@@ -199,7 +199,7 @@ function Legend() {
             strokeWidth="1.5"
           />
         </svg>
-        Default Next
+        Siguiente por defecto
       </span>
       <span className="flex items-center gap-1.5">
         <svg width="22" height="10" aria-hidden="true">
@@ -213,7 +213,7 @@ function Legend() {
             strokeDasharray="4 3"
           />
         </svg>
-        Skip Logic
+        Lógica de salto
       </span>
     </div>
   );
@@ -256,7 +256,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
         className="fill-foreground"
         style={{ fontSize: '14px', fontWeight: 600 }}
       >
-        Page {page.index + 1}
+        Página {page.index + 1}
       </text>
       <text
         x={x + NODE_WIDTH - 16}
@@ -265,7 +265,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
         className="fill-muted-foreground"
         style={{ fontSize: '12px' }}
       >
-        {page.fields.length} question{page.fields.length === 1 ? '' : 's'}
+        {page.fields.length} pregunta{page.fields.length === 1 ? '' : 's'}
       </text>
 
       {/* Orphan badge */}
@@ -298,7 +298,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
             className="fill-red-700 dark:fill-red-300"
             style={{ fontSize: '11px', fontWeight: 500 }}
           >
-            Unreachable
+            Sin acceso
           </text>
         </g>
       )}
@@ -322,7 +322,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
           className="fill-muted-foreground italic"
           style={{ fontSize: '11px' }}
         >
-          +{overflow} more
+          +{overflow} más
         </text>
       )}
 
