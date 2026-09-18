@@ -421,7 +421,7 @@ describe('SurveyRecommendationEditor — Overrides', () => {
       overrides: [{ whenAnyAnswer: [], forceOfferingKey: 'offering-a' }],
     });
     const { onChange } = renderEditor(config, []);
-    const removeBtn = screen.getByTitle('Remove');
+    const removeBtn = screen.getByTitle('Quitar');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -491,12 +491,12 @@ describe('SurveyRecommendationEditor — Hybrid Rule', () => {
 
   it('shows "Enable" button when hybrid is disabled', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText('Enable')).toBeInTheDocument();
+    expect(screen.getByText('Activar')).toBeInTheDocument();
   });
 
   it('calls onChange with empty hybrid rule when "Enable" is clicked', () => {
     const { onChange } = renderEditor(makeConfig(), []);
-    fireEvent.click(screen.getByText('Enable'));
+    fireEvent.click(screen.getByText('Activar'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.hybrid).toBeDefined();
@@ -510,7 +510,7 @@ describe('SurveyRecommendationEditor — Hybrid Rule', () => {
       hybrid: { whenAnswers: {}, title: 'Hybrid Title', body: 'Hybrid Body', offeringKeys: [] },
     });
     renderEditor(config, []);
-    expect(screen.getByText('Disable')).toBeInTheDocument();
+    expect(screen.getByText('Desactivar')).toBeInTheDocument();
   });
 
   it('calls onChange with hybrid=undefined when "Disable" is clicked', () => {
@@ -518,7 +518,7 @@ describe('SurveyRecommendationEditor — Hybrid Rule', () => {
       hybrid: { whenAnswers: {}, title: 'H', body: 'B', offeringKeys: [] },
     });
     const { onChange } = renderEditor(config, []);
-    fireEvent.click(screen.getByText('Disable'));
+    fireEvent.click(screen.getByText('Desactivar'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.hybrid).toBeUndefined();
@@ -685,8 +685,8 @@ describe('SurveyRecommendationEditor — edge cases', () => {
       hybrid: { whenAnswers: {}, title: '', body: '', offeringKeys: [] },
     });
     renderEditor(config, []);
-    expect(screen.queryByText('Enable')).toBeNull();
-    expect(screen.getByText('Disable')).toBeInTheDocument();
+    expect(screen.queryByText('Activar')).toBeNull();
+    expect(screen.getByText('Desactivar')).toBeInTheDocument();
   });
 
   it('renders overrides count of 0 when overrides is undefined', () => {
