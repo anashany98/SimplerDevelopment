@@ -24,10 +24,10 @@ export function PostPreview({
       <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
         <div className="text-xs text-gray-500">
           Slug <code className="text-gray-700">{preview.slug}</code> ·{' '}
-          {preview.published ? 'Currently published' : 'Currently a draft'}
+          {preview.published ? 'Publicada actualmente' : 'En borrador'}
           {preview.customJs && (
             <span className="ml-2 text-amber-700">
-              · Page has custom JS (not executed in preview)
+              · La página tiene JS personalizado (no se ejecuta en la vista previa)
             </span>
           )}
         </div>
@@ -47,7 +47,7 @@ export function PostPreview({
                   : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
               }`}
             >
-              Desktop
+              Escritorio
             </button>
             <button
               type="button"
@@ -58,7 +58,7 @@ export function PostPreview({
                   : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
               }`}
             >
-              Mobile
+              Móvil
             </button>
           </div>
 
@@ -69,7 +69,7 @@ export function PostPreview({
           >
             <iframe
               src={preview.iframeSrc}
-              title="Page preview"
+              title="Vista previa de la página"
               className="w-full"
               style={{ border: 0, height: '75vh' }}
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups"

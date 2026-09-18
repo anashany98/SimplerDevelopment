@@ -129,7 +129,7 @@ describe('ApprovalReviewer', () => {
 
   it('renders the entity type label and title in the sticky bar', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'post', preview: { ...defaultPreview, title: 'Draft Post' } })} />);
-    expect(screen.getByText(/Page — Draft review/i)).toBeTruthy();
+    expect(screen.getByText(/Página — Revisión de borrador/i)).toBeTruthy();
     expect(screen.getByText('Draft Post')).toBeTruthy();
   });
 
@@ -140,34 +140,34 @@ describe('ApprovalReviewer', () => {
 
   it('shows PENDING status badge when status is pending', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'pending' })} />);
-    expect(screen.getByText('PENDING')).toBeTruthy();
+    expect(screen.getByText('PENDIENTE')).toBeTruthy();
   });
 
   it('shows APPROVED status badge when status is approved', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'approved' })} />);
-    expect(screen.getByText('APPROVED')).toBeTruthy();
+    expect(screen.getByText('APROBADO')).toBeTruthy();
   });
 
   it('shows REJECTED status badge when status is rejected', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'rejected' })} />);
-    expect(screen.getByText('REJECTED')).toBeTruthy();
+    expect(screen.getByText('RECHAZADO')).toBeTruthy();
   });
 
   it('shows EXPIRED status badge when status is expired', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'expired' })} />);
-    expect(screen.getByText('EXPIRED')).toBeTruthy();
+    expect(screen.getByText('CADUCADO')).toBeTruthy();
   });
 
   it('shows Approve and Reject buttons when status is pending', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'pending' })} />);
-    expect(screen.getByText('Approve')).toBeTruthy();
-    expect(screen.getByText('Reject')).toBeTruthy();
+    expect(screen.getByText('Aprobar')).toBeTruthy();
+    expect(screen.getByText('Rechazar')).toBeTruthy();
   });
 
   it('hides Approve/Reject buttons when status is approved', () => {
     render(<ApprovalReviewer {...buildProps({ status: 'approved' })} />);
-    expect(screen.queryByRole('button', { name: 'Approve' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Reject' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Aprobar' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Rechazar' })).toBeNull();
   });
 
   it('shows reviewer attribution when status is approved and reviewerName+reviewedAt are set', () => {
@@ -177,7 +177,7 @@ describe('ApprovalReviewer', () => {
       reviewedAt: '2026-05-01T10:00:00.000Z',
     })} />);
     expect(screen.getByText('Alice Smith')).toBeTruthy();
-    expect(screen.getByText(/Approved/)).toBeTruthy();
+    expect(screen.getByText(/Aprobado/)).toBeTruthy();
   });
 
   it('shows "Rejected by" attribution when status is rejected', () => {
@@ -187,7 +187,7 @@ describe('ApprovalReviewer', () => {
       reviewedAt: '2026-05-02T12:00:00.000Z',
     })} />);
     expect(screen.getByText('Bob Jones')).toBeTruthy();
-    expect(screen.getByText(/Rejected/)).toBeTruthy();
+    expect(screen.getByText(/Rechazado/)).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -196,27 +196,27 @@ describe('ApprovalReviewer', () => {
 
   it('maps pitch_deck entityType to "Pitch deck"', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'pitch_deck' })} />);
-    expect(screen.getByText(/Pitch deck — Draft review/)).toBeTruthy();
+    expect(screen.getByText(/Presentación — Revisión de borrador/)).toBeTruthy();
   });
 
   it('maps email_campaign entityType to "Email"', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'email_campaign' })} />);
-    expect(screen.getByText(/Email — Draft review/)).toBeTruthy();
+    expect(screen.getByText(/Correo — Revisión de borrador/)).toBeTruthy();
   });
 
   it('maps survey entityType to "Survey"', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'survey' })} />);
-    expect(screen.getByText(/Survey — Draft review/)).toBeTruthy();
+    expect(screen.getByText(/Encuesta — Revisión de borrador/)).toBeTruthy();
   });
 
   it('maps booking_page entityType to "Booking page"', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'booking_page' })} />);
-    expect(screen.getByText(/Booking page — Draft review/)).toBeTruthy();
+    expect(screen.getByText(/Página de reservas — Revisión de borrador/)).toBeTruthy();
   });
 
   it('falls back to underscored entityType for unknown kinds', () => {
     render(<ApprovalReviewer {...buildProps({ entityType: 'custom_type' })} />);
-    expect(screen.getByText(/custom type — Draft review/)).toBeTruthy();
+    expect(screen.getByText(/custom type — Revisión de borrador/)).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -240,7 +240,7 @@ describe('ApprovalReviewer', () => {
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
     expect(screen.getByText(/test-post/)).toBeTruthy();
-    expect(screen.getByText(/Currently published/)).toBeTruthy();
+    expect(screen.getByText(/Publicada actualmente/)).toBeTruthy();
     expect(screen.getByTestId('block-renderer')).toBeTruthy();
   });
 
@@ -254,7 +254,7 @@ describe('ApprovalReviewer', () => {
       siteId: null,
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText(/Currently a draft/)).toBeTruthy();
+    expect(screen.getByText(/En borrador/)).toBeTruthy();
   });
 
   it('renders post kind with custom JS warning when customJs is present', () => {
@@ -268,7 +268,7 @@ describe('ApprovalReviewer', () => {
       customJs: 'console.log("hi")',
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText(/Page has custom JS/)).toBeTruthy();
+    expect(screen.getByText(/La página tiene JS personalizado/)).toBeTruthy();
   });
 
   it('renders block_template kind with category and scope', () => {
@@ -301,7 +301,7 @@ describe('ApprovalReviewer', () => {
       pendingDelete: true,
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText('PENDING DELETE')).toBeTruthy();
+    expect(screen.getByText('ELIMINACIÓN PENDIENTE')).toBeTruthy();
     expect(screen.queryByTestId('block-renderer')).toBeNull();
   });
 
@@ -317,9 +317,9 @@ describe('ApprovalReviewer', () => {
       ],
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText(/Slide 1/)).toBeTruthy();
+    expect(screen.getByText(/Diapositiva 1/)).toBeTruthy();
     expect(screen.getByText(/Intro/)).toBeTruthy();
-    expect(screen.getByText(/Slide 2/)).toBeTruthy();
+    expect(screen.getByText(/Diapositiva 2/)).toBeTruthy();
   });
 
   it('renders pitch_deck with empty slides message', () => {
@@ -331,7 +331,7 @@ describe('ApprovalReviewer', () => {
       slides: [],
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText(/This deck has no slides yet/)).toBeTruthy();
+    expect(screen.getByText(/Esta presentación aún no tiene diapositivas/)).toBeTruthy();
   });
 
   it('renders pitch_deck slide with background image style from pageSettings', () => {
@@ -370,7 +370,7 @@ describe('ApprovalReviewer', () => {
     expect(screen.getByText(/Team SD/)).toBeTruthy();
     expect(screen.getByText(/Welcome to us!/)).toBeTruthy();
     expect(screen.getByText(/Check this out/)).toBeTruthy();
-    expect(screen.getByTitle('Email preview')).toBeTruthy();
+    expect(screen.getByTitle('Vista previa del correo')).toBeTruthy();
   });
 
   it('renders email_campaign without previewText when null', () => {
@@ -385,7 +385,7 @@ describe('ApprovalReviewer', () => {
       status: 'draft',
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.queryByText(/Preview:/)).toBeNull();
+    expect(screen.queryByText(/Vista previa:/)).toBeNull();
   });
 
   it('renders pending_change kind with entityType, operation, and JSON payload', () => {
@@ -426,7 +426,7 @@ describe('ApprovalReviewer', () => {
     expect(screen.getByText(/Satisfaction rating/)).toBeTruthy();
     expect(screen.getByText('Good feedback')).toBeTruthy();
     expect(screen.getByText('Thank you!')).toBeTruthy();
-    expect(screen.getByText(/email required/)).toBeTruthy();
+    expect(screen.getByText(/correo obligatorio/)).toBeTruthy();
   });
 
   it('renders survey with no fields message when fields is empty', () => {
@@ -443,7 +443,7 @@ describe('ApprovalReviewer', () => {
       requireEmail: false,
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
-    expect(screen.getByText('No fields yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay campos.')).toBeTruthy();
   });
 
   it('renders survey field with showIf conditional info', () => {
@@ -466,7 +466,7 @@ describe('ApprovalReviewer', () => {
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
     // The conditional div renders "Conditional — <code>..." text
-    expect(screen.getAllByText(/Conditional/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Condicional/).length).toBeGreaterThan(0);
   });
 
   it('renders booking_page kind with duration, price, and timezone', () => {
@@ -508,7 +508,7 @@ describe('ApprovalReviewer', () => {
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
     expect(screen.getByText('Free')).toBeTruthy();
-    expect(screen.getByText(/Currently inactive/)).toBeTruthy();
+    expect(screen.getByText(/Inactiva actualmente/)).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -517,22 +517,22 @@ describe('ApprovalReviewer', () => {
 
   it('opens approve modal when Approve button is clicked', () => {
     render(<ApprovalReviewer {...buildProps()} />);
-    fireEvent.click(screen.getByText('Approve'));
-    expect(screen.getByText('Approve this draft?')).toBeTruthy();
+    fireEvent.click(screen.getByText('Aprobar'));
+    expect(screen.getByText('¿Aprobar este borrador?')).toBeTruthy();
   });
 
   it('opens reject modal when Reject button is clicked', () => {
     render(<ApprovalReviewer {...buildProps()} />);
-    fireEvent.click(screen.getByText('Reject'));
-    expect(screen.getByText('Reject this draft?')).toBeTruthy();
+    fireEvent.click(screen.getByText('Rechazar'));
+    expect(screen.getByText('¿Rechazar este borrador?')).toBeTruthy();
   });
 
   it('closes modal when Cancel is clicked', () => {
     render(<ApprovalReviewer {...buildProps()} />);
-    fireEvent.click(screen.getByText('Approve'));
-    expect(screen.getByText('Approve this draft?')).toBeTruthy();
-    fireEvent.click(screen.getByText('Cancel'));
-    expect(screen.queryByText('Approve this draft?')).toBeNull();
+    fireEvent.click(screen.getByText('Aprobar'));
+    expect(screen.getByText('¿Aprobar este borrador?')).toBeTruthy();
+    fireEvent.click(screen.getByText('Cancelar'));
+    expect(screen.queryByText('¿Aprobar este borrador?')).toBeNull();
   });
 
   // -------------------------------------------------------------------------
@@ -541,15 +541,15 @@ describe('ApprovalReviewer', () => {
 
   it('shows name and email inputs for unauthenticated users', () => {
     render(<ApprovalReviewer {...buildProps({ currentUser: null })} />);
-    fireEvent.click(screen.getByText('Approve'));
-    expect(screen.getByPlaceholderText('Full name')).toBeTruthy();
-    expect(screen.getByPlaceholderText('you@example.com')).toBeTruthy();
+    fireEvent.click(screen.getByText('Aprobar'));
+    expect(screen.getByPlaceholderText('Nombre completo')).toBeTruthy();
+    expect(screen.getByPlaceholderText('tu@ejemplo.com')).toBeTruthy();
   });
 
   it('allows changing reviewer name and email in the modal', () => {
     render(<ApprovalReviewer {...buildProps({ currentUser: null })} />);
-    fireEvent.click(screen.getByText('Approve'));
-    const nameInput = screen.getByPlaceholderText('Full name');
+    fireEvent.click(screen.getByText('Aprobar'));
+    const nameInput = screen.getByPlaceholderText('Nombre completo');
     fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
     expect((nameInput as HTMLInputElement).value).toBe('Jane Doe');
   });
@@ -560,16 +560,16 @@ describe('ApprovalReviewer', () => {
 
   it('hides name/email inputs for authenticated users', () => {
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    fireEvent.click(screen.getByText('Approve'));
-    expect(screen.queryByPlaceholderText('Full name')).toBeNull();
-    expect(screen.queryByPlaceholderText('you@example.com')).toBeNull();
-    expect(screen.getByText(/Recording this approval as Alice/)).toBeTruthy();
+    fireEvent.click(screen.getByText('Aprobar'));
+    expect(screen.queryByPlaceholderText('Nombre completo')).toBeNull();
+    expect(screen.queryByPlaceholderText('tu@ejemplo.com')).toBeNull();
+    expect(screen.getByText(/Se registrará esta aprobación como Alice/)).toBeTruthy();
   });
 
   it('shows rejection copy for authenticated user on reject modal', () => {
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Bob', email: 'bob@test.com' } })} />);
-    fireEvent.click(screen.getByText('Reject'));
-    expect(screen.getByText(/Recording this rejection as Bob/)).toBeTruthy();
+    fireEvent.click(screen.getByText('Rechazar'));
+    expect(screen.getByText(/Se registrará este rechazo como Bob/)).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -579,15 +579,15 @@ describe('ApprovalReviewer', () => {
   it('shows error when Approve is confirmed without entering a name', async () => {
     render(<ApprovalReviewer {...buildProps({ currentUser: null })} />);
     // Click the sticky bar Approve button — opens modal
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
     // Modal is now open; last "Approve" button is the modal confirm
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
     });
-    expect(screen.getByText('Please enter your name.')).toBeTruthy();
+    expect(screen.getByText('Introduce tu nombre.')).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -597,47 +597,47 @@ describe('ApprovalReviewer', () => {
   it('transitions status to approved after successful submit', async () => {
     installFetchMock(() => ({ success: true, data: { status: 'approved' } }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
     });
     await flush();
     // Modal closed
-    expect(screen.queryByText('Approve this draft?')).toBeNull();
+    expect(screen.queryByText('¿Aprobar este borrador?')).toBeNull();
     // Status badge updated
-    expect(screen.getByText('APPROVED')).toBeTruthy();
+    expect(screen.getByText('APROBADO')).toBeTruthy();
   });
 
   it('transitions status to rejected after successful reject submit', async () => {
     installFetchMock(() => ({ success: true, data: { status: 'rejected' } }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyReject] = screen.getAllByText('Reject');
+    const [stickyReject] = screen.getAllByText('Rechazar');
     fireEvent.click(stickyReject);
-    const allReject = screen.getAllByText('Reject');
+    const allReject = screen.getAllByText('Rechazar');
     const confirmBtn = allReject[allReject.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
     });
     await flush();
-    expect(screen.queryByText('Reject this draft?')).toBeNull();
-    expect(screen.getByText('REJECTED')).toBeTruthy();
+    expect(screen.queryByText('¿Rechazar este borrador?')).toBeNull();
+    expect(screen.getByText('RECHAZADO')).toBeTruthy();
   });
 
   it('falls back to derived status when API response has no data.status', async () => {
     installFetchMock(() => ({ success: true }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
     });
     await flush();
-    expect(screen.getByText('APPROVED')).toBeTruthy();
+    expect(screen.getByText('APROBADO')).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -647,9 +647,9 @@ describe('ApprovalReviewer', () => {
   it('shows API error message in modal when success=false', async () => {
     installFetchMock(() => ({ success: false, message: 'Not authorized to approve' }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
@@ -657,30 +657,30 @@ describe('ApprovalReviewer', () => {
     await flush();
     expect(screen.getByText('Not authorized to approve')).toBeTruthy();
     // Modal stays open
-    expect(screen.getByText('Approve this draft?')).toBeTruthy();
+    expect(screen.getByText('¿Aprobar este borrador?')).toBeTruthy();
   });
 
   it('shows fallback error when success=false and no message', async () => {
     installFetchMock(() => ({ success: false }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
     });
     await flush();
-    expect(screen.getByText('Failed to record review')).toBeTruthy();
+    expect(screen.getByText('No se pudo registrar la revisión')).toBeTruthy();
   });
 
   it('shows network error message when fetch throws', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = vi.fn().mockRejectedValue(new Error('Network failure'));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
@@ -696,11 +696,11 @@ describe('ApprovalReviewer', () => {
   it('posts correct action and reviewer info to the token endpoint', async () => {
     const fetchMock = installFetchMock(() => ({ success: true, data: { status: 'approved' } }));
     render(<ApprovalReviewer {...buildProps({ token: 'tok-xyz', currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const noteArea = screen.getByPlaceholderText('Anything to tell the author?');
+    const noteArea = screen.getByPlaceholderText('¿Algo que quieras decirle al autor?');
     fireEvent.change(noteArea, { target: { value: 'Looks great' } });
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmBtn);
@@ -723,9 +723,9 @@ describe('ApprovalReviewer', () => {
     installFetchMock(() => ({ success: false, message: 'Error!' }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
     // Open approve, fail
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmApprove = allApprove[allApprove.length - 1];
     await act(async () => {
       fireEvent.click(confirmApprove);
@@ -733,10 +733,10 @@ describe('ApprovalReviewer', () => {
     await flush();
     expect(screen.getByText('Error!')).toBeTruthy();
     // Cancel and open reject — error should be cleared
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     // Reinstall mock to succeed so Reject opens fresh
     installFetchMock(() => ({ success: true }));
-    const [stickyReject] = screen.getAllByText('Reject');
+    const [stickyReject] = screen.getAllByText('Rechazar');
     fireEvent.click(stickyReject);
     expect(screen.queryByText('Error!')).toBeNull();
   });
@@ -750,9 +750,9 @@ describe('ApprovalReviewer', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = vi.fn(() => new Promise((r) => { resolvePromise = r; }));
     render(<ApprovalReviewer {...buildProps({ currentUser: { name: 'Alice', email: 'alice@test.com' } })} />);
-    const [stickyApprove] = screen.getAllByText('Approve');
+    const [stickyApprove] = screen.getAllByText('Aprobar');
     fireEvent.click(stickyApprove);
-    const allApprove = screen.getAllByText('Approve');
+    const allApprove = screen.getAllByText('Aprobar');
     const confirmBtn = allApprove[allApprove.length - 1];
     act(() => {
       fireEvent.click(confirmBtn);
@@ -760,7 +760,7 @@ describe('ApprovalReviewer', () => {
     // Submitting state should kick in before the promise resolves
     await waitFor(() => {
       // "Approving…" button appears in the modal when submitting
-      const approvingBtn = screen.queryByText('Approving…');
+      const approvingBtn = screen.queryByText('Aprobando…');
       expect(approvingBtn).toBeTruthy();
       expect(approvingBtn?.closest('button')?.disabled).toBe(true);
     });

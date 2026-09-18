@@ -121,7 +121,7 @@ export function ApprovalReviewer(props: Props) {
   async function submit() {
     if (!decision) return;
     if (!reviewerName.trim()) {
-      setError('Please enter your name.');
+      setError('Introduce tu nombre.');
       return;
     }
     setSubmitting(true);
@@ -139,14 +139,14 @@ export function ApprovalReviewer(props: Props) {
       });
       const data = (await res.json()) as { success: boolean; message?: string; data?: { status?: string } };
       if (!data.success) {
-        setError(data.message ?? 'Failed to record review');
+        setError(data.message ?? 'No se pudo registrar la revisión');
         setSubmitting(false);
         return;
       }
       setCurrentStatus((data.data?.status as typeof currentStatus | undefined) ?? (decision === 'approve' ? 'approved' : 'rejected'));
       setDecision(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unexpected error');
+      setError(err instanceof Error ? err.message : 'Error inesperado');
     } finally {
       setSubmitting(false);
     }
@@ -204,7 +204,7 @@ export function ApprovalReviewer(props: Props) {
 function getPreviewTitle(p: ApprovalEntityPreview): string {
   switch (p.kind) {
     case 'missing':
-      return 'Not found';
+      return 'No encontrado';
     case 'pending_change':
       return p.title;
     default:
@@ -224,14 +224,12 @@ function StickyBar(props: {
   onApprove: () => void;
   onReject: () => void;
 }) {
-  const statusColor =
-    props.status === 'approved'
-      ? 'bg-green-100 text-green-800'
-      : props.status === 'rejected'
-      ? 'bg-red-100 text-red-800'
-      : props.status === 'expired'
-      ? 'bg-gray-100 text-gray-700'
-      : 'bg-amber-100 text-amber-800';
+  const statusMeta = {
+    approved: { color: 'bg-green-100 text-green-800', label: 'APROBADO' },
+    rejected: { color: 'bg-red-100 text-red-800', label: 'RECHAZADO' },
+    expired: { color: 'bg-gray-100 text-gray-700', label: 'CADUCADO' },
+    pending: { color: 'bg-amber-100 text-amber-800', label: 'PENDIENTE' },
+  }[props.status];
 
   return (
     <div className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
@@ -239,10 +237,10 @@ function StickyBar(props: {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              {humanEntity(props.entityType)} — Draft review
+              {humanEntity(props.entityType)} — Revisión de borrador
             </span>
-            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor}`}>
-              {props.status.toUpperCase()}
+            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusMeta.color}`}>
+              {statusMeta.label}
             </span>
           </div>
           <h1 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{props.title}</h1>
@@ -257,24 +255,24 @@ function StickyBar(props: {
               onClick={props.onReject}
               className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50"
             >
-              Reject
+              Rechazar
             </button>
             <button
               type="button"
               onClick={props.onApprove}
               className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700"
             >
-              Approve
+              Aprobar
             </button>
           </div>
         ) : (
           <div className="text-xs text-gray-500 shrink-0">
             {props.reviewerName && props.reviewedAt && (
               <>
-                {props.status === 'approved' ? 'Approved' : 'Rejected'} by{' '}
+                {props.status === 'approved' ? 'Aprobado' : 'Rechazado'} por{' '}
                 <span className="font-medium text-gray-700">{props.reviewerName}</span>
                 <br />
-                on {new Date(props.reviewedAt).toLocaleString()}
+                el {new Date(props.reviewedAt).toLocaleString('es-ES')}
               </>
             )}
           </div>
@@ -301,7 +299,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
             <div className="text-xs text-gray-500">
               {preview.category} · {preview.scope}
               {preview.pendingDelete && (
-                <span className="ml-2 px-2 py-0.5 rounded bg-red-100 text-red-800 font-medium">PENDING DELETE</span>
+                <span className="ml-2 px-2 py-0.5 rounded bg-red-100 text-red-800 font-medium">ELIMINACIÓN PENDIENTE</span>
               )}
             </div>
             {preview.description && (
@@ -320,7 +318,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
         <div className="space-y-6">
           {preview.slides.length === 0 ? (
             <div className="rounded-xl bg-white border border-gray-200 p-12 text-center text-gray-500">
-              This deck has no slides yet.
+              Esta presentación aún no tiene diapositivas.
             </div>
           ) : (
             preview.slides.map((slide, idx) => {
@@ -357,7 +355,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
                   )}
                   <div className="px-6 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <span className="text-xs font-medium text-gray-700">
-                      Slide {idx + 1}
+                      Diapositiva {idx + 1}
                       {slide.label && <span className="text-gray-500"> — {slide.label}</span>}
                     </span>
                     <span className="text-xs text-gray-400">{slide.id}</span>
@@ -378,20 +376,20 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
         <div className="rounded-xl bg-white border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 space-y-1">
             <div className="text-xs text-gray-500">
-              From <span className="font-medium text-gray-700">{preview.fromName}</span>{' '}
+              De <span className="font-medium text-gray-700">{preview.fromName}</span>{' '}
               &lt;{preview.fromEmail}&gt;
             </div>
-            <div className="text-sm font-medium text-gray-900">Subject: {preview.subject}</div>
+            <div className="text-sm font-medium text-gray-900">Asunto: {preview.subject}</div>
             {preview.previewText && (
-              <div className="text-xs text-gray-600 italic">Preview: {preview.previewText}</div>
+              <div className="text-xs text-gray-600 italic">Vista previa: {preview.previewText}</div>
             )}
             <div className="text-xs text-gray-500">
-              Status: <code className="text-gray-700">{preview.status}</code>
+              Estado: <code className="text-gray-700">{preview.status}</code>
             </div>
           </div>
           <iframe
-            title="Email preview"
-            srcDoc={preview.htmlContent || '<p style="padding:24px;color:#666">No HTML content yet.</p>'}
+            title="Vista previa del correo"
+            srcDoc={preview.htmlContent || '<p style="padding:24px;color:#666">Aún no hay contenido HTML.</p>'}
             className="w-full"
             style={{ minHeight: '70vh', border: 'none' }}
             // Deliberately omits allow-scripts: htmlContent is unsanitized
@@ -406,7 +404,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
       return (
         <div className="rounded-xl bg-white border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 text-xs text-gray-500">
-            Staged change: <code className="text-gray-700">{preview.entityType}</code> ·{' '}
+            Cambio preparado: <code className="text-gray-700">{preview.entityType}</code> ·{' '}
             <code className="text-gray-700">{preview.operation}</code>
           </div>
           <pre className="p-6 text-xs overflow-x-auto bg-gray-900 text-gray-100">
@@ -420,10 +418,10 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 space-y-1">
             <div className="text-xs text-gray-500">
               Slug <code className="text-gray-700">{preview.slug}</code> ·{' '}
-              Status <code className="text-gray-700">{preview.status}</code>
+              Estado <code className="text-gray-700">{preview.status}</code>
               {preview.requireEmail && (
                 <span className="ml-2 px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-medium">
-                  email required
+                  correo obligatorio
                 </span>
               )}
             </div>
@@ -431,18 +429,18 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
               <p className="text-sm text-gray-700 mt-2">{preview.description}</p>
             )}
             <div className="text-xs text-gray-500 mt-1">
-              Public URL on approve: <code className="text-gray-700">{preview.publicUrl}</code>
+              URL pública al aprobar: <code className="text-gray-700">{preview.publicUrl}</code>
             </div>
           </div>
           <div className="p-6 space-y-4">
             {preview.fields.length === 0 ? (
-              <p className="text-sm text-gray-500">No fields yet.</p>
+              <p className="text-sm text-gray-500">Aún no hay campos.</p>
             ) : (
               preview.fields.map((f, idx) => (
                 <div key={f.id ?? idx} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-1">
                     <div className="text-sm font-medium text-gray-900">
-                      {idx + 1}. {f.label || <span className="italic text-gray-500">(no label)</span>}
+                      {idx + 1}. {f.label || <span className="italic text-gray-500">(sin etiqueta)</span>}
                       {f.required && <span className="text-red-600 ml-1" aria-label="required">*</span>}
                     </div>
                     <code className="text-xs text-gray-500">{f.type}</code>
@@ -456,7 +454,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
                   )}
                   {f.showIf != null && (
                     <div className="mt-2 text-xs text-gray-500">
-                      Conditional — <code className="text-gray-700">{JSON.stringify(f.showIf)}</code>
+                      Condicional — <code className="text-gray-700">{JSON.stringify(f.showIf)}</code>
                     </div>
                   )}
                 </div>
@@ -465,7 +463,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
             {(preview.thankYouTitle || preview.thankYouMessage) && (
               <div className="mt-6 rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3">
                 <div className="text-xs font-medium text-emerald-800 uppercase tracking-wider mb-1">
-                  Thank-you screen
+                  Pantalla de agradecimiento
                 </div>
                 {preview.thankYouTitle && (
                   <div className="text-sm font-medium text-emerald-900">{preview.thankYouTitle}</div>
@@ -484,10 +482,10 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 space-y-1">
             <div className="text-xs text-gray-500">
               Slug <code className="text-gray-700">{preview.slug}</code> ·{' '}
-              {preview.active ? 'Currently active' : 'Currently inactive'}
+              {preview.active ? 'Activa actualmente' : 'Inactiva actualmente'}
             </div>
             <div className="text-xs text-gray-500 mt-1">
-              Public URL on approve: <code className="text-gray-700">{preview.publicUrl}</code>
+              URL pública al aprobar: <code className="text-gray-700">{preview.publicUrl}</code>
             </div>
           </div>
           <div className="p-6 grid grid-cols-2 gap-4 text-sm">
@@ -498,19 +496,19 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
             <div>
               <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Precio</div>
               <div className="text-gray-900">
-                {preview.priceLabel ?? (preview.price > 0 ? `$${(preview.price / 100).toFixed(2)}` : 'Free')}
+                {preview.priceLabel ?? (preview.price > 0 ? `$${(preview.price / 100).toFixed(2)}` : 'Gratis')}
               </div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Booking type</div>
+              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Tipo de reserva</div>
               <div className="text-gray-900">{preview.bookingType}</div>
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Assignment</div>
+              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Asignación</div>
               <div className="text-gray-900">{preview.assignmentMode}</div>
             </div>
             <div className="col-span-2">
-              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Timezone</div>
+              <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Zona horaria</div>
               <div className="text-gray-900">{preview.timezone}</div>
             </div>
             {preview.description && (
@@ -545,16 +543,16 @@ function DecisionModal(props: {
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
         <h2 className="text-lg font-semibold text-gray-900">
-          {isApprove ? 'Approve this draft?' : 'Reject this draft?'}
+          {isApprove ? '¿Aprobar este borrador?' : '¿Rechazar este borrador?'}
         </h2>
         <p className="text-sm text-gray-600">
           {props.isAuthed && props.currentUser
             ? isApprove
-              ? `Recording this approval as ${props.currentUser.name}. The change will go live as soon as you confirm.`
-              : `Recording this rejection as ${props.currentUser.name}. The author can revise and re-send for review.`
+              ? `Se registrará esta aprobación como ${props.currentUser.name}. El cambio se publicará en cuanto confirmes.`
+              : `Se registrará este rechazo como ${props.currentUser.name}. El autor puede revisar y volver a enviarlo.`
             : isApprove
-            ? 'Your name will be recorded with the approval. The change will go live as soon as you confirm.'
-            : 'Your name will be recorded with the rejection. The author can revise and re-send for review.'}
+            ? 'Tu nombre quedará registrado con la aprobación. El cambio se publicará en cuanto confirmes.'
+            : 'Tu nombre quedará registrado con el rechazo. El autor puede revisar y volver a enviarlo.'}
         </p>
         {props.error && (
           <div className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
@@ -564,23 +562,23 @@ function DecisionModal(props: {
         {!props.isAuthed && (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tu nombre</label>
               <input
                 value={props.reviewerName}
                 onChange={(e) => props.onChangeName(e.target.value)}
-                placeholder="Full name"
+                placeholder="Nombre completo"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500"
                 autoFocus
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Correo<span className="text-gray-500 font-normal">(optional)</span>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Correo<span className="text-gray-500 font-normal">(opcional)</span>
               </label>
               <input
                 type="email"
                 value={props.reviewerEmail}
                 onChange={(e) => props.onChangeEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="tu@ejemplo.com"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500"
               />
             </div>
@@ -588,12 +586,12 @@ function DecisionModal(props: {
         )}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Note <span className="text-gray-500 font-normal">(optional)</span>
+            Nota <span className="text-gray-500 font-normal">(opcional)</span>
           </label>
           <textarea
             value={props.reviewNote}
             onChange={(e) => props.onChangeNote(e.target.value)}
-            placeholder={isApprove ? 'Anything to tell the author?' : 'What needs to change?'}
+            placeholder={isApprove ? '¿Algo que quieras decirle al autor?' : '¿Qué hay que cambiar?'}
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder:text-gray-500 resize-none"
             autoFocus={props.isAuthed}
@@ -616,11 +614,11 @@ function DecisionModal(props: {
           >
             {props.submitting
               ? isApprove
-                ? 'Approving…'
-                : 'Rejecting…'
+                ? 'Aprobando…'
+                : 'Rechazando…'
               : isApprove
-              ? 'Approve'
-              : 'Reject'}
+              ? 'Aprobar'
+              : 'Rechazar'}
           </button>
         </div>
       </div>
@@ -631,17 +629,17 @@ function DecisionModal(props: {
 function humanEntity(entityType: string): string {
   switch (entityType) {
     case 'post':
-      return 'Page';
+      return 'Página';
     case 'pitch_deck':
-      return 'Pitch deck';
+      return 'Presentación';
     case 'email_campaign':
-      return 'Email';
+      return 'Correo';
     case 'block_template':
-      return 'Block template';
+      return 'Plantilla de bloques';
     case 'survey':
-      return 'Survey';
+      return 'Encuesta';
     case 'booking_page':
-      return 'Booking page';
+      return 'Página de reservas';
     default:
       return entityType.replace(/_/g, ' ');
   }

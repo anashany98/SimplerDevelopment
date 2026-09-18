@@ -163,7 +163,7 @@ async function loadPreview(
   pendingChangeId: number | null,
 ): Promise<ApprovalEntityPreview> {
   if (linkType === 'pending_change') {
-    if (!pendingChangeId) return { kind: 'missing', message: 'Pending change ref missing' };
+    if (!pendingChangeId) return { kind: 'missing', message: 'Falta la referencia del cambio pendiente' };
     const [change] = await db
       .select()
       .from(mcpPendingChanges)
@@ -171,7 +171,7 @@ async function loadPreview(
         and(eq(mcpPendingChanges.id, pendingChangeId), eq(mcpPendingChanges.clientId, clientId)),
       )
       .limit(1);
-    if (!change) return { kind: 'missing', message: 'Pending change not found' };
+    if (!change) return { kind: 'missing', message: 'Cambio pendiente no encontrado' };
     return {
       kind: 'pending_change',
       title: change.summary ?? `${change.entityType}:${change.operation}`,
@@ -181,25 +181,25 @@ async function loadPreview(
     };
   }
 
-  if (!entityId) return { kind: 'missing', message: 'Entity ref missing' };
+  if (!entityId) return { kind: 'missing', message: 'Falta la referencia de la entidad' };
 
   switch (entityType) {
     case 'post': {
       const [row] = await db.select().from(posts).where(eq(posts.id, entityId)).limit(1);
-      if (!row) return { kind: 'missing', message: 'Post not found' };
+      if (!row) return { kind: 'missing', message: 'Publicación no encontrada' };
       // Tenancy: the posts table carries no clientId column — ownership is via
       // websiteId → clientWebsites.clientId (mirrors the cms MCP tools). The
       // [token] is the only credential, so verify the post's site belongs to
       // the approval link's client before leaking any content. A null
       // websiteId is an agency/global post with no tenant owner and is never
       // reachable from a client-scoped approval link.
-      if (!row.websiteId) return { kind: 'missing', message: 'Post not found' };
+      if (!row.websiteId) return { kind: 'missing', message: 'Publicación no encontrada' };
       const [ownerSite] = await db
         .select({ clientId: clientWebsites.clientId })
         .from(clientWebsites)
         .where(and(eq(clientWebsites.id, row.websiteId), eq(clientWebsites.clientId, clientId)))
         .limit(1);
-      if (!ownerSite) return { kind: 'missing', message: 'Post not found' };
+      if (!ownerSite) return { kind: 'missing', message: 'Publicación no encontrada' };
       // Faithful preview: render the post through the SAME iframe the visual
       // editor's preview mode uses (the live site renderer at ?_preview=true),
       // rather than a divergent BlockRenderer card. Falls back to null when the
@@ -229,7 +229,7 @@ async function loadPreview(
         .from(pitchDecks)
         .where(and(eq(pitchDecks.id, entityId), eq(pitchDecks.clientId, clientId)))
         .limit(1);
-      if (!row) return { kind: 'missing', message: 'Deck not found' };
+      if (!row) return { kind: 'missing', message: 'Presentación no encontrada' };
       const slides = (row.slides ?? []) as PitchDeckSlideV2[];
       return {
         kind: 'pitch_deck',
@@ -259,7 +259,7 @@ async function loadPreview(
         .from(emailCampaigns)
         .where(and(eq(emailCampaigns.id, entityId), eq(emailCampaigns.clientId, clientId)))
         .limit(1);
-      if (!row) return { kind: 'missing', message: 'Campaign not found' };
+      if (!row) return { kind: 'missing', message: 'Campaña no encontrada' };
       return {
         kind: 'email_campaign',
         title: row.name,
@@ -281,7 +281,7 @@ async function loadPreview(
         .from(blockTemplates)
         .where(and(eq(blockTemplates.id, entityId), eq(blockTemplates.clientId, clientId)))
         .limit(1);
-      if (!row) return { kind: 'missing', message: 'Template not found' };
+      if (!row) return { kind: 'missing', message: 'Plantilla no encontrada' };
       const draft = (row.draft ?? null) as BlockTemplateDraft | null;
       const blocks = (draft?.blocks ?? row.blocks ?? []) as unknown;
       const blockEditorJson = JSON.stringify({ blocks, version: '1.0' });
@@ -302,7 +302,7 @@ async function loadPreview(
         .from(surveys)
         .where(and(eq(surveys.id, entityId), eq(surveys.clientId, clientId)))
         .limit(1);
-      if (!row) return { kind: 'missing', message: 'Survey not found' };
+      if (!row) return { kind: 'missing', message: 'Encuesta no encontrada' };
       return {
         kind: 'survey',
         title: row.title,
@@ -334,7 +334,7 @@ async function loadPreview(
         .from(bookingPages)
         .where(and(eq(bookingPages.id, entityId), eq(bookingPages.clientId, clientId)))
         .limit(1);
-      if (!row) return { kind: 'missing', message: 'Booking page not found' };
+      if (!row) return { kind: 'missing', message: 'Página de reservas no encontrada' };
       return {
         kind: 'booking_page',
         title: row.title,
@@ -351,6 +351,6 @@ async function loadPreview(
       };
     }
     default:
-      return { kind: 'missing', message: `Unknown entity type: ${entityType}` };
+      return { kind: 'missing', message: `Tipo de entidad desconocido: ${entityType}` };
   }
 }
