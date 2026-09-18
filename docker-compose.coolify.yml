@@ -150,6 +150,10 @@ services:
       # prefer inside containers (an .env.local placeholder cannot clobber it).
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
       DRIZZLE_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/simplerdev
+      # Per-process Postgres pool. lib/db defaults to 1 (build-safe); the
+      # serving process wants more so concurrent requests + the per-minute cron
+      # drains don't serialize on a single connection.
+      DB_POOL_MAX: ${DB_POOL_MAX:-10}
       # ── Public URLs — SET THESE to your deploy origin in Coolify ──────────
       # The host middleware rejects unknown hosts on non-localhost origins.
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
