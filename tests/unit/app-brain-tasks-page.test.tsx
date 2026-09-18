@@ -285,7 +285,7 @@ describe('Tasks tab — loading / error states', () => {
       return makeRes({ success: true, data: { items: [], meetings: {} } });
     });
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
     // Resolve so we don't leak
     resolveTasks(makeRes({ success: true, data: [] }));
   });
@@ -293,10 +293,10 @@ describe('Tasks tab — loading / error states', () => {
   it('renders all 4 status columns once loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Open');
-      expect(container.textContent).toContain('In Progress');
+      expect(container.textContent).toContain('Abiertos');
+      expect(container.textContent).toContain('En progreso');
       expect(container.textContent).toContain('Blocked');
-      expect(container.textContent).toContain('Done');
+      expect(container.textContent).toContain('Listo');
     });
   });
 
@@ -503,7 +503,7 @@ describe('PromoteModal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
   });
 
@@ -566,14 +566,14 @@ describe('PromoteModal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Promote to project board');
+      expect(container.textContent).not.toContain('Promover al tablero de proyecto');
     });
   });
 
@@ -617,11 +617,11 @@ describe('PromoteModal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     // Click the modal's "Promote" button (the submit one)
     const modalPromoteBtn = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Promote') && b.textContent !== 'Promote to project board',
+      b.textContent?.includes('Promote') && b.textContent !== 'Promover al tablero de proyecto',
     ).pop() as HTMLButtonElement;
     fireEvent.click(modalPromoteBtn);
     await waitFor(() => {
@@ -656,10 +656,10 @@ describe('PromoteModal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     const modalPromoteBtn = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Promote') && b.textContent !== 'Promote to project board',
+      b.textContent?.includes('Promote') && b.textContent !== 'Promover al tablero de proyecto',
     ).pop() as HTMLButtonElement;
     fireEvent.click(modalPromoteBtn);
     await waitFor(() => {
@@ -856,9 +856,9 @@ describe('Review tab — basic rendering', () => {
     setupReview([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pending');
-      expect(container.textContent).toContain('Approved');
-      expect(container.textContent).toContain('Rejected');
+      expect(container.textContent).toContain('Pendiente');
+      expect(container.textContent).toContain('Aprobado');
+      expect(container.textContent).toContain('Rechazado');
     });
   });
 
@@ -938,10 +938,10 @@ describe('Review tab — basic rendering', () => {
     setupReview([makeReviewItem(1, { status: 'approved' })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pending');
+      expect(container.textContent).toContain('Pendiente');
     });
     const approvedBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Approved',
+      b.textContent?.trim() === 'Aprobado',
     ) as HTMLButtonElement;
     fireEvent.click(approvedBtn);
     await waitFor(() => {
@@ -1061,7 +1061,7 @@ describe('Review tab — actions', () => {
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     // Click the "Select all pending" checkbox
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     expect(selectAll).toBeTruthy();
     fireEvent.click(selectAll);
@@ -1084,7 +1084,7 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const itemCheckbox = container.querySelector(
-      'input[aria-label="Select item"]',
+      'input[aria-label="Seleccionar elemento"]',
     ) as HTMLInputElement;
     expect(itemCheckbox).toBeTruthy();
     fireEvent.click(itemCheckbox);
@@ -1099,7 +1099,7 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     fireEvent.click(selectAll);
@@ -1114,7 +1114,7 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     await waitFor(() => {
@@ -1158,7 +1158,7 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     const bulkApprove = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -1348,9 +1348,9 @@ describe('Review tab — proposed types and payload details', () => {
     });
     const { container } = renderPage();
     // Switch to Approved tab so this status filter matches
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const approvedTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Approved',
+      b.textContent?.trim() === 'Aprobado',
     ) as HTMLButtonElement;
     fireEvent.click(approvedTab);
     await waitFor(() => {
@@ -1367,9 +1367,9 @@ describe('Review tab — proposed types and payload details', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const rejTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Rejected',
+      b.textContent?.trim() === 'Rechazado',
     ) as HTMLButtonElement;
     fireEvent.click(rejTab);
     await waitFor(() => {
@@ -1386,9 +1386,9 @@ describe('Review tab — proposed types and payload details', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const allTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'All',
+      b.textContent?.trim() === 'Todos',
     ) as HTMLButtonElement;
     fireEvent.click(allTab);
     await waitFor(() => {
