@@ -409,7 +409,7 @@ describe('CrmContactsPage', () => {
       });
       const result = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No contacts found');
+        expect(result.container.textContent).toContain('No se encontraron contactos.');
       });
       expect(screen.getByText('Añadir primer contacto')).toBeTruthy();
     });
@@ -744,13 +744,13 @@ describe('CrmContactsPage', () => {
       // Wait for the mock's async company fetch to populate option '100'
       await waitFor(() => {
         const companySelect = Array.from(container.querySelectorAll('select')).find(
-          (s) => Array.from(s.options).some((o) => o.textContent === 'All Companies'),
+          (s) => Array.from(s.options).some((o) => o.textContent === 'Todas las empresas'),
         ) as HTMLSelectElement;
         expect(companySelect).toBeTruthy();
         expect(Array.from(companySelect.options).some(o => o.value === '100')).toBe(true);
       });
       const companySelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Companies'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todas las empresas'),
       ) as HTMLSelectElement;
       fireEvent.change(companySelect, { target: { value: '100' } });
       await waitFor(() => {
@@ -803,7 +803,7 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
@@ -820,7 +820,7 @@ describe('CrmContactsPage', () => {
     it('selecting "All Contacts" clears filters', async () => {
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       // First apply view 11
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
@@ -838,7 +838,7 @@ describe('CrmContactsPage', () => {
     it('applying a saved view with no title still works', async () => {
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '12' } });
       // No exception thrown — saved view 12 has empty filters
@@ -850,7 +850,7 @@ describe('CrmContactsPage', () => {
       // No delete button initially
       expect(container.querySelector('button[title="Eliminar vista guardada"]')).toBeNull();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
@@ -866,7 +866,7 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
