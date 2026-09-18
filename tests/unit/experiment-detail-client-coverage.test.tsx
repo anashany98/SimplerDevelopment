@@ -233,7 +233,7 @@ describe('ExperimentDetailClient — initial render', () => {
   it('renders a Delete button', () => {
     const { container } = renderComponent();
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Delete'),
+      b => b.textContent?.includes('Eliminar'),
     );
     expect(deleteBtn).toBeTruthy();
   });
@@ -446,7 +446,7 @@ describe('ExperimentDetailClient — name editing', () => {
 // Delete button on screen before the dialog exists, and the confirm button is the one
 // the dialog adds afterwards.
 const deleteButtons = (container: HTMLElement) =>
-  Array.from(container.querySelectorAll('button')).filter(b => b.textContent?.includes('Delete'));
+  Array.from(container.querySelectorAll('button')).filter(b => b.textContent?.includes('Eliminar'));
 const triggerDelete = (container: HTMLElement) => {
   const [trigger] = deleteButtons(container);
   expect(trigger).toBeTruthy();
@@ -470,7 +470,7 @@ describe('ExperimentDetailClient — delete flow', () => {
     const { container } = renderComponent();
     triggerDelete(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.trim() === 'Cancel',
+      b => b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn!);
@@ -1139,7 +1139,7 @@ describe('ExperimentDetailClient — results display', () => {
   it('shows Loading… initially while results are null', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     const { container } = renderComponent();
-    expect(container.textContent).toContain('Loading…');
+    expect(container.textContent).toContain('Cargando…');
   });
 
   it('renders stats table after results load', async () => {
@@ -1160,7 +1160,7 @@ describe('ExperimentDetailClient — results display', () => {
   it('shows Refresh button to refetch results', async () => {
     const { container } = renderComponent();
     const refreshBtn = Array.from(container.querySelectorAll('button')).find(
-      b => b.textContent?.includes('Refresh'),
+      b => b.textContent?.includes('Actualizar'),
     );
     expect(refreshBtn).toBeTruthy();
     const callsBefore = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.length;
