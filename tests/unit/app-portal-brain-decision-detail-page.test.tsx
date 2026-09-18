@@ -511,7 +511,7 @@ describe('DecisionDetailPage — context section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const showBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Show'),
+        (b) => b.textContent?.includes('Mostrar'),
       );
       expect(showBtn).toBeTruthy();
     });
@@ -527,11 +527,11 @@ describe('DecisionDetailPage — context section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Show'),
+        (b) => b.textContent?.includes('Mostrar'),
       )).toBe(true);
     });
     const showBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Show'),
+      (b) => b.textContent?.includes('Mostrar'),
     ) as HTMLButtonElement;
     fireEvent.click(showBtn);
     await waitFor(() => {
@@ -562,7 +562,7 @@ describe('DecisionDetailPage — alternatives considered', () => {
     });
     // Expand the section to reveal the content.
     const showBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Show'),
+      (b) => b.textContent?.includes('Mostrar'),
     ) as HTMLButtonElement;
     if (showBtn) fireEvent.click(showBtn);
     await waitFor(() => {
@@ -789,7 +789,7 @@ describe('DecisionDetailPage — reject confirm dialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     await openRejectDialog(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
