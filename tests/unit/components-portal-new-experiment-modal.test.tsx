@@ -127,14 +127,14 @@ describe('NewExperimentModal — open state', () => {
   it('calls onClose when the close button is clicked', () => {
     const onClose = vi.fn();
     render(<NewExperimentModal open={true} onClose={onClose} />);
-    fireEvent.click(screen.getByTitle('Close'));
+    fireEvent.click(screen.getByTitle('Cerrar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when the Cancel button is clicked', () => {
     const onClose = vi.fn();
     render(<NewExperimentModal open={true} onClose={onClose} />);
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -150,7 +150,7 @@ describe('NewExperimentModal — open state', () => {
   it('shows a loading spinner while fetching targets', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof global.fetch;
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
   });
 
   it('fetches sites when opened', async () => {
@@ -169,7 +169,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
   /** Waits until the loading spinner disappears. */
   async function waitForLoaded() {
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
@@ -242,7 +242,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
 describe('NewExperimentModal — pitch deck target type', () => {
   async function waitForLoaded() {
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
@@ -316,7 +316,7 @@ describe('NewExperimentModal — pitch deck target type', () => {
     fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
 
     await waitFor(() => {
-      const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+      const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
       expect(createBtn.disabled).toBe(true);
     });
   });
@@ -361,13 +361,13 @@ describe('NewExperimentModal — submit validation', () => {
   async function renderLoaded() {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
   it('shows "Pick a target first" if submitted without a selection', async () => {
     await renderLoaded();
-    const form = screen.getByRole('button', { name: /Create/ }).closest('form')!;
+    const form = screen.getByRole('button', { name: /Crear/ }).closest('form')!;
     fireEvent.submit(form);
     await waitFor(() => {
       expect(screen.getByText('Pick a target first.')).toBeInTheDocument();
@@ -393,7 +393,7 @@ describe('NewExperimentModal — submit validation', () => {
 
   it('disables the Create button when no target is selected', async () => {
     await renderLoaded();
-    const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+    const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
     expect(createBtn.disabled).toBe(true);
   });
 
@@ -401,7 +401,7 @@ describe('NewExperimentModal — submit validation', () => {
     await renderLoaded();
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
-    const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+    const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
     expect(createBtn.disabled).toBe(false);
   });
 });
@@ -413,7 +413,7 @@ describe('NewExperimentModal — submit success', () => {
   it('POSTs the correct payload and redirects on success', async () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
 
     const select = screen.getByRole('combobox') as HTMLSelectElement;
@@ -453,7 +453,7 @@ describe('NewExperimentModal — submit error', () => {
   async function renderAndSelectPage() {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
@@ -576,7 +576,7 @@ describe('NewExperimentModal — state reset on close/reopen', () => {
       <NewExperimentModal open={true} onClose={vi.fn()} />,
     );
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
 
     // Switch to pitch deck and type a custom name
