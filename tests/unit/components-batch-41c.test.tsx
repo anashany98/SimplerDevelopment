@@ -204,8 +204,8 @@ describe('IconPicker', () => {
 
   it('renders the placeholder label when no value is set', () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    expect(screen.getByText('Choose icon...')).toBeTruthy();
-    expect(screen.getByText('Icon')).toBeTruthy();
+    expect(screen.getByText('Elegir icono...')).toBeTruthy();
+    expect(screen.getByText('Icono')).toBeTruthy();
   });
 
   it('honours custom label', () => {
@@ -215,7 +215,7 @@ describe('IconPicker', () => {
 
   it('opens the picker and renders icon grid when the trigger is clicked', async () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    const trigger = screen.getByText('Choose icon...').closest('button')!;
+    const trigger = screen.getByText('Elegir icono...').closest('button')!;
     fireEvent.click(trigger);
 
     // Search input should appear after opening
@@ -232,7 +232,7 @@ describe('IconPicker', () => {
   it('calls onChange with the material-style name when an icon is selected', () => {
     const onChange = vi.fn();
     render(<IconPicker value={undefined} onChange={onChange} />);
-    const trigger = screen.getByText('Choose icon...').closest('button')!;
+    const trigger = screen.getByText('Elegir icono...').closest('button')!;
     fireEvent.click(trigger);
 
     // Pick the MdBarChart mock — its parent button is the one we click
@@ -246,11 +246,11 @@ describe('IconPicker', () => {
 
   it('filters icons by search query and shows the empty-state when nothing matches', () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    fireEvent.click(screen.getByText('Choose icon...').closest('button')!);
+    fireEvent.click(screen.getByText('Elegir icono...').closest('button')!);
     const search = screen.getByPlaceholderText('Buscar iconos...') as HTMLInputElement;
 
     fireEvent.change(search, { target: { value: 'zzzzzzzz-no-match' } });
-    expect(screen.getByText(/No icons match/i)).toBeTruthy();
+    expect(screen.getByText(/Ningún icono coincide/i)).toBeTruthy();
   });
 
   it('renders the current icon label when a value is provided', () => {

@@ -317,12 +317,12 @@ describe('TicketReplyForm', () => {
 
   it('renders the staff heading when isStaff=true', () => {
     render(<TicketReplyForm ticketId={42} isStaff={true} />);
-    expect(screen.getByText(/Reply to Client/i)).toBeTruthy();
+    expect(screen.getByText(/Responder al cliente/i)).toBeTruthy();
   });
 
   it('renders the plain Reply heading when isStaff=false and hides internal note checkbox', () => {
     const { container } = render(<TicketReplyForm ticketId={42} isStaff={false} />);
-    expect(screen.getByText(/^Reply$/)).toBeTruthy();
+    expect(screen.getByText(/^Responder$/)).toBeTruthy();
     expect(container.querySelector('input[type="checkbox"]')).toBeNull();
   });
 
@@ -411,7 +411,7 @@ describe('TicketReplyForm', () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to send reply');
+      expect(container.textContent).toContain('No se pudo enviar la respuesta');
     });
   });
 });

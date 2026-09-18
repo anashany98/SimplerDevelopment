@@ -216,7 +216,7 @@ describe('ExperimentDetailClient — initial render', () => {
     // The raw textarea lives inside the collapsed "Advanced — raw JSON" panel.
     // Expand it for variant b by clicking its toggle button (the second one — one per variant).
     const advancedToggles = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     // Variant b has blockTreeOverride so its Advanced panel exists; variant a is empty so it won't.
     expect(advancedToggles.length).toBeGreaterThanOrEqual(1);
@@ -638,7 +638,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
     // Variant b (index 1) has blockTreeOverride so its "Advanced — raw JSON" toggle exists.
     // Expand it to reveal the raw textarea.
     const advancedToggles = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     expect(advancedToggles.length).toBeGreaterThanOrEqual(1);
     await act(async () => {
@@ -689,7 +689,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
     expect(seedBtns.length).toBeGreaterThanOrEqual(1);
     // Before seeding, variant a shows the empty placeholder (no Advanced toggle for it).
     const togglesBefore = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     const toggleCountBefore = togglesBefore.length; // only variant b's
 
@@ -703,7 +703,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
     // the "Advanced — raw JSON" toggle appears. Wait for it.
     await waitFor(() => {
       const togglesAfter = Array.from(container.querySelectorAll('button')).filter(
-        b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+        b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
       );
       expect(togglesAfter.length).toBeGreaterThan(toggleCountBefore);
     });
@@ -715,7 +715,7 @@ describe('ExperimentDetailClient — variant JSON save', () => {
 
     // Also verify via the raw textarea: expand variant a's Advanced panel.
     const advancedToggles = Array.from(container.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     // Variant a's toggle is the newly added one (last in the list if toggleCountBefore > 0,
     // or first if b had none — but b always has one, so a's is index toggleCountBefore).

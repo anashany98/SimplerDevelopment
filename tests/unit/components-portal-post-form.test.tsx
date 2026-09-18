@@ -293,14 +293,14 @@ describe('PortalPostForm — create mode (visual editor)', () => {
   it('shows "Create Page" submit button in create mode', async () => {
     render(<PortalPostForm siteId={1} mode="create" />);
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Create Page/i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Crear página/i })).toBeTruthy(),
     );
   });
 
   it('shows "New Page" in layout title when no title is set', async () => {
     render(<PortalPostForm siteId={1} mode="create" />);
     await waitFor(() =>
-      expect(screen.getByTestId('layout-title').textContent).toBe('New Page'),
+      expect(screen.getByTestId('layout-title').textContent).toBe('Nueva página'),
     );
   });
 
@@ -336,7 +336,7 @@ describe('PortalPostForm — edit mode (visual editor)', () => {
   it('renders "Save Changes" in edit mode', async () => {
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Save Changes/i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Guardar cambios/i })).toBeTruthy(),
     );
   });
 
@@ -352,21 +352,21 @@ describe('PortalPostForm — edit mode (visual editor)', () => {
       <PortalPostForm siteId={1} mode="edit" post={{ ...basePost, title: '' }} />,
     );
     await waitFor(() =>
-      expect(screen.getByTestId('layout-title').textContent).toBe('Edit Page'),
+      expect(screen.getByTestId('layout-title').textContent).toBe('Editar página'),
     );
   });
 
   it('shows "Start A/B test" button in edit mode with post id', async () => {
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Start A\/B test/i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Iniciar test A\/B/i })).toBeTruthy(),
     );
   });
 
   it('does NOT show "Start A/B test" button in create mode', async () => {
     render(<PortalPostForm siteId={1} mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Page/i }));
-    expect(screen.queryByRole('button', { name: /Start A\/B test/i })).toBeNull();
+    await waitFor(() => screen.getByRole('button', { name: /Crear página/i }));
+    expect(screen.queryByRole('button', { name: /Iniciar test A\/B/i })).toBeNull();
   });
 });
 
@@ -562,7 +562,7 @@ describe('PortalPostForm — custom code modal (iframe edit mode)', () => {
 describe('PortalPostForm — handleSubmit create', () => {
   it('POSTs to portal posts API and redirects on success', async () => {
     render(<PortalPostForm siteId={2} mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Page/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear página/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -594,12 +594,12 @@ describe('PortalPostForm — handleSubmit create', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Page/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear página/i }));
 
     act(() => { fireEvent.submit(document.querySelector('form')!); });
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Saving\.\.\./i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Guardando\.\.\./i })).toBeTruthy(),
     );
 
     act(() => {
@@ -619,7 +619,7 @@ describe('PortalPostForm — handleSubmit create', () => {
     }) as any;
 
     render(<PortalPostForm siteId={9} mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Page/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear página/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -642,14 +642,14 @@ describe('PortalPostForm — handleSubmit create', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="create" />);
-    await waitFor(() => screen.getByRole('button', { name: /Create Page/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Crear página/i }));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
     });
 
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: /Create Page/i })).toBeTruthy(),
+      expect(screen.getByRole('button', { name: /Crear página/i })).toBeTruthy(),
     );
     expect(mockRouterPush).not.toHaveBeenCalled();
   });
@@ -711,10 +711,10 @@ describe('PortalPostForm — A/B experiment button', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Start A\/B test/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Iniciar test A\/B/i }));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Start A\/B test/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Iniciar test A\/B/i }));
     });
 
     await waitFor(() =>
@@ -732,10 +732,10 @@ describe('PortalPostForm — A/B experiment button', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Start A\/B test/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Iniciar test A\/B/i }));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Start A\/B test/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Iniciar test A\/B/i }));
     });
 
     await waitFor(() =>
@@ -753,14 +753,14 @@ describe('PortalPostForm — A/B experiment button', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Start A\/B test/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Iniciar test A\/B/i }));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Start A\/B test/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Iniciar test A\/B/i }));
     });
 
     await waitFor(() =>
-      expect(screen.getByText('Failed to create experiment')).toBeTruthy(),
+      expect(screen.getByText('No se pudo crear el experimento')).toBeTruthy(),
     );
   });
 
@@ -774,15 +774,15 @@ describe('PortalPostForm — A/B experiment button', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Start A\/B test/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Iniciar test A\/B/i }));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Start A\/B test/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Iniciar test A\/B/i }));
     });
 
     await waitFor(() => screen.getByText('Server error'));
     // Dismiss the error
-    fireEvent.click(screen.getByLabelText('Dismiss error'));
+    fireEvent.click(screen.getByLabelText('Descartar error'));
     await waitFor(() =>
       expect(screen.queryByText('Server error')).toBeNull(),
     );
@@ -798,10 +798,10 @@ describe('PortalPostForm — A/B experiment button', () => {
     }) as any;
 
     render(<PortalPostForm siteId={1} mode="edit" post={basePost} />);
-    await waitFor(() => screen.getByRole('button', { name: /Start A\/B test/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Iniciar test A\/B/i }));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Start A\/B test/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Iniciar test A\/B/i }));
     });
 
     await waitFor(() =>

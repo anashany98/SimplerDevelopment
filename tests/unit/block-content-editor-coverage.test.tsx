@@ -1029,13 +1029,13 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A' }],
     });
-    const dotActive = container.querySelector('[data-testid="color-Active Dot"]') as HTMLInputElement;
+    const dotActive = container.querySelector('[data-testid="color-Punto activo"]') as HTMLInputElement;
     if (dotActive) {
       fireEvent.change(dotActive, { target: { value: '#aabbcc' } });
       expect(onUpdate).toHaveBeenCalledWith({ dotActiveColor: '#aabbcc' });
     }
 
-    const progressBar = container.querySelector('[data-testid="color-Progress Bar"]') as HTMLInputElement;
+    const progressBar = container.querySelector('[data-testid="color-Barra de progreso"]') as HTMLInputElement;
     if (progressBar) {
       fireEvent.change(progressBar, { target: { value: '#abc123' } });
       expect(onUpdate).toHaveBeenCalledWith({ progressBarColor: '#abc123' });
@@ -1094,7 +1094,7 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
     fireEvent.click(numBtns[2]); // switch to slide 3
     // Now remove it
     const rm = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.startsWith('Remove slide'),
+      b.textContent?.startsWith('Eliminar diapositiva'),
     );
     if (rm) {
       fireEvent.click(rm);
@@ -2095,7 +2095,7 @@ describe('BlockContentEditor — services-grid rich text + color fields', () => 
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.services).toHaveLength(1);
-    expect(call.services[0].title).toBe('New service');
+    expect(call.services[0].title).toBe('Nuevo servicio');
   });
 });
 
@@ -2337,7 +2337,7 @@ describe('BlockContentEditor — bento-grid color fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bg1', type: 'bento-grid', order: 0, cards: [],
     });
-    const darkBg = container.querySelector('[data-testid="color-Dark BG"]') as HTMLInputElement;
+    const darkBg = container.querySelector('[data-testid="color-Fondo oscuro"]') as HTMLInputElement;
     if (darkBg) {
       fireEvent.change(darkBg, { target: { value: '#111' } });
       expect(onUpdate).toHaveBeenCalledWith({ darkBg: '#111' });

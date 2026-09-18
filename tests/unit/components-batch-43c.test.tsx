@@ -323,19 +323,19 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={1} siteName="acme.com" />,
     );
-    expect(container.textContent).toContain('Danger Zone');
+    expect(container.textContent).toContain('Zona de peligro');
     expect(container.textContent).toContain('acme.com');
-    expect(container.textContent).toContain('Delete Website');
+    expect(container.textContent).toContain('Eliminar sitio web');
   });
 
   it('switches to the confirm view when Delete Website is clicked', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={2} siteName="example.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
-    expect(container.textContent).toContain('Tipo');
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
+    expect(container.textContent).toContain('Escribe');
     expect(container.querySelector('input')).toBeTruthy();
-    expect(container.textContent).toContain('Permanently Delete');
+    expect(container.textContent).toContain('Eliminar definitivamente');
     expect(container.textContent).toContain('Cancel');
   });
 
@@ -343,8 +343,8 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={3} siteName="needs-exact-match.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
-    const deleteBtn = screen.getByText('Permanently Delete') as HTMLButtonElement;
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
+    const deleteBtn = screen.getByText('Eliminar definitivamente') as HTMLButtonElement;
     expect(deleteBtn.disabled).toBe(true);
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -359,14 +359,14 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={4} siteName="x.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'partial' } });
     fireEvent.click(screen.getByText('Cancelar'));
 
-    expect(container.textContent).toContain('Delete this website');
+    expect(container.textContent).toContain('Eliminar este sitio web');
     // Re-open should show empty input
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input2 = container.querySelector('input') as HTMLInputElement;
     expect(input2.value).toBe('');
   });
@@ -377,12 +377,12 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={42} siteName="bye.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'bye.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -401,12 +401,12 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={50} siteName="block.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'block.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -424,18 +424,18 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={51} siteName="throw.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'throw.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 });

@@ -174,7 +174,7 @@ describe('WebsiteAutomationSettings', () => {
     expect(el.getAttribute('data-scope')).toBe('website');
     expect(el.getAttribute('data-title')).toBe('Automatizaciones');
     expect(el.getAttribute('data-description')).toBe(
-      'Automate CRM workflows and customer follow-ups',
+      'Automatiza flujos de trabajo del CRM y seguimientos de clientes',
     );
     expect(el.getAttribute('data-preset-count')).toBe('3');
     // The keys must include each of the three known automation presets.

@@ -668,9 +668,9 @@ describe('ProvisioningStatus', () => {
 
     const { container } = render(<ProvisioningStatus siteId={11} />);
     await flushMicrotasks();
-    expect(container.textContent).toContain('Deploy your website');
-    expect(container.textContent).toContain('CRM AGENTS subdomain');
-    expect(container.textContent).toContain('Deploy Now');
+    expect(container.textContent).toContain('Despliega tu sitio web');
+    expect(container.textContent).toContain('subdominio de CRM AGENTS');
+    expect(container.textContent).toContain('Desplegar ahora');
   });
 
   it('clicking Deploy Now POSTs to the provision endpoint and refetches', async () => {
@@ -715,7 +715,7 @@ describe('ProvisioningStatus', () => {
     render(<ProvisioningStatus siteId={22} />);
     await flushMicrotasks();
 
-    const deployBtn = screen.getByText('Deploy Now');
+    const deployBtn = screen.getByText('Desplegar ahora');
     await act(async () => {
       fireEvent.click(deployBtn);
       await Promise.resolve();
@@ -752,12 +752,12 @@ describe('ProvisioningStatus', () => {
     await flushMicrotasks();
 
     expect(container.textContent).toContain(
-      'Setting up your website...',
+      'Configurando tu sitio web...',
     );
-    expect(container.textContent).toContain('Creating repository');
-    expect(container.textContent).toContain('Setting up deployment');
-    expect(container.textContent).toContain('Configuring DNS');
-    expect(container.textContent).toContain('Live');
+    expect(container.textContent).toContain('Creando repositorio');
+    expect(container.textContent).toContain('Configurando el despliegue');
+    expect(container.textContent).toContain('Configurando el DNS');
+    expect(container.textContent).toContain('Activo');
   });
 
   it('renders the failed panel with the error message and Retry button', async () => {
@@ -780,9 +780,9 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={44} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Provisioning failed');
+    expect(container.textContent).toContain('El aprovisionamiento falló');
     expect(container.textContent).toContain('github 422: name taken');
-    expect(container.textContent).toContain('Retry');
+    expect(container.textContent).toContain('Reintentar');
   });
 
   it('renders the active infrastructure panel with subdomain + repo + vercel links', async () => {
@@ -805,7 +805,7 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={55} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Infrastructure');
+    expect(container.textContent).toContain('Infraestructura');
     expect(container.textContent).toContain('Activo');
     // domain
     expect(container.textContent).toContain('live.simplerdevelopment.com');
@@ -817,7 +817,7 @@ describe('ProvisioningStatus', () => {
       links.some((a) => a.getAttribute('href') === 'https://vercel.com/x/live'),
     ).toBe(true);
     // Managed badge should NOT be present (github repo + vercel project set)
-    expect(container.textContent).not.toContain('Managed');
+    expect(container.textContent).not.toContain('Gestionado');
   });
 
   it('shows the "Managed" badge when active without github/vercel projects', async () => {
@@ -840,9 +840,9 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={66} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Managed');
+    expect(container.textContent).toContain('Gestionado');
     expect(container.textContent).toContain(
-      'Hosted by CRM AGENTS',
+      'Alojado por CRM AGENTS',
     );
   });
 });

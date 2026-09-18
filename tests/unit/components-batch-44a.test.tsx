@@ -353,7 +353,7 @@ describe('CardSidebar', () => {
 
   it('renders the empty-assignee fallback when no one is assigned', () => {
     const { container } = render(<CardSidebar {...baseProps} />);
-    expect(container.textContent).toContain('Assignees');
+    expect(container.textContent).toContain('Asignados');
     expect(container.textContent).toContain('Sin asignar');
   });
 
@@ -427,7 +427,7 @@ describe('CardSidebar', () => {
     const { getByText } = render(
       <CardSidebar {...baseProps} confirmDelete={true} deleting={true} />,
     );
-    const btn = getByText(/Deleting/);
+    const btn = getByText(/Eliminando/);
     expect((btn as HTMLButtonElement).disabled).toBe(true);
   });
 

@@ -141,7 +141,7 @@ describe('ProjectMembersTab', () => {
 
     it('renders the Members heading', async () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
-      await waitFor(() => expect(screen.getByText('Members')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Miembros')).toBeTruthy());
     });
 
     it('renders member names after load', async () => {
@@ -158,7 +158,7 @@ describe('ProjectMembersTab', () => {
     it('shows "No members yet." when list is empty', async () => {
       global.fetch = happyFetch({ members: [] });
       render(<ProjectMembersTab projectId={1} canManage={false} />);
-      await waitFor(() => expect(screen.getByText('No members yet.')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Aún no hay miembros.')).toBeTruthy());
     });
 
     it('shows member added date', async () => {
@@ -178,7 +178,7 @@ describe('ProjectMembersTab', () => {
     it('does not show Add Member button', async () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
       await waitFor(() => expect(screen.getByText('Alice Smith')).toBeTruthy());
-      expect(screen.queryByText('Add Member')).toBeNull();
+      expect(screen.queryByText('Añadir miembro')).toBeNull();
     });
 
     it('renders role as a text badge, not a select', async () => {
@@ -202,7 +202,7 @@ describe('ProjectMembersTab', () => {
   describe('management mode (canManage=true)', () => {
     it('shows Add Member button', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => expect(screen.getByText('Add Member')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Añadir miembro')).toBeTruthy());
     });
 
     it('shows Remove buttons for each member', async () => {
@@ -236,19 +236,19 @@ describe('ProjectMembersTab', () => {
   describe('Add Member form', () => {
     it('toggles form open and closed via the button', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => expect(screen.getByText('Add Member')).toBeTruthy());
-
-      fireEvent.click(screen.getByText('Add Member'));
       await waitFor(() => expect(screen.getByText('Añadir miembro')).toBeTruthy());
 
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => expect(screen.queryByText('Añadir miembro')).toBeNull());
+      fireEvent.click(screen.getByText('Añadir miembro'));
+      await waitFor(() => expect(screen.getByText('Nuevo miembro')).toBeTruthy());
+
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => expect(screen.queryByText('Nuevo miembro')).toBeNull());
     });
 
     it('shows available teammates in the select (not already members)', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
       await waitFor(() =>
         expect(screen.getByText(/Carol Jones/)).toBeTruthy(),
       );
@@ -261,29 +261,29 @@ describe('ProjectMembersTab', () => {
         team: [TEAM_USER_3],
       });
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
       await waitFor(() =>
-        expect(screen.getByText(/Everyone on your team is already a member/)).toBeTruthy(),
+        expect(screen.getByText(/Todo tu equipo ya es miembro/)).toBeTruthy(),
       );
     });
 
     it('shows error if no teammate is selected on submit', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
 
-      await waitFor(() => screen.getByText('Añadir miembro')); // form heading
+      await waitFor(() => screen.getByText('Nuevo miembro')); // form heading
 
       // Submit the form without selecting a teammate
-      const submitBtn = screen.getAllByText('Add Member').find(el => el.closest('button[type="submit"]'));
+      const submitBtn = screen.getAllByText('Añadir miembro').find(el => el.closest('button[type="submit"]'));
       // find submit button directly
       const form = document.querySelector('form');
       expect(form).toBeTruthy();
       fireEvent.submit(form!);
 
       await waitFor(() =>
-        expect(screen.getByText('Pick a teammate to add')).toBeTruthy(),
+        expect(screen.getByText('Elige un compañero para añadir')).toBeTruthy(),
       );
     });
 
@@ -307,8 +307,8 @@ describe('ProjectMembersTab', () => {
       }) as unknown as typeof global.fetch;
 
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
 
       await waitFor(() => screen.getByText(/Carol Jones/));
       const teamSelect = screen.getAllByRole('combobox')[0];
@@ -323,8 +323,8 @@ describe('ProjectMembersTab', () => {
     it('shows server error message on failed POST', async () => {
       global.fetch = happyFetch({ postSuccess: false });
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
 
       await waitFor(() => screen.getByText(/Carol Jones/));
       const teamSelect = screen.getAllByRole('combobox')[0];
@@ -338,10 +338,10 @@ describe('ProjectMembersTab', () => {
 
     it('allows changing the role selector in the add form', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getByText('Add Member'));
-      fireEvent.click(screen.getByText('Add Member'));
-
       await waitFor(() => screen.getByText('Añadir miembro'));
+      fireEvent.click(screen.getByText('Añadir miembro'));
+
+      await waitFor(() => screen.getByText('Nuevo miembro'));
       const selects = screen.getAllByRole('combobox');
       // Second select is the role selector in the form
       const roleSelect = selects[1];
@@ -474,7 +474,7 @@ describe('ProjectMembersTab', () => {
 
       global.fetch = happyFetch({ members: [] });
       rerender(<ProjectMembersTab projectId={2} canManage={false} />);
-      await waitFor(() => expect(screen.getByText('No members yet.')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Aún no hay miembros.')).toBeTruthy());
     });
   });
 });

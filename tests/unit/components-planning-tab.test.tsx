@@ -218,7 +218,7 @@ async function renderAndWait(props: { projectId?: number; projectKey?: string | 
     />,
   );
   await waitFor(() => {
-    expect(utils.container.textContent || '').not.toContain('Loading sprints');
+    expect(utils.container.textContent || '').not.toContain('Cargando sprints');
   });
   return utils;
 }
@@ -231,7 +231,7 @@ describe('PlanningTab — initial render', () => {
     const mod = await import('@/components/portal/planning/PlanningTab');
     const PlanningTab = mod.default;
     const { container } = render(<PlanningTab projectId={42} projectKey="PRJ" canEdit />);
-    expect(container.textContent).toContain('Loading sprints');
+    expect(container.textContent).toContain('Cargando sprints');
   });
 
   it('fetches sprints with the right URL on mount', async () => {
@@ -244,13 +244,13 @@ describe('PlanningTab — initial render', () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container } = await renderAndWait();
     expect(container.textContent).toContain('Aún no hay sprints');
-    expect(container.textContent).toContain('Create a sprint to start planning work.');
+    expect(container.textContent).toContain('Crea un sprint para empezar a planificar el trabajo.');
   });
 
   it('hides the "New Sprint" button when canEdit=false', async () => {
     mockLoad({ sprints: [], backlog: [] });
     const { queryByText } = await renderAndWait({ canEdit: false });
-    expect(queryByText('New Sprint')).toBeNull();
+    expect(queryByText('Nuevo sprint')).toBeNull();
   });
 
   it('auto-expands the active sprint after load', async () => {
@@ -376,7 +376,7 @@ describe('PlanningTab — create sprint form', () => {
     mockLoad({ sprints: [], backlog: [] });
     const { container, getByText } = await renderAndWait();
     expect(container.textContent).not.toContain('Crear sprint');
-    act(() => fireEvent.click(getByText('New Sprint')));
+    act(() => fireEvent.click(getByText('Nuevo sprint')));
     expect(container.textContent).toContain('Crear sprint');
     act(() => fireEvent.click(getByText('Cancelar')));
     expect(container.textContent).not.toContain('Crear sprint');
@@ -393,7 +393,7 @@ describe('PlanningTab — create sprint form', () => {
       return makeRes({ success: true });
     });
     const { container, getByText, getByPlaceholderText } = await renderAndWait();
-    act(() => fireEvent.click(getByText('New Sprint')));
+    act(() => fireEvent.click(getByText('Nuevo sprint')));
     fireEvent.change(getByPlaceholderText('Sprint 1'), { target: { value: 'New One' } });
     const submitBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     expect(submitBtn).toBeTruthy();
@@ -420,7 +420,7 @@ describe('PlanningTab — create sprint form', () => {
       return makeRes({ success: true, data: { sprints: [], backlog: [] } });
     });
     const { container, getByText, getByPlaceholderText } = await renderAndWait();
-    act(() => fireEvent.click(getByText('New Sprint')));
+    act(() => fireEvent.click(getByText('Nuevo sprint')));
     fireEvent.change(getByPlaceholderText('Sprint 1'), { target: { value: 'No add' } });
     const submitBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     await act(async () => {
@@ -458,6 +458,6 @@ describe('PlanningTab — Planner / Roadmap view toggle', () => {
     mockLoad({ sprints: [], backlog: [] });
     const { getByText, queryByText } = await renderAndWait();
     act(() => fireEvent.click(getByText('Roadmap')));
-    expect(queryByText('New Sprint')).toBeNull();
+    expect(queryByText('Nuevo sprint')).toBeNull();
   });
 });

@@ -708,12 +708,12 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     // (The websites inline form's own heading also reads "Name your first
     // site", so anchor on its unique input testid instead of the duplicated text.)
     await waitFor(() => expect(screen.getByTestId('ob-setup-site-name')).toBeTruthy());
-    expect(screen.queryByText('Also activated')).toBeNull();
+    expect(screen.queryByText('También activados')).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /Next module/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Siguiente módulo/ }));
 
     // Store never gets its own walk segment — it's grouped onto the summary screen.
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
     expect(screen.getByText('Storefront & Commerce')).toBeTruthy();
     expect(screen.queryByText('Add your first product')).toBeNull();
   });
@@ -726,7 +726,7 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
 
     await waitFor(() => expect(screen.getByText('Surveys enabled')).toBeTruthy());
     expect(
-      screen.getByText('Create your first survey whenever you need it — Surveys is in your sidebar.'),
+      screen.getByText('Crea tu primera encuesta cuando la necesites — Encuestas está en tu barra lateral.'),
     ).toBeTruthy();
     // No pending action rows — check the rows' unique description copy rather
     // than their label, since the segment *header* title also happens to read
@@ -794,9 +794,9 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     render(<RealStepModuleSetup {...makeStepProps({ state })} />);
 
     // email is now summary-tier — it never gets a walk segment, so the
-    // terminal "Also activated" screen renders immediately (no inline form,
+    // terminal "También activados" screen renders immediately (no inline form,
     // no per-action checklist).
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
     expect(screen.getByText('Email Marketing')).toBeTruthy();
     expect(screen.queryByText('Verify your sender address')).toBeNull();
     expect(screen.queryByTestId('ob-setup-brain-note-title')).toBeNull();
@@ -808,15 +808,15 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     // Single walk-tier module — the only segment is also the last one.
     const singleState = makeState('module-setup', { selectedModules: ['websites'] });
     const { unmount } = render(<RealStepModuleSetup {...makeStepProps({ state: singleState })} />);
-    await waitFor(() => expect(screen.getByRole('button', { name: /Continue/ })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('button', { name: /Continuar/ })).toBeTruthy());
     unmount();
 
     // Multi-module case: the grouped summary screen is the terminal segment too.
     const groupedState = makeState('module-setup', { selectedModules: ['websites', 'store'] });
     render(<RealStepModuleSetup {...makeStepProps({ state: groupedState })} />);
-    await waitFor(() => expect(screen.getByRole('button', { name: /Next module/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Next module/ }));
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
-    expect(screen.getByRole('button', { name: /Continue/ })).toBeTruthy();
+    await waitFor(() => expect(screen.getByRole('button', { name: /Siguiente módulo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Siguiente módulo/ }));
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
+    expect(screen.getByRole('button', { name: /Continuar/ })).toBeTruthy();
   });
 });

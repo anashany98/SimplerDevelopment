@@ -828,7 +828,7 @@ describe('ExperimentDetailClient — variant management', () => {
 
     // Count Advanced toggles before seeding (all variants have null blockTreeOverride)
     const togglesBefore = Array.from(document.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     const toggleCountBefore = togglesBefore.length;
 
@@ -840,14 +840,14 @@ describe('ExperimentDetailClient — variant management', () => {
     // After seeding variant a, a new Advanced toggle should appear for it
     await waitFor(() => {
       const togglesAfter = Array.from(document.querySelectorAll('button')).filter(
-        b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+        b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
       );
       expect(togglesAfter.length).toBeGreaterThan(toggleCountBefore);
     });
 
     // Expand the newly-appeared toggle
     const togglesAfter = Array.from(document.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     await act(async () => {
       fireEvent.click(togglesAfter[toggleCountBefore]);
@@ -935,7 +935,7 @@ describe('ExperimentDetailClient — variant management', () => {
 
     // Expand the Advanced panel for variant a (which has a non-null override)
     const advancedToggles = Array.from(document.querySelectorAll('button')).filter(
-      b => b.textContent?.includes('Advanced') && b.textContent?.includes('raw JSON'),
+      b => b.textContent?.includes('Avanzado') && b.textContent?.includes('JSON sin procesar'),
     );
     expect(advancedToggles.length).toBeGreaterThanOrEqual(1);
     await act(async () => {

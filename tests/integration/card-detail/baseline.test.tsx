@@ -158,7 +158,7 @@ describe('CardDetailModal baseline', () => {
     expect(screen.getByText('PROJ-12')).toBeInTheDocument();
 
     // Section labels (rendered as `<h3>` headings, all-caps)
-    expect(screen.getByText(/^Labels$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Etiquetas$/i)).toBeInTheDocument();
     expect(screen.getByText(/^Description$/i)).toBeInTheDocument();
     expect(screen.getByText(/^Attachments/i)).toBeInTheDocument();
     expect(screen.getByText(/^Comments/i)).toBeInTheDocument();

@@ -343,7 +343,7 @@ describe('BlockContentEditor — testimonial', () => {
     const { container } = renderBlock({
       id: 't1', type: 'testimonial', order: 0, quote: 'q', author: 'a',
     });
-    expect(container.querySelector('[data-testid="rte-Quote"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Cita"]')).toBeTruthy();
   });
 });
 
@@ -412,7 +412,7 @@ describe('BlockContentEditor — card-grid block', () => {
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.cards).toHaveLength(1);
-    expect(call.cards[0].title).toBe('New card');
+    expect(call.cards[0].title).toBe('Nueva tarjeta');
   });
 
   it('updates iconSize as NumberField', () => {
@@ -794,7 +794,7 @@ describe('BlockContentEditor — timeline', () => {
 describe('BlockContentEditor — bento-grid', () => {
   it('adds card and updates span', () => {
     const { container, onUpdate } = renderBlock({ id: 'bg1', type: 'bento-grid', order: 0, cards: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].cards).toHaveLength(1);
   });
@@ -815,7 +815,7 @@ describe('BlockContentEditor — bento-grid', () => {
 describe('BlockContentEditor — team-showcase', () => {
   it('adds member', () => {
     const { container, onUpdate } = renderBlock({ id: 'ts1', type: 'team-showcase', order: 0, members: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].members).toHaveLength(1);
   });
@@ -826,8 +826,8 @@ describe('BlockContentEditor — team-showcase', () => {
       members: [{ id: 'm1', name: 'n', title: 't', photo: 'p', bio: 'b' }],
     });
     const inputs = container.querySelectorAll('input[type="text"]');
-    // last input on member row is specialties — find one with empty value & placeholder containing "Specialties"
-    const specInput = Array.from(inputs).find((i) => (i as HTMLInputElement).placeholder?.includes('Specialties')) as HTMLInputElement;
+    // last input on member row is specialties — find one with empty value & placeholder containing "Especialidades"
+    const specInput = Array.from(inputs).find((i) => (i as HTMLInputElement).placeholder?.includes('Especialidades')) as HTMLInputElement;
     fireEvent.change(specInput, { target: { value: 'a, b, c' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.members[0].specialties).toEqual(['a', 'b', 'c']);
@@ -837,7 +837,7 @@ describe('BlockContentEditor — team-showcase', () => {
 describe('BlockContentEditor — team-flip-grid', () => {
   it('adds and removes member', () => {
     const { container, onUpdate } = renderBlock({ id: 'tfg1', type: 'team-flip-grid', order: 0, members: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     const added = onUpdate.mock.calls[0][0];
     expect(added.members).toHaveLength(1);
@@ -1046,7 +1046,7 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'First' }],
     });
-    expect(container.textContent).toContain('Slides');
+    expect(container.textContent).toContain('Diapositivas');
     expect(container.querySelector('[data-testid="rte-Título"]')).toBeTruthy();
   });
 
@@ -1065,7 +1065,7 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'First' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Remove slide'));
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Eliminar diapositiva'));
     expect(rm).toBeUndefined();
   });
 
@@ -1074,7 +1074,7 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'A' }, { id: 'slide-2', title: 'B' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Remove slide'));
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Eliminar diapositiva'));
     fireEvent.click(rm!);
     expect(onUpdate.mock.calls[0][0].slides).toHaveLength(1);
   });
@@ -1428,8 +1428,8 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
       id: 'st1', type: 'stats', order: 0,
       stats: [{ id: 's1', value: '', label: '' }], columns: 3,
     });
-    // header uses "Stat 1" fallback because first field is empty
-    expect(container.textContent).toContain('Stat 1');
+    // header uses "Estadística 1" fallback because first field is empty
+    expect(container.textContent).toContain('Estadística 1');
   });
 });
 
@@ -2142,8 +2142,8 @@ describe('BlockContentEditor — list edit / remove deeper', () => {
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add'));
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
-    expect(call.cards[0].frontTitle).toBe('New Card');
-    expect(call.cards[0].backText).toBe('Back side content');
+    expect(call.cards[0].frontTitle).toBe('Nueva tarjeta');
+    expect(call.cards[0].backText).toBe('Contenido del reverso');
   });
 });
 
@@ -2283,7 +2283,7 @@ describe('BlockContentEditor — team-showcase remove member', () => {
       members: [{ id: 'm1', name: 'A', title: 'T', photo: '', bio: '', specialties: ['x'] }],
     });
     const specInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder?.includes('Specialties'),
+      (i) => (i as HTMLInputElement).placeholder?.includes('Especialidades'),
     ) as HTMLInputElement;
     fireEvent.change(specInput, { target: { value: '' } });
     expect(onUpdate.mock.calls[0][0].members[0].specialties).toBeUndefined();

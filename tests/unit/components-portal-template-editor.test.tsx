@@ -158,7 +158,7 @@ describe('TemplateEditor', () => {
     render(<TemplateEditor {...BASE_PROPS} siteUrl={null} />);
     // The text contains a typographic apostrophe; match on a stable substring.
     expect(
-      screen.getByText(/domain or subdomain configured yet/i),
+      screen.getByText(/dominio o subdominio configurado/i),
     ).toBeInTheDocument();
     expect(screen.queryByTestId('visual-editor-shell')).not.toBeInTheDocument();
   });
@@ -191,7 +191,7 @@ describe('TemplateEditor', () => {
     render(<TemplateEditor {...BASE_PROPS} />);
     await waitFor(() => screen.getByTestId('visual-editor-shell'));
     // With a post-content block loaded, no dirty, should show "Saved"
-    expect(screen.getByText('Saved')).toBeInTheDocument();
+    expect(screen.getByText('Guardado')).toBeInTheDocument();
   });
 
   it('displays "No template — post renders raw" before the load resolves', () => {
@@ -204,7 +204,7 @@ describe('TemplateEditor', () => {
     // "No template — post renders raw" only appears when blocks.length===0 AND
     // not dirty AND savedAt===null. Because loading is true, the shell is
     // replaced by a spinner, but the toolbar is rendered immediately.
-    expect(screen.getByText(/No template — post renders raw/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sin plantilla — el post se renderiza en bruto/i)).toBeInTheDocument();
   });
 
   // ── load error ────────────────────────────────────────────────────────────
@@ -236,7 +236,7 @@ describe('TemplateEditor', () => {
     await waitFor(() => screen.getByTestId('visual-editor-shell'));
     // The setBlocks guard auto-inserts a post-content placeholder, so warning should NOT appear.
     expect(
-      screen.queryByText(/Templates require a/i),
+      screen.queryByText(/Las plantillas requieren un bloque/i),
     ).not.toBeInTheDocument();
   });
 
@@ -290,7 +290,7 @@ describe('TemplateEditor', () => {
     fireEvent.click(screen.getByTestId('code-modal-apply'));
 
     // After apply the CSS/JS are set, editor is dirty
-    expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
+    expect(screen.getByText('Cambios sin guardar')).toBeInTheDocument();
     // Badge showing "CSS + JS" should appear on the Code button
     expect(screen.getByText('CSS + JS')).toBeInTheDocument();
     // Save button should now be enabled
@@ -356,7 +356,7 @@ describe('TemplateEditor', () => {
 
     // After save: no unsaved changes + "Saved HH:MM:SS" status visible
     await waitFor(() =>
-      expect(screen.queryByText('Unsaved changes')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cambios sin guardar')).not.toBeInTheDocument(),
     );
     // Save button goes back to disabled (no more dirty state)
     await waitFor(() =>
@@ -457,8 +457,8 @@ describe('TemplateEditor', () => {
   it('shows the view_quilt icon and "Content type" label', async () => {
     mockFetchSuccess([POST_CONTENT_BLOCK]);
     render(<TemplateEditor {...BASE_PROPS} />);
-    await waitFor(() => screen.getByText('Content type'));
-    expect(screen.getByText('Content type')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Tipo de contenido'));
+    expect(screen.getByText('Tipo de contenido')).toBeInTheDocument();
   });
 
   // ── endpoints ─────────────────────────────────────────────────────────────

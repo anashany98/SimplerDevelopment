@@ -301,13 +301,13 @@ describe('NodeInspector', () => {
 
     render(<NodeInspector node={node} claims={claims} onClose={() => {}} />);
 
-    expect(screen.getByTestId('pathviz-contested-banner').textContent).toContain('2 agents');
+    expect(screen.getByTestId('pathviz-contested-banner').textContent).toContain('2 agentes');
   });
 
   it('shows "no active claims" when the node has none', () => {
     const node = makeNode({ id: 7, kind: 'schema', label: 'cards' });
     render(<NodeInspector node={node} claims={[]} onClose={() => {}} />);
-    expect(screen.getByText('No active claims on this node.')).toBeTruthy();
+    expect(screen.getByText('No hay reclamos activos en este nodo.')).toBeTruthy();
   });
 
   it('calls onClose when the close button is clicked', () => {

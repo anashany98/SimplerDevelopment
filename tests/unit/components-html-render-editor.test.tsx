@@ -222,7 +222,7 @@ describe('HtmlRenderEditor', () => {
       <HtmlRenderEditor block={makeBlock()} onUpdate={onUpdate} />,
     );
     expect(container.textContent).not.toContain('Contenido');
-    expect(container.textContent).not.toContain('Field schema');
+    expect(container.textContent).not.toContain('Esquema de campos');
   });
 
   it('shows the Content section once at least one field is present', () => {
@@ -235,7 +235,7 @@ describe('HtmlRenderEditor', () => {
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
     expect(container.textContent).toContain('Contenido');
-    expect(container.textContent).toContain('Field schema (1)');
+    expect(container.textContent).toContain('Esquema de campos (1)');
   });
 
   it('emits a values update when a field input changes', () => {
@@ -275,7 +275,7 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).toContain('Loop source');
+    expect(container.textContent).toContain('Origen del bucle');
   });
 
   it('shows the loop section when a loop object is set even without data-loop markup, with warning', () => {
@@ -287,7 +287,7 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).toContain('Loop source');
+    expect(container.textContent).toContain('Origen del bucle');
     expect(container.textContent).toContain('No');
     expect(container.textContent).toContain('data-loop');
   });
@@ -335,7 +335,7 @@ describe('HtmlRenderEditor', () => {
     const { getByText } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    fireEvent.click(getByText(/Disable loop/));
+    fireEvent.click(getByText(/Desactivar bucle/));
     expect(onUpdate).toHaveBeenCalledWith({ loop: undefined });
   });
 
@@ -552,7 +552,7 @@ describe('HtmlRenderEditor schema editor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title')?.startsWith('Delete field'),
+      (b) => b.getAttribute('title')?.startsWith('Eliminar campo'),
     )!;
     fireEvent.click(deleteBtn);
     expect(onUpdate).toHaveBeenCalledWith({ fields: [], values: {} });
@@ -626,7 +626,7 @@ describe('HtmlRenderEditor schema editor', () => {
       fields: [{ name: 'orphan', type: 'text' }],
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect(container.textContent).toContain('unused');
+    expect(container.textContent).toContain('sin usar');
   });
 
   it('shows the "Nx" usage badge with a count when the template references the field', () => {
@@ -719,7 +719,7 @@ describe('HtmlRenderFullJson export/import', () => {
     )!;
     fireEvent.change(jsonTextarea, { target: { value: 'not json' } });
     fireEvent.click(getByText('Aplicar'));
-    expect(container.textContent).toContain('Invalid JSON');
+    expect(container.textContent).toContain('JSON no válido');
   });
 
   it('shows an error when the payload is missing html', () => {
@@ -733,7 +733,7 @@ describe('HtmlRenderFullJson export/import', () => {
     )!;
     fireEvent.change(jsonTextarea, { target: { value: JSON.stringify({ fields: [] }) } });
     fireEvent.click(getByText('Aplicar'));
-    expect(container.textContent).toContain('Missing `html`');
+    expect(container.textContent).toContain('Falta `html`');
   });
 
   it('shows an error when fields is not an array', () => {
@@ -747,7 +747,7 @@ describe('HtmlRenderFullJson export/import', () => {
     )!;
     fireEvent.change(jsonTextarea, { target: { value: JSON.stringify({ html: '<p>x</p>', fields: {} }) } });
     fireEvent.click(getByText('Aplicar'));
-    expect(container.textContent).toContain('Missing `fields`');
+    expect(container.textContent).toContain('Falta `fields`');
   });
 
   it('applies a valid JSON payload', () => {
@@ -799,7 +799,7 @@ describe('HtmlRenderFullJson export/import', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     await act(async () => {
-      fireEvent.click(getByText('Copy JSON'));
+      fireEvent.click(getByText('Copiar JSON'));
     });
     expect(writeText).toHaveBeenCalled();
   });
@@ -813,9 +813,9 @@ describe('HtmlRenderFullJson export/import', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText, container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     await act(async () => {
-      fireEvent.click(getByText('Copy JSON'));
+      fireEvent.click(getByText('Copiar JSON'));
     });
-    expect(container.textContent).toContain('Clipboard write failed');
+    expect(container.textContent).toContain('No se pudo escribir en el portapapeles');
   });
 });
 
@@ -835,7 +835,7 @@ describe('HtmlRenderSchemaActions', () => {
     });
     const { getAllByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     // There are several Copy-style buttons; the schema one is the first
-    // labeled exactly "Copy" (not "Copy JSON").
+    // labeled exactly "Copiar" (not "Copiar JSON").
     const copyButtons = getAllByText('Copiar');
     fireEvent.click(copyButtons[0]);
     expect(window.localStorage.getItem('sd-html-render-schema-clipboard')).toBeTruthy();

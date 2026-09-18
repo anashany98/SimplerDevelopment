@@ -111,7 +111,7 @@ describe('CrmCustomFieldsPanel: loading state', () => {
   it('renders loading spinner while fetch is pending', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof fetch;
     render(<CrmCustomFieldsPanel entityType="contact" entityId={1} />);
-    expect(screen.getByText(/Loading custom fields/)).toBeTruthy();
+    expect(screen.getByText(/Cargando campos personalizados/)).toBeTruthy();
   });
 });
 
@@ -124,9 +124,9 @@ describe('CrmCustomFieldsPanel: empty state', () => {
     global.fetch = makeFetchOk([], []) as unknown as typeof fetch;
     render(<CrmCustomFieldsPanel entityType="contact" entityId={1} />);
     await waitFor(() => {
-      expect(screen.getByText(/No custom fields defined/)).toBeTruthy();
+      expect(screen.getByText(/No hay campos personalizados definidos/)).toBeTruthy();
     });
-    expect(screen.getByText(/Add some in settings/)).toBeTruthy();
+    expect(screen.getByText(/Añade algunos en ajustes/)).toBeTruthy();
   });
 });
 
@@ -222,7 +222,7 @@ describe('CrmCustomFieldsPanel: view mode field rendering', () => {
       makeFieldDef({ id: 7, fieldName: 'Active', fieldType: 'boolean' }),
       'true',
     );
-    expect(screen.getByText('Yes')).toBeTruthy();
+    expect(screen.getByText('Sí')).toBeTruthy();
   });
 
   it('renders boolean false as "No" badge', async () => {
@@ -288,7 +288,7 @@ describe('CrmCustomFieldsPanel: edit mode inputs', () => {
     const editBtn = screen.getByRole('button', { name: /Edit/ });
     await act(async () => { fireEvent.click(editBtn); });
     // Wait for edit mode to activate
-    await waitFor(() => expect(screen.getByText(/Edit mode/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Modo edición/)).toBeTruthy());
     return result;
   }
 
@@ -434,15 +434,15 @@ describe('CrmCustomFieldsPanel: mode toggle', () => {
     render(<CrmCustomFieldsPanel entityType="contact" entityId={1} />);
     await waitFor(() => expect(screen.getByText('Name')).toBeTruthy());
     expect(screen.getByRole('button', { name: /Edit/ })).toBeTruthy();
-    expect(screen.getByText(/View mode/)).toBeTruthy();
+    expect(screen.getByText(/Modo vista/)).toBeTruthy();
   });
 
   it('switches to edit mode when Edit is clicked', async () => {
     render(<CrmCustomFieldsPanel entityType="contact" entityId={1} />);
     await waitFor(() => expect(screen.getByText('Name')).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Edit/ }));
-    expect(screen.getByText(/Edit mode/)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /View/ })).toBeTruthy();
+    expect(screen.getByText(/Modo edición/)).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Ver/ })).toBeTruthy();
   });
 
   it('switches back to view mode from edit without dirty confirmation', async () => {
@@ -450,8 +450,8 @@ describe('CrmCustomFieldsPanel: mode toggle', () => {
     await waitFor(() => expect(screen.getByText('Name')).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Edit/ }));
     // No changes → no confirm needed
-    fireEvent.click(screen.getByRole('button', { name: /View/ }));
-    expect(screen.getByText(/View mode/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /Ver/ }));
+    expect(screen.getByText(/Modo vista/)).toBeTruthy();
   });
 
   it('prompts confirm when switching from edit with dirty state; accepts', async () => {
@@ -462,9 +462,9 @@ describe('CrmCustomFieldsPanel: mode toggle', () => {
     // Make it dirty
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'dirty' } });
-    fireEvent.click(screen.getByRole('button', { name: /View/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Ver/ }));
     expect(window.confirm).toHaveBeenCalled();
-    await waitFor(() => expect(screen.getByText(/View mode/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Modo vista/)).toBeTruthy());
   });
 
   it('cancels discard when confirm returns false', async () => {
@@ -474,9 +474,9 @@ describe('CrmCustomFieldsPanel: mode toggle', () => {
     fireEvent.click(screen.getByRole('button', { name: /Edit/ }));
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'dirty' } });
-    fireEvent.click(screen.getByRole('button', { name: /View/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Ver/ }));
     // Still in edit mode
-    expect(screen.getByText(/Edit mode/)).toBeTruthy();
+    expect(screen.getByText(/Modo edición/)).toBeTruthy();
   });
 });
 
@@ -501,10 +501,10 @@ describe('CrmCustomFieldsPanel: save flow', () => {
     fireEvent.change(input, { target: { value: 'x' } });
     fireEvent.change(input, { target: { value: '' } });
     // Click save
-    const saveBtn = screen.getByRole('button', { name: /Save Custom Fields/ });
+    const saveBtn = screen.getByRole('button', { name: /Guardar campos personalizados/ });
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(screen.getByText(/Required:/)).toBeTruthy();
+      expect(screen.getByText(/Obligatorio:/)).toBeTruthy();
     });
   });
 
@@ -530,11 +530,11 @@ describe('CrmCustomFieldsPanel: save flow', () => {
     fireEvent.change(input, { target: { value: 'updated' } });
     // Click save
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Custom Fields/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar campos personalizados/ }));
     });
     await waitFor(() => expect(putCalled).toBe(true));
     // Should return to view mode
-    await waitFor(() => expect(screen.getByText(/View mode/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Modo vista/)).toBeTruthy());
   });
 
   it('shows server error message when save fails', async () => {
@@ -554,7 +554,7 @@ describe('CrmCustomFieldsPanel: save flow', () => {
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'x' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Custom Fields/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar campos personalizados/ }));
     });
     await waitFor(() => expect(screen.getByText('DB error')).toBeTruthy());
   });
@@ -576,9 +576,9 @@ describe('CrmCustomFieldsPanel: save flow', () => {
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'x' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Custom Fields/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar campos personalizados/ }));
     });
-    await waitFor(() => expect(screen.getByText('Failed to save')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('No se pudo guardar')).toBeTruthy());
   });
 });
 
@@ -601,7 +601,7 @@ describe('CrmCustomFieldsPanel: externalMode prop', () => {
     );
     await waitFor(() => expect(screen.getByText('Name')).toBeTruthy());
     expect(screen.queryByRole('button', { name: /Edit/ })).toBeNull();
-    expect(screen.queryByRole('button', { name: /View/ })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Ver/ })).toBeNull();
   });
 
   it('shows edit inputs when externalMode="edit"', async () => {
@@ -686,7 +686,7 @@ describe('CrmCustomFieldsPanel: useImperativeHandle', () => {
       result = await ref.current!.save();
     });
     expect(result).toBe(false);
-    expect(screen.getByText(/Required:/)).toBeTruthy();
+    expect(screen.getByText(/Obligatorio:/)).toBeTruthy();
   });
 
   it('exposes reload() that re-fetches data', async () => {
@@ -802,9 +802,9 @@ describe('CrmCustomFieldsPanel: error banner', () => {
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'y' } });
     fireEvent.change(input, { target: { value: '' } });
-    fireEvent.click(screen.getByRole('button', { name: /Save Custom Fields/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Guardar campos personalizados/ }));
     await waitFor(() => {
-      expect(screen.getByText(/Required:/)).toBeTruthy();
+      expect(screen.getByText(/Obligatorio:/)).toBeTruthy();
     });
   });
 
@@ -820,14 +820,14 @@ describe('CrmCustomFieldsPanel: error banner', () => {
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'y' } });
     fireEvent.change(input, { target: { value: '' } });
-    fireEvent.click(screen.getByRole('button', { name: /Save Custom Fields/ }));
-    await waitFor(() => expect(screen.getByText(/Required:/)).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Guardar campos personalizados/ }));
+    await waitFor(() => expect(screen.getByText(/Obligatorio:/)).toBeTruthy());
     // Switch back to view (no dirty, no confirm needed since we cleared it)
     // Actually the value is now empty so it IS dirty — mock confirm to accept
     vi.spyOn(window, 'confirm').mockReturnValue(true);
-    fireEvent.click(screen.getByRole('button', { name: /View/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Ver/ }));
     await waitFor(() => {
-      expect(screen.queryByText(/Required:/)).toBeNull();
+      expect(screen.queryByText(/Obligatorio:/)).toBeNull();
     });
   });
 });
@@ -845,7 +845,7 @@ describe('CrmCustomFieldsPanel: save button state', () => {
     render(<CrmCustomFieldsPanel entityType="contact" entityId={1} />);
     await waitFor(() => expect(screen.getByText('Name')).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: /Edit/ }));
-    const saveBtn = screen.getByRole('button', { name: /Save Custom Fields/ }) as HTMLButtonElement;
+    const saveBtn = screen.getByRole('button', { name: /Guardar campos personalizados/ }) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(true);
   });
 
@@ -859,7 +859,7 @@ describe('CrmCustomFieldsPanel: save button state', () => {
     fireEvent.click(screen.getByRole('button', { name: /Edit/ }));
     const input = screen.getAllByRole('textbox')[0] as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'changed' } });
-    const saveBtn = screen.getByRole('button', { name: /Save Custom Fields/ }) as HTMLButtonElement;
+    const saveBtn = screen.getByRole('button', { name: /Guardar campos personalizados/ }) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(false);
   });
 });

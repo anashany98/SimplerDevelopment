@@ -245,7 +245,7 @@ describe('PortalSidebar — open/close toggle', () => {
     // When the sidebar is open (mobileOpen={true}), verify the close button
     // inside the aside is present instead.
     render(<PortalSidebar mobileOpen={true} />);
-    const closeBtn = document.querySelector('button[aria-label="Close navigation"]');
+    const closeBtn = document.querySelector('button[aria-label="Cerrar navegación"]');
     expect(closeBtn).toBeTruthy();
   });
 });
