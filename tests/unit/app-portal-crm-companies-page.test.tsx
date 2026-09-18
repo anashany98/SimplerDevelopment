@@ -191,12 +191,12 @@ async function renderPage() {
 describe('CrmCompaniesPage — initial render', () => {
   it('renders the Add Company button', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('Add Company');
+    expect(container.textContent).toContain('Añadir empresa');
   });
 
   it('renders the total company count', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('2 companies');
+    expect(container.textContent).toContain('2 empresas');
   });
 
   it('shows singular "company" for count of 1', async () => {
@@ -208,9 +208,9 @@ describe('CrmCompaniesPage — initial render', () => {
     });
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('1 company');
+      expect(container.textContent).toContain('1 empresa');
     });
-    expect(container.textContent).not.toContain('1 companies');
+    expect(container.textContent).not.toContain('1 empresas');
   });
 
   it('renders both company names', async () => {
@@ -226,8 +226,8 @@ describe('CrmCompaniesPage — initial render', () => {
 
   it('renders contact count for each company', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('5 contacts');
-    expect(container.textContent).toContain('0 contacts');
+    expect(container.textContent).toContain('5 contactos');
+    expect(container.textContent).toContain('0 contactos');
   });
 
   it('renders singular "contact" for contactCount of 1', async () => {
@@ -244,9 +244,9 @@ describe('CrmCompaniesPage — initial render', () => {
     });
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('1 contact');
+      expect(container.textContent).toContain('1 contacto');
     });
-    expect(container.textContent).not.toContain('1 contacts');
+    expect(container.textContent).not.toContain('1 contactos');
   });
 
   it('renders formatted deal values', async () => {
@@ -269,7 +269,7 @@ describe('CrmCompaniesPage — initial render', () => {
 
   it('renders the search input', async () => {
     await renderPage();
-    const input = document.querySelector('input[placeholder="Search companies..."]');
+    const input = document.querySelector('input[placeholder="Buscar empresas..."]');
     expect(input).toBeTruthy();
   });
 
@@ -280,7 +280,7 @@ describe('CrmCompaniesPage — initial render', () => {
 
   it('renders a logo image when logoUrl is set', async () => {
     const { container } = await renderPage();
-    const img = container.querySelector('img[alt="Beta LLC logo"]');
+    const img = container.querySelector('img[alt="Logo de Beta LLC"]');
     expect(img).toBeTruthy();
     expect((img as HTMLImageElement).src).toContain('beta.png');
   });
@@ -319,22 +319,22 @@ describe('CrmCompaniesPage — empty state', () => {
   it('shows "No companies found" empty state', async () => {
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('No companies found');
+      expect(container.textContent).toContain('No se encontraron empresas.');
     });
   });
 
   it('shows the Add First Company button in empty state', async () => {
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Add First Company');
+      expect(container.textContent).toContain('Añadir la primera empresa');
     });
   });
 
   it('clicking Add First Company opens the inline form', async () => {
     render(React.createElement(CrmCompaniesPage));
-    await waitFor(() => screen.getByText('Add First Company'));
-    fireEvent.click(screen.getByText('Add First Company'));
-    expect(screen.getByText('New Company')).toBeTruthy();
+    await waitFor(() => screen.getByText('Añadir la primera empresa'));
+    fireEvent.click(screen.getByText('Añadir la primera empresa'));
+    expect(screen.getByText('Nueva empresa')).toBeTruthy();
   });
 
   it('falls back to data.data array shape when data.companies is missing', async () => {
@@ -398,58 +398,58 @@ describe('CrmCompaniesPage — hover highlighting', () => {
 describe('CrmCompaniesPage — inline create form', () => {
   it('Add Company toggles the form open', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    expect(screen.getByText('New Company')).toBeTruthy();
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    expect(screen.getByText('Nueva empresa')).toBeTruthy();
   });
 
   it('button label changes to Cancel when form is open', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    expect(screen.getByText('Cancel')).toBeTruthy();
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    expect(screen.getByText('Cancelar')).toBeTruthy();
   });
 
   it('Cancel button closes the form', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    fireEvent.click(screen.getByText('Cancel'));
-    expect(screen.queryByText('New Company')).toBeNull();
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    fireEvent.click(screen.getByText('Cancelar'));
+    expect(screen.queryByText('Nueva empresa')).toBeNull();
   });
 
   it('form renders Name, Domain, Industry fields', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    expect(container.textContent).toContain('Name *');
-    expect(container.textContent).toContain('Domain');
-    expect(container.textContent).toContain('Industry');
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    expect(container.textContent).toContain('Nombre *');
+    expect(container.textContent).toContain('Dominio');
+    expect(container.textContent).toContain('Industria');
   });
 
   it('form renders the size dropdown with options', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    expect(container.textContent).toContain('1-10 employees');
-    expect(container.textContent).toContain('1001+ employees');
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    expect(container.textContent).toContain('1-10 empleados');
+    expect(container.textContent).toContain('1001+ empleados');
   });
 
   it('form renders address, lat/lng, phone, website, notes fields', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
-    expect(container.textContent).toContain('Address');
-    expect(container.textContent).toContain('Latitude');
-    expect(container.textContent).toContain('Longitude');
-    expect(container.textContent).toContain('Phone');
-    expect(container.textContent).toContain('Website');
-    expect(container.textContent).toContain('Notes');
+    fireEvent.click(screen.getByText('Añadir empresa'));
+    expect(container.textContent).toContain('Dirección');
+    expect(container.textContent).toContain('Latitud');
+    expect(container.textContent).toContain('Longitud');
+    expect(container.textContent).toContain('Teléfono');
+    expect(container.textContent).toContain('Sitio web');
+    expect(container.textContent).toContain('Notas');
   });
 
   it('form renders the media picker stub with label "Logo"', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     expect(screen.getByTestId('media-picker').textContent).toContain('Logo');
   });
 
   it('clicking the media picker updates logoUrl', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     fireEvent.click(screen.getByTestId('media-picker'));
     // No error thrown — logoUrl state updated
     expect(screen.getByTestId('media-picker')).toBeTruthy();
@@ -457,7 +457,7 @@ describe('CrmCompaniesPage — inline create form', () => {
 
   it('typing in the Name field updates its value', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'NewCo' } });
     expect(nameInput.value).toBe('NewCo');
@@ -469,7 +469,7 @@ describe('CrmCompaniesPage — inline create form', () => {
     );
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'TestCo' } });
     fireEvent.submit(container.querySelector('form')!);
@@ -483,12 +483,12 @@ describe('CrmCompaniesPage — inline create form', () => {
 
   it('successful submit closes the form', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'TestCo' } });
     fireEvent.submit(container.querySelector('form')!);
     await waitFor(() => {
-      expect(screen.queryByText('New Company')).toBeNull();
+      expect(screen.queryByText('Nueva empresa')).toBeNull();
     });
   });
 
@@ -498,7 +498,7 @@ describe('CrmCompaniesPage — inline create form', () => {
     );
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'GeoCompany' } });
     // lat/lng inputs are type="number" — find them by step attribute
@@ -523,7 +523,7 @@ describe('CrmCompaniesPage — inline create form', () => {
     );
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'NoGeo' } });
     fireEvent.submit(container.querySelector('form')!);
@@ -546,7 +546,7 @@ describe('CrmCompaniesPage — inline create form', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Dup' } });
     fireEvent.submit(container.querySelector('form')!);
@@ -554,7 +554,7 @@ describe('CrmCompaniesPage — inline create form', () => {
       expect(screen.getByText('Name already exists')).toBeTruthy();
     });
     // Form should remain open after failure
-    expect(screen.getByText('New Company')).toBeTruthy();
+    expect(screen.getByText('Nueva empresa')).toBeTruthy();
   });
 
   it('falls back to default error message when API returns no message', async () => {
@@ -565,12 +565,12 @@ describe('CrmCompaniesPage — inline create form', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Add Company'));
+    fireEvent.click(screen.getByText('Añadir empresa'));
     const nameInput = container.querySelector('input[required]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'X' } });
     fireEvent.submit(container.querySelector('form')!);
     await waitFor(() => {
-      expect(screen.getByText('Failed to create company.')).toBeTruthy();
+      expect(screen.getByText('No se pudo crear la empresa.')).toBeTruthy();
     });
   });
 });
@@ -587,7 +587,7 @@ describe('CrmCompaniesPage — search', () => {
       await Promise.resolve();
     });
     const searchInput = document.querySelector(
-      'input[placeholder="Search companies..."]',
+      'input[placeholder="Buscar empresas..."]',
     ) as HTMLInputElement;
     fireEvent.change(searchInput, { target: { value: 'acme' } });
     await act(async () => {
@@ -612,7 +612,7 @@ describe('CrmCompaniesPage — search', () => {
     render(React.createElement(CrmCompaniesPage));
     await act(async () => { await Promise.resolve(); });
     const searchInput = document.querySelector(
-      'input[placeholder="Search companies..."]',
+      'input[placeholder="Buscar empresas..."]',
     ) as HTMLInputElement;
     fireEvent.change(searchInput, { target: { value: 'acme' } });
     await act(async () => { vi.advanceTimersByTime(350); });
@@ -653,7 +653,7 @@ describe('CrmCompaniesPage — pagination', () => {
   it('does not show pagination when total <= 25', async () => {
     const { container } = await renderPage();
     // total=2, limit=25 → only 1 page
-    expect(container.textContent).not.toContain('Page 1 of');
+    expect(container.textContent).not.toContain('Página 1 de');
   });
 
   it('shows pagination controls when total > 25', async () => {
@@ -665,7 +665,7 @@ describe('CrmCompaniesPage — pagination', () => {
     });
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
   });
 
@@ -681,7 +681,7 @@ describe('CrmCompaniesPage — pagination', () => {
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
     // chevron_right is the last button
     const allBtns = Array.from(container.querySelectorAll('button'));
@@ -704,7 +704,7 @@ describe('CrmCompaniesPage — pagination', () => {
     });
     const { container } = render(React.createElement(CrmCompaniesPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
     const allBtns = Array.from(container.querySelectorAll('button'));
     // chevron_left is the first pagination button
@@ -725,7 +725,7 @@ describe('CrmCompaniesPage — pagination', () => {
     });
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = render(React.createElement(CrmCompaniesPage));
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 3'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 3'));
     const pageBtn2 = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent === '2',
     );
@@ -750,12 +750,12 @@ describe('CrmCompaniesPage — pagination', () => {
     });
     vi.stubGlobal('fetch', fetchSpy);
     const { container } = render(React.createElement(CrmCompaniesPage));
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 2'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 2'));
     // Advance to page 2
     const allBtns = Array.from(container.querySelectorAll('button'));
     const nextBtn = allBtns[allBtns.length - 1];
     fireEvent.click(nextBtn);
-    await waitFor(() => expect(container.textContent).toContain('Page 2 of 2'));
+    await waitFor(() => expect(container.textContent).toContain('Página 2 de 2'));
     const allBtns2 = Array.from(container.querySelectorAll('button'));
     const nextBtn2 = allBtns2[allBtns2.length - 1] as HTMLButtonElement;
     expect(nextBtn2.disabled).toBe(true);
