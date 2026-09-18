@@ -874,7 +874,7 @@ describe('BlockContentEditor — booking styleOverrides fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bk1', type: 'booking', order: 0, slug: 'x',
     });
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     if (textColor) {
       fireEvent.change(textColor, { target: { value: '#fff' } });
       const call = onUpdate.mock.calls.at(-1)![0];
@@ -1011,7 +1011,7 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A' }],
     });
-    const arrowBg = container.querySelector('[data-testid="color-Arrow Background"]') as HTMLInputElement;
+    const arrowBg = container.querySelector('[data-testid="color-Fondo de flecha"]') as HTMLInputElement;
     if (arrowBg) {
       fireEvent.change(arrowBg, { target: { value: 'rgba(0,0,0,0.3)' } });
       expect(onUpdate).toHaveBeenCalledWith({ arrowBackground: 'rgba(0,0,0,0.3)' });
@@ -1683,7 +1683,7 @@ describe('BlockContentEditor — section fontFamily', () => {
       <StyleSettings block={block} onChange={onChange} currentViewport="desktop" />,
     );
     openTypography(container);
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     fireEvent.change(textColor, { target: { value: '#000' } });
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ style: expect.objectContaining({ color: '#000' }) }),
@@ -2212,7 +2212,7 @@ describe('BlockContentEditor — hero-slideshow secondary CTA + overlayColor', (
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A', overlayColor: 'rgba(0,0,0,0.45)' }],
     });
-    const overlayColor = container.querySelector('[data-testid="color-Overlay Color"]') as HTMLInputElement;
+    const overlayColor = container.querySelector('[data-testid="color-Color de superposición"]') as HTMLInputElement;
     if (overlayColor) {
       fireEvent.change(overlayColor, { target: { value: 'rgba(0,0,0,0.7)' } });
       const call = onUpdate.mock.calls[0][0];

@@ -689,7 +689,7 @@ describe('BlockContentEditor — booking-menu', () => {
 describe('BlockContentEditor — social-links', () => {
   it('renders empty state with add button and adds link', () => {
     const { container, onUpdate } = renderBlock({ id: 'sl1', type: 'social-links', order: 0, links: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Link'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace'));
     fireEvent.click(addBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ links: [{ platform: 'facebook', url: '' }] });
   });
@@ -735,7 +735,7 @@ describe('BlockContentEditor — social-links', () => {
   it('hides + Add Link when at 6 links', () => {
     const six = Array.from({ length: 6 }, (_, i) => ({ platform: 'facebook', url: `${i}` }));
     const { container } = renderBlock({ id: 'sl1', type: 'social-links', order: 0, links: six });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Link'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace'));
     expect(addBtn).toBeUndefined();
   });
 });
@@ -747,7 +747,7 @@ describe('BlockContentEditor — social-links', () => {
 describe('BlockContentEditor — timeline', () => {
   it('adds + removes steps', () => {
     const { container, onUpdate } = renderBlock({ id: 'tl1', type: 'timeline', order: 0, steps: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].steps).toHaveLength(1);
   });
@@ -851,7 +851,7 @@ describe('BlockContentEditor — site-footer', () => {
       logoUrl: 'x', wordmark: 'W', linkGroups: [{ label: 'PRODUCT', links: [{ label: 'Pricing', href: '/p' }] }],
     });
     expect(container.textContent).toContain('URL del logotipo');
-    expect(container.textContent).toContain('Link Groups');
+    expect(container.textContent).toContain('Grupos de enlaces');
     expect(container.textContent).toContain('Copyright');
   });
 
@@ -876,7 +876,7 @@ describe('BlockContentEditor — site-footer', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sf1', type: 'site-footer', order: 0, linkGroups: [],
     });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Group'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir grupo'));
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].linkGroups).toHaveLength(1);
   });
@@ -885,7 +885,7 @@ describe('BlockContentEditor — site-footer', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sf1', type: 'site-footer', order: 0, socialLinks: [],
     });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Social'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace social'));
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].socialLinks).toHaveLength(1);
   });
@@ -1787,7 +1787,7 @@ describe('BlockContentEditor — site-footer inline edits', () => {
       id: 'sf1', type: 'site-footer', order: 0,
       linkGroups: [{ label: 'PRODUCT', links: [] }],
     });
-    const addLinkBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Link');
+    const addLinkBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Enlace');
     fireEvent.click(addLinkBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.linkGroups[0].links).toHaveLength(1);
@@ -2063,7 +2063,7 @@ describe('BlockContentEditor — section splitColor branches', () => {
     );
 
     openStyleSection('Tipografía');
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     fireEvent.change(textColor, { target: { value: '#000' } });
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ style: expect.objectContaining({ color: '#000' }) }),

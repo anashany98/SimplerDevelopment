@@ -86,7 +86,7 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('basic render', () => {
     it('renders without crashing', () => {
       renderSettings();
-      expect(screen.getByText('Slides')).toBeInTheDocument();
+      expect(screen.getByText('Diapositivas')).toBeInTheDocument();
     });
 
     it('renders slide tab button for each slide', () => {
@@ -106,22 +106,22 @@ describe('HeroSlideshowBlockSettings', () => {
 
     it('renders active slide fields for slide title', () => {
       renderSettings();
-      expect(screen.getByTestId('rte-Slide Title')).toBeInTheDocument();
+      expect(screen.getByTestId('rte-Título de la diapositiva')).toBeInTheDocument();
     });
 
     it('renders "Slideshow Settings" section', () => {
       renderSettings();
-      expect(screen.getByText('Slideshow Settings')).toBeInTheDocument();
+      expect(screen.getByText('Ajustes del carrusel')).toBeInTheDocument();
     });
 
     it('renders "Background Video" section', () => {
       renderSettings();
-      expect(screen.getByText('Background Video')).toBeInTheDocument();
+      expect(screen.getByText('Vídeo de fondo')).toBeInTheDocument();
     });
 
     it('renders "Stats Bar" section', () => {
       renderSettings();
-      expect(screen.getByText('Stats Bar')).toBeInTheDocument();
+      expect(screen.getByText('Barra de estadísticas')).toBeInTheDocument();
     });
   });
 
@@ -137,7 +137,7 @@ describe('HeroSlideshowBlockSettings', () => {
       });
       renderSettings(block);
       fireEvent.click(screen.getByText('2'));
-      const subtitleInput = screen.getByPlaceholderText('Optional subtitle');
+      const subtitleInput = screen.getByPlaceholderText('Subtítulo opcional');
       expect(subtitleInput).toHaveValue('Sub 2');
     });
 
@@ -289,7 +289,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1', subtitle: 'Old Sub' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const subtitleInput = screen.getByPlaceholderText('Optional subtitle');
+      const subtitleInput = screen.getByPlaceholderText('Subtítulo opcional');
       fireEvent.change(subtitleInput, { target: { value: 'New Sub' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -302,7 +302,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const desc = screen.getByPlaceholderText('Optional description');
+      const desc = screen.getByPlaceholderText('Descripción opcional');
       fireEvent.change(desc, { target: { value: 'A description' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -371,7 +371,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1', title: 'Old Title' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const rte = screen.getByTestId('rte-Slide Title');
+      const rte = screen.getByTestId('rte-Título de la diapositiva');
       fireEvent.change(rte, { target: { value: 'New Title' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -386,7 +386,7 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('background image', () => {
     it('shows "Choose Image" button when no background image', () => {
       renderSettings();
-      expect(screen.getByText('Choose Image')).toBeInTheDocument();
+      expect(screen.getByText('Elegir imagen')).toBeInTheDocument();
     });
 
     it('shows image and Change/Remove buttons when backgroundImage is set', () => {
@@ -394,14 +394,14 @@ describe('HeroSlideshowBlockSettings', () => {
         slides: [makeSlide({ id: 's1', backgroundImage: 'https://example.com/img.jpg' })],
       });
       renderSettings(block);
-      expect(screen.getByText('Change')).toBeInTheDocument();
+      expect(screen.getByText('Cambiar')).toBeInTheDocument();
       expect(screen.getByText('Quitar')).toBeInTheDocument();
     });
 
     it('clicking "Choose Image" shows MediaPicker', () => {
       renderSettings();
-      fireEvent.click(screen.getByText('Choose Image'));
-      expect(screen.getByTestId('media-picker-Slide Background')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('Elegir imagen'));
+      expect(screen.getByTestId('media-picker-Fondo de la diapositiva')).toBeInTheDocument();
     });
 
     it('clicking "Change" shows MediaPicker', () => {
@@ -409,8 +409,8 @@ describe('HeroSlideshowBlockSettings', () => {
         slides: [makeSlide({ id: 's1', backgroundImage: 'https://example.com/img.jpg' })],
       });
       renderSettings(block);
-      fireEvent.click(screen.getByText('Change'));
-      expect(screen.getByTestId('media-picker-Slide Background')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('Cambiar'));
+      expect(screen.getByTestId('media-picker-Fondo de la diapositiva')).toBeInTheDocument();
     });
 
     it('calls onChange with backgroundImage cleared when "Remove" clicked', () => {
@@ -431,8 +431,8 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      fireEvent.click(screen.getByText('Choose Image'));
-      const mpInput = screen.getByTestId('mp-input-Slide Background');
+      fireEvent.click(screen.getByText('Elegir imagen'));
+      const mpInput = screen.getByTestId('mp-input-Fondo de la diapositiva');
       fireEvent.change(mpInput, { target: { value: 'https://example.com/new.jpg' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -440,7 +440,7 @@ describe('HeroSlideshowBlockSettings', () => {
         }),
       );
       // Picker should be hidden after selection
-      expect(screen.queryByTestId('media-picker-Slide Background')).toBeNull();
+      expect(screen.queryByTestId('media-picker-Fondo de la diapositiva')).toBeNull();
     });
   });
 
@@ -449,7 +449,7 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('per-slide background video', () => {
     it('renders background video URL input for current slide', () => {
       renderSettings();
-      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (optional)');
+      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (opcional)');
       expect(videoInputs.length).toBeGreaterThanOrEqual(1);
     });
 
@@ -457,7 +457,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (optional)');
+      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (opcional)');
       // First one is the per-slide video input
       fireEvent.change(videoInputs[0], { target: { value: 'https://cdn.example.com/bg.mp4' } });
       expect(onChange).toHaveBeenCalledWith(
@@ -520,7 +520,7 @@ describe('HeroSlideshowBlockSettings', () => {
       renderSettings();
       // The block-level video URL input is under "Background Video" section
       // It should be in the persistent section (not the per-slide one)
-      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (optional)');
+      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (opcional)');
       expect(videoInputs.length).toBeGreaterThanOrEqual(2);
     });
 
@@ -528,7 +528,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (optional)');
+      const videoInputs = screen.getAllByPlaceholderText('https://...mp4 (opcional)');
       // The last one is the block-level persistent video input
       const lastInput = videoInputs[videoInputs.length - 1];
       fireEvent.change(lastInput, { target: { value: 'https://cdn.example.com/persist.mp4' } });
@@ -578,34 +578,34 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('slideshow settings toggles', () => {
     it('renders Autoplay checkbox', () => {
       renderSettings();
-      expect(screen.getByLabelText('Autoplay')).toBeInTheDocument();
+      expect(screen.getByLabelText('Reproducción automática')).toBeInTheDocument();
     });
 
     it('renders Show Dots checkbox', () => {
       renderSettings();
-      expect(screen.getByLabelText('Show Dots')).toBeInTheDocument();
+      expect(screen.getByLabelText('Mostrar puntos')).toBeInTheDocument();
     });
 
     it('renders Show Arrows checkbox', () => {
       renderSettings();
-      expect(screen.getByLabelText('Show Arrows')).toBeInTheDocument();
+      expect(screen.getByLabelText('Mostrar flechas')).toBeInTheDocument();
     });
 
     it('renders Pause on Hover checkbox', () => {
       renderSettings();
-      expect(screen.getByLabelText('Pause on Hover')).toBeInTheDocument();
+      expect(screen.getByLabelText('Pausar al pasar el cursor')).toBeInTheDocument();
     });
 
     it('renders Ken Burns Effect checkbox', () => {
       renderSettings();
-      expect(screen.getByLabelText('Ken Burns Effect')).toBeInTheDocument();
+      expect(screen.getByLabelText('Efecto Ken Burns')).toBeInTheDocument();
     });
 
     it('calls onChange with autoplay: false when Autoplay unchecked', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], autoplay: true });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const autoplayCheckbox = screen.getByLabelText('Autoplay');
+      const autoplayCheckbox = screen.getByLabelText('Reproducción automática');
       fireEvent.click(autoplayCheckbox);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ autoplay: false }));
     });
@@ -614,7 +614,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], showDots: true });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const dotsCheckbox = screen.getByLabelText('Show Dots');
+      const dotsCheckbox = screen.getByLabelText('Mostrar puntos');
       fireEvent.click(dotsCheckbox);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ showDots: false }));
     });
@@ -623,7 +623,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], kenBurns: false });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const kenBurnsCheckbox = screen.getByLabelText('Ken Burns Effect');
+      const kenBurnsCheckbox = screen.getByLabelText('Efecto Ken Burns');
       fireEvent.click(kenBurnsCheckbox);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ kenBurns: true }));
     });
@@ -696,14 +696,14 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('stats bar', () => {
     it('renders "+ Add Stat" button', () => {
       renderSettings();
-      expect(screen.getByText('+ Add Stat')).toBeInTheDocument();
+      expect(screen.getByText('+ Añadir estadística')).toBeInTheDocument();
     });
 
     it('calls onChange with a new stat appended when "+ Add Stat" clicked', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], stats: [] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      fireEvent.click(screen.getByText('+ Add Stat'));
+      fireEvent.click(screen.getByText('+ Añadir estadística'));
       expect(onChange).toHaveBeenCalledTimes(1);
       const newStats = onChange.mock.calls[0][0].stats;
       expect(newStats).toHaveLength(1);
@@ -789,14 +789,14 @@ describe('HeroSlideshowBlockSettings', () => {
   describe('color pickers', () => {
     it('renders Overlay Color picker for active slide', () => {
       renderSettings();
-      expect(screen.getByTestId('color-Overlay Color')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Color de superposición')).toBeInTheDocument();
     });
 
     it('calls onChange with overlayColor when color picker changes', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1', overlayColor: '' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const colorInput = screen.getByTestId('color-Overlay Color');
+      const colorInput = screen.getByTestId('color-Color de superposición');
       fireEvent.change(colorInput, { target: { value: 'rgba(0,0,0,0.5)' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -807,18 +807,18 @@ describe('HeroSlideshowBlockSettings', () => {
 
     it('renders advanced nav color pickers', () => {
       renderSettings();
-      expect(screen.getByTestId('color-Arrow Color')).toBeInTheDocument();
-      expect(screen.getByTestId('color-Arrow Background')).toBeInTheDocument();
-      expect(screen.getByTestId('color-Dot Color')).toBeInTheDocument();
-      expect(screen.getByTestId('color-Dot Active Color')).toBeInTheDocument();
-      expect(screen.getByTestId('color-Progress Bar Color')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Color de flecha')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Fondo de flecha')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Color de punto')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Color de punto activo')).toBeInTheDocument();
+      expect(screen.getByTestId('color-Color de la barra de progreso')).toBeInTheDocument();
     });
 
     it('calls onChange with arrowColor when Arrow Color picker changes', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], arrowColor: '' });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const colorInput = screen.getByTestId('color-Arrow Color');
+      const colorInput = screen.getByTestId('color-Color de flecha');
       fireEvent.change(colorInput, { target: { value: '#fff' } });
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ arrowColor: '#fff' }));
     });
@@ -827,7 +827,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide()], arrowColor: '#fff' });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const colorInput = screen.getByTestId('color-Arrow Color');
+      const colorInput = screen.getByTestId('color-Color de flecha');
       fireEvent.change(colorInput, { target: { value: '' } });
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ arrowColor: undefined }));
     });
@@ -840,20 +840,20 @@ describe('HeroSlideshowBlockSettings', () => {
       const block = makeBlock({ slides: [] });
       renderSettings(block);
       // Should render the sections without the active slide content
-      expect(screen.getByText('Slides')).toBeInTheDocument();
-      expect(screen.getByText('Slideshow Settings')).toBeInTheDocument();
+      expect(screen.getByText('Diapositivas')).toBeInTheDocument();
+      expect(screen.getByText('Ajustes del carrusel')).toBeInTheDocument();
     });
 
     it('does not render slide content section when slides is empty', () => {
       const block = makeBlock({ slides: [] });
       renderSettings(block);
-      expect(screen.queryByTestId('rte-Slide Title')).toBeNull();
+      expect(screen.queryByTestId('rte-Título de la diapositiva')).toBeNull();
     });
 
     it('handles block with no stats array (undefined)', () => {
       const block = makeBlock({ slides: [makeSlide()], stats: undefined });
       renderSettings(block);
-      expect(screen.getByText('+ Add Stat')).toBeInTheDocument();
+      expect(screen.getByText('+ Añadir estadística')).toBeInTheDocument();
     });
   });
 });
