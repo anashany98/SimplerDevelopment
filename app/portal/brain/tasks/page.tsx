@@ -55,7 +55,7 @@ interface PromotionTarget {
 const STATUS_COLUMNS: { key: TaskStatus; label: string; color: string }[] = [
   { key: 'open',        label: 'Abiertos',         color: '#94a3b8' },
   { key: 'in_progress', label: 'En progreso',  color: '#3b82f6' },
-  { key: 'blocked',     label: 'Blocked',      color: '#ef4444' },
+  { key: 'blocked',     label: 'Bloqueado',    color: '#ef4444' },
   { key: 'done',        label: 'Listo',         color: '#10b981' },
 ];
 
@@ -96,16 +96,16 @@ interface MeetingShape {
 const TYPE_META: Record<ProposedType, { label: string; icon: string; tone: string }> = {
   task: { label: 'Tarea', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
   decision: { label: 'Decisión', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
-  commitment: { label: 'Commitment', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
-  relationship_update: { label: 'Relationship update', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
-  follow_up: { label: 'Follow-up', icon: 'reply', tone: 'text-foreground bg-muted' },
-  compliance_warning: { label: 'Compliance warning', icon: 'warning', tone: 'text-red-600 dark:text-red-400 bg-red-500/10' },
-  note: { label: 'Note', icon: 'sticky_note_2', tone: 'text-foreground bg-muted' },
-  crm_contact_classify: { label: 'Classify contact', icon: 'badge', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_deal_link:        { label: 'Link to deal',     icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_deal_create:      { label: 'Create deal',      icon: 'monetization_on', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_company_link:     { label: 'Link to company',  icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_company_create:   { label: 'Create company',   icon: 'apartment', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  commitment: { label: 'Compromiso', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
+  relationship_update: { label: 'Actualización de relación', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
+  follow_up: { label: 'Seguimiento', icon: 'reply', tone: 'text-foreground bg-muted' },
+  compliance_warning: { label: 'Aviso de cumplimiento', icon: 'warning', tone: 'text-red-600 dark:text-red-400 bg-red-500/10' },
+  note: { label: 'Nota', icon: 'sticky_note_2', tone: 'text-foreground bg-muted' },
+  crm_contact_classify: { label: 'Clasificar contacto', icon: 'badge', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_deal_link:        { label: 'Vincular a negocio',     icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_deal_create:      { label: 'Crear negocio',      icon: 'monetization_on', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_company_link:     { label: 'Vincular a empresa',  icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_company_create:   { label: 'Crear empresa',   icon: 'apartment', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
 };
 
 const REVIEW_STATUS_TABS: { key: 'pending' | 'approved' | 'rejected' | 'all'; label: string }[] = [
@@ -156,13 +156,13 @@ export default function BrainTasksAndReviewPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">{tab === 'review' ? 'reviews' : 'checklist'}</span>
-            {tab === 'review' ? 'Review queue' : 'Brain Tasks'}
+            {tab === 'review' ? 'Cola de revisión' : 'Tareas del cerebro'}
           </span>
         }
         subtitle={
           tab === 'review'
-            ? 'Tasks, decisions, commitments, and CRM links extracted by AI from your communications. Approve to commit them, edit and approve, or reject.'
-            : 'Tasks captured from communications and AI-generated suggestions, after human approval.'
+            ? 'Tareas, decisiones, compromisos y vínculos del CRM extraídos por la IA de tus comunicaciones. Apruébalos para confirmarlos, edítalos y apruébalos, o recházalos.'
+            : 'Tareas capturadas de las comunicaciones y sugerencias generadas por la IA, tras la aprobación humana.'
         }
       />
 
@@ -176,7 +176,7 @@ export default function BrainTasksAndReviewPage() {
           }`}
         >
           <span className="material-icons text-base">checklist</span>
-          Tasks
+          Tareas
         </button>
         <button
           onClick={() => setTab('review')}
@@ -187,7 +187,7 @@ export default function BrainTasksAndReviewPage() {
           }`}
         >
           <span className="material-icons text-base">reviews</span>
-          Review queue
+          Cola de revisión
           {pendingReviewCount !== null && pendingReviewCount > 0 && (
             <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">
               {pendingReviewCount > 99 ? '99+' : pendingReviewCount}
@@ -216,7 +216,7 @@ function TasksTab() {
       const r = await fetch('/api/portal/brain/tasks');
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load tasks.');
+        setError(json.message || 'No se pudieron cargar las tareas.');
       } else {
         setTasks(json.data);
         setError(null);
@@ -246,7 +246,7 @@ function TasksTab() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to update task.');
+        setError(json.message || 'No se pudo actualizar la tarea.');
         await load();
       }
     } catch (err) {
@@ -412,7 +412,7 @@ function TaskColumn({
         >
           {tasks.length === 0 ? (
             <div className="text-xs text-muted-foreground text-center py-6">
-              No tasks
+              Sin tareas
             </div>
           ) : (
             tasks.map(t => <TaskCard key={t.id} task={t} onPromote={onPromote} />)
@@ -457,7 +457,7 @@ function TaskCard({
           {task.complianceFlag && (
             <span className="ml-2 inline-flex items-center gap-0.5 text-xs text-red-600 dark:text-red-400 align-middle">
               <span className="material-icons text-sm">warning</span>
-              compliance
+              cumplimiento
             </span>
           )}
         </p>
@@ -491,13 +491,13 @@ function TaskCard({
             className="text-xs text-muted-foreground hover:text-foreground hover:underline flex items-center gap-0.5"
           >
             <span className="material-icons text-xs">forum</span>
-            communication
+            comunicación
           </Link>
         )}
         {task.linkedKanbanCardId && (
           <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
             <span className="material-icons text-xs">view_kanban</span>
-            on board
+            en el tablero
           </span>
         )}
       </div>
@@ -512,7 +512,7 @@ function TaskCard({
             title="Promover al tablero de proyecto"
           >
             <span className="material-icons text-sm">view_kanban</span>
-            Promote
+            Promover
           </button>
         </div>
       )}
@@ -550,7 +550,7 @@ function PromoteModal({
             if (firstCol) setColumnId(firstCol.id);
           }
         } else {
-          setLocalError(json.message || 'Failed to load projects.');
+          setLocalError(json.message || 'No se pudieron cargar los proyectos.');
         }
       })
       .catch((err) => setLocalError(err instanceof Error ? err.message : 'Network error'));
@@ -578,8 +578,8 @@ function PromoteModal({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setLocalError(json.message || 'Failed to promote.');
-        onError(json.message || 'Failed to promote.');
+        setLocalError(json.message || 'No se pudo promover.');
+        onError(json.message || 'No se pudo promover.');
         return;
       }
       onPromoted();
@@ -607,16 +607,16 @@ function PromoteModal({
         {!targets ? (
           <div className="flex items-center justify-center py-6 text-muted-foreground text-sm">
             <span className="material-icons animate-spin mr-2 text-base">progress_activity</span>
-            Loading projects…
+            Cargando proyectos…
           </div>
         ) : targets.length === 0 ? (
           <div className="bg-muted/30 border border-border rounded-xl p-3 text-xs text-muted-foreground">
-            No active projects to promote into. <Link href="/portal/projects" className="text-primary hover:underline">Primero crea un proyecto</Link>.
+            No hay proyectos activos en los que promover. <Link href="/portal/projects" className="text-primary hover:underline">Primero crea un proyecto</Link>.
           </div>
         ) : (
           <>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Project</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Proyecto</label>
               <select
                 value={projectId ?? ''}
                 onChange={(e) => setProjectId(parseInt(e.target.value, 10))}
@@ -629,14 +629,14 @@ function PromoteModal({
             </div>
             {project && project.columns.length > 0 && (
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Column</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Columna</label>
                 <select
                   value={columnId ?? ''}
                   onChange={(e) => setColumnId(parseInt(e.target.value, 10))}
                   className={pSelect}
                 >
                   {project.columns.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}{c.isDone ? ' (done)' : ''}</option>
+                    <option key={c.id} value={c.id}>{c.name}{c.isDone ? ' (listo)' : ''}</option>
                   ))}
                 </select>
               </div>
@@ -656,8 +656,8 @@ function PromoteModal({
             className={pBtnPrimary}
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Promoting…</>
-              : <><span className="material-icons text-base">view_kanban</span>Promote</>
+              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Promoviendo…</>
+              : <><span className="material-icons text-base">view_kanban</span>Promover</>
             }
           </button>
         </div>
@@ -684,7 +684,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
       const r = await fetch(`/api/portal/brain/review?status=${statusFilter}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load review queue.');
+        setError(json.message || 'No se pudo cargar la cola de revisión.');
         setItems([]);
       } else {
         setItems(json.data.items);
@@ -795,7 +795,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
       );
       const failed = results.filter((r) => r.status === 'rejected').length;
       if (failed > 0) {
-        setError(`${failed} of ${ids.length} ${action} request${ids.length === 1 ? '' : 's'} failed.`);
+        setError(`Fallaron ${failed} de ${ids.length} solicitud${ids.length === 1 ? '' : 'es'} de ${action}.`);
       }
       setSelected(new Set());
       await load();
@@ -814,7 +814,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
         body: JSON.stringify({}),
       });
       const json = await r.json();
-      if (!r.ok || !json.success) setError(json.message || 'Failed to approve.');
+      if (!r.ok || !json.success) setError(json.message || 'No se pudo aprobar.');
       await load();
       void refreshPendingCount();
     } finally {
@@ -831,7 +831,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
         body: JSON.stringify({}),
       });
       const json = await r.json();
-      if (!r.ok || !json.success) setError(json.message || 'Failed to reject.');
+      if (!r.ok || !json.success) setError(json.message || 'No se pudo rechazar.');
       await load();
       void refreshPendingCount();
     } finally {
@@ -863,8 +863,8 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
           {statusFilter === 'pending' && (
             <div className="text-sm text-muted-foreground">
               {pendingTotal === 0
-                ? <span className="text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-1"><span className="material-icons text-base">check_circle</span> All clear</span>
-                : <span><strong className="text-foreground">{pendingTotal}</strong> pending</span>
+                ? <span className="text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-1"><span className="material-icons text-base">check_circle</span> Todo en orden</span>
+                : <span><strong className="text-foreground">{pendingTotal}</strong> pendientes</span>
               }
             </div>
           )}
@@ -873,7 +873,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
             className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"
           >
             <span className="material-icons text-sm">forum</span>
-            View communications
+            Ver comunicaciones
           </Link>
         </div>
       </div>
@@ -892,8 +892,8 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
             />
             <span>
               {selected.size > 0
-                ? <><strong className="text-foreground">{selected.size}</strong> selected</>
-                : <>Select all pending ({pendingIds.length})</>}
+                ? <><strong className="text-foreground">{selected.size}</strong> seleccionados</>
+                : <>Seleccionar todos los pendientes ({pendingIds.length})</>}
             </span>
           </label>
           {selected.size > 0 && (
@@ -904,7 +904,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                 className={`${pBtnGhost} !py-1 !px-3 !text-xs hover:border-destructive/50 hover:text-destructive`}
               >
                 <span className="material-icons text-sm">close</span>
-                Reject {selected.size}
+                Rechazar {selected.size}
               </button>
               <button
                 onClick={() => bulkAction('approve')}
@@ -912,8 +912,8 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                 className={`${pBtnPrimary} !py-1 !px-3 !text-xs`}
               >
                 {bulkBusy
-                  ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Working…</>
-                  : <><span className="material-icons text-sm">check</span>Approve {selected.size}</>}
+                  ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Procesando…</>
+                  : <><span className="material-icons text-sm">check</span>Aprobar {selected.size}</>}
               </button>
             </div>
           )}
@@ -933,10 +933,10 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">inbox</span>
           <p className="text-foreground text-sm font-medium">
-            {statusFilter === 'pending' ? 'Nothing pending review.' : 'Nothing here yet.'}
+            {statusFilter === 'pending' ? 'Nada pendiente de revisión.' : 'Nada por aquí todavía.'}
           </p>
           <p className="text-muted-foreground text-xs mt-1">
-            New items appear here when AI processes a communication or email thread.
+            Los elementos nuevos aparecen aquí cuando la IA procesa una comunicación o un hilo de correo.
           </p>
         </div>
       ) : (
@@ -974,7 +974,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                     ) : (
                       <span className="text-sm font-medium text-foreground inline-flex items-center gap-1">
                         <span className="material-icons text-base text-muted-foreground">help</span>
-                        Other sources
+                        Otros orígenes
                       </span>
                     )}
                     {meeting?.meetingDate && (
@@ -984,7 +984,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                     )}
                   </div>
                   <span className="text-xs text-muted-foreground shrink-0">
-                    {groupItems.length} item{groupItems.length === 1 ? '' : 's'}
+                    {groupItems.length} elemento{groupItems.length === 1 ? '' : 's'}
                   </span>
                 </div>
                 <div className="space-y-2">
@@ -1073,7 +1073,7 @@ function ReviewCard({ item, busy, onApprove, onReject, meetingHref, selectable, 
                 className={`${pBtnGhost} !py-1 !px-2 !text-xs hover:border-destructive/50 hover:text-destructive`}
               >
                 <span className="material-icons text-sm">close</span>
-                Reject
+                Rechazar
               </button>
               <button
                 onClick={onApprove}
@@ -1081,18 +1081,18 @@ function ReviewCard({ item, busy, onApprove, onReject, meetingHref, selectable, 
                 className={`${pBtnPrimary} !py-1 !px-2 !text-xs`}
               >
                 <span className="material-icons text-sm">check</span>
-                Approve
+                Aprobar
               </button>
             </>
           ) : item.status === 'approved' || item.status === 'edited' ? (
             <span className="text-xs text-emerald-600 dark:text-emerald-400 inline-flex items-center gap-1">
               <span className="material-icons text-sm">check_circle</span>
-              {item.status === 'edited' ? 'Edited & approved' : 'Approved'}
+              {item.status === 'edited' ? 'Editado y aprobado' : 'Aprobado'}
             </span>
           ) : (
             <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
               <span className="material-icons text-sm">block</span>
-              Rejected
+              Rechazado
             </span>
           )}
         </div>
@@ -1106,35 +1106,35 @@ function describeProposal(item: ReviewItem): string {
   const s = (k: string) => typeof p[k] === 'string' ? p[k] as string : '';
   const n = (k: string) => typeof p[k] === 'number' ? p[k] as number : null;
   switch (item.proposedType) {
-    case 'task': return s('title') || 'Untitled task';
-    case 'decision': return s('title') || 'Untitled decision';
-    case 'commitment': return `${s('who') || 'Someone'} → ${s('what')}`;
-    case 'relationship_update': return `${s('field') || 'field'}: ${s('value')}`;
-    case 'compliance_warning': return s('message') || 'Compliance warning';
+    case 'task': return s('title') || 'Tarea sin título';
+    case 'decision': return s('title') || 'Decisión sin título';
+    case 'commitment': return `${s('who') || 'Alguien'} → ${s('what')}`;
+    case 'relationship_update': return `${s('field') || 'campo'}: ${s('value')}`;
+    case 'compliance_warning': return s('message') || 'Aviso de cumplimiento';
     case 'crm_contact_classify': {
       const parts: string[] = [];
-      if (s('proposedStatus')) parts.push(`status → ${s('proposedStatus')}`);
-      if (s('proposedSeniority')) parts.push(`seniority → ${s('proposedSeniority')}`);
-      if (s('proposedDepartment')) parts.push(`department → ${s('proposedDepartment')}`);
-      if (s('proposedTitle')) parts.push(`title → ${s('proposedTitle')}`);
+      if (s('proposedStatus')) parts.push(`estado → ${s('proposedStatus')}`);
+      if (s('proposedSeniority')) parts.push(`antigüedad → ${s('proposedSeniority')}`);
+      if (s('proposedDepartment')) parts.push(`departamento → ${s('proposedDepartment')}`);
+      if (s('proposedTitle')) parts.push(`cargo → ${s('proposedTitle')}`);
       const id = n('contactId');
-      return parts.length > 0 ? `Contact${id ? ` #${id}` : ''}: ${parts.join(', ')}` : `Contact${id ? ` #${id}` : ''}`;
+      return parts.length > 0 ? `Contacto${id ? ` #${id}` : ''}: ${parts.join(', ')}` : `Contacto${id ? ` #${id}` : ''}`;
     }
-    case 'crm_deal_link': return `Link to deal #${n('dealId')}`;
+    case 'crm_deal_link': return `Vincular a negocio #${n('dealId')}`;
     case 'crm_deal_create': {
       const value = n('value');
       const v = value !== null ? ` (${formatCents(value, s('currency') || 'USD')})` : '';
-      return `Create deal: ${s('title') || '(untitled)'}${v}`;
+      return `Crear negocio: ${s('title') || '(sin título)'}${v}`;
     }
     case 'crm_company_link': {
       const candidates = Array.isArray(p.candidateCompanyIds) ? p.candidateCompanyIds : [];
       return candidates.length > 1
-        ? `Pick a company from ${candidates.length} candidates (default: #${n('companyId')})`
-        : `Link to company #${n('companyId')}`;
+        ? `Elige una empresa entre ${candidates.length} candidatas (por defecto: #${n('companyId')})`
+        : `Vincular a empresa #${n('companyId')}`;
     }
     case 'crm_company_create': {
       const dom = s('domain') ? ` (${s('domain')})` : '';
-      return `Create company: ${s('name') || '(unnamed)'}${dom}`;
+      return `Crear empresa: ${s('name') || '(sin nombre)'}${dom}`;
     }
     default: return JSON.stringify(p).slice(0, 80);
   }
@@ -1144,30 +1144,30 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
   const bits: { label: string; value: string }[] = [];
   if (type === 'task') {
     if (typeof payload.description === 'string' && payload.description) bits.push({ label: '', value: payload.description });
-    if (typeof payload.ownerHint === 'string') bits.push({ label: 'owner', value: payload.ownerHint });
-    if (typeof payload.dueDate === 'string') bits.push({ label: 'due', value: payload.dueDate });
-    if (typeof payload.priority === 'string') bits.push({ label: 'priority', value: payload.priority });
-    if (payload.complianceFlag === true) bits.push({ label: '', value: 'compliance flag' });
+    if (typeof payload.ownerHint === 'string') bits.push({ label: 'responsable', value: payload.ownerHint });
+    if (typeof payload.dueDate === 'string') bits.push({ label: 'vence', value: payload.dueDate });
+    if (typeof payload.priority === 'string') bits.push({ label: 'prioridad', value: payload.priority });
+    if (payload.complianceFlag === true) bits.push({ label: '', value: 'marca de cumplimiento' });
   } else if (type === 'decision' && typeof payload.details === 'string') {
     bits.push({ label: '', value: payload.details });
   } else if (type === 'commitment' && typeof payload.when === 'string') {
-    bits.push({ label: 'when', value: payload.when });
+    bits.push({ label: 'cuándo', value: payload.when });
   } else if (type === 'relationship_update' && typeof payload.rationale === 'string') {
-    bits.push({ label: 'rationale', value: payload.rationale });
+    bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'compliance_warning' && typeof payload.severity === 'string') {
-    bits.push({ label: 'severity', value: payload.severity });
+    bits.push({ label: 'gravedad', value: payload.severity });
   } else if (type === 'crm_contact_classify' && typeof payload.rationale === 'string') {
-    bits.push({ label: 'rationale', value: payload.rationale });
+    bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_deal_link' && typeof payload.rationale === 'string') {
-    bits.push({ label: 'rationale', value: payload.rationale });
+    bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_deal_create') {
-    if (typeof payload.priority === 'string') bits.push({ label: 'priority', value: payload.priority });
-    if (typeof payload.expectedCloseDate === 'string') bits.push({ label: 'close by', value: payload.expectedCloseDate });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.priority === 'string') bits.push({ label: 'prioridad', value: payload.priority });
+    if (typeof payload.expectedCloseDate === 'string') bits.push({ label: 'cierre previsto', value: payload.expectedCloseDate });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_company_create') {
-    if (typeof payload.industry === 'string') bits.push({ label: 'industry', value: payload.industry });
-    if (typeof payload.website === 'string') bits.push({ label: 'website', value: payload.website });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.industry === 'string') bits.push({ label: 'sector', value: payload.industry });
+    if (typeof payload.website === 'string') bits.push({ label: 'sitio web', value: payload.website });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   }
 
   if (bits.length === 0) return null;
@@ -1210,7 +1210,7 @@ function SuggestedReviewerChip({ item }: { item: ReviewItem }) {
   return (
     <span
       className="text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center gap-1 flex-shrink-0 cursor-help"
-      title={reason ?? `Suggested reviewer #${pid} (score ${score})`}
+      title={reason ?? `Revisor sugerido #${pid} (puntuación ${score})`}
     >
       <span className="material-icons text-sm">person_pin</span>
       <span className="truncate max-w-[8rem]">{label}</span>
