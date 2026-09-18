@@ -207,6 +207,18 @@ vi.mock('@/lib/automation/event-bus', () => ({
   emitEvent: (...args: unknown[]) => automationState.emitEvent(...args),
 }));
 
+// Billing was removed (2026-08): the route short-circuits with 403 when
+// PAYMENTS_DISABLED is true. The gate is mocked open here so the tests below
+// can exercise the webhook-handling logic itself (same pattern as
+// api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
