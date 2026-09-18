@@ -422,7 +422,7 @@ describe('AdminPortalHostingPage', () => {
     it('closes form when Cancel clicked', async () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
       await waitFor(() => expect(screen.queryByText('Add Hosted Site', { selector: 'h2' })).toBeNull());
     });
 
@@ -514,7 +514,7 @@ describe('AdminPortalHostingPage', () => {
     it('shows empty DNS placeholder text when no rows', async () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      expect(screen.getByText(/No DNS records added/)).toBeTruthy();
+      expect(screen.getByText(/No hay registros DNS\. Haz clic en "Añadir registro" para agregar uno\./)).toBeTruthy();
     });
 
     it('adds a DNS row when "Add record" clicked', async () => {
@@ -556,7 +556,7 @@ describe('AdminPortalHostingPage', () => {
   describe('edit modal', () => {
     it('opens edit form with pre-filled values when edit button clicked', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
       expect(screen.getByText('Edit Hosted Site')).toBeTruthy();
       expect(screen.getByDisplayValue('Acme Site')).toBeTruthy();
@@ -564,7 +564,7 @@ describe('AdminPortalHostingPage', () => {
 
     it('disables the client dropdown in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
       // The client select should be disabled
       const clientSelect = document.querySelector('select[disabled]') as HTMLSelectElement;
@@ -573,7 +573,7 @@ describe('AdminPortalHostingPage', () => {
 
     it('pre-fills DNS rows in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
       // Should have the CNAME row from baseSite.dnsInstructions
       const hostInputs = screen.getAllByPlaceholderText('Host (e.g. @)') as HTMLInputElement[];
@@ -588,7 +588,7 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
 
       const nameInput = screen.getByDisplayValue('Acme Site') as HTMLInputElement;
@@ -613,16 +613,16 @@ describe('AdminPortalHostingPage', () => {
   describe('delete confirmation dialog', () => {
     it('opens delete dialog when delete button clicked', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
       expect(screen.getByText('Delete hosted site?')).toBeTruthy();
     });
 
     it('cancels delete when Cancel clicked', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
       await waitFor(() => expect(screen.queryByText('Delete hosted site?')).toBeNull());
     });
 
@@ -633,9 +633,9 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
-      fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
       await waitFor(() => expect(screen.queryByText('Acme Site')).toBeNull());
     });
 
@@ -658,7 +658,7 @@ describe('AdminPortalHostingPage', () => {
       // Open delete from detail panel
       fireEvent.click(screen.getByRole('button', { name: /Delete Site/ }));
       // Confirm delete
-      fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
       await waitFor(() => expect(screen.queryByText('VIP client')).toBeNull());
     });
   });
