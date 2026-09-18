@@ -162,7 +162,7 @@ describe('CardChecklist', () => {
     expect(toggle).not.toHaveBeenCalled();
     // No remove button when canEdit is false
     expect(
-      container.querySelector('button[aria-label="Delete item"]'),
+      container.querySelector('button[aria-label="Eliminar elemento"]'),
     ).toBeNull();
     // No add-item input row when canEdit is false
     expect(container.querySelector('input[type="text"]')).toBeNull();
@@ -179,7 +179,7 @@ describe('CardChecklist', () => {
       />,
     );
     const btn = container.querySelector(
-      'button[aria-label="Delete item"]',
+      'button[aria-label="Eliminar elemento"]',
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     expect(remove).toHaveBeenCalledWith(42);
@@ -212,19 +212,19 @@ describe('CardChecklist', () => {
       <CardChecklist {...baseProps} newChecklistText="" />,
     );
     let btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Add',
+      (b) => b.textContent === 'Añadir',
     ) as HTMLButtonElement;
     expect(btn.disabled).toBe(true);
 
     rerender(<CardChecklist {...baseProps} newChecklistText="   " />);
     btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Add',
+      (b) => b.textContent === 'Añadir',
     ) as HTMLButtonElement;
     expect(btn.disabled).toBe(true);
 
     rerender(<CardChecklist {...baseProps} newChecklistText="real" />);
     btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Add',
+      (b) => b.textContent === 'Añadir',
     ) as HTMLButtonElement;
     expect(btn.disabled).toBe(false);
   });
