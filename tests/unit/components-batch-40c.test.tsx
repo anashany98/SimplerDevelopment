@@ -288,33 +288,33 @@ describe('BlockContextMenu', () => {
 
   it('disables Group when fewer than 2 blocks are selected', () => {
     const { getByText } = setup({ selectedCount: 1 });
-    const groupBtn = getByText('Group into Section').closest('button') as HTMLButtonElement;
+    const groupBtn = getByText('Agrupar en sección').closest('button') as HTMLButtonElement;
     expect(groupBtn.disabled).toBe(true);
     expect(groupBtn.getAttribute('title')).toContain('Select 2 or more');
   });
 
   it('enables Group when 2 or more blocks are selected', () => {
     const { getByText } = setup({ selectedCount: 3 });
-    const groupBtn = getByText('Group into Section').closest('button') as HTMLButtonElement;
+    const groupBtn = getByText('Agrupar en sección').closest('button') as HTMLButtonElement;
     expect(groupBtn.disabled).toBe(false);
   });
 
   it('fires the matching handler AND onClose for each action item', () => {
     const { getByText, onDuplicate, onCopy, onPaste, onSaveAsTemplate, onDelete, onClose } = setup();
 
-    fireEvent.click(getByText('Duplicate'));
+    fireEvent.click(getByText('Duplicar'));
     expect(onDuplicate).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(getByText('Copy'));
+    fireEvent.click(getByText('Copiar'));
     expect(onCopy).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(getByText('Paste'));
+    fireEvent.click(getByText('Pegar'));
     expect(onPaste).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(getByText('Save as Template'));
+    fireEvent.click(getByText('Guardar como plantilla'));
     expect(onSaveAsTemplate).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     expect(onDelete).toHaveBeenCalledTimes(1);
 
     // Every click also closes the menu
