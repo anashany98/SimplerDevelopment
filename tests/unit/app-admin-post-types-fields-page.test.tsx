@@ -73,7 +73,7 @@ import CustomFieldsPage from '@/app/admin/post-types/[id]/fields/page';
 
 async function renderPage() {
   const result = render(<CustomFieldsPage />);
-  await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+  await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
   return result;
 }
 
@@ -89,7 +89,7 @@ describe('CustomFieldsPage', () => {
       // Delay the post-type response so loading persists
       global.fetch = vi.fn(() => new Promise(() => {}));
       render(<CustomFieldsPage />);
-      expect(screen.getByText('Loading...')).toBeTruthy();
+      expect(screen.getByText('Cargando...')).toBeTruthy();
     });
 
     it('renders page heading with post type name after load', async () => {
@@ -284,7 +284,7 @@ describe('CustomFieldsPage', () => {
   describe('edit field', () => {
     it('opens form pre-filled when Edit is clicked', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const nameInput = screen.getByDisplayValue('Author') as HTMLInputElement;
       expect(nameInput.value).toBe('Author');
@@ -292,7 +292,7 @@ describe('CustomFieldsPage', () => {
 
     it('does not auto-update slug when editing existing field', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const nameInput = screen.getByDisplayValue('Author') as HTMLInputElement;
       const slugInput = screen.getByDisplayValue('author') as HTMLInputElement;
@@ -303,7 +303,7 @@ describe('CustomFieldsPage', () => {
 
     it('submits PUT request when form is saved in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const form = screen.getByDisplayValue('Author').closest('form') as HTMLFormElement;
       fireEvent.submit(form);
@@ -317,7 +317,7 @@ describe('CustomFieldsPage', () => {
 
     it('shows "Update Field" text on submit button when editing', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       expect(screen.getByRole('button', { name: 'Update Field' })).toBeTruthy();
     });
@@ -326,7 +326,7 @@ describe('CustomFieldsPage', () => {
       // Use only the select field in the list so Edit buttons are unambiguous
       setupFetch([selectField]);
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       await waitFor(() => expect(screen.getByText('Options (one per line)')).toBeTruthy());
       // options joined with '\n' — textarea value contains 'A' and 'B'
@@ -337,7 +337,7 @@ describe('CustomFieldsPage', () => {
 
     it('cancel button in form resets to list view', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       // There are two cancel buttons now — click the one inside the form
       const cancelBtns = screen.getAllByRole('button', { name: 'Cancel' });
@@ -349,7 +349,7 @@ describe('CustomFieldsPage', () => {
   describe('delete field', () => {
     it('calls DELETE when Delete is clicked and confirmed', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       expect(confirmMock).toHaveBeenCalled();
       await waitFor(() => {
@@ -363,7 +363,7 @@ describe('CustomFieldsPage', () => {
     it('does not call DELETE when confirm is cancelled', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       await flush();
       const delCall = mockFetch.mock.calls.find(
@@ -449,12 +449,12 @@ describe('CustomFieldsPage', () => {
   describe('table column headers', () => {
     it('renders all expected column headers', async () => {
       await renderPage();
-      expect(screen.getByText('Order')).toBeTruthy();
-      expect(screen.getByText('Name')).toBeTruthy();
+      expect(screen.getByText('Pedido')).toBeTruthy();
+      expect(screen.getByText('Nombre')).toBeTruthy();
       expect(screen.getByText('Slug')).toBeTruthy();
-      expect(screen.getByText('Type')).toBeTruthy();
-      expect(screen.getByText('Required')).toBeTruthy();
-      expect(screen.getByText('Actions')).toBeTruthy();
+      expect(screen.getByText('Tipo')).toBeTruthy();
+      expect(screen.getByText('Obligatorio')).toBeTruthy();
+      expect(screen.getByText('Acciones')).toBeTruthy();
     });
   });
 });
