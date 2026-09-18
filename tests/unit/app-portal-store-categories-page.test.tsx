@@ -115,7 +115,7 @@ async function flush() {
 
 async function openCreateForm() {
   await renderPage();
-  fireEvent.click(screen.getByRole('button', { name: /Add Category/i }));
+  fireEvent.click(screen.getByRole('button', { name: /Agregar categoría/i }));
 }
 
 // ─── Tests ────────────────────────────────────────────────────────────────────
@@ -141,17 +141,17 @@ describe('StoreCategoriesPage', () => {
   describe('page structure', () => {
     it('renders Product Categories heading', async () => {
       await renderPage();
-      expect(screen.getByText('Product Categories')).toBeTruthy();
+      expect(screen.getByText('Categorías de productos')).toBeTruthy();
     });
 
     it('renders subtitle text', async () => {
       await renderPage();
-      expect(screen.getByText('Organize products into categories.')).toBeTruthy();
+      expect(screen.getByText('Organiza los productos en categorías.')).toBeTruthy();
     });
 
     it('renders "Add Category" button', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /Add Category/i })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Agregar categoría/i })).toBeTruthy();
     });
   });
 
@@ -164,7 +164,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('No categories yet. Create your first one above.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay categorías. Crea la primera arriba.')).toBeTruthy();
     });
 
     it('handles missing data key gracefully', async () => {
@@ -173,7 +173,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('No categories yet. Create your first one above.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay categorías. Crea la primera arriba.')).toBeTruthy();
     });
 
     it('handles success:false gracefully (no crash)', async () => {
@@ -183,7 +183,7 @@ describe('StoreCategoriesPage', () => {
       });
       await renderPage();
       // No crash — empty state shown
-      expect(screen.getByText('No categories yet. Create your first one above.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay categorías. Crea la primera arriba.')).toBeTruthy();
     });
   });
 
@@ -281,45 +281,45 @@ describe('StoreCategoriesPage', () => {
   describe('create form', () => {
     it('shows form when "Add Category" clicked', async () => {
       await openCreateForm();
-      expect(screen.getByText('New Category')).toBeTruthy();
+      expect(screen.getByText('Nueva categoría')).toBeTruthy();
     });
 
     it('hides form and shows "Add Category" again when Cancel clicked in form', async () => {
       await openCreateForm();
       // Click the form's own Cancel button (type="button", no icon, inside the form)
       const formCancelBtn = Array.from(document.querySelectorAll('form button[type="button"]')).find(
-        (b) => b.textContent?.trim() === 'Cancel'
+        (b) => b.textContent?.trim() === 'Cancelar'
       ) as HTMLButtonElement | undefined;
       if (formCancelBtn) fireEvent.click(formCancelBtn);
-      expect(screen.queryByText('New Category')).toBeNull();
+      expect(screen.queryByText('Nueva categoría')).toBeNull();
     });
 
     it('clicking header button again (now showing Cancel icon) closes form', async () => {
       await renderPage();
-      const btn = screen.getByRole('button', { name: /Add Category/i });
+      const btn = screen.getByRole('button', { name: /Agregar categoría/i });
       fireEvent.click(btn);
-      expect(screen.getByText('New Category')).toBeTruthy();
+      expect(screen.getByText('Nueva categoría')).toBeTruthy();
       // The header button now shows "Cancel" — click it to close
       // It's the button that's NOT inside a form element
       const headerCancelBtn = Array.from(document.querySelectorAll('button')).find(
-        (b) => !b.closest('form') && b.textContent?.includes('Cancel')
+        (b) => !b.closest('form') && b.textContent?.includes('Cancelar')
       ) as HTMLButtonElement | undefined;
       if (headerCancelBtn) fireEvent.click(headerCancelBtn);
-      expect(screen.queryByText('New Category')).toBeNull();
+      expect(screen.queryByText('Nueva categoría')).toBeNull();
     });
 
     it('renders name, slug, description, imageUrl, parent inputs', async () => {
       await openCreateForm();
-      expect(screen.getByPlaceholderText('e.g. T-Shirts')).toBeTruthy();
+      expect(screen.getByPlaceholderText('p. ej., Camisetas')).toBeTruthy();
       expect(screen.getByPlaceholderText('t-shirts')).toBeTruthy();
-      expect(screen.getByPlaceholderText('Optional description')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Descripción opcional')).toBeTruthy();
       expect(screen.getByPlaceholderText('https://...')).toBeTruthy();
-      expect(screen.getByText('None (top-level)')).toBeTruthy();
+      expect(screen.getByText('Ninguno (nivel superior)')).toBeTruthy();
     });
 
     it('auto-generates slug from name', async () => {
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'My Cool Category' },
       });
       const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
@@ -332,9 +332,9 @@ describe('StoreCategoriesPage', () => {
         b.querySelector('.material-icons')?.textContent === 'edit'
       );
       if (editBtn) fireEvent.click(editBtn);
-      await waitFor(() => expect(screen.getByText('Edit Category')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Editar categoría')).toBeTruthy());
 
-      const nameInput = screen.getByPlaceholderText('e.g. T-Shirts') as HTMLInputElement;
+      const nameInput = screen.getByPlaceholderText('p. ej., Camisetas') as HTMLInputElement;
       const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
       const originalSlug = slugInput.value;
       fireEvent.change(nameInput, { target: { value: 'Changed Name' } });
@@ -355,7 +355,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Agregar categoría/i }));
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       expect(select).toBeTruthy();
       // Both cats available as parent options
@@ -369,7 +369,7 @@ describe('StoreCategoriesPage', () => {
         b.querySelector('.material-icons')?.textContent === 'edit'
       );
       if (editBtn) fireEvent.click(editBtn);
-      await waitFor(() => expect(screen.getByText('Edit Category')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Editar categoría')).toBeTruthy());
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       // The category being edited (id=1, T-Shirts) should not be in parent options
       expect(Array.from(select.options).some((o) => o.value === '1')).toBe(false);
@@ -394,14 +394,14 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
-      await waitFor(() => expect(screen.getByText('Category created.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      await waitFor(() => expect(screen.getByText('Categoría creada.')).toBeTruthy());
     });
 
     it('shows error message in form when create fails', async () => {
@@ -411,13 +411,13 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
       await waitFor(() => expect(screen.getByText('Slug already exists')).toBeTruthy());
     });
 
@@ -428,14 +428,14 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hats' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'hats' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
-      await waitFor(() => expect(screen.getByText('Failed to save.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      await waitFor(() => expect(screen.getByText('No se pudo guardar.')).toBeTruthy());
     });
 
     it('shows "Something went wrong." when fetch throws', async () => {
@@ -445,14 +445,14 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Caps' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'caps' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
-      await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      await waitFor(() => expect(screen.getByText('Algo salió mal.')).toBeTruthy());
     });
 
     it('shows saving spinner on submit button while saving', async () => {
@@ -467,15 +467,15 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Caps' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'caps' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
       await waitFor(() => {
-        const submitBtn = screen.getByRole('button', { name: /Create Category/i });
+        const submitBtn = screen.getByRole('button', { name: /Crear Category/i });
         expect(submitBtn.querySelector('.animate-spin')).toBeTruthy();
       });
       resolve(makeRes({ success: true, data: baseCat }));
@@ -491,12 +491,12 @@ describe('StoreCategoriesPage', () => {
         b.querySelector('.material-icons')?.textContent === 'edit'
       );
       if (editBtn) fireEvent.click(editBtn);
-      await waitFor(() => expect(screen.getByText('Edit Category')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Editar categoría')).toBeTruthy());
     }
 
     it('populates form fields with existing values', async () => {
       await openEditForm();
-      const nameInput = screen.getByPlaceholderText('e.g. T-Shirts') as HTMLInputElement;
+      const nameInput = screen.getByPlaceholderText('p. ej., Camisetas') as HTMLInputElement;
       expect(nameInput.value).toBe('T-Shirts');
       const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
       expect(slugInput.value).toBe('t-shirts');
@@ -504,7 +504,7 @@ describe('StoreCategoriesPage', () => {
 
     it('pre-fills description', async () => {
       await openEditForm();
-      const desc = screen.getByPlaceholderText('Optional description') as HTMLTextAreaElement;
+      const desc = screen.getByPlaceholderText('Descripción opcional') as HTMLTextAreaElement;
       expect(desc.value).toBe('All t-shirt products');
     });
 
@@ -516,8 +516,8 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Update Category/i }));
-      await waitFor(() => expect(screen.getByText('Category updated.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      await waitFor(() => expect(screen.getByText('Categoría actualizada.')).toBeTruthy());
     });
 
     it('shows error message when update fails', async () => {
@@ -528,7 +528,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Update Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
       await waitFor(() => expect(screen.getByText('Slug conflict')).toBeTruthy());
     });
 
@@ -540,8 +540,8 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Update Category/i }));
-      await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
+      await waitFor(() => expect(screen.getByText('Algo salió mal.')).toBeTruthy());
     });
 
     it('clears error when slug input changed', async () => {
@@ -552,7 +552,7 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openEditForm();
-      fireEvent.click(screen.getByRole('button', { name: /Update Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar Category/i }));
       await waitFor(() => expect(screen.getByText('Bad slug')).toBeTruthy());
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'new-slug' },
@@ -573,14 +573,14 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Jackets' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'jackets' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
-      await waitFor(() => expect(screen.getByText('Category created.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
+      await waitFor(() => expect(screen.getByText('Categoría creada.')).toBeTruthy());
     });
 
     it('shows error banner (outside form) when delete throws', async () => {
@@ -595,7 +595,7 @@ describe('StoreCategoriesPage', () => {
         b.querySelector('.material-icons')?.textContent === 'delete'
       );
       if (deleteBtn) fireEvent.click(deleteBtn);
-      await waitFor(() => expect(screen.getByText('Failed to delete.')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('No se pudo eliminar.')).toBeTruthy());
     });
   });
 
@@ -644,7 +644,7 @@ describe('StoreCategoriesPage', () => {
         b.querySelector('.material-icons')?.textContent === 'delete'
       );
       if (deleteBtn) fireEvent.click(deleteBtn);
-      await waitFor(() => expect(screen.getByText('Category deleted.')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Categoría eliminada.')).toBeTruthy());
     });
   });
 
@@ -653,7 +653,7 @@ describe('StoreCategoriesPage', () => {
   describe('slug generation edge cases', () => {
     it('generates slug stripping special chars', async () => {
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Hello, World!' },
       });
       const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
@@ -662,7 +662,7 @@ describe('StoreCategoriesPage', () => {
 
     it('generates slug with multiple spaces collapsed', async () => {
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Top  Hats  2025' },
       });
       const slugInput = screen.getByPlaceholderText('t-shirts') as HTMLInputElement;
@@ -677,16 +677,16 @@ describe('StoreCategoriesPage', () => {
         return defaultHandler(url, init);
       });
       await openCreateForm();
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Bad' },
       });
       fireEvent.change(screen.getByPlaceholderText('t-shirts'), {
         target: { value: 'bad' },
       });
-      fireEvent.click(screen.getByRole('button', { name: /Create Category/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear Category/i }));
       await waitFor(() => expect(screen.getByText('Validation error')).toBeTruthy());
       // Typing in name field should clear error
-      fireEvent.change(screen.getByPlaceholderText('e.g. T-Shirts'), {
+      fireEvent.change(screen.getByPlaceholderText('p. ej., Camisetas'), {
         target: { value: 'Good' },
       });
       expect(screen.queryByText('Validation error')).toBeNull();
