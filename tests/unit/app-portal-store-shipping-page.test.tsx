@@ -146,7 +146,7 @@ describe('ShippingSettingsPage — empty state', () => {
   it('renders Shipping heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Shipping');
+      expect(container.textContent).toContain('Envío');
     });
   });
 
@@ -160,14 +160,14 @@ describe('ShippingSettingsPage — empty state', () => {
   it('renders empty state when no zones', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No shipping zones');
+      expect(container.textContent).toContain('Sin zonas de envío');
     });
   });
 
   it('renders Add Zone button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Add Zone');
+      expect(container.textContent).toContain('Agregar zona');
     });
   });
 
@@ -210,7 +210,7 @@ describe('ShippingSettingsPage — zone list', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All countries');
+      expect(container.textContent).toContain('Todos los países');
     });
   });
 
@@ -287,10 +287,10 @@ describe('ShippingSettingsPage — zone expand/collapse', () => {
     const header = container.querySelector('[class*="cursor-pointer"]') as HTMLElement;
     fireEvent.click(header);
     await flush();
-    expect(container.textContent).toContain('Name');
-    expect(container.textContent).toContain('Source');
-    expect(container.textContent).toContain('Type');
-    expect(container.textContent).toContain('Price');
+    expect(container.textContent).toContain('Nombre');
+    expect(container.textContent).toContain('Fuente');
+    expect(container.textContent).toContain('Tipo');
+    expect(container.textContent).toContain('Precio');
   });
 });
 
@@ -299,41 +299,41 @@ describe('ShippingSettingsPage — zone expand/collapse', () => {
 describe('ShippingSettingsPage — create zone form', () => {
   it('clicking Add Zone opens the zone form', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(btn);
     await flush();
-    expect(container.textContent).toContain('New Shipping Zone');
+    expect(container.textContent).toContain('Nueva zona de envío');
   });
 
   it('Cancel button on zone form hides the form', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(addBtn);
     await flush();
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLElement;
     fireEvent.click(cancelBtn);
     await flush();
-    expect(container.textContent).not.toContain('New Shipping Zone');
+    expect(container.textContent).not.toContain('Nueva zona de envío');
   });
 
   it('Add Zone button becomes Cancel when form is open', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(btn);
     await flush();
-    // The header button now shows Cancel
-    expect(btn.textContent).toContain('Cancel');
+    // The header button now shows Cancelar
+    expect(btn.textContent).toContain('Cancelar');
   });
 
   it('saves a new zone and shows success banner', async () => {
@@ -351,22 +351,22 @@ describe('ShippingSettingsPage — create zone form', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
 
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(addBtn);
     await flush();
 
-    const nameInput = container.querySelector('input[placeholder*="Domestic"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Nacional"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Domestic' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Zone created.');
+      expect(container.textContent).toContain('Zona creada.');
     });
   });
 
@@ -378,15 +378,15 @@ describe('ShippingSettingsPage — create zone form', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
 
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(addBtn);
     await flush();
 
-    const nameInput = container.querySelector('input[placeholder*="Domestic"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Nacional"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
@@ -405,22 +405,22 @@ describe('ShippingSettingsPage — create zone form', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add Zone'));
+    await waitFor(() => expect(container.textContent).toContain('Agregar zona'));
 
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Zone'),
+      (b) => b.textContent?.includes('Agregar zona'),
     ) as HTMLElement;
     fireEvent.click(addBtn);
     await flush();
 
-    const nameInput = container.querySelector('input[placeholder*="Domestic"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Nacional"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 });
@@ -440,8 +440,8 @@ describe('ShippingSettingsPage — edit zone form', () => {
     fireEvent.click(editButtons[0]);
     await flush();
 
-    expect(container.textContent).toContain('Edit Zone');
-    const nameInput = container.querySelector('input[placeholder*="Domestic"]') as HTMLInputElement;
+    expect(container.textContent).toContain('Editar zona');
+    const nameInput = container.querySelector('input[placeholder*="Nacional"]') as HTMLInputElement;
     expect(nameInput.value).toBe('Europe');
   });
 
@@ -465,14 +465,14 @@ describe('ShippingSettingsPage — edit zone form', () => {
     fireEvent.click(editButtons[0]);
     await flush();
 
-    const nameInput = container.querySelector('input[placeholder*="Domestic"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Nacional"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Updated Europe' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Zone updated.');
+      expect(container.textContent).toContain('Zona actualizada.');
     });
   });
 });
@@ -502,7 +502,7 @@ describe('ShippingSettingsPage — delete zone', () => {
     await flush();
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Zone deleted.');
+      expect(container.textContent).toContain('Zona eliminada.');
     });
 
     const deleteCall = fetchMock.mock.calls.find(
@@ -554,7 +554,7 @@ describe('ShippingSettingsPage — create manual rate', () => {
     );
     const { container } = renderPage();
     await openRateForm(container);
-    expect(container.textContent).toContain('New Rate');
+    expect(container.textContent).toContain('Nueva tarifa');
   });
 
   it('manual mode is selected by default', async () => {
@@ -573,8 +573,8 @@ describe('ShippingSettingsPage — create manual rate', () => {
     );
     const { container } = renderPage();
     await openRateForm(container);
-    expect(container.textContent).toContain('Flat Rate');
-    expect(container.textContent).toContain('Price ($)');
+    expect(container.textContent).toContain('Tarifa plana');
+    expect(container.textContent).toContain('Precio ($)');
   });
 
   it('saves a new manual rate and shows Rate created. banner', async () => {
@@ -593,14 +593,14 @@ describe('ShippingSettingsPage — create manual rate', () => {
     const { container } = renderPage();
     await openRateForm(container);
 
-    const nameInput = container.querySelector('input[placeholder*="Standard"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Estándar"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Standard Shipping' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Rate created.');
+      expect(container.textContent).toContain('Tarifa creada.');
     });
   });
 
@@ -614,7 +614,7 @@ describe('ShippingSettingsPage — create manual rate', () => {
     const { container } = renderPage();
     await openRateForm(container);
 
-    const nameInput = container.querySelector('input[placeholder*="Standard"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Estándar"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Express' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
@@ -635,14 +635,14 @@ describe('ShippingSettingsPage — create manual rate', () => {
     const { container } = renderPage();
     await openRateForm(container);
 
-    const nameInput = container.querySelector('input[placeholder*="Standard"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Estándar"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Express' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 
@@ -654,12 +654,12 @@ describe('ShippingSettingsPage — create manual rate', () => {
     await openRateForm(container);
 
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLElement;
     fireEvent.click(cancelBtn);
     await flush();
 
-    expect(container.textContent).not.toContain('New Rate');
+    expect(container.textContent).not.toContain('Nueva tarifa');
   });
 
   it('free shipping type disables price input', async () => {
@@ -703,8 +703,8 @@ describe('ShippingSettingsPage — create live carrier rate', () => {
     );
     const { container } = renderPage();
     await openRateFormLive(container);
-    expect(container.textContent).toContain('Carrier');
-    expect(container.textContent).toContain('Service');
+    expect(container.textContent).toContain('Transportista');
+    expect(container.textContent).toContain('Servicio');
   });
 
   it('EasyPost mode hides manual Type / Price / Free Above fields', async () => {
@@ -713,9 +713,9 @@ describe('ShippingSettingsPage — create live carrier rate', () => {
     );
     const { container } = renderPage();
     await openRateFormLive(container);
-    expect(container.textContent).not.toContain('Flat Rate');
-    expect(container.textContent).not.toContain('Price ($)');
-    expect(container.textContent).not.toContain('Free Above ($)');
+    expect(container.textContent).not.toContain('Tarifa plana');
+    expect(container.textContent).not.toContain('Precio ($)');
+    expect(container.textContent).not.toContain('Gratis desde ($)');
   });
 
   it('EasyPost form sends liveRateOnly=true in POST body', async () => {
@@ -733,7 +733,7 @@ describe('ShippingSettingsPage — create live carrier rate', () => {
     const { container } = renderPage();
     await openRateFormLive(container);
 
-    const nameInput = container.querySelector('input[placeholder*="Live carrier"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Tarifa en vivo"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'UPS Live' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
@@ -760,14 +760,14 @@ describe('ShippingSettingsPage — create live carrier rate', () => {
     const { container } = renderPage();
     await openRateFormLive(container);
 
-    const nameInput = container.querySelector('input[placeholder*="Live carrier"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder*="Tarifa en vivo"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'USPS Priority' } });
 
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Rate created.');
+      expect(container.textContent).toContain('Tarifa creada.');
     });
   });
 });
@@ -794,8 +794,8 @@ describe('ShippingSettingsPage — edit rate', () => {
     fireEvent.click(editRateBtn);
     await flush();
 
-    expect(container.textContent).toContain('Edit Rate');
-    const nameInput = container.querySelector('input[placeholder*="Standard"]') as HTMLInputElement;
+    expect(container.textContent).toContain('Editar tarifa');
+    const nameInput = container.querySelector('input[placeholder*="Estándar"]') as HTMLInputElement;
     expect(nameInput.value).toBe('Express');
   });
 
@@ -829,7 +829,7 @@ describe('ShippingSettingsPage — edit rate', () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Rate updated.');
+      expect(container.textContent).toContain('Tarifa actualizada.');
     });
   });
 
@@ -888,7 +888,7 @@ describe('ShippingSettingsPage — delete rate', () => {
     await flush();
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Rate deleted.');
+      expect(container.textContent).toContain('Tarifa eliminada.');
     });
 
     const deleteCalls = fetchMock.mock.calls.filter(
@@ -1032,7 +1032,7 @@ describe('ShippingSettingsPage — fetch failure on load', () => {
     fetchMock.mockRejectedValue(new Error('network error'));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No shipping zones');
+      expect(container.textContent).toContain('Sin zonas de envío');
     });
   });
 
@@ -1040,7 +1040,7 @@ describe('ShippingSettingsPage — fetch failure on load', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }, false));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No shipping zones');
+      expect(container.textContent).toContain('Sin zonas de envío');
     });
   });
 });
