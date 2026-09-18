@@ -424,7 +424,7 @@ describe('CrmCompanyDetailPage', () => {
       const { container } = await renderPage();
       fireEvent.click(screen.getByText('Editar'));
       const cancelBtns = Array.from(container.querySelectorAll('button')).filter(
-        b => b.textContent === 'Cancel'
+        b => b.textContent === 'Cancelar'
       );
       fireEvent.click(cancelBtns[0]);
       expect(container.textContent).not.toContain('Editar empresa');
@@ -647,7 +647,7 @@ describe('CrmCompanyDetailPage', () => {
   describe('contacts tab', () => {
     async function openContacts(result: any) {
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        (b: any) => b.textContent?.includes('Contacts (')
+        (b: any) => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab as Element);
       await waitFor(() => {
@@ -680,8 +680,8 @@ describe('CrmCompanyDetailPage', () => {
     it('shows contact status badge', async () => {
       const result = await renderPage();
       await openContacts(result);
-      expect(result.container.textContent).toContain('active');
-      expect(result.container.textContent).toContain('lead');
+      expect(result.container.textContent).toContain('Activo');
+      expect(result.container.textContent).toContain('Prospecto');
     });
 
     it('shows empty state when no contacts at all', async () => {
@@ -694,11 +694,11 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No contacts at this company.');
+        expect(result.container.textContent).toContain('No hay contactos en esta empresa.');
       });
     });
 
@@ -707,7 +707,7 @@ describe('CrmCompanyDetailPage', () => {
       await waitFor(() => screen.getByText('Acme Corp'));
       // Switch to contacts tab
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await flush();
@@ -720,14 +720,14 @@ describe('CrmCompanyDetailPage', () => {
         return defaultFetch(url, init);
       });
       const searchInput = result.container.querySelector(
-        'input[placeholder="Search contacts..."]'
+        'input[placeholder="Buscar contactos..."]'
       ) as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'zzz' } });
       // Real debounce of 300ms
       await new Promise(r => setTimeout(r, 400));
       await act(async () => { await Promise.resolve(); });
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No contacts match your filters.');
+        expect(result.container.textContent).toContain('Ningún contacto coincide con tus filtros.');
       });
     });
 
@@ -735,7 +735,7 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await flush();
@@ -748,7 +748,7 @@ describe('CrmCompanyDetailPage', () => {
       });
       fireEvent.click(screen.getByTestId('pms-select-engineer'));
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No contacts match your filters.');
+        expect(result.container.textContent).toContain('Ningún contacto coincide con tus filtros.');
       });
     });
 
@@ -762,11 +762,11 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await act(async () => { await Promise.resolve(); });
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       const searchInput = result.container.querySelector(
-        'input[placeholder="Search contacts..."]'
+        'input[placeholder="Buscar contactos..."]'
       ) as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'jane' } });
       await act(async () => { vi.advanceTimersByTime(350); });
@@ -786,7 +786,7 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await flush();
@@ -803,9 +803,9 @@ describe('CrmCompanyDetailPage', () => {
       const result = await renderPage();
       await openContacts(result);
       fireEvent.click(screen.getByText('Añadir contacto'));
-      expect(result.container.textContent).toContain('First name *');
+      expect(result.container.textContent).toContain('Nombre *');
       fireEvent.click(screen.getByText('Cancelar'));
-      expect(result.container.textContent).not.toContain('First name *');
+      expect(result.container.textContent).not.toContain('Nombre *');
     });
 
     it('updates new contact fields on change', async () => {
@@ -846,7 +846,7 @@ describe('CrmCompanyDetailPage', () => {
         expect(body.email).toBeNull();
       });
       await waitFor(() => {
-        expect(result.container.textContent).not.toContain('First name *');
+        expect(result.container.textContent).not.toContain('Nombre *');
       });
     });
 
@@ -882,7 +882,7 @@ describe('CrmCompanyDetailPage', () => {
       fireEvent.change(required, { target: { value: 'Alice' } });
       fireEvent.submit(result.container.querySelector('form')!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Failed to create contact.');
+        expect(result.container.textContent).toContain('No se pudo crear el contacto.');
       });
     });
 
@@ -908,7 +908,7 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       // Contacts loading spinner should be visible (animate-spin in panel)
@@ -934,11 +934,11 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 1 of 3');
+        expect(result.container.textContent).toContain('Página 1 de 3');
       });
       // Click "2" page button
       const pageBtn = Array.from(result.container.querySelectorAll('button')).find(
@@ -946,7 +946,7 @@ describe('CrmCompanyDetailPage', () => {
       );
       fireEvent.click(pageBtn!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 2 of 3');
+        expect(result.container.textContent).toContain('Página 2 de 3');
       });
     });
 
@@ -965,11 +965,11 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 1 of 3');
+        expect(result.container.textContent).toContain('Página 1 de 3');
       });
       // Go to page 3 via direct button click
       const pageBtn3 = Array.from(result.container.querySelectorAll('button')).find(
@@ -977,7 +977,7 @@ describe('CrmCompanyDetailPage', () => {
       );
       fireEvent.click(pageBtn3!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 3 of 3');
+        expect(result.container.textContent).toContain('Página 3 de 3');
       });
       // Previous button: find the one with chevron_left material icon
       const prevBtn = Array.from(result.container.querySelectorAll('button')).find(
@@ -985,7 +985,7 @@ describe('CrmCompanyDetailPage', () => {
       );
       fireEvent.click(prevBtn!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 2 of 3');
+        expect(result.container.textContent).toContain('Página 2 de 3');
       });
     });
 
@@ -993,7 +993,7 @@ describe('CrmCompanyDetailPage', () => {
       const result = await renderPage();
       await openContacts(result);
       // total=2 => totalPages=1 => no "Page 1 of 1" text
-      expect(result.container.textContent).not.toContain('Page 1 of');
+      expect(result.container.textContent).not.toContain('Página 1 de');
     });
 
     it('handles fetch response without success flag in contacts', async () => {
@@ -1006,19 +1006,19 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Contacts (')
+        b => b.textContent?.includes('Contactos (')
       );
       fireEvent.click(tab!);
       await flush();
       // No throw; default state shows empty
-      expect(result.container.textContent).toContain('No contacts');
+      expect(result.container.textContent).toContain('No hay contactos');
     });
   });
 
   describe('deals tab', () => {
     async function openDeals(result: any) {
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        (b: any) => b.textContent?.includes('Deals (')
+        (b: any) => b.textContent?.includes('Negocios (')
       );
       fireEvent.click(tab as Element);
     }
@@ -1048,8 +1048,8 @@ describe('CrmCompanyDetailPage', () => {
     it('renders deal status badges', async () => {
       const result = await renderPage();
       await openDeals(result);
-      expect(result.container.textContent).toContain('open');
-      expect(result.container.textContent).toContain('won');
+      expect(result.container.textContent).toContain('Abierto');
+      expect(result.container.textContent).toContain('Ganado');
     });
 
     it('shows empty state when no deals', async () => {
@@ -1065,11 +1065,11 @@ describe('CrmCompanyDetailPage', () => {
       const result = render(<CrmCompanyDetailPage />);
       await waitFor(() => screen.getByText('Acme Corp'));
       const tab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Deals (')
+        b => b.textContent?.includes('Negocios (')
       );
       fireEvent.click(tab!);
       await flush();
-      expect(result.container.textContent).toContain('No deals with this company.');
+      expect(result.container.textContent).toContain('No hay negocios con esta empresa.');
     });
 
     it('opens the new deal form and fetches pipelines', async () => {
@@ -1126,7 +1126,7 @@ describe('CrmCompanyDetailPage', () => {
       await openDeals(result);
       fireEvent.click(screen.getByText('Añadir negocio'));
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pipelines available');
+        expect(result.container.textContent).toContain('No hay pipelines disponibles');
       });
     });
 
@@ -1141,7 +1141,7 @@ describe('CrmCompanyDetailPage', () => {
       await openDeals(result);
       fireEvent.click(screen.getByText('Añadir negocio'));
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pipelines available');
+        expect(result.container.textContent).toContain('No hay pipelines disponibles');
       });
     });
 
@@ -1286,7 +1286,7 @@ describe('CrmCompanyDetailPage', () => {
       fireEvent.change(titleInput, { target: { value: 'X' } });
       fireEvent.submit(result.container.querySelector('form')!);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Failed to create deal.');
+        expect(result.container.textContent).toContain('No se pudo crear el negocio.');
       });
     });
 
@@ -1370,7 +1370,7 @@ describe('CrmCompanyDetailPage', () => {
       const result = await renderPage();
       // Switch to deals
       const dealsTab = Array.from(result.container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Deals (')
+        b => b.textContent?.includes('Negocios (')
       );
       fireEvent.click(dealsTab!);
       await flush();
