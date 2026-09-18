@@ -797,7 +797,7 @@ describe('SelectableBlock - add-array-item button', () => {
   it('renders + Stat for stats block, + Image for gallery, + Service for services-grid, + Item for accordion', () => {
     const types: Array<[string, string]> = [
       ['stats', '+ Stat'],
-      ['gallery', '+ Image'],
+      ['gallery', '+ Imagen'],
       ['services-grid', '+ Service'],
       ['accordion', '+ Item'],
     ];
