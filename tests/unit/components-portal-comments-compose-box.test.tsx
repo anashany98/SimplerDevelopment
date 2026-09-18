@@ -73,18 +73,18 @@ describe('ComposeBox — rendering', () => {
 
   it('does NOT render a Cancel button when onCancel is not provided', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    expect(screen.queryByRole('button', { name: 'Cancel' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Cancelar' })).toBeNull();
   });
 
   it('renders a Cancel button when onCancel is provided', () => {
     render(<ComposeBox members={members} onSubmit={noop} onCancel={vi.fn()} />);
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancelar' })).toBeInTheDocument();
   });
 
   it('calls onCancel when Cancel button is clicked', () => {
     const onCancel = vi.fn();
     render(<ComposeBox members={members} onSubmit={noop} onCancel={onCancel} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
