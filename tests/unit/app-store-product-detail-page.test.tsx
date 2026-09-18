@@ -101,19 +101,19 @@ describe('ProductEditPage — new product mode', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Details tab is active by default — check its heading
-    expect(container.textContent).toContain('Basic Information');
+    expect(container.textContent).toContain('Información básica');
     // All tab labels are rendered in the tab bar
     expect(container.textContent).toContain('Precios');
     expect(container.textContent).toContain('Inventario');
     expect(container.textContent).toContain('Envío');
     expect(container.textContent).toContain('Imágenes');
     expect(container.textContent).toContain('Organización'); // tab label for Category & Tags
-    expect(container.textContent).toContain('Variants');     // tab label for Options & Variants
-    expect(container.textContent).toContain('Bulk Pricing'); // tab label
+    expect(container.textContent).toContain('Variantes');     // tab label for Options & Variants
+    expect(container.textContent).toContain('Precios por volumen'); // tab label
     // Navigate to Organization tab and verify its section headings
     fireEvent.click(findButtonByText(container, 'Organización')!);
-    await waitFor(() => expect(container.textContent).toContain('Category & Tags'));
-    expect(container.textContent).toContain('SEO Settings');
+    await waitFor(() => expect(container.textContent).toContain('Categoría y etiquetas'));
+    expect(container.textContent).toContain('Ajustes SEO');
   });
 
   it('typing in the Name field auto-generates slug', async () => {
@@ -266,10 +266,10 @@ describe('ProductEditPage — collapsible sections', () => {
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // SEO Settings is on the Organization tab (collapsible within it)
     fireEvent.click(findButtonByText(container, 'Organización')!);
-    await waitFor(() => expect(container.textContent).toContain('SEO Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes SEO'));
     expect(container.textContent).not.toContain('Título SEO');
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('SEO Settings'),
+      b.textContent?.includes('Ajustes SEO'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -282,7 +282,7 @@ describe('ProductEditPage — collapsible sections', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Options & Variants is the Variants tab — click it to see content
-    fireEvent.click(findButtonByText(container, 'Variants')!);
+    fireEvent.click(findButtonByText(container, 'Variantes')!);
     await waitFor(() => expect(container.textContent).toContain('Añadir opción'));
     fireEvent.click(findButtonByText(container, 'Añadir opción')!);
     await waitFor(() => {
@@ -294,9 +294,9 @@ describe('ProductEditPage — collapsible sections', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Bulk Pricing is its own tab
-    fireEvent.click(findButtonByText(container, 'Bulk Pricing')!);
-    await waitFor(() => expect(container.textContent).toContain('Add Rule'));
-    fireEvent.click(findButtonByText(container, 'Add Rule')!);
+    fireEvent.click(findButtonByText(container, 'Precios por volumen')!);
+    await waitFor(() => expect(container.textContent).toContain('Añadir regla'));
+    fireEvent.click(findButtonByText(container, 'Añadir regla')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Cant. mín.');
       expect(container.textContent).toContain('Cant. máx.');
@@ -383,7 +383,7 @@ describe('ProductEditPage — edit existing', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Editar producto'));
     // Options & Variants are on the Variants tab
-    fireEvent.click(findButtonByText(container, 'Variants')!);
+    fireEvent.click(findButtonByText(container, 'Variantes')!);
     await waitFor(() => expect(container.textContent).toContain('Añadir opción'));
   });
 
@@ -408,10 +408,10 @@ describe('ProductEditPage — edit existing', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Editar producto'));
     // Bulk Pricing is its own tab
-    fireEvent.click(findButtonByText(container, 'Bulk Pricing')!);
+    fireEvent.click(findButtonByText(container, 'Precios por volumen')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Cant. mín.');
-      expect(container.textContent).toContain('Add Rule');
+      expect(container.textContent).toContain('Añadir regla');
     });
   });
 
@@ -448,7 +448,7 @@ describe('ProductEditPage — options & variants generation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Options & Variants is the Variants tab
-    fireEvent.click(findButtonByText(container, 'Variants')!);
+    fireEvent.click(findButtonByText(container, 'Variantes')!);
     await waitFor(() => expect(container.textContent).toContain('Añadir opción'));
     fireEvent.click(findButtonByText(container, 'Añadir opción')!);
     await waitFor(() => expect(container.querySelector('input[placeholder*="Nombre de la opción"]')).toBeTruthy());
@@ -458,9 +458,9 @@ describe('ProductEditPage — options & variants generation', () => {
     fireEvent.change(valuesI, { target: { value: 'Red, Blue' } });
     // Now Generate Variants button should appear
     await waitFor(() => {
-      expect(container.textContent).toContain('Generate Variants');
+      expect(container.textContent).toContain('Generar variantes');
     });
-    fireEvent.click(findButtonByText(container, 'Generate Variants')!);
+    fireEvent.click(findButtonByText(container, 'Generar variantes')!);
     await waitFor(() => {
       // Variants table appears
       expect(container.textContent).toContain('Variante');
@@ -473,7 +473,7 @@ describe('ProductEditPage — options & variants generation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Options & Variants is the Variants tab
-    fireEvent.click(findButtonByText(container, 'Variants')!);
+    fireEvent.click(findButtonByText(container, 'Variantes')!);
     await waitFor(() => expect(container.textContent).toContain('Añadir opción'));
     fireEvent.click(findButtonByText(container, 'Añadir opción')!);
     await waitFor(() => expect(container.querySelector('input[placeholder*="Nombre de la opción"]')).toBeTruthy());
@@ -496,9 +496,9 @@ describe('ProductEditPage — bulk pricing', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     // Bulk Pricing is its own tab
-    fireEvent.click(findButtonByText(container, 'Bulk Pricing')!);
-    await waitFor(() => expect(container.textContent).toContain('Add Rule'));
-    fireEvent.click(findButtonByText(container, 'Add Rule')!);
+    fireEvent.click(findButtonByText(container, 'Precios por volumen')!);
+    await waitFor(() => expect(container.textContent).toContain('Añadir regla'));
+    fireEvent.click(findButtonByText(container, 'Añadir regla')!);
     await waitFor(() => expect(container.textContent).toContain('Cant. mín.'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.querySelector('.material-icons')?.textContent === 'delete',
@@ -517,7 +517,7 @@ describe('ProductEditPage — media picker', () => {
     // "Images" appears both as a tab label and inside the tab content header.
     // Click the tab button (it's in the tab bar) to navigate there.
     fireEvent.click(findButtonByText(container, 'Imágenes')!);
-    await waitFor(() => expect(container.textContent).toContain('Add from Media'));
+    await waitFor(() => expect(container.textContent).toContain('Añadir desde medios'));
   }
 
   it('opens the media picker modal', async () => {
@@ -530,7 +530,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Seleccionar imágenes');
     });
@@ -540,7 +540,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => expect(container.textContent).toContain('Seleccionar imágenes'));
     const closeBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.querySelector('.material-icons')?.textContent === 'close',
@@ -561,9 +561,9 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('No images found');
+      expect(container.textContent).toContain('No se encontraron imágenes');
     });
   });
 
@@ -583,7 +583,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => {
       expect(container.textContent).toContain('pic.png');
       expect(container.textContent).toContain('doc.pdf');
@@ -603,7 +603,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => expect(container.textContent).toContain('pic.png'));
     // Click the media item card (button)
     const card = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -611,7 +611,7 @@ describe('ProductEditPage — media picker', () => {
     ) as HTMLButtonElement;
     fireEvent.click(card);
     await waitFor(() => {
-      expect(container.textContent).toContain('1 image selected');
+      expect(container.textContent).toContain('1 imagen seleccionada');
     });
     // Click again to deselect
     const card2 = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -619,7 +619,7 @@ describe('ProductEditPage — media picker', () => {
     ) as HTMLButtonElement;
     fireEvent.click(card2);
     await waitFor(() => {
-      expect(container.textContent).toContain('0 images selected');
+      expect(container.textContent).toContain('0 imágenes seleccionadas');
     });
   });
 
@@ -628,7 +628,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => expect(container.textContent).toContain('Seleccionar imágenes'));
     const searchInput = container.querySelector('input[placeholder="Buscar en medios…"]') as HTMLInputElement;
     fireEvent.change(searchInput, { target: { value: 'logo' } });
@@ -642,9 +642,9 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => expect(container.textContent).toContain('Seleccionar imágenes'));
-    fireEvent.click(findButtonByText(container, 'Upload New')!);
+    fireEvent.click(findButtonByText(container, 'Subir nuevo')!);
     await waitFor(() => {
       expect(container.querySelector('[data-testid="media-upload-modal"]')).toBeTruthy();
     });
@@ -654,7 +654,7 @@ describe('ProductEditPage — media picker', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nuevo producto'));
     await openImageTab(container);
-    fireEvent.click(findButtonByText(container, 'Add from Media')!);
+    fireEvent.click(findButtonByText(container, 'Añadir desde medios')!);
     await waitFor(() => expect(container.textContent).toContain('Seleccionar imágenes'));
     fireEvent.click(findButtonByText(container, 'Listo')!);
     await waitFor(() => {
@@ -691,7 +691,7 @@ describe('ProductEditPage — existing images', () => {
     await waitFor(() => expect(container.textContent).toContain('Editar producto'));
     // Images are on the Images tab
     fireEvent.click(findButtonByText(container, 'Imágenes')!);
-    await waitFor(() => expect(container.textContent).toContain('Add from Media'));
+    await waitFor(() => expect(container.textContent).toContain('Añadir desde medios'));
     // Two images rendered
     const imgs = container.querySelectorAll('img');
     expect(imgs.length).toBeGreaterThanOrEqual(2);

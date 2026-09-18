@@ -519,12 +519,12 @@ export default function ProductEditPage() {
     { id: 'pricing', label: 'Precios' },
     { id: 'inventory', label: 'Inventario' },
     { id: 'shipping', label: 'Envío' },
-    { id: 'print', label: 'Print' },
+    { id: 'print', label: 'Impresión' },
     { id: 'images', label: 'Imágenes' },
     { id: 'organization', label: 'Organización' },
-    { id: 'variants', label: 'Variants' },
+    { id: 'variants', label: 'Variantes' },
     ...(!isNew ? [{ id: 'customization', label: 'Personalización' }] : []),
-    { id: 'bulkPricing', label: 'Bulk Pricing' },
+    { id: 'bulkPricing', label: 'Precios por volumen' },
   ];
 
   return (
@@ -538,7 +538,7 @@ export default function ProductEditPage() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <span className="material-icons text-base">arrow_back</span>
-            Back to Products
+            Volver a los productos
           </Link>
         }
         actions={
@@ -561,10 +561,10 @@ export default function ProductEditPage() {
             className={pBtnGhost}
           >
             <span className="material-icons text-base">design_services</span>
-            Open Designer Setup
+            Abrir configuración del diseñador
           </Link>
           <span className="text-xs text-muted-foreground">
-            Configure styles, sides, and the asset library for the customer designer.
+            Configura los estilos, las caras y la biblioteca de recursos del diseñador para clientes.
           </span>
         </div>
       )}
@@ -606,7 +606,7 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">info</span>
-            Basic Information
+            Información básica
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
@@ -821,7 +821,7 @@ export default function ProductEditPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add_photo_alternate</span>
-              Add from Media
+              Añadir desde medios
             </button>
           </div>
           {form.images.length > 0 ? (
@@ -912,7 +912,7 @@ export default function ProductEditPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">upload</span>
-                Upload New
+                Subir nuevo
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-4">
@@ -923,7 +923,7 @@ export default function ProductEditPage() {
               ) : mediaItems.length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
                   <span className="material-icons text-4xl text-muted-foreground/40 block mb-2">photo_library</span>
-                  No images found. Upload some to get started.
+                  No se encontraron imágenes. Sube algunas para empezar.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -969,7 +969,7 @@ export default function ProductEditPage() {
             </div>
             <div className="p-4 border-t border-border flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                {form.images.length} image{form.images.length !== 1 ? 's' : ''} selected
+                {form.images.length} {form.images.length !== 1 ? 'imágenes seleccionadas' : 'imagen seleccionada'}
               </span>
               <button
                 type="button"
@@ -998,7 +998,7 @@ export default function ProductEditPage() {
           <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
             <h2 className={`${pSectionTitle} flex items-center gap-2`}>
               <span className="material-icons text-lg text-muted-foreground">category</span>
-              Category &amp; Tags
+              Categoría y etiquetas
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -1034,7 +1034,7 @@ export default function ProductEditPage() {
             >
               <span className="font-semibold flex items-center gap-2">
                 <span className="material-icons text-lg text-muted-foreground">search</span>
-                SEO Settings
+                Ajustes SEO
               </span>
               <span className="material-icons text-muted-foreground">{showSeo ? 'expand_less' : 'expand_more'}</span>
             </button>
@@ -1070,7 +1070,7 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">tune</span>
-            Options &amp; Variants
+            Opciones y variantes
           </h2>
           {/* Options */}
           <div className="space-y-3">
@@ -1135,7 +1135,7 @@ export default function ProductEditPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">auto_awesome</span>
-              Generate Variants
+              Generar variantes
             </button>
           )}
 
@@ -1281,7 +1281,7 @@ export default function ProductEditPage() {
               </button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Store-designed products can still use design/template records and rendered product images, but only customer-customizable products expose the storefront Customize button.
+              Los productos diseñados por la tienda pueden usar registros de diseño/plantilla e imágenes renderizadas del producto, pero solo los personalizables por el cliente muestran el botón Personalizar de la tienda.
             </p>
           </div>
           {form.designMode !== 'standard' && (
@@ -1299,7 +1299,7 @@ export default function ProductEditPage() {
                     <div>
                       <div className="text-sm font-semibold text-foreground">Editar el diseño de este producto</div>
                       <div className="text-xs text-muted-foreground mt-1">
-                        Opens the same canvas editor customers use, in staff mode — load the saved layers, tweak them, save back to the same design row. Skips add-to-cart.
+                        Abre el mismo editor de lienzo que usan los clientes, pero en modo interno para el personal: carga las capas guardadas, ajústalas y guárdalas de nuevo en el mismo registro de diseño. Omite el añadir al carrito.
                       </div>
                     </div>
                   </div>
@@ -1310,12 +1310,12 @@ export default function ProductEditPage() {
                     className={`shrink-0 ${pBtnSoft}`}
                   >
                     <span className="material-icons text-base">open_in_new</span>
-                    Open in Designer
+                    Abrir en el diseñador
                   </a>
                 </div>
               )}
               <p className="text-xs text-muted-foreground mb-3">
-                Each surface (front/back/sleeve…) defines the printable area. Customer-customizable products use these in the public designer; store-designed products use them for store-authored templates and fulfillment.
+                Cada superficie (frontal/trasera/manga…) define el área imprimible. Los productos personalizables por el cliente las usan en el diseñador público; los diseñados por la tienda las usan para plantillas creadas por la tienda y la preparación de pedidos.
               </p>
               <ProductStylesPanel siteId={Number(siteId)} productId={Number(productId)} />
             </div>
@@ -1328,7 +1328,7 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">price_change</span>
-            Bulk Pricing
+            Precios por volumen
           </h2>
           {form.bulkPricing.length > 0 && (
             <table className="w-full text-sm">
@@ -1405,7 +1405,7 @@ export default function ProductEditPage() {
             className={pBtnSoft}
           >
             <span className="material-icons text-sm">add</span>
-            Add Rule
+            Añadir regla
           </button>
         </div>
       )}
