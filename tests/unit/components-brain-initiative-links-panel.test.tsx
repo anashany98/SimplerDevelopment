@@ -136,9 +136,9 @@ describe('InitiativeLinksPanel — populated state', () => {
 
   it('renders a tab for each entity type that has items', () => {
     renderPanel(links);
-    expect(screen.getByText('Tasks')).toBeInTheDocument();
-    expect(screen.getByText('Notes')).toBeInTheDocument();
-    expect(screen.queryByText('Meetings')).not.toBeInTheDocument();
+    expect(screen.getByText('Tareas')).toBeInTheDocument();
+    expect(screen.getByText('Notas')).toBeInTheDocument();
+    expect(screen.queryByText('Reuniones')).not.toBeInTheDocument();
   });
 
   it('shows the first tab as active by default and renders its items', () => {
@@ -155,14 +155,14 @@ describe('InitiativeLinksPanel — populated state', () => {
 
   it('switches active tab on click', () => {
     renderPanel(links);
-    fireEvent.click(screen.getByText('Notes'));
+    fireEvent.click(screen.getByText('Notas'));
     expect(screen.getByText('Note Beta')).toBeInTheDocument();
     expect(screen.queryByText('Task Alpha')).not.toBeInTheDocument();
   });
 
   it('shows the count badge on each tab', () => {
     renderPanel(links);
-    const tasksTab = screen.getByText('Tasks').closest('button')!;
+    const tasksTab = screen.getByText('Tareas').closest('button')!;
     expect(tasksTab.textContent).toContain('2');
   });
 
@@ -180,7 +180,7 @@ describe('InitiativeLinksPanel — populated state', () => {
 describe('InitiativeLinksPanel — item display edge cases', () => {
   it('shows fallback label when title is null', () => {
     renderPanel([makeLink({ entityType: 'task', entityId: 7, title: null })]);
-    expect(screen.getByText('Task #7')).toBeInTheDocument();
+    expect(screen.getByText('Tarea #7')).toBeInTheDocument();
   });
 
   it('renders item note when present', () => {
@@ -218,8 +218,8 @@ describe('InitiativeLinksPanel — item display edge cases', () => {
       makeLink({ linkId: 10, entityType: 'note', entityId: 1, title: 'My Note' }),
       makeLink({ linkId: 11, entityType: 'crm_deal', entityId: 2, title: 'My Deal' }),
     ]);
-    expect(screen.getByText('Notes')).toBeInTheDocument();
-    expect(screen.getByText('Deals')).toBeInTheDocument();
+    expect(screen.getByText('Notas')).toBeInTheDocument();
+    expect(screen.getByText('Negocios')).toBeInTheDocument();
   });
 });
 
@@ -346,7 +346,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
     renderPanel([]);
     fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
-      expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
+      expect(screen.getByText('No tareas found.')).toBeInTheDocument(),
     );
   });
 
@@ -395,7 +395,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'decision' } });
     await waitFor(() => {
-      expect(screen.getByText(/No decisions found/i)).toBeInTheDocument();
+      expect(screen.getByText(/No decisiones found/i)).toBeInTheDocument();
       expect(
         screen.getByText(/Decisions and topics require the brain-restructure module/i),
       ).toBeInTheDocument();
@@ -408,7 +408,7 @@ describe('InitiativeLinksPanel — picker dialog options', () => {
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'topic' } });
     await waitFor(() => {
-      expect(screen.getByText(/No topics found/i)).toBeInTheDocument();
+      expect(screen.getByText(/No temas found/i)).toBeInTheDocument();
       expect(
         screen.getByText(/Decisions and topics require the brain-restructure module/i),
       ).toBeInTheDocument();
@@ -709,7 +709,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'decision' } });
     await waitFor(() =>
-      expect(screen.getByText(/No decisions found/i)).toBeInTheDocument(),
+        expect(screen.getByText(/No decisiones found/i)).toBeInTheDocument(),
     );
   });
 
@@ -719,7 +719,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
     const select = await screen.findByRole('combobox');
     fireEvent.change(select, { target: { value: 'topic' } });
     await waitFor(() =>
-      expect(screen.getByText(/No topics found/i)).toBeInTheDocument(),
+        expect(screen.getByText(/No temas found/i)).toBeInTheDocument(),
     );
   });
 
@@ -728,7 +728,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
     renderPanel([]);
     fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
-      expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
+      expect(screen.getByText('No tareas found.')).toBeInTheDocument(),
     );
   });
 
@@ -737,7 +737,7 @@ describe('InitiativeLinksPanel — picker entity-type branches', () => {
     renderPanel([]);
     fireEvent.click(screen.getByText('Enlace'));
     await waitFor(() =>
-      expect(screen.getByText('No tasks found.')).toBeInTheDocument(),
+      expect(screen.getByText('No tareas found.')).toBeInTheDocument(),
     );
   });
 
@@ -795,13 +795,13 @@ describe('InitiativeLinksPanel — onChanged optional', () => {
 
 describe('InitiativeLinksPanel — picker type selector covers all entity types', () => {
   const expectedTypes = [
-    { value: 'task', label: 'Task' },
-    { value: 'note', label: 'Note' },
-    { value: 'meeting', label: 'Meeting' },
-    { value: 'decision', label: 'Decision' },
-    { value: 'topic', label: 'Topic' },
-    { value: 'crm_deal', label: 'Deal' },
-    { value: 'crm_company', label: 'Company' },
+    { value: 'task', label: 'Tarea' },
+    { value: 'note', label: 'Nota' },
+    { value: 'meeting', label: 'Reunión' },
+    { value: 'decision', label: 'Decisión' },
+    { value: 'topic', label: 'Tema' },
+    { value: 'crm_deal', label: 'Negocio' },
+    { value: 'crm_company', label: 'Empresa' },
   ];
 
   for (const { value, label } of expectedTypes) {

@@ -333,7 +333,7 @@ describe('InitiativesListPage — header', () => {
 // ─── Status filter pills ───────────────────────────────────────────────────
 
 describe('InitiativesListPage — status filter pills', () => {
-  const statuses = ['Active', 'Planned', 'Paused', 'Completed', 'Cancelled', 'All'];
+  const statuses = ['Activa', 'Planificada', 'Pausada', 'Completada', 'Cancelada', 'All'];
 
   statuses.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -359,7 +359,7 @@ describe('InitiativesListPage — status filter pills', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Initiatives'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Planned',
+      (b) => b.textContent?.trim() === 'Planificada',
     ) as HTMLButtonElement;
     expect(btn).toBeTruthy();
     fireEvent.click(btn);
@@ -370,7 +370,7 @@ describe('InitiativesListPage — status filter pills', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Initiatives'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Paused',
+      (b) => b.textContent?.trim() === 'Pausada',
     ) as HTMLButtonElement;
     expect(btn).toBeTruthy();
     fireEvent.click(btn);

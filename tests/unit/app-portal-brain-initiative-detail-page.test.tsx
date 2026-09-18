@@ -307,14 +307,14 @@ describe('InitiativeDetailPage — header (active initiative)', () => {
   it('renders status chip "Active"', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activa');
     });
   });
 
   it('renders priority chip "High"', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('High');
+      expect(container.textContent).toContain('Alta');
     });
   });
 
@@ -982,8 +982,8 @@ describe('InitiativeDetailPage — goals section', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('on track');
-      expect(container.textContent).toContain('at risk');
+      expect(container.textContent).toContain('en curso');
+      expect(container.textContent).toContain('en riesgo');
     });
   });
 
@@ -1154,9 +1154,13 @@ describe('InitiativeDetailPage — linked entities panel', () => {
 // ─── Priority chip variants ───────────────────────────────────────────────
 
 describe('InitiativeDetailPage — priority chip variants', () => {
-  const priorities = ['low', 'medium', 'critical'] as const;
+  const priorities = [
+    ['low', 'Baja'],
+    ['medium', 'Media'],
+    ['critical', 'Crítica'],
+  ] as const;
 
-  priorities.forEach((priority) => {
+  priorities.forEach(([priority, label]) => {
     it(`shows "${priority}" priority chip label`, async () => {
       fetchMock.mockImplementation(async (url: string) => {
         if (url.includes('/api/portal/team')) return makeRes({ success: true, data: [] });
@@ -1166,7 +1170,6 @@ describe('InitiativeDetailPage — priority chip variants', () => {
         });
       });
       const { container } = renderPage();
-      const label = priority.charAt(0).toUpperCase() + priority.slice(1);
       await waitFor(() => {
         expect(container.textContent).toContain(label);
       });

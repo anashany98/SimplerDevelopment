@@ -351,14 +351,14 @@ describe('InitiativeDetailPage — successful render', () => {
   it('renders status chip for active initiative', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activa');
     });
   });
 
   it('renders priority chip', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Medium');
+      expect(container.textContent).toContain('Media');
     });
   });
 
@@ -396,10 +396,10 @@ describe('InitiativeDetailPage — successful render', () => {
 
 describe('InitiativeDetailPage — status chips', () => {
   it.each([
-    ['planned', 'Planned'],
-    ['paused', 'Paused'],
-    ['completed', 'Completed'],
-    ['cancelled', 'Cancelled'],
+    ['planned', 'Planificada'],
+    ['paused', 'Pausada'],
+    ['completed', 'Completada'],
+    ['cancelled', 'Cancelada'],
   ] as const)('renders %s chip as "%s"', async (status, label) => {
     setupDefault({ status });
     const { container } = renderPage();
@@ -409,9 +409,9 @@ describe('InitiativeDetailPage — status chips', () => {
   });
 
   it.each([
-    ['low', 'Low'],
-    ['high', 'High'],
-    ['critical', 'Critical'],
+    ['low', 'Baja'],
+    ['high', 'Alta'],
+    ['critical', 'Crítica'],
   ] as const)('renders %s priority as "%s"', async (priority, label) => {
     setupDefault({ priority });
     const { container } = renderPage();
@@ -655,7 +655,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     setupDefault({ status: 'completed' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Completed');
+      expect(container.textContent).toContain('Completada');
     });
     const editBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'Editar',
@@ -1043,7 +1043,7 @@ describe('InitiativeDetailPage — goals section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // goal status chips are rendered in the sparkline bar
-      expect(container.textContent).toContain('on track');
+      expect(container.textContent).toContain('en curso');
     });
   });
 
@@ -1375,7 +1375,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
     setupDefault({ status: 'completed', lessonsLearned: null });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Completed');
+      expect(container.textContent).toContain('Completada');
     });
     expect(container.textContent).not.toContain('Lessons learned');
   });
