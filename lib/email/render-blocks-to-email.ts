@@ -358,7 +358,7 @@ function renderEmailFooter(block: EmailFooterBlock): string {
 
   if (showUnsub) {
     html += `\n      <p style="margin:0;font-size:12px;color:#999999">
-        <a href="{{UNSUBSCRIBE_URL}}" style="color:#666666;text-decoration:underline">Unsubscribe</a>
+        <a href="{{UNSUBSCRIBE_URL}}" style="color:#666666;text-decoration:underline">Cancelar suscripción</a>
       </p>`;
   }
 

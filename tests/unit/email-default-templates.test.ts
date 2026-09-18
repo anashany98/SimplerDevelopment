@@ -147,16 +147,16 @@ describe('getDefaultTemplates', () => {
 
   it('rendered htmlContent contains the heading text for each populated template', () => {
     const expected: Record<string, string> = {
-      'order.confirmed': 'Order Confirmed',
-      'order.shipped': 'Your Order Has Shipped!',
-      'order.delivered': 'Your Order Has Been Delivered',
-      'order.cancelled': 'Order Cancelled',
-      'order.refunded': 'Refund Issued',
-      'payment.failed': 'Payment Failed',
-      'account.welcome': 'Welcome to %%siteName%%!',
-      'account.password_reset': 'Reset Your Password',
-      'booking.confirmed': 'Booking Confirmed',
-      'booking.cancelled': 'Booking Cancelled',
+      'order.confirmed': 'Pedido confirmado',
+      'order.shipped': '¡Tu pedido ha sido enviado!',
+      'order.delivered': 'Tu pedido ha sido entregado',
+      'order.cancelled': 'Pedido cancelado',
+      'order.refunded': 'Reembolso emitido',
+      'payment.failed': 'Pago fallido',
+      'account.welcome': '¡Te damos la bienvenida a %%siteName%%!',
+      'account.password_reset': 'Restablece tu contraseña',
+      'booking.confirmed': 'Reserva confirmada',
+      'booking.cancelled': 'Reserva cancelada',
     };
     for (const t of templates) {
       if (!REGISTERED_EVENTS.has(t.event)) continue;
@@ -189,7 +189,7 @@ describe('getDefaultTemplates', () => {
     expect(allStrings).toContain('%%estimatedDelivery%%');
     const button = t.blocks.find(b => b.type === 'button') as Record<string, unknown> | undefined;
     expect(button!.url).toBe('%%trackingUrl%%');
-    expect(button!.text).toBe('Track Your Package');
+    expect(button!.text).toBe('Sigue tu pedido');
   });
 
   it('order.cancelled mentions cancellationReason and uses an outline button', () => {
@@ -214,7 +214,7 @@ describe('getDefaultTemplates', () => {
     const button = t.blocks.find(b => b.type === 'button') as Record<string, unknown> | undefined;
     expect(button).toBeDefined();
     expect(button!.url).toBe('%%retryUrl%%');
-    expect(button!.text).toBe('Retry Payment');
+    expect(button!.text).toBe('Reintentar pago');
     expect(button!.variant).toBe('primary');
     expect(button!.size).toBe('lg');
   });
@@ -223,7 +223,7 @@ describe('getDefaultTemplates', () => {
     const t = templates.find(x => x.event === 'account.welcome')!;
     const button = t.blocks.find(b => b.type === 'button') as Record<string, unknown> | undefined;
     expect(button!.url).toBe('%%siteUrl%%');
-    expect(button!.text).toBe('Start Shopping');
+    expect(button!.text).toBe('Empezar a comprar');
     expect(button!.size).toBe('lg');
   });
 
@@ -231,9 +231,9 @@ describe('getDefaultTemplates', () => {
     const t = templates.find(x => x.event === 'account.password_reset')!;
     const allStrings = t.blocks.flatMap(b => Object.values(b as Record<string, unknown>).filter(v => typeof v === 'string') as string[]).join('\n');
     expect(allStrings).toContain('%%resetUrl%%');
-    expect(allStrings.toLowerCase()).toContain('expires');
+    expect(allStrings.toLowerCase()).toContain('caduca');
     const button = t.blocks.find(b => b.type === 'button') as Record<string, unknown> | undefined;
-    expect(button!.text).toBe('Reset Password');
+    expect(button!.text).toBe('Restablecer contraseña');
   });
 
   it('booking.confirmed includes booking details and a cancel CTA', () => {
@@ -254,7 +254,7 @@ describe('getDefaultTemplates', () => {
     expect(allStrings).toContain('%%bookingDate%%');
     const button = t.blocks.find(b => b.type === 'button') as Record<string, unknown> | undefined;
     expect(button!.url).toBe('%%siteUrl%%');
-    expect(button!.text).toBe('Book Again');
+    expect(button!.text).toBe('Reservar de nuevo');
   });
 
   it('every populated template uses %%firstName%% in the salutation', () => {

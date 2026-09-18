@@ -146,7 +146,7 @@ describe('lib/email/website-email-events', () => {
       const def = getEventDefinition('order.confirmed');
       expect(def).toBeDefined();
       expect(def!.event).toBe('order.confirmed');
-      expect(def!.name).toBe('Order Confirmation');
+      expect(def!.name).toBe('Confirmación de pedido');
       expect(def!.category).toBe('store');
       expect(def!.isRequired).toBe(true);
     });
@@ -344,8 +344,8 @@ describe('lib/email/website-email-events', () => {
       const def = getEventDefinition('order.confirmed')!;
       const data = buildSampleData(def.variables);
       const rendered = replaceVariables(def.defaultSubject, data);
-      // defaultSubject is 'Order %%orderNumber%% confirmed' and the sample value is 'ORD-0042'
-      expect(rendered).toBe('Order ORD-0042 confirmed');
+      // defaultSubject is 'Pedido %%orderNumber%% confirmado' and the sample value is 'ORD-0042'
+      expect(rendered).toBe('Pedido ORD-0042 confirmado');
     });
 
     it('round-trips every event: subject + sample data renders without leaving %%tokens%%', () => {

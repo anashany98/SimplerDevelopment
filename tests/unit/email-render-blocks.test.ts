@@ -91,7 +91,7 @@ describe('renderBlocksToEmailHtml', () => {
     expect(html).toContain('123 Main St');
     // Unsubscribe URL is left as a placeholder — the send path replaces it.
     expect(html).toContain('{{UNSUBSCRIBE_URL}}');
-    expect(html).toContain('Unsubscribe');
+    expect(html).toContain('Cancelar suscripción');
   });
 
   it('skips block types it cannot render in email (no popup leakage)', () => {
@@ -114,11 +114,11 @@ describe('renderBlocksToEmailHtml', () => {
     const wrapped = buildCampaignHtmlString(inner, 'https://example.test/unsub?t=abc', 'Preview line');
 
     expect(wrapped.startsWith('<!DOCTYPE html>')).toBe(true);
-    expect(wrapped).toContain('<html lang="en">');
+    expect(wrapped).toContain('<html lang="es">');
     expect(wrapped).toContain('Hello');
     expect(wrapped).toContain('Preview line');
     expect(wrapped).toContain('https://example.test/unsub?t=abc');
-    expect(wrapped).toContain('Unsubscribe');
+    expect(wrapped).toContain('Cancelar suscripción');
   });
 
   it('htmlToText produces a plain-text fallback that contains the visible copy', () => {

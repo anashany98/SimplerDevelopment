@@ -300,7 +300,7 @@ test.describe('Email Block Editor — Render Preview API @email @block-editor @p
     expect(html).toContain('Learn More');
     expect(html).toContain('Test Corp');
     // Should have unsubscribe placeholder rendered
-    expect(html).toContain('Unsubscribe');
+    expect(html).toContain('Cancelar suscripción');
     // Should have table-based layout (email-safe)
     expect(html).toContain('role="presentation"');
     // Should have max-width 600px email wrapper

@@ -235,21 +235,21 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
     const sendCall = inst.emails.send.mock.calls[0][0];
     expect(sendCall.from).toBe('CRM AGENTS <sender@example.test>');
     expect(sendCall.to).toBe('new@example.test');
-    expect(sendCall.subject).toBe('Alice invited you to Acme Co');
+    expect(sendCall.subject).toBe('Alice te ha invitado a Acme Co');
     expect(sendCall.html).toContain('Newbie');
     expect(sendCall.html).toContain('Acme Co');
     expect(sendCall.html).toContain('Alice');
-    // role 'member' → 'Team Member' label
-    expect(sendCall.html).toContain('Team Member');
-    // gets indefinite article 'a' for consonant-starting label
-    expect(sendCall.html).toMatch(/as a\s+<strong>Team Member<\/strong>/);
+    // role 'member' → 'Miembro del equipo' label
+    expect(sendCall.html).toContain('Miembro del equipo');
+    // invited with the role label (no indefinite article in Spanish)
+    expect(sendCall.html).toMatch(/con el rol de\s+<strong>Miembro del equipo<\/strong>/);
     // invite URL includes token + base
     expect(sendCall.html).toContain(
       'https://portal.example.test/portal/invite/tok_123',
     );
   });
 
-  it('renders an "Owner" role label with the article "an"', async () => {
+  it('renders a "Propietario" role label', async () => {
     process.env.RESEND_API_KEY = 're_test_invite2';
     const { sendInviteEmail } = await import('@/lib/email/invite-email');
     await sendInviteEmail({
@@ -261,11 +261,11 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
       inviteToken: 'tok',
     });
     const html = resendInstances[0].emails.send.mock.calls[0][0].html as string;
-    expect(html).toContain('Owner');
-    expect(html).toMatch(/as an\s+<strong>Owner<\/strong>/);
+    expect(html).toContain('Propietario');
+    expect(html).toMatch(/con el rol de\s+<strong>Propietario<\/strong>/);
   });
 
-  it('renders an "Admin" role label with the article "an"', async () => {
+  it('renders an "Administrador" role label', async () => {
     process.env.RESEND_API_KEY = 're_test_invite3';
     const { sendInviteEmail } = await import('@/lib/email/invite-email');
     await sendInviteEmail({
@@ -277,10 +277,10 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
       inviteToken: 'tok',
     });
     const html = resendInstances[0].emails.send.mock.calls[0][0].html as string;
-    expect(html).toMatch(/as an\s+<strong>Admin<\/strong>/);
+    expect(html).toMatch(/con el rol de\s+<strong>Administrador<\/strong>/);
   });
 
-  it('renders a Viewer role label with article "a"', async () => {
+  it('renders a "Lector" role label', async () => {
     process.env.RESEND_API_KEY = 're_test_invite4';
     const { sendInviteEmail } = await import('@/lib/email/invite-email');
     await sendInviteEmail({
@@ -292,10 +292,10 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
       inviteToken: 'tok',
     });
     const html = resendInstances[0].emails.send.mock.calls[0][0].html as string;
-    expect(html).toMatch(/as a\s+<strong>Viewer<\/strong>/);
+    expect(html).toMatch(/con el rol de\s+<strong>Lector<\/strong>/);
   });
 
-  it('falls back to "Team Member" for an unknown role', async () => {
+  it('falls back to "Miembro del equipo" for an unknown role', async () => {
     process.env.RESEND_API_KEY = 're_test_invite5';
     const { sendInviteEmail } = await import('@/lib/email/invite-email');
     await sendInviteEmail({
@@ -307,7 +307,7 @@ describe('lib/email/invite-email — sendInviteEmail', () => {
       inviteToken: 'tok',
     });
     const html = resendInstances[0].emails.send.mock.calls[0][0].html as string;
-    expect(html).toContain('Team Member');
+    expect(html).toContain('Miembro del equipo');
   });
 
   it('falls back to default BASE_URL + FROM_EMAIL when env is unset', async () => {

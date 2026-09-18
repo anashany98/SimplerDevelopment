@@ -116,7 +116,7 @@ vi.mock('@/lib/email/render-blocks-to-email', () => ({
 }));
 
 const eventDefMap: Record<string, { defaultSubject: string }> = {
-  'order.confirmed': { defaultSubject: 'Order %%orderNumber%% confirmed' },
+  'order.confirmed': { defaultSubject: 'Pedido %%orderNumber%% confirmado' },
 };
 vi.mock('@/lib/email/website-email-events', () => ({
   replaceVariables: (tmpl: string, data: Record<string, string>) =>
@@ -130,8 +130,8 @@ vi.mock('@/lib/email/default-email-templates', () => ({
       event: 'order.confirmed',
       blocks: [{ id: 'b1', type: 'heading', order: 0, text: 'Hi %%firstName%%' }],
       htmlContent: '',
-      name: 'Order Confirmed',
-      subject: 'Order %%orderNumber%% confirmed',
+      name: 'Pedido confirmado',
+      subject: 'Pedido %%orderNumber%% confirmado',
       description: '',
       variables: [],
       isRequired: false,
@@ -278,12 +278,12 @@ describe('formatEmailDate', () => {
   it('formats a Date in long form', () => {
     const out = formatEmailDate(new Date('2026-06-15T12:00:00Z'));
     expect(out).toMatch(/2026/);
-    expect(out).toMatch(/June/);
+    expect(out).toMatch(/junio/);
   });
 
   it('parses ISO strings', () => {
     const out = formatEmailDate('2026-12-25T00:00:00Z');
-    expect(out).toMatch(/December/);
+    expect(out).toMatch(/diciembre/);
   });
 });
 
@@ -293,8 +293,8 @@ describe('buildItemsHtml', () => {
       { productName: 'Mug', quantity: 2, unitPrice: 1000, total: 2000 },
     ]);
     expect(html).toContain('<table');
-    expect(html).toContain('Item');
-    expect(html).toContain('Qty');
+    expect(html).toContain('Producto');
+    expect(html).toContain('Cant.');
     expect(html).toContain('Total');
     expect(html).toContain('Mug');
     expect(html).toContain('$20.00');
@@ -316,7 +316,7 @@ describe('buildItemsHtml', () => {
   it('renders an empty body when items is empty', () => {
     const html = buildItemsHtml([]);
     expect(html).toContain('<table');
-    expect(html).toContain('Item');
+    expect(html).toContain('Producto');
     // No <tr> beyond the header row
     const rowMatches = html.match(/<tr>/g) || [];
     expect(rowMatches.length).toBe(1);
@@ -357,11 +357,11 @@ describe('getWebsiteUrls', () => {
     expect(urls.accountUrl).toBe('https://example.test/account');
   });
 
-  it('returns "Our Store" + default base when no row exists', async () => {
+  it('returns "Nuestra tienda" + default base when no row exists', async () => {
     delete process.env.NEXTAUTH_URL;
     H.dbState.clientWebsiteForInfo = [];
     const urls = await getWebsiteUrls(1);
-    expect(urls.siteName).toBe('Our Store');
+    expect(urls.siteName).toBe('Nuestra tienda');
     expect(urls.baseUrl).toBe('https://simplerdevelopment.com');
   });
 });
@@ -387,12 +387,12 @@ describe('sendTransactionalEmail', () => {
     expect(H.resendSendMock).toHaveBeenCalledTimes(1);
     const payload = H.resendSendMock.mock.calls[0][0];
     expect(payload.to).toBe('alice@example.test');
-    expect(payload.subject).toBe('Order ORD-1 confirmed');
+    expect(payload.subject).toBe('Pedido ORD-1 confirmado');
     // FROM_EMAIL is captured at module-load (default fallback used)
     expect(payload.from).toMatch(/^Acme <[^>]+>$/);
     expect(payload.html).toContain('<!DOCTYPE html>');
     expect(payload.html).toContain('<rendered>heading</rendered>');
-    expect(payload.html).toContain('Powered by CRM AGENTS');
+    expect(payload.html).toContain('Con la tecnología de CRM AGENTS');
   });
 
   it('falls back to a generic subject when event has no definition', async () => {
@@ -409,8 +409,8 @@ describe('sendTransactionalEmail', () => {
 
     expect(result.success).toBe(true);
     const payload = H.resendSendMock.mock.calls[0][0];
-    expect(payload.subject).toBe('Notification from Gamma');
-    expect(payload.html).toContain('You have a new notification from Gamma');
+    expect(payload.subject).toBe('Notificación de Gamma');
+    expect(payload.html).toContain('Tienes una nueva notificación de Gamma');
   });
 
   it('uses the custom template (blockContent path) when one exists and is enabled', async () => {
@@ -521,7 +521,7 @@ describe('sendTransactionalEmail', () => {
 
     expect(result.success).toBe(true);
     const payload = H.resendSendMock.mock.calls[0][0];
-    expect(payload.html).toContain('You have a new notification from Acme');
+    expect(payload.html).toContain('Tienes una nueva notificación de Acme');
   });
 
   it('overrides the sender name when fromName is provided', async () => {

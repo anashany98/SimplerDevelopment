@@ -19,10 +19,10 @@ export async function sendCartRecoveryEmail(opts: {
   const link = `${BASE_URL}/api/storefront/${opts.websiteId}/cart/recover?token=${encodeURIComponent(opts.recoveryToken)}`;
   const dollars = (opts.cartValue / 100).toFixed(2);
   await resend.emails.send({
-    from: `Your Cart <${FROM_EMAIL}>`,
+    from: `Tu carrito <${FROM_EMAIL}>`,
     to: opts.to,
-    subject: 'You left items in your cart',
-    html: `<p>You still have ${opts.itemCount} item${opts.itemCount === 1 ? '' : 's'} waiting in your cart (total $${dollars}).</p>
-<p><a href="${link}">Return to your cart</a> to finish checking out.</p>`,
+    subject: 'Dejaste artículos en tu carrito',
+    html: `<p>Todavía tienes ${opts.itemCount} ${opts.itemCount === 1 ? 'artículo' : 'artículos'} esperando en tu carrito (total $${dollars}).</p>
+<p><a href="${link}">Vuelve a tu carrito</a> para terminar la compra.</p>`,
   });
 }

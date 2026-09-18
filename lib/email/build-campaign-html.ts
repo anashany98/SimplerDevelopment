@@ -15,7 +15,7 @@ export function buildCampaignHtmlString(
     ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${previewText}</div>`
     : '';
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,8 +35,8 @@ export function buildCampaignHtmlString(
           <tr>
             <td style="padding:24px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.5;">
-                You received this email because you subscribed to our list.<br />
-                <a href="${unsubscribeUrl}" style="color:#6b7280;text-decoration:underline;">Unsubscribe</a>
+                Recibes este correo porque te suscribiste a nuestra lista.<br />
+                <a href="${unsubscribeUrl}" style="color:#6b7280;text-decoration:underline;">Cancelar suscripción</a>
               </p>
             </td>
           </tr>

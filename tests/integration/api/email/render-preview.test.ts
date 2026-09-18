@@ -108,7 +108,7 @@ describe('POST /api/portal/email/render-preview @email', () => {
 
     // Document wrapper from buildCampaignHtml.
     expect(html).toMatch(/^<!DOCTYPE html>/);
-    expect(html).toContain('<html lang="en">');
+    expect(html).toContain('<html lang="es">');
     expect(html).toContain('</html>');
 
     // Preview text injected as hidden mso-hide div.
@@ -126,7 +126,7 @@ describe('POST /api/portal/email/render-preview @email', () => {
     expect(html).toContain('Click me');
 
     // Footer unsubscribe link is a placeholder '#' (per the route's call to buildCampaignHtml).
-    expect(html).toContain('Unsubscribe');
+    expect(html).toContain('Cancelar suscripción');
   });
 
   it('200 with empty blocks array still returns a wrapped document', async () => {
@@ -142,6 +142,6 @@ describe('POST /api/portal/email/render-preview @email', () => {
     expect(res.status).toBe(200);
     const html = res.data?.data.html ?? '';
     expect(html).toContain('<!DOCTYPE html>');
-    expect(html).toContain('Unsubscribe');
+    expect(html).toContain('Cancelar suscripción');
   });
 });

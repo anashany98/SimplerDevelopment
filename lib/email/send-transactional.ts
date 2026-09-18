@@ -56,7 +56,7 @@ function wrapEmailHtml(innerHtml: string, previewText?: string): string {
     ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${previewText}</div>`
     : '';
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -75,7 +75,7 @@ function wrapEmailHtml(innerHtml: string, previewText?: string): string {
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                Powered by CRM AGENTS
+                Con la tecnología de CRM AGENTS
               </p>
             </td>
           </tr>
@@ -139,7 +139,7 @@ async function getWebsiteInfo(websiteId: number) {
     : baseUrl;
 
   return {
-    siteName: site?.name || 'Our Store',
+    siteName: site?.name || 'Nuestra tienda',
     siteUrl,
     /** Base URL for storefront account pages: /sites/[domain]/account */
     accountUrl: `${siteUrl}/account`,
@@ -219,7 +219,7 @@ export async function sendTransactionalEmail(
       const eventDef = getEventDefinition(event);
       subject = eventDef
         ? replaceVariables(eventDef.defaultSubject, allVars)
-        : `Notification from ${siteInfo.siteName}`;
+        : `Notificación de ${siteInfo.siteName}`;
       htmlContent = await renderDefaultTemplate(event, allVars, websiteId);
     }
 
@@ -260,7 +260,7 @@ async function renderDefaultTemplate(
   if (!template || template.blocks.length === 0) {
     // Fallback: simple text email
     return wrapEmailHtml(
-      `<p style="font-size:16px;line-height:1.6;color:#333;">You have a new notification from ${variables.siteName || 'our store'}.</p>`,
+      `<p style="font-size:16px;line-height:1.6;color:#333;">Tienes una nueva notificación de ${variables.siteName || 'nuestra tienda'}.</p>`,
     );
   }
 
@@ -298,7 +298,7 @@ export function formatAddress(addr: {
 export function formatEmailDate(date: Date | string | null): string {
   if (!date) return 'N/A';
   const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -325,8 +325,8 @@ export function buildItemsHtml(items: Array<{
 
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0">
     <tr>
-      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:left;text-transform:uppercase;">Item</th>
-      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:center;text-transform:uppercase;">Qty</th>
+      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:left;text-transform:uppercase;">Producto</th>
+      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:center;text-transform:uppercase;">Cant.</th>
       <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:right;text-transform:uppercase;">Total</th>
     </tr>
     ${rows}
