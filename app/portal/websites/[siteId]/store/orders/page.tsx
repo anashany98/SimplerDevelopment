@@ -189,7 +189,7 @@ export default function OrdersListPage() {
             <span className="material-icons text-lg">chevron_left</span>
           </button>
           <span className="text-sm text-muted-foreground">
-            Page {page} of {totalPages}
+            Página {page} de {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}

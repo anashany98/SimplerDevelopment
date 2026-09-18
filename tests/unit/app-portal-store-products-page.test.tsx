@@ -171,7 +171,7 @@ describe('ProductsListPage — empty state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const links = Array.from(container.querySelectorAll('a')).filter(
-        (a) => a.textContent?.includes('Add Product'),
+        (a) => a.textContent?.includes('Nuevo producto'),
       );
       expect(links.length).toBeGreaterThan(0);
     });
@@ -510,7 +510,7 @@ describe('ProductsListPage — checkbox selection', () => {
     expect(checkboxes.length).toBeGreaterThan(0);
     await act(async () => { fireEvent.click(checkboxes[0]); });
     await waitFor(() => {
-      expect(container.textContent).toContain('1 selected');
+      expect(container.textContent).toContain('1 seleccionados');
     });
   });
 
@@ -530,7 +530,7 @@ describe('ProductsListPage — checkbox selection', () => {
     ) as HTMLInputElement;
     await act(async () => { fireEvent.click(headerCheckbox); });
     await waitFor(() => {
-      expect(container.textContent).toContain('2 selected');
+      expect(container.textContent).toContain('2 seleccionados');
     });
   });
 
@@ -541,13 +541,13 @@ describe('ProductsListPage — checkbox selection', () => {
       container.querySelectorAll('tbody input[type="checkbox"]'),
     ) as HTMLInputElement[];
     await act(async () => { fireEvent.click(checkboxes[0]); });
-    await waitFor(() => expect(container.textContent).toContain('1 selected'));
+    await waitFor(() => expect(container.textContent).toContain('1 seleccionados'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.includes('Limpiar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(clearBtn); });
     await waitFor(() => {
-      expect(container.textContent).not.toContain('selected');
+      expect(container.textContent).not.toContain('seleccionados');
     });
   });
 });
@@ -561,20 +561,20 @@ describe('ProductsListPage — bulk actions', () => {
       container.querySelectorAll('tbody input[type="checkbox"]'),
     ) as HTMLInputElement[];
     await act(async () => { fireEvent.click(checkboxes[0]); });
-    await waitFor(() => expect(container.textContent).toContain('selected'));
+    await waitFor(() => expect(container.textContent).toContain('seleccionados'));
   }
 
   it('bulk bar is hidden initially', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Widget Pro'));
-    expect(container.textContent).not.toContain('selected');
+    expect(container.textContent).not.toContain('seleccionados');
   });
 
   it('"Set Active" button calls bulk PATCH', async () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const setActiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Set Active'),
+      (b) => b.textContent?.includes('Activar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(setActiveBtn); });
     await waitFor(() => {
@@ -589,7 +589,7 @@ describe('ProductsListPage — bulk actions', () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const setDraftBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Set Draft'),
+      (b) => b.textContent?.includes('Pasar a borrador'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(setDraftBtn); });
     await waitFor(() => {
@@ -671,7 +671,7 @@ describe('ProductsListPage — pagination', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
   });
 
@@ -681,7 +681,7 @@ describe('ProductsListPage — pagination', () => {
       return makeRes(makeProductsRes([makeProduct()], 3));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 3'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 3'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const prevBtn = buttons.find((b) => b.textContent?.includes('chevron_left')) as HTMLButtonElement;
     expect(prevBtn?.disabled).toBe(true);
@@ -693,12 +693,12 @@ describe('ProductsListPage — pagination', () => {
       return makeRes(makeProductsRes([makeProduct()], 3));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 3'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 3'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const nextBtn = buttons.find((b) => b.textContent?.includes('chevron_right')) as HTMLButtonElement;
     await act(async () => { fireEvent.click(nextBtn); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2 of 3');
+      expect(container.textContent).toContain('Página 2 de 3');
     });
   });
 });

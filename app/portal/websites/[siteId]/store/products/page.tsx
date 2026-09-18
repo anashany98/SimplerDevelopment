@@ -101,7 +101,7 @@ export default function ProductsListPage() {
   };
 
   const bulkDelete = async () => {
-    if (!confirm(`Delete ${selected.size} product(s)? This cannot be undone.`)) return;
+    if (!confirm(`¿Eliminar ${selected.size} producto(s)? Esta acción no se puede deshacer.`)) return;
     setBulkLoading(true);
     try {
       await fetch(`${base}/products/bulk`, {
@@ -154,7 +154,7 @@ export default function ProductsListPage() {
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            Add Product
+            Nuevo producto
           </Link>
         }
       />
@@ -210,20 +210,20 @@ export default function ProductsListPage() {
       {/* Bulk actions */}
       {selected.size > 0 && (
         <div className="flex items-center gap-3 p-3 bg-accent/50 border border-border rounded-xl">
-          <span className="text-sm text-foreground font-medium">{selected.size} selected</span>
+          <span className="text-sm text-foreground font-medium">{selected.size} seleccionados</span>
           <button
             onClick={() => bulkChangeStatus('active')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 transition-colors disabled:opacity-50"
           >
-            Set Active
+            Activar
           </button>
           <button
             onClick={() => bulkChangeStatus('draft')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 transition-colors disabled:opacity-50"
           >
-            Set Draft
+            Pasar a borrador
           </button>
           <button
             onClick={() => bulkChangeStatus('archived')}
@@ -262,7 +262,7 @@ export default function ProductsListPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              Add Product
+              Nuevo producto
             </Link>
           )}
         </div>
@@ -299,7 +299,7 @@ export default function ProductsListPage() {
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
-                        aria-label={`Select ${product.name}`}
+                        aria-label={`Seleccionar ${product.name}`}
                         checked={selected.has(product.id)}
                         onChange={() => toggleSelect(product.id)}
                         className="rounded border-border"
@@ -364,7 +364,7 @@ export default function ProductsListPage() {
             <span className="material-icons text-lg">chevron_left</span>
           </button>
           <span className="text-sm text-muted-foreground">
-            Page {page} of {totalPages}
+            Página {page} de {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
