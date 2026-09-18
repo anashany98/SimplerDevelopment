@@ -133,7 +133,7 @@ async function mountAndWait(props: { projectId?: number; canEdit?: boolean } = {
   const result = render(<ProjectRecurrencesPanel projectId={projectId} canEdit={canEdit} />);
   // Wait for "Loading…" to disappear
   await waitFor(() =>
-    expect(screen.queryByText('Loading…')).toBeNull(),
+    expect(screen.queryByText('Cargando…')).toBeNull(),
   );
   return result;
 }
@@ -162,7 +162,7 @@ describe('ProjectRecurrencesPanel — initial render', () => {
     // Don't resolve — keep it in loading state
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     render(<ProjectRecurrencesPanel projectId={PROJECT_ID} canEdit />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
   });
 
   it('shows empty-state message when no recurrences', async () => {
@@ -273,14 +273,14 @@ describe('ProjectRecurrencesPanel — canEdit guard', () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait({ canEdit: false });
     expect(screen.queryByTitle('Pause')).toBeNull();
-    expect(screen.queryByTitle('Delete')).toBeNull();
+    expect(screen.queryByTitle('Eliminar')).toBeNull();
   });
 
   it('shows pause/delete buttons when canEdit=true', async () => {
     setupFetch({ recurrences: [makeRecurrence({ active: true })] });
     await mountAndWait({ canEdit: true });
     expect(screen.getByTitle('Pause')).toBeInTheDocument();
-    expect(screen.getByTitle('Delete')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar')).toBeInTheDocument();
   });
 });
 
@@ -583,7 +583,7 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     expect(window.confirm).toHaveBeenCalledWith('Delete this recurrence?');
   });
@@ -592,7 +592,7 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [makeRecurrence({ id: 99 })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -610,7 +610,7 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [makeRecurrence({ id: 99 })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
     const delCall = calls.find(
@@ -627,7 +627,7 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [] });
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText(/No recurring tasks yet/i)).toBeInTheDocument();
