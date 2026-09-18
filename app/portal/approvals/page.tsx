@@ -104,12 +104,12 @@ function DiffViewer({ before, after }: { before: unknown; after: unknown }) {
   const rows = diffObjects(before, after);
   const changedCount = rows.filter(r => r.kind !== 'unchanged').length;
   if (rows.length === 0) {
-    return <p className="text-xs text-muted-foreground italic">No fields to compare.</p>;
+    return <p className="text-xs text-muted-foreground italic">No hay campos que comparar.</p>;
   }
   return (
     <div className="space-y-2">
       <div className="text-[11px] text-muted-foreground">
-        {changedCount} of {rows.length} field{rows.length === 1 ? '' : 's'} changed.
+        {changedCount} de {rows.length} campo{rows.length === 1 ? '' : 's'} modificado{changedCount === 1 ? '' : 's'}.
       </div>
       <div className="border border-border rounded-md overflow-hidden divide-y divide-border">
         {rows.map(row => {
@@ -122,22 +122,22 @@ function DiffViewer({ before, after }: { before: unknown; after: unknown }) {
             <div key={row.key} className={`${rowBg} px-3 py-2 text-xs`}>
               <div className="flex items-center justify-between gap-2 mb-1">
                 <code className="font-semibold text-foreground">{row.key}</code>
-                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{row.kind}</span>
+                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{({ added: 'añadido', removed: 'eliminado', changed: 'cambiado', unchanged: 'sin cambios' } as Record<string, string>)[row.kind] ?? row.kind}</span>
               </div>
               {row.kind === 'unchanged' ? (
                 <pre className="text-muted-foreground whitespace-pre-wrap break-words line-clamp-3">{formatValue(row.before)}</pre>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <div className="text-[10px] text-muted-foreground mb-0.5">before</div>
+                    <div className="text-[10px] text-muted-foreground mb-0.5">antes</div>
                     <pre className="bg-muted/40 rounded px-2 py-1 whitespace-pre-wrap break-words max-h-40 overflow-auto">
-                      {row.kind === 'added' ? <span className="text-muted-foreground italic">(not set)</span> : formatValue(row.before)}
+                      {row.kind === 'added' ? <span className="text-muted-foreground italic">(sin definir)</span> : formatValue(row.before)}
                     </pre>
                   </div>
                   <div>
-                    <div className="text-[10px] text-muted-foreground mb-0.5">after</div>
+                    <div className="text-[10px] text-muted-foreground mb-0.5">después</div>
                     <pre className="bg-muted/40 rounded px-2 py-1 whitespace-pre-wrap break-words max-h-40 overflow-auto">
-                      {row.kind === 'removed' ? <span className="text-muted-foreground italic">(removed)</span> : formatValue(row.after)}
+                      {row.kind === 'removed' ? <span className="text-muted-foreground italic">(eliminado)</span> : formatValue(row.after)}
                     </pre>
                   </div>
                 </div>
@@ -226,14 +226,14 @@ export default function PortalApprovalsPage() {
       setNote('');
       fetchList();
     } else {
-      alert(res.message ?? 'Apply failed');
+      alert(res.message ?? 'No se pudo aplicar');
       fetchList();
     }
   };
 
   const reject = async () => {
     if (!selected) return;
-    if (!confirm('Reject this pending change? It will NOT be applied.')) return;
+    if (!confirm('¿Rechazar este cambio pendiente? No se aplicará.')) return;
     setBusy(true);
     const res = await safeJson(`/api/portal/approvals/${selected.change.id}/reject`, {
       method: 'POST',
@@ -246,12 +246,12 @@ export default function PortalApprovalsPage() {
       setNote('');
       fetchList();
     } else {
-      alert(res.message ?? 'Reject failed');
+      alert(res.message ?? 'No se pudo rechazar');
     }
   };
 
   const renderJson = (value: unknown) => {
-    if (value === null || value === undefined) return <span className="text-muted-foreground italic">(none)</span>;
+    if (value === null || value === undefined) return <span className="text-muted-foreground italic">(ninguno)</span>;
     return (
       <pre className="text-xs bg-muted/40 rounded-md p-3 overflow-auto max-h-96 whitespace-pre-wrap break-words">
         {JSON.stringify(value, null, 2)}
@@ -277,7 +277,7 @@ export default function PortalApprovalsPage() {
       setNote('');
       fetchList();
     } else {
-      alert(res.message ?? `Bulk ${action} failed`);
+      alert(res.message ?? `No se pudo ${action === 'approve' ? 'aprobar' : 'rechazar'} el lote`);
     }
   };
 
@@ -318,7 +318,7 @@ export default function PortalApprovalsPage() {
 
       {/* Filter tabs */}
       <div className="flex gap-1 border-b border-border text-sm overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
-        {(['pending', 'applied', 'rejected', 'failed', 'expired', 'all'] as StatusFilter[]).map(f => (
+        {([['pending', 'Pendientes'], ['applied', 'Aplicados'], ['rejected', 'Rechazados'], ['failed', 'Fallidos'], ['expired', 'Caducados'], ['all', 'Todos']] as [StatusFilter, string][]).map(([f, label]) => (
           <button
             key={f}
             onClick={() => { setFilter(f); setSelected(null); setCheckedIds(new Set()); }}
@@ -328,7 +328,7 @@ export default function PortalApprovalsPage() {
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+            {label}
           </button>
         ))}
       </div>
@@ -440,7 +440,7 @@ export default function PortalApprovalsPage() {
             ) : items.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground">
                 <span className="material-icons text-4xl mb-2 block">check_circle</span>
-                No hay {filter === 'all' ? '' : filter + ' '}cambios.
+                No hay cambios{filter === 'all' ? '' : ` ${({ pending: 'pendientes', applied: 'aplicados', rejected: 'rechazados', failed: 'fallidos', expired: 'caducados' } as Record<string, string>)[filter]}`}.
               </div>
             ) : (
               items.map(item => {
@@ -478,15 +478,15 @@ export default function PortalApprovalsPage() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusBadge[item.status] ?? ''}`}>
-                              {item.status}
+                              {({ pending: 'Pendiente', applied: 'Aplicado', rejected: 'Rechazado', failed: 'Fallido', expired: 'Caducado' } as Record<string, string>)[item.status] ?? item.status}
                             </span>
                             <span className="text-xs font-medium text-muted-foreground">
                               {entityLabel[item.entityType] ?? item.entityType} · {item.operation}
                             </span>
                           </div>
-                          <p className="text-sm text-foreground mt-1 line-clamp-2">{item.summary ?? '(no summary)'}</p>
+                          <p className="text-sm text-foreground mt-1 line-clamp-2">{item.summary ?? '(sin resumen)'}</p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {item.keyName ?? 'unknown key'} · {new Date(item.createdAt).toLocaleString()}
+                            {item.keyName ?? 'clave desconocida'} · {new Date(item.createdAt).toLocaleString()}
                           </p>
                         </div>
                         {item.errorMessage && (
@@ -515,28 +515,28 @@ export default function PortalApprovalsPage() {
               <div className="space-y-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusBadge[selected.change.status] ?? ''}`}>
-                    {selected.change.status}
+                    {({ pending: 'Pendiente', applied: 'Aplicado', rejected: 'Rechazado', failed: 'Fallido', expired: 'Caducado' } as Record<string, string>)[selected.change.status] ?? selected.change.status}
                   </span>
                   <span className="text-xs font-medium text-muted-foreground">
                     #{selected.change.id} · {entityLabel[selected.change.entityType] ?? selected.change.entityType} · {selected.change.operation}
                   </span>
                 </div>
-                <h2 className="text-base font-semibold text-foreground">{selected.change.summary ?? '(no summary)'}</h2>
+                <h2 className="text-base font-semibold text-foreground">{selected.change.summary ?? '(sin resumen)'}</h2>
                 <p className="text-xs text-muted-foreground">
-                  Submitted by {selected.submitterName ?? 'unknown'} via key &quot;{selected.keyName ?? 'unknown'}&quot; on{' '}
+                  Enviado por {selected.submitterName ?? 'desconocido'} mediante la clave &quot;{selected.keyName ?? 'desconocida'}&quot; el{' '}
                   {new Date(selected.change.createdAt).toLocaleString()}
                 </p>
               </div>
 
               {selected.change.status === 'failed' && selected.change.errorMessage && (
                 <div className="text-xs bg-destructive/10 text-destructive rounded-md p-3">
-                  <strong>Apply failed:</strong> {selected.change.errorMessage}
+                  <strong>Error al aplicar:</strong> {selected.change.errorMessage}
                 </div>
               )}
 
               {selected.change.reviewNote && (
                 <div className="text-xs text-muted-foreground">
-                  <strong>Review note:</strong> {selected.change.reviewNote}
+                  <strong>Nota de revisión:</strong> {selected.change.reviewNote}
                 </div>
               )}
 
@@ -631,7 +631,7 @@ export default function PortalApprovalsPage() {
             {checkedIds.size} seleccionados
           </span>
           {checkedIds.size > MAX_BULK && (
-            <span className="text-xs text-destructive">Max {MAX_BULK} per batch</span>
+            <span className="text-xs text-destructive">Máx. {MAX_BULK} por lote</span>
           )}
           <button
             onClick={() => setBulkAction('approve')}

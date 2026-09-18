@@ -138,12 +138,12 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     expect(screen.getByText('Aprobaciones MCP')).toBeTruthy();
-    expect(screen.getByText('Pending')).toBeTruthy();
-    expect(screen.getByText('Applied')).toBeTruthy();
-    expect(screen.getByText('Rejected')).toBeTruthy();
-    expect(screen.getByText('Failed')).toBeTruthy();
-    expect(screen.getByText('Expired')).toBeTruthy();
-    expect(screen.getByText('All')).toBeTruthy();
+    expect(screen.getByText('Pendientes')).toBeTruthy();
+    expect(screen.getByText('Aplicados')).toBeTruthy();
+    expect(screen.getByText('Rechazados')).toBeTruthy();
+    expect(screen.getByText('Fallidos')).toBeTruthy();
+    expect(screen.getByText('Caducados')).toBeTruthy();
+    expect(screen.getByText('Todos')).toBeTruthy();
   });
 
   it('shows the empty-state when no items are returned', async () => {
@@ -152,7 +152,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
+    expect(screen.getByText(/No hay cambios pendientes\./)).toBeTruthy();
   });
 
   it('renders a list of items from the API', async () => {
@@ -185,7 +185,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getAllByText('(no summary)').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('(sin resumen)').length).toBeGreaterThan(0);
   });
 
   it('falls back to "unknown key" when keyName is null', async () => {
@@ -198,7 +198,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/unknown key/)).toBeTruthy();
+    expect(screen.getByText(/clave desconocida/)).toBeTruthy();
   });
 
   it('switches filters and re-fetches without ?status when "all" is selected', async () => {
@@ -215,12 +215,12 @@ describe('PortalApprovalsPage', () => {
     // initial pending call
     expect(fetchMock.mock.calls.some(([u]) => String(u).endsWith('?status=pending'))).toBe(true);
     await act(async () => {
-      fireEvent.click(screen.getByText('Applied'));
+      fireEvent.click(screen.getByText('Aplicados'));
     });
     await flush();
     expect(fetchMock.mock.calls.some(([u]) => String(u).endsWith('?status=applied'))).toBe(true);
     await act(async () => {
-      fireEvent.click(screen.getByText('All'));
+      fireEvent.click(screen.getByText('Todos'));
     });
     await flush();
     // "all" => no query string
@@ -236,7 +236,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     // empty state still visible
-    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
+    expect(screen.getByText(/No hay cambios pendientes\./)).toBeTruthy();
   });
 
   it('treats a non-JSON empty body as a failed response', async () => {
@@ -245,7 +245,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
+    expect(screen.getByText(/No hay cambios pendientes\./)).toBeTruthy();
   });
 
   it('treats invalid JSON as a failed response (try/catch path in safeJson)', async () => {
@@ -254,7 +254,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
+    expect(screen.getByText(/No hay cambios pendientes\./)).toBeTruthy();
   });
 
   it('opens a detail panel when an item is clicked, showing summary + submitter', async () => {
@@ -277,7 +277,7 @@ describe('PortalApprovalsPage', () => {
     await flush();
     // heading-level summary now appears
     expect(screen.getAllByText('Click me').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/Submitted by Alice via key/)).toBeTruthy();
+    expect(screen.getByText(/Enviado por Alice mediante la clave/)).toBeTruthy();
   });
 
   it('renders DiffViewer rows with added / removed / changed / unchanged kinds', async () => {
@@ -304,10 +304,10 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getAllByText('added').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('removed').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('changed').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('unchanged').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('añadido').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('eliminado').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('cambiado').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('sin cambios').length).toBeGreaterThan(0);
   });
 
   it('shows "No fields to compare." when both sides are empty objects', async () => {
@@ -334,7 +334,7 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getByText('No fields to compare.')).toBeTruthy();
+    expect(screen.getByText('No hay campos que comparar.')).toBeTruthy();
   });
 
   it('treats "create" operation as before={}, so all fields are added', async () => {
@@ -363,7 +363,7 @@ describe('PortalApprovalsPage', () => {
     await flush();
     expect(screen.getByText('Contenido propuesto')).toBeTruthy();
     // both top-level keys were "added"
-    expect(screen.getAllByText('added').length).toBe(2);
+    expect(screen.getAllByText('añadido').length).toBe(2);
   });
 
   it('switches to Raw JSON view and shows payload + current state', async () => {
@@ -434,7 +434,7 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getByText('Apply failed:')).toBeTruthy();
+    expect(screen.getByText('Error al aplicar:')).toBeTruthy();
     expect(screen.getByText(/boom/)).toBeTruthy();
   });
 
@@ -456,7 +456,7 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getByText('Review note:')).toBeTruthy();
+    expect(screen.getByText('Nota de revisión:')).toBeTruthy();
     expect(screen.getByText(/Looks good/)).toBeTruthy();
   });
 
@@ -874,7 +874,7 @@ describe('PortalApprovalsPage', () => {
     await act(async () => {
       fireEvent.click(checkboxes[0] as HTMLInputElement);
     });
-    expect(screen.getAllByText(/Max 25 per batch/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Máx. 25 por lote/).length).toBeGreaterThan(0);
   });
 
   it('auto-opens a detail panel when ?id=N is in the URL on mount', async () => {
