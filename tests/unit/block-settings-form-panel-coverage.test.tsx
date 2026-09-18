@@ -161,7 +161,7 @@ describe('ButtonBlockSettings', () => {
 
   it('updates variant via select', () => {
     const { onChange } = renderPanel(baseButton);
-    const select = screen.getByDisplayValue('Primary') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Primario') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'secondary' } });
     expect(onChange).toHaveBeenCalledWith({ variant: 'secondary' });
   });
@@ -194,7 +194,7 @@ describe('ButtonBlockSettings', () => {
 
   it('toggles openInNewTab checkbox', () => {
     const { onChange } = renderPanel(baseButton);
-    const checkbox = screen.getByLabelText('Open in new tab') as HTMLInputElement;
+    const checkbox = screen.getByLabelText('Abrir en nueva pestaña') as HTMLInputElement;
     fireEvent.click(checkbox);
     expect(onChange).toHaveBeenCalledWith({ openInNewTab: true });
   });
@@ -210,7 +210,7 @@ describe('ButtonBlockSettings', () => {
 
   it('updates iconPosition via select', () => {
     const { onChange } = renderPanel({ ...baseButton, icon: 'star', iconPosition: 'left' });
-    const select = screen.getByDisplayValue('Left of text') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('A la izquierda del texto') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'right' } });
     expect(onChange).toHaveBeenCalledWith({ iconPosition: 'right' });
   });
@@ -233,7 +233,7 @@ describe('ButtonBlockSettings', () => {
 
   it('defaults variant to primary when not set', () => {
     renderPanel({ ...baseButton, variant: undefined });
-    const select = screen.getByDisplayValue('Primary') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Primario') as HTMLSelectElement;
     expect(select.value).toBe('primary');
   });
 
@@ -264,19 +264,19 @@ describe('PopupBlockSettings', () => {
 
   it('renders headline and body RichTextEditables', () => {
     renderPanel(basePopup);
-    expect(screen.getByTestId('rte-Modal headline')).toBeTruthy();
-    expect(screen.getByTestId('rte-Body text — supports rich text')).toBeTruthy();
+    expect(screen.getByTestId('rte-Titular del modal')).toBeTruthy();
+    expect(screen.getByTestId('rte-Texto del cuerpo — admite texto enriquecido')).toBeTruthy();
   });
 
   it('updates headline via RichTextEditable', () => {
     const { onChange } = renderPanel(basePopup);
-    fireEvent.change(screen.getByTestId('rte-Modal headline'), { target: { value: 'New Headline' } });
+    fireEvent.change(screen.getByTestId('rte-Titular del modal'), { target: { value: 'New Headline' } });
     expect(onChange).toHaveBeenCalledWith({ headline: 'New Headline' });
   });
 
   it('updates body (empty collapses to undefined)', () => {
     const { onChange } = renderPanel(basePopup);
-    const bodyRte = screen.getByTestId('rte-Body text — supports rich text');
+    const bodyRte = screen.getByTestId('rte-Texto del cuerpo — admite texto enriquecido');
     fireEvent.change(bodyRte, { target: { value: 'New body' } });
     expect(onChange).toHaveBeenCalledWith({ body: 'New body' });
     fireEvent.change(bodyRte, { target: { value: '' } });
@@ -304,7 +304,7 @@ describe('PopupBlockSettings', () => {
   it('shows delay field when trigger=time-delay', () => {
     const { container } = renderPanel(basePopup);
     // label text present and a number input for delay is visible
-    expect(container.textContent).toContain('Delay (seconds)');
+    expect(container.textContent).toContain('Retardo (segundos)');
     const numInputs = container.querySelectorAll('input[type="number"]');
     const delayInput = Array.from(numInputs).find(
       (i) => Number((i as HTMLInputElement).value) === 5,
@@ -335,7 +335,7 @@ describe('PopupBlockSettings', () => {
 
   it('shows scroll percent field when trigger=scroll-percent', () => {
     const { container } = renderPanel({ ...basePopup, trigger: 'scroll-percent', scrollPercent: 50 });
-    expect(container.textContent).toContain('Scroll percent (0-100)');
+    expect(container.textContent).toContain('Porcentaje de scroll (0-100)');
     const numInputs = container.querySelectorAll('input[type="number"]');
     const scrollInput = Array.from(numInputs).find(
       (i) => Number((i as HTMLInputElement).value) === 50,
@@ -378,7 +378,7 @@ describe('PopupBlockSettings', () => {
 
   it('defaults trigger to time-delay when not set', () => {
     const { container } = renderPanel({ ...basePopup, trigger: undefined });
-    expect(container.textContent).toContain('Delay (seconds)');
+    expect(container.textContent).toContain('Retardo (segundos)');
     // delay input should be visible
     const numInputs = container.querySelectorAll('input[type="number"]');
     expect(numInputs.length).toBeGreaterThanOrEqual(1);
@@ -421,7 +421,7 @@ describe('SurveyBlockSettings', () => {
   it('renders survey search input when no survey selected', async () => {
     renderPanel({ ...baseSurvey, slug: '' });
     await waitFor(() => {
-      expect(screen.queryByPlaceholderText('Search surveys...')).toBeTruthy();
+      expect(screen.queryByPlaceholderText('Buscar encuestas...')).toBeTruthy();
     });
   });
 
@@ -445,7 +445,7 @@ describe('SurveyBlockSettings', () => {
     });
     const { onChange } = renderPanel({ ...baseSurvey, slug: '' });
     await waitFor(() => {});
-    const input = screen.getByPlaceholderText('Search surveys...') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Buscar encuestas...') as HTMLInputElement;
     fireEvent.focus(input);
     await waitFor(() => {
       expect(screen.queryByText('Other Survey')).toBeTruthy();
@@ -481,7 +481,7 @@ describe('SurveyBlockSettings', () => {
   it('toggles showPageTitle checkbox', async () => {
     const { onChange } = renderPanel(baseSurvey);
     await act(async () => {});
-    const cb = screen.getByLabelText('Show Survey Title') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar título de la encuesta') as HTMLInputElement;
     fireEvent.click(cb);
     expect(onChange).toHaveBeenCalledWith({ showPageTitle: false });
   });
@@ -489,7 +489,7 @@ describe('SurveyBlockSettings', () => {
   it('toggles showDescription checkbox', async () => {
     const { onChange } = renderPanel(baseSurvey);
     await act(async () => {});
-    const cb = screen.getByLabelText('Show Description') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar descripción') as HTMLInputElement;
     fireEvent.click(cb);
     expect(onChange).toHaveBeenCalledWith({ showDescription: false });
   });
@@ -497,7 +497,7 @@ describe('SurveyBlockSettings', () => {
   it('toggles showLogo checkbox', async () => {
     const { onChange } = renderPanel(baseSurvey);
     await act(async () => {});
-    const cb = screen.getByLabelText('Show Logo') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar logo') as HTMLInputElement;
     fireEvent.click(cb);
     expect(onChange).toHaveBeenCalledWith({ showLogo: false });
   });
@@ -509,7 +509,7 @@ describe('SurveyBlockSettings', () => {
     });
     renderPanel({ ...baseSurvey, slug: '' });
     await act(async () => {});
-    const input = screen.getByPlaceholderText('Search surveys...');
+    const input = screen.getByPlaceholderText('Buscar encuestas...');
     fireEvent.focus(input);
     await waitFor(() => {
       expect(screen.queryByText('Test Survey')).toBeTruthy();
@@ -527,7 +527,7 @@ describe('SurveyBlockSettings', () => {
     });
     renderPanel({ ...baseSurvey, slug: '' });
     await act(async () => {});
-    const input = screen.getByPlaceholderText('Search surveys...');
+    const input = screen.getByPlaceholderText('Buscar encuestas...');
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: 'ABC' } });
     await waitFor(() => {
@@ -585,7 +585,7 @@ describe('SurveyInputBlockSettings', () => {
 
   it('updates option value', () => {
     const { onChange } = renderPanel({ ...baseInput, fieldType: 'select', options: ['opt1', 'opt2'] });
-    const optionInputs = screen.getAllByPlaceholderText('Option value') as HTMLInputElement[];
+    const optionInputs = screen.getAllByPlaceholderText('Valor de la opción') as HTMLInputElement[];
     fireEvent.change(optionInputs[0], { target: { value: 'new-opt' } });
     expect(onChange).toHaveBeenCalledWith({ options: ['new-opt', 'opt2'] });
   });
@@ -599,15 +599,15 @@ describe('SurveyInputBlockSettings', () => {
 
   it('adds a new option', () => {
     const { onChange } = renderPanel({ ...baseInput, fieldType: 'checkbox', options: [] });
-    fireEvent.click(screen.getByText('+ Add Option'));
+    fireEvent.click(screen.getByText('+ Añadir opción'));
     expect(onChange).toHaveBeenCalledWith({ options: [''] });
   });
 
   it('shows slider config when fieldType is slider', () => {
     const { container } = renderPanel({ ...baseInput, fieldType: 'slider', min: 0, max: 100, step: 1 });
-    expect(container.textContent).toContain('Min');
-    expect(container.textContent).toContain('Max');
-    expect(container.textContent).toContain('Step');
+    expect(container.textContent).toContain('Mín');
+    expect(container.textContent).toContain('Máx');
+    expect(container.textContent).toContain('Paso');
     const numInputs = container.querySelectorAll('input[type="number"]');
     expect(numInputs.length).toBe(3);
   });
@@ -634,7 +634,7 @@ describe('SurveyInputBlockSettings', () => {
 
   it('does not show slider config for non-slider types (text)', () => {
     renderPanel(baseInput);
-    expect(screen.queryByLabelText('Min')).toBeNull();
+    expect(screen.queryByLabelText('Mín')).toBeNull();
   });
 });
 
@@ -747,14 +747,14 @@ describe('EmailFooterBlockSettings', () => {
 
   it('toggles showUnsubscribe checkbox', () => {
     const { onChange } = renderPanel(baseEmailFooter);
-    const cb = screen.getByLabelText('Show unsubscribe link') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar enlace de cancelación de suscripción') as HTMLInputElement;
     fireEvent.click(cb);
     expect(onChange).toHaveBeenCalledWith({ showUnsubscribe: false });
   });
 
   it('toggles showViewInBrowser checkbox', () => {
     const { onChange } = renderPanel(baseEmailFooter);
-    const cb = screen.getByLabelText('Show "View in browser" link') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar enlace "Ver en el navegador"') as HTMLInputElement;
     fireEvent.click(cb);
     expect(onChange).toHaveBeenCalledWith({ showViewInBrowser: true });
   });
@@ -785,7 +785,7 @@ describe('EmailFooterBlockSettings', () => {
 
   it('adds a new social link', () => {
     const { onChange } = renderPanel({ ...baseEmailFooter, socialLinks: [] });
-    fireEvent.click(screen.getByText('+ Add Social Link'));
+    fireEvent.click(screen.getByText('+ Añadir enlace social'));
     expect(onChange).toHaveBeenCalledWith({
       socialLinks: [{ platform: '', url: '' }],
     });
@@ -793,13 +793,13 @@ describe('EmailFooterBlockSettings', () => {
 
   it('defaults showUnsubscribe to true when not set', () => {
     renderPanel({ ...baseEmailFooter, showUnsubscribe: undefined });
-    const cb = screen.getByLabelText('Show unsubscribe link') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar enlace de cancelación de suscripción') as HTMLInputElement;
     expect(cb.checked).toBe(true);
   });
 
   it('defaults showViewInBrowser to false when not set', () => {
     renderPanel({ ...baseEmailFooter, showViewInBrowser: undefined });
-    const cb = screen.getByLabelText('Show "View in browser" link') as HTMLInputElement;
+    const cb = screen.getByLabelText('Mostrar enlace "Ver en el navegador"') as HTMLInputElement;
     expect(cb.checked).toBe(false);
   });
 });
@@ -819,13 +819,13 @@ describe('BookingMenuBlockSettings', () => {
 
   it('renders title and description RTEs', () => {
     renderPanel(baseBookingMenu);
-    expect(screen.getByTestId('rte-Optional section title...')).toBeTruthy();
-    expect(screen.getByTestId('rte-Optional description...')).toBeTruthy();
+    expect(screen.getByTestId('rte-Título de sección opcional...')).toBeTruthy();
+    expect(screen.getByTestId('rte-Descripción opcional...')).toBeTruthy();
   });
 
   it('updates title via RichTextEditable (empty collapses to undefined)', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const titleRte = screen.getByTestId('rte-Optional section title...');
+    const titleRte = screen.getByTestId('rte-Título de sección opcional...');
     fireEvent.change(titleRte, { target: { value: 'New Title' } });
     expect(onChange).toHaveBeenCalledWith({ title: 'New Title' });
     fireEvent.change(titleRte, { target: { value: '' } });
@@ -834,7 +834,7 @@ describe('BookingMenuBlockSettings', () => {
 
   it('updates description via RichTextEditable (empty collapses to undefined)', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const descRte = screen.getByTestId('rte-Optional description...');
+    const descRte = screen.getByTestId('rte-Descripción opcional...');
     fireEvent.change(descRte, { target: { value: 'New Desc' } });
     expect(onChange).toHaveBeenCalledWith({ description: 'New Desc' });
     fireEvent.change(descRte, { target: { value: '' } });
@@ -843,14 +843,14 @@ describe('BookingMenuBlockSettings', () => {
 
   it('updates columns via select (parses to number)', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
 
   it('defaults columns to 3 when not set', () => {
     renderPanel({ ...baseBookingMenu, columns: undefined });
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     expect(select.value).toBe('3');
   });
 });
