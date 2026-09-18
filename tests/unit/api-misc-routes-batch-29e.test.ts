@@ -541,8 +541,8 @@ describe('PATCH /api/portal/chat/widgets/[id]', () => {
     const res = await widgetRoute.PATCH(req, makeIdParams('1'));
     expect(res.status).toBe(200);
     const upd = updateCalls.find((u) => u.table === 'chatWidgets')!;
-    // only updatedAt is set
-    expect(Object.keys(upd.patch)).toEqual(['updatedAt']);
+    // updatedAt plus the lazily-minted publicKey for this legacy widget
+    expect(Object.keys(upd.patch)).toEqual(['updatedAt', 'publicKey']);
   });
 });
 
