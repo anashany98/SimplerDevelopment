@@ -137,7 +137,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText('MCP Approvals')).toBeTruthy();
+    expect(screen.getByText('Aprobaciones MCP')).toBeTruthy();
     expect(screen.getByText('Pending')).toBeTruthy();
     expect(screen.getByText('Applied')).toBeTruthy();
     expect(screen.getByText('Rejected')).toBeTruthy();
@@ -152,7 +152,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No pending changes\./)).toBeTruthy();
+    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
   });
 
   it('renders a list of items from the API', async () => {
@@ -171,8 +171,8 @@ describe('PortalApprovalsPage', () => {
     expect(screen.getByText('Item one summary')).toBeTruthy();
     expect(screen.getByText('Item two summary')).toBeTruthy();
     // entity label resolution
-    expect(screen.getAllByText(/Post · update/).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Pitch Deck · update/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Publicación · update/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Pitch deck · update/).length).toBeGreaterThan(0);
   });
 
   it('falls back to "(no summary)" when summary is null', async () => {
@@ -236,7 +236,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     // empty state still visible
-    expect(screen.getByText(/No pending changes\./)).toBeTruthy();
+    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
   });
 
   it('treats a non-JSON empty body as a failed response', async () => {
@@ -245,7 +245,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No pending changes\./)).toBeTruthy();
+    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
   });
 
   it('treats invalid JSON as a failed response (try/catch path in safeJson)', async () => {
@@ -254,7 +254,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    expect(screen.getByText(/No pending changes\./)).toBeTruthy();
+    expect(screen.getByText(/No hay pending cambios\./)).toBeTruthy();
   });
 
   it('opens a detail panel when an item is clicked, showing summary + submitter', async () => {
@@ -361,7 +361,7 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getByText('Proposed content')).toBeTruthy();
+    expect(screen.getByText('Contenido propuesto')).toBeTruthy();
     // both top-level keys were "added"
     expect(screen.getAllByText('added').length).toBe(2);
   });
@@ -385,10 +385,10 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Raw JSON'));
+      fireEvent.click(screen.getByText('JSON crudo'));
     });
-    expect(screen.getByText('Proposed payload')).toBeTruthy();
-    expect(screen.getByText('Current state')).toBeTruthy();
+    expect(screen.getByText('Contenido propuesto')).toBeTruthy();
+    expect(screen.getByText('Estado actual')).toBeTruthy();
   });
 
   it('hides "Current state" in Raw JSON view when operation is create', async () => {
@@ -410,10 +410,10 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Raw JSON'));
+      fireEvent.click(screen.getByText('JSON crudo'));
     });
-    expect(screen.getByText('Proposed payload')).toBeTruthy();
-    expect(screen.queryByText('Current state')).toBeNull();
+    expect(screen.getAllByText('Contenido propuesto').length).toBeGreaterThan(0);
+    expect(screen.queryByText('Estado actual')).toBeNull();
   });
 
   it('shows the failed-apply error block when status is failed and errorMessage is present', async () => {
@@ -478,7 +478,7 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    expect(screen.getByText(/Only owners and admins/)).toBeTruthy();
+    expect(screen.getByText(/Solo los propietarios y administradores/)).toBeTruthy();
   });
 
   it('approves a pending change and refreshes the list on success', async () => {
@@ -503,19 +503,19 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(screen.getByText(/Update headline/));
     });
     await flush();
-    const note = screen.getByPlaceholderText(/Add a note for the submitter/);
+    const note = screen.getByPlaceholderText(/Añade una nota para el remitente/);
     await act(async () => {
       fireEvent.change(note, { target: { value: 'lgtm' } });
     });
     await act(async () => {
-      fireEvent.click(screen.getByText(/Approve & Apply/));
+      fireEvent.click(screen.getByText(/Aprobar y aplicar/));
     });
     await flush();
     expect(
       fetchMock.mock.calls.some(([u]) => String(u) === '/api/portal/approvals/21/approve'),
     ).toBe(true);
     // panel should clear back to the placeholder
-    expect(screen.getByText('Select a change to review.')).toBeTruthy();
+    expect(screen.getByText('Selecciona un cambio para revisarlo.')).toBeTruthy();
   });
 
   it('alerts when an approve call fails', async () => {
@@ -540,7 +540,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText(/Approve & Apply/));
+      fireEvent.click(screen.getByText(/Aprobar y aplicar/));
     });
     await flush();
     expect(window.alert).toHaveBeenCalledWith('no permission');
@@ -568,7 +568,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Reject'));
+      fireEvent.click(screen.getByText('Rechazar'));
     });
     await flush();
     expect(window.confirm).toHaveBeenCalled();
@@ -597,7 +597,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Reject'));
+      fireEvent.click(screen.getByText('Rechazar'));
     });
     await flush();
     expect(
@@ -627,7 +627,7 @@ describe('PortalApprovalsPage', () => {
     });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Reject'));
+      fireEvent.click(screen.getByText('Rechazar'));
     });
     await flush();
     expect(window.alert).toHaveBeenCalledWith('cant reject');
@@ -647,7 +647,7 @@ describe('PortalApprovalsPage', () => {
       render(<PortalApprovalsPage />);
     });
     await flush();
-    const selectAllLabel = screen.getByText(/Select all 2 pending/);
+    const selectAllLabel = screen.getByText(/Seleccionar los 2 pendientes/);
     expect(selectAllLabel).toBeTruthy();
     // The select-all checkbox is the first checkbox in the document.
     const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -656,11 +656,11 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(selectAll);
     });
     // "2 selected" appears in both the header bar and the floating bulk bar.
-    expect(screen.getAllByText(/2 selected/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/2 seleccionados/).length).toBeGreaterThan(0);
     await act(async () => {
       fireEvent.click(selectAll);
     });
-    expect(screen.getByText(/Select all 2 pending/)).toBeTruthy();
+    expect(screen.getByText(/Seleccionar los 2 pendientes/)).toBeTruthy();
   });
 
   it('toggles a single item checkbox and updates the floating bulk bar', async () => {
@@ -678,16 +678,16 @@ describe('PortalApprovalsPage', () => {
     await act(async () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
     });
-    expect(screen.getAllByText(/1 selected/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/1 seleccionados/).length).toBeGreaterThan(0);
     await act(async () => {
       fireEvent.click(checkboxes[2] as HTMLInputElement);
     });
-    expect(screen.getAllByText(/2 selected/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/2 seleccionados/).length).toBeGreaterThan(0);
     // uncheck the first one
     await act(async () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
     });
-    expect(screen.getAllByText(/1 selected/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/1 seleccionados/).length).toBeGreaterThan(0);
   });
 
   it('opens the bulk-approve confirmation modal and shows entity-type counts', async () => {
@@ -709,15 +709,15 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(checkboxes[2] as HTMLInputElement);
     });
     // The bulk bar's Approve button
-    const approveButtons = screen.getAllByText('Approve');
+    const approveButtons = screen.getAllByText('Aprobar');
     await act(async () => {
       fireEvent.click(approveButtons[approveButtons.length - 1]);
     });
-    expect(screen.getByText(/Approve 2 changes\?/)).toBeTruthy();
-    // "Post" / "Pitch Deck" now also appear as entity-type filter dropdown
-    // options, so assert presence rather than uniqueness.
-    expect(screen.getAllByText('Post').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Pitch Deck').length).toBeGreaterThan(0);
+    expect(screen.getByText(/¿Aprobar 2 cambios\?/)).toBeTruthy();
+    // "Publicación" / "Pitch deck" now also appear as entity-type filter
+    // dropdown options, so assert presence rather than uniqueness.
+    expect(screen.getAllByText('Publicación').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Pitch deck').length).toBeGreaterThan(0);
   });
 
   it('opens the bulk-reject confirmation modal with the reject-specific copy', async () => {
@@ -736,12 +736,12 @@ describe('PortalApprovalsPage', () => {
     });
     // Bulk bar's "Reject" button. There may also be a detail-pane reject, so
     // grab the last one which is the floating bar.
-    const rejectButtons = screen.getAllByText('Reject');
+    const rejectButtons = screen.getAllByText('Rechazar');
     await act(async () => {
       fireEvent.click(rejectButtons[rejectButtons.length - 1]);
     });
-    expect(screen.getByText(/Reject 1 change\?/)).toBeTruthy();
-    expect(screen.getByText(/Each selected change will be marked rejected/)).toBeTruthy();
+    expect(screen.getByText(/¿Rechazar 1 cambio\?/)).toBeTruthy();
+    expect(screen.getByText(/Cada cambio seleccionado se marcará como rechazado/)).toBeTruthy();
   });
 
   it('confirms a bulk approve and shows the result toast', async () => {
@@ -770,18 +770,18 @@ describe('PortalApprovalsPage', () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
       fireEvent.click(checkboxes[2] as HTMLInputElement);
     });
-    const approveButtons = screen.getAllByText('Approve');
+    const approveButtons = screen.getAllByText('Aprobar');
     await act(async () => {
       fireEvent.click(approveButtons[approveButtons.length - 1]);
     });
     await act(async () => {
-      fireEvent.click(screen.getByText(/Confirm approve/));
+      fireEvent.click(screen.getByText(/Confirmar aprobación/));
     });
     await flush();
     expect(
       fetchMock.mock.calls.some(([u]) => String(u) === '/api/portal/approvals/bulk-approve'),
     ).toBe(true);
-    expect(screen.getByText(/Bulk result: 2 of 2/)).toBeTruthy();
+    expect(screen.getByText(/Resultado del lote: 2 de 2/)).toBeTruthy();
   });
 
   it('alerts on bulk-approve API failure', async () => {
@@ -802,12 +802,12 @@ describe('PortalApprovalsPage', () => {
     await act(async () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
     });
-    const approveButtons = screen.getAllByText('Approve');
+    const approveButtons = screen.getAllByText('Aprobar');
     await act(async () => {
       fireEvent.click(approveButtons[approveButtons.length - 1]);
     });
     await act(async () => {
-      fireEvent.click(screen.getByText(/Confirm approve/));
+      fireEvent.click(screen.getByText(/Confirmar aprobación/));
     });
     await flush();
     expect(window.alert).toHaveBeenCalledWith('bulk boom');
@@ -827,14 +827,14 @@ describe('PortalApprovalsPage', () => {
     await act(async () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
     });
-    const approveButtons = screen.getAllByText('Approve');
+    const approveButtons = screen.getAllByText('Aprobar');
     await act(async () => {
       fireEvent.click(approveButtons[approveButtons.length - 1]);
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
     });
-    expect(screen.queryByText(/Approve 1 change\?/)).toBeNull();
+    expect(screen.queryByText(/¿Aprobar 1 cambio\?/)).toBeNull();
     expect(
       fetchMock.mock.calls.some(([u]) => String(u).includes('/bulk-approve')),
     ).toBe(false);
@@ -854,12 +854,12 @@ describe('PortalApprovalsPage', () => {
     await act(async () => {
       fireEvent.click(checkboxes[1] as HTMLInputElement);
     });
-    expect(screen.getAllByText(/1 selected/).length).toBeGreaterThan(0);
-    const closeBtn = screen.getByTitle('Clear selection');
+    expect(screen.getAllByText(/1 seleccionados/).length).toBeGreaterThan(0);
+    const closeBtn = screen.getByTitle('Limpiar selección');
     await act(async () => {
       fireEvent.click(closeBtn);
     });
-    expect(screen.queryByText(/1 selected/)).toBeNull();
+    expect(screen.queryByText(/1 seleccionados/)).toBeNull();
   });
 
   it('shows the "Max 25 per batch" warning when selection exceeds bulk cap', async () => {
@@ -970,9 +970,9 @@ describe('PortalApprovalsPage', () => {
     await flush();
 
     // Entity type dropdown offers the distinct types present in the list.
-    const typeSelect = screen.getByDisplayValue('All types') as HTMLSelectElement;
-    expect(screen.getByText('Post')).toBeTruthy();
-    expect(screen.getByText('Pitch Deck')).toBeTruthy();
+    const typeSelect = screen.getByDisplayValue('Todos los tipos') as HTMLSelectElement;
+    expect(screen.getByText('Publicación')).toBeTruthy();
+    expect(screen.getByText('Pitch deck')).toBeTruthy();
     await act(async () => {
       fireEvent.change(typeSelect, { target: { value: 'pitch_deck' } });
     });
@@ -982,7 +982,7 @@ describe('PortalApprovalsPage', () => {
     ).toBe(true);
 
     // Agent dropdown offers the distinct agents present in the list.
-    const agentSelect = screen.getByDisplayValue('All agents') as HTMLSelectElement;
+    const agentSelect = screen.getByDisplayValue('Todos los agentes') as HTMLSelectElement;
     expect(screen.getByText('mcp-key-a')).toBeTruthy();
     expect(screen.getByText('mcp-key-b')).toBeTruthy();
     await act(async () => {
@@ -993,14 +993,14 @@ describe('PortalApprovalsPage', () => {
 
     // Time quick-select sends a since= param computed at click time.
     await act(async () => {
-      fireEvent.click(screen.getByText('Last 24h'));
+      fireEvent.click(screen.getByText('Últimas 24 h'));
     });
     await flush();
     expect(fetchMock.mock.calls.some(([u]) => String(u).includes('since='))).toBe(true);
 
     // Clear filters resets entityType/keyId/time but keeps the status tab.
     await act(async () => {
-      fireEvent.click(screen.getByText('Clear filters'));
+      fireEvent.click(screen.getByText('Limpiar filtros'));
     });
     await flush();
     const lastCall = fetchMock.mock.calls[fetchMock.mock.calls.length - 1][0];
