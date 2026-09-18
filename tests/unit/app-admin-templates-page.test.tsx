@@ -225,8 +225,8 @@ describe('TemplatesPage', () => {
     it('renders scope label badge for block scope', async () => {
       setupFetch([baseTemplate]);
       await renderPage();
-      // "Block" appears in both filter button and scope badge — confirm at least 2
-      expect(screen.getAllByText('Block').length).toBeGreaterThanOrEqual(2);
+      // "Block" stays on the filter button; the scope badge reads "Bloque"
+      expect(screen.getAllByText('Bloque').length).toBeGreaterThanOrEqual(1);
     });
 
     it('renders scope label badge for section scope', async () => {
@@ -355,7 +355,7 @@ describe('TemplatesPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
       expect(screen.getByText('New Template')).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
       expect(screen.queryByText('New Template')).toBeNull();
     });
 
@@ -381,7 +381,7 @@ describe('TemplatesPage', () => {
   describe('edit template', () => {
     it('opens form with "Edit Template" heading and pre-filled values', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       expect(screen.getByText('Edit Template')).toBeTruthy();
       expect(screen.getByDisplayValue('Hero Block')).toBeTruthy();
@@ -389,7 +389,7 @@ describe('TemplatesPage', () => {
 
     it('slug field is disabled when editing', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const slugInput = screen.getByDisplayValue('hero-block') as HTMLInputElement;
       expect(slugInput.disabled).toBe(true);
@@ -397,21 +397,21 @@ describe('TemplatesPage', () => {
 
     it('description is pre-filled', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       expect(screen.getByDisplayValue('A hero section template')).toBeTruthy();
     });
 
     it('tags are pre-filled joined by comma-space', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       expect(screen.getByDisplayValue('hero, landing')).toBeTruthy();
     });
 
     it('does NOT auto-update slug when name changes in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const nameInput = screen.getByDisplayValue('Hero Block');
       fireEvent.change(nameInput, { target: { value: 'Hero Block Renamed' } });
@@ -422,7 +422,7 @@ describe('TemplatesPage', () => {
 
     it('submits PUT when Update is clicked', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       fireEvent.click(screen.getByRole('button', { name: 'Update' }));
       await waitFor(() => {
@@ -437,7 +437,7 @@ describe('TemplatesPage', () => {
   describe('delete template', () => {
     it('calls DELETE endpoint after confirm', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       expect(confirmMock).toHaveBeenCalled();
       await waitFor(() => {
@@ -451,7 +451,7 @@ describe('TemplatesPage', () => {
     it('does not DELETE when confirm returns false', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       await flush();
       const delCall = mockFetch.mock.calls.find(
@@ -468,7 +468,7 @@ describe('TemplatesPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Cannot delete: in use'));
     });
@@ -477,7 +477,7 @@ describe('TemplatesPage', () => {
       setupFetch([pendingDeleteTemplate]);
       await renderPage();
       // Only "Cancel deletion" and "Publish" buttons visible — no "Delete"
-      expect(screen.queryByRole('button', { name: 'Delete' })).toBeNull();
+      expect(screen.queryByRole('button', { name: 'Eliminar' })).toBeNull();
     });
   });
 
@@ -485,13 +485,13 @@ describe('TemplatesPage', () => {
     it('shows Publish button for templates with a draft', async () => {
       setupFetch([draftTemplate]);
       await renderPage();
-      expect(screen.getByRole('button', { name: /Publish/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Publicar/ })).toBeTruthy();
     });
 
     it('calls publish endpoint when Publish clicked', async () => {
       setupFetch([draftTemplate]);
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Publish/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Publicar/ }));
       await waitFor(() => {
         const publishCall = mockFetch.mock.calls.find(
           ([url, init]) => /\/api\/block-templates\/4\/publish$/.test(url as string) && (init as RequestInit)?.method === 'POST',
@@ -508,7 +508,7 @@ describe('TemplatesPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Publish/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Publicar/ }));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Publish failed'));
     });
   });
@@ -549,7 +549,7 @@ describe('TemplatesPage', () => {
     it('shows "Draft" badge for template with non-delete draft', async () => {
       setupFetch([draftTemplate]);
       await renderPage();
-      expect(screen.getByText('Draft')).toBeTruthy();
+      expect(screen.getByText('Borrador')).toBeTruthy();
     });
 
     it('shows "Pending delete" badge for pending-delete template', async () => {
@@ -568,14 +568,14 @@ describe('TemplatesPage', () => {
     it('formatDraftTooltip includes updatedAt and updatedBy in title', async () => {
       setupFetch([draftTemplate]);
       await renderPage();
-      const draftBadge = screen.getByText('Draft').closest('[title]') as HTMLElement;
+      const draftBadge = screen.getByText('Borrador').closest('[title]') as HTMLElement;
       expect(draftBadge?.getAttribute('title')).toContain('by user 42');
     });
 
     it('formatDraftTooltip falls back to "Unpublished draft" when no metadata', async () => {
       setupFetch([{ ...draftTemplate, draft: { pendingDelete: false } }]);
       await renderPage();
-      const draftBadge = screen.getByText('Draft').closest('[title]') as HTMLElement;
+      const draftBadge = screen.getByText('Borrador').closest('[title]') as HTMLElement;
       expect(draftBadge?.getAttribute('title')).toBe('Unpublished draft');
     });
   });
