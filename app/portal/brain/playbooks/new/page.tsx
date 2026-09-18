@@ -69,7 +69,7 @@ export default function NewPlaybookPage() {
     });
     const json = await r.json();
     if (!r.ok || !json.success) {
-      throw new Error(json.message || 'Failed to create playbook');
+      throw new Error(json.message || 'No se pudo crear el playbook');
     }
     router.push(`/portal/brain/playbooks/${json.data.id}/edit`);
   };
@@ -89,7 +89,7 @@ export default function NewPlaybookPage() {
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">play_circle</span>
-              New playbook
+              Nuevo playbook
             </span>
           }
           subtitle="Comienza como borrador. Añade pasos en la siguiente pantalla y actívalo cuando estés listo."

@@ -32,7 +32,7 @@ type StatusFilter = 'all' | BrainPersonStatus;
 const STATUS_TABS: { key: StatusFilter; label: string }[] = [
   { key: 'active',   label: 'Activo' },
   { key: 'inactive', label: 'Inactivo' },
-  { key: 'departed', label: 'Departed' },
+  { key: 'departed', label: 'Baja' },
   { key: 'all',      label: 'Todos' },
 ];
 
@@ -146,14 +146,14 @@ export default function BrainPeoplePage() {
         const json = await r.json();
         if (cancelled) return;
         if (!r.ok || !json.success) {
-          setError(json.message || 'Failed to load people.');
+          setError(json.message || 'No se pudo cargar a las personas.');
           setRows([]);
           return;
         }
         setRows((json.data?.items ?? []) as PersonCardData[]);
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Network error');
+          setError(err instanceof Error ? err.message : 'Error de red');
           setRows([]);
         }
       } finally {
@@ -182,12 +182,12 @@ export default function BrainPeoplePage() {
       <div className="sticky top-0 z-10 -mx-4 px-4 pb-3 pt-2 bg-background/95 backdrop-blur border-b border-border">
         <PortalPageHeader
           eyebrow="Cerebro de empresa"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">groups</span>People</span>}
-          subtitle="Your internal team — employees, advisors, and contractors. Distinct from CRM contacts."
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">groups</span>Personas</span>}
+          subtitle="Tu equipo interno: empleados, asesores y colaboradores. Distinto de los contactos del CRM."
           actions={
             <Link href="/portal/brain/people/new" className={pBtnPrimary}>
               <span className="material-icons text-base">person_add</span>
-              New person
+              Nueva persona
             </Link>
           }
           className="mb-0 pb-3"
@@ -241,7 +241,7 @@ export default function BrainPeoplePage() {
 
         {tags.length > 0 && (
           <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] text-muted-foreground mr-1">Expertise:</span>
+            <span className="text-[11px] text-muted-foreground mr-1">Especialidad:</span>
             <button
               type="button"
               onClick={() => setParam({ expertiseTagId: null })}
@@ -277,7 +277,7 @@ export default function BrainPeoplePage() {
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
             <div className="flex items-center gap-2 font-medium mb-1">
               <span className="material-icons text-base">error_outline</span>
-              Couldn&apos;t load people
+              No se pudo cargar a las personas
             </div>
             <p>{error}</p>
           </div>
@@ -286,14 +286,14 @@ export default function BrainPeoplePage() {
             <span className="material-icons text-5xl text-muted-foreground mb-2 block">person_add</span>
             <p className="text-sm text-foreground font-medium">Aún no hay personas registradas.</p>
             <p className="text-xs text-muted-foreground mt-1 mb-4">
-              Add the first member of your team.
+              Añade al primer miembro de tu equipo.
             </p>
             <Link
               href="/portal/brain/people/new"
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">person_add</span>
-              Add person
+              Añadir persona
             </Link>
           </div>
         ) : (
@@ -313,9 +313,9 @@ export default function BrainPeoplePage() {
               className={pBtnGhost + " disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"}
             >
               <span className="material-icons text-base">chevron_left</span>
-              Prev
+              Anterior
             </button>
-            <span className="text-xs text-muted-foreground">Page {page}</span>
+            <span className="text-xs text-muted-foreground">Página {page}</span>
             <button
               type="button"
               disabled={!hasNextPage}

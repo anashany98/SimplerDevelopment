@@ -185,7 +185,7 @@ describe('PlaybookRunsPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load runs');
+      expect(container.textContent).toContain('No se pudieron cargar las ejecuciones');
     });
   });
 
@@ -219,7 +219,7 @@ describe('PlaybookRunsPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -248,7 +248,7 @@ describe('PlaybookRunsPage — empty state', () => {
   it('shows "No runs match these filters." in empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No runs match these filters');
+      expect(container.textContent).toContain('No hay ejecuciones que coincidan con estos filtros');
     });
   });
 
@@ -262,7 +262,7 @@ describe('PlaybookRunsPage — empty state', () => {
   it('shows instruction text about starting runs', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Start a run from any active playbook');
+      expect(container.textContent).toContain('Inicia una ejecución desde cualquier playbook activo');
     });
   });
 });
@@ -338,7 +338,7 @@ describe('PlaybookRunsPage — header', () => {
   it('renders "Playbook runs" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Playbook runs');
+      expect(container.textContent).toContain('Ejecuciones de playbook');
     });
   });
 
@@ -362,7 +362,7 @@ describe('PlaybookRunsPage — header', () => {
 // ─── Status filter pills ──────────────────────────────────────────────────────
 
 describe('PlaybookRunsPage — status filter pills', () => {
-  const expectedLabels = ['Active', 'Pending', 'Paused', 'Completed', 'Aborted', 'Failed', 'All'];
+  const expectedLabels = ['Active', 'Pending', 'Paused', 'Completed', 'Aborted', 'Failed', 'Todos'];
 
   expectedLabels.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -375,7 +375,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
 
   it('default status is "active" — Active pill is highlighted', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Active');
     expect(activeBtn?.className).toContain('bg-primary');
@@ -383,9 +383,9 @@ describe('PlaybookRunsPage — status filter pills', () => {
 
   it('clicking "All" pill calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const allBtn = buttons.find((b) => b.textContent?.trim() === 'All') as HTMLButtonElement;
+    const allBtn = buttons.find((b) => b.textContent?.trim() === 'Todos') as HTMLButtonElement;
     expect(allBtn).toBeTruthy();
     fireEvent.click(allBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -393,7 +393,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
 
   it('clicking "Pending" pill calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const pendingBtn = buttons.find((b) => b.textContent?.trim() === 'Pending') as HTMLButtonElement;
     expect(pendingBtn).toBeTruthy();
@@ -403,7 +403,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
 
   it('clicking "Failed" pill calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const failedBtn = buttons.find((b) => b.textContent?.trim() === 'Failed') as HTMLButtonElement;
     fireEvent.click(failedBtn);
@@ -412,7 +412,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
 
   it('clicking "Completed" pill calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completed') as HTMLButtonElement;
     fireEvent.click(completedBtn);
@@ -422,7 +422,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
   it('when status=completed in URL, Completed pill is highlighted', async () => {
     searchParamsMap = { status: 'completed' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completed');
     expect(completedBtn?.className).toContain('bg-primary');
@@ -435,7 +435,7 @@ describe('PlaybookRunsPage — playbook filter dropdown', () => {
   it('renders "Any playbook" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Any playbook');
+      expect(container.textContent).toContain('Cualquier playbook');
     });
   });
 
@@ -487,14 +487,14 @@ describe('PlaybookRunsPage — playbook filter dropdown', () => {
 describe('PlaybookRunsPage — date filters', () => {
   it('renders two date inputs (started after + before)', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const dateInputs = Array.from(container.querySelectorAll('input[type="date"]'));
     expect(dateInputs.length).toBe(2);
   });
 
   it('changing "started after" date calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const dateInputs = Array.from(container.querySelectorAll('input[type="date"]')) as HTMLInputElement[];
     fireEvent.change(dateInputs[0], { target: { value: '2025-01-01' } });
     expect(replaceMock).toHaveBeenCalled();
@@ -502,7 +502,7 @@ describe('PlaybookRunsPage — date filters', () => {
 
   it('changing "before" date calls router.replace', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const dateInputs = Array.from(container.querySelectorAll('input[type="date"]')) as HTMLInputElement[];
     fireEvent.change(dateInputs[1], { target: { value: '2025-12-31' } });
     expect(replaceMock).toHaveBeenCalled();
@@ -546,7 +546,7 @@ describe('PlaybookRunsPage — date filters', () => {
 describe('PlaybookRunsPage — clear button', () => {
   it('does NOT show "Clear" when no secondary filters are active', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Playbook runs'));
+    await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     expect(container.textContent).not.toContain('Limpiar');
   });
 
@@ -773,7 +773,7 @@ describe('PlaybookRunsPage — run row timestamps', () => {
   it('shows "started" time span when startedAt is provided', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('started');
+      expect(container.textContent).toContain('iniciada');
     });
   });
 
@@ -802,7 +802,7 @@ describe('PlaybookRunsPage — run row timestamps', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('ran for');
+      expect(container.textContent).toContain('duró');
     });
   });
 
@@ -810,7 +810,7 @@ describe('PlaybookRunsPage — run row timestamps', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Run #1'));
     // Default run has completedAt: null
-    expect(container.textContent).not.toContain('ran for');
+    expect(container.textContent).not.toContain('duró');
   });
 });
 

@@ -164,7 +164,7 @@ describe('BrainDocumentsListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load documents");
+      expect(container.textContent).toContain('No se pudieron cargar los documentos');
     });
   });
 
@@ -190,7 +190,7 @@ describe('BrainDocumentsListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load documents');
+      expect(container.textContent).toContain('No se pudieron cargar los documentos');
     });
   });
 
@@ -214,7 +214,7 @@ describe('BrainDocumentsListPage — header', () => {
   it('renders "Documents" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Documents');
+      expect(container.textContent).toContain('Documentos');
     });
   });
 
@@ -223,7 +223,7 @@ describe('BrainDocumentsListPage — header', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/documents/new"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('New document');
+      expect(link?.textContent).toContain('Nuevo documento');
     });
   });
 
@@ -262,7 +262,7 @@ describe('BrainDocumentsListPage — status filter', () => {
 
   it('clicking "all" status pill calls router.replace with status=all', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const allBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'all',
     ) as HTMLButtonElement;
@@ -276,7 +276,7 @@ describe('BrainDocumentsListPage — status filter', () => {
 
   it('clicking "draft" status pill calls router.replace with status=draft', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const draftBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'draft',
     ) as HTMLButtonElement;
@@ -290,7 +290,7 @@ describe('BrainDocumentsListPage — status filter', () => {
 
   it('clicking "archived" status pill calls router.replace with status=archived', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const archivedBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'archived',
     ) as HTMLButtonElement;
@@ -305,7 +305,7 @@ describe('BrainDocumentsListPage — status filter', () => {
   it('clicking "published" removes status from URL (it is the default)', async () => {
     searchParamsMap = { status: 'draft' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     replaceMock.mockReset();
     const publishedBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'published',
@@ -488,7 +488,7 @@ describe('BrainDocumentsListPage — search input', () => {
 
   it('typing in search box calls router.replace after debounce', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     vi.useFakeTimers();
     const input = container.querySelector('#doc-search') as HTMLInputElement;
     await act(async () => {
@@ -506,7 +506,7 @@ describe('BrainDocumentsListPage — search input', () => {
   it('clearing search removes search param from URL', async () => {
     searchParamsMap = { search: 'hello' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Documents'));
+    await waitFor(() => expect(container.textContent).toContain('Documentos'));
     vi.useFakeTimers();
     const input = container.querySelector('#doc-search') as HTMLInputElement;
     await act(async () => {
@@ -537,7 +537,7 @@ describe('BrainDocumentsListPage — empty state', () => {
   it('shows "No documents yet." empty message when no filters active', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No documents yet.');
+      expect(container.textContent).toContain('Aún no hay documentos.');
     });
   });
 
@@ -562,7 +562,7 @@ describe('BrainDocumentsListPage — empty state', () => {
     searchParamsMap = { search: 'xyz' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matching documents.');
+      expect(container.textContent).toContain('No hay documentos que coincidan.');
     });
   });
 
@@ -570,7 +570,7 @@ describe('BrainDocumentsListPage — empty state', () => {
     searchParamsMap = { category: 'sop' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Try clearing filters.');
+      expect(container.textContent).toContain('Prueba a quitar los filtros.');
     });
   });
 
@@ -578,7 +578,7 @@ describe('BrainDocumentsListPage — empty state', () => {
     searchParamsMap = { status: 'draft' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matching documents.');
+      expect(container.textContent).toContain('No hay documentos que coincidan.');
     });
   });
 });
@@ -616,8 +616,8 @@ describe('BrainDocumentsListPage — list rendering', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // Both group headings should appear
-      expect(container.textContent).toContain('Guide');
-      expect(container.textContent).toContain('Policy');
+      expect(container.textContent).toContain('Guía');
+      expect(container.textContent).toContain('Política');
     });
   });
 
@@ -646,7 +646,7 @@ describe('BrainDocumentsListPage — list rendering', () => {
 
     // Find the Guide group header button and click it
     const groupBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Guide'),
+      (b) => b.textContent?.includes('Guía'),
     ) as HTMLButtonElement;
     expect(groupBtn).toBeTruthy();
     fireEvent.click(groupBtn);
@@ -664,7 +664,7 @@ describe('BrainDocumentsListPage — list rendering', () => {
     });
 
     const groupBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Guide'),
+      (b) => b.textContent?.includes('Guía'),
     ) as HTMLButtonElement;
     fireEvent.click(groupBtn);
 
@@ -780,7 +780,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Prev'),
+      (b) => b.textContent?.includes('Anterior'),
     );
     expect(prevBtn).toBeTruthy();
   });
@@ -817,7 +817,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Prev'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn?.disabled).toBe(true);
   });
@@ -852,7 +852,7 @@ describe('BrainDocumentsListPage — pagination', () => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Prev'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     await waitFor(() => {
@@ -868,6 +868,6 @@ describe('BrainDocumentsListPage — pagination', () => {
     await waitFor(() => {
       expect(container.querySelector('[data-testid="document-card-1"]')).toBeTruthy();
     });
-    expect(container.textContent).toContain('Page 2');
+    expect(container.textContent).toContain('Página 2');
   });
 });

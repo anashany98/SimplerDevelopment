@@ -63,12 +63,12 @@ export default function BrainOrgChartPage() {
       const r = await fetch('/api/portal/brain/org-units?as=tree');
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load org units.');
+        setError(json.message || 'No se pudieron cargar las unidades organizativas.');
         return;
       }
       setTree((json.data?.tree as BrainOrgUnitTreeNode[]) ?? []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ export default function BrainOrgChartPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to move unit.');
+      alert(json.message || 'No se pudo mover la unidad.');
       return;
     }
     await loadTree();
@@ -110,7 +110,7 @@ export default function BrainOrgChartPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to rename unit.');
+      alert(json.message || 'No se pudo renombrar la unidad.');
       return;
     }
     await loadTree();
@@ -122,7 +122,7 @@ export default function BrainOrgChartPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to delete unit.');
+      alert(json.message || 'No se pudo eliminar la unidad.');
       return;
     }
     if (selectedId === id) setSelectedId(null);
@@ -137,7 +137,7 @@ export default function BrainOrgChartPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to merge units.');
+      alert(json.message || 'No se pudieron fusionar las unidades.');
       return;
     }
     if (selectedId === sourceId) setSelectedId(targetId);
@@ -152,7 +152,7 @@ export default function BrainOrgChartPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to create unit.');
+      alert(json.message || 'No se pudo crear la unidad.');
       return;
     }
     await loadTree();
@@ -173,7 +173,7 @@ export default function BrainOrgChartPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load org chart
+            No se pudo cargar el organigrama
           </div>
           <p>{error}</p>
         </div>
@@ -188,13 +188,13 @@ export default function BrainOrgChartPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">account_tree</span>
-            Org Chart
+            Organigrama
           </span>
         }
-        subtitle={`${flatCount} unit${flatCount === 1 ? '' : 's'} · drag rows to reorganize`}
+        subtitle={`${flatCount} unidad${flatCount === 1 ? '' : 'es'} · arrastra las filas para reorganizar`}
         actions={
           <div className="flex items-center gap-2">
-            <div className="inline-flex border border-border rounded-xl overflow-hidden" role="group" aria-label="Density">
+            <div className="inline-flex border border-border rounded-xl overflow-hidden" role="group" aria-label="Densidad">
               <button
                 type="button"
                 onClick={() => setCompactView(false)}
@@ -202,7 +202,7 @@ export default function BrainOrgChartPage() {
                 aria-pressed={!compactView}
               >
                 <span className="material-icons text-sm">density_medium</span>
-                Expanded
+                Expandido
               </button>
               <button
                 type="button"
@@ -211,7 +211,7 @@ export default function BrainOrgChartPage() {
                 aria-pressed={compactView}
               >
                 <span className="material-icons text-sm">density_small</span>
-                Compact
+                Compacto
               </button>
             </div>
             <button
@@ -220,7 +220,7 @@ export default function BrainOrgChartPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              New unit
+              Nueva unidad
             </button>
           </div>
         }
@@ -315,7 +315,7 @@ function UnitSidePanel({
       const r = await fetch(`/api/portal/brain/org-units/${unitId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load unit.');
+        setError(json.message || 'No se pudo cargar la unidad.');
         return;
       }
       const data = json.data as BrainOrgUnitWithDetails;
@@ -324,7 +324,7 @@ function UnitSidePanel({
       setDescDraft(data.unit.description ?? '');
       setMemberPage(0);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -344,7 +344,7 @@ function UnitSidePanel({
       });
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
-        alert(json.message || 'Failed to update unit.');
+        alert(json.message || 'No se pudo actualizar la unidad.');
         return false;
       }
       await load();
@@ -363,7 +363,7 @@ function UnitSidePanel({
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to remove member.');
+      alert(json.message || 'No se pudo quitar al miembro.');
       return;
     }
     await load();
@@ -381,7 +381,7 @@ function UnitSidePanel({
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Failed to update primary.');
+      alert(json.message || 'No se pudo actualizar la unidad principal.');
       return;
     }
     await load();
@@ -392,7 +392,7 @@ function UnitSidePanel({
     return (
       <div className={`${pCard} p-6 text-center text-sm text-muted-foreground`}>
         <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading unit…
+        Cargando unidad…
       </div>
     );
   }
@@ -402,7 +402,7 @@ function UnitSidePanel({
       <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 text-sm text-destructive">
         <div className="flex items-center gap-2 font-medium mb-1">
           <span className="material-icons text-base">error_outline</span>
-          Couldn&apos;t load unit
+          No se pudo cargar la unidad
         </div>
         <p>{error}</p>
       </div>
@@ -421,7 +421,7 @@ function UnitSidePanel({
       {/* Breadcrumb */}
       <div className="flex items-center flex-wrap gap-1 text-xs text-muted-foreground">
         {ancestors.length === 0 ? (
-          <span>Root</span>
+          <span>Raíz</span>
         ) : (
           ancestors.map((a, i) => (
             <span key={a.id} className="inline-flex items-center gap-1">
@@ -442,7 +442,7 @@ function UnitSidePanel({
           onChange={(e) => setNameDraft(e.target.value)}
           onBlur={() => {
             const v = nameDraft.trim();
-            if (v && v !== unit.name) patchUnit({ name: v }, 'name');
+            if (v && v !== unit.name) patchUnit({ name: v }, 'nombre');
             else setNameDraft(unit.name);
           }}
           onKeyDown={(e) => { if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur(); }}
@@ -458,7 +458,7 @@ function UnitSidePanel({
           onChange={(e) => setDescDraft(e.target.value)}
           onBlur={() => {
             const v = descDraft.trim();
-            if (v !== (unit.description ?? '')) patchUnit({ description: v || null }, 'description');
+            if (v !== (unit.description ?? '')) patchUnit({ description: v || null }, 'descripción');
           }}
           rows={2}
           placeholder="¿Qué hace esta unidad?"
@@ -478,7 +478,7 @@ function UnitSidePanel({
                 key={c || 'none'}
                 type="button"
                 onClick={() => patchUnit({ color: c || null }, 'color')}
-                title={c || 'No color'}
+                title={c || 'Sin color'}
                 className={`w-6 h-6 rounded-full border ${unit.color === c || (!unit.color && !c) ? 'ring-2 ring-primary ring-offset-1' : 'border-border'}`}
                 style={{ backgroundColor: c || 'transparent', backgroundImage: c ? undefined : 'repeating-linear-gradient(45deg, var(--border, #ccc) 0 2px, transparent 2px 4px)' }}
               />
@@ -492,7 +492,7 @@ function UnitSidePanel({
               <button
                 key={icon}
                 type="button"
-                onClick={() => patchUnit({ icon }, 'icon')}
+                onClick={() => patchUnit({ icon }, 'icono')}
                 title={icon}
                 className={`w-7 h-7 inline-flex items-center justify-center rounded border ${unit.icon === icon ? 'border-primary bg-primary/10' : 'border-border hover:bg-muted'}`}
               >
@@ -504,13 +504,13 @@ function UnitSidePanel({
       </div>
 
       {savingField && (
-        <p className="text-[10px] text-muted-foreground italic">Saving {savingField}…</p>
+        <p className="text-[10px] text-muted-foreground italic">Guardando {savingField}…</p>
       )}
 
       {/* Lead person */}
       <div>
         <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium mb-1">
-          Lead person
+          Persona responsable
         </label>
         {unit.leadPersonId === null ? (
           <button
@@ -519,7 +519,7 @@ function UnitSidePanel({
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-base">person_add</span>
-            Set lead
+            Definir responsable
           </button>
         ) : (
           <div className="flex items-center justify-between gap-2">
@@ -531,15 +531,15 @@ function UnitSidePanel({
                 type="button"
                 onClick={() => setShowLeadPicker(true)}
                 className="h-6 w-6 inline-flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted rounded"
-                title="Change lead"
+                title="Cambiar responsable"
               >
                 <span className="material-icons text-sm">edit</span>
               </button>
               <button
                 type="button"
-                onClick={() => patchUnit({ leadPersonId: null }, 'lead')}
+                onClick={() => patchUnit({ leadPersonId: null }, 'responsable')}
                 className="h-6 w-6 inline-flex items-center justify-center text-muted-foreground hover:text-destructive hover:bg-muted rounded"
-                title="Clear lead"
+                title="Quitar responsable"
               >
                 <span className="material-icons text-sm">close</span>
               </button>
@@ -552,7 +552,7 @@ function UnitSidePanel({
             onClose={() => setShowLeadPicker(false)}
             onPick={async (person) => {
               setShowLeadPicker(false);
-              await patchUnit({ leadPersonId: person.id }, 'lead');
+              await patchUnit({ leadPersonId: person.id }, 'responsable');
             }}
           />
         )}
@@ -562,7 +562,7 @@ function UnitSidePanel({
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className="block text-[11px] uppercase tracking-wide text-muted-foreground font-medium">
-            Members ({members.length})
+            Miembros ({members.length})
           </label>
           <button
             type="button"
@@ -570,7 +570,7 @@ function UnitSidePanel({
             className="text-xs text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">person_add</span>
-            Add member
+            Añadir miembro
           </button>
         </div>
         {members.length === 0 ? (
@@ -596,10 +596,10 @@ function UnitSidePanel({
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-muted-foreground hover:bg-muted disabled:opacity-40"
                 >
                   <span className="material-icons text-sm">chevron_left</span>
-                  Prev
+                  Anterior
                 </button>
                 <span className="text-muted-foreground">
-                  Page {memberPage + 1} of {totalPages}
+                  Página {memberPage + 1} de {totalPages}
                 </span>
                 <button
                   type="button"
@@ -623,7 +623,7 @@ function UnitSidePanel({
               });
               const json = await r.json().catch(() => ({}));
               if (!r.ok || !json.success) {
-                alert(json.message || 'Failed to add member.');
+                alert(json.message || 'No se pudo añadir al miembro.');
                 return;
               }
               setShowAddMember(false);
@@ -642,7 +642,7 @@ function UnitSidePanel({
           className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm rounded border border-destructive/30 text-destructive hover:bg-destructive/10"
         >
           <span className="material-icons text-base">delete</span>
-          Delete unit
+          Eliminar unidad
         </button>
         {showDeleteUnit && (
           <DeleteUnitInlineModal
@@ -653,7 +653,7 @@ function UnitSidePanel({
               const r = await fetch(`/api/portal/brain/org-units/${unitId}${force ? '?force=true' : ''}`, { method: 'DELETE' });
               const json = await r.json().catch(() => ({}));
               if (!r.ok || !json.success) {
-                alert(json.message || 'Failed to delete unit.');
+                alert(json.message || 'No se pudo eliminar la unidad.');
                 return;
               }
               setShowDeleteUnit(false);
@@ -734,7 +734,7 @@ function MemberRow({
       <button
         type="button"
         onClick={onTogglePrimary}
-        title={member.primary ? 'Primary unit (click to unmark)' : 'Mark as primary unit'}
+        title={member.primary ? 'Unidad principal (clic para desmarcar)' : 'Marcar como unidad principal'}
         className={`h-6 w-6 inline-flex items-center justify-center rounded hover:bg-muted ${member.primary ? 'text-yellow-500' : 'text-muted-foreground'}`}
       >
         <span className="material-icons text-base">{member.primary ? 'star' : 'star_outline'}</span>
@@ -793,7 +793,7 @@ function NewUnitModal({
       });
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to create unit.');
+        setError(json.message || 'No se pudo crear la unidad.');
         return;
       }
       onCreated(json.data);
@@ -810,18 +810,18 @@ function NewUnitModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoFocus
-            placeholder="Engineering"
+            placeholder="Ingeniería"
             className={pInput}
           />
         </Field>
-        <Field label="Parent unit">
+        <Field label="Unidad superior">
           <ParentUnitPicker
             tree={tree}
             value={parentId}
             onChange={setParentId}
           />
         </Field>
-        <Field label="Description (optional)">
+        <Field label="Descripción (opcional)">
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -830,7 +830,7 @@ function NewUnitModal({
             className={`${pInput} resize-y`}
           />
         </Field>
-        <Field label="Lead person (optional)">
+        <Field label="Persona responsable (opcional)">
           {leadPersonId === null ? (
             <button
               type="button"
@@ -838,7 +838,7 @@ function NewUnitModal({
               className="text-sm text-primary hover:underline inline-flex items-center gap-1"
             >
               <span className="material-icons text-base">person_add</span>
-              Pick lead
+              Elegir responsable
             </button>
           ) : (
             <div className="flex items-center gap-2 text-sm">
@@ -869,7 +869,7 @@ function NewUnitModal({
                   key={c || 'none'}
                   type="button"
                   onClick={() => setColor(c)}
-                  title={c || 'No color'}
+                  title={c || 'Sin color'}
                   className={`w-6 h-6 rounded-full border ${color === c ? 'ring-2 ring-primary ring-offset-1' : 'border-border'}`}
                   style={{ backgroundColor: c || 'transparent', backgroundImage: c ? undefined : 'repeating-linear-gradient(45deg, var(--border, #ccc) 0 2px, transparent 2px 4px)' }}
                 />
@@ -910,7 +910,7 @@ function NewUnitModal({
             className={pBtnPrimary}
           >
             {submitting && <span className="material-icons animate-spin text-sm">progress_activity</span>}
-            Create
+            Crear
           </button>
         </div>
       </div>
@@ -943,7 +943,7 @@ function ParentUnitPicker({
       onChange={(e) => onChange(e.target.value === '' ? null : parseInt(e.target.value, 10))}
       className={pSelect}
     >
-      <option value="">— No parent (root) —</option>
+      <option value="">— Sin unidad superior (raíz) —</option>
       {items.map((it) => (
         <option key={it.id} value={String(it.id)}>
           {`${'  '.repeat(it.depth)}${it.depth > 0 ? '↳ ' : ''}${it.label}`}
@@ -968,7 +968,7 @@ function AddMemberDialog({
   return (
     <ModalShell title="Añadir miembro" onClose={onClose}>
       <div className="space-y-3">
-        <Field label="Person">
+        <Field label="Persona">
           {selected ? (
             <div className="flex items-center justify-between gap-2 bg-muted/40 border border-border rounded-xl px-3 py-2">
               <div className="text-sm">
@@ -995,7 +995,7 @@ function AddMemberDialog({
           <input
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            placeholder="Tech lead"
+            placeholder="Responsable técnico"
             className={pInput}
           />
         </Field>
@@ -1025,7 +1025,7 @@ function AddMemberDialog({
             className={pBtnPrimary}
           >
             {submitting && <span className="material-icons animate-spin text-sm">progress_activity</span>}
-            Add
+            Añadir
           </button>
         </div>
       </div>
@@ -1072,16 +1072,16 @@ function DeleteUnitInlineModal({
   const [force, setForce] = useState(false);
   const needsForce = memberCount > 0;
   return (
-    <ModalShell title={`Delete "${unitName}"?`} onClose={onClose}>
+    <ModalShell title={`¿Eliminar "${unitName}"?`} onClose={onClose}>
       <p className="text-xs text-muted-foreground mb-3">
         {needsForce
-          ? `This unit has ${memberCount} member${memberCount === 1 ? '' : 's'}. Force delete detaches members and re-parents children up one level.`
-          : 'This will permanently delete the unit.'}
+          ? `Esta unidad tiene ${memberCount} miembro${memberCount === 1 ? '' : 's'}. La eliminación forzada desvincula a los miembros y sube las unidades hijas un nivel.`
+          : 'Esto eliminará la unidad de forma permanente.'}
       </p>
       {needsForce && (
         <label className="flex items-start gap-2 text-xs mb-3 cursor-pointer">
           <input type="checkbox" checked={force} onChange={(e) => setForce(e.target.checked)} className="mt-0.5" />
-          <span><strong>Eliminar forzosamente</strong> (cascades children to parent, detaches all members)</span>
+          <span><strong>Eliminar forzosamente</strong> (sube las unidades hijas al nivel superior y desvincula a todos los miembros)</span>
         </label>
       )}
       <div className="flex justify-end gap-2 pt-1">

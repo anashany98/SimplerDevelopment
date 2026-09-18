@@ -176,7 +176,7 @@ describe('BrainPersonProfilePage — error state', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load person");
+      expect(container.textContent).toContain('No se pudo cargar la persona');
     });
   });
 
@@ -194,7 +194,7 @@ describe('BrainPersonProfilePage — error state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }, false));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load person');
+      expect(container.textContent).toContain('No se pudo cargar la persona');
     });
   });
 
@@ -331,7 +331,7 @@ describe('BrainPersonProfilePage — profile section', () => {
   it('renders Profile section heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Profile');
+      expect(container.textContent).toContain('Perfil');
     });
   });
 
@@ -499,7 +499,7 @@ describe('BrainPersonProfilePage — org membership section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Primary');
+      expect(container.textContent).toContain('Principal');
     });
   });
 });
@@ -517,7 +517,7 @@ describe('BrainPersonProfilePage — reporting section', () => {
   it('shows "No direct reports." when directReports is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No direct reports.');
+      expect(container.textContent).toContain('Sin personas a cargo.');
     });
   });
 
@@ -769,7 +769,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
       fireEvent.click(deleteBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Delete this person?');
+      expect(container.textContent).toContain('¿Eliminar a esta persona?');
     });
   });
 
@@ -782,7 +782,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'Cancelar',
@@ -790,7 +790,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
     fireEvent.click(cancelBtn);
 
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Delete this person?');
+      expect(container.textContent).not.toContain('¿Eliminar a esta persona?');
     });
 
     const deleteCalls = fetchMock.mock.calls.filter(
@@ -813,7 +813,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     // The confirm dialog's own Delete button (inside the dialog)
     const confirmDeleteBtn = Array.from(
@@ -842,7 +842,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const confirmDeleteBtn = Array.from(
       container.querySelectorAll('[role="dialog"] button'),
@@ -868,7 +868,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const confirmDeleteBtn = Array.from(
       container.querySelectorAll('[role="dialog"] button'),
@@ -891,7 +891,7 @@ describe('BrainPersonProfilePage — delete modal', () => {
 
     await waitFor(() => {
       expect(container.textContent).toContain('Alice Smith');
-      expect(container.textContent).toContain('Delete this person?');
+      expect(container.textContent).toContain('¿Eliminar a esta persona?');
     });
   });
 });

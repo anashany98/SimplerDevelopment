@@ -120,7 +120,7 @@ function GoalsListContent() {
       const goalsJson = await goalsRes.json();
       const initsJson = await initsRes.json();
       if (!goalsRes.ok || !goalsJson.success) {
-        setError(goalsJson.message || 'Failed to load goals');
+        setError(goalsJson.message || 'No se pudieron cargar los objetivos');
         setAllGoals([]);
         return;
       }
@@ -136,7 +136,7 @@ function GoalsListContent() {
         );
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -168,12 +168,12 @@ function GoalsListContent() {
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
           eyebrow="Cerebro de empresa"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">track_changes</span>Goals</span>}
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">track_changes</span>Objetivos</span>}
           subtitle="Todos los objetivos de cada iniciativa. Entra en una iniciativa para revisar o editar."
           actions={
             <Link href="/portal/brain/initiatives" className={pBtnGhost}>
               <span className="material-icons text-base">flag</span>
-              Initiatives
+              Iniciativas
             </Link>
           }
           className="mb-0 pb-3"
@@ -184,9 +184,9 @@ function GoalsListContent() {
             const active = statusFilter === s;
             const label =
               s === 'all'
-                ? 'All'
+                ? 'Todos'
                 : s === 'active'
-                  ? 'Active'
+                  ? 'Activos'
                   : goalStatusChip(s as BrainGoalStatus).label;
             return (
               <button
@@ -212,7 +212,7 @@ function GoalsListContent() {
             onChange={(e) => setParam({ ownerId: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">Any owner</option>
+            <option value="">Cualquier responsable</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -233,16 +233,16 @@ function GoalsListContent() {
       ) : visibleGoals.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-2xl">
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">track_changes</span>
-          <p className="text-foreground text-sm font-medium">No goals match these filters.</p>
+          <p className="text-foreground text-sm font-medium">No hay objetivos que coincidan con estos filtros.</p>
           <p className="text-muted-foreground text-xs mt-1 mb-4">
-            Create an initiative to start tracking measurable outcomes.
+            Crea una iniciativa para empezar a medir resultados.
           </p>
           <Link
             href="/portal/brain/initiatives/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New initiative
+            Nueva iniciativa
           </Link>
         </div>
       ) : (
@@ -250,12 +250,12 @@ function GoalsListContent() {
           <table className="w-full text-sm">
             <thead className="bg-muted/40 text-xs text-muted-foreground">
               <tr>
-                <th className="text-left px-3 py-2 font-medium">Goal</th>
-                <th className="text-left px-3 py-2 font-medium">Estado</th>
-                <th className="text-left px-3 py-2 font-medium">Progress</th>
-                <th className="text-left px-3 py-2 font-medium">Propietario</th>
                 <th className="text-left px-3 py-2 font-medium">Objetivo</th>
-                <th className="text-left px-3 py-2 font-medium">Initiative</th>
+                <th className="text-left px-3 py-2 font-medium">Estado</th>
+                <th className="text-left px-3 py-2 font-medium">Progreso</th>
+                <th className="text-left px-3 py-2 font-medium">Propietario</th>
+                <th className="text-left px-3 py-2 font-medium">Fecha objetivo</th>
+                <th className="text-left px-3 py-2 font-medium">Iniciativa</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -277,7 +277,7 @@ function GoalsListContent() {
                       {g.lastCheckedInAt && (
                         <div className="text-[11px] text-muted-foreground inline-flex items-center gap-1 mt-0.5">
                           <span className="material-icons text-[13px]">history</span>
-                          checked in {relativeTime(g.lastCheckedInAt)} ago
+                          actualizado hace {relativeTime(g.lastCheckedInAt)}
                         </div>
                       )}
                     </td>
@@ -310,7 +310,7 @@ function GoalsListContent() {
                       </div>
                     </td>
                     <td className="px-3 py-2.5 align-top text-xs text-muted-foreground">
-                      {ownerName ?? <span className="opacity-60">unassigned</span>}
+                      {ownerName ?? <span className="opacity-60">sin asignar</span>}
                     </td>
                     <td className="px-3 py-2.5 align-top text-xs text-muted-foreground">
                       {g.targetDate ? new Date(g.targetDate).toLocaleDateString() : '—'}

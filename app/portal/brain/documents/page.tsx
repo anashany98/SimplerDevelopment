@@ -37,11 +37,11 @@ type StatusFilter = 'all' | BrainDocumentStatus;
 const CATEGORIES: BrainDocumentCategory[] = ['sop', 'policy', 'guide', 'reference', 'announcement', 'other'];
 const CATEGORY_LABEL: Record<BrainDocumentCategory, string> = {
   sop: 'SOP',
-  policy: 'Policy',
-  guide: 'Guide',
-  reference: 'Reference',
-  announcement: 'Announcement',
-  other: 'Other',
+  policy: 'Política',
+  guide: 'Guía',
+  reference: 'Referencia',
+  announcement: 'Anuncio',
+  other: 'Otro',
 };
 
 const PAGE_SIZE = 25;
@@ -122,12 +122,12 @@ export default function BrainDocumentsListPage() {
       const r = await fetch(`/api/portal/brain/documents?${qs.toString()}`);
       const json: ListResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load documents.');
+        setError(json.message || 'No se pudieron cargar los documentos.');
       } else {
         setItems(json.data?.items ?? []);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -163,7 +163,7 @@ export default function BrainDocumentsListPage() {
       const arr = map.get(it.category) ?? [];
       arr.push({
         ...it,
-        ownerName: it.ownerId !== null ? (ownerNameById.get(it.ownerId) ?? `User #${it.ownerId}`) : null,
+        ownerName: it.ownerId !== null ? (ownerNameById.get(it.ownerId) ?? `Usuario #${it.ownerId}`) : null,
       });
       map.set(it.category, arr);
     }
@@ -182,19 +182,19 @@ export default function BrainDocumentsListPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">description</span>
-            Documents
+            Documentos
           </span>
         }
-        subtitle="Versioned, required-readable SOPs &amp; policies. The canonical written answer for your team."
+        subtitle="SOP y políticas versionadas y de lectura obligatoria. La respuesta escrita canónica para tu equipo."
         actions={
           <>
             <Link href="/portal/brain/documents/queue" className={pBtnGhost}>
               <span className="material-icons text-base">assignment_late</span>
-              My reading queue
+              Mi cola de lectura
             </Link>
             <Link href="/portal/brain/documents/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New document
+              Nuevo documento
             </Link>
           </>
         }
@@ -244,7 +244,7 @@ export default function BrainDocumentsListPage() {
             className={pSelect}
           >
             <option value="">Todos los propietarios</option>
-            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
+            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `Usuario #${u.id}`}</option>)}
           </select>
         </div>
 
@@ -274,7 +274,7 @@ export default function BrainDocumentsListPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load documents
+            No se pudieron cargar los documentos
           </div>
           <p>{error}</p>
         </div>
@@ -285,22 +285,22 @@ export default function BrainDocumentsListPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">description</span>
           <h2 className="text-base font-semibold text-foreground mb-1">
             {searchParam || categoryParam || ownerParam || statusParam !== 'published'
-              ? 'No matching documents.'
-              : 'No documents yet.'}
+              ? 'No hay documentos que coincidan.'
+              : 'Aún no hay documentos.'}
           </h2>
           <p className="text-xs text-muted-foreground mb-4">
             {searchParam || categoryParam || ownerParam || statusParam !== 'published'
-              ? 'Try clearing filters.'
-              : 'Promote a note into your first SOP, or write one from scratch.'}
+              ? 'Prueba a quitar los filtros.'
+              : 'Promueve una nota como tu primer SOP o escribe uno desde cero.'}
           </p>
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Link href="/portal/brain/documents/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New document
+              Nuevo documento
             </Link>
             <Link href="/portal/brain/documents/new?source=note" className={pBtnGhost}>
               <span className="material-icons text-base">file_upload</span>
-              Promote from note
+              Promover desde nota
             </Link>
           </div>
         </div>
@@ -334,7 +334,7 @@ export default function BrainDocumentsListPage() {
 
           {(pageParam > 1 || hasNextPage) && (
             <div className="flex items-center justify-between pt-3 border-t border-border text-xs">
-              <span className="text-muted-foreground">Page {pageParam}</span>
+              <span className="text-muted-foreground">Página {pageParam}</span>
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -343,7 +343,7 @@ export default function BrainDocumentsListPage() {
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span className="material-icons text-base">chevron_left</span>
-                  Prev
+                  Anterior
                 </button>
                 <button
                   type="button"

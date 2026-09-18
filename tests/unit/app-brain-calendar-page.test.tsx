@@ -140,14 +140,14 @@ describe('BrainCalendarPage — shell', () => {
   it('renders the Calendar heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Calendar');
+      expect(container.textContent).toContain('Calendario');
     });
   });
 
   it('renders the intro copy', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Tasks, communications, relationship reviews');
+      expect(container.textContent).toContain('Tareas, comunicaciones, revisiones de relaciones');
     });
   });
 
@@ -162,7 +162,7 @@ describe('BrainCalendarPage — shell', () => {
   it('renders the New event toolbar button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New event');
+      expect(container.textContent).toContain('Nuevo evento');
     });
   });
 
@@ -170,7 +170,7 @@ describe('BrainCalendarPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const txt = container.textContent || '';
-      ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((d) =>
+      ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].forEach((d) =>
         expect(txt).toContain(d),
       );
     });
@@ -180,17 +180,17 @@ describe('BrainCalendarPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const txt = container.textContent || '';
-      expect(txt).toContain('Event');
-      expect(txt).toContain('Task due');
-      expect(txt).toContain('Communication');
-      expect(txt).toContain('Relationship review');
+      expect(txt).toContain('Evento');
+      expect(txt).toContain('Tarea pendiente');
+      expect(txt).toContain('Comunicación');
+      expect(txt).toContain('Revisión de relación');
     });
   });
 
   it('renders the phase B/C hint copy', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Week and day views');
+      expect(container.textContent).toContain('Las vistas de semana y día');
     });
   });
 
@@ -284,7 +284,7 @@ describe('BrainCalendarPage — agenda load', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toMatch(/\+\s*3\s*more/);
+      expect(container.textContent).toMatch(/\+\s*3\s*más/);
     });
   });
 
@@ -311,7 +311,7 @@ describe('BrainCalendarPage — agenda load', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not signed in');
+      expect(container.textContent).toContain('Sesión no iniciada');
     });
   });
 
@@ -324,7 +324,7 @@ describe('BrainCalendarPage — agenda load', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toMatch(/Server error \(HTTP 503\)/);
+      expect(container.textContent).toMatch(/Error del servidor \(HTTP 503\)/);
     });
   });
 
@@ -337,7 +337,7 @@ describe('BrainCalendarPage — agenda load', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toMatch(/Failed to load agenda \(HTTP 418\)/);
+      expect(container.textContent).toMatch(/No se pudo cargar la agenda \(HTTP 418\)/);
     });
   });
 
@@ -357,7 +357,7 @@ describe('BrainCalendarPage — agenda load', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -371,7 +371,7 @@ describe('BrainCalendarPage — month navigation', () => {
 
   it('clicking the next-month chevron advances the displayed month', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(container.textContent).toContain('Calendario'));
     const toolbar = findToolbar(container);
     const buttons = Array.from(toolbar.querySelectorAll('button')) as HTMLButtonElement[];
     // [prev, today, next, ...]
@@ -385,7 +385,7 @@ describe('BrainCalendarPage — month navigation', () => {
 
   it('clicking the prev-month chevron rewinds the displayed month', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(container.textContent).toContain('Calendario'));
     const toolbar = findToolbar(container);
     const buttons = Array.from(toolbar.querySelectorAll('button')) as HTMLButtonElement[];
     const before = container.querySelector('h2')?.textContent;
@@ -398,7 +398,7 @@ describe('BrainCalendarPage — month navigation', () => {
 
   it('clicking the Today button refetches agenda', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(container.textContent).toContain('Calendario'));
     const before = fetchMock.mock.calls.length;
     // Advance one month first
     const toolbar = findToolbar(container);
@@ -421,25 +421,25 @@ describe('BrainCalendarPage — month navigation', () => {
 describe('BrainCalendarPage — day-cell click', () => {
   it('opens the new-event modal when an empty day cell is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(container.textContent).toContain('Calendario'));
     const cell = container.querySelector('button.min-h-\\[110px\\]') as HTMLButtonElement;
     fireEvent.click(cell);
     await waitFor(() => {
-      expect(container.textContent).toContain('New event');
+      expect(container.textContent).toContain('Nuevo evento');
     });
   });
 
   it('opens the new-event modal from the New event toolbar button', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(container.textContent).toContain('Calendario'));
     const newBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New event') && !b.closest('form'),
+      (b) => b.textContent?.includes('Nuevo evento') && !b.closest('form'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
       // Modal heading "New event" is inside a form
       const formH = container.querySelector('form h3');
-      expect(formH?.textContent).toContain('New event');
+      expect(formH?.textContent).toContain('Nuevo evento');
     });
   });
 });
@@ -546,9 +546,9 @@ describe('BrainCalendarPage — auto-open from ?event=N', () => {
 describe('NewEventModal', () => {
   async function openModal() {
     const r = renderPage();
-    await waitFor(() => expect(r.container.textContent).toContain('Calendar'));
+    await waitFor(() => expect(r.container.textContent).toContain('Calendario'));
     const newBtn = Array.from(r.container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New event') && !b.closest('form'),
+      (b) => b.textContent?.includes('Nuevo evento') && !b.closest('form'),
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
@@ -827,7 +827,7 @@ describe('EventDetailModal', () => {
 
   it('renders the all-day variant when allDay=true', async () => {
     const { container } = await openDetail(makeEventDetail({ id: 33, allDay: true }));
-    expect(container.textContent).toContain('All day');
+    expect(container.textContent).toContain('Todo el día');
   });
 
   it('renders the "Synced from Google Calendar." note when source=google', async () => {

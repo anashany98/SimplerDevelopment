@@ -34,25 +34,25 @@ const KIND_STYLE: Record<AgendaItem['kind'], { dot: string; pill: string; icon: 
     dot: 'bg-primary',
     pill: 'bg-primary/10 text-primary',
     icon: 'event',
-    label: 'Event',
+    label: 'Evento',
   },
   task_due: {
     dot: 'bg-amber-500',
     pill: 'bg-amber-500/10 text-amber-700 dark:text-amber-300',
     icon: 'checklist',
-    label: 'Task due',
+    label: 'Tarea pendiente',
   },
   meeting: {
     dot: 'bg-blue-500',
     pill: 'bg-blue-500/10 text-blue-700 dark:text-blue-300',
     icon: 'forum',
-    label: 'Communication',
+    label: 'Comunicación',
   },
   relationship_review: {
     dot: 'bg-cyan-500',
     pill: 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-300',
     icon: 'flag',
-    label: 'Relationship review',
+    label: 'Revisión de relación',
   },
 };
 
@@ -113,8 +113,8 @@ export default function BrainCalendarPage() {
       const json = text ? safeParse(text) : null;
       if (!res.ok || !json?.success) {
         const msg = json?.message
-          || (text && !json ? `Server error (HTTP ${res.status}).` : null)
-          || (res.status === 401 ? 'Not signed in.' : `Failed to load agenda (HTTP ${res.status}).`);
+          || (text && !json ? `Error del servidor (HTTP ${res.status}).` : null)
+          || (res.status === 401 ? 'Sesión no iniciada.' : `No se pudo cargar la agenda (HTTP ${res.status}).`);
         setError(msg);
         setItems([]);
         return;
@@ -122,7 +122,7 @@ export default function BrainCalendarPage() {
       setError(null);
       setItems(json.data as AgendaItem[]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     }
   }, [gridStart]);
 
@@ -186,7 +186,7 @@ export default function BrainCalendarPage() {
     });
     const json = await res.json();
     if (!res.ok || !json.success) {
-      setError(json.message || 'Failed to create event.');
+      setError(json.message || 'No se pudo crear el evento.');
       return;
     }
     setShowCreate(null);
@@ -195,7 +195,7 @@ export default function BrainCalendarPage() {
 
   const handleEventDelete = async () => {
     if (!eventDetail) return;
-    if (!confirm(`Delete "${eventDetail.title}"?`)) return;
+    if (!confirm(`¿Eliminar "${eventDetail.title}"?`)) return;
     const res = await fetch(`/api/portal/brain/calendar/events/${eventDetail.id}`, { method: 'DELETE' });
     const json = await res.json();
     if (json.success) {
@@ -211,10 +211,10 @@ export default function BrainCalendarPage() {
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">calendar_month</span>
-            Calendar
+            Calendario
           </span>
         }
-        subtitle="Tasks, communications, relationship reviews, and scheduled events — all in one view. Click an empty day to schedule something."
+        subtitle="Tareas, comunicaciones, revisiones de relaciones y eventos programados, todo en una sola vista. Haz clic en un día vacío para programar algo."
         actions={
           <div className="flex items-center gap-2">
             <Link href="/portal/brain" className={pBtnGhost}>
@@ -223,7 +223,7 @@ export default function BrainCalendarPage() {
             </Link>
             <button onClick={() => setShowCreate({ date: today })} className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New event
+              Nuevo evento
             </button>
           </div>
         }
@@ -271,7 +271,7 @@ export default function BrainCalendarPage() {
       {/* Month grid */}
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <div className="grid grid-cols-7 border-b border-border">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+          {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].map((d) => (
             <div key={d} className="px-2 py-2 text-xs font-medium text-muted-foreground text-center">
               {d}
             </div>
@@ -319,7 +319,7 @@ export default function BrainCalendarPage() {
                     </li>
                   ))}
                   {dayItems.length > 4 && (
-                    <li className="text-[10px] text-muted-foreground pl-1">+ {dayItems.length - 4} more</li>
+                    <li className="text-[10px] text-muted-foreground pl-1">+ {dayItems.length - 4} más</li>
                   )}
                 </ul>
               </button>
@@ -331,7 +331,7 @@ export default function BrainCalendarPage() {
       {/* Coming-soon hint about Phase B/C */}
       <div className="bg-card border border-border rounded-2xl p-4 text-xs text-muted-foreground">
         <span className="material-icons text-sm align-text-bottom mr-1">info</span>
-        Week and day views, drag-to-reschedule, and Google Calendar sync are coming in follow-up phases.
+        Las vistas de semana y día, el arrastrar para reprogramar y la sincronización con Google Calendar llegarán en fases posteriores.
       </div>
 
       {showCreate && (
@@ -440,7 +440,7 @@ function NewEventModal({
         <div className="flex items-center justify-between">
           <h3 className="font-semibold flex items-center gap-2">
             <span className="material-icons text-primary">event</span>
-            New event
+            Nuevo evento
           </h3>
           <button type="button" onClick={onCancel} className="p-1 text-muted-foreground hover:text-foreground">
             <span className="material-icons text-lg">close</span>
@@ -475,7 +475,7 @@ function NewEventModal({
           <div className="sm:col-span-2 flex items-end gap-3">
             <label className="flex items-center gap-2 text-sm cursor-pointer mb-1.5">
               <input type="checkbox" checked={allDay} onChange={(e) => setAllDay(e.target.checked)} className="h-4 w-4" />
-              All-day
+              Todo el día
             </label>
             {!allDay && (
               <div className="flex-1 grid grid-cols-2 gap-2">
@@ -489,7 +489,7 @@ function NewEventModal({
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-muted-foreground">End</label>
+                  <label className="text-[10px] text-muted-foreground">Fin</label>
                   <input
                     type="time"
                     value={endTime}
@@ -514,7 +514,7 @@ function NewEventModal({
 
         <div className="grid sm:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Location</label>
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ubicación</label>
             <input
               type="text"
               value={location}
@@ -541,7 +541,7 @@ function NewEventModal({
             className={pBtnPrimary}
           >
             {saving
-              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Creating…</>
+              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Creando…</>
               : <><span className="material-icons text-base">check</span>Crear evento</>
             }
           </button>
@@ -574,7 +574,7 @@ function EventDetailModal({
         <div className="flex items-center justify-between">
           <h3 className="font-semibold flex items-center gap-2">
             <span className="material-icons text-primary">event</span>
-            Event
+            Evento
           </h3>
           <button type="button" onClick={onClose} className="p-1 text-muted-foreground hover:text-foreground">
             <span className="material-icons text-lg">close</span>
@@ -589,7 +589,7 @@ function EventDetailModal({
             <h4 className="text-lg font-semibold">{event.title}</h4>
             <p className="text-sm text-muted-foreground">
               {event.allDay
-                ? `${new Date(event.startAt).toLocaleDateString()} — All day`
+                ? `${new Date(event.startAt).toLocaleDateString()} — Todo el día`
                 : `${new Date(event.startAt).toLocaleString()} – ${new Date(event.endAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`}
             </p>
             {event.description && (
