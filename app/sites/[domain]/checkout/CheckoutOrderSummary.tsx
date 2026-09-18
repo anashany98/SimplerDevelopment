@@ -25,7 +25,7 @@ export function CheckoutOrderSummary({
       <div className="border border-border rounded-xl bg-card p-5 sticky top-24 space-y-4">
         <h2 className="font-semibold flex items-center gap-2">
           <span className="material-icons text-base">receipt</span>
-          Order Summary
+          Resumen del pedido
         </h2>
 
         <div className="divide-y divide-border">
@@ -43,7 +43,7 @@ export function CheckoutOrderSummary({
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{item.productName}</p>
                 {item.variantName && <p className="text-xs text-muted-foreground">{item.variantName}</p>}
-                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                <p className="text-xs text-muted-foreground">Cant.: {item.quantity}</p>
               </div>
               <p className="text-sm font-semibold flex-shrink-0">{formatPrice(item.unitPrice * item.quantity)}</p>
             </div>
@@ -58,7 +58,7 @@ export function CheckoutOrderSummary({
           {selectedRate && (
             <div className="flex justify-between">
               <span className="text-muted-foreground">Envío</span>
-              <span>{shippingCost === 0 ? 'Free' : formatPrice(shippingCost)}</span>
+              <span>{shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}</span>
             </div>
           )}
           <div className="flex justify-between font-bold text-base pt-1 border-t border-border mt-1">

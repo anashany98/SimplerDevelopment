@@ -31,7 +31,7 @@ function PaymentFormInner({ total, currency, orderNumber, onSuccess, basePath }:
 
     const { error: submitError } = await elements.submit();
     if (submitError) {
-      setError(submitError.message || 'Payment failed');
+      setError(submitError.message || 'No se pudo procesar el pago');
       setProcessing(false);
       return;
     }
@@ -45,7 +45,7 @@ function PaymentFormInner({ total, currency, orderNumber, onSuccess, basePath }:
     });
 
     if (confirmError) {
-      setError(confirmError.message || 'Payment failed');
+      setError(confirmError.message || 'No se pudo procesar el pago');
       setProcessing(false);
     } else {
       onSuccess(orderNumber);
@@ -71,19 +71,19 @@ function PaymentFormInner({ total, currency, orderNumber, onSuccess, basePath }:
         {processing ? (
           <span className="flex items-center justify-center gap-2">
             <span className="animate-spin rounded-full h-4 w-4 border-2 border-white/30" style={{ borderTopColor: '#ffffff' }} />
-            Processing...
+            Procesando...
           </span>
         ) : (
           <span className="flex items-center justify-center gap-2">
             <span className="material-icons text-base">lock</span>
-            Pay {formatPrice(total, currency)}
+            Pagar {formatPrice(total, currency)}
           </span>
         )}
       </button>
 
       <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
         <span className="material-icons text-sm">lock</span>
-        Secured by Stripe
+        Protegido por Stripe
       </div>
     </form>
   );
@@ -116,7 +116,7 @@ export function CheckoutPaymentSection({
       {checkoutLoading && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
           <span className="animate-spin rounded-full h-4 w-4 border-2 border-primary/30" style={{ borderTopColor: 'currentColor' }} />
-          Preparing payment...
+          Preparando el pago...
         </div>
       )}
 
