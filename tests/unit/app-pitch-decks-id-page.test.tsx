@@ -691,13 +691,13 @@ describe('Slide CRUD', () => {
     });
   });
 
-  it('duplicateSlide copies a slide with a "(copy)" suffix', async () => {
+  it('duplicateSlide copies a slide with a "(copia)" suffix', async () => {
     const { container } = renderPage();
     clickCb(container, 'SlideList-onDuplicateSlide', 0);
     await waitFor(() => {
       const list = getProps('SlideList', container);
       expect(list.slides.length).toBe(3);
-      expect(list.slides[1].label).toContain('(copy)');
+      expect(list.slides[1].label).toContain('(copia)');
     });
   });
 
@@ -835,7 +835,7 @@ describe('Path groups and decision slides', () => {
       const list = getProps('SlideList', container);
       const decision = list.slides.find((s: Record<string, unknown>) => s.decisionSlide);
       expect(decision.decisionOptions[0].label).toBe('Opción A');
-      expect(decision.decisionOptions[1].label).toBe('Option B');
+      expect(decision.decisionOptions[1].label).toBe('Opción B');
     });
   });
 
@@ -1101,7 +1101,7 @@ describe('Mount-time effects', () => {
     renderPage();
     await waitFor(() => {
       expect(setErrorMock).toHaveBeenCalledWith(
-        'AI generation failed. You can try regenerating the deck.',
+        'La generación con IA falló. Puedes intentar regenerar la presentación.',
       );
     });
   });
@@ -1290,13 +1290,13 @@ describe('Board view', () => {
 // ─── HTML slide upload ──────────────────────────────────────────────────────
 
 describe('HTML slide upload', () => {
-  it('clicking "Upload HTML Slide" on the empty state triggers the file input', () => {
+  it('clicking "Subir diapositiva HTML" on the empty state triggers the file input', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(fileInput).toBeTruthy();
     // Simulate clicking through SlideList's onUploadHtmlSlide path via empty-state button
     const uploadButton = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Upload HTML Slide'),
+      b.textContent?.includes('Subir diapositiva HTML'),
     ) as HTMLButtonElement;
     expect(uploadButton).toBeTruthy();
     // Click should not throw — file input proxies via ref.
@@ -1333,7 +1333,7 @@ describe('HTML slide upload', () => {
     fireEvent.change(fileInput);
     await waitFor(() => {
       expect(alertSpy).toHaveBeenCalled();
-      expect(alertSpy.mock.calls[0][0]).toContain('Upload failed');
+      expect(alertSpy.mock.calls[0][0]).toContain('Error al subir');
     });
     alertSpy.mockRestore();
   });

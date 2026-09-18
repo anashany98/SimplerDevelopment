@@ -53,7 +53,7 @@ export function SlideContentEditor({
             type="text"
             value={slidePrompt}
             onChange={(e) => onSlidePromptChange(e.target.value)}
-            placeholder="Edit this slide with AI... e.g. 'Hazlo más conciso' or 'Agregar comparación de competidores'"
+            placeholder="Edita esta diapositiva con IA… p. ej. 'Hazlo más conciso' o 'Agregar comparación de competidores'"
             className="w-full pl-10 pr-3 py-2.5 bg-card border border-border rounded-lg text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             disabled={slideGenerating}
           />
@@ -75,7 +75,7 @@ export function SlideContentEditor({
         <summary className="flex items-center gap-1.5 cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors select-none">
           <span className="material-icons text-sm transition-transform group-open:rotate-90">chevron_right</span>
           <span className="material-icons text-sm">speaker_notes</span>
-          Speaker Notes
+          Notas del presentador
           {slide.notes && <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
         </summary>
         <textarea

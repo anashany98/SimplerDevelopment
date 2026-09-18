@@ -164,8 +164,8 @@ test.describe('Portal Booking Page Detail — Refactor Baseline @critical @booki
 
     // Embed tab: direct link section.
     await clickTab(page, 'Embed');
-    await expect(page.getByText('Direct Link').first()).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText('Iframe Embed Code').first()).toBeVisible();
+    await expect(page.getByText('Enlace directo').first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText('Código de inserción iframe').first()).toBeVisible();
 
     // Bookings tab: upcoming + past sections.
     await clickTab(page, 'Bookings');

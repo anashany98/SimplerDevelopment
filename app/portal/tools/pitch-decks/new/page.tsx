@@ -22,7 +22,7 @@ export default function NewPitchDeckPage() {
 
   async function handleStartBlank() {
     if (!title.trim()) {
-      setError('Add a title above before starting a blank deck.');
+      setError('Agrega un título arriba antes de crear una presentación en blanco.');
       titleInputRef.current?.focus();
       return;
     }
@@ -45,7 +45,7 @@ export default function NewPitchDeckPage() {
       }
       router.push(`/portal/tools/pitch-decks/${data.data.id}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setCreatingBlank(false);
     }
   }
@@ -96,7 +96,7 @@ export default function NewPitchDeckPage() {
 
       router.push(`/portal/tools/pitch-decks/${deckId}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setLoading(false);
       setStep('idle');
     }
@@ -126,7 +126,7 @@ export default function NewPitchDeckPage() {
           <div>
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <span className="material-icons text-primary text-base">add_box</span>
-              Start blank
+              Empezar en blanco
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">Omitir generación. Agrega un título, pulsa iniciar y crea diapositivas en el editor.</p>
           </div>
@@ -139,12 +139,12 @@ export default function NewPitchDeckPage() {
             {creatingBlank ? (
               <>
                 <span className="material-icons animate-spin text-base">autorenew</span>
-                Creating...
+                Creando…
               </>
             ) : (
               <>
                 <span className="material-icons text-base">arrow_forward</span>
-                Start blank deck
+                Crear presentación en blanco
               </>
             )}
           </button>
@@ -153,7 +153,7 @@ export default function NewPitchDeckPage() {
           <div>
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <span className="material-icons text-primary text-base">upload_file</span>
-              Already have HTML?
+              ¿Ya tienes HTML?
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">Sube un archivo .html y lo convertiremos en una presentación de una diapositiva.</p>
           </div>
@@ -173,13 +173,13 @@ export default function NewPitchDeckPage() {
 
         <div className={`${pCard} p-5 space-y-4`}>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Deck Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Título de la presentación</label>
             <input
               ref={titleInputRef}
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Q1 2026 Investor Pitch"
+              placeholder="p. ej. Presentación para inversores Q1 2026"
               className={pInput}
               required
               disabled={loading || creatingBlank}
@@ -190,17 +190,17 @@ export default function NewPitchDeckPage() {
             <BrandingProfileSelector
               value={brandingProfileId}
               onChange={setBrandingProfileId}
-              label="Brand Profile"
+              label="Perfil de marca"
               allowNone
-              noneLabel="None"
+              noneLabel="Ninguno"
             />
             <p className="text-xs text-muted-foreground mt-1">Aplica los colores, fuentes y mensajes de tu marca para diseñar y redactar el contenido de la presentación.</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
-              Website URL
-              <span className="font-normal text-muted-foreground ml-1">(optional)</span>
+              URL del sitio web
+              <span className="font-normal text-muted-foreground ml-1">(opcional)</span>
             </label>
             <div className="relative">
               <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">language</span>
@@ -216,7 +216,7 @@ export default function NewPitchDeckPage() {
             <p className="text-xs text-muted-foreground mt-1">
               {brandingProfileId
                 ? 'Se extraerá contexto adicional de esta URL para complementar tu perfil de marca.'
-                : 'We\'ll extract brand colors, fonts, and company info to customize the deck.'}
+                : 'Extraeremos los colores, las fuentes y la información de la empresa para personalizar la presentación.'}
             </p>
           </div>
 
@@ -225,7 +225,7 @@ export default function NewPitchDeckPage() {
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder={"e.g. Create a pitch deck for our financial advisory firm that highlights our AI-powered investment strategies, team expertise, track record, and why clients should choose us over traditional advisors."}
+              placeholder={"p. ej. Crea una presentación para nuestra asesoría financiera que destaque nuestras estrategias de inversión impulsadas por IA, la experiencia del equipo, nuestra trayectoria y por qué los clientes deberían elegirnos en lugar de asesores tradicionales."}
               rows={5}
               className={`${pInput} resize-none`}
               required
@@ -248,7 +248,7 @@ export default function NewPitchDeckPage() {
           ) : (
             <>
               <span className="material-icons text-lg">auto_awesome</span>
-              Generate Pitch Deck
+              Generar presentación
             </>
           )}
         </button>

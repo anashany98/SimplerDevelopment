@@ -229,7 +229,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
   // render) would re-fire the modal every render until the URL is rewritten.
   useEffect(() => {
     if (searchParams.get('genError') === '1') {
-      setError('AI generation failed. You can try regenerating the deck.');
+      setError('La generación con IA falló. Puedes intentar regenerar la presentación.');
       // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional, see comment above
       setShowRegenerate(true);
     }
@@ -316,7 +316,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
   }
 
   function addPathGroup() {
-    const name = prompt('Path group name (e.g. "pricing", "case-studies"):');
+    const name = prompt('Nombre del grupo de rutas (p. ej. "precios", "casos-de-estudio"):');
     if (!name?.trim() || !deck) return;
     const slug = slugify(name.trim());
     if (!slug) return;
@@ -386,7 +386,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const groups = getPathGroups();
     const newSlide: PitchDeckSlideV2 = {
       id: `slide-decision-${Date.now()}`,
-      label: 'Decision Point',
+      label: 'Punto de decisión',
       blocks: [],
       decisionSlide: true,
       decisionOptions: groups.length >= 2
@@ -397,7 +397,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
           }))
         : [
             { id: `opt-${Date.now()}-0`, label: 'Opción A', pathGroup: 'path-a' },
-            { id: `opt-${Date.now()}-1`, label: 'Option B', pathGroup: 'path-b' },
+            { id: `opt-${Date.now()}-1`, label: 'Opción B', pathGroup: 'path-b' },
           ],
     };
     const mainSlides = deck.slides.filter(s => !s.pathGroup);
@@ -636,7 +636,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     if (!deck) return;
     const draftCount = deck.slides.filter((s) => slideHasDraft(s)).length;
     if (draftCount === 0) return;
-    if (!confirm(`Publish ${draftCount} draft slide${draftCount === 1 ? '' : 's'}? This will make all queued changes visible in the public deck.`)) return;
+    if (!confirm(`¿Publicar ${draftCount} diapositiva${draftCount === 1 ? '' : 's'} en borrador? Esto hará visibles todos los cambios en cola en la presentación pública.`)) return;
     setPublishingAll(true);
     setError('');
     try {
@@ -690,7 +690,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
         body: JSON.stringify({
           targetType: 'deck',
           targetId: deck.id,
-          name: `A/B test — ${deck.title || 'Untitled'}`,
+          name: `A/B test — ${deck.title || 'Sin título'}`,
         }),
       });
       const json = await res.json();
@@ -705,7 +705,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
   }
 
   async function handleDelete() {
-    if (!confirm('Delete this pitch deck? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar esta presentación? Esta acción no se puede deshacer.')) return;
     await deleteDeck(id);
     router.push('/portal/tools/pitch-decks');
   }
@@ -738,7 +738,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     if (!deck) return;
     const result = await uploadHtmlSlide(file);
     if (!result.success || !result.data) {
-      alert(`Upload failed: ${result.error || 'unknown error'}`);
+      alert(`Error al subir el archivo: ${result.error || 'error desconocido'}`);
       return;
     }
     const ts = Date.now();
@@ -753,12 +753,12 @@ function PitchDeckEditorContent({ id }: { id: string }) {
         height: '100vh',
         width: 'full',
         sandbox: 'scripts',
-        iframeTitle: filenameNoExt || 'Embedded HTML slide',
+        iframeTitle: filenameNoExt || 'Diapositiva HTML incrustada',
       },
     ];
     const newSlide: PitchDeckSlideV2 = {
       id: `slide-${ts}`,
-      label: filenameNoExt || 'HTML Slide',
+      label: filenameNoExt || 'Diapositiva HTML',
       blocks: [],
       draft: {
         pendingCreate: true,
@@ -777,14 +777,14 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const target = deck.slides[idx];
     // Pending-create slides have no live state to preserve — drop immediately.
     if (slideIsPendingCreate(target)) {
-      if (!confirm('Discard this draft slide?')) return;
+      if (!confirm('¿Descartar esta diapositiva en borrador?')) return;
       const newSlides = deck.slides.filter((_, i) => i !== idx);
       setDeck({ ...deck, slides: newSlides });
       if (activeSlide >= newSlides.length) setActiveSlide(newSlides.length - 1);
       setHasUnsavedChanges(true);
       return;
     }
-    if (!confirm('Mark this slide for deletion? It stays visible in the public deck until you publish.')) return;
+    if (!confirm('¿Marcar esta diapositiva para eliminación? Seguirá visible en la presentación pública hasta que publiques.')) return;
     const newSlides = [...deck.slides];
     newSlides[idx] = markSlidePendingDelete(target);
     setDeck({ ...deck, slides: newSlides });
@@ -798,7 +798,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     // pendingCreate has no live counterpart — clearing the draft means deleting
     // the slide entirely.
     if (slideIsPendingCreate(target)) {
-      if (!confirm('Discard this draft slide?')) return;
+      if (!confirm('¿Descartar esta diapositiva en borrador?')) return;
       const newSlides = deck.slides.filter((_, i) => i !== idx);
       setDeck({ ...deck, slides: newSlides });
       if (activeSlide >= newSlides.length) setActiveSlide(Math.max(0, newSlides.length - 1));
@@ -823,7 +823,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const dup: PitchDeckSlideV2 = {
       ...sourceView,
       id: `slide-${ts}`,
-      label: (source.label || source.id) + ' (copy)',
+      label: (source.label || source.id) + ' (copia)',
       // Live fields empty — the copy is a brand-new draft.
       blocks: [],
       customCss: undefined,
@@ -896,7 +896,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     const raw = slugDraft.trim();
     const normalized = slugify(raw);
     if (!normalized) {
-      setSlugError('Slug must contain at least one letter or number.');
+      setSlugError('El slug debe contener al menos una letra o un número.');
       return;
     }
     if (normalized === deck.slug) {
@@ -926,13 +926,13 @@ function PitchDeckEditorContent({ id }: { id: string }) {
   async function saveCheckpoint() {
     if (!deck) return;
     setSavingVersion(true);
-    const data = await saveVersionCheckpoint(id, `Manual save — ${deck.slides.length} slides`);
+    const data = await saveVersionCheckpoint(id, `Guardado manual — ${deck.slides.length} diapositivas`);
     setSavingVersion(false);
     if (data.success && data.data) setVersions(prev => [data.data!, ...prev]);
   }
 
   async function handleRestoreVersion(versionId: number) {
-    if (!confirm('Restore this version? Your current slides will be saved as a checkpoint first.')) return;
+    if (!confirm('¿Restaurar esta versión? Tus diapositivas actuales se guardarán primero como punto de control.')) return;
     setRestoring(true);
     const data = await restoreVersion(id, versionId);
     setRestoring(false);
@@ -1144,7 +1144,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
               className="inline-flex items-center gap-2 px-4 py-2 border border-border text-foreground rounded-lg text-sm font-medium hover:bg-accent transition-colors"
             >
               <span className="material-icons text-base">upload_file</span>
-              Upload HTML Slide
+              Subir diapositiva HTML
             </button>
           </div>
         </div>
@@ -1157,10 +1157,10 @@ function PitchDeckEditorContent({ id }: { id: string }) {
               className="inline-flex items-center gap-1.5 px-3 py-2 text-sm border border-border rounded-lg bg-card text-foreground hover:bg-accent transition-colors min-h-[40px]"
             >
               <span className="material-icons text-base">view_carousel</span>
-              Slides ({deck.slides.length})
+              Diapositivas ({deck.slides.length})
             </button>
             <span className="text-xs text-muted-foreground truncate">
-              {activeSlide + 1}. {currentSlide.label || 'Untitled'}
+              {activeSlide + 1}. {currentSlide.label || 'Sin título'}
             </span>
           </div>
 
@@ -1185,7 +1185,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
             `}
           >
             <div className="md:hidden flex items-center justify-between pb-2 border-b border-border">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slides</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Diapositivas</span>
               <button
                 onClick={() => setMobileSlideDrawerOpen(false)}
                 className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -1265,7 +1265,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
             />
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-muted-foreground min-w-0 truncate max-w-full">
-                Slide {activeSlide + 1} of {deck.slides.length} · {currentSlide.label || 'Untitled'}
+                Diapositiva {activeSlide + 1} de {deck.slides.length} · {currentSlide.label || 'Sin título'}
               </span>
               {slideIsPendingCreate(currentSlide) && (
                 <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold">
@@ -1288,21 +1288,21 @@ function PitchDeckEditorContent({ id }: { id: string }) {
                     title={
                       slideIsPendingDelete(currentSlide)
                         ? 'Publicar — elimina esta diapositiva de la presentación publicada'
-                        : 'Publish this slide\'s draft to the live deck'
+                        : 'Publicar el borrador de esta diapositiva en la presentación publicada'
                     }
                   >
                     <span className={`material-icons text-sm ${publishingSlideId === currentSlide.id ? 'animate-spin' : ''}`}>
                       {publishingSlideId === currentSlide.id ? 'autorenew' : 'publish'}
                     </span>
-                    {publishingSlideId === currentSlide.id ? 'Publishing...' : 'Publish slide'}
+                    {publishingSlideId === currentSlide.id ? 'Publicando…' : 'Publicar diapositiva'}
                   </button>
                   <button
                     onClick={() => cancelSlideDraft(activeSlide)}
                     className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    title={slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Discard draft changes'}
+                    title={slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Descartar cambios del borrador'}
                   >
                     <span className="material-icons text-sm">undo</span>
-                    {slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Discard draft'}
+                    {slideIsPendingDelete(currentSlide) ? 'Cancelar eliminación' : 'Descartar borrador'}
                   </button>
                 </>
               )}

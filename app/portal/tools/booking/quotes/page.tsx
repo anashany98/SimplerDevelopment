@@ -52,7 +52,7 @@ export default function BookingQuotesPage() {
         <span className="material-icons text-lg">arrow_back</span>Volver</Link>
       <PortalPageHeader
         eyebrow="Reservas"
-        title="Custom Quotes"
+        title="Cotizaciones personalizadas"
         subtitle="Crea enlaces de pago para reservas personalizadas"
         actions={
           <Link href="/portal/tools/booking/quotes/new" className={pBtnPrimary}>
@@ -91,7 +91,7 @@ export default function BookingQuotesPage() {
                   {q.status}
                 </span>
                 <div className="flex items-center gap-1">
-                  <button onClick={() => copyLink(q.slug)} title="Copy payment link"
+                  <button onClick={() => copyLink(q.slug)} title="Copiar enlace de pago"
                     className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                     <span className="material-icons text-base">link</span>
                   </button>

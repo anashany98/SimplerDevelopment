@@ -519,7 +519,7 @@ describe('saveSlug', () => {
     clickCb(container, 'EditorHeader-onSaveSlug');
     await waitFor(() => {
       const props = getProps('EditorHeader', container);
-      expect(props?.slugError).toContain('letter or number');
+      expect(props?.slugError).toContain('una letra o un número');
     });
     expect(apiMocks.patchDeck).not.toHaveBeenCalled();
   });
@@ -600,9 +600,9 @@ describe('handlePublishSlide (non-collab)', () => {
         ],
       }),
     );
-    // The inline "Publish slide" button appears when slideHasDraft(currentSlide)
+    // The inline "Publicar diapositiva" button appears when slideHasDraft(currentSlide)
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish slide'),
+      (b) => b.textContent?.includes('Publicar diapositiva'),
     );
     if (publishBtn) {
       fireEvent.click(publishBtn);
@@ -657,11 +657,11 @@ describe('Inline draft-slide action buttons', () => {
     expect(container.textContent).toContain('Pendiente de eliminación');
   });
 
-  it('clicking inline "Publish slide" button triggers handlePublishSlide', async () => {
+  it('clicking inline "Publicar diapositiva" button triggers handlePublishSlide', async () => {
     const { container } = renderPage(makeDraftDeck());
-    // The button text includes material-icon text "publish" + "Publish slide"
+    // The button text includes material-icon text "publish" + "Publicar diapositiva"
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish slide') && b.getAttribute('title')?.includes('live deck'),
+      (b) => b.textContent?.includes('Publicar diapositiva') && b.getAttribute('title')?.includes('presentación publicada'),
     ) as HTMLButtonElement | undefined;
     expect(btn).toBeTruthy();
     if (btn) fireEvent.click(btn);
@@ -670,12 +670,12 @@ describe('Inline draft-slide action buttons', () => {
     });
   });
 
-  it('clicking "Discard draft" button triggers cancelSlideDraft (regular draft)', async () => {
+  it('clicking "Descartar borrador" button triggers cancelSlideDraft (regular draft)', async () => {
     const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
     const { container } = renderPage(makeDraftDeck());
     // The discard button appears for slides that have a draft
     const discardBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Discard draft'),
+      (b) => b.textContent?.includes('Descartar borrador'),
     ) as HTMLButtonElement | undefined;
     expect(discardBtn).toBeTruthy();
     if (discardBtn) fireEvent.click(discardBtn);
@@ -1008,13 +1008,13 @@ describe('SurveyFieldEditorView onUpdateField', () => {
 
 describe('Mobile slide drawer', () => {
   function findMobileSlidesTrigger(container: HTMLElement): HTMLButtonElement | undefined {
-    // Button text is "view_carouselSlides (N)" — icon text prepended to label
+    // Button text is "view_carouselDiapositivas (N)" — icon text prepended to label
     return Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Slides (') && b.querySelector('.material-icons'),
+      (b) => b.textContent?.includes('Diapositivas (') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement | undefined;
   }
 
-  it('opens when the mobile "Slides (N)" trigger is clicked', async () => {
+  it('opens when the mobile "Diapositivas (N)" trigger is clicked', async () => {
     const { container } = renderPage();
     const slidesBtn = findMobileSlidesTrigger(container);
     expect(slidesBtn).toBeTruthy();
@@ -1045,7 +1045,7 @@ describe('Mobile slide drawer', () => {
     }
   });
 
-  it('closes via the "Close slides panel" button inside the drawer', async () => {
+  it('closes via the "Cerrar panel de diapositivas" button inside the drawer', async () => {
     const { container } = renderPage();
     const slidesBtn = findMobileSlidesTrigger(container);
     if (slidesBtn) {
