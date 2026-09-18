@@ -389,7 +389,7 @@ describe('ProjectReportsTab — VelocityChart', () => {
   it('renders velocity legend labels Committed and Completed', async () => {
     const { container } = await renderAndSettle();
     expect(container.textContent).toContain('Committed');
-    expect(container.textContent).toContain('Completed');
+    expect(container.textContent).toContain('Completado');
   });
 
   it('renders average stats in the description', async () => {
@@ -619,10 +619,10 @@ describe('ProjectReportsTab — CycleTable', () => {
   it('renders the cycle table header columns', async () => {
     const { container } = await renderAndSettle();
     expect(container.textContent).toContain('Key');
-    expect(container.textContent).toContain('Title');
+    expect(container.textContent).toContain('Título');
     expect(container.textContent).toContain('Lead');
     expect(container.textContent).toContain('Cycle');
-    expect(container.textContent).toContain('Done');
+    expect(container.textContent).toContain('Listo');
   });
 
   it('renders card titles', async () => {
