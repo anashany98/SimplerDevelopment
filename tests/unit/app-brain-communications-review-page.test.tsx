@@ -259,7 +259,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Send draft');
-      expect(container.textContent).toContain('Task');
+      expect(container.textContent).toContain('Tarea');
     });
   });
 
@@ -280,7 +280,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Ship in Q4');
-      expect(container.textContent).toContain('Decision');
+      expect(container.textContent).toContain('Decisión');
       expect(container.textContent).toContain('reviewed risks');
     });
   });
@@ -765,7 +765,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => {
       const textarea = container.querySelector('textarea');
       expect(textarea).toBeTruthy();
-      expect(container.textContent).toContain('Edit JSON before approving');
+      expect(container.textContent).toContain('Edita el JSON antes de aprobar');
     });
   });
 
@@ -775,11 +775,11 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     fireEvent.click(findEditBtn(container));
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit JSON before approving');
+      expect(container.textContent).toContain('Edita el JSON antes de aprobar');
     });
     fireEvent.click(findCancelEditBtn(container));
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit JSON before approving');
+      expect(container.textContent).not.toContain('Edita el JSON antes de aprobar');
     });
   });
 
