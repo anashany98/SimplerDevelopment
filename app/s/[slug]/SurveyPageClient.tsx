@@ -24,7 +24,7 @@ export function SurveyPageClient() {
         sourceId={sourceIdParam}
       />
       {!isEmbed && (
-        <p className="text-center text-xs text-gray-400 mt-6 pb-6">Powered by CRM AGENTS</p>
+        <p className="text-center text-xs text-gray-400 mt-6 pb-6">Con la tecnología de CRM AGENTS</p>
       )}
     </div>
   );

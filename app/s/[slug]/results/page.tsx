@@ -33,10 +33,10 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params;
   const survey = await loadSurvey(slug);
-  if (!survey) return { title: 'Results not found' };
+  if (!survey) return { title: 'Resultados no encontrados' };
   return {
-    title: `${survey.title} — Results`,
-    description: survey.description ?? `Aggregated results for ${survey.title}.`,
+    title: `${survey.title} — Resultados`,
+    description: survey.description ?? `Resultados agregados de ${survey.title}.`,
     robots: { index: false, follow: false },
   };
 }
@@ -80,14 +80,14 @@ export default async function PublicSurveyResultsPage(
             <p className="text-sm text-gray-600 dark:text-gray-400">{data.surveyDescription}</p>
           )}
           <p className="text-xs text-gray-500 dark:text-gray-500">
-            Aggregated public results — no individual responses are shown.
+            Resultados públicos agregados — no se muestran respuestas individuales.
           </p>
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <SummaryCard label="Total responses" value={data.totalResponses} />
+          <SummaryCard label="Respuestas totales" value={data.totalResponses} />
           <SummaryCard
-            label="Questions"
+            label="Preguntas"
             value={data.questions.length}
           />
         </div>
@@ -95,7 +95,7 @@ export default async function PublicSurveyResultsPage(
         {data.totalResponses === 0 ? (
           <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-10 text-center">
             <span className="material-icons text-4xl text-gray-300 dark:text-gray-700">bar_chart</span>
-            <p className="text-gray-500 mt-2 text-sm">No responses yet. Check back soon.</p>
+            <p className="text-gray-500 mt-2 text-sm">Aún no hay respuestas. Vuelve pronto.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -106,7 +106,7 @@ export default async function PublicSurveyResultsPage(
         )}
 
         <footer className="pt-4 text-center">
-          <p className="text-xs text-gray-400 dark:text-gray-600">Powered by CRM AGENTS</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600">Con la tecnología de CRM AGENTS</p>
         </footer>
       </div>
     </div>
@@ -134,7 +134,7 @@ function QuestionCard({
       <header>
         <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{question.label}</h2>
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          {question.answerCount} {question.answerCount === 1 ? 'response' : 'responses'}
+          {question.answerCount} {question.answerCount === 1 ? 'respuesta' : 'respuestas'}
         </p>
       </header>
 
@@ -151,7 +151,7 @@ function QuestionCard({
       )}
 
       {!question.optionCounts && !question.numericStats && !question.textSamples?.length && (
-        <p className="text-xs text-gray-400">No data for this question yet.</p>
+        <p className="text-xs text-gray-400">Aún no hay datos para esta pregunta.</p>
       )}
     </section>
   );
@@ -219,7 +219,7 @@ function NumericSummary({
             </span>
           ))}
         </div>
-        <span className="text-xs text-gray-500">({stats.count} ratings)</span>
+        <span className="text-xs text-gray-500">({stats.count} valoraciones)</span>
       </div>
     );
   }
@@ -227,9 +227,9 @@ function NumericSummary({
     <div className="flex flex-wrap items-baseline gap-4">
       <div>
         <span className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{stats.average.toFixed(1)}</span>
-        <span className="text-xs text-gray-500 ml-1">avg</span>
+        <span className="text-xs text-gray-500 ml-1">media</span>
       </div>
-      <span className="text-xs text-gray-500">Min {stats.min} · Max {stats.max} · n={stats.count}</span>
+      <span className="text-xs text-gray-500">Mín {stats.min} · Máx {stats.max} · n={stats.count}</span>
     </div>
   );
 }
@@ -249,7 +249,7 @@ function TextSamples({ samples }: { samples: string[] }) {
         </blockquote>
       ))}
       {samples.length > shown.length && (
-        <p className="text-xs text-gray-400">+ {samples.length - shown.length} more answers</p>
+        <p className="text-xs text-gray-400">+ {samples.length - shown.length} respuestas más</p>
       )}
     </div>
   );
