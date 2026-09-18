@@ -259,7 +259,7 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     await waitFor(() => screen.getByText(/Link artifact/i));
     fireEvent.click(screen.getByText(/Link artifact/i));
 
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 
   it('button label changes to "Close" when picker is open', async () => {
@@ -281,7 +281,7 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     await waitFor(() => screen.getByText('Close'));
     fireEvent.click(screen.getByText('Close'));
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 
   it('opens picker from empty state "Link your first artifact" button', async () => {
@@ -291,7 +291,7 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     await waitFor(() => screen.getByText(/Link your first artifact/i));
     fireEvent.click(screen.getByText(/Link your first artifact/i));
 
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 
   it('fetches available artifacts when picker opens', async () => {
@@ -340,9 +340,9 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
 
     await waitFor(() => screen.getByText(/Link artifact/i));
     fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByPlaceholderText(/Search artifacts/i));
+    await waitFor(() => screen.getByPlaceholderText(/Buscar artefactos/i));
 
-    fireEvent.change(screen.getByPlaceholderText(/Search artifacts/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Buscar artefactos/i), {
       target: { value: 'New' },
     });
 
@@ -392,8 +392,8 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
 
     // Select a type then click All
     fireEvent.click(screen.getByText('Website'));
-    await waitFor(() => screen.getByRole('button', { name: 'All' }));
-    fireEvent.click(screen.getByRole('button', { name: 'All' }));
+    await waitFor(() => screen.getByRole('button', { name: 'Todos' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Todos' }));
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
@@ -466,7 +466,7 @@ describe('ProjectArtifactsTab — linking an artifact', () => {
       fireEvent.click(screen.getByText('New Site'));
     });
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 
   it('does not close picker when POST returns non-ok', async () => {
@@ -484,7 +484,7 @@ describe('ProjectArtifactsTab — linking an artifact', () => {
     fireEvent.click(screen.getByText('New Site'));
 
     // Picker stays open because linkArtifact returned early on !res.ok
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 });
 
@@ -643,12 +643,12 @@ describe('ProjectArtifactsTab — outside click closes picker', () => {
 
     await waitFor(() => screen.getByText(/Link artifact/i));
     fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByPlaceholderText(/Search artifacts/i));
+    await waitFor(() => screen.getByPlaceholderText(/Buscar artefactos/i));
 
     // Simulate a mousedown on the document body (outside the picker)
     fireEvent.mouseDown(document.body);
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 });
 
