@@ -124,7 +124,7 @@ import AdminSuggestedProjectsPage from '@/app/admin/portal-suggested-projects/pa
 async function renderPage() {
   const result = render(<AdminSuggestedProjectsPage />);
   await waitFor(() => {
-    expect(screen.queryByText('Loading...')).toBeNull();
+    expect(screen.queryByText('Cargando...')).toBeNull();
   });
   return result;
 }
@@ -135,7 +135,7 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('initial render', () => {
     it('shows loading state before fetch resolves', () => {
       render(<AdminSuggestedProjectsPage />);
-      expect(screen.getByText('Loading...')).toBeTruthy();
+      expect(screen.getByText('Cargando...')).toBeTruthy();
     });
 
     it('renders page heading after fetch', async () => {
@@ -176,7 +176,7 @@ describe('AdminSuggestedProjectsPage', () => {
     it('renders a project card with title and category', async () => {
       await renderPage();
       expect(screen.getByText('Website Starter')).toBeTruthy();
-      expect(screen.getByText('Website')).toBeTruthy();
+      expect(screen.getByText('Sitio web')).toBeTruthy();
     });
 
     it('renders estimated price via formatCents', async () => {
@@ -331,7 +331,7 @@ describe('AdminSuggestedProjectsPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
       expect(screen.getByText('Create Suggested Project')).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
       expect(screen.queryByText('Create Suggested Project')).toBeNull();
     });
 
@@ -355,7 +355,7 @@ describe('AdminSuggestedProjectsPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
 
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'New Project' } });
 
       fireEvent.submit(titleInput.closest('form')!);
@@ -371,7 +371,7 @@ describe('AdminSuggestedProjectsPage', () => {
       });
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'Bad Project' } });
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Server error on create')).toBeTruthy());
@@ -386,7 +386,7 @@ describe('AdminSuggestedProjectsPage', () => {
       });
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'Bad Project' } });
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Failed')).toBeTruthy());
@@ -406,7 +406,7 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('edit project', () => {
     it('shows edit form when Edit button clicked', async () => {
       await renderPage();
-      const editBtn = screen.getByTitle('Edit');
+      const editBtn = screen.getByTitle('Editar');
       fireEvent.click(editBtn);
       expect(screen.getByText(/Editing:/)).toBeTruthy();
       expect(screen.getByRole('button', { name: 'Save Changes' })).toBeTruthy();
@@ -414,7 +414,7 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('pre-populates edit form with item values', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       await waitFor(() => {
         const inputs = screen.getAllByDisplayValue('Website Starter');
         expect(inputs.length).toBeGreaterThan(0);
@@ -423,15 +423,15 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('cancels edit and returns to list view', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       expect(screen.getByText(/Editing:/)).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
       expect(screen.queryByText(/Editing:/)).toBeNull();
     });
 
     it('saves edit and updates item in list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: 'Updated Project' } });
       fireEvent.submit(titleInput.closest('form')!);
@@ -446,7 +446,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Patch failed')).toBeTruthy());
@@ -460,7 +460,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Failed to save')).toBeTruthy());
@@ -468,7 +468,7 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('converts price from cents to decimal in edit form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       // 150000 cents → "1500.00"
       await waitFor(() => {
         const priceInput = screen.getByDisplayValue('1500.00') as HTMLInputElement;
@@ -480,21 +480,21 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('delete project', () => {
     it('calls confirm dialog before deleting', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       expect(confirmMock).toHaveBeenCalledWith('Delete "Website Starter"? This cannot be undone.');
     });
 
     it('removes item from list after confirmed delete', async () => {
       await renderPage();
       expect(screen.getByText('Website Starter')).toBeTruthy();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await waitFor(() => expect(screen.queryByText('Website Starter')).toBeNull());
     });
 
     it('does not delete when confirm is cancelled', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await flush();
       expect(screen.getByText('Website Starter')).toBeTruthy();
     });
@@ -507,7 +507,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Delete failed'));
     });
 
@@ -519,7 +519,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Delete failed'));
     });
   });
@@ -566,7 +566,7 @@ describe('AdminSuggestedProjectsPage', () => {
       const descTextareas = screen.getAllByRole('textbox');
       // The description textarea is the third textbox (title, description, icon, features, timeline...)
       // Find by its adjacent label
-      const descLabel = screen.getByText('Description');
+      const descLabel = screen.getByText('Descripción');
       const descTextarea = descLabel.parentElement!.querySelector('textarea')!;
       fireEvent.change(descTextarea, { target: { value: 'Great project' } });
       expect((descTextarea as HTMLTextAreaElement).value).toBe('Great project');
@@ -576,7 +576,7 @@ describe('AdminSuggestedProjectsPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
       // Use getAllByText because the card list also shows a "Website" badge
-      expect(screen.getAllByText('Website').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Sitio web').length).toBeGreaterThan(0);
       expect(screen.getByText('E-Commerce')).toBeTruthy();
       expect(screen.getByText('Mobile App')).toBeTruthy();
       expect(screen.getByText('Maintenance')).toBeTruthy();
