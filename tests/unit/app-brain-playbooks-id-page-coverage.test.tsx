@@ -214,7 +214,7 @@ describe('PlaybookDetailPage — loading state', () => {
   it('shows loading spinner while fetch is in flight', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -698,7 +698,7 @@ describe('PlaybookDetailPage — active status', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Archive'),
+        b.textContent?.includes('Archivar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -829,9 +829,9 @@ describe('PlaybookDetailPage — onArchive', () => {
   it('calls POST /archive when Archive is clicked and user confirms', async () => {
     setupActive();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Archive'));
+    await waitFor(() => expect(container.textContent).toContain('Archivar'));
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -846,10 +846,10 @@ describe('PlaybookDetailPage — onArchive', () => {
     vi.stubGlobal('confirm', vi.fn(() => false));
     setupActive();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Archive'));
+    await waitFor(() => expect(container.textContent).toContain('Archivar'));
     const before = fetchMock.mock.calls.length;
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await new Promise((r) => setTimeout(r, 30));
@@ -873,9 +873,9 @@ describe('PlaybookDetailPage — onArchive', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Archive'));
+    await waitFor(() => expect(container.textContent).toContain('Archivar'));
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -891,7 +891,7 @@ describe('PlaybookDetailPage — onDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) =>         b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -913,7 +913,7 @@ describe('PlaybookDetailPage — onDelete', () => {
     await waitFor(() => expect(container.textContent).toContain('Onboarding'));
     const before = fetchMock.mock.calls.length;
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) =>         b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await new Promise((r) => setTimeout(r, 30));
@@ -947,7 +947,7 @@ describe('PlaybookDetailPage — onDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) =>         b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -987,7 +987,7 @@ describe('StartRunDialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Start a run'));
     await openDialog(container);
-    expect(container.textContent).toContain('Label');
+    expect(container.textContent).toContain('Etiqueta');
     expect(container.textContent).toContain('Context variables');
   });
 
@@ -997,7 +997,7 @@ describe('StartRunDialog', () => {
     await waitFor(() => expect(container.textContent).toContain('Start a run'));
     await openDialog(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1010,11 +1010,11 @@ describe('StartRunDialog', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Start a run'));
     await openDialog(container);
-    const closeBtn = container.querySelector('[aria-label="Close"]') as HTMLButtonElement;
+    const closeBtn = container.querySelector('[aria-label="Cerrar"]') as HTMLButtonElement;
     expect(closeBtn).toBeTruthy();
     fireEvent.click(closeBtn);
     await waitFor(() => {
-      expect(container.querySelector('[aria-label="Close"]')).toBeFalsy();
+      expect(container.querySelector('[aria-label="Cerrar"]')).toBeFalsy();
     });
   });
 
@@ -1155,11 +1155,11 @@ describe('StartRunDialog', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addLinkBtn);
     await waitFor(() => expect(container.querySelectorAll('select').length).toBeGreaterThan(0));
-    const removeBtn = container.querySelector('[aria-label="Remove this link"]') as HTMLButtonElement;
+    const removeBtn = container.querySelector('[aria-label="Quitar este vínculo"]') as HTMLButtonElement;
     expect(removeBtn).toBeTruthy();
     fireEvent.click(removeBtn);
     await waitFor(() => {
-      expect(container.querySelector('[aria-label="Remove this link"]')).toBeFalsy();
+      expect(container.querySelector('[aria-label="Quitar este vínculo"]')).toBeFalsy();
     });
   });
 
