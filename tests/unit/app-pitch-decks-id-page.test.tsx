@@ -441,7 +441,7 @@ describe('PitchDeckEditorPage rendering', () => {
 
   it('renders the "Deck not found" empty state when no deck is loaded', () => {
     const { container } = renderPage(null);
-    expect(container.textContent).toContain('Deck not found');
+    expect(container.textContent).toContain('Presentación no encontrada');
     expect(container.querySelector('a')?.getAttribute('href')).toBe('/portal/tools/pitch-decks');
   });
 
@@ -454,9 +454,9 @@ describe('PitchDeckEditorPage rendering', () => {
 
   it('renders the no-slides empty state when deck.slides is empty', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
-    expect(container.textContent).toContain('No slides yet');
-    expect(container.textContent).toContain('Generate with AI');
-    expect(container.textContent).toContain('Add Blank Slide');
+    expect(container.textContent).toContain('Aún no hay diapositivas');
+    expect(container.textContent).toContain('Generar con IA');
+    expect(container.textContent).toContain('Agregar diapositiva en blanco');
   });
 
   it('passes pathGroups and slide counts to SlideList', () => {
@@ -834,7 +834,7 @@ describe('Path groups and decision slides', () => {
     await waitFor(() => {
       const list = getProps('SlideList', container);
       const decision = list.slides.find((s: Record<string, unknown>) => s.decisionSlide);
-      expect(decision.decisionOptions[0].label).toBe('Option A');
+      expect(decision.decisionOptions[0].label).toBe('Opción A');
       expect(decision.decisionOptions[1].label).toBe('Option B');
     });
   });
@@ -1491,7 +1491,7 @@ describe('Misc small surface', () => {
   it('switches between preview and edit modes', async () => {
     const { container } = renderPage();
     const previewBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Preview'),
+      b.textContent?.includes('Vista previa'),
     ) as HTMLButtonElement;
     fireEvent.click(previewBtn);
     await waitFor(() => {
