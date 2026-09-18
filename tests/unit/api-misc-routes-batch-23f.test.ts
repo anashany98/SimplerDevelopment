@@ -42,6 +42,18 @@ vi.mock('@/lib/mcp-auth', () => ({
   resolvePortalFromCurrentRequest: async () => null,
 }));
 
+// Billing was removed (2026-08): the payment-methods route short-circuits with
+// 403 when PAYMENTS_DISABLED is true. The gate is mocked open here so the tests
+// below can exercise the listing/deletion logic itself (same pattern as
+// api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 vi.mock('drizzle-orm', () => ({
   eq: (a: unknown, b: unknown) => ({ op: 'eq', a, b }),
   and: (...args: unknown[]) => ({ op: 'and', args }),
