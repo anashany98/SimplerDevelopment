@@ -94,7 +94,7 @@ describe('PersonProfileSidebar', () => {
       render(<PersonProfileSidebar person={{ id: 1, userId: 42 }} />);
     });
 
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
 
     // resolve the tasks fetch so cleanup doesn't leak
     await act(async () => {
