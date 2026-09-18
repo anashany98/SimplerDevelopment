@@ -50,7 +50,7 @@ export default function OrdersListPage() {
       const data = await res.json();
       if (data.success) {
         setOrders(data.data || []);
-        setTotalPages(data.págination?.totalPages || 1);
+        setTotalPages(data.pagination?.totalPages || 1);
       }
     } catch {
       // fail silently

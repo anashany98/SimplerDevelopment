@@ -60,7 +60,7 @@ export default function ProductsListPage() {
       const data = await res.json();
       if (data.success) {
         setProducts(data.data || []);
-        setTotalPages(data.págination?.totalPages || 1);
+        setTotalPages(data.pagination?.totalPages || 1);
       }
     } catch {
       // fail silently
