@@ -183,7 +183,7 @@ describe('BrainOrgChartPage — loading state', () => {
     // Never resolve fetch so loading state persists
     fetchMock.mockImplementation(() => new Promise(() => { /* pending */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -278,7 +278,7 @@ describe('BrainOrgChartPage — main shell', () => {
   it('renders the EmptySidePanel when no unit is selected', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Nothing selected');
+      expect(container.textContent).toContain('Nada seleccionado');
     });
   });
 
@@ -588,7 +588,7 @@ describe('UnitSidePanel', () => {
     const { container } = renderPage();
     await selectUnit(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('No members yet.');
+      expect(container.textContent).toContain('Aún no hay miembros.');
     });
   });
 
@@ -826,7 +826,7 @@ describe('UnitSidePanel', () => {
     ) as HTMLButtonElement;
     fireEvent.click(setLeadBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Set lead person');
+      expect(container.textContent).toContain('Definir responsable');
       expect(container.querySelector('[data-testid="person-picker"]')).toBeTruthy();
     });
   });
@@ -975,7 +975,7 @@ describe('UnitSidePanel', () => {
     await selectUnit(container);
     await waitFor(() => expect(container.textContent).toContain('Bob'));
     const removeBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.title === 'Remove from unit',
+      (b) => b.title === 'Quitar de la unidad',
     ) as HTMLButtonElement[];
     expect(removeBtns.length).toBeGreaterThan(0);
     fireEvent.click(removeBtns[0]);
@@ -1049,7 +1049,7 @@ describe('UnitSidePanel', () => {
     await waitFor(() => expect(container.querySelector('[role="dialog"]')).toBeTruthy());
     // Find the Delete confirm button in the dialog
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.textContent?.includes('Delete unit'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     expect(confirmBtn.disabled).toBe(false);
     fireEvent.click(confirmBtn);
@@ -1087,7 +1087,7 @@ describe('UnitSidePanel', () => {
     await waitFor(() => expect(container.querySelector('[role="dialog"]')).toBeTruthy());
     // With members, the Delete button should be disabled until force is checked
     const confirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.textContent?.includes('Delete unit'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     expect(confirmBtn.disabled).toBe(true);
     // Check force checkbox
@@ -1130,7 +1130,7 @@ describe('UnitSidePanel', () => {
     });
     // Next button should appear
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn).toBeTruthy();
     fireEvent.click(nextBtn);
@@ -1157,7 +1157,7 @@ describe('NewUnitModal', () => {
   it('opens the NewUnitModal', async () => {
     const { container } = renderPage();
     await openNewModal(container);
-    expect(container.textContent).toContain('New org unit');
+    expect(container.textContent).toContain('Nueva unidad organizativa');
   });
 
   it('Create button disabled when name is empty', async () => {
@@ -1235,7 +1235,7 @@ describe('NewUnitModal', () => {
     const { container } = renderPage();
     await openNewModal(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1272,7 +1272,7 @@ describe('NewUnitModal', () => {
     expect(colorBtns.length).toBeGreaterThan(0);
     fireEvent.click(colorBtns[1]); // click a colored preset
     // No crash expected; ring-2 class indicates selection
-    expect(container.textContent).toContain('New org unit');
+    expect(container.textContent).toContain('Nueva unidad organizativa');
   });
 
   it('icon preset in new unit modal updates selection', async () => {
@@ -1284,7 +1284,7 @@ describe('NewUnitModal', () => {
     ) as HTMLButtonElement[];
     expect(iconBtns.length).toBeGreaterThan(0);
     fireEvent.click(iconBtns[1]); // pick a different icon
-    expect(container.textContent).toContain('New org unit');
+    expect(container.textContent).toContain('Nueva unidad organizativa');
   });
 
   it('parent unit picker renders tree options', async () => {
@@ -1346,7 +1346,7 @@ describe('NewUnitModal', () => {
     });
     // Clear lead
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.title === 'Clear',
+      (b) => b.title === 'Limpiar',
     ) as HTMLButtonElement;
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn);
@@ -1394,7 +1394,7 @@ describe('ModalShell — Escape key', () => {
     fireEvent.click(newUnitBtn);
     await waitFor(() => expect(container.querySelector('[role="dialog"]')).toBeTruthy());
     const closeBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.getAttribute('aria-label') === 'Close',
+      (b) => b.getAttribute('aria-label') === 'Cerrar',
     ) as HTMLButtonElement[];
     expect(closeBtns.length).toBeGreaterThan(0);
     fireEvent.click(closeBtns[0]);
