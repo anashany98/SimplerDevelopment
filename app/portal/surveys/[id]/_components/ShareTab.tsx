@@ -39,7 +39,7 @@ export default function ShareTab({ survey, publicUrl, copied, onCopyLink, onCopy
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-lg">{copied ? 'check' : 'content_copy'}</span>
-            {copied ? 'Copied!' : 'Copy'}
+            {copied ? '¡Copiado!' : 'Copiar'}
           </button>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function ShareTab({ survey, publicUrl, copied, onCopyLink, onCopy
           className="inline-flex items-center gap-1.5 px-4 py-2 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
         >
           <span className="material-icons text-lg">{copied ? 'check' : 'content_copy'}</span>
-          {copied ? 'Copied!' : 'Copy Embed Code'}
+          {copied ? '¡Copiado!' : 'Copiar código de inserción'}
         </button>
       </div>
 

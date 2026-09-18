@@ -33,13 +33,13 @@ const PROVIDERS: { value: 'anthropic' | 'openai'; label: string; placeholder: st
     value: 'anthropic',
     label: 'Anthropic (Claude)',
     placeholder: 'sk-ant-api03-…',
-    helper: 'Generate at console.anthropic.com → Settings → API Keys.',
+    helper: 'Genérala en console.anthropic.com → Settings → API Keys.',
   },
   {
     value: 'openai',
     label: 'OpenAI (GPT + Embeddings)',
     placeholder: 'sk-proj-…',
-    helper: 'Generate at platform.openai.com → API Keys. Used for chat AND brain embeddings.',
+    helper: 'Genérala en platform.openai.com → API Keys. Se usa para chat Y incrustaciones del Brain.',
   },
 ];
 
@@ -72,10 +72,10 @@ export default function ByokKeysPage() {
     try {
       const res = await fetch('/api/portal/integrations/api-keys', { cache: 'no-store' });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message ?? 'Failed to load keys');
+      if (!res.ok || !json.success) throw new Error(json.message ?? 'No se pudieron cargar las claves');
       setKeys(json.data as ByokKey[]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load keys');
+      setError(err instanceof Error ? err.message : 'No se pudieron cargar las claves');
     } finally {
       setLoading(false);
     }
@@ -119,35 +119,35 @@ export default function ByokKeysPage() {
         body: JSON.stringify({ provider: providerValue, apiKey, label: labelValue || null }),
       });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message ?? 'Failed to add key');
-      setSuccess(`${providerLabel(providerValue)} key added.`);
+      if (!res.ok || !json.success) throw new Error(json.message ?? 'No se pudo añadir la clave');
+      setSuccess(`Clave de ${providerLabel(providerValue)} añadida.`);
       setLabel('');
       setCreating(false);
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add key');
+      setError(err instanceof Error ? err.message : 'No se pudo añadir la clave');
     } finally {
       setAdding(false);
     }
   }
 
   async function handleDelete(id: number) {
-    if (!window.confirm('Remove this key? AI calls will fall back to platform credits.')) return;
+    if (!window.confirm('¿Quitar esta clave? Las llamadas de IA usarán los créditos de la plataforma.')) return;
     setError(null);
     setSuccess(null);
     try {
       const res = await fetch(`/api/portal/integrations/api-keys/${id}`, { method: 'DELETE' });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message ?? 'Failed to delete key');
-      setSuccess('Key removed.');
+      if (!res.ok || !json.success) throw new Error(json.message ?? 'No se pudo eliminar la clave');
+      setSuccess('Clave eliminada.');
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete key');
+      setError(err instanceof Error ? err.message : 'No se pudo eliminar la clave');
     }
   }
 
   async function handleRename(id: number, currentLabel: string | null) {
-    const next = window.prompt('Label for this key (optional):', currentLabel ?? '');
+    const next = window.prompt('Etiqueta para esta clave (opcional):', currentLabel ?? '');
     if (next === null) return;
     setError(null);
     setSuccess(null);
@@ -158,10 +158,10 @@ export default function ByokKeysPage() {
         body: JSON.stringify({ label: next.trim() || null }),
       });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message ?? 'Failed to update key');
+      if (!res.ok || !json.success) throw new Error(json.message ?? 'No se pudo actualizar la clave');
       await refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update key');
+      setError(err instanceof Error ? err.message : 'No se pudo actualizar la clave');
     }
   }
 
@@ -175,7 +175,7 @@ export default function ByokKeysPage() {
       <PortalPageHeader
         eyebrow="Integraciones"
         title="Claves de API de proveedores (BYOK)"
-        subtitle="Bring-your-own keys for Anthropic and OpenAI. When configured, the portal calls these providers directly with your key — usage and billing are between you and the provider. Without a key, AI falls back to bundled platform credits."
+        subtitle="Usa tus propias claves para Anthropic y OpenAI. Cuando están configuradas, el portal llama a estos proveedores directamente con tu clave — el uso y la facturación corren entre tú y el proveedor. Sin una clave, la IA usa los créditos de la plataforma."
       />
 
       {error && (
@@ -195,25 +195,25 @@ export default function ByokKeysPage() {
       {!canManageKeys && (
         <div className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center">
           <span className="material-icons text-5xl text-muted-foreground mb-3">workspace_premium</span>
-          <h3 className="font-semibold text-foreground mb-1">Bring your own AI key is a Scale feature</h3>
+          <h3 className="font-semibold text-foreground mb-1">Usar tu propia clave de IA es una función del plan Scale</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            On the Scale plan you connect your own Anthropic and OpenAI keys and pay providers directly
-            at cost — token usage appears on your provider invoice, not against platform AI credits.
-            Upgrade to Scale to unlock BYOK.
+            En el plan Scale conectas tus propias claves de Anthropic y OpenAI y pagas a los proveedores directamente
+            al coste — el uso de tokens aparece en tu factura del proveedor, no contra los créditos de IA de la plataforma.
+            Cambia a Scale para desbloquear BYOK.
           </p>
           <a
             href="/portal/settings/billing/plans"
             className={`mt-4 ${pBtnPrimary}`}
           >
             <span className="material-icons text-base">workspace_premium</span>
-            View plans
+            Ver planes
           </a>
         </div>
       )}
 
       <section className={pCard}>
         <div className="p-4 border-b border-border flex items-center justify-between">
-          <h2 className={pSectionTitle}>Configured keys</h2>
+          <h2 className={pSectionTitle}>Claves configuradas</h2>
           {/* Add key button only available on Scale */}
           {canManageKeys && !creating && (
             <button
@@ -222,7 +222,7 @@ export default function ByokKeysPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              Add key
+              Añadir clave
             </button>
           )}
         </div>
@@ -234,7 +234,7 @@ export default function ByokKeysPage() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label className="block">
-                <span className="text-sm font-medium">Provider</span>
+                <span className="text-sm font-medium">Proveedor</span>
                 <select
                   name="provider"
                   value={provider}
@@ -247,7 +247,7 @@ export default function ByokKeysPage() {
                 </select>
               </label>
               <label className="block">
-                <span className="text-sm font-medium">Label (optional)</span>
+                <span className="text-sm font-medium">Etiqueta (opcional)</span>
                 <input
                   name="label"
                   value={label}
@@ -259,7 +259,7 @@ export default function ByokKeysPage() {
               </label>
             </div>
             <label className="block">
-              <span className="text-sm font-medium">API key</span>
+              <span className="text-sm font-medium">Clave de API</span>
               <input
                 name="apiKey"
                 type="password"
@@ -283,7 +283,7 @@ export default function ByokKeysPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">save</span>
-                {adding ? 'Saving…' : 'Save key'}
+                {adding ? 'Guardando…' : 'Guardar clave'}
               </button>
               <button
                 type="button"
@@ -298,16 +298,16 @@ export default function ByokKeysPage() {
           <div className="p-4 text-sm text-muted-foreground">Cargando…</div>
         ) : keys.length === 0 ? (
           <div className="p-6 text-center text-sm text-muted-foreground">
-            No BYOK keys yet. AI calls use bundled platform credits.
+            Aún no hay claves BYOK. Las llamadas de IA usan los créditos de la plataforma.
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
               <tr className="text-left">
-                <th className="px-4 py-2 font-medium">Provider</th>
+                <th className="px-4 py-2 font-medium">Proveedor</th>
                 <th className="px-4 py-2 font-medium">Etiqueta</th>
-                <th className="px-4 py-2 font-medium">Key</th>
-                <th className="px-4 py-2 font-medium">Last used</th>
+                <th className="px-4 py-2 font-medium">Clave</th>
+                <th className="px-4 py-2 font-medium">Último uso</th>
                 <th className="px-4 py-2 font-medium text-right">Acciones</th>
               </tr>
             </thead>
@@ -352,7 +352,7 @@ export default function ByokKeysPage() {
       <section className={`${pCard} p-5 space-y-2 text-sm`}>
         <h3 className={`${pSectionTitle} flex items-center gap-1 mb-1`}>
           <span className="material-icons text-base">info</span>
-          How BYOK billing works
+          Cómo funciona la facturación de BYOK
         </h3>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
           <li>Cuando hay una clave configurada para un proveedor, todas las llamadas de IA del portal a ese proveedor la usan.</li>
