@@ -140,7 +140,7 @@ export default async function MobileAuthPage() {
           }}
         >
           {/* Material Icons "auto_awesome" rendered as a Unicode-ish star fallback */}
-          <span style={{ fontFamily: '"Material Icons"', fontSize: 32 }}>auto_awesome</span>
+          <span style={{ fontFamily: '"Material Icons", "Material Icons Full"', fontSize: 32 }}>auto_awesome</span>
         </div>
         <h1 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#0B0F19' }}>
           Connect CRM AGENTS Chat

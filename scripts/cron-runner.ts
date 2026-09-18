@@ -87,12 +87,27 @@ async function fire(entry: Entry): Promise<void> {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// Fire due jobs with a small concurrency cap + stagger. vercel.json schedules
+// 13 `* * * * *` drains that all become due on the same tick; firing all of
+// them at once saturates a 2-vCPU host (observed: request TTFB spiking to
+// ~2.8s during the minute-boundary burst). Capped batches keep the box
+// responsive; the total number of fired jobs is unchanged.
+const FIRE_CONCURRENCY = Number(process.env.CRON_FIRE_CONCURRENCY) || 3;
+const FIRE_STAGGER_MS = Number(process.env.CRON_FIRE_STAGGER_MS) || 200;
+
+async function fireDue(due: Entry[]): Promise<void> {
+  for (let i = 0; i < due.length; i += FIRE_CONCURRENCY) {
+    await Promise.allSettled(due.slice(i, i + FIRE_CONCURRENCY).map((e) => fire(e)));
+    if (i + FIRE_CONCURRENCY < due.length) await sleep(FIRE_STAGGER_MS);
+  }
+}
+
 console.log(`[cron-runner] scheduling ${entries.length} jobs against ${BASE_URL}`);
 
 for (;;) {
   const now = Date.now();
   const due = entries.filter((e) => e.next <= now);
-  if (due.length > 0) await Promise.allSettled(due.map((e) => fire(e)));
+  if (due.length > 0) await fireDue(due);
   // Recompute from now: a delayed run forfeits the missed tick instead of
   // firing repeatedly to "catch up" (same behaviour as Vercel's scheduler).
   for (const e of due) e.next = nextFireTime(e.schedule, new Date());

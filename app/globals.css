@@ -31,11 +31,25 @@
   font-style: normal;
   font-weight: 400;
   font-display: block;
+  src: url("/fonts/material-icons-subset.woff2") format("woff2");
+}
+
+/* Full icon set (126KB) as a fallback face: user-picked icons (IconPicker)
+ * are stored by name and render through ligatures, so the subset can't cover
+ * every possibility. NOTE: for LIGATURE fonts browsers do not fall back per
+ * ligature (the subset keeps a-z, so text always "renders") — an icon name
+ * outside the subset shows literal text. Keeping this face covers
+ * character-level misses (e.g. PUA) and lets us widen without a re-deploy. */
+@font-face {
+  font-family: "Material Icons Full";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
   src: url("/fonts/material-icons.woff2") format("woff2");
 }
 
 .material-icons {
-  font-family: "Material Icons";
+  font-family: "Material Icons", "Material Icons Full";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;

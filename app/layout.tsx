@@ -147,7 +147,7 @@ export default async function RootLayout({
              *  Preload the woff2 so icon glyphs paint immediately. */}
             <link
               rel="preload"
-              href="/fonts/material-icons.woff2"
+              href="/fonts/material-icons-subset.woff2"
               as="font"
               type="font/woff2"
               crossOrigin="anonymous"

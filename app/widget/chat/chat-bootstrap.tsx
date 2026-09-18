@@ -73,8 +73,9 @@ export default function ChatBootstrap({
     const style = document.createElement('style');
     style.id = 'sd-chat-mi';
     style.textContent =
-      '@font-face{font-family:"Material Icons";font-style:normal;font-weight:400;font-display:block;src:url("/fonts/material-icons.woff2") format("woff2");}' +
-      '.material-icons{font-family:"Material Icons";font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-feature-settings:"liga";-webkit-font-feature-settings:"liga";-webkit-font-smoothing:antialiased;}';
+      '@font-face{font-family:"Material Icons";font-style:normal;font-weight:400;font-display:block;src:url("/fonts/material-icons-subset.woff2") format("woff2");}' +
+      '@font-face{font-family:"Material Icons Full";font-style:normal;font-weight:400;font-display:block;src:url("/fonts/material-icons.woff2") format("woff2");}' +
+      '.material-icons{font-family:"Material Icons","Material Icons Full";font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;font-feature-settings:"liga";-webkit-font-feature-settings:"liga";-webkit-font-smoothing:antialiased;}';
     document.head.appendChild(style);
   }, []);
 
