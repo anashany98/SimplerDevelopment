@@ -169,12 +169,12 @@ function openSection(title: string) {
 describe('StyleSettings — rendering', () => {
   it('renders all collapsible section headers', () => {
     renderPanel();
-    expect(screen.getByText('Layout')).toBeTruthy();
+    expect(screen.getByText('Diseño')).toBeTruthy();
     expect(screen.getByText('Margin & Padding')).toBeTruthy();
     expect(screen.getByText('Visibility')).toBeTruthy();
-    expect(screen.getByText('Background')).toBeTruthy();
-    expect(screen.getByText('Typography')).toBeTruthy();
-    expect(screen.getByText('Border')).toBeTruthy();
+    expect(screen.getByText('Fondo')).toBeTruthy();
+    expect(screen.getByText('Tipografía')).toBeTruthy();
+    expect(screen.getByText('Borde')).toBeTruthy();
     expect(screen.getByText('Shadows & Effects')).toBeTruthy();
     expect(screen.getByText('CSS Properties')).toBeTruthy();
   });
@@ -202,7 +202,7 @@ describe('StyleSettings — rendering', () => {
     // @ts-expect-error testing defensive path
     const { onChange } = renderPanel({ style: 'not an object' });
     // Just confirm it renders without crashing
-    expect(screen.getByText('Layout')).toBeTruthy();
+    expect(screen.getByText('Diseño')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
   });
 });
@@ -244,7 +244,7 @@ describe('StyleSettings — Layout', () => {
 
   it('shows grid controls when display is grid', () => {
     renderPanel({ style: { display: 'grid' } } as Partial<Block>);
-    expect(screen.getByText('Columns')).toBeTruthy();
+    expect(screen.getByText('Columnas')).toBeTruthy();
     expect(screen.getByText('Rows')).toBeTruthy();
     expect(screen.getByPlaceholderText('1fr 1fr 1fr')).toBeTruthy();
   });
@@ -282,7 +282,7 @@ describe('StyleSettings — Layout', () => {
     const { onChange } = renderPanel();
     // Width/Height live in the "Size" section (closed by default) now that
     // Layout only holds display/flex/position controls.
-    openSection('Size');
+    openSection('Tamaño');
     const inputs = screen.getAllByPlaceholderText('auto');
     fireEvent.change(inputs[0], { target: { value: '50%' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -296,7 +296,7 @@ describe('StyleSettings — Layout', () => {
 
   it('hides Width/Height Size inputs for spacer blocks (VEQA-058 — dead control, SpacerBlockRender only reads the Content-tab height enum)', () => {
     renderPanel({ type: 'spacer' } as Partial<Block>);
-    openSection('Size');
+    openSection('Tamaño');
     expect(screen.queryAllByPlaceholderText('auto').length).toBe(0);
   });
 
@@ -328,7 +328,7 @@ describe('StyleSettings — Layout', () => {
   it('updates gap via select when flex', () => {
     const { onChange } = renderPanel();
     const gap = screen.getAllByRole('combobox').find(
-      (s) => (s as HTMLSelectElement).options[0]?.text === 'None' &&
+      (s) => (s as HTMLSelectElement).options[0]?.text === 'Ninguno' &&
         Array.from((s as HTMLSelectElement).options).some((o) => o.value === '1rem'),
     ) as HTMLSelectElement;
     fireEvent.change(gap, { target: { value: '1rem' } });
@@ -597,13 +597,13 @@ describe('StyleSettings — Visibility', () => {
 describe('StyleSettings — Background', () => {
   it('renders the GradientBuilder mock', () => {
     renderPanel();
-    openSection('Background');
+    openSection('Fondo');
     expect(screen.getByTestId('gradient-builder')).toBeTruthy();
   });
 
   it('GradientBuilder onChange (set color) forwards to onChange', () => {
     const { onChange } = renderPanel();
-    openSection('Background');
+    openSection('Fondo');
     fireEvent.click(screen.getByTestId('gradient-set-color'));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -617,7 +617,7 @@ describe('StyleSettings — Background', () => {
 
   it('GradientBuilder onChange (set gradient) forwards to onChange', () => {
     const { onChange } = renderPanel();
-    openSection('Background');
+    openSection('Fondo');
     fireEvent.click(screen.getByTestId('gradient-set-gradient'));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -632,7 +632,7 @@ describe('StyleSettings — Background', () => {
     renderPanel({
       style: { backgroundImage: 'url(/x.png)' },
     } as Partial<Block>);
-    openSection('Background');
+    openSection('Fondo');
     // "Repeat" appears both as a label and a select option, so use getAllByText
     expect(screen.getAllByText('Repeat').length).toBeGreaterThan(0);
     expect(screen.getByText('Attachment')).toBeTruthy();
@@ -642,13 +642,13 @@ describe('StyleSettings — Background', () => {
     renderPanel({
       style: { backgroundGradient: 'linear-gradient(red,blue)' },
     } as Partial<Block>);
-    openSection('Background');
+    openSection('Fondo');
     expect(screen.getByText('Background blend mode')).toBeTruthy();
   });
 
   it('MediaPicker change updates backgroundImage', () => {
     const { onChange } = renderPanel();
-    openSection('Background');
+    openSection('Fondo');
     const input = screen.getByTestId('media-picker-input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '/new.png' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -666,13 +666,13 @@ describe('StyleSettings — Background', () => {
 describe('StyleSettings — Typography', () => {
   it('renders TokenColorPicker for text color', () => {
     renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     expect(screen.getByTestId('token-color-Text Color')).toBeTruthy();
   });
 
   it('changes text color via token picker', () => {
     const { onChange } = renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     const input = screen.getByTestId('token-color-input-Text Color') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '#ff0000' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -694,7 +694,7 @@ describe('StyleSettings — Typography', () => {
 
   it('shows font-size + alignment controls for text blocks', () => {
     renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     expect(screen.getByText('Font Size')).toBeTruthy();
     expect(screen.getByText('Text Align')).toBeTruthy();
     expect(screen.getByText('Transform')).toBeTruthy();
@@ -703,7 +703,7 @@ describe('StyleSettings — Typography', () => {
 
   it('font family change goes through GoogleFontPicker mock', () => {
     const { onChange } = renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     const fp = screen.getByTestId('google-font-picker') as HTMLInputElement;
     fireEvent.change(fp, { target: { value: 'Roboto' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -715,7 +715,7 @@ describe('StyleSettings — Typography', () => {
 
   it('changes font weight', () => {
     const { onChange } = renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     const weightSelect = screen.getAllByRole('combobox').find((s) =>
       Array.from((s as HTMLSelectElement).options).some((o) => o.text === 'Bold'),
     ) as HTMLSelectElement;
@@ -729,7 +729,7 @@ describe('StyleSettings — Typography', () => {
 
   it('clicks a text-align button', () => {
     const { onChange } = renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     const center = screen.getByTitle('Center');
     fireEvent.click(center);
     expect(onChange).toHaveBeenCalledWith(
@@ -741,7 +741,7 @@ describe('StyleSettings — Typography', () => {
 
   it('clicks a text-transform button (ABC)', () => {
     const { onChange } = renderPanel();
-    openSection('Typography');
+    openSection('Tipografía');
     const buttons = screen.getAllByRole('button');
     const abc = buttons.find((b) => b.textContent === 'ABC');
     if (!abc) throw new Error('ABC button not found');
@@ -755,7 +755,7 @@ describe('StyleSettings — Typography', () => {
 
   it('updates responsive font-size override', () => {
     const { onChange } = renderPanel({}, 'tablet');
-    openSection('Typography');
+    openSection('Tipografía');
     const respFontSize = screen.getAllByRole('combobox').find((s) => {
       const opts = (s as HTMLSelectElement).options;
       return Array.from(opts).some((o) => o.value === '6xl') && opts[0].value === '';
@@ -794,7 +794,7 @@ describe('StyleSettings — Border', () => {
 
   it('sets border width with no existing borderStyle defaults style to solid', () => {
     const { onChange } = renderPanel();
-    openSection('Border');
+    openSection('Borde');
     const widthSelect = findBorderWidthSelect();
     fireEvent.change(widthSelect, { target: { value: '2px' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -808,7 +808,7 @@ describe('StyleSettings — Border', () => {
     const { onChange } = renderPanel({
       style: { borderWidth: '1px', borderStyle: 'solid' },
     } as Partial<Block>);
-    openSection('Border');
+    openSection('Borde');
     const widthSelect = findBorderWidthSelect();
     fireEvent.change(widthSelect, { target: { value: '4px' } });
     // Should have been called with width updated (and style preserved as solid in merged result)
@@ -821,18 +821,18 @@ describe('StyleSettings — Border', () => {
 
   it('shows border color & style controls only when width set', () => {
     const noWidth = renderPanel();
-    openSection('Border');
+    openSection('Borde');
     expect(screen.queryByTestId('token-color-Border Color')).toBeNull();
     noWidth.unmount();
 
     renderPanel({ style: { borderWidth: '2px' } } as Partial<Block>);
-    openSection('Border');
+    openSection('Borde');
     expect(screen.getByTestId('token-color-Border Color')).toBeTruthy();
   });
 
   it('toggles per-side borders panel', () => {
     renderPanel();
-    openSection('Border');
+    openSection('Borde');
     const psbBtn = screen.getByText('Per-side borders');
     fireEvent.click(psbBtn);
     // Now per-side labels render: "Top W", "Right W", "Bottom W", "Left W"
@@ -844,7 +844,7 @@ describe('StyleSettings — Border', () => {
 
   it('setting a per-side width with no per-side style auto-sets solid', () => {
     const { onChange } = renderPanel();
-    openSection('Border');
+    openSection('Borde');
     fireEvent.click(screen.getByText('Per-side borders'));
     // The first <select> under Top W is our target.
     const allSelects = screen.getAllByRole('combobox');
@@ -862,7 +862,7 @@ describe('StyleSettings — Border', () => {
 
   it('renders border radius dropdown and updates it', () => {
     const { onChange } = renderPanel();
-    openSection('Border');
+    openSection('Borde');
     // border-radius select: contains "Full (Pill)"
     const radiusSelect = screen.getAllByRole('combobox').find((s) =>
       Array.from((s as HTMLSelectElement).options).some((o) => o.text === 'Full (Pill)'),
@@ -877,7 +877,7 @@ describe('StyleSettings — Border', () => {
 
   it('shows per-corner radius toggle when radius is set', () => {
     renderPanel({ style: { borderRadius: '0.5rem' } } as Partial<Block>);
-    openSection('Border');
+    openSection('Borde');
     expect(screen.getByText('Per-corner radius')).toBeTruthy();
     fireEvent.click(screen.getByText('Per-corner radius'));
     expect(screen.getByText('TL')).toBeTruthy();
@@ -888,7 +888,7 @@ describe('StyleSettings — Border', () => {
 
   it('does not show per-corner radius when no radius set', () => {
     renderPanel();
-    openSection('Border');
+    openSection('Borde');
     expect(screen.queryByText('Per-corner radius')).toBeNull();
   });
 });
