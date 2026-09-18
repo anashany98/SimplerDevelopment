@@ -171,12 +171,12 @@ export default function SurveySettings(props: Props) {
       <div className="bg-card border border-border rounded-xl p-6 space-y-6">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">palette</span>
-          Appearance
+          Apariencia
         </h3>
 
         {/* Branding Profile */}
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Branding Profile</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Perfil de marca</label>
           <select
             value={editBrandingProfileId || ''}
             onChange={(e) => setEditBrandingProfileId(e.target.value ? Number(e.target.value) : null)}
@@ -186,19 +186,19 @@ export default function SurveySettings(props: Props) {
             {brandingProfiles.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
-                {p.isDefault ? ' (default)' : ''}
+                {p.isDefault ? ' (predeterminado)' : ''}
               </option>
             ))}
           </select>
           <p className="text-xs text-muted-foreground mt-1">
-            Select a branding profile as a base, then override individual values below.
+            Selecciona un perfil de marca como base y luego sobrescribe los valores individuales a continuación.
             {brandingProfiles.length === 0 && (
               <>
                 {' '}
                 <a href="/portal/branding" className="text-primary hover:underline">
-                  Create a branding profile
+                  Crear un perfil de marca
                 </a>{' '}
-                first.
+                primero.
               </>
             )}
           </p>
@@ -208,7 +208,7 @@ export default function SurveySettings(props: Props) {
         <div>
           <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
             <span className="material-icons text-base text-muted-foreground">color_lens</span>
-            Colors
+            Colores
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {(
@@ -218,10 +218,10 @@ export default function SurveySettings(props: Props) {
                 { key: 'accentColor', label: 'Acento', fallback: '#f59e0b' },
                 { key: 'backgroundColor', label: 'Fondo', fallback: '#ffffff' },
                 { key: 'textColor', label: 'Texto', fallback: '#111827' },
-                { key: 'formBg', label: 'Form Card', fallback: '#ffffff' },
-                { key: 'inputBg', label: 'Input Fields', fallback: '#ffffff' },
-                { key: 'inputTextColor', label: 'Input Text', fallback: '#111827' },
-                { key: 'inputOptionTextColor', label: 'Option Text', fallback: '#374151' },
+                { key: 'formBg', label: 'Tarjeta del formulario', fallback: '#ffffff' },
+                { key: 'inputBg', label: 'Campos de entrada', fallback: '#ffffff' },
+                { key: 'inputTextColor', label: 'Texto de entrada', fallback: '#111827' },
+                { key: 'inputOptionTextColor', label: 'Texto de opciones', fallback: '#374151' },
               ] as const
             ).map(({ key, label, fallback }) => (
               <div key={key}>
@@ -250,18 +250,18 @@ export default function SurveySettings(props: Props) {
         <div>
           <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
             <span className="material-icons text-base text-muted-foreground">text_fields</span>
-            Fonts
+            Fuentes
           </h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Heading Font</label>
+              <label className="block text-xs text-muted-foreground mb-1">Fuente de títulos</label>
               <GoogleFontPicker
                 value={(editStyling.headingFont as string) || ''}
                 onChange={(font) => setEditStyling((prev) => ({ ...prev, headingFont: font }))}
               />
             </div>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Body Font</label>
+              <label className="block text-xs text-muted-foreground mb-1">Fuente del cuerpo</label>
               <GoogleFontPicker
                 value={(editStyling.bodyFont as string) || ''}
                 onChange={(font) => setEditStyling((prev) => ({ ...prev, bodyFont: font }))}
@@ -274,11 +274,11 @@ export default function SurveySettings(props: Props) {
         <div>
           <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
             <span className="material-icons text-base text-muted-foreground">smart_button</span>
-            Buttons
+            Botones
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Button Background</label>
+              <label className="block text-xs text-muted-foreground mb-1">Fondo del botón</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -314,18 +314,18 @@ export default function SurveySettings(props: Props) {
               </div>
             </div>
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Border Radius</label>
+              <label className="block text-xs text-muted-foreground mb-1">Radio del borde</label>
               <select
                 value={(editStyling.buttonBorderRadius as string) || ''}
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, buttonBorderRadius: e.target.value }))}
                 className="w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
                 <option value="">Predeterminado</option>
-                <option value="0px">Square (0px)</option>
-                <option value="4px">Slight (4px)</option>
-                <option value="8px">Rounded (8px)</option>
-                <option value="12px">More Rounded (12px)</option>
-                <option value="9999px">Pill (full)</option>
+                <option value="0px">Cuadrado (0px)</option>
+                <option value="4px">Ligero (4px)</option>
+                <option value="8px">Redondeado (8px)</option>
+                <option value="12px">Más redondeado (12px)</option>
+                <option value="9999px">Pastilla (completo)</option>
               </select>
             </div>
           </div>
@@ -337,18 +337,18 @@ export default function SurveySettings(props: Props) {
             <span className="material-icons text-base text-muted-foreground">view_quilt</span>Diseño</h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-muted-foreground mb-1">Card Border Radius</label>
+              <label className="block text-xs text-muted-foreground mb-1">Radio del borde de la tarjeta</label>
               <select
                 value={(editStyling.borderRadius as string) || ''}
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, borderRadius: e.target.value }))}
                 className="w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="">Default (8px)</option>
-                <option value="0px">Square (0px)</option>
-                <option value="4px">Slight (4px)</option>
-                <option value="12px">Rounded (12px)</option>
-                <option value="16px">More Rounded (16px)</option>
-                <option value="24px">Very Rounded (24px)</option>
+                <option value="">Predeterminado (8px)</option>
+                <option value="0px">Cuadrado (0px)</option>
+                <option value="4px">Ligero (4px)</option>
+                <option value="12px">Redondeado (12px)</option>
+                <option value="16px">Más redondeado (16px)</option>
+                <option value="24px">Muy redondeado (24px)</option>
               </select>
             </div>
           </div>
@@ -378,7 +378,7 @@ export default function SurveySettings(props: Props) {
                 onChange={(e) => setEditStyling((prev) => ({ ...prev, darkMode: e.target.checked }))}
                 className="rounded border-border accent-primary"
               />
-              <span className="text-sm text-foreground">Enable dark mode</span>
+              <span className="text-sm text-foreground">Activar modo oscuro</span>
             </label>
           </div>
         </div>
@@ -411,7 +411,7 @@ export default function SurveySettings(props: Props) {
                   fontSize: '0.95rem',
                 }}
               >
-                Survey Question
+                Pregunta de encuesta
               </p>
               <div
                 className="rounded px-3 py-2 text-xs"
@@ -420,7 +420,7 @@ export default function SurveySettings(props: Props) {
                   color: ((editStyling.textColor as string) || '#111827') + '80',
                 }}
               >
-                Your answer...
+                Tu respuesta...
               </div>
               <button
                 className="w-full px-4 py-2 text-sm font-medium"
@@ -443,7 +443,7 @@ export default function SurveySettings(props: Props) {
       <div className="bg-card border border-border rounded-xl p-6 space-y-4">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">celebration</span>
-          Completion Screen
+          Pantalla de finalización
         </h3>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1">Título de agradecimiento</label>
@@ -464,7 +464,7 @@ export default function SurveySettings(props: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Redirect URL (optional)</label>
+          <label className="block text-sm font-medium text-foreground mb-1">URL de redirección (opcional)</label>
           <input
             type="url"
             value={editRedirectUrl}
@@ -473,7 +473,7 @@ export default function SurveySettings(props: Props) {
             className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            If set, respondents will be redirected here instead of seeing the thank you screen
+            Si se define, los encuestados serán redirigidos aquí en lugar de ver la pantalla de agradecimiento
           </p>
         </div>
       </div>
@@ -482,7 +482,7 @@ export default function SurveySettings(props: Props) {
       <div className="bg-card border border-border rounded-xl p-6 space-y-4">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <span className="material-icons text-primary">tune</span>
-          Response Settings
+          Ajustes de respuestas
         </h3>
         <div className="space-y-3">
           <label className="flex items-center gap-2 cursor-pointer">
@@ -492,7 +492,7 @@ export default function SurveySettings(props: Props) {
               onChange={(e) => setEditRequireEmail(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-sm text-foreground">Require respondent email</span>
+            <span className="text-sm text-foreground">Solicitar el correo del encuestado</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -501,7 +501,7 @@ export default function SurveySettings(props: Props) {
               onChange={(e) => setEditAllowMultiple(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-sm text-foreground">Allow multiple submissions per person</span>
+            <span className="text-sm text-foreground">Permitir varias respuestas por persona</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -520,10 +520,10 @@ export default function SurveySettings(props: Props) {
               className="rounded border-border mt-0.5"
             />
             <span className="text-sm text-foreground">
-              Publish public results page
+              Publicar página pública de resultados
               <span className="block text-xs text-muted-foreground">
-                Aggregated charts at <code className="px-1 py-0.5 rounded bg-muted text-[11px]">/s/&lt;slug&gt;/results</code>. No
-                individual responses are exposed.
+                Gráficos agregados en <code className="px-1 py-0.5 rounded bg-muted text-[11px]">/s/&lt;slug&gt;/results</code>. No
+                se exponen respuestas individuales.
               </span>
             </span>
           </label>
@@ -535,11 +535,11 @@ export default function SurveySettings(props: Props) {
               className="rounded border-border mt-0.5"
             />
             <span className="text-sm text-foreground">
-              Offer completion certificate
+              Ofrecer certificado de finalización
               <span className="block text-xs text-muted-foreground">
-                After submitting, respondents see a &ldquo;Download Certificate&rdquo; button on the thank-you screen.
-                The PDF uses this survey&apos;s branding profile (logo, colors, fonts) and shows the respondent&apos;s
-                name and completion date.
+                Tras enviar, los encuestados ven un botón &ldquo;Descargar certificado&rdquo; en la pantalla de agradecimiento.
+                El PDF usa el perfil de marca de esta encuesta (logotipo, colores, fuentes) y muestra el nombre del encuestado
+                y la fecha de finalización.
               </span>
             </span>
           </label>
@@ -556,14 +556,14 @@ export default function SurveySettings(props: Props) {
         <div>
           <label className="block text-sm font-medium text-foreground mb-1 flex items-center gap-1.5">
             <span className="material-icons text-base text-muted-foreground">verified_user</span>
-            Email Follow-up Consent Field
+            Campo de consentimiento para correos de seguimiento
           </label>
           <select
             value={editConsentField ?? ''}
             onChange={(e) => setEditConsentField(e.target.value ? e.target.value : null)}
             className="w-full sm:w-72 px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
-            <option value="">(none — email presence is enough)</option>
+            <option value="">(ninguno — basta con un correo electrónico)</option>
             {(editFields || [])
               .filter((f) => f.id && f.type !== 'heading' && f.type !== 'page_break' && f.type !== 'file')
               .map((f) => (
@@ -573,9 +573,9 @@ export default function SurveySettings(props: Props) {
               ))}
           </select>
           <p className="text-xs text-muted-foreground mt-1">
-            Follow-up email sequences only fire when this field&apos;s answer is truthy
-            (e.g. a checkbox or &ldquo;Yes&rdquo; toggle). Leave unset to send follow-ups to anyone who
-            provides an email address.
+            Las secuencias de correos de seguimiento solo se activan cuando la respuesta de este campo es verdadera
+            (p. ej. una casilla o un interruptor &ldquo;Sí&rdquo;). Déjalo sin definir para enviar seguimientos a cualquiera que
+            proporcione una dirección de correo electrónico.
           </p>
         </div>
 
@@ -590,12 +590,12 @@ export default function SurveySettings(props: Props) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Max Responses (optional)</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Máximo de respuestas (opcional)</label>
             <input
               type="number"
               value={editMaxResponses}
               onChange={(e) => setEditMaxResponses(e.target.value)}
-              placeholder="Unlimited"
+              placeholder="Ilimitado"
               min={1}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
@@ -613,8 +613,8 @@ export default function SurveySettings(props: Props) {
             <div className="flex-1">
               <h3 className="font-semibold text-foreground">Enrutar automáticamente al CRM</h3>
               <p className="text-xs text-muted-foreground mt-0.5">
-                When a response&apos;s score crosses your threshold (and an email is captured), automátically create a
-                deal in the chosen CRM pipeline.
+                Cuando la puntuación de una respuesta supera tu umbral (y se captura un correo electrónico), se crea
+                automáticamente un trato en el pipeline de CRM elegido.
               </p>
             </div>
           </div>
@@ -633,16 +633,16 @@ export default function SurveySettings(props: Props) {
                     minScore: current?.minScore ?? 0,
                     pipelineId: current?.pipelineId ?? 0,
                     stageId: current?.stageId ?? 0,
-                    dealTitleTemplate: current?.dealTitleTemplate ?? 'Survey lead: {surveyTitle}',
+                    dealTitleTemplate: current?.dealTitleTemplate ?? 'Lead de encuesta: {surveyTitle}',
                   },
                 });
               }}
               className="rounded border-border mt-0.5"
             />
             <span className="text-sm text-foreground">
-              Enable auto-route
+              Activar enrutamiento automático
               <span className="block text-xs text-muted-foreground">
-                Best-effort — a CRM error will never fail the public survey submit.
+                De mejor esfuerzo — un error del CRM nunca hará fallar el envío público de la encuesta.
               </span>
             </span>
           </label>
@@ -650,7 +650,7 @@ export default function SurveySettings(props: Props) {
           {autoRoute?.enabled && (
             <div className="grid sm:grid-cols-2 gap-4 pt-2 border-t border-border">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Minimum score</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Puntuación mínima</label>
                 <input
                   type="number"
                   value={Number.isFinite(autoRoute.minScore) ? autoRoute.minScore : 0}
@@ -695,14 +695,14 @@ export default function SurveySettings(props: Props) {
                 </select>
                 {pipelinesLoaded && pipelines.length === 0 && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    No CRM pipelines yet.{' '}
+                    No hay pipelines de CRM todavía.{' '}
                     <a href="/portal/crm/pipelines" className="text-primary hover:underline">Crea uno</a>.
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Stage</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Etapa</label>
                 <select
                   value={autoRoute.stageId || ''}
                   onChange={(e) => {
@@ -726,7 +726,7 @@ export default function SurveySettings(props: Props) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Deal title template</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Plantilla del título del trato</label>
                 <input
                   type="text"
                   value={autoRoute.dealTitleTemplate ?? ''}
@@ -739,11 +739,11 @@ export default function SurveySettings(props: Props) {
                       },
                     });
                   }}
-                  placeholder="Survey lead: {surveyTitle}"
+                  placeholder="Lead de encuesta: {surveyTitle}"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 font-mono text-xs"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Supports tokens: <code>{'{surveyTitle}'}</code>, <code>{'{respondentName}'}</code>,{' '}
+                  Admite tokens: <code>{'{surveyTitle}'}</code>, <code>{'{respondentName}'}</code>,{' '}
                   <code>{'{respondentEmail}'}</code>, <code>{'{score}'}</code>.
                 </p>
               </div>
@@ -759,7 +759,7 @@ export default function SurveySettings(props: Props) {
           className="inline-flex items-center gap-1.5 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-sm transition-colors"
         >
           <span className="material-icons text-lg">delete</span>
-          Delete Survey
+          Eliminar encuesta
         </button>
         <button
           onClick={onSave}

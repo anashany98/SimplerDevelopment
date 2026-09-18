@@ -144,15 +144,15 @@ beforeEach(() => {
 describe('SurveySettings — section rendering', () => {
   it('renders Appearance, Completion Screen, and Response Settings sections', () => {
     renderSettings();
-    expect(screen.getByText('Appearance')).toBeInTheDocument();
-    expect(screen.getByText('Completion Screen')).toBeInTheDocument();
-    expect(screen.getByText('Response Settings')).toBeInTheDocument();
+    expect(screen.getByText('Apariencia')).toBeInTheDocument();
+    expect(screen.getByText('Pantalla de finalización')).toBeInTheDocument();
+    expect(screen.getByText('Ajustes de respuestas')).toBeInTheDocument();
   });
 
   it('renders Save Settings and Delete Survey buttons', () => {
     renderSettings();
     expect(screen.getByRole('button', { name: /Guardar ajustes/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Delete Survey/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Eliminar encuesta/i })).toBeInTheDocument();
   });
 
   it('shows "Saving..." text when saving prop is true', () => {
@@ -191,7 +191,7 @@ describe('SurveySettings — branding profile', () => {
 
   it('shows "Create a branding profile" link when no profiles exist', () => {
     renderSettings({ brandingProfiles: [] });
-    expect(screen.getByRole('link', { name: /Create a branding profile/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Crear un perfil de marca/i })).toBeInTheDocument();
   });
 });
 
@@ -247,7 +247,7 @@ describe('SurveySettings — button / layout selects', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
     const borderRadiusSelects = screen.getAllByRole('combobox').filter((el) => {
-      return [...el.querySelectorAll('option')].some((o) => o.textContent?.includes('Square'));
+      return [...el.querySelectorAll('option')].some((o) => o.textContent?.includes('Cuadrado'));
     });
     fireEvent.change(borderRadiusSelects[0], { target: { value: '0px' } });
     expect(setEditStyling).toHaveBeenCalled();
@@ -335,14 +335,14 @@ function findCheckboxByText(text: RegExp): HTMLInputElement {
 describe('SurveySettings — response setting toggles', () => {
   it('calls setEditRequireEmail when checkbox toggled', () => {
     const props = renderSettings({ editRequireEmail: false });
-    const cb = findCheckboxByText(/Require respondent email/i);
+    const cb = findCheckboxByText(/Solicitar el correo del encuestado/i);
     fireEvent.click(cb);
     expect(props.setEditRequireEmail).toHaveBeenCalledWith(true);
   });
 
   it('calls setEditAllowMultiple when checkbox toggled off', () => {
     const props = renderSettings({ editAllowMultiple: true });
-    const cb = findCheckboxByText(/Allow multiple submissions per person/i);
+    const cb = findCheckboxByText(/Permitir varias respuestas por persona/i);
     fireEvent.click(cb);
     expect(props.setEditAllowMultiple).toHaveBeenCalledWith(false);
   });
@@ -356,14 +356,14 @@ describe('SurveySettings — response setting toggles', () => {
 
   it('calls setEditPublishResults when Publish results checkbox toggled', () => {
     const props = renderSettings({ editPublishResults: false });
-    const cb = findCheckboxByText(/Publish public results page/i);
+    const cb = findCheckboxByText(/Publicar página pública de resultados/i);
     fireEvent.click(cb);
     expect(props.setEditPublishResults).toHaveBeenCalledWith(true);
   });
 
   it('calls setEditCertificateEnabled when certificate checkbox toggled', () => {
     const props = renderSettings({ editCertificateEnabled: false });
-    const cb = findCheckboxByText(/Offer completion certificate/i);
+    const cb = findCheckboxByText(/Ofrecer certificado de finalización/i);
     fireEvent.click(cb);
     expect(props.setEditCertificateEnabled).toHaveBeenCalledWith(true);
   });
@@ -420,7 +420,7 @@ describe('SurveySettings — consent field', () => {
   it('calls setEditConsentField with field id when selected', () => {
     const props = renderSettings({ editFields: fieldsWithConsent });
     // The consent field select contains a "none" option and the consent field option
-    const noneOption = screen.getByRole('option', { name: /none — email presence is enough/i });
+    const noneOption = screen.getByRole('option', { name: /ninguno — basta/i });
     const consentSelect = noneOption.closest('select')!;
     fireEvent.change(consentSelect, { target: { value: 'consent-1' } });
     expect(props.setEditConsentField).toHaveBeenCalledWith('consent-1');
@@ -431,7 +431,7 @@ describe('SurveySettings — consent field', () => {
       editFields: fieldsWithConsent,
       editConsentField: 'consent-1',
     });
-    const noneOption = screen.getByRole('option', { name: /none — email presence is enough/i });
+    const noneOption = screen.getByRole('option', { name: /ninguno — basta/i });
     const consentSelect = noneOption.closest('select')!;
     fireEvent.change(consentSelect, { target: { value: '' } });
     expect(props.setEditConsentField).toHaveBeenCalledWith(null);
@@ -450,7 +450,7 @@ describe('SurveySettings — closes at / max responses', () => {
   it('calls setEditMaxResponses when max responses input changes', () => {
     const props = renderSettings();
     // Max responses uses placeholder "Unlimited"
-    const maxInput = screen.getByPlaceholderText('Unlimited');
+    const maxInput = screen.getByPlaceholderText('Ilimitado');
     fireEvent.change(maxInput, { target: { value: '100' } });
     expect(props.setEditMaxResponses).toHaveBeenCalledWith('100');
   });
@@ -465,7 +465,7 @@ describe('SurveySettings — Save / Delete callbacks', () => {
 
   it('calls onDelete when Delete Survey is clicked', () => {
     const props = renderSettings();
-    fireEvent.click(screen.getByRole('button', { name: /Delete Survey/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar encuesta/i }));
     expect(props.onDelete).toHaveBeenCalledOnce();
   });
 });
@@ -525,7 +525,7 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
 
   it('renders Enable auto-route checkbox', () => {
     renderSettings({ editFields: [scoredField], editScoringConfig: null });
-    expect(screen.getByRole('checkbox', { name: /Enable auto-route/i })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: /Activar enrutamiento automático/i })).toBeInTheDocument();
   });
 
   it('calls setEditScoringConfig when Enable auto-route is toggled on', () => {
@@ -535,7 +535,7 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
       editScoringConfig: null,
       setEditScoringConfig,
     });
-    const cb = findCheckboxByText(/Enable auto-route/i);
+    const cb = findCheckboxByText(/Activar enrutamiento automático/i);
     fireEvent.click(cb);
     expect(setEditScoringConfig).toHaveBeenCalled();
     const arg = setEditScoringConfig.mock.calls[0][0] as SurveyScoringConfig;
@@ -558,7 +558,7 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
     });
 
     // Minimum score: the only spinbutton in the auto-route panel
-    expect(screen.getByPlaceholderText('Survey lead: {surveyTitle}')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Lead de encuesta: {surveyTitle}')).toBeInTheDocument();
     // The Deal title template input uses that placeholder — check the min score spinbutton
     const spinbuttons = screen.getAllByRole('spinbutton');
     expect(spinbuttons.length).toBeGreaterThanOrEqual(1);
