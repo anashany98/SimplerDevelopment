@@ -211,7 +211,7 @@ describe('BrainOrgChartPage — loading state', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
     resolve(makeRes({ success: true, data: { tree: [] } }));
   });
 });
@@ -315,7 +315,7 @@ describe('BrainOrgChartPage — loaded with tree', () => {
     setupTree(1);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Nothing selected');
+      expect(container.textContent).toContain('Nada seleccionado');
     });
   });
 
@@ -623,7 +623,7 @@ describe('NewUnitModal', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newUnitBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('New org unit');
+      expect(container.textContent).toContain('Nueva unidad organizativa');
     });
   }
 
@@ -637,7 +637,7 @@ describe('NewUnitModal', () => {
     const { container } = renderPage();
     await openModal(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -787,7 +787,7 @@ describe('NewUnitModal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
     // Now clear
     const clearBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.title === 'Clear',
+      b.title === 'Limpiar',
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     await waitFor(() => {
@@ -871,7 +871,7 @@ describe('UnitSidePanel', () => {
     const { container } = renderPage();
     await selectUnit(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('No members yet');
+      expect(container.textContent).toContain('Aún no hay miembros');
     });
   });
 
@@ -1136,7 +1136,7 @@ describe('UnitSidePanel', () => {
     await selectUnit(container);
     await waitFor(() => expect(container.textContent).toContain('Person 10'));
     const removeBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.title === 'Remove from unit',
+      b.title === 'Quitar de la unidad',
     ) as HTMLButtonElement;
     fireEvent.click(removeBtn);
     await waitFor(() => {
@@ -1157,7 +1157,7 @@ describe('UnitSidePanel', () => {
       expect(container.textContent).toContain('Page 1 of 2');
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Next'),
+      b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn).toBeTruthy();
     fireEvent.click(nextBtn);
@@ -1240,7 +1240,7 @@ describe('DeleteUnitInlineModal', () => {
     const { container } = renderPage();
     await openDeleteModal(container);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.textContent?.includes('unit'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     expect(deleteBtn.disabled).toBe(true);
   });
@@ -1253,7 +1253,7 @@ describe('DeleteUnitInlineModal', () => {
     fireEvent.click(forceCheckbox);
     await waitFor(() => {
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete') && !b.textContent?.includes('unit'),
+        (b) => b.textContent?.includes('Eliminar'),
       ) as HTMLButtonElement;
       expect(deleteBtn.disabled).toBe(false);
     });
@@ -1264,7 +1264,7 @@ describe('DeleteUnitInlineModal', () => {
     const { container } = renderPage();
     await openDeleteModal(container);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.textContent?.includes('unit'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -1280,7 +1280,7 @@ describe('DeleteUnitInlineModal', () => {
     const { container } = renderPage();
     await openDeleteModal(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1359,7 +1359,7 @@ describe('AddMemberDialog', () => {
     fireEvent.click(pickerBtn);
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.title === 'Clear',
+      b.title === 'Limpiar',
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     await waitFor(() => {
@@ -1424,7 +1424,7 @@ describe('AddMemberDialog', () => {
     const { container } = renderPage();
     await openAddMember(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1627,7 +1627,7 @@ describe('EmptySidePanel', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Nothing selected');
+      expect(container.textContent).toContain('Nada seleccionado');
     });
   });
 
@@ -1640,7 +1640,7 @@ describe('EmptySidePanel', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select an org unit');
+      expect(container.textContent).toContain('Selecciona una unidad organizativa');
     });
   });
 
@@ -1655,13 +1655,13 @@ describe('EmptySidePanel', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Nothing selected'));
+    await waitFor(() => expect(container.textContent).toContain('Nada seleccionado'));
     const selectBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent === 'select-1',
     ) as HTMLButtonElement;
     fireEvent.click(selectBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Nothing selected');
+      expect(container.textContent).not.toContain('Nada seleccionado');
     });
   });
 });
@@ -1746,7 +1746,7 @@ describe('BrainOrgChartPage — onDelete clears selection', () => {
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(deleteBtn); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Nothing selected');
+      expect(container.textContent).toContain('Nada seleccionado');
     });
   });
 });
