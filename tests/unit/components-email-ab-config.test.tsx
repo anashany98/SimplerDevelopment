@@ -251,18 +251,18 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
 
   it('renders Subject B input', () => {
     renderDraftEnabled();
-    expect(screen.getByPlaceholderText('Alternate subject line to test')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Linea de asunto alternativa para probar')).toBeTruthy();
   });
 
   it('shows existing Subject B value', () => {
     renderDraftEnabled('Variant B subject');
-    const input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Variant B subject');
   });
 
   it('typing updates local state but does not call fetch mid-type', () => {
     renderDraftEnabled();
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     fireEvent.change(input, { target: { value: 'New subject B' } });
     // fetch should NOT have been called during typing (only on blur)
     // Note: fetch may have been called for the status GET on mount — check PATCH only
@@ -275,7 +275,7 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
   it('blurring with changed value sends PATCH with abSubjectB', async () => {
     fetchMock.mockResolvedValue(successFetch());
     const { onChange } = renderDraftEnabled('Original');
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     fireEvent.change(input, { target: { value: 'Changed Subject B' } });
     await act(async () => {
       fireEvent.blur(input);
@@ -287,7 +287,7 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
 
   it('blurring without change does NOT send PATCH', async () => {
     renderDraftEnabled('Same subject');
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     // Don't change value — just blur
     await act(async () => {
       fireEvent.blur(input);
@@ -424,7 +424,7 @@ describe('EmailAbConfig — not-draft + enabled', () => {
 
   it('does NOT show the edit fields (Subject B input) when not draft', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'ab_testing' }));
-    expect(screen.queryByPlaceholderText('Alternate subject line to test')).toBeNull();
+    expect(screen.queryByPlaceholderText('Linea de asunto alternativa para probar')).toBeNull();
   });
 
   it('does NOT show the enable checkbox when not draft', () => {
@@ -470,8 +470,8 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
     await waitFor(() => {
       expect(screen.getByText('Test status')).toBeTruthy();
     });
-    expect(screen.getByText('Variant')).toBeTruthy();
-    expect(screen.getByText('Sent')).toBeTruthy();
+    expect(screen.getByText('Variante')).toBeTruthy();
+    expect(screen.getByText('Enviado')).toBeTruthy();
     expect(screen.getByText('Opened')).toBeTruthy();
     expect(screen.getByText('Clicked')).toBeTruthy();
   });
@@ -662,7 +662,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    let input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    let input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Original B');
 
     rerender(
@@ -671,7 +671,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Updated B');
   });
 
