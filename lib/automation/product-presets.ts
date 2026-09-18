@@ -10,39 +10,39 @@ import type { AutomationPreset } from '@/components/portal/ProductAutomationSett
 export const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'welcome_email',
-    name: 'Welcome Email (team ticket)',
+    name: 'Email de bienvenida (ticket para el equipo)',
     description:
-      'Opens a support ticket for your team to send a personalised welcome when a new subscriber joins a list. (A transactional-email send action is not yet available — this creates a ticket as a manual step.)',
+      'Abre un ticket de soporte para tu equipo para enviar una bienvenida personalizada cuando un nuevo suscriptor se une a una lista. (Todavía no hay una acción de envío de email transaccional — esto crea un ticket como paso manual.)',
     icon: 'waving_hand',
     trigger: { event: 'email.subscriber.added' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New subscriber: {{event.email}}', body: 'A new subscriber ({{event.email}}) joined your mailing list. Send them a welcome message.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo suscriptor: {{event.email}}', body: 'Un nuevo suscriptor ({{event.email}}) se ha unido a tu lista de correo. Envíale un mensaje de bienvenida.' } }],
   },
   {
     key: 'unsubscribe_notification',
-    name: 'Unsubscribe Notification (team ticket)',
+    name: 'Aviso de baja (ticket para el equipo)',
     description:
-      'Opens a support ticket for your team when someone unsubscribes from your list. (A direct notification send action is not yet available — this creates a ticket as a manual step.)',
+      'Abre un ticket de soporte para tu equipo cuando alguien se da de baja de tu lista. (Todavía no hay una acción de envío de aviso directo — esto crea un ticket como paso manual.)',
     icon: 'notifications',
     trigger: { event: 'email.subscriber.unsubscribed' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Subscriber unsubscribed: {{event.email}}', body: '{{event.email}} has unsubscribed from your mailing list.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Suscriptor dado de baja: {{event.email}}', body: '{{event.email}} se ha dado de baja de tu lista de correo.' } }],
   },
   {
     key: 'campaign_sent_report',
-    name: 'Campaign Sent Follow-up (team ticket)',
+    name: 'Seguimiento de campaña enviada (ticket para el equipo)',
     description:
-      'Opens a ticket to remind your team to check campaign engagement metrics after the delay period. (A scheduled-report send action is not yet available — this creates a ticket as a manual step.)',
+      'Abre un ticket para recordar a tu equipo que revise las métricas de interacción de la campaña tras el periodo de espera. (Todavía no hay una acción de envío de informe programado — esto crea un ticket como paso manual.)',
     icon: 'assessment',
     trigger: { event: 'email.campaign.sent' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Review results: {{event.name}}', body: 'Campaign "{{event.name}}" has been sent. Check engagement metrics in 24-48 hours.' }, delay: 86400 }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Revisar resultados: {{event.name}}', body: 'La campaña "{{event.name}}" se ha enviado. Revisa las métricas de interacción en 24-48 horas.' }, delay: 86400 }],
     settings: [
       {
         key: 'reportDelay',
-        label: 'Check results after',
+        label: 'Revisar resultados después de',
         type: 'select',
         options: [
-          { value: '86400', label: '1 day' },
-          { value: '172800', label: '2 days' },
-          { value: '604800', label: '1 week' },
+          { value: '86400', label: '1 día' },
+          { value: '172800', label: '2 días' },
+          { value: '604800', label: '1 semana' },
         ],
         defaultValue: '86400',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -51,9 +51,9 @@ export const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
   },
   {
     key: 'subscriber_to_crm',
-    name: 'Add Subscriber to CRM',
+    name: 'Añadir suscriptor al CRM',
     description:
-      'Automatically creates a CRM contact when someone subscribes to your list.',
+      'Crea automáticamente un contacto del CRM cuando alguien se suscribe a tu lista.',
     icon: 'person_add',
     trigger: { event: 'email.subscriber.added' },
     actions: [{
@@ -61,27 +61,27 @@ export const EMAIL_AUTOMATION_PRESETS: AutomationPreset[] = [
       params: {
         email: '{{event.email}}',
         name: '{{event.name}}',
-        notes: 'Auto-created from email subscriber sign-up.',
+        notes: 'Creado automáticamente desde el alta de un suscriptor de email.',
       },
     }],
   },
   {
     key: 're_engagement',
-    name: 'Re-engagement Reminder (team ticket)',
+    name: 'Recordatorio de reactivación (ticket para el equipo)',
     description:
-      'Opens a ticket reminding your team to send a re-engagement campaign to non-openers after a campaign. (An automated re-engagement send action is not yet available — this creates a ticket as a manual step.)',
+      'Abre un ticket para recordar a tu equipo que envíe una campaña de reactivación a quienes no abrieron tras una campaña. (Todavía no hay una acción de envío automático de reactivación — esto crea un ticket como paso manual.)',
     icon: 'refresh',
     trigger: { event: 'email.campaign.sent' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Re-engagement opportunity', body: 'Review non-openers from your recent campaign "{{event.name}}" and consider a targeted follow-up.' }, delay: 604800 }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Oportunidad de reactivación', body: 'Revisa a quienes no abrieron tu campaña reciente "{{event.name}}" y valora un seguimiento específico.' }, delay: 604800 }],
     settings: [
       {
         key: 'reEngageDelay',
-        label: 'Remind after',
+        label: 'Recordar después de',
         type: 'select',
         options: [
-          { value: '259200', label: '3 days' },
-          { value: '604800', label: '1 week' },
-          { value: '1209600', label: '2 weeks' },
+          { value: '259200', label: '3 días' },
+          { value: '604800', label: '1 semana' },
+          { value: '1209600', label: '2 semanas' },
         ],
         defaultValue: '604800',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -101,9 +101,9 @@ export interface ProductPresetGroup {
 export const BOOKING_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'booking_to_crm_contact',
-    name: 'New Booking → CRM Contact',
+    name: 'Nueva reserva → contacto en el CRM',
     description:
-      'Automatically creates a CRM contact when a guest books a slot, so every new lead lands in your pipeline.',
+      'Crea automáticamente un contacto del CRM cuando un invitado reserva una franja, para que cada nuevo lead llegue a tu pipeline.',
     icon: 'person_add',
     trigger: { event: 'booking.guest_booked' },
     actions: [{
@@ -114,39 +114,39 @@ export const BOOKING_AUTOMATION_PRESETS: AutomationPreset[] = [
         phone: '{{event.guestPhone}}',
         source: 'web',
         status: 'lead',
-        notes: 'Auto-created from booking: {{event.pageTitle}}',
+        notes: 'Creado automáticamente desde la reserva: {{event.pageTitle}}',
       },
     }],
   },
   {
     key: 'booking_confirmed_to_deal',
-    name: 'Confirmed Booking → CRM Deal',
+    name: 'Reserva confirmada → negocio en el CRM',
     description:
-      'Opens a CRM deal when a paid booking is confirmed, so revenue opportunities flow directly into your sales pipeline.',
+      'Abre un negocio del CRM cuando se confirma una reserva de pago, para que las oportunidades de ingresos pasen directamente a tu pipeline de ventas.',
     icon: 'handshake',
     trigger: { event: 'booking.confirmed' },
     actions: [{
       tool: 'create_crm_deal',
       params: {
-        title: 'Booking: {{event.pageTitle}} — {{event.guestName}}',
+        title: 'Reserva: {{event.pageTitle}} — {{event.guestName}}',
         value: '{{event.total}}',
-        notes: 'Auto-created from confirmed booking on {{event.startTime}}. Guest: {{event.guestEmail}}',
+        notes: 'Creado automáticamente desde la reserva confirmada el {{event.startTime}}. Invitado: {{event.guestEmail}}',
         priority: 'medium',
       },
     }],
   },
   {
     key: 'booking_team_ticket',
-    name: 'New Booking → Team Ticket',
+    name: 'Nueva reserva → ticket para el equipo',
     description:
-      'Opens a support ticket for your team when a new booking arrives so nothing falls through the cracks.',
+      'Abre un ticket de soporte para tu equipo cuando llega una nueva reserva para que nada se quede en el tintero.',
     icon: 'confirmation_number',
     trigger: { event: 'booking.guest_booked' },
     actions: [{
       tool: 'create_support_ticket',
       params: {
-        subject: 'New booking: {{event.pageTitle}} — {{event.guestName}}',
-        body: '{{event.guestName}} ({{event.guestEmail}}) booked a slot on {{event.pageTitle}} starting {{event.startTime}}.',
+        subject: 'Nueva reserva: {{event.pageTitle}} — {{event.guestName}}',
+        body: '{{event.guestName}} ({{event.guestEmail}}) reservó una franja en {{event.pageTitle}} a partir del {{event.startTime}}.',
       },
     }],
   },
@@ -155,9 +155,9 @@ export const BOOKING_AUTOMATION_PRESETS: AutomationPreset[] = [
 export const SURVEY_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'survey_response_to_crm_contact',
-    name: 'Survey Response → CRM Contact',
+    name: 'Respuesta de encuesta → contacto en el CRM',
     description:
-      'Creates a CRM contact when a respondent submits their email address in a survey, capturing every inbound lead automatically.',
+      'Crea un contacto del CRM cuando un encuestado envía su dirección de email en una encuesta, capturando automáticamente cada lead entrante.',
     icon: 'person_add',
     trigger: { event: 'survey.response_submitted' },
     conditions: [{ field: 'respondentEmail', operator: 'exists' }],
@@ -168,38 +168,38 @@ export const SURVEY_AUTOMATION_PRESETS: AutomationPreset[] = [
         email: '{{event.respondentEmail}}',
         source: 'web',
         status: 'lead',
-        notes: 'Auto-created from survey response: {{event.surveyTitle}}',
+        notes: 'Creado automáticamente desde la respuesta de encuesta: {{event.surveyTitle}}',
       },
     }],
   },
   {
     key: 'survey_response_to_deal',
-    name: 'Survey Response → CRM Deal',
+    name: 'Respuesta de encuesta → negocio en el CRM',
     description:
-      'Opens a deal in your pipeline when someone submits a survey that signals purchase intent — ideal for quote-request or needs-assessment forms.',
+      'Abre un negocio en tu pipeline cuando alguien envía una encuesta que indica intención de compra — ideal para formularios de solicitud de presupuesto o evaluación de necesidades.',
     icon: 'attach_money',
     trigger: { event: 'survey.response_submitted' },
     actions: [{
       tool: 'create_crm_deal',
       params: {
-        title: 'Survey inquiry: {{event.surveyTitle}} — {{event.respondentName}}',
-        notes: 'Auto-created from survey "{{event.surveyTitle}}" submitted by {{event.respondentEmail}}',
+        title: 'Consulta de encuesta: {{event.surveyTitle}} — {{event.respondentName}}',
+        notes: 'Creado automáticamente desde la encuesta "{{event.surveyTitle}}" enviada por {{event.respondentEmail}}',
         priority: 'medium',
       },
     }],
   },
   {
     key: 'survey_response_ticket',
-    name: 'Survey Response → Team Ticket',
+    name: 'Respuesta de encuesta → ticket para el equipo',
     description:
-      'Opens a support ticket for your team when a new survey response arrives so someone follows up promptly.',
+      'Abre un ticket de soporte para tu equipo cuando llega una nueva respuesta de encuesta para que alguien haga seguimiento con prontitud.',
     icon: 'assignment',
     trigger: { event: 'survey.response_submitted' },
     actions: [{
       tool: 'create_support_ticket',
       params: {
-        subject: 'New survey response: {{event.surveyTitle}}',
-        body: '{{event.respondentName}} ({{event.respondentEmail}}) submitted a response to "{{event.surveyTitle}}". Review it in the portal.',
+        subject: 'Nueva respuesta de encuesta: {{event.surveyTitle}}',
+        body: '{{event.respondentName}} ({{event.respondentEmail}}) envió una respuesta a "{{event.surveyTitle}}". Revísala en el portal.',
       },
     }],
   },
@@ -208,23 +208,23 @@ export const SURVEY_AUTOMATION_PRESETS: AutomationPreset[] = [
 export const PRODUCT_PRESET_GROUPS: ProductPresetGroup[] = [
   {
     productScope: 'email',
-    label: 'Email Marketing',
+    label: 'Email marketing',
     icon: 'email',
-    description: 'Automate subscriber engagement and campaign follow-ups',
+    description: 'Automatiza la interacción de suscriptores y el seguimiento de campañas',
     presets: EMAIL_AUTOMATION_PRESETS,
   },
   {
     productScope: 'booking',
-    label: 'Bookings',
+    label: 'Reservas',
     icon: 'calendar_month',
-    description: 'Capture leads and open deals automatically when guests book',
+    description: 'Captura leads y abre negocios automáticamente cuando los invitados reservan',
     presets: BOOKING_AUTOMATION_PRESETS,
   },
   {
     productScope: 'survey',
-    label: 'Surveys',
+    label: 'Encuestas',
     icon: 'poll',
-    description: 'Turn survey responses into CRM contacts and deals automatically',
+    description: 'Convierte las respuestas de encuestas en contactos y negocios del CRM automáticamente',
     presets: SURVEY_AUTOMATION_PRESETS,
   },
 ];
