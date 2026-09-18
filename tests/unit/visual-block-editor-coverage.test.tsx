@@ -421,7 +421,7 @@ describe('VisualBlockEditor — block toolbar', () => {
     const { onChange } = setup();
     const group = screen.getByTestId('vbp-a').closest('.group') as HTMLElement;
     fireEvent.mouseEnter(group);
-    fireEvent.click(screen.getAllByTitle('Duplicate')[0]);
+    fireEvent.click(screen.getAllByTitle('Duplicar')[0]);
     expect(onChange).toHaveBeenCalled();
     const updated = onChange.mock.calls[0][0] as ReturnType<typeof makeBlock>[];
     expect(updated.length).toBe(4);
@@ -432,7 +432,7 @@ describe('VisualBlockEditor — block toolbar', () => {
     const { onChange } = setup();
     const group = screen.getByTestId('vbp-a').closest('.group') as HTMLElement;
     fireEvent.mouseEnter(group);
-    fireEvent.click(screen.getAllByTitle('Delete')[0]);
+    fireEvent.click(screen.getAllByTitle('Eliminar')[0]);
     expect(onChange).toHaveBeenCalled();
     const updated = onChange.mock.calls[0][0] as ReturnType<typeof makeBlock>[];
     expect(updated.length).toBe(2);
@@ -448,7 +448,7 @@ describe('VisualBlockEditor — block toolbar', () => {
     // Now hover and delete it
     const group = screen.getByTestId('vbp-a').closest('.group') as HTMLElement;
     fireEvent.mouseEnter(group);
-    fireEvent.click(screen.getAllByTitle('Delete')[0]);
+    fireEvent.click(screen.getAllByTitle('Eliminar')[0]);
     expect(screen.queryByTestId('block-settings-a')).toBeNull();
     expect(onChange).toHaveBeenCalled();
   });
@@ -615,8 +615,8 @@ describe('VisualBlockEditor — toolbar visible when selected', () => {
     fireEvent.click(blockDiv);
     // Toolbar is rendered for the selected block (not just hovered) — check Move up is present
     expect(screen.getByTitle('Move up')).toBeTruthy();
-    expect(screen.getByTitle('Duplicate')).toBeTruthy();
-    expect(screen.getByTitle('Delete')).toBeTruthy();
+    expect(screen.getByTitle('Duplicar')).toBeTruthy();
+    expect(screen.getByTitle('Eliminar')).toBeTruthy();
   });
 });
 
