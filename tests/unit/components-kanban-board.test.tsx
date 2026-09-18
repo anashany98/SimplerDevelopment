@@ -365,8 +365,8 @@ describe('KanbanBoard — initial render', () => {
 
   it('shows isFirst/isLast nav controls correctly (no left arrow on first, no right on last)', () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
-    const lefts = container.querySelectorAll('button[title="Move left"]');
-    const rights = container.querySelectorAll('button[title="Move right"]');
+    const lefts = container.querySelectorAll('button[title="Mover a la izquierda"]');
+    const rights = container.querySelectorAll('button[title="Mover a la derecha"]');
     // 3 cols → only 2 lefts (cols 2,3) and 2 rights (cols 1,2)
     expect(lefts.length).toBe(2);
     expect(rights.length).toBe(2);
@@ -390,7 +390,7 @@ describe('KanbanBoard — filters', () => {
     const { container, getByPlaceholderText } = render(
       <KanbanBoard {...defaultProps()} />,
     );
-    const input = getByPlaceholderText('Filter cards…') as HTMLInputElement;
+    const input = getByPlaceholderText('Filtrar tarjetas…') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'first' } });
     expect(container.textContent).toContain('First Task');
     expect(container.textContent).not.toContain('Second Task');
@@ -450,7 +450,7 @@ describe('KanbanBoard — filters', () => {
     const { container, getByPlaceholderText } = render(
       <KanbanBoard {...defaultProps()} />,
     );
-    fireEvent.change(getByPlaceholderText('Filter cards…'), { target: { value: 'first' } });
+    fireEvent.change(getByPlaceholderText('Filtrar tarjetas…'), { target: { value: 'first' } });
     const clear = Array.from(container.querySelectorAll('button'))
       .find(b => b.textContent?.startsWith('Clear filters'));
     expect(clear).toBeTruthy();
@@ -468,7 +468,7 @@ describe('KanbanBoard — filters', () => {
   it('shows the "All" sprint button selected by default', () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
     const allBtn = Array.from(container.querySelectorAll('button'))
-      .find(b => b.textContent === 'All' && b.className.includes('rounded-full'));
+      .find(b => b.textContent === 'Todos' && b.className.includes('rounded-full'));
     expect(allBtn?.className).toContain('bg-primary');
   });
 });
@@ -480,30 +480,30 @@ describe('KanbanBoard — filters', () => {
 describe('KanbanBoard — add card', () => {
   it('opens the inline add-card form on "Add card" click and cancels on Cancel', () => {
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    const addCardBtn = getAllByText('Add card')[0].closest('button')!;
+    const addCardBtn = getAllByText('Añadir tarjeta')[0].closest('button')!;
     fireEvent.click(addCardBtn);
     const form = container.querySelector('form');
     expect(form).toBeTruthy();
     const cancel = Array.from(container.querySelectorAll('button'))
-      .find(b => b.textContent === 'Cancel');
+      .find(b => b.textContent === 'Cancelar');
     fireEvent.click(cancel!);
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
   });
 
   it('cancels add-card form on Escape key', () => {
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getAllByText('Add card')[0].closest('button')!);
-    const titleInput = container.querySelector('input[placeholder="Card title…"]') as HTMLInputElement;
+    fireEvent.click(getAllByText('Añadir tarjeta')[0].closest('button')!);
+    const titleInput = container.querySelector('input[placeholder="Título de la tarjeta…"]') as HTMLInputElement;
     expect(titleInput).toBeTruthy();
     fireEvent.keyDown(titleInput, { key: 'Escape' });
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
   });
 
   it('submit is disabled when title is empty', () => {
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getAllByText('Add card')[0].closest('button')!);
+    fireEvent.click(getAllByText('Añadir tarjeta')[0].closest('button')!);
     const submit = Array.from(container.querySelectorAll('button'))
-      .find(b => b.textContent === 'Add' && b.getAttribute('type') === 'submit') as HTMLButtonElement;
+      .find(b => b.textContent === 'Añadir' && b.getAttribute('type') === 'submit') as HTMLButtonElement;
     expect(submit.disabled).toBe(true);
   });
 
@@ -524,8 +524,8 @@ describe('KanbanBoard — add card', () => {
       }),
     });
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getAllByText('Add card')[0].closest('button')!);
-    const titleInput = container.querySelector('input[placeholder="Card title…"]') as HTMLInputElement;
+    fireEvent.click(getAllByText('Añadir tarjeta')[0].closest('button')!);
+    const titleInput = container.querySelector('input[placeholder="Título de la tarjeta…"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Brand new' } });
     const form = container.querySelector('form')!;
     await act(async () => {
@@ -540,7 +540,7 @@ describe('KanbanBoard — add card', () => {
 
   it('does nothing when handleAddCard is submitted with empty title (early return)', async () => {
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getAllByText('Add card')[0].closest('button')!);
+    fireEvent.click(getAllByText('Añadir tarjeta')[0].closest('button')!);
     const form = container.querySelector('form')!;
     await act(async () => {
       fireEvent.submit(form);
@@ -555,8 +555,8 @@ describe('KanbanBoard — add card', () => {
       json: async () => ({ success: false }),
     });
     const { container, getAllByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getAllByText('Add card')[0].closest('button')!);
-    const titleInput = container.querySelector('input[placeholder="Card title…"]') as HTMLInputElement;
+    fireEvent.click(getAllByText('Añadir tarjeta')[0].closest('button')!);
+    const titleInput = container.querySelector('input[placeholder="Título de la tarjeta…"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Ghost' } });
     await act(async () => {
       fireEvent.submit(container.querySelector('form')!);
@@ -575,8 +575,8 @@ describe('KanbanBoard — add column', () => {
       }),
     });
     const { container, getByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getByText('Add column').closest('button')!);
-    const nameInput = container.querySelector('input[placeholder="Column name..."]') as HTMLInputElement;
+    fireEvent.click(getByText('Añadir columna').closest('button')!);
+    const nameInput = container.querySelector('input[placeholder="Nombre de la columna..."]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Review' } });
     await act(async () => {
       fireEvent.submit(container.querySelector('form')!);
@@ -586,15 +586,15 @@ describe('KanbanBoard — add column', () => {
 
   it('cancels the add-column form on Escape', () => {
     const { container, getByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getByText('Add column').closest('button')!);
-    const nameInput = container.querySelector('input[placeholder="Column name..."]') as HTMLInputElement;
+    fireEvent.click(getByText('Añadir columna').closest('button')!);
+    const nameInput = container.querySelector('input[placeholder="Nombre de la columna..."]') as HTMLInputElement;
     fireEvent.keyDown(nameInput, { key: 'Escape' });
-    expect(container.querySelector('input[placeholder="Column name..."]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Nombre de la columna..."]')).toBeNull();
   });
 
   it('does not submit empty column names', async () => {
     const { container, getByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getByText('Add column').closest('button')!);
+    fireEvent.click(getByText('Añadir columna').closest('button')!);
     await act(async () => {
       fireEvent.submit(container.querySelector('form')!);
     });
@@ -603,7 +603,7 @@ describe('KanbanBoard — add column', () => {
 
   it('changing color input updates the color picker value', () => {
     const { container, getByText } = render(<KanbanBoard {...defaultProps()} />);
-    fireEvent.click(getByText('Add column').closest('button')!);
+    fireEvent.click(getByText('Añadir columna').closest('button')!);
     const colorInput = container.querySelector('input[type="color"]') as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: '#abcdef' } });
     expect(colorInput.value).toBe('#abcdef');
@@ -618,7 +618,7 @@ describe('KanbanBoard — column management', () => {
   it('moves a column right and persists', async () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
     // First column's "Move right" button (Todo → after In Progress)
-    const right = container.querySelector('button[title="Move right"]') as HTMLButtonElement;
+    const right = container.querySelector('button[title="Mover a la derecha"]') as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(right);
     });
@@ -631,7 +631,7 @@ describe('KanbanBoard — column management', () => {
   it('moves a column left and persists', async () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
     // Move-left appears on col 2 and col 3; click first one
-    const left = container.querySelector('button[title="Move left"]') as HTMLButtonElement;
+    const left = container.querySelector('button[title="Mover a la izquierda"]') as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(left);
     });
@@ -647,7 +647,7 @@ describe('KanbanBoard — column management', () => {
       json: async () => ({ success: true }),
     });
     const { container } = render(<KanbanBoard {...defaultProps()} />);
-    const del = container.querySelector('button[title="Delete empty column"]') as HTMLButtonElement;
+    const del = container.querySelector('button[title="Eliminar columna vacía"]') as HTMLButtonElement;
     expect(del).toBeTruthy();
     await act(async () => {
       fireEvent.click(del);
@@ -663,7 +663,7 @@ describe('KanbanBoard — column management', () => {
   it('toggleDone fires PATCH and updates the badge', async () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
     // Pick the first column's done-toggle (not-yet-done state)
-    const toggle = container.querySelector('button[title*="Mark as Done"]') as HTMLButtonElement;
+    const toggle = container.querySelector('button[title*="Marcar como columna de Hecho"]') as HTMLButtonElement;
     expect(toggle).toBeTruthy();
     await act(async () => {
       fireEvent.click(toggle);
@@ -732,7 +732,7 @@ describe('KanbanBoard — column management', () => {
 describe('KanbanBoard — move-to dropdown', () => {
   it('opens the move-to menu and moves a card to a different column', async () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
-    const moveBtn = container.querySelector('button[title="Move to column"]') as HTMLButtonElement;
+    const moveBtn = container.querySelector('button[title="Mover a columna"]') as HTMLButtonElement;
     expect(moveBtn).toBeTruthy();
     fireEvent.click(moveBtn);
     // The other columns should be listed; pick "In Progress"
@@ -929,7 +929,7 @@ describe('KanbanBoard — deep-link & keyboard', () => {
 
   it('"/" focuses the filter input', () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
-    const input = container.querySelector('input[placeholder="Filter cards…"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder="Filtrar tarjetas…"]') as HTMLInputElement;
     expect(input).toBeTruthy();
     act(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '/' }));
@@ -942,7 +942,7 @@ describe('KanbanBoard — deep-link & keyboard', () => {
     act(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'c' }));
     });
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeTruthy();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeTruthy();
   });
 
   it('"c" does nothing when canEdit=false', () => {
@@ -950,32 +950,32 @@ describe('KanbanBoard — deep-link & keyboard', () => {
     act(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'c' }));
     });
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
   });
 
   it('"Escape" closes the add-card / add-column forms', () => {
     const { container, getByText } = render(<KanbanBoard {...defaultProps()} />);
     // Open both forms
-    fireEvent.click(getByText('Add column').closest('button')!);
-    expect(container.querySelector('input[placeholder="Column name..."]')).toBeTruthy();
+    fireEvent.click(getByText('Añadir columna').closest('button')!);
+    expect(container.querySelector('input[placeholder="Nombre de la columna..."]')).toBeTruthy();
     act(() => {
       // Escape via window listener — but the form input also has its own
       // Escape handler. Either way the form should close.
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     });
-    expect(container.querySelector('input[placeholder="Column name..."]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Nombre de la columna..."]')).toBeNull();
   });
 
   it('ignores shortcuts while typing in an input', () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
-    const filterInput = container.querySelector('input[placeholder="Filter cards…"]') as HTMLInputElement;
+    const filterInput = container.querySelector('input[placeholder="Filtrar tarjetas…"]') as HTMLInputElement;
     filterInput.focus();
     act(() => {
       // Dispatch from the input — target.tagName === 'INPUT' branch
       filterInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'c', bubbles: true }));
     });
     // No add-card form opened
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
   });
 
   it('ignores shortcuts when modifier keys are held', () => {
@@ -983,7 +983,7 @@ describe('KanbanBoard — deep-link & keyboard', () => {
     act(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'c', metaKey: true }));
     });
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
   });
 
   it('ignores shortcuts while a card modal is open', () => {
@@ -993,7 +993,7 @@ describe('KanbanBoard — deep-link & keyboard', () => {
     act(() => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: 'c' }));
     });
-    expect(container.querySelector('input[placeholder="Card title…"]')).toBeNull();
+    expect(container.querySelector('input[placeholder="Título de la tarjeta…"]')).toBeNull();
     window.history.replaceState({}, '', '/');
   });
 });
