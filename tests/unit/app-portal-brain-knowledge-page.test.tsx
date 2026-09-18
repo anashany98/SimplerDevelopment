@@ -368,7 +368,7 @@ describe('BrainNoteDetailPage — successful render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Save'),
+        (b) => b.textContent?.trim().includes('Guardar'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(true);
     });
@@ -447,7 +447,7 @@ describe('BrainNoteDetailPage — dirty state', () => {
 
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Save'),
+        (b) => b.textContent?.trim().includes('Guardar'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
@@ -478,13 +478,13 @@ describe('BrainNoteDetailPage — manual save', () => {
 
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Save'),
+        (b) => b.textContent?.trim().includes('Guardar'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
 
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Save'),
+      (b) => b.textContent?.trim().includes('Guardar'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
 
@@ -507,7 +507,7 @@ describe('BrainNoteDetailPage — manual save', () => {
     fireEvent.change(titleInput, { target: { value: 'A new title' } });
 
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Save'),
+      (b) => b.textContent?.trim().includes('Guardar'),
     ) as HTMLButtonElement;
 
     await waitFor(() => expect(saveBtn.disabled).toBe(false));
@@ -534,13 +534,13 @@ describe('BrainNoteDetailPage — manual save', () => {
 
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Save'),
+        (b) => b.textContent?.trim().includes('Guardar'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
 
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Save'),
+      (b) => b.textContent?.trim().includes('Guardar'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
 
@@ -560,7 +560,7 @@ describe('BrainNoteDetailPage — manual save', () => {
     // Wait for dirty state
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim().includes('Save'),
+        (b) => b.textContent?.trim().includes('Guardar'),
       ) as HTMLButtonElement;
       // Save is enabled because dirty, but title is empty
       // The button will be disabled since title is '' (falsy)
