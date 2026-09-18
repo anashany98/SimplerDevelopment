@@ -91,7 +91,7 @@ function UsageMeterRow({ row }: { row: SnapshotRow }) {
       {overageCents > 0 && (
         <p className="mt-1 text-xs text-red-600 dark:text-red-400">
           <span className="material-icons text-xs align-text-bottom mr-0.5">warning</span>
-          Approx. {formatCents(overageCents)} overage so far this month
+          Aprox. {formatCents(overageCents)} de exceso este mes
         </p>
       )}
     </div>
@@ -112,10 +112,10 @@ export default function UsageMeters() {
         if (res.success) {
           setData(res.data);
         } else {
-          setError(res.message ?? 'Failed to load usage');
+          setError(res.message ?? 'No se pudo cargar el uso');
         }
       })
-      .catch(() => setError('Failed to load usage'))
+      .catch(() => setError('No se pudo cargar el uso'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -142,14 +142,14 @@ export default function UsageMeters() {
         <span className="material-icons text-5xl text-muted-foreground/40">data_usage</span>
         <h2 className="mt-4 font-semibold text-foreground">Aún no hay uso medido</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Usage meters appear here once you have active modules with included allowances.
+          Los medidores de uso aparecen aquí en cuanto tengas módulos activos con asignaciones incluidas.
         </p>
         <Link
           href="/portal/settings/billing/plans"
           className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
         >
           <span className="material-icons text-sm">add_circle_outline</span>
-          Browse modules
+          Explorar módulos
         </Link>
       </div>
     );
@@ -168,7 +168,7 @@ export default function UsageMeters() {
         <div className="bg-card border border-border rounded-xl px-6 py-5">
           <h2 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">speed</span>
-            Resource usage this month
+            Uso de recursos este mes
           </h2>
           <div className="divide-y divide-border">
             {infraRows.map((row) => (
@@ -182,7 +182,7 @@ export default function UsageMeters() {
       <div className="bg-card border border-border rounded-xl px-6 py-5">
         <h2 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
           <span className="material-icons text-base text-muted-foreground">psychology</span>
-          AI credits
+          Créditos de IA
         </h2>
 
         {/* Credit balance */}
@@ -195,7 +195,7 @@ export default function UsageMeters() {
             </p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-muted-foreground">Monthly grant</p>
+            <p className="text-xs text-muted-foreground">Asignación mensual</p>
             <p className="text-sm font-medium text-foreground tabular-nums">
               {formatNumber(creditBalance.monthlyGrant)} / mo
             </p>
@@ -206,7 +206,7 @@ export default function UsageMeters() {
         {payAsYouGo && (
           <div className="mb-4 flex items-center gap-2 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2">
             <span className="material-icons text-sm">bolt</span>
-            Pay-as-you-go is enabled — usage past your balance will be billed.
+            El pago por uso está activado — el uso que supere tu saldo se facturará.
           </div>
         )}
 
@@ -220,14 +220,14 @@ export default function UsageMeters() {
             className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-sm">add</span>
-            Buy credits
+            Comprar créditos
           </Link>
           <Link
             href="/portal/settings/billing/plans"
             className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-accent text-foreground hover:bg-accent/80 transition-colors"
           >
             <span className="material-icons text-sm">explore</span>
-            Browse modules
+            Explorar módulos
           </Link>
         </div>
       </div>

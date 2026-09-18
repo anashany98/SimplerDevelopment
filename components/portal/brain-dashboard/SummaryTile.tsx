@@ -23,21 +23,21 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
         <Counter
           icon="reviews"
           tone="text-blue-600 dark:text-blue-400"
-          label="Pending review"
+          label="Pendientes de revisión"
           value={data.counts.pendingReviewItems}
           href="/portal/brain/communications?status=needs_review"
         />
         <Counter
           icon="checklist"
           tone="text-foreground"
-          label="Open tasks"
+          label="Tareas abiertas"
           value={data.counts.openTasks}
           href="/portal/brain/tasks"
         />
         <Counter
           icon="auto_awesome"
           tone="text-primary"
-          label="AI-created tasks"
+          label="Tareas creadas por IA"
           value={data.counts.aiCreatedTasks}
           href="/portal/brain/tasks?filter=ai"
         />
@@ -52,13 +52,13 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
 
       <div className="grid md:grid-cols-2 gap-4">
         <Tile
-          title="Needs review"
+          title="Necesitan revisión"
           icon="reviews"
           tone="text-blue-600 dark:text-blue-400"
           action={
             <Link href="/portal/brain/communications" className="text-xs text-primary hover:underline">Ver todo</Link>
           }
-          empty="Nothing waiting for review."
+          empty="Nada pendiente de revisión."
           items={data.needsReviewMeetings}
           render={(m) => (
             <Link
@@ -86,16 +86,16 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
           tone="text-red-600 dark:text-red-400"
           action={
             <Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">
-              All tasks
+              Todas las tareas
             </Link>
           }
-          empty="Nothing overdue."
+          empty="Nada atrasado."
           items={data.overdueTasks}
           render={(t) => <TaskRow task={t} highlightDue />}
         />
 
         <Tile
-          title="Stale prospects"
+          title="Prospectos inactivos"
           icon="schedule"
           tone="text-amber-600 dark:text-amber-400"
           action={
@@ -104,7 +104,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
               className="text-xs text-primary hover:underline"
             >Todos</Link>
           }
-          empty="No stale prospects."
+          empty="No hay prospectos inactivos."
           items={data.staleProspects}
           render={(r) => (
             <Link
@@ -118,14 +118,14 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
                 </span>
               </div>
               <span className="text-xs text-muted-foreground">
-                {r.type.replace(/_/g, ' ')} · stale after {r.staleAfterDays}d
+                {r.type.replace(/_/g, ' ')} · inactivo tras {r.staleAfterDays}d
               </span>
             </Link>
           )}
         />
 
         <Tile
-          title="Priority relationships"
+          title="Relaciones prioritarias"
           icon="flag"
           tone="text-red-600 dark:text-red-400"
           action={
@@ -134,7 +134,7 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
               className="text-xs text-primary hover:underline"
             >Ver todo</Link>
           }
-          empty="No high-priority relationships."
+          empty="No hay relaciones de alta prioridad."
           items={data.priorityRelationships}
           render={(r) => (
             <Link
@@ -155,14 +155,14 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
               </div>
               <span className="text-xs text-muted-foreground">
                 {r.type.replace(/_/g, ' ')}
-                {r.openTaskCount > 0 && ` · ${r.openTaskCount} open`}
+                {r.openTaskCount > 0 && ` · ${r.openTaskCount} abiertas`}
               </span>
             </Link>
           )}
         />
 
         <Tile
-          title="Blocked"
+          title="Bloqueadas"
           icon="block"
           tone="text-muted-foreground"
           action={
@@ -171,19 +171,19 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
               className="text-xs text-primary hover:underline"
             >Ver todo</Link>
           }
-          empty="Nothing blocked."
+          empty="Nada bloqueado."
           items={data.blockedTasks}
           render={(t) => <TaskRow task={t} />}
         />
 
         <Tile
-          title="Upcoming"
+          title="Próximas"
           icon="event"
           tone="text-foreground"
           action={
             <Link href="/portal/brain/tasks" className="text-xs text-primary hover:underline">Ver todo</Link>
           }
-          empty="No upcoming due dates."
+          empty="No hay vencimientos próximos."
           items={data.upcomingTasks}
           render={(t) => <TaskRow task={t} />}
         />
@@ -194,19 +194,19 @@ export async function BrainDashboardSummaryTile({ clientId }: Props) {
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">forum</span>
-            Recent Communication
+            Comunicación reciente
           </h2>
           <Link
             href="/portal/brain/communications/new"
             className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"
           >
             <span className="material-icons text-sm">add</span>
-            New note
+            Nueva nota
           </Link>
         </div>
         {data.recentMeetings.length === 0 ? (
           <p className="text-xs text-muted-foreground">
-            No notes yet. Paste your first transcript or forward an email to get started.
+            Aún no hay notas. Pega tu primera transcripción o reenvía un email para empezar.
           </p>
         ) : (
           <ul className="divide-y divide-border">

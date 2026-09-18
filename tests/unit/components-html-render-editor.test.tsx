@@ -825,7 +825,7 @@ describe('HtmlRenderSchemaActions', () => {
   it('disables the Paste button when the clipboard is empty', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect((getByText('Paste') as HTMLButtonElement).disabled).toBe(true);
+    expect((getByText('Pegar') as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('writes the schema to localStorage when Copy is clicked', () => {
@@ -860,7 +860,7 @@ describe('HtmlRenderSchemaActions', () => {
     // Find Paste button by its title attribute (which always starts with "Paste"
     // or "No schema in clipboard" — the populated case has the former).
     const pasteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.getAttribute('title') || '').startsWith('Paste'),
+      (b) => (b.getAttribute('title') || '').startsWith('Pegar'),
     )!;
     fireEvent.click(pasteBtn);
     expect(confirmSpy).toHaveBeenCalled();
@@ -885,7 +885,7 @@ describe('HtmlRenderSchemaActions', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const pasteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.getAttribute('title') || '').startsWith('Paste'),
+      (b) => (b.getAttribute('title') || '').startsWith('Pegar'),
     )!;
     fireEvent.click(pasteBtn);
     // No html replacement should have happened.
@@ -1075,7 +1075,7 @@ describe('HtmlRenderPostPicker', () => {
       fields: [{ name: 'p', type: 'post', label: 'P' }],
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect(container.textContent).toContain('No site context');
+    expect(container.textContent).toContain('Sin contexto de sitio');
   });
 
   it('shows a Loading state, then renders post options after fetch resolves', async () => {

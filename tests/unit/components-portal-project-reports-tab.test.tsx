@@ -266,11 +266,11 @@ describe('ProjectReportsTab — section headings', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Burndown')).toBeTruthy();
-      expect(screen.getByText('Capacity by assignee')).toBeTruthy();
-      expect(screen.getByText('Velocity')).toBeTruthy();
-      expect(screen.getByText('Sprint retrospective')).toBeTruthy();
-      expect(screen.getByText('Cumulative flow')).toBeTruthy();
-      expect(screen.getByRole('heading', { name: /Cycle.*lead time/i })).toBeTruthy();
+      expect(screen.getByText('Capacidad por persona')).toBeTruthy();
+      expect(screen.getByText('Velocidad')).toBeTruthy();
+      expect(screen.getByText('Retrospectiva del sprint')).toBeTruthy();
+      expect(screen.getByText('Flujo acumulado')).toBeTruthy();
+      expect(screen.getByRole('heading', { name: /Ciclo.*entrega/i })).toBeTruthy();
     });
   });
 
@@ -278,7 +278,7 @@ describe('ProjectReportsTab — section headings', () => {
     setupFetch({ sprints: [] });
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey={null} />);
 
-    await waitFor(() => expect(screen.queryByText('Sprint retrospective')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Retrospectiva del sprint')).toBeNull());
   });
 });
 
@@ -407,7 +407,7 @@ describe('ProjectReportsTab — burndown chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      const svg = screen.getByRole('img', { name: /Burndown chart/i });
+      const svg = screen.getByRole('img', { name: /Gráfico burndown/i });
       expect(svg).toBeTruthy();
     }, { timeout: 3000 });
   });
@@ -440,7 +440,7 @@ describe('ProjectReportsTab — burndown chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/No sprint selected/i)).toBeTruthy(),
+      expect(screen.getByText(/No hay ningún sprint seleccionado/i)).toBeTruthy(),
     );
   });
 
@@ -449,7 +449,7 @@ describe('ProjectReportsTab — burndown chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      expect(screen.getByText('Remaining')).toBeTruthy();
+      expect(screen.getByText('Restante')).toBeTruthy();
       expect(screen.getByText('Ideal')).toBeTruthy();
     }, { timeout: 3000 });
   });
@@ -465,7 +465,7 @@ describe('ProjectReportsTab — velocity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      const svg = screen.getByRole('img', { name: /Velocity chart/i });
+      const svg = screen.getByRole('img', { name: /Gráfico de velocidad/i });
       expect(svg).toBeTruthy();
     });
   });
@@ -475,8 +475,8 @@ describe('ProjectReportsTab — velocity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Average committed: 21 pts/i)).toBeTruthy();
-      expect(screen.getByText(/Average completed: 20 pts/i)).toBeTruthy();
+      expect(screen.getByText(/Media comprometida: 21 pts/i)).toBeTruthy();
+      expect(screen.getByText(/Media completada: 20 pts/i)).toBeTruthy();
     });
   });
 
@@ -486,7 +486,7 @@ describe('ProjectReportsTab — velocity chart', () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText(/No completed sprints yet/i),
+        screen.getByText(/Aún no hay sprints completados/i),
       ).toBeTruthy(),
     );
   });
@@ -496,7 +496,7 @@ describe('ProjectReportsTab — velocity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Last 0 completed sprints/i)).toBeTruthy(),
+      expect(screen.getByText(/Últimos 0 sprints completados/i)).toBeTruthy(),
     );
   });
 
@@ -505,7 +505,7 @@ describe('ProjectReportsTab — velocity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      expect(screen.getByText('Committed')).toBeTruthy();
+      expect(screen.getByText('Comprometido')).toBeTruthy();
       expect(screen.getByText('Completado')).toBeTruthy();
     });
   });
@@ -521,7 +521,7 @@ describe('ProjectReportsTab — CFD chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() => {
-      const svg = screen.getByRole('img', { name: /Cumulative flow diagram/i });
+      const svg = screen.getByRole('img', { name: /Diagrama de flujo acumulado/i });
       expect(svg).toBeTruthy();
     });
   });
@@ -531,7 +531,7 @@ describe('ProjectReportsTab — CFD chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/No daily snapshots yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay instantáneas diarias/i)).toBeTruthy(),
     );
   });
 
@@ -552,7 +552,7 @@ describe('ProjectReportsTab — CFD chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/2 days/)).toBeTruthy(),
+      expect(screen.getByText(/2 días/)).toBeTruthy(),
     );
   });
 
@@ -573,7 +573,7 @@ describe('ProjectReportsTab — CFD chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/0 days/)).toBeTruthy(),
+      expect(screen.getByText(/0 días/)).toBeTruthy(),
     );
   });
 });
@@ -601,7 +601,7 @@ describe('ProjectReportsTab — capacity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/No assigned cards in this sprint yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay tarjetas asignadas en este sprint/i)).toBeTruthy(),
     );
   });
 
@@ -613,7 +613,7 @@ describe('ProjectReportsTab — capacity chart', () => {
     await waitFor(
       () =>
         // Alice: 8/10 pts · 5 cards
-        expect(screen.getByText(/8\/10 pts · 5 cards/)).toBeTruthy(),
+        expect(screen.getByText(/8\/10 pts · 5 tarjetas/)).toBeTruthy(),
       { timeout: 5000 },
     );
   });
@@ -623,7 +623,7 @@ describe('ProjectReportsTab — capacity chart', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Cards per teammate in Sprint 1/i)).toBeTruthy(),
+      expect(screen.getByText(/Tarjetas por persona en Sprint 1/i)).toBeTruthy(),
     );
   });
 
@@ -750,7 +750,7 @@ describe('ProjectReportsTab — cycle table', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Average cycle time: 0.5 days/i)).toBeTruthy(),
+      expect(screen.getByText(/Tiempo de ciclo medio: 0.5 días/i)).toBeTruthy(),
     );
   });
 
@@ -759,7 +759,7 @@ describe('ProjectReportsTab — cycle table', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/No completed cards yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay tarjetas completadas/i)).toBeTruthy(),
     );
   });
 
@@ -777,7 +777,7 @@ describe('ProjectReportsTab — cycle table', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/Showing 50 of 55 done cards/i)).toBeTruthy(),
+      expect(screen.getByText(/Mostrando 50 de 55 tarjetas completadas/i)).toBeTruthy(),
     );
   });
 });
@@ -834,7 +834,7 @@ describe('ProjectReportsTab — fetch error resilience', () => {
     await waitFor(() => expect(screen.queryByText('refresh')).toBeNull());
     expect(screen.getByText('Burndown')).toBeTruthy();
     // Velocity section shows empty state when data is absent
-    expect(screen.getByText(/No completed sprints yet/i)).toBeTruthy();
+    expect(screen.getByText(/Aún no hay sprints completados/i)).toBeTruthy();
   });
 
   it('shows empty velocity state when velocity returns success:false', async () => {
@@ -842,7 +842,7 @@ describe('ProjectReportsTab — fetch error resilience', () => {
     render(<ProjectReportsTab projectId={PROJECT_ID} projectKey="PROJ" />);
 
     await waitFor(() =>
-      expect(screen.getByText(/No completed sprints yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay sprints completados/i)).toBeTruthy(),
     );
   });
 

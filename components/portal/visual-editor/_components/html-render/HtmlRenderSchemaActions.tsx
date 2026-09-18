@@ -89,7 +89,7 @@ export function HtmlRenderSchemaActions({
       if (!ok) return;
       onApply(applySchemaSnapshot(result));
     };
-    reader.onerror = () => setImportError('Failed to read file');
+    reader.onerror = () => setImportError('No se pudo leer el archivo');
     reader.readAsText(file);
   };
 
@@ -99,10 +99,10 @@ export function HtmlRenderSchemaActions({
   const formatRelative = (ts: number): string => {
     const diff = now - ts;
     const m = Math.round(diff / 60000);
-    if (m < 1) return 'just now';
-    if (m < 60) return `${m}m ago`;
+    if (m < 1) return 'ahora mismo';
+    if (m < 60) return `hace ${m} min`;
     const h = Math.round(m / 60);
-    if (h < 24) return `${h}h ago`;
+    if (h < 24) return `hace ${h} h`;
     return new Date(ts).toLocaleDateString();
   };
 
@@ -120,10 +120,10 @@ export function HtmlRenderSchemaActions({
         onClick={handlePaste}
         disabled={!clipboard}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-        title={clipboard ? `Paste ${clipboard.fields.length}-field schema from "${clipboard.sourceLabel || 'unknown'}" (${formatRelative(clipboard.copiedAt)})` : 'No schema in clipboard yet — Copy from another block first'}
+        title={clipboard ? `Pegar esquema de ${clipboard.fields.length} campos de "${clipboard.sourceLabel || 'desconocido'}" (${formatRelative(clipboard.copiedAt)})` : 'Aún no hay ningún esquema en el portapapeles — copia primero desde otro bloque'}
       >
         <span className="material-icons text-sm">content_paste</span>
-        Paste{clipboard ? ` (${formatRelative(clipboard.copiedAt)})` : ''}
+        Pegar{clipboard ? ` (${formatRelative(clipboard.copiedAt)})` : ''}
       </button>
       <span className="flex-1" />
       <button

@@ -170,7 +170,7 @@ export default function ProjectReportsTab({ projectId, projectKey }: { projectId
         <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
           <div>
             <h2 className="text-lg font-semibold text-foreground">Burndown</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">Daily remaining points vs. the ideal line.</p>
+            <p className="text-sm text-muted-foreground mt-0.5">Puntos restantes diarios frente a la línea ideal.</p>
           </div>
           {sprints.length > 0 && (
             <select
@@ -184,35 +184,35 @@ export default function ProjectReportsTab({ projectId, projectKey }: { projectId
             </select>
           )}
         </div>
-        {burndown ? <BurndownChart payload={burndown} /> : <EmptyChart message="No sprint selected." />}
+        {burndown ? <BurndownChart payload={burndown} /> : <EmptyChart message="No hay ningún sprint seleccionado." />}
       </section>
 
       {/* Capacity by assignee */}
       <section>
-        <h2 className="text-lg font-semibold text-foreground mb-1">Capacity by assignee</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-1">Capacidad por persona</h2>
         <p className="text-sm text-muted-foreground mb-3">
-          Cards per teammate in {capacity?.sprintName ?? 'the selected sprint'}, broken down by board column.
+          Tarjetas por persona en {capacity?.sprintName ?? 'el sprint seleccionado'}, desglosadas por columna del tablero.
         </p>
         {capacity?.rows?.length
           ? <CapacityChart payload={capacity} />
-          : <EmptyChart message="No assigned cards in this sprint yet." />}
+          : <EmptyChart message="Aún no hay tarjetas asignadas en este sprint." />}
       </section>
 
       {/* Velocity */}
       <section>
-        <h2 className="text-lg font-semibold text-foreground mb-1">Velocity</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-1">Velocidad</h2>
         <p className="text-sm text-muted-foreground mb-3">
-          Last {velocity?.rows?.length ?? 0} completed sprints. Average committed: {velocity?.averageCommitted ?? 0} pts ·
-          {' '}Average completed: {velocity?.averageCompleted ?? 0} pts.
+          Últimos {velocity?.rows?.length ?? 0} sprints completados. Media comprometida: {velocity?.averageCommitted ?? 0} pts ·
+          {' '}Media completada: {velocity?.averageCompleted ?? 0} pts.
         </p>
-        {velocity?.rows?.length ? <VelocityChart payload={velocity} /> : <EmptyChart message="No completed sprints yet — velocity becomes available once sprints close." />}
+        {velocity?.rows?.length ? <VelocityChart payload={velocity} /> : <EmptyChart message="Aún no hay sprints completados — la velocidad estará disponible cuando se cierren sprints." />}
       </section>
 
       {/* Retro */}
       {activeSprintId != null && (
         <section>
-          <h2 className="text-lg font-semibold text-foreground mb-1">Sprint retrospective</h2>
-          <p className="text-sm text-muted-foreground mb-3">Three columns: what went well, what didn&rsquo;t, and the action items the team commits to next sprint.</p>
+          <h2 className="text-lg font-semibold text-foreground mb-1">Retrospectiva del sprint</h2>
+          <p className="text-sm text-muted-foreground mb-3">Tres columnas: lo que fue bien, lo que no, y las acciones que el equipo se compromete a hacer en el próximo sprint.</p>
           <SprintRetroPanel
             sprintId={activeSprintId}
             sprintName={sprints.find(s => s.id === activeSprintId)?.name ?? `Sprint ${activeSprintId}`}
@@ -222,22 +222,22 @@ export default function ProjectReportsTab({ projectId, projectKey }: { projectId
 
       {/* Cumulative flow */}
       <section>
-        <h2 className="text-lg font-semibold text-foreground mb-1">Cumulative flow</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-1">Flujo acumulado</h2>
         <p className="text-sm text-muted-foreground mb-3">
-          Card counts per column over the last {cfd?.days?.length ?? 0} day{(cfd?.days?.length ?? 0) === 1 ? '' : 's'}. Stacked-area shape shows where work piles up.
+          Recuento de tarjetas por columna durante los últimos {cfd?.days?.length ?? 0} día{(cfd?.days?.length ?? 0) === 1 ? '' : 's'}. La forma de áreas apiladas muestra dónde se acumula el trabajo.
         </p>
         {cfd?.days?.length
           ? <CfdChart payload={cfd} />
-          : <EmptyChart message="No daily snapshots yet — schedule /api/cron/pm-column-snapshots once a day to populate this chart." />}
+          : <EmptyChart message="Aún no hay instantáneas diarias — programa /api/cron/pm-column-snapshots una vez al día para rellenar este gráfico." />}
       </section>
 
       {/* Cycle / lead time */}
       <section>
-        <h2 className="text-lg font-semibold text-foreground mb-1">Cycle &amp; lead time</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-1">Ciclo y tiempo de entrega</h2>
         <p className="text-sm text-muted-foreground mb-3">
-          Average cycle time: {cycle?.averageCycleDays ?? 0} days · Average lead time: {cycle?.averageLeadDays ?? 0} days.
+          Tiempo de ciclo medio: {cycle?.averageCycleDays ?? 0} días · Tiempo de entrega medio: {cycle?.averageLeadDays ?? 0} días.
         </p>
-        {cycle?.rows?.length ? <CycleTable payload={cycle} projectKey={projectKey} /> : <EmptyChart message="No completed cards yet." />}
+        {cycle?.rows?.length ? <CycleTable payload={cycle} projectKey={projectKey} /> : <EmptyChart message="Aún no hay tarjetas completadas." />}
       </section>
     </div>
   );
@@ -255,7 +255,7 @@ function EmptyChart({ message }: { message: string }) {
 
 function BurndownChart({ payload }: { payload: BurndownPayload }) {
   if (!payload.series || payload.series.length === 0) {
-    return <EmptyChart message={payload.message ?? 'No data yet — events accrue as cards move into and out of the sprint.'} />;
+    return <EmptyChart message={payload.message ?? 'Aún no hay datos — los eventos se acumulan a medida que las tarjetas entran y salen del sprint.'} />;
   }
   const W = 720;
   const H = 240;
@@ -275,7 +275,7 @@ function BurndownChart({ payload }: { payload: BurndownPayload }) {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Burndown chart">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Gráfico burndown">
         {/* Y ticks */}
         {yTicks.map(t => (
           <g key={`y-${t}`}>
@@ -299,7 +299,7 @@ function BurndownChart({ payload }: { payload: BurndownPayload }) {
         ))}
       </svg>
       <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-2">
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-0.5 bg-primary"></span>Remaining</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-0.5 bg-primary"></span>Restante</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 border-t border-dashed border-muted-foreground"></span>Ideal</span>
       </div>
     </div>
@@ -323,7 +323,7 @@ function VelocityChart({ payload }: { payload: VelocityPayload }) {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Velocity chart">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Gráfico de velocidad">
         {[0, Math.round(max / 2), max].map(t => (
           <g key={`v-y-${t}`}>
             <line x1={PAD.left} x2={W - PAD.right} y1={yAt(t)} y2={yAt(t)} stroke="currentColor" strokeOpacity="0.1" />
@@ -357,7 +357,7 @@ function VelocityChart({ payload }: { payload: VelocityPayload }) {
         })}
       </svg>
       <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-2">
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-current opacity-25 rounded-sm"></span>Committed</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-current opacity-25 rounded-sm"></span>Comprometido</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Completado</span>
       </div>
     </div>
@@ -413,7 +413,7 @@ function CfdChart({ payload }: { payload: CfdPayload }) {
 
   return (
     <div className="bg-card border border-border rounded-xl p-4">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Cumulative flow diagram">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Diagrama de flujo acumulado">
         {yTicks.map(t => (
           <g key={`cfd-y-${t}`}>
             <line x1={PAD.left} x2={W - PAD.right} y1={yAt(t)} y2={yAt(t)} stroke="currentColor" strokeOpacity="0.1" />
@@ -483,15 +483,15 @@ function CapacityChart({ payload }: { payload: CapacityPayload }) {
                     <div
                       key={s.col.id}
                       style={{ width: `${segPct}%`, backgroundColor: columnColor(s.col) }}
-                      title={`${s.col.name}: ${s.cards} card${s.cards === 1 ? '' : 's'}${s.points > 0 ? ` · ${s.points} pts` : ''}`}
-                      aria-label={`${s.col.name}: ${s.cards} cards`}
+                      title={`${s.col.name}: ${s.cards} tarjeta${s.cards === 1 ? '' : 's'}${s.points > 0 ? ` · ${s.points} pts` : ''}`}
+                      aria-label={`${s.col.name}: ${s.cards} tarjetas`}
                     />
                   );
                 })}
               </div>
             </div>
             <div className="text-xs text-muted-foreground tabular-nums shrink-0">
-              {r.completedPoints}/{r.committedPoints} pts · {r.cardCount} card{r.cardCount === 1 ? '' : 's'}
+              {r.completedPoints}/{r.committedPoints} pts · {r.cardCount} tarjeta{r.cardCount === 1 ? '' : 's'}
             </div>
           </div>
         );
@@ -528,11 +528,11 @@ function CycleTable({ payload, projectKey }: { payload: CyclePayload; projectKey
       <table className="w-full text-sm min-w-[560px]">
         <thead className="bg-muted/50 border-b border-border">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Key</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Clave</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-16">Pts</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Lead</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Cycle</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Entrega</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-24">Ciclo</th>
             <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-28">Listo</th>
           </tr>
         </thead>
@@ -554,7 +554,7 @@ function CycleTable({ payload, projectKey }: { payload: CyclePayload; projectKey
       </table>
       {payload.rows.length > 50 && (
         <div className="border-t border-border px-4 py-2 text-xs text-muted-foreground bg-muted/30">
-          Showing 50 of {payload.rows.length} done cards.
+          Mostrando 50 de {payload.rows.length} tarjetas completadas.
         </div>
       )}
     </div>

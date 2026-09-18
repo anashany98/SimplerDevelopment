@@ -24,7 +24,7 @@ export function HtmlRenderPostPicker({
   siteId?: number;
 }) {
   const [options, setOptions] = useState<PickerPostOption[] | null>(null);
-  const [error, setError] = useState<string | null>(!siteId ? 'No site context — picker disabled' : null);
+  const [error, setError] = useState<string | null>(!siteId ? 'Sin contexto de sitio — selector desactivado' : null);
 
   useEffect(() => {
     if (!siteId) {
@@ -38,9 +38,9 @@ export function HtmlRenderPostPicker({
         const json = await res.json();
         if (cancelled) return;
         if (json?.success && Array.isArray(json.data)) setOptions(json.data);
-        else setError(json?.message || json?.error || 'Failed to load posts');
+        else setError(json?.message || json?.error || 'No se pudieron cargar las publicaciones');
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load posts');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'No se pudieron cargar las publicaciones');
       }
     })();
     return () => { cancelled = true; };
@@ -59,7 +59,7 @@ export function HtmlRenderPostPicker({
           onChange={(e) => onChange(e.target.value)}
           className="mt-1 block w-full rounded border border-border px-2.5 py-1.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
         >
-          <option value="">— Select a post —</option>
+          <option value="">— Selecciona una publicación —</option>
           {options.map(o => (
             <option key={o.id} value={String(o.id)}>{o.title} ({o.postType})</option>
           ))}

@@ -18,11 +18,11 @@ const MAX_TONES = 3;
 
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
   { id: 'logos', label: 'Logos', icon: 'image' },
-  { id: 'colors', label: 'Colors', icon: 'palette' },
+  { id: 'colors', label: 'Colores', icon: 'palette' },
   { id: 'typography', label: 'Tipografía', icon: 'text_fields' },
-  { id: 'buttons', label: 'Buttons', icon: 'smart_button' },
+  { id: 'buttons', label: 'Botones', icon: 'smart_button' },
   { id: 'style', label: 'Estilo', icon: 'tune' },
-  { id: 'messaging', label: 'Messaging', icon: 'chat' },
+  { id: 'messaging', label: 'Mensajes', icon: 'chat' },
 ];
 
 export function StepBrandVibe({ state, setAnswers, next }: StepProps) {
@@ -77,7 +77,7 @@ export function StepBrandVibe({ state, setAnswers, next }: StepProps) {
     <div className="space-y-7">
       <div>
         <label className={obLabel}>
-          Tone <span className="font-normal text-muted-foreground">— up to {MAX_TONES}</span>
+          Tono <span className="font-normal text-muted-foreground">— hasta {MAX_TONES}</span>
         </label>
         <div className="flex flex-wrap gap-2">
           {BRAND_TONES.map((t) => {
@@ -98,7 +98,7 @@ export function StepBrandVibe({ state, setAnswers, next }: StepProps) {
         </div>
         <p className={obHint}>
           <span className="material-icons" style={{ fontSize: 15 }}>info</span>
-          {tones.length} / {MAX_TONES} selected
+          {tones.length} / {MAX_TONES} seleccionados
         </p>
       </div>
 
@@ -107,7 +107,7 @@ export function StepBrandVibe({ state, setAnswers, next }: StepProps) {
       ) : profileError ? (
         <div className="flex items-center justify-between rounded-lg border border-border p-4">
           <p className="text-sm text-muted-foreground">
-            Couldn&apos;t load your brand profile — you can set it up later in Branding.
+            No se pudo cargar tu perfil de marca — puedes configurarlo más tarde en Branding.
           </p>
           <button
             type="button"
@@ -223,7 +223,7 @@ function InlineBrandEditor({
           data-testid="onboarding-brand-next"
           className={obPrimaryBtn}
         >
-          {saving ? 'Saving…' : 'Continue'}
+          {saving ? 'Guardando…' : 'Continuar'}
           <span className="material-icons" style={{ fontSize: 18 }}>arrow_forward</span>
         </button>
       </div>

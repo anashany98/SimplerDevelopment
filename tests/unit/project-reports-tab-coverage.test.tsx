@@ -205,17 +205,17 @@ describe('ProjectReportsTab — initial load', () => {
 
   it('renders the Velocity section heading after load', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Velocity');
+    expect(container.textContent).toContain('Velocidad');
   });
 
   it('renders the Cumulative flow section heading after load', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Cumulative flow');
+    expect(container.textContent).toContain('Flujo acumulado');
   });
 
   it('renders the Cycle & lead time section heading after load', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Cycle');
+    expect(container.textContent).toContain('Ciclo');
   });
 
   it('fetches sprints for the given projectId', async () => {
@@ -288,7 +288,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
     const { container } = await renderAndSettle();
     // Wait for burndown data to arrive and chart to render
     await waitFor(() => {
-      const svg = container.querySelector('svg[aria-label="Burndown chart"]');
+      const svg = container.querySelector('svg[aria-label="Gráfico burndown"]');
       expect(svg).toBeTruthy();
     });
   });
@@ -296,7 +296,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
   it('renders the Remaining legend label', async () => {
     const { container } = await renderAndSettle();
     await waitFor(() => {
-      expect(container.textContent).toContain('Remaining');
+      expect(container.textContent).toContain('Restante');
     });
   });
 
@@ -335,7 +335,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No data yet');
+      expect(container.textContent).toContain('Aún no hay datos');
     });
   });
 
@@ -349,7 +349,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
       expect(container.querySelector('.animate-spin')).toBeNull();
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('No sprint selected.');
+      expect(container.textContent).toContain('No hay ningún sprint seleccionado.');
     });
   });
 
@@ -368,7 +368,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      const svg = container.querySelector('svg[aria-label="Burndown chart"]');
+      const svg = container.querySelector('svg[aria-label="Gráfico burndown"]');
       expect(svg).toBeTruthy();
     });
   });
@@ -377,7 +377,7 @@ describe('ProjectReportsTab — BurndownChart', () => {
 describe('ProjectReportsTab — VelocityChart', () => {
   it('renders the velocity SVG with aria-label', async () => {
     const { container } = await renderAndSettle();
-    const svg = container.querySelector('svg[aria-label="Velocity chart"]');
+    const svg = container.querySelector('svg[aria-label="Gráfico de velocidad"]');
     expect(svg).toBeTruthy();
   });
 
@@ -388,7 +388,7 @@ describe('ProjectReportsTab — VelocityChart', () => {
 
   it('renders velocity legend labels Committed and Completed', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Committed');
+    expect(container.textContent).toContain('Comprometido');
     expect(container.textContent).toContain('Completado');
   });
 
@@ -407,7 +407,7 @@ describe('ProjectReportsTab — VelocityChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No completed sprints yet');
+      expect(container.textContent).toContain('Aún no hay sprints completados');
     });
   });
 
@@ -418,7 +418,7 @@ describe('ProjectReportsTab — VelocityChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No completed sprints yet');
+      expect(container.textContent).toContain('Aún no hay sprints completados');
     });
   });
 
@@ -449,7 +449,7 @@ describe('ProjectReportsTab — VelocityChart', () => {
 describe('ProjectReportsTab — CfdChart', () => {
   it('renders the CFD SVG with aria-label', async () => {
     const { container } = await renderAndSettle();
-    const svg = container.querySelector('svg[aria-label="Cumulative flow diagram"]');
+    const svg = container.querySelector('svg[aria-label="Diagrama de flujo acumulado"]');
     expect(svg).toBeTruthy();
   });
 
@@ -462,7 +462,7 @@ describe('ProjectReportsTab — CfdChart', () => {
 
   it('shows day count in the section description', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('3 days');
+    expect(container.textContent).toContain('3 días');
   });
 
   it('uses singular "day" when exactly 1 day', async () => {
@@ -481,7 +481,7 @@ describe('ProjectReportsTab — CfdChart', () => {
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
       // The CFD description says "over the last 1 day" (singular)
-      expect(container.textContent).toContain('the last 1 day.');
+      expect(container.textContent).toContain('los últimos 1 día.');
     });
   });
 
@@ -494,7 +494,7 @@ describe('ProjectReportsTab — CfdChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No daily snapshots yet');
+      expect(container.textContent).toContain('Aún no hay instantáneas diarias');
     });
   });
 
@@ -505,7 +505,7 @@ describe('ProjectReportsTab — CfdChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No daily snapshots yet');
+      expect(container.textContent).toContain('Aún no hay instantáneas diarias');
     });
   });
 });
@@ -530,7 +530,7 @@ describe('ProjectReportsTab — CapacityChart', () => {
     await waitFor(() => {
       // Alice: 6/8 pts · 5 cards
       expect(container.textContent).toContain('6/8 pts');
-      expect(container.textContent).toContain('5 cards');
+      expect(container.textContent).toContain('5 tarjetas');
     });
   });
 
@@ -553,8 +553,8 @@ describe('ProjectReportsTab — CapacityChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('1 card');
-      expect(container.textContent).not.toContain('1 cards');
+      expect(container.textContent).toContain('1 tarjeta');
+      expect(container.textContent).not.toContain('1 tarjetas');
     });
   });
 
@@ -577,7 +577,7 @@ describe('ProjectReportsTab — CapacityChart', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No assigned cards in this sprint yet.');
+      expect(container.textContent).toContain('Aún no hay tarjetas asignadas en este sprint.');
     });
   });
 
@@ -618,10 +618,10 @@ describe('ProjectReportsTab — CapacityChart', () => {
 describe('ProjectReportsTab — CycleTable', () => {
   it('renders the cycle table header columns', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Key');
+    expect(container.textContent).toContain('Clave');
     expect(container.textContent).toContain('Título');
-    expect(container.textContent).toContain('Lead');
-    expect(container.textContent).toContain('Cycle');
+    expect(container.textContent).toContain('Entrega');
+    expect(container.textContent).toContain('Ciclo');
     expect(container.textContent).toContain('Listo');
   });
 
@@ -675,8 +675,8 @@ describe('ProjectReportsTab — CycleTable', () => {
 
   it('renders average cycle/lead stats in the section description', async () => {
     const { container } = await renderAndSettle();
-    expect(container.textContent).toContain('Average cycle time: 1 days');
-    expect(container.textContent).toContain('Average lead time: 2 days');
+    expect(container.textContent).toContain('Tiempo de ciclo medio: 1 días');
+    expect(container.textContent).toContain('Tiempo de entrega medio: 2 días');
   });
 
   it('shows empty state when cycle has no rows', async () => {
@@ -688,7 +688,7 @@ describe('ProjectReportsTab — CycleTable', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('No completed cards yet.');
+      expect(container.textContent).toContain('Aún no hay tarjetas completadas.');
     });
   });
 
@@ -710,7 +710,7 @@ describe('ProjectReportsTab — CycleTable', () => {
     }) as any;
     const { container } = render(<ProjectReportsTab projectId={42} projectKey="P" />);
     await waitFor(() => {
-      expect(container.textContent).toContain('Showing 50 of 55 done cards.');
+      expect(container.textContent).toContain('Mostrando 50 de 55 tarjetas completadas.');
     });
   });
 });
@@ -766,7 +766,7 @@ describe('ProjectReportsTab — edge cases and fallbacks', () => {
     await waitFor(() => {
       expect(container.querySelector('.animate-spin')).toBeNull();
     });
-    expect(container.textContent).toContain('the selected sprint');
+    expect(container.textContent).toContain('el sprint seleccionado');
   });
 
   it('shows 0 days in CFD description when cfd is null', async () => {
@@ -778,7 +778,7 @@ describe('ProjectReportsTab — edge cases and fallbacks', () => {
     await waitFor(() => {
       expect(container.querySelector('.animate-spin')).toBeNull();
     });
-    expect(container.textContent).toContain('0 days');
+    expect(container.textContent).toContain('0 días');
   });
 
   it('shows 0 averages in velocity description when velocity is null', async () => {
@@ -790,7 +790,7 @@ describe('ProjectReportsTab — edge cases and fallbacks', () => {
     await waitFor(() => {
       expect(container.querySelector('.animate-spin')).toBeNull();
     });
-    expect(container.textContent).toContain('Average committed: 0 pts');
+    expect(container.textContent).toContain('Media comprometida: 0 pts');
   });
 
   it('defaults to first planning sprint when no active sprint exists', async () => {
@@ -853,6 +853,6 @@ describe('ProjectReportsTab — edge cases and fallbacks', () => {
     // No sprints → no select
     expect(container.querySelector('select')).toBeNull();
     // Component still renders with empty states
-    expect(container.textContent).toContain('No sprint selected.');
+    expect(container.textContent).toContain('No hay ningún sprint seleccionado.');
   });
 });

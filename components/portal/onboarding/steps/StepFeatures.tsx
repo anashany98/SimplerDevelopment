@@ -51,7 +51,7 @@ export function StepFeatures({ state, setAnswers, next }: StepProps) {
       <div className="flex items-center justify-between pt-1">
         <p className={obHint}>
           <span className="material-icons" style={{ fontSize: 15 }}>interests</span>
-          {picked.length === 0 ? 'No pressure — pick zero or all.' : `${picked.length} selected`}
+          {picked.length === 0 ? 'Sin presión — elige ninguno o todos.' : `${picked.length} seleccionados`}
         </p>
         <button
           type="button"

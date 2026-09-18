@@ -57,10 +57,10 @@ describe('self-hosted onboarding', () => {
       <StepPayment {...makeProps('payment')} stripeEnabled={false} />,
     );
 
-    expect(screen.getByRole('button', { name: /continue without payment/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /continuar sin pago/i })).toBeTruthy();
     expect(screen.getByTestId('onboarding-payment-unconfigured')).toBeTruthy();
-    expect(screen.queryByText(/14-day free trial/i)).toBeNull();
-    expect(screen.getAllByText('Included').length).toBeGreaterThan(0);
+    expect(screen.queryByText(/prueba gratis de 14 días/i)).toBeNull();
+    expect(screen.getAllByText('Incluido').length).toBeGreaterThan(0);
     expect(container.textContent).not.toContain('/mo');
   });
 

@@ -36,7 +36,7 @@ export default async function AgencyStatusWidget({
 
   const checkItems = [
     {
-      label: 'Custom domain',
+      label: 'Dominio personalizado',
       icon: 'dns',
       done: hasDomain && isVerified,
       detail: hasDomain
@@ -44,27 +44,27 @@ export default async function AgencyStatusWidget({
         : null,
       badge: hasDomain
         ? isVerified
-          ? { text: 'Verified', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
-          : { text: 'Pending', color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' }
-        : { text: 'Not set', color: 'bg-muted text-muted-foreground' },
+          ? { text: 'Verificado', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
+          : { text: 'Pendiente', color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' }
+        : { text: 'Sin configurar', color: 'bg-muted text-muted-foreground' },
     },
     {
-      label: 'Agency branding',
+      label: 'Marca de la agencia',
       icon: 'palette',
       done: hasBranding,
       detail: agency?.agencyName ?? null,
       badge: hasBranding
-        ? { text: 'Configured', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
-        : { text: 'Not set', color: 'bg-muted text-muted-foreground' },
+        ? { text: 'Configurado', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
+        : { text: 'Sin configurar', color: 'bg-muted text-muted-foreground' },
     },
     {
-      label: 'White-label mode',
+      label: 'Modo marca blanca',
       icon: 'campaign',
       done: !!agency?.whiteLabelEnabled,
       detail: null,
       badge: agency?.whiteLabelEnabled
-        ? { text: 'Enabled', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
-        : { text: 'Off', color: 'bg-muted text-muted-foreground' },
+        ? { text: 'Activado', color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' }
+        : { text: 'Desactivado', color: 'bg-muted text-muted-foreground' },
     },
   ];
 
@@ -73,7 +73,7 @@ export default async function AgencyStatusWidget({
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{memberCount}</span>
         <span className="ml-2 text-sm text-muted-foreground">
-          team member{memberCount !== 1 ? 's' : ''}
+          miembro{memberCount !== 1 ? 's' : ''} del equipo
         </span>
       </div>
 
@@ -115,7 +115,7 @@ export default async function AgencyStatusWidget({
           className="text-xs text-primary hover:underline flex items-center gap-1"
         >
           <span className="material-icons text-sm">arrow_forward</span>
-          Manage agency settings
+          Gestionar ajustes de agencia
         </Link>
       </div>
     </div>
