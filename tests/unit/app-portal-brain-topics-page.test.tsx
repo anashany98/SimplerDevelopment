@@ -236,7 +236,7 @@ describe('BrainTopicsAdminPage — empty tree', () => {
   it('shows "No topics yet." placeholder when tree is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No topics yet.');
+      expect(container.textContent).toContain('Aún no hay temas.');
     });
   });
 
@@ -294,7 +294,7 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     await waitFor(() => {
-      const input = container.querySelector('input[placeholder="New root topic name…"]');
+      const input = container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]');
       expect(input).toBeTruthy();
     });
   });
@@ -307,7 +307,7 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     fireEvent.change(input, { target: { value: 'Alpha Topic' } });
     fireEvent.keyDown(input, { key: 'Enter' });
@@ -332,11 +332,11 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     fireEvent.keyDown(input, { key: 'Escape' });
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="New root topic name…"]')).toBeNull();
+      expect(container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]')).toBeNull();
     });
   });
 
@@ -348,7 +348,7 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     fireEvent.change(input, { target: { value: 'Beta Topic' } });
     fireEvent.blur(input);
@@ -368,7 +368,7 @@ describe('BrainTopicsAdminPage — create root topic', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     const before = fetchMock.mock.calls.length;
     fireEvent.blur(input);
@@ -394,14 +394,14 @@ describe('BrainTopicsAdminPage — create root topic', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No topics yet.'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay temas.'));
     // Use "Create your first topic" button in empty state
     const createBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Create your first topic'),
     ) as HTMLButtonElement;
     fireEvent.click(createBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     fireEvent.change(input, { target: { value: 'Duplicate' } });
     fireEvent.keyDown(input, { key: 'Enter' });
@@ -422,7 +422,7 @@ describe('ImportFromTagsWizard', () => {
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import topics from tags');
+      expect(container.textContent).toContain('Importar temas desde etiquetas');
     });
   });
 
@@ -555,14 +555,14 @@ describe('ImportFromTagsWizard', () => {
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import topics from tags');
+      expect(container.textContent).toContain('Importar temas desde etiquetas');
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Import topics from tags');
+      expect(container.textContent).not.toContain('Importar temas desde etiquetas');
     });
   });
 
@@ -573,13 +573,13 @@ describe('ImportFromTagsWizard', () => {
       b.textContent?.includes('Import from tags'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
-    await waitFor(() => expect(container.textContent).toContain('Import topics from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar temas desde etiquetas'));
     // The backdrop is the first fixed inset-0 div (z-40)
     const backdrop = container.querySelector('.fixed.inset-0.z-40') as HTMLElement;
     expect(backdrop).toBeTruthy();
     fireEvent.click(backdrop);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Import topics from tags');
+      expect(container.textContent).not.toContain('Importar temas desde etiquetas');
     });
   });
 
@@ -669,11 +669,11 @@ describe('ImportFromTagsWizard', () => {
       expect(container.textContent).toContain('Import complete');
     });
     const doneBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'done' || b.textContent?.includes('Done'),
+      b.textContent?.includes('Listo'),
     ) as HTMLButtonElement;
     fireEvent.click(doneBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Import topics from tags');
+      expect(container.textContent).not.toContain('Importar temas desde etiquetas');
     });
   });
 
@@ -684,7 +684,7 @@ describe('ImportFromTagsWizard', () => {
       b.textContent?.includes('Import from tags'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
-    await waitFor(() => expect(container.textContent).toContain('Import topics from tags'));
+    await waitFor(() => expect(container.textContent).toContain('Importar temas desde etiquetas'));
     const prefixInput = container.querySelector('input[placeholder*="leave empty"]') as HTMLInputElement;
     fireEvent.change(prefixInput, { target: { value: 'kb' } });
     const previewBtn = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -717,7 +717,7 @@ describe('ImportFromTagsWizard', () => {
     ) as HTMLButtonElement;
     fireEvent.click(link);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import topics from tags');
+      expect(container.textContent).toContain('Importar temas desde etiquetas');
     });
   });
 });
@@ -759,7 +759,7 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     const { container } = renderPage();
     await openPanel(container);
     // Panel is in loading state
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
     resolveDetail(makeRes({ success: true, data: makeTopicDetail() }));
   });
 
@@ -832,7 +832,7 @@ describe('TopicDetailPanel — rendered via tree node click', () => {
     const { container } = renderPage();
     await openPanel(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('No entities attached yet.');
+      expect(container.textContent).toContain('Aún no hay entidades asociadas.');
     });
   });
 
@@ -1044,7 +1044,7 @@ describe('Reload behavior', () => {
     ) as HTMLButtonElement;
     fireEvent.click(newBtn);
     const input = await waitFor(
-      () => container.querySelector('input[placeholder="New root topic name…"]') as HTMLInputElement,
+      () => container.querySelector('input[placeholder="Nombre del tema raíz nuevo…"]') as HTMLInputElement,
     );
     fireEvent.change(input, { target: { value: 'New Root' } });
     fireEvent.keyDown(input, { key: 'Enter' });
