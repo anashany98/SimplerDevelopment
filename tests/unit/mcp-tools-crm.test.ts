@@ -348,6 +348,9 @@ vi.mock('drizzle-orm', () => {
 // ── helpers ─────────────────────────────────────────────────────────────────
 
 import { registerCrmTools } from '@/lib/mcp/tools/crm';
+import { registerCrmDealExtrasTools } from '@/lib/mcp/tools/crm-deal-extras';
+import { registerCrmProposalsContractsTools } from '@/lib/mcp/tools/crm-proposals-contracts';
+import { registerCrmCustomFieldsTools } from '@/lib/mcp/tools/crm-custom-fields';
 
 interface CapturedTool {
   name: string;
@@ -384,6 +387,15 @@ function registerAll(scopes: string[] = ['*']) {
   const { stub, tools } = makeServer();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerCrmTools(stub as any, ctxFor(scopes));
+  // The crm domain was split into sub-domain registrars (see lib/mcp/tools/
+  // index.ts); the harness registers them all so these tests keep covering
+  // the full CRM tool surface.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCrmDealExtrasTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCrmProposalsContractsTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCrmCustomFieldsTools(stub as any, ctxFor(scopes));
   return tools;
 }
 

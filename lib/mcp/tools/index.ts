@@ -17,6 +17,9 @@ import { registerKanbanSearchTools } from './kanban-search';
 import { registerSprintsTools } from './sprints';
 import { registerTicketsTools } from './tickets';
 import { registerCrmTools } from './crm';
+import { registerCrmDealExtrasTools } from './crm-deal-extras';
+import { registerCrmProposalsContractsTools } from './crm-proposals-contracts';
+import { registerCrmCustomFieldsTools } from './crm-custom-fields';
 import { registerCmsTools } from './cms';
 import { registerEmailTools } from './email';
 import { registerPitchDecksTools } from './pitch-decks';
@@ -89,6 +92,9 @@ export {
   registerPathvizCoordinationTools,
   registerAgentFlowTools,
   registerOmnichannelTools,
+  registerCrmDealExtrasTools,
+  registerCrmProposalsContractsTools,
+  registerCrmCustomFieldsTools,
 };
 
 /**
@@ -111,6 +117,9 @@ export const allToolRegistrars: readonly McpToolRegistrar[] = [
   registerKanbanSearchTools,
   registerTicketsTools,
   registerCrmTools,
+  registerCrmDealExtrasTools,
+  registerCrmProposalsContractsTools,
+  registerCrmCustomFieldsTools,
   registerCmsTools,
   registerEmailTools,
   registerPitchDecksTools,
