@@ -55,14 +55,14 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
   const load = useCallback(async () => {
     const res = await fetch(`/api/portal/chat/conversations/${conversationId}`);
     const json = await res.json();
-    if (!json.success) throw new Error(json.message || 'Failed to load conversation');
+    if (!json.success) throw new Error(json.message || 'No se pudo cargar la conversación');
     setConversation(json.data.conversation as Conversation);
     setMessages(json.data.messages as Message[]);
     setAiRuns((json.data.aiRuns ?? []) as AiRun[]);
   }, [conversationId]);
 
   useEffect(() => {
-    load().catch((e) => setError(e instanceof Error ? e.message : 'Load failed'));
+    load().catch((e) => setError(e instanceof Error ? e.message : 'No se pudo cargar'));
   }, [load]);
 
   // SSE — same inbox stream the list page uses; we filter to this conversation.
@@ -110,10 +110,10 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
         body: JSON.stringify({ body }),
       });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message || 'Send failed');
+      if (!res.ok || !json.success) throw new Error(json.message || 'No se pudo enviar');
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Send failed');
+      setError(e instanceof Error ? e.message : 'No se pudo enviar');
     } finally {
       setSending(false);
     }
@@ -128,7 +128,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
       });
       const json = await res.json();
       if (!json.success) {
-        setError(json.message || 'Update failed');
+        setError(json.message || 'No se pudo actualizar');
         return;
       }
       setConversation((c) => (c ? { ...c, ...(json.data as Conversation) } : c));
@@ -141,7 +141,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link href="/portal/inbox" className="hover:text-foreground inline-flex items-center gap-1">
           <span className="material-icons text-base">arrow_back</span>
-          Inbox
+          Bandeja de entrada
         </Link>
       </div>
 
@@ -154,7 +154,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
           <div>
             <div className="font-semibold flex items-center gap-2">
               <span className="material-icons">person</span>
-              {conversation.visitorName || 'Anonymous visitor'}
+              {conversation.visitorName || 'Visitante anónimo'}
             </div>
             <div className="text-xs text-muted-foreground">
               {conversation.visitorEmail || '—'} · {conversation.channel} · {conversation.status} · {conversation.aiMode.toUpperCase()}
@@ -163,17 +163,17 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
           <div className="flex flex-wrap justify-end gap-2">
             {conversation.status !== 'closed' && conversation.aiMode !== 'ai' && (
               <button type="button" onClick={() => action('ai-takeover')} className={pBtnGhost} title="La IA solo puede enviar automáticamente respuestas fundamentadas y de alta confianza">
-                <span className="material-icons text-base">smart_toy</span> AI
+                <span className="material-icons text-base">smart_toy</span> IA
               </button>
             )}
             {conversation.status !== 'closed' && conversation.aiMode !== 'human' && (
               <button type="button" onClick={() => action('human-takeover')} className={pBtnGhost}>
-                <span className="material-icons text-base">support_agent</span> Human
+                <span className="material-icons text-base">support_agent</span> Humano
               </button>
             )}
             {conversation.status !== 'closed' && conversation.aiMode !== 'paused' && (
               <button type="button" onClick={() => action('pause-ai')} className={pBtnGhost}>
-                <span className="material-icons text-base">pause</span> Pause AI
+                <span className="material-icons text-base">pause</span> Pausar IA
               </button>
             )}
             {conversation.status !== 'closed' && (
@@ -185,7 +185,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
                     className={pBtnGhost}
                   >
                     <span className="material-icons text-base">person_remove</span>
-                    Unassign
+                    Quitar asignación
                   </button>
                 ) : (
                   <button
@@ -194,7 +194,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
                     className={pBtnGhost}
                   >
                     <span className="material-icons text-base">person_add</span>
-                    Assign to me
+                    Asignármela
                   </button>
                 )}
                 <button
@@ -212,7 +212,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
                 className={pBtnGhost}
               >
                 <span className="material-icons text-base">refresh</span>
-                Reopen
+                Reabrir
               </button>
             )}
           </div>
@@ -247,12 +247,12 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
 
       {aiRuns.some((run) => run.status === 'review' && run.decision?.answer) && (
         <section className={`${pCard} space-y-3 p-4`}>
-          <h2 className="flex items-center gap-2 text-sm font-semibold"><span className="material-icons text-base text-primary">auto_awesome</span>AI drafts requiring review</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold"><span className="material-icons text-base text-primary">auto_awesome</span>Borradores de IA pendientes de revisión</h2>
           {aiRuns.filter((run) => run.status === 'review' && run.decision?.answer).map((run) => (
             <div key={run.id} className="rounded-lg border border-border p-3 text-sm">
               <p className="whitespace-pre-wrap">{run.decision?.answer}</p>
               <div className="mt-2 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-                <span>{Math.round((run.decision?.confidence ?? 0) * 100)}% confidence · {run.decision?.grounded ? 'grounded' : 'not grounded'}</span>
+                <span>{Math.round((run.decision?.confidence ?? 0) * 100)}% de confianza · {run.decision?.grounded ? 'fundamentado' : 'no fundamentado'}</span>
                 <button type="button" onClick={() => setDraft(run.decision?.answer ?? '')} className="rounded border border-border px-2 py-1 font-medium text-foreground">Usar borrador</button>
               </div>
             </div>
@@ -272,7 +272,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
             type="text"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Reply…"
+            placeholder="Responder…"
             maxLength={8000}
             className="flex-1 rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
             disabled={sending}

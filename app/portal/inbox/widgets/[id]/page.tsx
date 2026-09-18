@@ -37,12 +37,12 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
   const load = useCallback(async () => {
     const res = await fetch(`/api/portal/chat/widgets/${widgetId}`);
     const json = await res.json();
-    if (!json.success) throw new Error(json.message || 'Load failed');
+    if (!json.success) throw new Error(json.message || 'No se pudo cargar');
     setWidget(json.data as Widget);
   }, [widgetId]);
 
   useEffect(() => {
-    load().catch((e) => setError(e instanceof Error ? e.message : 'Load failed'));
+    load().catch((e) => setError(e instanceof Error ? e.message : 'No se pudo cargar'));
   }, [load]);
 
   const save = useCallback(async () => {
@@ -69,10 +69,10 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
         }),
       });
       const json = await res.json();
-      if (!json.success) throw new Error(json.message || 'Save failed');
+      if (!json.success) throw new Error(json.message || 'No se pudo guardar');
       setWidget(json.data as Widget);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Save failed');
+      setError(e instanceof Error ? e.message : 'No se pudo guardar');
     } finally {
       setSaving(false);
     }
@@ -101,7 +101,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
   }, [widget]);
 
   if (!widget) {
-    return <div className="p-6 text-sm text-muted-foreground">{error || 'Loading…'}</div>;
+    return <div className="p-6 text-sm text-muted-foreground">{error || 'Cargando…'}</div>;
   }
 
   return (
@@ -109,7 +109,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link href="/portal/inbox" className="hover:text-foreground inline-flex items-center gap-1">
           <span className="material-icons text-base">arrow_back</span>
-          Inbox
+          Bandeja de entrada
         </Link>
       </div>
       <PortalPageHeader eyebrow="Bandeja" title="Ajustes del widget de chat" />
@@ -124,20 +124,20 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
               checked={widget.enabled}
               onChange={(e) => setWidget({ ...widget, enabled: e.target.checked })}
             />
-            Widget enabled
+            Widget activado
           </label>
           <p className="text-xs text-muted-foreground mt-1">
-            When off, embed scripts on this site will return 404.
+            Cuando está desactivado, los scripts incrustados en este sitio devolverán 404.
           </p>
         </div>
 
         <div>
-          <label htmlFor="widget-display-name" className="text-sm font-medium">Display name</label>
+          <label htmlFor="widget-display-name" className="text-sm font-medium">Nombre visible</label>
           <input id="widget-display-name" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" value={widget.displayName ?? ''} onChange={(e) => setWidget({ ...widget, displayName: e.target.value })} maxLength={120} />
         </div>
 
         <div>
-          <label htmlFor="widget-greeting-message" className="text-sm font-medium">Greeting message</label>
+          <label htmlFor="widget-greeting-message" className="text-sm font-medium">Mensaje de bienvenida</label>
           <textarea
             id="widget-greeting-message"
             className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15 mt-1 resize-none"
@@ -148,31 +148,31 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
         </div>
 
         <div>
-          <label htmlFor="widget-origins" className="text-sm font-medium">Allowed domains</label>
+          <label htmlFor="widget-origins" className="text-sm font-medium">Dominios permitidos</label>
           <textarea id="widget-origins" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" rows={3} value={widget.allowedOrigins.join('\n')} onChange={(e) => setWidget({ ...widget, allowedOrigins: e.target.value.split(/\r?\n/).map((value) => value.trim()).filter(Boolean) })} placeholder={'example.com\n*.example.org'} />
           <p className="mt-1 text-xs text-muted-foreground">Un nombre de host por linea. Los comodines deben usar la forma explicita *.example.com.</p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="widget-ai-mode" className="text-sm font-medium">Default AI mode</label>
+            <label htmlFor="widget-ai-mode" className="text-sm font-medium">Modo de IA predeterminado</label>
             <select id="widget-ai-mode" className={`${pSelect} mt-1`} value={widget.aiMode} onChange={(e) => setWidget({ ...widget, aiMode: e.target.value })}>
-              <option value="hybrid">Hybrid</option><option value="ai">AI</option><option value="human">Human</option><option value="paused">Paused</option>
+              <option value="hybrid">Híbrido</option><option value="ai">IA</option><option value="human">Humano</option><option value="paused">En pausa</option>
             </select>
           </div>
           <div>
-            <label htmlFor="widget-language" className="text-sm font-medium">Language</label>
+            <label htmlFor="widget-language" className="text-sm font-medium">Idioma</label>
             <input id="widget-language" className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm" value={widget.language} onChange={(e) => setWidget({ ...widget, language: e.target.value })} />
           </div>
         </div>
 
         <div className="flex flex-wrap gap-5 text-sm">
-          <label className="flex items-center gap-2"><input type="checkbox" checked={widget.allowAttachments} onChange={(e) => setWidget({ ...widget, allowAttachments: e.target.checked })} />Allow attachments</label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={widget.allowAttachments} onChange={(e) => setWidget({ ...widget, allowAttachments: e.target.checked })} />Permitir archivos adjuntos</label>
           <label className="flex items-center gap-2"><input type="checkbox" checked={widget.showBranding} onChange={(e) => setWidget({ ...widget, showBranding: e.target.checked })} />Mostrar marca de la plataforma</label>
         </div>
 
         <div>
-          <label htmlFor="widget-away-message" className="text-sm font-medium">Away message</label>
+          <label htmlFor="widget-away-message" className="text-sm font-medium">Mensaje de ausencia</label>
           <textarea
             id="widget-away-message"
             className="w-full rounded-xl border border-border bg-card px-3.5 py-2 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15 mt-1 resize-none"
@@ -197,7 +197,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
             </select>
           </div>
           <div>
-            <label className="text-sm font-medium">Primary color</label>
+            <label className="text-sm font-medium">Color principal</label>
             <input
               type="color"
               className="w-full border rounded-md p-1 mt-1 bg-background h-10"
@@ -214,17 +214,17 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
           className={pBtnPrimary}
         >
           <span className="material-icons text-base">save</span>
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? 'Guardando…' : 'Guardar'}
         </button>
       </section>
 
       <section className={`${pCard} p-5 space-y-2`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons">code</span>
-          Embed
+          Incrustar
         </h2>
         <p className="text-sm text-muted-foreground">
-          For direct HTML paste (&lt;head&gt;)
+          Para pegar directamente en el HTML (&lt;head&gt;)
         </p>
         <pre className="bg-muted p-3 rounded-xl text-xs overflow-x-auto">{embed}</pre>
         <button
@@ -241,12 +241,12 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
           className={pBtnGhost}
         >
           <span className="material-icons text-base">{copied ? 'check' : 'content_copy'}</span>
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? 'Copiado' : 'Copiar'}
         </button>
 
         <p className="text-sm text-muted-foreground pt-2">
-          For Site Custom Code (JavaScript field) — do not use the HTML snippet above there, it
-          will break the page&apos;s custom code script.
+          Para el Site Custom Code (campo de JavaScript) — no uses el fragmento HTML de arriba,
+          romperá el script de código personalizado de la página.
         </p>
         <pre className="bg-muted p-3 rounded-xl text-xs overflow-x-auto">{embedJs}</pre>
         <button
@@ -263,7 +263,7 @@ export default function WidgetSettingsPage({ params }: { params: Promise<{ id: s
           className={pBtnGhost}
         >
           <span className="material-icons text-base">{copiedJs ? 'check' : 'content_copy'}</span>
-          {copiedJs ? 'Copied' : 'Copy'}
+          {copiedJs ? 'Copiado' : 'Copiar'}
         </button>
       </section>
     </div>

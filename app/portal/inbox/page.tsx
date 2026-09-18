@@ -35,7 +35,7 @@ interface Widget {
 const STATUS_FILTERS = [
   { id: 'all', label: 'Todos' },
   { id: 'open', label: 'Abierto' },
-  { id: 'assigned', label: 'Assigned' },
+  { id: 'assigned', label: 'Asignado' },
   { id: 'closed', label: 'Cerrado' },
 ] as const;
 
@@ -62,7 +62,7 @@ export default function InboxPage() {
     if (search.trim()) params.set('q', search.trim());
     const res = await fetch(`/api/portal/chat/conversations?${params}`);
     const json = await res.json();
-    if (!json.success) throw new Error(json.message || 'Failed to load conversations');
+    if (!json.success) throw new Error(json.message || 'No se pudieron cargar las conversaciones');
     setConversations(json.data as Conversation[]);
   }
 
@@ -82,7 +82,7 @@ export default function InboxPage() {
       try {
         await loadConversations(filter, channelFilter, query);
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Load failed');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'No se pudo cargar');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -135,13 +135,13 @@ export default function InboxPage() {
       });
       const json = await res.json();
       if (!json.success) {
-        setCreateError(json.message ?? 'Failed to create widget');
+        setCreateError(json.message ?? 'No se pudo crear el widget');
         return;
       }
       setWidgets((prev) => [...prev, json.data as Widget]);
       setShowCreateModal(false);
     } catch {
-      setCreateError('Network error — please try again');
+      setCreateError('Error de red — inténtalo de nuevo');
     } finally {
       setCreating(false);
     }
@@ -157,17 +157,17 @@ export default function InboxPage() {
           <div className="flex gap-2">
             <Link href="/portal/settings/channels" className={pBtnGhost}>
               <span className="material-icons text-base">hub</span>
-              Channels
+              Canales
             </Link>
             {widgets.length > 0 ? (
               <Link href={`/portal/inbox/widgets/${widgets[0].id}`} className={pBtnGhost}>
                 <span className="material-icons text-base">settings</span>
-                Web chat
+                Chat web
               </Link>
             ) : (
               <button type="button" onClick={openCreateModal} className={pBtnPrimary}>
                 <span className="material-icons text-base">add</span>
-                Web chat
+                Chat web
               </button>
             )}
           </div>
@@ -184,7 +184,7 @@ export default function InboxPage() {
           <option value="whatsapp">WhatsApp</option>
           <option value="instagram">Instagram</option>
           <option value="messenger">Messenger</option>
-          <option value="webchat">Web chat</option>
+          <option value="webchat">Chat web</option>
           <option value="email">Correo</option>
         </select>
       </div>
@@ -220,11 +220,11 @@ export default function InboxPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">add</span>
-                Create widget
+                Crear widget
               </button>
             </div>
           ) : (
-            'No conversations match this filter yet.'
+            'Aún no hay conversaciones que coincidan con este filtro.'
           )}
         </div>
       ) : (
@@ -240,7 +240,7 @@ export default function InboxPage() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium truncate">{c.visitorName || 'Anonymous visitor'}</span>
+                    <span className="font-medium truncate">{c.visitorName || 'Visitante anónimo'}</span>
                     <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{c.channel}</span>
                     <span
                       className={`text-xs px-1.5 py-0.5 rounded ${
@@ -255,7 +255,7 @@ export default function InboxPage() {
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground truncate">
-                    {c.visitorEmail || c.visitorId || 'Unknown identity'} · {c.aiMode.toUpperCase()} · {c.priority} priority
+                    {c.visitorEmail || c.visitorId || 'Identidad desconocida'} · {c.aiMode.toUpperCase()} · {c.priority} prioridad
                   </div>
                 </div>
                 <div className="text-xs text-muted-foreground whitespace-nowrap">
@@ -282,10 +282,10 @@ export default function InboxPage() {
               </button>
             </div>
             <p className="text-sm text-muted-foreground">
-              A chat widget lets visitors on your site start live conversations. Select which site to attach it to.
+              Un widget de chat permite a los visitantes de tu sitio iniciar conversaciones en vivo. Elige a qué sitio vincularlo.
             </p>
             <div className="space-y-2">
-              <label htmlFor="widget-site" className="text-sm font-medium">Site</label>
+              <label htmlFor="widget-site" className="text-sm font-medium">Sitio</label>
               {sites.length > 0 ? (
                 <select
                   id="widget-site"
@@ -300,9 +300,9 @@ export default function InboxPage() {
                 </select>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  No sites found.{' '}
+                  No se han encontrado sitios.{' '}
                   <Link href="/portal/websites" className="underline hover:text-foreground" onClick={() => setShowCreateModal(false)}>
-                    Create a site first.
+                    Crea un sitio primero.
                   </Link>
                 </p>
               )}
@@ -322,7 +322,7 @@ export default function InboxPage() {
                 disabled={!selectedSiteId || creating}
                 className={pBtnPrimary}
               >
-                {creating ? 'Creating…' : 'Create widget'}
+                {creating ? 'Creando…' : 'Crear widget'}
               </button>
             </div>
           </div>
