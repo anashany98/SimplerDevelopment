@@ -158,7 +158,7 @@ test.describe('Portal Surveys Detail — Refactor Baseline @critical @surveys', 
 
     // Edit label inside the expanded editor (the label input is the first Label
     // input visible after adding). Use the unique placeholder from SurveyBuilder.
-    const labelInput = page.locator('input[placeholder="e.g. What is your domain name?"]').first();
+    const labelInput = page.locator('input[placeholder="p. ej. ¿Cuál es tu nombre de dominio?"]').first();
     await expect(labelInput).toBeVisible({ timeout: 10_000 });
     await labelInput.fill('SURVEY-baseline-question-1');
 
@@ -208,7 +208,7 @@ test.describe('Portal Surveys Detail — Refactor Baseline @critical @surveys', 
     await page.getByTitle('Edit', { exact: true }).first().click();
 
     // Change the label
-    const labelInput = page.locator('input[placeholder="e.g. What is your domain name?"]').first();
+    const labelInput = page.locator('input[placeholder="p. ej. ¿Cuál es tu nombre de dominio?"]').first();
     await expect(labelInput).toBeVisible();
     await labelInput.fill('SURVEY-edited-label');
 
@@ -253,7 +253,7 @@ test.describe('Portal Surveys Detail — Refactor Baseline @critical @surveys', 
     await page.locator('button', { hasText: 'Multiple Choice' }).first().click();
 
     // Update the label of the newly-added (expanded) field — last visible label input.
-    const labelInputs = page.locator('input[placeholder="e.g. What is your domain name?"]');
+    const labelInputs = page.locator('input[placeholder="p. ej. ¿Cuál es tu nombre de dominio?"]');
     await expect(labelInputs.last()).toBeVisible({ timeout: 10_000 });
     await labelInputs.last().fill('SURVEY-baseline-mc');
 
@@ -295,7 +295,7 @@ test.describe('Portal Surveys Detail — Refactor Baseline @critical @surveys', 
     await clickTab(page, 'edit');
 
     // Click the first "Move down" button (belongs to question A → swaps with B).
-    await page.getByTitle('Move down').first().click();
+    await page.getByTitle('Bajar').first().click();
     // The "Saved" success toast clears after 2s, so we synchronize on the
     // network response from the PUT instead of the ephemeral DOM banner.
     const saveResponse = page.waitForResponse(
