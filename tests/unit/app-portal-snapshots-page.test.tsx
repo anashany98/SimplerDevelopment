@@ -128,7 +128,7 @@ describe('PortalSnapshotsPage', () => {
     it('shows loading spinner while fetching', () => {
       vi.stubGlobal('fetch', vi.fn(() => new Promise(() => { /* never resolves */ })));
       const { container } = render(<PortalSnapshotsPage />);
-      expect(container.textContent).toContain('Loading snapshots...');
+      expect(container.textContent).toContain('Cargando instantáneas...');
     });
   });
 
@@ -165,12 +165,12 @@ describe('PortalSnapshotsPage', () => {
 
     it('renders "Uploaded" when sourceSiteId is null', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Uploaded');
+      expect(container.textContent).toContain('Subida');
     });
 
     it('renders "Site #<id>" when sourceSiteId not found in websites list', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Site #11');
+      expect(container.textContent).toContain('Web #11');
     });
 
     it('renders a formatted createdAt date', async () => {
@@ -198,7 +198,7 @@ describe('PortalSnapshotsPage', () => {
     it('renders Import button for each snapshot', async () => {
       const { container } = await renderAndLoad();
       const importBtns = Array.from(container.querySelectorAll('button')).filter(
-        (b) => b.textContent?.includes('Import'),
+        (b) => b.textContent?.includes('Importar'),
       );
       expect(importBtns.length).toBe(3);
     });
@@ -215,7 +215,7 @@ describe('PortalSnapshotsPage', () => {
   describe('page header', () => {
     it('renders the page title', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Site snapshots');
+      expect(container.textContent).toContain('Instantáneas de webs');
     });
 
     it('renders the Create snapshot header button', async () => {
@@ -291,7 +291,7 @@ describe('PortalSnapshotsPage', () => {
       const siteSelect = panel.querySelector('select') as HTMLSelectElement;
       fireEvent.change(siteSelect, { target: { value: '10' } });
       const nameInput = panel.querySelector(
-        'input[placeholder="e.g. Acme Marketing Site v1"]',
+        'input[placeholder="p. ej. Web de marketing de Acme v1"]',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'My Snap' } });
       await act(async () => { fireEvent.click(getPanelSubmitBtn(container)); });
@@ -335,7 +335,7 @@ describe('PortalSnapshotsPage', () => {
       fireEvent.change(siteSelect, { target: { value: '10' } });
       await act(async () => { fireEvent.click(getPanelSubmitBtn(container)); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Export failed');
+        expect(container.textContent).toContain('Error al exportar');
       });
     });
   });
@@ -366,7 +366,7 @@ describe('PortalSnapshotsPage', () => {
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Snapshot deleted');
+        expect(container.textContent).toContain('Instantánea eliminada');
       });
     });
 
@@ -408,11 +408,11 @@ describe('PortalSnapshotsPage', () => {
   describe('import modal', () => {
     async function openImportModal(container: HTMLElement) {
       const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import') && b.title === 'Importar esta instantánea',
+        (b) => b.textContent?.includes('Importar') && b.title === 'Importar esta instantánea',
       )!;
       fireEvent.click(importBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Import snapshot');
+        expect(container.textContent).toContain('Importar instantánea');
       });
       return importBtn;
     }
@@ -420,7 +420,7 @@ describe('PortalSnapshotsPage', () => {
     it('opens the import modal when Import button is clicked', async () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
-      expect(screen.getByText('Import snapshot')).toBeTruthy();
+      expect(screen.getByText('Importar instantánea')).toBeTruthy();
     });
 
     it('shows the snapshot name in the modal', async () => {
@@ -497,7 +497,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
@@ -507,7 +507,7 @@ describe('PortalSnapshotsPage', () => {
         expect(post).toBeTruthy();
       });
       await waitFor(() => {
-        expect(container.textContent).toContain('Imported');
+        expect(container.textContent).toContain('Se importaron');
       });
     });
 
@@ -521,11 +521,11 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('2 slug conflicts resolved');
+        expect(container.textContent).toContain('2 conflictos de slug resueltos');
       });
     });
 
@@ -539,7 +539,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
@@ -557,11 +557,11 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Import failed');
+        expect(container.textContent).toContain('Error al importar');
       });
     });
 
@@ -569,7 +569,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
