@@ -1368,7 +1368,7 @@ describe('ExperimentDetailClient — results display', () => {
       />,
     );
 
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
   });
 
   it('shows stats table when results load', async () => {
@@ -1582,7 +1582,7 @@ describe('ExperimentDetailClient — results display', () => {
     const callsBefore = (fetchMock as ReturnType<typeof vi.fn>).mock.calls.length;
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Refresh/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
     });
 
     await waitFor(() => {
@@ -1605,7 +1605,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Delete/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
     expect(screen.getByText(/Are you sure you want to delete/)).toBeInTheDocument();
   });
@@ -1620,8 +1620,8 @@ describe('ExperimentDetailClient — delete experiment', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Delete/ }));
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(screen.queryByText('Delete Experiment')).not.toBeInTheDocument();
   });
 
@@ -1650,7 +1650,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
     );
 
     // Open modal — click the header Delete button (has delete icon + text)
-    fireEvent.click(screen.getByRole('button', { name: /Delete/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     // Wait for modal to appear then click the confirm button inside the modal
     await waitFor(() => {
       expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
@@ -1691,7 +1691,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Delete/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     await waitFor(() => {
       expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
     });
@@ -1718,7 +1718,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Delete/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     await waitFor(() => {
       expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
     });
