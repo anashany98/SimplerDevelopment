@@ -219,7 +219,7 @@ describe('BrainDocumentDetailPage — loading', () => {
     // Never resolve the fetch
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -337,7 +337,7 @@ describe('BrainDocumentDetailPage — header (draft document)', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/documents/42/edit"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('Edit draft');
+      expect(link?.textContent).toContain('Editar borrador');
     });
   });
 });
@@ -422,7 +422,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       );
       expect(archiveBtn).toBeTruthy();
     });
@@ -594,7 +594,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Summary');
+      expect(container.textContent).toContain('Resumen');
       expect(container.textContent).toContain('Executive summary');
     });
   });
@@ -615,7 +615,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     // "Summary" heading should not appear (only the version-history section header)
     const summaryHeading = Array.from(container.querySelectorAll('h2')).find(
-      (h) => h.textContent?.trim() === 'Summary',
+      (h) => h.textContent?.trim() === 'Resumen',
     );
     expect(summaryHeading).toBeUndefined();
   });
@@ -889,11 +889,11 @@ describe('BrainDocumentDetailPage — handleArchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       )).toBe(true);
     });
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -908,12 +908,12 @@ describe('BrainDocumentDetailPage — handleArchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       )).toBe(true);
     });
     const beforeCalls = fetchMock.mock.calls.length;
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await new Promise((r) => setTimeout(r, 50));
