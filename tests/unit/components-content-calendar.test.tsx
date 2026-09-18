@@ -187,7 +187,7 @@ describe('ContentCalendar — toolbar', () => {
     // chevron_left and chevron_right material icons + a "Today" button
     expect(container.textContent).toContain('chevron_left');
     expect(container.textContent).toContain('chevron_right');
-    expect(screen.getByRole('button', { name: /today/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /hoy/i })).toBeTruthy();
   });
 
   it('renders status and type filter selects', async () => {
@@ -253,7 +253,7 @@ describe('ContentCalendar — navigation', () => {
     fireEvent.click(nextBtn);
     fireEvent.click(nextBtn);
 
-    fireEvent.click(screen.getByRole('button', { name: /today/i }));
+    fireEvent.click(screen.getByRole('button', { name: /hoy/i }));
     const expected = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     await waitFor(() => expect(container.textContent).toContain(expected));
   });
