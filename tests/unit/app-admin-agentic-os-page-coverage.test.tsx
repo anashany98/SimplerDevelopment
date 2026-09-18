@@ -280,9 +280,9 @@ describe('AgenticOsPage — catalog renders', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Skills');
       expect(container.textContent).toContain('On-demand');
-      expect(container.textContent).toContain('Scheduled');
-      expect(container.textContent).toContain('Succeeded');
-      expect(container.textContent).toContain('Failed');
+      expect(container.textContent).toContain('Programado');
+      expect(container.textContent).toContain('Exitoso');
+      expect(container.textContent).toContain('Fallido');
     });
   });
 
@@ -334,7 +334,7 @@ describe('AgenticOsPage — refresh button', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const callsBefore = fetchMock.mock.calls.length;
     const refreshBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Refresh'),
+      b.textContent?.includes('Actualizar'),
     ) as HTMLButtonElement;
     fireEvent.click(refreshBtn);
     await waitFor(() => {
@@ -388,7 +388,7 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     expect(container.textContent).toContain('All domains');
     expect(container.textContent).toContain('On-demand only');
-    expect(container.textContent).toContain('Scheduled');
+    expect(container.textContent).toContain('Programado');
     expect(container.textContent).toContain('Run history');
   });
 
@@ -438,7 +438,7 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('OnDemandSkill'));
 
     const scBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Scheduled' || b.textContent?.includes('Scheduled'),
+      b.textContent?.trim() === 'Programado' || b.textContent?.includes('Programado'),
     ) as HTMLButtonElement;
     fireEvent.click(scBtn);
 
@@ -461,7 +461,7 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const scBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Scheduled'),
+      b.textContent?.includes('Programado'),
     ) as HTMLButtonElement;
     fireEvent.click(scBtn);
 
