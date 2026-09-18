@@ -128,9 +128,9 @@ describe('PortalMediaPage — shell + header', () => {
   it('renders the page header and Upload button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Media Library');
-      expect(container.textContent).toContain('Upload and manage');
-      expect(container.textContent).toContain('Upload');
+      expect(container.textContent).toContain('Biblioteca de medios');
+      expect(container.textContent).toContain('Sube y gestiona');
+      expect(container.textContent).toContain('Subir');
     });
   });
 
@@ -148,23 +148,23 @@ describe('PortalMediaPage — shell + header', () => {
   it('renders the empty-state when no media and no filters', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No media yet');
+      expect(container.textContent).toContain('Todavía no hay medios. Sube tu primer archivo.');
     });
   });
 
   it('renders the filtered empty-state when search is set', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No media yet'));
-    const input = container.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Todavía no hay medios. Sube tu primer archivo.'));
+    const input = container.querySelector('input[placeholder*="Buscar"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'nothing' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('No media matches your filters.');
+      expect(container.textContent).toContain('Ningún medio coincide con tus filtros.');
     });
   });
 
   it('does not render the branding-profiles dropdown when none are returned', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     expect(container.querySelector('select')).toBeFalsy();
   });
 
@@ -189,8 +189,8 @@ describe('PortalMediaPage — shell + header', () => {
 describe('PortalMediaPage — filters', () => {
   it('passes the search term into the fetch URL', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
-    const input = container.querySelector('input[placeholder*="Search"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
+    const input = container.querySelector('input[placeholder*="Buscar"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'logo' } });
     await waitFor(() => {
       const calls = fetchMock.mock.calls.map(c => String(c[0]));
@@ -200,7 +200,7 @@ describe('PortalMediaPage — filters', () => {
 
   it('clicking the Image type filter passes mimeType=image', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
       b.textContent?.trim() === 'Image',
     ) as HTMLButtonElement;
@@ -213,7 +213,7 @@ describe('PortalMediaPage — filters', () => {
 
   it('clicking the Video filter passes mimeType=video', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
       b.textContent?.trim() === 'Video',
     ) as HTMLButtonElement;
@@ -226,7 +226,7 @@ describe('PortalMediaPage — filters', () => {
 
   it('clicking the Application filter passes mimeType=application', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const btn = Array.from(container.querySelectorAll('button')).find(b =>
       b.textContent?.trim() === 'Application',
     ) as HTMLButtonElement;
@@ -239,7 +239,7 @@ describe('PortalMediaPage — filters', () => {
 
   it('clicking All clears the mimeType filter', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     // First switch to Image
     const imgBtn = Array.from(container.querySelectorAll('button')).find(b =>
       b.textContent?.trim() === 'Image',
@@ -378,7 +378,7 @@ describe('PortalMediaPage — pagination', () => {
     }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
-    expect(container.textContent).not.toContain('Previous');
+    expect(container.textContent).not.toContain('Anterior');
   });
 
   it('renders Previous/Next controls when total exceeds limit', async () => {
@@ -389,8 +389,8 @@ describe('PortalMediaPage — pagination', () => {
     }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Previous');
-      expect(container.textContent).toContain('Next');
+      expect(container.textContent).toContain('Anterior');
+      expect(container.textContent).toContain('Siguiente');
       expect(container.textContent).toContain('1');
       expect(container.textContent).toContain('50');
     });
@@ -403,9 +403,9 @@ describe('PortalMediaPage — pagination', () => {
       pagination: { total: 50 },
     }));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Previous'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prev = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Previous',
+      b.textContent?.trim() === 'Anterior',
     ) as HTMLButtonElement;
     expect(prev.disabled).toBe(true);
   });
@@ -417,9 +417,9 @@ describe('PortalMediaPage — pagination', () => {
       pagination: { total: 50 },
     }));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Next'));
+    await waitFor(() => expect(container.textContent).toContain('Siguiente'));
     const next = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Next',
+      b.textContent?.trim() === 'Siguiente',
     ) as HTMLButtonElement;
     fireEvent.click(next);
     await waitFor(() => {
@@ -435,9 +435,9 @@ describe('PortalMediaPage — pagination', () => {
       pagination: { total: 50 },
     }));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Next'));
+    await waitFor(() => expect(container.textContent).toContain('Siguiente'));
     const next = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Next',
+      b.textContent?.trim() === 'Siguiente',
     ) as HTMLButtonElement;
     fireEvent.click(next);
     await waitFor(() => {
@@ -445,7 +445,7 @@ describe('PortalMediaPage — pagination', () => {
       expect(calls.some(u => u.includes('offset=20'))).toBe(true);
     });
     const prev = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Previous',
+      b.textContent?.trim() === 'Anterior',
     ) as HTMLButtonElement;
     fireEvent.click(prev);
     await waitFor(() => {
@@ -460,59 +460,59 @@ describe('PortalMediaPage — pagination', () => {
 describe('PortalMediaPage — upload modal', () => {
   it('opens the upload modal when Upload is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Upload Media');
-      expect(container.textContent).toContain('Drop files here');
+      expect(container.textContent).toContain('Subir medios');
+      expect(container.textContent).toContain('Suelta los archivos aquí o haz clic para explorar');
     });
   });
 
   it('closes the modal via the close (X) button', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     // X is the button containing the "close" icon
     const closeBtn = Array.from(container.querySelectorAll('button')).find(b =>
       b.querySelector('.material-icons')?.textContent === 'close',
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Upload Media');
+      expect(container.textContent).not.toContain('Subir medios');
     });
   });
 
   it('closes the modal on backdrop click', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     // The backdrop is the parent of the .bg-card content
     const backdrop = container.querySelector('.fixed.inset-0') as HTMLElement;
     fireEvent.click(backdrop);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Upload Media');
+      expect(container.textContent).not.toContain('Subir medios');
     });
   });
 
   it('selecting a non-image file shows the filename but no preview', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(['pdf-bytes'], 'doc.pdf', { type: 'application/pdf' });
     Object.defineProperty(fileInput, 'files', { value: [file], configurable: true });
@@ -520,36 +520,36 @@ describe('PortalMediaPage — upload modal', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('doc.pdf');
       // No image preview rendered
-      const imgs = container.querySelectorAll('img[alt="Preview"]');
+      const imgs = container.querySelectorAll('img[alt="Vista previa"]');
       expect(imgs.length).toBe(0);
     });
   });
 
   it('selecting an image file shows the preview image', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(['img'], 'pic.png', { type: 'image/png' });
     Object.defineProperty(fileInput, 'files', { value: [file], configurable: true });
     fireEvent.change(fileInput);
     await waitFor(() => {
-      expect(container.querySelector('img[alt="Preview"]')).toBeTruthy();
+      expect(container.querySelector('img[alt="Vista previa"]')).toBeTruthy();
     });
   });
 
   it('drag enter toggles the dragActive style', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const dropzone = container.querySelector('.border-dashed') as HTMLElement;
     fireEvent.dragEnter(dropzone, { dataTransfer: { files: [] } });
     expect(dropzone.className).toContain('border-primary');
@@ -560,12 +560,12 @@ describe('PortalMediaPage — upload modal', () => {
 
   it('dropping a file selects it', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const dropzone = container.querySelector('.border-dashed') as HTMLElement;
     const file = new File(['x'], 'dropped.png', { type: 'image/png' });
     fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
@@ -576,16 +576,16 @@ describe('PortalMediaPage — upload modal', () => {
 
   it('drop with no files is a no-op', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const dropzone = container.querySelector('.border-dashed') as HTMLElement;
     fireEvent.drop(dropzone, { dataTransfer: { files: [] } });
     // Still shows "Drop files" since no file was selected
-    expect(container.textContent).toContain('Drop files here');
+    expect(container.textContent).toContain('Suelta los archivos aquí o haz clic para explorar');
   });
 
   it('uploads a file successfully and closes the modal', async () => {
@@ -598,12 +598,12 @@ describe('PortalMediaPage — upload modal', () => {
       return makeRes({ success: true, data: [], pagination: { total: 0 } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(['img'], 'go.png', { type: 'image/png' });
     Object.defineProperty(fileInput, 'files', { value: [file], configurable: true });
@@ -611,19 +611,19 @@ describe('PortalMediaPage — upload modal', () => {
     await waitFor(() => expect(container.textContent).toContain('go.png'));
     // Fill metadata
     const altInput = Array.from(container.querySelectorAll('input')).find(i =>
-      (i as HTMLInputElement).placeholder === 'Describe the image',
+      (i as HTMLInputElement).placeholder === 'Describe la imagen',
     ) as HTMLInputElement;
     fireEvent.change(altInput, { target: { value: 'a logo' } });
     const captionEl = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(captionEl, { target: { value: 'caption text' } });
     // Click the Upload submit button (inside the modal)
     const submit = Array.from(container.querySelectorAll('button')).filter(b =>
-      b.textContent?.trim() === 'Upload',
+      b.textContent?.trim() === 'Subir',
     ).pop() as HTMLButtonElement;
     fireEvent.click(submit);
     await waitFor(() => {
       expect(uploadCalled).toBe(true);
-      expect(container.textContent).not.toContain('Upload Media');
+      expect(container.textContent).not.toContain('Subir medios');
     });
   });
 
@@ -635,9 +635,9 @@ describe('PortalMediaPage — upload modal', () => {
       return makeRes({ success: true, data: [], pagination: { total: 0 } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
@@ -646,7 +646,7 @@ describe('PortalMediaPage — upload modal', () => {
     fireEvent.change(fileInput);
     await waitFor(() => expect(container.textContent).toContain('oops.png'));
     const submit = Array.from(container.querySelectorAll('button')).filter(b =>
-      b.textContent?.trim() === 'Upload',
+      b.textContent?.trim() === 'Subir',
     ).pop() as HTMLButtonElement;
     fireEvent.click(submit);
     await waitFor(() => {
@@ -662,9 +662,9 @@ describe('PortalMediaPage — upload modal', () => {
       return makeRes({ success: true, data: [], pagination: { total: 0 } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
@@ -673,33 +673,33 @@ describe('PortalMediaPage — upload modal', () => {
     fireEvent.change(fileInput);
     await waitFor(() => expect(container.textContent).toContain('fail.png'));
     const submit = Array.from(container.querySelectorAll('button')).filter(b =>
-      b.textContent?.trim() === 'Upload',
+      b.textContent?.trim() === 'Subir',
     ).pop() as HTMLButtonElement;
     fireEvent.click(submit);
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith('Upload failed');
+      expect(alertMock).toHaveBeenCalledWith('La subida falló');
     });
   });
 
   it('Cancel button inside the modal closes it', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(['x'], 'c.png', { type: 'image/png' });
     Object.defineProperty(fileInput, 'files', { value: [file], configurable: true });
     fireEvent.change(fileInput);
     await waitFor(() => expect(container.textContent).toContain('c.png'));
     const cancel = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancel);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Upload Media');
+      expect(container.textContent).not.toContain('Subir medios');
     });
   });
 
@@ -713,7 +713,7 @@ describe('PortalMediaPage — upload modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Acme'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
@@ -729,16 +729,16 @@ describe('PortalMediaPage — upload modal', () => {
 
   it('clicking the dropzone triggers a hidden file-input click', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Media Library'));
+    await waitFor(() => expect(container.textContent).toContain('Biblioteca de medios'));
     const uploadBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Upload') && b.querySelector('.material-icons'),
+      b.textContent?.includes('Subir') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     fireEvent.click(uploadBtn);
-    await waitFor(() => expect(container.textContent).toContain('Upload Media'));
+    await waitFor(() => expect(container.textContent).toContain('Subir medios'));
     const dropzone = container.querySelector('.border-dashed') as HTMLElement;
     // Don't crash:
     fireEvent.click(dropzone);
-    expect(container.textContent).toContain('Upload Media');
+    expect(container.textContent).toContain('Subir medios');
   });
 });
 
@@ -768,11 +768,11 @@ describe('PortalMediaPage — detail modal', () => {
     const card = container.querySelector('.grid > div') as HTMLElement;
     fireEvent.click(card);
     await waitFor(() => {
-      expect(container.textContent).toContain('Media Details');
-      expect(container.textContent).toContain('Filename:');
-      expect(container.textContent).toContain('Type:');
-      expect(container.textContent).toContain('Size:');
-      expect(container.textContent).toContain('Uploaded:');
+      expect(container.textContent).toContain('Detalles del medio');
+      expect(container.textContent).toContain('Nombre de archivo:');
+      expect(container.textContent).toContain('Tipo:');
+      expect(container.textContent).toContain('Tamaño:');
+      expect(container.textContent).toContain('Subido:');
       expect(container.textContent).toContain('a logo');
       expect(container.textContent).toContain('cap');
     });
@@ -784,7 +784,7 @@ describe('PortalMediaPage — detail modal', () => {
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('Dimensions:');
+      expect(container.textContent).toContain('Dimensiones:');
       expect(container.textContent).toContain('100 x 50');
     });
   });
@@ -795,7 +795,7 @@ describe('PortalMediaPage — detail modal', () => {
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('Brand:');
+      expect(container.textContent).toContain('Marca:');
       expect(container.textContent).toContain('Globex');
     });
   });
@@ -816,7 +816,7 @@ describe('PortalMediaPage — detail modal', () => {
     await waitFor(() => expect(container.textContent).toContain('doc.pdf'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
     await waitFor(() => {
-      expect(container.textContent).toContain('Media Details');
+      expect(container.textContent).toContain('Detalles del medio');
       // Description icon appears twice in details (preview + nothing else) — just verify modal open
       expect(container.querySelector('img')).toBeFalsy();
     });
@@ -827,13 +827,13 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Media Details'));
+    await waitFor(() => expect(container.textContent).toContain('Detalles del medio'));
     const closeBtn = Array.from(container.querySelectorAll('button')).find(b =>
       b.querySelector('.material-icons')?.textContent === 'close',
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Media Details');
+      expect(container.textContent).not.toContain('Detalles del medio');
     });
   });
 
@@ -842,11 +842,11 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Media Details'));
+    await waitFor(() => expect(container.textContent).toContain('Detalles del medio'));
     const backdrop = container.querySelector('.fixed.inset-0') as HTMLElement;
     fireEvent.click(backdrop);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Media Details');
+      expect(container.textContent).not.toContain('Detalles del medio');
     });
   });
 
@@ -855,9 +855,9 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Copy URL'));
+    await waitFor(() => expect(container.textContent).toContain('Copiar URL'));
     const copyBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Copy URL'),
+      b.textContent?.includes('Copiar URL'),
     ) as HTMLButtonElement;
     fireEvent.click(copyBtn);
     expect(clipboardWriteMock).toHaveBeenCalledWith('https://cdn.example.com/file-1.png');
@@ -868,13 +868,13 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Edit Metadata'));
+    await waitFor(() => expect(container.textContent).toContain('Editar metadatos'));
     const edit = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Edit Metadata',
+      b.textContent?.trim() === 'Editar metadatos',
     ) as HTMLButtonElement;
     fireEvent.click(edit);
     await waitFor(() => {
-      expect(container.textContent).toContain('Save');
+      expect(container.textContent).toContain('Guardar');
     });
   });
 
@@ -897,20 +897,20 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Edit Metadata'));
+    await waitFor(() => expect(container.textContent).toContain('Editar metadatos'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Edit Metadata',
+        b.textContent?.trim() === 'Editar metadatos',
       ) as HTMLButtonElement,
     );
-    await waitFor(() => expect(container.textContent).toContain('Save'));
+    await waitFor(() => expect(container.textContent).toContain('Guardar'));
     // Update alt
     const altInputs = container.querySelectorAll('input[type="text"], input:not([type])');
     const altInput = altInputs[altInputs.length - 1] as HTMLInputElement;
     fireEvent.change(altInput, { target: { value: 'new alt' } });
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Save',
+        b.textContent?.trim() === 'Guardar',
       ) as HTMLButtonElement,
     );
     await waitFor(() => expect(putCalled).toBe(true));
@@ -921,21 +921,21 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Edit Metadata'));
+    await waitFor(() => expect(container.textContent).toContain('Editar metadatos'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Edit Metadata',
+        b.textContent?.trim() === 'Editar metadatos',
       ) as HTMLButtonElement,
     );
-    await waitFor(() => expect(container.textContent).toContain('Save'));
+    await waitFor(() => expect(container.textContent).toContain('Guardar'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Cancel',
+        b.textContent?.trim() === 'Cancelar',
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
       // "Save" gone, "Edit Metadata" back
-      expect(container.textContent).toContain('Edit Metadata');
+      expect(container.textContent).toContain('Editar metadatos');
     });
   });
 
@@ -956,15 +956,15 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Delete'));
+    await waitFor(() => expect(container.textContent).toContain('Eliminar'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Delete',
+        b.textContent?.trim() === 'Eliminar',
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
       expect(deleted).toBe(true);
-      expect(container.textContent).not.toContain('Media Details');
+      expect(container.textContent).not.toContain('Detalles del medio');
     });
   });
 
@@ -985,16 +985,16 @@ describe('PortalMediaPage — detail modal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Delete'));
+    await waitFor(() => expect(container.textContent).toContain('Eliminar'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Delete',
+        b.textContent?.trim() === 'Eliminar',
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
       expect(deleteCalls).toBe(0);
       // Detail still open
-      expect(container.textContent).toContain('Media Details');
+      expect(container.textContent).toContain('Detalles del medio');
     });
   });
 });
@@ -1051,9 +1051,9 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     const versionBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Version history'),
+      b.textContent?.includes('Historial de versiones'),
     ) as HTMLButtonElement;
     fireEvent.click(versionBtn);
     await waitFor(() => {
@@ -1077,14 +1077,14 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Version history'),
+        b.textContent?.includes('Historial de versiones'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
-      expect(container.textContent).toContain('No prior versions yet');
+      expect(container.textContent).toContain('Todavía no hay versiones anteriores. Reemplaza el archivo para empezar un historial.');
     });
   });
 
@@ -1102,15 +1102,15 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Version history'),
+        b.textContent?.includes('Historial de versiones'),
       ) as HTMLButtonElement,
     );
     // Should still show open state but with empty list (or no failure)
     await waitFor(() => {
-      expect(container.textContent).toContain('No prior versions yet');
+      expect(container.textContent).toContain('Todavía no hay versiones anteriores. Reemplaza el archivo para empezar un historial.');
     });
   });
 
@@ -1120,15 +1120,15 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Version history'),
+        b.textContent?.includes('Historial de versiones'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => expect(container.textContent).toContain('prev-v1.png'));
     const restoreBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Restore',
+      b.textContent?.trim() === 'Restaurar',
     ) as HTMLButtonElement;
     fireEvent.click(restoreBtn);
     await waitFor(() => {
@@ -1143,17 +1143,17 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Version history'),
+        b.textContent?.includes('Historial de versiones'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => expect(container.textContent).toContain('prev-v1.png'));
     const before = fetchMock.mock.calls.length;
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Restore',
+        b.textContent?.trim() === 'Restaurar',
       ) as HTMLButtonElement,
     );
     // No new call after confirm-false
@@ -1181,20 +1181,20 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Version history'),
+        b.textContent?.includes('Historial de versiones'),
       ) as HTMLButtonElement,
     );
     await waitFor(() => expect(container.textContent).toContain('prev-v1.png'));
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Restore',
+        b.textContent?.trim() === 'Restaurar',
       ) as HTMLButtonElement,
     );
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith('Restore failed');
+      expect(alertMock).toHaveBeenCalledWith('La restauración falló');
     });
   });
 
@@ -1203,7 +1203,7 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Replace File'));
+    await waitFor(() => expect(container.textContent).toContain('Reemplazar archivo'));
     // The hidden replace input is inside the detail modal
     const replaceInputs = container.querySelectorAll('input[type="file"]');
     const replaceInput = replaceInputs[replaceInputs.length - 1] as HTMLInputElement;
@@ -1230,7 +1230,7 @@ describe('PortalMediaPage — versions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('file-1.png'));
     fireEvent.click(container.querySelector('.grid > div') as HTMLElement);
-    await waitFor(() => expect(container.textContent).toContain('Replace File'));
+    await waitFor(() => expect(container.textContent).toContain('Reemplazar archivo'));
     const replaceInputs = container.querySelectorAll('input[type="file"]');
     const replaceInput = replaceInputs[replaceInputs.length - 1] as HTMLInputElement;
     const file = new File(['n'], 'r.png', { type: 'image/png' });
