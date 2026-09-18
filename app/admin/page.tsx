@@ -235,15 +235,15 @@ export default function AdminDashboard() {
 
       {/* Quick actions */}
       <div className="mt-3">
-        <Panel title="Quick actions">
+        <Panel title="Acciones rápidas">
           <div className="p-3 flex flex-wrap gap-2">
-            <Button size="sm" href="/admin/clients" icon="person_add">Add client</Button>
-            <Button size="sm" href="/admin/portal-invoices/new" icon="receipt">New invoice</Button>
-            <Button size="sm" href="/admin/portal-projects" icon="add_task">New project</Button>
-            <Button size="sm" href="/admin/portal-tickets" icon="support">View tickets</Button>
-            <Button size="sm" href="/admin/email/campaigns/new" icon="drafts">New campaign</Button>
-            <Button size="sm" href="/admin/crm/deals" icon="trending_up">View deals</Button>
-            <Button size="sm" href="/admin/mcp-usage" icon="query_stats">MCP usage</Button>
+            <Button size="sm" href="/admin/clients" icon="person_add">Añadir cliente</Button>
+            <Button size="sm" href="/admin/portal-invoices/new" icon="receipt">Nueva factura</Button>
+            <Button size="sm" href="/admin/portal-projects" icon="add_task">Nuevo proyecto</Button>
+            <Button size="sm" href="/admin/portal-tickets" icon="support">Ver tickets</Button>
+            <Button size="sm" href="/admin/email/campaigns/new" icon="drafts">Nueva campaña</Button>
+            <Button size="sm" href="/admin/crm/deals" icon="trending_up">Ver negocios</Button>
+            <Button size="sm" href="/admin/mcp-usage" icon="query_stats">Uso de MCP</Button>
           </div>
         </Panel>
       </div>
