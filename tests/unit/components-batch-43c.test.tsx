@@ -82,7 +82,7 @@ describe('ProjectStatusControl', () => {
     const { container } = render(
       <ProjectStatusControl projectId={1} status="active" canEdit={false} />,
     );
-    expect(container.textContent).toContain('active');
+    expect(container.textContent).toContain('activo');
     // No button or popover trigger
     expect(container.querySelector('button')).toBeNull();
   });
@@ -91,8 +91,8 @@ describe('ProjectStatusControl', () => {
     const { container } = render(
       <ProjectStatusControl projectId={1} status="bogus" canEdit={false} />,
     );
-    // active label is "Active" -> toLowerCase() -> "active"
-    expect(container.textContent).toContain('active');
+    // active label is "Activo" -> toLowerCase() -> "activo"
+    expect(container.textContent).toContain('activo');
   });
 
   it('renders the toggle button with arrow_drop_down when canEdit is true', () => {
@@ -111,10 +111,10 @@ describe('ProjectStatusControl', () => {
     );
     const btn = container.querySelector('button') as HTMLButtonElement;
     fireEvent.click(btn);
-    expect(container.textContent).toContain('Active');
+    expect(container.textContent).toContain('Activo');
     expect(container.textContent).toContain('Paused');
-    expect(container.textContent).toContain('Completed');
-    expect(container.textContent).toContain('Archived');
+    expect(container.textContent).toContain('Completado');
+    expect(container.textContent).toContain('Archivado');
   });
 
   it('closes the popover without firing fetch when clicking the same status', async () => {
@@ -128,7 +128,7 @@ describe('ProjectStatusControl', () => {
     fireEvent.click(container.querySelector('button') as HTMLButtonElement);
     // The "Active" option is now visible — click it (same status)
     const activeOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Active'),
+      (b) => b.textContent?.includes('Activo'),
     ) as HTMLButtonElement;
     expect(activeOpt).toBeTruthy();
     fireEvent.click(activeOpt);
@@ -145,7 +145,7 @@ describe('ProjectStatusControl', () => {
 
     // Find the "Completed" option button
     const completedOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Completed'),
+      (b) => b.textContent?.includes('Completado'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(completedOpt);
@@ -172,7 +172,7 @@ describe('ProjectStatusControl', () => {
     );
     fireEvent.click(container.querySelector('button') as HTMLButtonElement);
     const completedOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Completed'),
+      (b) => b.textContent?.includes('Completado'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(completedOpt);
@@ -333,7 +333,7 @@ describe('DeleteWebsiteButton', () => {
       <DeleteWebsiteButton siteId={2} siteName="example.com" />,
     );
     fireEvent.click(screen.getByText('Delete Website'));
-    expect(container.textContent).toContain('Type');
+    expect(container.textContent).toContain('Tipo');
     expect(container.querySelector('input')).toBeTruthy();
     expect(container.textContent).toContain('Permanently Delete');
     expect(container.textContent).toContain('Cancel');
@@ -362,7 +362,7 @@ describe('DeleteWebsiteButton', () => {
     fireEvent.click(screen.getByText('Delete Website'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'partial' } });
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
 
     expect(container.textContent).toContain('Delete this website');
     // Re-open should show empty input
