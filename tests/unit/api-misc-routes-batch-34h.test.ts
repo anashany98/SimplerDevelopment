@@ -1071,6 +1071,6 @@ describe('POST /api/public/chat/messages', () => {
       }),
     );
     expect(res.status).toBe(200);
-    expect(insertCalls[0].values).toMatchObject({ authorName: 'Visitor' });
+    expect(insertCalls[0].values).toMatchObject({ authorName: 'Visitante' });
   });
 });
