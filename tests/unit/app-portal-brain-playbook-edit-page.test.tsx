@@ -265,7 +265,7 @@ describe('PlaybookEditPage — loading state', () => {
   it('shows loading spinner while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 
   it('shows progress_activity icon in loading state', () => {
@@ -417,7 +417,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
   it('renders the Details section heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Details');
+      expect(container.textContent).toContain('Detalles');
     });
   });
 
