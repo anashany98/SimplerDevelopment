@@ -248,7 +248,7 @@ describe('DecisionsListPage — empty state', () => {
   it('shows "No decisions captured yet" in empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No decisions captured yet');
+      expect(container.textContent).toContain('Aún no hay decisiones registradas');
     });
   });
 
@@ -339,7 +339,7 @@ describe('DecisionsListPage — header', () => {
 // ─── Status filter pills ───────────────────────────────────────────────────
 
 describe('DecisionsListPage — status filter pills', () => {
-  const statuses = ['All', 'Accepted', 'Proposed', 'Superseded', 'Rejected'];
+  const statuses = ['Todos', 'Accepted', 'Proposed', 'Superseded', 'Rechazado'];
 
   statuses.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -357,7 +357,7 @@ describe('DecisionsListPage — status filter pills', () => {
     // The reversibility buttons also have "All" — distinguish by finding the one with an icon class
     // that wraps text "All" among the status filter row. Use data-stable text includes.
     const allBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('All') && b.textContent?.includes('inbox'),
+      (b) => b.textContent?.includes('Todos') && b.textContent?.includes('inbox'),
     ) as HTMLButtonElement;
     expect(allBtn).toBeTruthy();
     fireEvent.click(allBtn);
@@ -414,7 +414,7 @@ describe('DecisionsListPage — decision maker dropdown', () => {
   it('renders "All decision makers" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All decision makers');
+      expect(container.textContent).toContain('Todos los responsables');
     });
   });
 
@@ -557,7 +557,7 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(true);
   });
@@ -567,7 +567,7 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Use PostgreSQL'));
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn.disabled).toBe(true);
   });
@@ -583,7 +583,7 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const nextBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Next'),
+        (b) => b.textContent?.includes('Siguiente'),
       ) as HTMLButtonElement;
       expect(nextBtn.disabled).toBe(false);
     });
@@ -600,12 +600,12 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const nextBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Next'),
+        (b) => b.textContent?.includes('Siguiente'),
       ) as HTMLButtonElement;
       expect(nextBtn.disabled).toBe(false);
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -624,7 +624,7 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Page 2'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(false);
   });
@@ -634,7 +634,7 @@ describe('DecisionsListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Page 2'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     expect(replaceMock).toHaveBeenCalled();
