@@ -20,7 +20,7 @@ const STATUS_PILL: Partial<Record<RecommendationStatus, { label: string; icon: s
     classes: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
   },
   dismissed: {
-    label: 'Dismissed',
+    label: 'Descartada',
     icon: 'block',
     classes: 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400',
   },
@@ -48,19 +48,19 @@ export function RecommendationCard({ rec, onMarkDone, onDismiss, busy, error, re
           <span className="font-display text-lg font-extrabold tracking-[-0.02em] text-primary leading-none">
             {rec.opportunityScore.toFixed(2)}
           </span>
-          <span className="text-[9px] font-semibold uppercase tracking-wide text-primary/70 mt-0.5">Score</span>
+          <span className="text-[9px] font-semibold uppercase tracking-wide text-primary/70 mt-0.5">Puntuación</span>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5 mt-2">
         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${tierClasses[rec.impact]}`}>
-          Impact: {rec.impact}
+          Impacto: {rec.impact}
         </span>
         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${tierClasses[rec.effort]}`}>
-          Effort: {rec.effort}
+          Esfuerzo: {rec.effort}
         </span>
         <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-          {formatPct(rec.confidence)} confidence
+          {formatPct(rec.confidence)} de confianza
         </span>
         {pill && (
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${pill.classes}`}>
@@ -93,7 +93,7 @@ export function RecommendationCard({ rec, onMarkDone, onDismiss, busy, error, re
             className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
             aria-expanded={evidenceOpen}
           >
-            {evidenceOpen ? 'Hide' : 'Show'} evidence
+            {evidenceOpen ? 'Ocultar' : 'Mostrar'} evidencia
             <span className="material-icons text-sm">{evidenceOpen ? 'expand_less' : 'expand_more'}</span>
           </button>
           {evidenceOpen && (
@@ -125,11 +125,11 @@ export function RecommendationCard({ rec, onMarkDone, onDismiss, busy, error, re
         <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border">
           <button type="button" onClick={onMarkDone} disabled={busy} className={btnDone}>
             <span className="material-icons text-sm">check_circle</span>
-            Mark done
+            Marcar como hecha
           </button>
           <button type="button" onClick={onDismiss} disabled={busy} className={btnDismiss}>
             <span className="material-icons text-sm">close</span>
-            Dismiss
+            Descartar
           </button>
           {busy && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
           {error && <p className="text-xs text-destructive ml-auto">{error}</p>}

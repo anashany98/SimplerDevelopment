@@ -144,9 +144,9 @@ export default function PortalTriggerLinksPage() {
         title="Enlaces de disparo"
         subtitle={
           <>
-            Tracked shortlinks. Each visit to{' '}
-            <code className="px-1 py-0.5 bg-muted rounded text-xs">/go/&lt;slug&gt;</code> is logged
-            and can be used as an automation trigger.
+            Enlaces cortos con seguimiento. Cada visita a{' '}
+            <code className="px-1 py-0.5 bg-muted rounded text-xs">/go/&lt;slug&gt;</code> se registra
+            y puede usarse como disparador de automatización.
           </>
         }
       />
@@ -155,7 +155,7 @@ export default function PortalTriggerLinksPage() {
         <h2 className="text-sm font-medium text-foreground mb-3">Crear un nuevo enlace</h2>
         <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end">
           <div className="flex-1">
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Destination URL</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">URL de destino</label>
             <input
               type="text"
               required
@@ -166,7 +166,7 @@ export default function PortalTriggerLinksPage() {
             />
           </div>
           <div className="flex-1">
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Label (optional)</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Etiqueta (opcional)</label>
             <input
               type="text"
               value={label}
@@ -181,7 +181,7 @@ export default function PortalTriggerLinksPage() {
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add_link</span>
-            {creating ? 'Creating…' : 'Crear enlace'}
+            {creating ? 'Creando…' : 'Crear enlace'}
           </button>
         </form>
         {createError && (
@@ -203,8 +203,8 @@ export default function PortalTriggerLinksPage() {
             <thead className="bg-muted/30 text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="text-left px-4 py-2 font-medium">Slug</th>
-                <th className="text-left px-4 py-2 font-medium">Destination</th>
-                <th className="text-right px-4 py-2 font-medium">Clicks</th>
+                <th className="text-left px-4 py-2 font-medium">Destino</th>
+                <th className="text-right px-4 py-2 font-medium">Clics</th>
                 <th className="text-left px-4 py-2 font-medium">Creado</th>
                 <th className="text-right px-4 py-2 font-medium">Acciones</th>
               </tr>
@@ -238,7 +238,7 @@ export default function PortalTriggerLinksPage() {
                       type="button"
                       onClick={(e) => { e.stopPropagation(); copySlug(link.slug); }}
                       className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded"
-                      title="Copy /go URL"
+                      title="Copiar URL /go"
                     >
                       <span className="material-icons text-base">content_copy</span>
                     </button>
@@ -264,7 +264,7 @@ export default function PortalTriggerLinksPage() {
           <header className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons text-base">analytics</span>
-              Recent clicks
+              Clics recientes
             </h2>
             <button
               type="button"
@@ -277,7 +277,7 @@ export default function PortalTriggerLinksPage() {
           {!detailLoading && detail && (
             <>
               <div className="text-xs text-muted-foreground mb-3">
-                {detail.clickCount} total click{detail.clickCount === 1 ? '' : 's'}.
+                {detail.clickCount} clic{detail.clickCount === 1 ? '' : 's'} en total.
               </div>
               {detail.recentClicks.length === 0 ? (
                 <div className="text-sm text-muted-foreground italic py-4">Aún no hay clics registrados.</div>

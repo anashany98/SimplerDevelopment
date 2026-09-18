@@ -82,7 +82,7 @@ export default function SettingsBillingPage() {
   };
 
   const handleRemoveMethod = async (id: number) => {
-    if (!confirm('Remove this payment method?')) return;
+    if (!confirm('¿Eliminar este método de pago?')) return;
     setRemovingId(id);
     try {
       const res = await fetch('/api/portal/billing/payment-methods', {
