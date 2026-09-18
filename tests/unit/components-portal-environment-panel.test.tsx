@@ -80,7 +80,7 @@ async function renderAndSettle(
   render(<EnvironmentPanel siteId={siteId} environments={environments} />);
   // wait for loading to clear (generous timeout: under multi-file parallel load
   // the default 1s waitFor budget can be exceeded by fetch-resolve + re-render)
-  await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull(), { timeout: 5000 });
+  await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull(), { timeout: 5000 });
 }
 
 // ===========================================================================
@@ -98,7 +98,7 @@ describe('EnvironmentPanel — initial render', () => {
     const pending = new Promise<any>(res => { resolve = res; });
     global.fetch = vi.fn(() => pending) as any;
     render(<EnvironmentPanel siteId={1} environments={bothEnvs} />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
     // resolve to avoid act() warning
     act(() => { resolve!({ ok: true, json: () => Promise.resolve({ success: true, data: [] }) }); });
   });
@@ -118,7 +118,7 @@ describe('EnvironmentPanel — initial render', () => {
   it('defaults to first env when no production env exists', async () => {
     const customEnvs = [{ id: 5, name: 'staging', vercelTarget: 'preview', previewUrl: null }];
     render(<EnvironmentPanel siteId={99} environments={customEnvs} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
     expect((global.fetch as any).mock.calls.some((c: any[]) => c[0].includes('/environments/5/'))).toBe(true);
   });
 
@@ -131,7 +131,7 @@ describe('EnvironmentPanel — initial render', () => {
   it('does not render preview URL link when activeEnv has no previewUrl', async () => {
     // Switch to staging (no previewUrl) by rendering staging only
     render(<EnvironmentPanel siteId={99} environments={[stagingEnv]} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
     expect(screen.queryByRole('link', { name: /Preview URL/i })).toBeNull();
   });
 
@@ -684,7 +684,7 @@ describe('EnvironmentPanel — copy from other environment', () => {
 
   it('does not show Copy button when only one env exists', async () => {
     render(<EnvironmentPanel siteId={99} environments={onlyProd} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
     expect(screen.queryByRole('button', { name: /Copy from/i })).toBeNull();
   });
 
@@ -722,7 +722,7 @@ describe('EnvironmentPanel — copy from other environment', () => {
     // Render prod + staging, then click the Staging tab to make staging active
     await renderAndSettle();
     await act(async () => { fireEvent.click(screen.getByText('Staging')); });
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
     expect(screen.getByRole('button', { name: /Copy from Production/i })).toBeInTheDocument();
   });
 });
