@@ -37,13 +37,21 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
     cancelled: 'bg-red-100 text-red-800',
   };
 
+  const statusLabel: Record<string, string> = {
+    pending: 'Pendiente',
+    processing: 'En proceso',
+    shipped: 'Enviado',
+    delivered: 'Entregado',
+    cancelled: 'Cancelado',
+  };
+
   return (
     <RequireAuth>
       <AccountLayout siteId={siteId} domain={domain}>
         <div className="space-y-8">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              Welcome back{customer?.firstName ? `, ${customer.firstName}` : ''}
+              Hola de nuevo{customer?.firstName ? `, ${customer.firstName}` : ''}
             </h1>
             <p className="text-gray-500 text-sm mt-1">Gestiona tus pedidos, lista de deseos y ajustes de cuenta.</p>
           </div>
@@ -51,17 +59,17 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div className="border border-gray-200 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Total Orders</p>
+              <p className="text-xs text-gray-500 mb-1">Pedidos totales</p>
               <p className="text-2xl font-bold text-gray-900">{customer?.orderCount ?? 0}</p>
             </div>
             <div className="border border-gray-200 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Total Spent</p>
+              <p className="text-xs text-gray-500 mb-1">Total gastado</p>
               <p className="text-2xl font-bold text-gray-900">{formatMoney(customer?.totalSpent ?? 0)}</p>
             </div>
             <div className="border border-gray-200 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Member Since</p>
+              <p className="text-xs text-gray-500 mb-1">Miembro desde</p>
               <p className="text-lg font-semibold text-gray-900">
-                {customer?.createdAt ? new Date(customer.createdAt as unknown as string).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '---'}
+                {customer?.createdAt ? new Date(customer.createdAt as unknown as string).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }) : '---'}
               </p>
             </div>
           </div>
@@ -69,10 +77,10 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
           {/* Quick actions */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { href: '/account/orders', icon: 'receipt_long', label: 'My Orders' },
-              { href: '/account/wishlist', icon: 'favorite', label: 'Wishlist' },
-              { href: '/account/support', icon: 'support_agent', label: 'Get Help' },
-              { href: '/account/profile', icon: 'person', label: 'Profile' },
+              { href: '/account/orders', icon: 'receipt_long', label: 'Mis pedidos' },
+              { href: '/account/wishlist', icon: 'favorite', label: 'Lista de deseos' },
+              { href: '/account/support', icon: 'support_agent', label: 'Ayuda' },
+              { href: '/account/profile', icon: 'person', label: 'Perfil' },
             ].map(link => (
               <Link
                 key={link.href}
@@ -88,15 +96,15 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
           {/* Recent orders */}
           <div className="border border-gray-200 rounded-xl overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="font-semibold text-gray-900">Recent Orders</h2>
+              <h2 className="font-semibold text-gray-900">Pedidos recientes</h2>
               <Link href="/account/orders" className="text-xs text-gray-500 hover:text-gray-900">Ver todo</Link>
             </div>
             {recentOrders.length === 0 ? (
               <div className="p-8 text-center">
                 <span className="material-icons text-4xl text-gray-300" style={{ fontSize: '48px' }}>receipt_long</span>
-                <p className="text-sm text-gray-500 mt-2">No orders yet. Start shopping!</p>
+                <p className="text-sm text-gray-500 mt-2">Aún no tienes pedidos. ¡Empieza a comprar!</p>
                 <Link href="/shop" className="inline-block mt-4 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800">
-                  Browse Products
+                  Explorar productos
                 </Link>
               </div>
             ) : (
@@ -112,7 +120,7 @@ export function AccountDashboardClient({ siteId, domain }: { siteId: number; dom
                       <p className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</p>
                     </div>
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColor[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                      {order.status}
+                      {statusLabel[order.status] ?? order.status}
                     </span>
                     <span className="text-sm font-medium text-gray-900">{formatMoney(order.total)}</span>
                     <span className="material-icons text-gray-400" style={{ fontSize: '18px' }}>chevron_right</span>

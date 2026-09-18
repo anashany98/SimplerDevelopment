@@ -24,6 +24,14 @@ const statusColor: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-800',
 };
 
+const statusLabel: Record<string, string> = {
+  pending: 'Pendiente',
+  processing: 'En proceso',
+  shipped: 'Enviado',
+  delivered: 'Entregado',
+  cancelled: 'Cancelado',
+};
+
 export function OrdersPageClient({ siteId, domain }: { siteId: number; domain: string }) {
   const { token } = useCustomerAuth();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -46,8 +54,8 @@ export function OrdersPageClient({ siteId, domain }: { siteId: number; domain: s
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">My Orders</h1>
-              <p className="text-gray-500 text-sm mt-1">View and track your order history.</p>
+              <h1 className="text-2xl font-bold text-gray-900">Mis pedidos</h1>
+              <p className="text-gray-500 text-sm mt-1">Consulta y sigue tu historial de pedidos.</p>
             </div>
           </div>
 
@@ -58,9 +66,9 @@ export function OrdersPageClient({ siteId, domain }: { siteId: number; domain: s
           ) : orders.length === 0 ? (
             <div className="border border-gray-200 rounded-xl p-12 text-center">
               <span className="material-icons text-gray-300" style={{ fontSize: '48px' }}>receipt_long</span>
-              <p className="text-sm text-gray-500 mt-3">You haven&apos;t placed any orders yet.</p>
+              <p className="text-sm text-gray-500 mt-3">Aún no has realizado ningún pedido.</p>
               <Link href="/shop" className="inline-block mt-4 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800">
-                Start Shopping
+                Empezar a comprar
               </Link>
             </div>
           ) : (
@@ -85,16 +93,16 @@ export function OrdersPageClient({ siteId, domain }: { siteId: number; domain: s
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <p className="text-sm text-gray-500">
-                        {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        {new Date(order.createdAt).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
                     </div>
                     <div className="col-span-4 sm:col-span-2">
                       <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-medium ${statusColor[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                        {order.status}
+                        {statusLabel[order.status] ?? order.status}
                       </span>
                     </div>
                     <div className="col-span-4 sm:col-span-2">
-                      <p className="text-sm text-gray-500">{order.itemCount ?? '--'} item{order.itemCount !== 1 ? 's' : ''}</p>
+                      <p className="text-sm text-gray-500">{order.itemCount ?? '--'} artículo{order.itemCount !== 1 ? 's' : ''}</p>
                     </div>
                     <div className="col-span-4 sm:col-span-2 text-right flex items-center justify-end gap-2">
                       <span className="text-sm font-medium text-gray-900">{formatMoney(order.total)}</span>
