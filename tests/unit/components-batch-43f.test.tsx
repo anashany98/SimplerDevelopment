@@ -41,7 +41,7 @@ describe('TitleSection', () => {
     );
     expect(screen.getByPlaceholderText('Page title')).toHaveValue('My Post');
     expect(screen.getByPlaceholderText('page-slug')).toHaveValue('my-post');
-    expect(screen.getByText('Title')).toBeTruthy();
+    expect(screen.getByText('Título')).toBeTruthy();
     expect(screen.getByText('Slug')).toBeTruthy();
   });
 
@@ -98,9 +98,9 @@ describe('StatusSection', () => {
     render(<StatusSection formData={formData} setFormData={vi.fn()} />);
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     expect(select.value).toBe('draft');
-    expect(screen.getByText('Status')).toBeTruthy();
-    expect(screen.getByText('Draft')).toBeTruthy();
-    expect(screen.getByText('Published')).toBeTruthy();
+    expect(screen.getByText('Estado')).toBeTruthy();
+    expect(screen.getByText('Borrador')).toBeTruthy();
+    expect(screen.getByText('Publicado')).toBeTruthy();
   });
 
   it('renders published when published is true', () => {
