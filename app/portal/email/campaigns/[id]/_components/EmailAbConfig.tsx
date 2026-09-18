@@ -86,12 +86,12 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
       });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message ?? 'Save failed');
+        setError(data.message ?? 'Error al guardar');
       } else {
         onChange(patch);
       }
     } catch {
-      setError('Save failed');
+      setError('Error al guardar');
     } finally {
       setSaving(false);
     }
@@ -125,7 +125,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
       const res = await fetch(url, { method: 'POST' });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message ?? 'Promotion failed');
+        setError(data.message ?? 'Error al promover');
       } else {
         onChange({
           status: 'sent',
@@ -147,10 +147,10 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
       >
         <div className="flex items-center gap-2">
           <span className="material-icons text-base text-muted-foreground">science</span>
-          <span className="text-sm font-medium text-foreground">A/B test subject lines</span>
+          <span className="text-sm font-medium text-foreground">Prueba A/B de asuntos</span>
           {enabled && (
             <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
-              {isTesting ? 'Testing' : campaign.abDecidedAt ? 'Promoted' : 'Enabled'}
+              {isTesting ? 'En prueba' : campaign.abDecidedAt ? 'Promocionado' : 'Activado'}
             </span>
           )}
         </div>
@@ -175,16 +175,16 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
               />
               <span className="text-foreground">Activa la prueba A/B para esta campaña</span>
               <span className="text-xs text-muted-foreground">
-                ({pct}% to test, {100 - pct}% gets winner)
+                ({pct}% para la prueba, {100 - pct}% recibe al ganador)
               </span>
             </label>
           )}
 
           {!isDraft && enabled && (
             <p className="text-sm text-muted-foreground">
-              A/B test {campaign.abDecidedAt ? 'promoted' : 'in progress'}.
-              Subject A: <span className="text-foreground">{campaign.subject}</span> /
-              Subject B: <span className="text-foreground">{campaign.abSubjectB}</span>
+              Prueba A/B {campaign.abDecidedAt ? 'promocionada' : 'en curso'}.
+              Asunto A: <span className="text-foreground">{campaign.subject}</span> /
+              Asunto B: <span className="text-foreground">{campaign.abSubjectB}</span>
             </p>
           )}
 
@@ -206,12 +206,12 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                   className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Subject A is the existing subject above ({campaign.subject || '—'}).
+                  El asunto A es el asunto existente de arriba ({campaign.subject || '—'}).
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Winner metric</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Métrica del ganador</label>
                 <div className="flex gap-2">
                   {(['open', 'click'] as const).map(m => (
                     <button
@@ -227,7 +227,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                           : 'border-border text-foreground hover:bg-accent'
                       }`}
                     >
-                      {m === 'open' ? 'Open rate' : 'Click rate'}
+                      {m === 'open' ? 'Tasa de apertura' : 'Tasa de clics'}
                     </button>
                   ))}
                 </div>
@@ -235,7 +235,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
-                  Test size: {pct}% of list
+                  Tamaño de la prueba: {pct}% de la lista
                 </label>
                 <input
                   type="range"
@@ -257,8 +257,8 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                   className="w-full"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  {Math.floor(pct / 2)}% gets Subject A, {Math.floor(pct / 2)}% gets Subject B,
-                  the remaining {100 - pct}% gets the winner after a 4-hour wait.
+                  {Math.floor(pct / 2)}% recibe el asunto A, {Math.floor(pct / 2)}% recibe el asunto B,
+                  el {100 - pct}% restante recibe al ganador tras una espera de 4 horas.
                 </p>
               </div>
             </>
@@ -267,14 +267,14 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
           {/* Status panel (after send) */}
           {!isDraft && enabled && status && (
             <div className="bg-muted/40 rounded-md p-3 space-y-2">
-              <div className="text-sm font-medium text-foreground">Test status</div>
+              <div className="text-sm font-medium text-foreground">Estado de la prueba</div>
               <table className="w-full text-xs">
                 <thead>
                   <tr className="text-left text-muted-foreground">
                     <th className="py-1">Variante</th>
                     <th className="py-1">Enviado</th>
-                    <th className="py-1">Opened</th>
-                    <th className="py-1">Clicked</th>
+                    <th className="py-1">Aperturas</th>
+                    <th className="py-1">Clics</th>
                   </tr>
                 </thead>
                 <tbody className="text-foreground">
@@ -283,7 +283,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                     if (!c && v !== 'winner') return null;
                     return (
                       <tr key={v}>
-                        <td className="py-0.5 capitalize">{v === 'winner' ? 'Winner blast' : v}</td>
+                        <td className="py-0.5 capitalize">{v === 'winner' ? 'Envío del ganador' : v}</td>
                         <td className="py-0.5">{c?.sent ?? 0}</td>
                         <td className="py-0.5">{c?.opened ?? 0}</td>
                         <td className="py-0.5">{c?.clicked ?? 0}</td>
@@ -295,13 +295,13 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
 
               {status.decided ? (
                 <p className="text-xs text-muted-foreground">
-                  Winner: <strong className="text-foreground">{status.winnerSubject}</strong>
-                  {status.decidedAt && <> &middot; promoted {new Date(status.decidedAt).toLocaleString()}</>}
+                  Ganador: <strong className="text-foreground">{status.winnerSubject}</strong>
+                  {status.decidedAt && <> &middot; promocionado {new Date(status.decidedAt).toLocaleString()}</>}
                 </p>
               ) : (
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">
-                    Projected winner: <strong className="text-foreground">{status.projectedWinner.toUpperCase()}</strong>
+                    Ganador previsto: <strong className="text-foreground">{status.projectedWinner.toUpperCase()}</strong>
                     {' '}— {status.projectedReason}
                   </p>
                   <div className="flex gap-2 mt-2">
@@ -310,9 +310,9 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                       onClick={() => promoteWinner(false)}
                       disabled={!status.ready || promoting || isSent}
                       className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md disabled:opacity-50"
-                      title={status.ready ? 'Promote the winner and send the remainder' : 'Decision window not yet reached (4h)'}
+                      title={status.ready ? 'Promover al ganador y enviar el resto' : 'La ventana de decisión aún no se ha alcanzado (4 h)'}
                     >
-                      {promoting ? 'Promoting…' : 'Promote winner'}
+                      {promoting ? 'Promoviendo…' : 'Promover ganador'}
                     </button>
                     {!status.ready && (
                       <button
@@ -322,7 +322,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                         className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent disabled:opacity-50"
                         title="Omitir la ventana de espera de 4 horas"
                       >
-                        Force-promote now
+                        Forzar promoción ahora
                       </button>
                     )}
                   </div>
@@ -333,8 +333,8 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
 
           {!enabled && isDraft && (
             <p className="text-xs text-muted-foreground">
-              When enabled, the first {pct}% of your list is split evenly between two subject lines.
-              After 4 hours, the winner is auto-selected by the chosen metric and sent to the rest.
+              Cuando se activa, el primer {pct}% de tu lista se reparte a partes iguales entre dos asuntos.
+              Tras 4 horas, se selecciona automáticamente al ganador según la métrica elegida y se envía al resto.
             </p>
           )}
         </div>
