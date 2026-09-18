@@ -143,19 +143,19 @@ const TEMPLATES: AutomationTemplate[] = [
   {
     id: 'booking-to-deal',
     icon: 'event_available',
-    title: 'New booking → CRM deal',
-    description: 'When a guest books a slot, create a deal in your default pipeline using the booking total.',
+    title: 'Nueva reserva → negocio en el CRM',
+    description: 'Cuando un invitado reserva una franja, crea un negocio en tu pipeline predeterminado con el importe de la reserva.',
     scope: 'crm',
     rule: {
-      name: 'Booking → CRM Deal',
-      description: 'Auto-create a CRM deal when a guest books a slot.',
+      name: 'Reserva → negocio en el CRM',
+      description: 'Crea automáticamente un negocio en el CRM cuando un invitado reserva una franja.',
       trigger: { event: 'booking.guest_booked' },
       actions: [{
         tool: 'create_crm_deal',
         params: {
           title: '{{event.guestName}} — {{event.pageTitle}}',
           value: '{{event.total}}',
-          notes: 'Booking #{{event.bookingId}}\nEmail: {{event.guestEmail}}\nPhone: {{event.guestPhone}}\nStart: {{event.startTime}}',
+          notes: 'Reserva n.º {{event.bookingId}}\nEmail: {{event.guestEmail}}\nTeléfono: {{event.guestPhone}}\nInicio: {{event.startTime}}',
         },
       }],
       productScope: 'crm',
@@ -164,18 +164,18 @@ const TEMPLATES: AutomationTemplate[] = [
   {
     id: 'survey-to-deal',
     icon: 'poll',
-    title: 'Survey response → CRM deal',
-    description: 'When a survey response comes in, create a deal in your default pipeline.',
+    title: 'Respuesta de encuesta → negocio en el CRM',
+    description: 'Cuando llega una respuesta de encuesta, crea un negocio en tu pipeline predeterminado.',
     scope: 'crm',
     rule: {
-      name: 'Survey → CRM Deal',
-      description: 'Auto-create a CRM deal when a survey response is submitted.',
+      name: 'Encuesta → negocio en el CRM',
+      description: 'Crea automáticamente un negocio en el CRM cuando se envía una respuesta de encuesta.',
       trigger: { event: 'survey.response_submitted' },
       actions: [{
         tool: 'create_crm_deal',
         params: {
           title: '{{event.respondentName}} — {{event.surveyTitle}}',
-          notes: 'Survey response #{{event.responseId}}\nEmail: {{event.respondentEmail}}\nSource: {{event.source}}',
+          notes: 'Respuesta de encuesta n.º {{event.responseId}}\nEmail: {{event.respondentEmail}}\nOrigen: {{event.source}}',
         },
       }],
       productScope: 'crm',
@@ -184,12 +184,12 @@ const TEMPLATES: AutomationTemplate[] = [
   {
     id: 'booking-to-contact',
     icon: 'person_add',
-    title: 'New booking → CRM contact',
-    description: 'Lighter alternative to a deal — just capture the lead in CRM contacts.',
+    title: 'Nueva reserva → contacto en el CRM',
+    description: 'Alternativa más ligera a un negocio: captura el contacto potencial en los contactos del CRM.',
     scope: 'crm',
     rule: {
-      name: 'Booking → CRM Contact',
-      description: 'Auto-create a CRM contact when a guest books a slot.',
+      name: 'Reserva → contacto en el CRM',
+      description: 'Crea automáticamente un contacto en el CRM cuando un invitado reserva una franja.',
       trigger: { event: 'booking.guest_booked' },
       actions: [{
         tool: 'create_crm_contact',
@@ -199,7 +199,7 @@ const TEMPLATES: AutomationTemplate[] = [
           phone: '{{event.guestPhone}}',
           source: 'web',
           status: 'lead',
-          notes: 'Booked {{event.pageTitle}} at {{event.startTime}}',
+          notes: 'Reservó {{event.pageTitle}} a las {{event.startTime}}',
         },
       }],
       productScope: 'crm',
@@ -208,12 +208,12 @@ const TEMPLATES: AutomationTemplate[] = [
   {
     id: 'survey-to-contact',
     icon: 'how_to_reg',
-    title: 'Survey response → CRM contact',
-    description: 'Capture survey respondents as CRM contacts (lighter than creating a deal).',
+    title: 'Respuesta de encuesta → contacto en el CRM',
+    description: 'Captura a los encuestados como contactos del CRM (más ligero que crear un negocio).',
     scope: 'crm',
     rule: {
-      name: 'Survey → CRM Contact',
-      description: 'Auto-create a CRM contact when a survey response is submitted.',
+      name: 'Encuesta → contacto en el CRM',
+      description: 'Crea automáticamente un contacto en el CRM cuando se envía una respuesta de encuesta.',
       trigger: { event: 'survey.response_submitted' },
       actions: [{
         tool: 'create_crm_contact',
@@ -222,7 +222,7 @@ const TEMPLATES: AutomationTemplate[] = [
           email: '{{event.respondentEmail}}',
           source: 'web',
           status: 'lead',
-          notes: 'Survey: {{event.surveyTitle}}',
+          notes: 'Encuesta: {{event.surveyTitle}}',
         },
       }],
       productScope: 'crm',
@@ -231,40 +231,40 @@ const TEMPLATES: AutomationTemplate[] = [
 ];
 
 const EVENT_LABELS: Record<string, string> = {
-  'booking.created': 'Booking Page Created',
-  'booking.guest_booked': 'Guest Booked a Slot',
-  'booking.confirmed': 'Booking Confirmed',
-  'booking.cancelled': 'Booking Cancelled',
-  'booking.rescheduled': 'Booking Rescheduled',
-  'crm.contact.created': 'Contact Created',
-  'crm.contact.updated': 'Contact Updated',
-  'crm.deal.created': 'Deal Created',
-  'crm.deal.updated': 'Deal Updated',
-  'crm.deal.won': 'Deal Won',
-  'crm.deal.lost': 'Deal Lost',
-  'email.campaign.sent': 'Campaign Sent',
-  'email.subscriber.added': 'Subscriber Added',
-  'email.subscriber.unsubscribed': 'Subscriber Unsubscribed',
-  'project.created': 'Project Created',
-  'project.status.changed': 'Project Status Changed',
-  'task.created': 'Task Created',
-  'task.completed': 'Task Completed',
-  'task.assigned': 'Task Assigned',
-  'ticket.created': 'Ticket Created',
-  'ticket.replied': 'Ticket Reply',
-  'ticket.resolved': 'Ticket Resolved',
-  'form.submitted': 'Form Submitted',
-  'page.published': 'Page Published',
-  'order.placed': 'Order Placed',
-  'order.paid': 'Order Paid',
-  'order.shipped': 'Order Shipped',
-  'invoice.sent': 'Invoice Sent',
-  'invoice.paid': 'Invoice Paid',
-  'invoice.overdue': 'Invoice Overdue',
-  'proposal.sent': 'Proposal Sent',
-  'proposal.viewed': 'Proposal Viewed',
-  'proposal.accepted': 'Proposal Accepted',
-  'proposal.declined': 'Proposal Declined',
+  'booking.created': 'Página de reservas creada',
+  'booking.guest_booked': 'Invitado reservó una franja',
+  'booking.confirmed': 'Reserva confirmada',
+  'booking.cancelled': 'Reserva cancelada',
+  'booking.rescheduled': 'Reserva reprogramada',
+  'crm.contact.created': 'Contacto creado',
+  'crm.contact.updated': 'Contacto actualizado',
+  'crm.deal.created': 'Negocio creado',
+  'crm.deal.updated': 'Negocio actualizado',
+  'crm.deal.won': 'Negocio ganado',
+  'crm.deal.lost': 'Negocio perdido',
+  'email.campaign.sent': 'Campaña enviada',
+  'email.subscriber.added': 'Suscriptor añadido',
+  'email.subscriber.unsubscribed': 'Suscriptor dado de baja',
+  'project.created': 'Proyecto creado',
+  'project.status.changed': 'Estado del proyecto cambiado',
+  'task.created': 'Tarea creada',
+  'task.completed': 'Tarea completada',
+  'task.assigned': 'Tarea asignada',
+  'ticket.created': 'Ticket creado',
+  'ticket.replied': 'Respuesta de ticket',
+  'ticket.resolved': 'Ticket resuelto',
+  'form.submitted': 'Formulario enviado',
+  'page.published': 'Página publicada',
+  'order.placed': 'Pedido realizado',
+  'order.paid': 'Pedido pagado',
+  'order.shipped': 'Pedido enviado',
+  'invoice.sent': 'Factura enviada',
+  'invoice.paid': 'Factura pagada',
+  'invoice.overdue': 'Factura vencida',
+  'proposal.sent': 'Propuesta enviada',
+  'proposal.viewed': 'Propuesta vista',
+  'proposal.accepted': 'Propuesta aceptada',
+  'proposal.declined': 'Propuesta rechazada',
 };
 
 const SCOPE_COLORS: Record<string, string> = {
@@ -294,18 +294,18 @@ function getEventScope(event: string | null | undefined): string {
 }
 
 function formatToolName(tool?: string | null): string { // untyped JSON — a row missing `tool` crashed the whole rules list
-  return tool ? tool.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : 'Unknown action';
+  return tool ? tool.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : 'Acción desconocida';
 }
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  return `hace ${days} días`;
 }
 
 type TabType = 'rules' | 'presets' | 'logs' | 'create';
@@ -432,10 +432,10 @@ export default function BrainAutomationsPage() {
       if (data.success) {
         setParsed(data.parsed);
       } else {
-        setParseError(data.error || 'Failed to parse');
+        setParseError(data.error || 'No se pudo analizar');
       }
     } catch {
-      setParseError('Network error');
+      setParseError('Error de red');
     } finally {
       setParsing(false);
     }
@@ -501,13 +501,13 @@ export default function BrainAutomationsPage() {
             setSchedPreview({ description: data.description, nextRunAt: data.nextRunAt });
           } else {
             setSchedPreview(null);
-            setSchedPreviewError(data.error || 'Invalid schedule');
+            setSchedPreviewError(data.error || 'Programación no válida');
           }
         })
         .catch(() => {
           if (cancelled) return;
           setSchedPreview(null);
-          setSchedPreviewError('Network error');
+          setSchedPreviewError('Error de red');
         });
     }, 250);
     return () => { cancelled = true; clearTimeout(handle); };
@@ -591,7 +591,7 @@ export default function BrainAutomationsPage() {
         setSchedTemplateId('');
         setTab('rules');
       } else {
-        setSchedPreviewError(data.error || 'Failed to save');
+        setSchedPreviewError(data.error || 'No se pudo guardar');
       }
     } finally {
       setSchedSaving(false);
@@ -642,7 +642,7 @@ export default function BrainAutomationsPage() {
   };
 
   const handleDelete = async (ruleId: number) => {
-    if (!confirm('Delete this automation rule?')) return;
+    if (!confirm('¿Eliminar esta regla de automatización?')) return;
     const res = await fetch(`/api/portal/automations/${ruleId}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.success) {
@@ -663,7 +663,7 @@ export default function BrainAutomationsPage() {
       <PortalPageHeader
         eyebrow="Cerebro de empresa"
         title="Automatizaciones del cerebro"
-        subtitle="Cross-product rules that fire when something happens — booking, survey, deal, task — and act on your behalf."
+        subtitle="Reglas que cruzan productos y se activan cuando algo ocurre —reserva, encuesta, negocio o tarea— y actúan en tu nombre."
         actions={
           <>
             <Link
@@ -678,7 +678,7 @@ export default function BrainAutomationsPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-lg">auto_awesome</span>
-              Create Automation
+              Crear automatización
             </button>
           </>
         }
@@ -701,19 +701,19 @@ export default function BrainAutomationsPage() {
             {t === 'rules' && (
               <>
                 <span className="material-icons text-base align-text-bottom mr-1.5">bolt</span>
-                Rules ({rules.length})
+                Reglas ({rules.length})
               </>
             )}
             {t === 'presets' && (
               <>
                 <span className="material-icons text-base align-text-bottom mr-1.5">tune</span>
-                Product Presets
+                Presets de producto
               </>
             )}
             {t === 'logs' && (
               <>
                 <span className="material-icons text-base align-text-bottom mr-1.5">history</span>
-                Activity
+                Actividad
               </>
             )}
             {t === 'create' && (
@@ -732,13 +732,13 @@ export default function BrainAutomationsPage() {
               <span className="material-icons text-5xl text-muted-foreground">bolt</span>
               <h2 className="mt-3 font-semibold text-lg">Aún no hay automatizaciones</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                Install a one-click template, or describe your own automation in plain English.
+                Instala una plantilla con un clic o describe tu propia automatización en lenguaje natural.
               </p>
               <button
                 onClick={() => setTab('create')}
                 className={`mt-4 ${pBtnPrimary}`}
               >
-                Browse templates
+                Ver plantillas
               </button>
             </div>
           ) : (
@@ -774,27 +774,27 @@ export default function BrainAutomationsPage() {
                           </span>
                           {rule.schedule
                             ? describeScheduleClient(rule.schedule)
-                            : (EVENT_LABELS[rule.trigger?.event ?? ''] || rule.trigger?.event || 'Unknown trigger')}
+                            : (EVENT_LABELS[rule.trigger?.event ?? ''] || rule.trigger?.event || 'Disparador desconocido')}
                         </span>
                         <span className="flex items-center gap-1">
                           <span className="material-icons text-xs">arrow_forward</span>
-                          {rule.actions?.length ?? 0} action{(rule.actions?.length ?? 0) !== 1 ? 's' : ''}
+                          {rule.actions?.length ?? 0} {(rule.actions?.length ?? 0) !== 1 ? 'acciones' : 'acción'}
                         </span>
                         {rule.executionCount > 0 && (
                           <span className="flex items-center gap-1">
                             <span className="material-icons text-xs">play_circle</span>
-                            {rule.executionCount} runs
+                            {rule.executionCount} ejecuciones
                           </span>
                         )}
                         {rule.lastExecutedAt && (
-                          <span>Last fired: {timeAgo(rule.lastExecutedAt)}</span>
+                          <span>Última ejecución: {timeAgo(rule.lastExecutedAt)}</span>
                         )}
                       </div>
                       {rule.schedule && (
                         <div className="mt-1.5">
                           <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
                             <span className="material-icons text-[12px]">schedule</span>
-                            Schedule: {describeScheduleClient(rule.schedule)}
+                            Programación: {describeScheduleClient(rule.schedule)}
                           </span>
                         </div>
                       )}
@@ -807,7 +807,7 @@ export default function BrainAutomationsPage() {
                             className="text-[10px] font-mono bg-muted px-2 py-0.5 rounded"
                           >
                             {formatToolName(action.tool)}
-                            {action.delay ? ` (${action.delay >= 86400 ? `${Math.floor(action.delay / 86400)}d` : action.delay >= 3600 ? `${Math.floor(action.delay / 3600)}h` : `${action.delay}s`} delay)` : ''}
+                            {action.delay ? ` (${action.delay >= 86400 ? `${Math.floor(action.delay / 86400)}d` : action.delay >= 3600 ? `${Math.floor(action.delay / 3600)}h` : `${action.delay}s`} de retraso)` : ''}
                           </span>
                         ))}
                       </div>
@@ -850,8 +850,8 @@ export default function BrainAutomationsPage() {
         <div className="space-y-8">
           <div className="bg-muted/30 border border-border rounded-xl p-4 text-sm text-muted-foreground">
             <span className="material-icons text-base align-text-bottom mr-1 text-primary">info</span>
-            Product presets are one-toggle rules grouped by the product they belong to (Email Marketing, etc).
-            Toggling one creates an automation rule with the matching <code className="px-1 py-0.5 rounded bg-muted text-foreground text-xs">productScope</code> — visible in the Rules tab and the runtime engine.
+            Los presets de producto son reglas de un solo interruptor agrupadas por el producto al que pertenecen (Email Marketing, etc.).
+            Al activar uno se crea una regla de automatización con el <code className="px-1 py-0.5 rounded bg-muted text-foreground text-xs">productScope</code> correspondiente — visible en la pestaña Reglas y en el motor de ejecución.
           </div>
 
           {PRODUCT_PRESET_GROUPS.map((group) => (
@@ -887,7 +887,7 @@ export default function BrainAutomationsPage() {
               <span className="material-icons text-5xl text-muted-foreground">history</span>
               <h3 className="mt-3 font-semibold text-lg">Aún no hay actividad</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Execution logs will appear here once automations start running.
+                Los registros de ejecución aparecerán aquí cuando las automatizaciones empiecen a ejecutarse.
               </p>
             </div>
           ) : (
@@ -936,11 +936,11 @@ export default function BrainAutomationsPage() {
           {/* Quick Start Templates */}
           <div className={`${pCard} p-6`}>
             <div className="flex items-center justify-between mb-1">
-              <h2 className={pSectionTitle}>Quick start templates</h2>
+              <h2 className={pSectionTitle}>Plantillas de inicio rápido</h2>
               <span className="text-xs text-muted-foreground">Instalación con un clic</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Pre-built rules for common workflows. They use your default CRM pipeline — no setup required.
+              Reglas predefinidas para flujos habituales. Usan tu pipeline de CRM predeterminado, sin configuración.
             </p>
             <div className="grid sm:grid-cols-2 gap-3">
               {TEMPLATES.map((tpl) => {
@@ -981,17 +981,17 @@ export default function BrainAutomationsPage() {
                         {installed ? (
                           <>
                             <span className="material-icons text-sm">check</span>
-                            Installed
+                            Instalada
                           </>
                         ) : installing ? (
                           <>
                             <span className="material-icons text-sm animate-spin">autorenew</span>
-                            Installing...
+                            Instalando...
                           </>
                         ) : (
                           <>
                             <span className="material-icons text-sm">add</span>
-                            Install
+                            Instalar
                           </>
                         )}
                       </button>
@@ -1006,20 +1006,20 @@ export default function BrainAutomationsPage() {
           <div className={`${pCard} p-6`}>
             <h2 className={`${pSectionTitle} mb-1`}>Describe tu automatización</h2>
             <p className="text-sm text-muted-foreground mb-4">
-              Tell us what you want to happen in plain English. AI will parse it into a structured rule.
+              Cuéntanos qué quieres que ocurra en lenguaje natural. La IA lo convertirá en una regla estructurada.
             </p>
 
             <textarea
               value={nlpInput}
               onChange={(e) => setNlpInput(e.target.value)}
-              placeholder="e.g. When someone books an appointment, send them a confirmation email and create a task for my team"
+              placeholder="p. ej. Cuando alguien reserve una cita, envíale un email de confirmación y crea una tarea para mi equipo"
               className={`${pInput} h-28 resize-none`}
             />
 
             <div className="flex items-center justify-between mt-3">
               <p className="text-xs text-muted-foreground">
                 <span className="material-icons text-xs align-text-bottom mr-0.5">info</span>
-                Uses AI credits to parse your description
+                Usa créditos de IA para analizar tu descripción
               </p>
               <button
                 onClick={handleParse}
@@ -1029,12 +1029,12 @@ export default function BrainAutomationsPage() {
                 {parsing ? (
                   <>
                     <span className="material-icons text-base animate-spin">autorenew</span>
-                    Parsing...
+                    Analizando...
                   </>
                 ) : (
                   <>
                     <span className="material-icons text-base">auto_awesome</span>
-                    Parse with AI
+                    Analizar con IA
                   </>
                 )}
               </button>
@@ -1051,14 +1051,14 @@ export default function BrainAutomationsPage() {
           {/* Examples */}
           {!parsed && (
             <div className={`${pCard} p-6`}>
-              <h3 className={`${pSectionTitle} mb-3`}>Example automations</h3>
+              <h3 className={`${pSectionTitle} mb-3`}>Automatizaciones de ejemplo</h3>
               <div className="grid gap-2">
                 {[
-                  'When someone books an appointment, send them a confirmation email and create a task for my team',
-                  'When a deal is won, create a new project and send a welcome email to the contact',
-                  'When a support ticket is created with high priority, notify my team immediately',
-                  'When a form is submitted on my website, create a CRM contact and add them to my mailing list',
-                  'When a proposal is accepted, create an invoice and start a new project',
+                  'Cuando alguien reserve una cita, envíale un email de confirmación y crea una tarea para mi equipo',
+                  'Cuando se gane un negocio, crea un proyecto nuevo y envía un email de bienvenida al contacto',
+                  'Cuando se cree un ticket de soporte con prioridad alta, avisa a mi equipo de inmediato',
+                  'Cuando se envíe un formulario en mi web, crea un contacto en el CRM y añádelo a mi lista de correo',
+                  'Cuando se acepte una propuesta, crea una factura y pon en marcha un proyecto nuevo',
                 ].map((example) => (
                   <button
                     key={example}
@@ -1079,7 +1079,7 @@ export default function BrainAutomationsPage() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className={pSectionTitle}>Revisar automatización</h3>
                 <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full font-medium">
-                  AI Generated
+                  Generado por IA
                 </span>
               </div>
 
@@ -1090,7 +1090,7 @@ export default function BrainAutomationsPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Trigger</label>
+                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Disparador</label>
                   {/* Trigger-type radio: AI default is event-driven; user can
                       flip to a time-based schedule which overrides the
                       event match with a sentinel trigger. */}
@@ -1104,7 +1104,7 @@ export default function BrainAutomationsPage() {
                         onChange={() => setTriggerMode('event')}
                       />
                       <span className="material-icons text-base text-primary">sensors</span>
-                      When event happens
+                      Cuando ocurre el evento
                     </label>
                     <label className="flex items-center gap-1.5 text-sm cursor-pointer">
                       <input
@@ -1115,7 +1115,7 @@ export default function BrainAutomationsPage() {
                         onChange={() => setTriggerMode('schedule')}
                       />
                       <span className="material-icons text-base text-sky-500">schedule</span>
-                      On a schedule
+                      Según programación
                     </label>
                   </div>
                   {triggerMode === 'event' && (
@@ -1124,7 +1124,7 @@ export default function BrainAutomationsPage() {
                       <span className="text-sm">{EVENT_LABELS[parsed.trigger.event] || parsed.trigger.event}</span>
                       {parsed.trigger.filters && Object.keys(parsed.trigger.filters).length > 0 && (
                         <span className="text-xs text-muted-foreground">
-                          (filtered: {Object.entries(parsed.trigger.filters).map(([k, v]) => `${k}=${v}`).join(', ')})
+                          (filtrado: {Object.entries(parsed.trigger.filters).map(([k, v]) => `${k}=${v}`).join(', ')})
                         </span>
                       )}
                     </div>
@@ -1149,7 +1149,7 @@ export default function BrainAutomationsPage() {
 
                 {parsed.conditions.length > 0 && (
                   <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Conditions</label>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Condiciones</label>
                     <div className="space-y-1 mt-1">
                       {parsed.conditions.map((c, i) => (
                         <div key={i} className="flex items-center gap-2 text-sm">
@@ -1173,7 +1173,7 @@ export default function BrainAutomationsPage() {
                           <span className="text-sm font-medium">{formatToolName(action.tool)}</span>
                           {action.delay && action.delay > 0 && (
                             <span className="text-xs text-muted-foreground ml-2">
-                              (after {action.delay >= 86400 ? `${Math.floor(action.delay / 86400)} days` : action.delay >= 3600 ? `${Math.floor(action.delay / 3600)} hours` : `${action.delay} seconds`})
+                              (después de {action.delay >= 86400 ? `${Math.floor(action.delay / 86400)} días` : action.delay >= 3600 ? `${Math.floor(action.delay / 3600)} horas` : `${action.delay} segundos`})
                             </span>
                           )}
                           <div className="text-xs text-muted-foreground mt-0.5 font-mono">
@@ -1203,7 +1203,7 @@ export default function BrainAutomationsPage() {
                   ) : (
                     <span className="material-icons text-base">check</span>
                   )}
-                  Save Automation
+                  Guardar automatización
                 </button>
                 <button
                   onClick={() => setParsed(null)}
@@ -1223,35 +1223,35 @@ export default function BrainAutomationsPage() {
                 <h2 className={pSectionTitle}>Programar una regla</h2>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                Run an action on a fixed cadence — daily, weekly, monthly, or a custom cron expression. All times are UTC.
+                Ejecuta una acción con una frecuencia fija: diaria, semanal, mensual o una expresión cron personalizada. Todas las horas son UTC.
               </p>
 
               <div className="grid sm:grid-cols-2 gap-3">
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Rule name</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre de la regla</span>
                   <input
                     type="text"
                     value={schedName}
                     onChange={(e) => setSchedName(e.target.value)}
-                    placeholder="Weekly digest"
+                    placeholder="Resumen semanal"
                     className={pInput}
                   />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Action template</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Plantilla de acción</span>
                   <select
                     value={schedTemplateId}
                     onChange={(e) => setSchedTemplateId(e.target.value)}
                     className={pSelect}
                   >
-                    <option value="">— pick one —</option>
+                    <option value="">— elige una —</option>
                     <optgroup label="Plantillas integradas">
                       {TEMPLATES.map((t) => (
                         <option key={t.id} value={t.id}>{t.title}</option>
                       ))}
                     </optgroup>
                     {pluginScripts.length > 0 && (
-                      <optgroup label="Plugin scripts">
+                      <optgroup label="Scripts de plugin">
                         {pluginScripts.map((p) => (
                           <option
                             key={pluginTemplateId(p.pluginSlug, p.script.id)}
@@ -1301,7 +1301,7 @@ export default function BrainAutomationsPage() {
                   ) : (
                     <span className="material-icons text-base">check</span>
                   )}
-                  Save scheduled rule
+                  Guardar regla programada
                 </button>
               </div>
             </div>
@@ -1341,13 +1341,13 @@ function PluginScriptArgsEditor(props: PluginScriptArgsEditorProps) {
     <div className="mt-4 p-4 bg-muted/30 border border-border rounded-xl">
       <div className="flex items-center gap-2 mb-3">
         <span className="material-icons text-base text-muted-foreground">tune</span>
-        <h3 className="text-sm font-medium">Script inputs</h3>
+        <h3 className="text-sm font-medium">Entradas del script</h3>
         <span className="text-xs text-muted-foreground">— {item?.script.name}</span>
       </div>
       <div className="grid sm:grid-cols-2 gap-3">
         {fields.map((arg) => {
           const value = props.values[arg.name] ?? '';
-          const placeholder = arg.default !== undefined ? `default: ${String(arg.default)}` : '';
+          const placeholder = arg.default !== undefined ? `predeterminado: ${String(arg.default)}` : '';
           return (
             <label key={arg.name} className="flex flex-col gap-1">
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -1407,22 +1407,22 @@ function ScheduleEditor(props: ScheduleEditorProps) {
     <div className="space-y-3 mt-2 p-4 bg-muted/30 border border-border rounded-xl">
       <div className="grid sm:grid-cols-2 gap-3">
         <label className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Cadence</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Frecuencia</span>
           <select
             value={cadence}
             onChange={(e) => props.onCadence(e.target.value as ScheduleEditorProps['cadence'])}
             className={pSelect}
           >
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="cron">Custom cron</option>
+            <option value="daily">Diaria</option>
+            <option value="weekly">Semanal</option>
+            <option value="monthly">Mensual</option>
+            <option value="cron">Cron personalizado</option>
           </select>
         </label>
 
         {(cadence === 'daily' || cadence === 'weekly' || cadence === 'monthly') && (
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Time (UTC)</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Hora (UTC)</span>
             <input
               type="time"
               value={time}
@@ -1464,7 +1464,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
 
         {cadence === 'cron' && (
           <label className="flex flex-col gap-1 sm:col-span-2">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Cron expression</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Expresión cron</span>
             <input
               type="text"
               value={cronExpression}
@@ -1489,7 +1489,7 @@ function ScheduleEditor(props: ScheduleEditorProps) {
             <span>
               <strong>{preview.description}</strong>
               {preview.nextRunAt && (
-                <span className="text-muted-foreground"> · Next runs at: {new Date(preview.nextRunAt).toUTCString()}</span>
+                <span className="text-muted-foreground"> · Próxima ejecución: {new Date(preview.nextRunAt).toUTCString()}</span>
               )}
             </span>
           </>
