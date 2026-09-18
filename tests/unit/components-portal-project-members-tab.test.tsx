@@ -165,7 +165,7 @@ describe('ProjectMembersTab', () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
       await waitFor(() =>
         expect(
-          screen.getByText(new Date('2025-01-15T10:00:00Z').toLocaleDateString()),
+          screen.getByText(new Date('2025-01-15T10:00:00Z').toLocaleDateString('en-US')),
         ).toBeTruthy(),
       );
     });
@@ -183,7 +183,7 @@ describe('ProjectMembersTab', () => {
 
     it('renders role as a text badge, not a select', async () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
-      await waitFor(() => expect(screen.getByText('Owner')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Propietario')).toBeTruthy());
       // No role-change selects in read-only mode
       const selects = screen.queryAllByRole('combobox');
       expect(selects).toHaveLength(0);
@@ -192,7 +192,7 @@ describe('ProjectMembersTab', () => {
     it('does not show Remove buttons', async () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
       await waitFor(() => expect(screen.getByText('Alice Smith')).toBeTruthy());
-      expect(screen.queryByText('Remove')).toBeNull();
+      expect(screen.queryByText('Quitar')).toBeNull();
     });
   });
 
@@ -208,7 +208,7 @@ describe('ProjectMembersTab', () => {
     it('shows Remove buttons for each member', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
       await waitFor(() => {
-        const removes = screen.getAllByText('Remove');
+        const removes = screen.getAllByText('Quitar');
         expect(removes).toHaveLength(2);
       });
     });
@@ -225,7 +225,7 @@ describe('ProjectMembersTab', () => {
     it('column header shows Actions when canManage', async () => {
       render(<ProjectMembersTab projectId={1} canManage={true} />);
       await waitFor(() =>
-        expect(screen.getByText((t) => t.toUpperCase() === 'ACTIONS')).toBeTruthy(),
+        expect(screen.getByText((t) => t.toUpperCase() === 'ACCIONES')).toBeTruthy(),
       );
     });
   });
@@ -239,10 +239,10 @@ describe('ProjectMembersTab', () => {
       await waitFor(() => expect(screen.getByText('Add Member')).toBeTruthy());
 
       fireEvent.click(screen.getByText('Add Member'));
-      await waitFor(() => expect(screen.getByText('Add member')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Añadir miembro')).toBeTruthy());
 
       fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => expect(screen.queryByText('Add member')).toBeNull());
+      await waitFor(() => expect(screen.queryByText('Añadir miembro')).toBeNull());
     });
 
     it('shows available teammates in the select (not already members)', async () => {
@@ -273,7 +273,7 @@ describe('ProjectMembersTab', () => {
       await waitFor(() => screen.getByText('Add Member'));
       fireEvent.click(screen.getByText('Add Member'));
 
-      await waitFor(() => screen.getByText('Add member')); // form heading
+      await waitFor(() => screen.getByText('Añadir miembro')); // form heading
 
       // Submit the form without selecting a teammate
       const submitBtn = screen.getAllByText('Add Member').find(el => el.closest('button[type="submit"]'));
@@ -341,7 +341,7 @@ describe('ProjectMembersTab', () => {
       await waitFor(() => screen.getByText('Add Member'));
       fireEvent.click(screen.getByText('Add Member'));
 
-      await waitFor(() => screen.getByText('Add member'));
+      await waitFor(() => screen.getByText('Añadir miembro'));
       const selects = screen.getAllByRole('combobox');
       // Second select is the role selector in the form
       const roleSelect = selects[1];
@@ -399,10 +399,10 @@ describe('ProjectMembersTab', () => {
       const mockFetch = happyFetch();
       global.fetch = mockFetch;
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getAllByText('Remove'));
+      await waitFor(() => screen.getAllByText('Quitar'));
 
       await act(async () => {
-        fireEvent.click(screen.getAllByText('Remove')[0]);
+        fireEvent.click(screen.getAllByText('Quitar')[0]);
       });
 
       await waitFor(() => {
@@ -419,9 +419,9 @@ describe('ProjectMembersTab', () => {
       const mockFetch = happyFetch();
       global.fetch = mockFetch;
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getAllByText('Remove'));
+      await waitFor(() => screen.getAllByText('Quitar'));
 
-      fireEvent.click(screen.getAllByText('Remove')[0]);
+      fireEvent.click(screen.getAllByText('Quitar')[0]);
 
       const calls = (mockFetch as ReturnType<typeof vi.fn>).mock.calls;
       const deleteCall = calls.find(
@@ -434,10 +434,10 @@ describe('ProjectMembersTab', () => {
       confirmSpy.mockReturnValue(true);
       global.fetch = happyFetch({ deleteSuccess: false });
       render(<ProjectMembersTab projectId={1} canManage={true} />);
-      await waitFor(() => screen.getAllByText('Remove'));
+      await waitFor(() => screen.getAllByText('Quitar'));
 
       await act(async () => {
-        fireEvent.click(screen.getAllByText('Remove')[0]);
+        fireEvent.click(screen.getAllByText('Quitar')[0]);
       });
 
       await waitFor(() =>
