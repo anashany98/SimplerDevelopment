@@ -37,7 +37,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
       placeholder: '',
       helpText: '',
       required: false,
-      options: hasOptions(type) ? ['Option 1', 'Option 2'] : [],
+      options: hasOptions(type) ? ['Opción 1', 'Opción 2'] : [],
       ...(type === 'slider' ? { min: 500, max: 50000, step: 500 } : {}),
       ...(hasMediaUrl(type) ? { mediaUrl: '' } : {}),
       order: fields.length,
@@ -83,9 +83,9 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
       {/* Section header */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-foreground">Survey / Intake Form</p>
+          <p className="text-sm font-medium text-foreground">Encuesta / Formulario de solicitud</p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Add fields clients must fill out when requesting this service. Leave empty to show a simple request form instead.
+            Añade campos que los clientes deben rellenar al solicitar este servicio. Déjalo vacío para mostrar un formulario de solicitud simple.
           </p>
         </div>
         <button
@@ -99,7 +99,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
       {/* Type picker */}
       {showTypePicker && (
         <div className="border border-border rounded-xl p-4 bg-muted/30">
-          <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Choose field type</p>
+          <p className="text-xs font-medium text-muted-foreground mb-3 uppercase tracking-wide">Elige el tipo de campo</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {FIELD_TYPES.map(ft => (
               <button
@@ -124,7 +124,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
       {/* Field list */}
       {fields.length === 0 ? (
         <div className="border border-dashed border-border rounded-xl py-8 text-center text-sm text-muted-foreground">
-          No fields yet — click &ldquo;Add Field&rdquo; to build your intake form.
+          Aún no hay campos: haz clic en «Añadir campo» para crear tu formulario de solicitud.
         </div>
       ) : (
         <div className="space-y-2">
@@ -140,16 +140,16 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                   <div className="flex-1 border-t-2 border-dashed border-primary/30" />
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
                     <span className="material-icons text-sm text-primary">insert_page_break</span>
-                    <span className="text-xs font-medium text-primary">Page {pageNum}</span>
+                    <span className="text-xs font-medium text-primary">Página {pageNum}</span>
                   </div>
                   <div className="flex-1 border-t-2 border-dashed border-primary/30" />
                   <div className="flex items-center gap-0.5">
                     <button type="button" onClick={() => moveField(field.id, -1)} disabled={idx === 0}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30" title="Move up">
+                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30" title="Subir">
                       <span className="material-icons text-sm">arrow_upward</span>
                     </button>
                     <button type="button" onClick={() => moveField(field.id, 1)} disabled={idx === fields.length - 1}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30" title="Move down">
+                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30" title="Bajar">
                       <span className="material-icons text-sm">arrow_downward</span>
                     </button>
                     <button type="button" onClick={() => deleteField(field.id)}
@@ -179,9 +179,9 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                       title={(() => {
                         const showIf = field.showIf;
                         if ('combinator' in showIf) {
-                          return `Conditional: ${showIf.rules.length} rule(s) (AND)`;
+                          return `Condicional: ${showIf.rules.length} regla(s) (AND)`;
                         }
-                        return `Conditional: depends on field ${(showIf as { fieldId: string }).fieldId}`;
+                        return `Condicional: depende del campo ${(showIf as { fieldId: string }).fieldId}`;
                       })()}
                     >
                       visibility
@@ -189,11 +189,11 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                   )}
                   <div className="flex items-center gap-0.5 flex-shrink-0">
                     <button type="button" onClick={() => moveField(field.id, -1)} disabled={idx === 0}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors" title="Move up">
+                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors" title="Subir">
                       <span className="material-icons text-sm">arrow_upward</span>
                     </button>
                     <button type="button" onClick={() => moveField(field.id, 1)} disabled={idx === fields.length - 1}
-                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors" title="Move down">
+                      className="p-1 rounded text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors" title="Bajar">
                       <span className="material-icons text-sm">arrow_downward</span>
                     </button>
                     <button type="button" onClick={() => setExpandedId(isOpen ? null : field.id)}
@@ -217,14 +217,14 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
 
                     {/* Type selector */}
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-foreground mb-1">Field Type</label>
+                      <label className="block text-xs font-medium text-foreground mb-1">Tipo de campo</label>
                       <select
                         value={field.type}
                         onChange={e => {
                           const t = e.target.value as FieldType;
                           updateField(field.id, {
                             type: t,
-                            options: hasOptions(t) ? (field.options.length ? field.options : ['Option 1', 'Option 2']) : [],
+                            options: hasOptions(t) ? (field.options.length ? field.options : ['Opción 1', 'Opción 2']) : [],
                             ...(t === 'slider' ? { min: field.min ?? 500, max: field.max ?? 50000, step: field.step ?? 500 } : {}),
                           });
                         }}
@@ -245,7 +245,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                         value={field.label}
                         onChange={e => updateField(field.id, { label: e.target.value })}
                         className={inputCls}
-                        placeholder="e.g. What is your domain name?"
+                        placeholder="p. ej. ¿Cuál es tu nombre de dominio?"
                       />
                       {field.label.includes('{') && field.label.includes('}') && (
                         <p className="text-xs text-muted-foreground mt-1">Usa token de canalización: la vista previa muestra la sustitución en vivo</p>
@@ -255,13 +255,13 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {/* Media URL (image/video) */}
                     {hasMediaUrl(field.type) && (
                       <div className="sm:col-span-2">
-                        <label className="block text-xs font-medium text-foreground mb-1">Media URL</label>
+                        <label className="block text-xs font-medium text-foreground mb-1">URL del archivo</label>
                         <input
                           type="text"
                           value={field.mediaUrl || ''}
                           onChange={e => updateField(field.id, { mediaUrl: e.target.value })}
                           className={inputCls}
-                          placeholder="https://…/image.png or …/video.mp4"
+                          placeholder="https://…/imagen.png o …/video.mp4"
                         />
                       </div>
                     )}
@@ -275,7 +275,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                           value={field.placeholder}
                           onChange={e => updateField(field.id, { placeholder: e.target.value })}
                           className={inputCls}
-                          placeholder="e.g. example.com"
+                          placeholder="p. ej. ejemplo.com"
                         />
                       </div>
                     )}
@@ -283,13 +283,13 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {/* Help text */}
                     {field.type !== 'heading' && (
                       <div className={!hasPlaceholder(field.type) ? 'sm:col-span-2' : ''}>
-                        <label className="block text-xs font-medium text-foreground mb-1">Help Text</label>
+                        <label className="block text-xs font-medium text-foreground mb-1">Texto de ayuda</label>
                         <input
                           type="text"
                           value={field.helpText}
                           onChange={e => updateField(field.id, { helpText: e.target.value })}
                           className={inputCls}
-                          placeholder="Optional hint shown below the field"
+                          placeholder="Pista opcional mostrada debajo del campo"
                         />
                       </div>
                     )}
@@ -298,19 +298,19 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {field.type === 'slider' && (
                       <>
                         <div>
-                          <label className="block text-xs font-medium text-foreground mb-1">Min</label>
+                          <label className="block text-xs font-medium text-foreground mb-1">Mín</label>
                           <input type="number" value={field.min ?? 0}
                             onChange={e => updateField(field.id, { min: Number(e.target.value) })}
                             className={inputCls} />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-foreground mb-1">Max</label>
+                          <label className="block text-xs font-medium text-foreground mb-1">Máx</label>
                           <input type="number" value={field.max ?? 10000}
                             onChange={e => updateField(field.id, { max: Number(e.target.value) })}
                             className={inputCls} />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-foreground mb-1">Step</label>
+                          <label className="block text-xs font-medium text-foreground mb-1">Paso</label>
                           <input type="number" value={field.step ?? 500}
                             onChange={e => updateField(field.id, { step: Number(e.target.value) })}
                             className={inputCls} />
@@ -321,14 +321,14 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                     {/* Options (select / radio / checkbox) */}
                     {hasOptions(field.type) && (
                       <div className="sm:col-span-2">
-                        <label className="block text-xs font-medium text-foreground mb-1">Opciones<span className="text-muted-foreground">(one per line)</span>
+                        <label className="block text-xs font-medium text-foreground mb-1">Opciones<span className="text-muted-foreground">(una por línea)</span>
                         </label>
                         <textarea
                           rows={4}
                           value={field.options.join('\n')}
                           onChange={e => updateField(field.id, { options: e.target.value.split('\n') })}
                           className={`${inputCls} resize-none`}
-                          placeholder={'Option 1\nOption 2\nOption 3'}
+                          placeholder={'Opción 1\nOpción 2\nOpción 3'}
                         />
                       </div>
                     )}
@@ -349,7 +349,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                             field.required ? 'translate-x-4' : 'translate-x-0.5'
                           }`} />
                         </button>
-                        <span className="text-xs text-foreground">Required field</span>
+                        <span className="text-xs text-foreground">Campo obligatorio</span>
                       </div>
                     )}
 
@@ -372,9 +372,9 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                       <div className="sm:col-span-2 border-t border-border pt-3 mt-1">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-xs font-medium text-foreground">Scoring (optional)</p>
+                            <p className="text-xs font-medium text-foreground">Puntuación (opcional)</p>
                             <p className="text-xs text-muted-foreground mt-0.5">
-                              Contribute this field&apos;s answer to a total score for each response.
+                              Contribuye con la respuesta de este campo a una puntuación total en cada respuesta.
                             </p>
                           </div>
                           <button
@@ -419,7 +419,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                             {usesNumericScoring(field.type) && (
                               <>
                                 <div className="flex items-center gap-2">
-                                  <label className="text-xs text-muted-foreground">Mode:</label>
+                                  <label className="text-xs text-muted-foreground">Modo:</label>
                                   <div className="inline-flex rounded-md border border-border overflow-hidden text-xs">
                                     <button
                                       type="button"
@@ -431,14 +431,14 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                       })}
                                       className={`px-2.5 py-1 ${field.scoring?.type === 'numeric' ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground hover:bg-muted/50'}`}
                                     >
-                                      Weighted
+                                        Ponderado
                                     </button>
                                     {supportsNps(field.type) && (
                                       <button
                                         type="button"
                                         onClick={() => updateField(field.id, { scoring: { type: 'nps' } })}
                                         className={`px-2.5 py-1 border-l border-border ${field.scoring?.type === 'nps' ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground hover:bg-muted/50'}`}
-                                        title="0-6 → -1 (detractor), 7-8 → 0 (passive), 9-10 → +1 (promoter)"
+                                        title="0-6 → -1 (detractor), 7-8 → 0 (pasivo), 9-10 → +1 (promotor)"
                                       >
                                         NPS
                                       </button>
@@ -448,7 +448,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
 
                                 {field.scoring.type === 'numeric' && (
                                   <div>
-                                    <label className="block text-xs font-medium text-foreground mb-1">Weight</label>
+                                    <label className="block text-xs font-medium text-foreground mb-1">Peso</label>
                                     <input
                                       type="number"
                                       step="0.5"
@@ -462,7 +462,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                       className={`${inputCls} w-32`}
                                     />
                                     <p className="text-xs text-muted-foreground mt-1">
-                                      Score = weight × answer. Use 1 for raw values, 0.5 to halve, -1 to subtract.
+                                      Puntuación = peso × respuesta. Usa 1 para valores brutos, 0,5 para reducir a la mitad, -1 para restar.
                                     </p>
                                   </div>
                                 )}
@@ -470,7 +470,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                 {field.scoring.type === 'nps' && (
                                   <div className="rounded-md border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
                                     <span className="material-icons text-sm align-middle mr-1 text-primary">info</span>
-                                    NPS bucketing: 0-6 → -1 (detractor), 7-8 → 0 (passive), 9-10 → +1 (promoter).
+                                    Agrupación NPS: 0-6 → -1 (detractor), 7-8 → 0 (pasivo), 9-10 → +1 (promotor).
                                   </div>
                                 )}
                               </>
@@ -479,7 +479,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                             {/* Option-map mode for select / radio / checkbox / toggle */}
                             {!usesNumericScoring(field.type) && field.scoring.type === 'option_map' && (
                               <div className="space-y-1.5">
-                                <label className="block text-xs font-medium text-foreground">Option values</label>
+                                <label className="block text-xs font-medium text-foreground">Valores de opción</label>
                                 {(() => {
                                   const optionLabels =
                                     field.type === 'toggle'
@@ -488,7 +488,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                   if (optionLabels.length === 0) {
                                     return (
                                       <p className="text-xs text-muted-foreground">
-                                        Add options above to assign scoring values.
+                                        Añade opciones arriba para asignar valores de puntuación.
                                       </p>
                                     );
                                   }
@@ -516,7 +516,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                 })()}
                                 {field.type === 'checkbox' && (
                                   <p className="text-xs text-muted-foreground mt-1">
-                                    Checkboxes sum the values of every selected option.
+                                    Las casillas suman los valores de cada opción seleccionada.
                                   </p>
                                 )}
                               </div>
@@ -534,7 +534,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                       return (
                         <div className="sm:col-span-2">
                           <label className="block text-xs font-medium text-foreground mb-1">
-                            Skip Logic <span className="text-muted-foreground">(jump to page based on answer)</span>
+                            Lógica de salto <span className="text-muted-foreground">(saltar a página según la respuesta)</span>
                           </label>
                           <div className="space-y-1.5">
                             {field.options.filter(o => o.trim()).map(opt => (
@@ -551,9 +551,9 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                   }}
                                   className="px-2 py-1 rounded border border-border bg-background text-xs w-28"
                                 >
-                                  <option value="">Next page</option>
+                                  <option value="">Página siguiente</option>
                                   {Array.from({ length: pageCount }, (_, i) => (
-                                    <option key={i} value={i}>Page {i + 1}</option>
+                                    <option key={i} value={i}>Página {i + 1}</option>
                                   ))}
                                 </select>
                               </div>
@@ -570,7 +570,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                         onClick={() => setExpandedId(null)}
                         className="px-3 py-1.5 text-xs text-primary font-medium hover:underline"
                       >
-                        Done editing
+                        Terminar edición
                       </button>
                     </div>
                   </div>

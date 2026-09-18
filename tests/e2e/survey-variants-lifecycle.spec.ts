@@ -265,7 +265,7 @@ test.describe('Survey variants lifecycle @ab @critical', () => {
     // Navigate to the Variants tab so the panel loads. Without clicking the tab
     // first, variant names only exist inside the (not-yet-rendered) tab panel,
     // while the Overview tab is active — neither "A" nor "B" will be in the DOM.
-    await page.getByRole('button', { name: /\bVariants\b/ }).click();
+    await page.getByRole('button', { name: /\bVariantes\b/ }).click();
     // Variant names are rendered as editable <input type="text"> fields inside
     // the panel (VariantsPanel.tsx line ~223). `getByText` ignores input values.
     // Playwright 1.60 has no `getByDisplayValue`; use waitForFunction to poll the

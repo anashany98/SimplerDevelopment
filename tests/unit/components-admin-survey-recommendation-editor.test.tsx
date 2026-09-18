@@ -91,17 +91,17 @@ afterEach(() => {
 describe('SurveyRecommendationEditor — no config (undefined)', () => {
   it('renders the empty-state message', () => {
     renderEditor(undefined, []);
-    expect(screen.getByText(/No recommendation slide configured/i)).toBeInTheDocument();
+    expect(screen.getByText(/No hay diapositiva de recomendación configurada/i)).toBeInTheDocument();
   });
 
   it('shows the "Add Recommendation" button', () => {
     renderEditor(undefined, []);
-    expect(screen.getByText('Add Recommendation')).toBeInTheDocument();
+    expect(screen.getByText('Añadir recomendación')).toBeInTheDocument();
   });
 
   it('calls onChange with empty config when "Add Recommendation" is clicked', () => {
     const { onChange } = renderEditor(undefined, []);
-    fireEvent.click(screen.getByText('Add Recommendation'));
+    fireEvent.click(screen.getByText('Añadir recomendación'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.offerings).toEqual([]);
@@ -111,7 +111,7 @@ describe('SurveyRecommendationEditor — no config (undefined)', () => {
 
   it('does not render the full editor when config is undefined', () => {
     renderEditor(undefined, []);
-    expect(screen.queryByText('Header & CTA')).toBeNull();
+    expect(screen.queryByText('Encabezado y CTA')).toBeNull();
     expect(screen.queryByText(/Offerings/)).toBeNull();
   });
 });
@@ -123,7 +123,7 @@ describe('SurveyRecommendationEditor — no config (undefined)', () => {
 describe('SurveyRecommendationEditor — Header & CTA card', () => {
   it('renders the Header & CTA section', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText('Header & CTA')).toBeInTheDocument();
+    expect(screen.getByText('Encabezado y CTA')).toBeInTheDocument();
   });
 
   it('shows bookUrl input with current value', () => {
@@ -143,7 +143,7 @@ describe('SurveyRecommendationEditor — Header & CTA card', () => {
 
   it('calls onChange when eyebrow changes', () => {
     const { onChange } = renderEditor(makeConfig({ eyebrow: '' }), []);
-    const input = screen.getByPlaceholderText(/e.g. Here's where this lands/i);
+    const input = screen.getByPlaceholderText(/Aquí es donde aterriza esto/i);
     fireEvent.change(input, { target: { value: 'Here is the result' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -152,7 +152,7 @@ describe('SurveyRecommendationEditor — Header & CTA card', () => {
 
   it('calls onChange when narrativeTemplate changes', () => {
     const { onChange } = renderEditor(makeConfig(), []);
-    const textarea = screen.getByPlaceholderText(/You're \{\{q1Context\}\}/i);
+    const textarea = screen.getByPlaceholderText(/Eres \{\{q1Context\}\}/i);
     fireEvent.change(textarea, { target: { value: 'Custom narrative' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -161,7 +161,7 @@ describe('SurveyRecommendationEditor — Header & CTA card', () => {
 
   it('shows alwaysAlsoOfferingKey select with "None" default', () => {
     renderEditor(makeConfig(), []);
-    const select = screen.getByDisplayValue('— None —');
+    const select = screen.getByDisplayValue('— Ninguna —');
     expect(select).toBeInTheDocument();
   });
 
@@ -175,7 +175,7 @@ describe('SurveyRecommendationEditor — Header & CTA card', () => {
   it('calls onChange when alwaysAlsoOfferingKey is set', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, []);
-    const select = screen.getByDisplayValue('— None —');
+    const select = screen.getByDisplayValue('— Ninguna —');
     fireEvent.change(select, { target: { value: 'offering-a' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -205,22 +205,22 @@ describe('SurveyRecommendationEditor — Header & CTA card', () => {
 describe('SurveyRecommendationEditor — Offerings', () => {
   it('shows "No offerings yet" when empty', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText(/No offerings yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Aún no hay ofertas/i)).toBeInTheDocument();
   });
 
   it('renders the Offerings section title with count', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     renderEditor(config, []);
-    expect(screen.getByText('Offerings (1)')).toBeInTheDocument();
+    expect(screen.getByText('Ofertas (1)')).toBeInTheDocument();
   });
 
   it('calls onChange with a new offering when "Add Offering" is clicked', () => {
     const { onChange } = renderEditor(makeConfig(), []);
-    fireEvent.click(screen.getByText('Add Offering'));
+    fireEvent.click(screen.getByText('Añadir oferta'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.offerings).toHaveLength(1);
-    expect(arg.offerings[0].name).toBe('New Offering');
+    expect(arg.offerings[0].name).toBe('Nueva oferta');
   });
 
   it('renders offering fields (key, name, tagline, youGet, price, duration)', () => {
@@ -257,7 +257,7 @@ describe('SurveyRecommendationEditor — Offerings', () => {
   it('removes an offering when delete is clicked (confirm=true)', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, []);
-    const deleteBtn = screen.getByTitle('Remove offering');
+    const deleteBtn = screen.getByTitle('Quitar oferta');
     fireEvent.click(deleteBtn);
     expect(window.confirm).toHaveBeenCalled();
     expect(onChange).toHaveBeenCalledOnce();
@@ -269,7 +269,7 @@ describe('SurveyRecommendationEditor — Offerings', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, []);
-    fireEvent.click(screen.getByTitle('Remove offering'));
+    fireEvent.click(screen.getByTitle('Quitar oferta'));
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -300,7 +300,7 @@ describe('SurveyRecommendationEditor — Offerings', () => {
 describe('SurveyRecommendationEditor — Question Routing', () => {
   it('shows "No radio/select questions" when only text fields exist', () => {
     renderEditor(makeConfig(), [textField]);
-    expect(screen.getByText(/No radio\/select questions/i)).toBeInTheDocument();
+    expect(screen.getByText(/No hay preguntas de opción única/i)).toBeInTheDocument();
   });
 
   it('renders routable fields (radio and select) but not text fields', () => {
@@ -320,7 +320,7 @@ describe('SurveyRecommendationEditor — Question Routing', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, [radioField]);
     // Vote selects are labelled "— No vote —"
-    const voteSelects = screen.getAllByDisplayValue('— No vote —');
+    const voteSelects = screen.getAllByDisplayValue('— Sin voto —');
     fireEvent.change(voteSelects[0], { target: { value: 'offering-a' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -348,7 +348,7 @@ describe('SurveyRecommendationEditor — Question Routing', () => {
   it('calls onChange with context when a context phrase input changes', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, [radioField]);
-    const contextInputs = screen.getAllByPlaceholderText('fills {{q1Context}} etc.');
+    const contextInputs = screen.getAllByPlaceholderText('rellena {{q1Context}}, etc.');
     fireEvent.change(contextInputs[0], { target: { value: 'a startup founder' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -375,7 +375,7 @@ describe('SurveyRecommendationEditor — Question Routing', () => {
     });
     renderEditor(config, [radioField]);
     // "1/2 routed"
-    expect(screen.getByText('1/2 routed')).toBeInTheDocument();
+    expect(screen.getByText('1/2 enrutadas')).toBeInTheDocument();
   });
 });
 
@@ -386,7 +386,7 @@ describe('SurveyRecommendationEditor — Question Routing', () => {
 describe('SurveyRecommendationEditor — Overrides', () => {
   it('shows "No overrides" when empty', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText('No overrides.')).toBeInTheDocument();
+    expect(screen.getByText('Sin anulaciones.')).toBeInTheDocument();
   });
 
   it('shows overrides count in section title', () => {
@@ -394,13 +394,13 @@ describe('SurveyRecommendationEditor — Overrides', () => {
       overrides: [{ whenAnyAnswer: [], forceOfferingKey: 'offering-a' }],
     });
     renderEditor(config, []);
-    expect(screen.getByText('Overrides (1)')).toBeInTheDocument();
+    expect(screen.getByText('Anulaciones (1)')).toBeInTheDocument();
   });
 
   it('calls onChange with a new override when "Add Override" is clicked', () => {
     const config = makeConfig({ offerings: [makeOffering()] });
     const { onChange } = renderEditor(config, []);
-    fireEvent.click(screen.getByText('Add Override'));
+    fireEvent.click(screen.getByText('Añadir anulación'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.overrides).toHaveLength(1);
@@ -409,7 +409,7 @@ describe('SurveyRecommendationEditor — Overrides', () => {
 
   it('adds override with empty forceOfferingKey when no offerings exist', () => {
     const { onChange } = renderEditor(makeConfig(), []);
-    fireEvent.click(screen.getByText('Add Override'));
+    fireEvent.click(screen.getByText('Añadir anulación'));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
     expect(arg.overrides![0].forceOfferingKey).toBe('');
@@ -486,7 +486,7 @@ describe('SurveyRecommendationEditor — Overrides', () => {
 describe('SurveyRecommendationEditor — Hybrid Rule', () => {
   it('shows "No hybrid rule" when hybrid is not set', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText('No hybrid rule.')).toBeInTheDocument();
+    expect(screen.getByText('Sin regla híbrida.')).toBeInTheDocument();
   });
 
   it('shows "Enable" button when hybrid is disabled', () => {
@@ -538,7 +538,7 @@ describe('SurveyRecommendationEditor — Hybrid Rule', () => {
       hybrid: { whenAnswers: {}, title: '', body: '', offeringKeys: [] },
     });
     const { onChange } = renderEditor(config, []);
-    const titleInput = screen.getByPlaceholderText(/A Snapshot into a Roadmap/i);
+    const titleInput = screen.getByPlaceholderText(/Una instantánea de la hoja de ruta/i);
     fireEvent.change(titleInput, { target: { value: 'New Title' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -599,7 +599,7 @@ describe('SurveyRecommendationEditor — Hybrid Rule', () => {
     });
     const { onChange } = renderEditor(config, [radioField]);
     // The "— Any —" selects are for whenAnswers per routable field
-    const anySelects = screen.getAllByDisplayValue('— Any —');
+    const anySelects = screen.getAllByDisplayValue('— Cualquiera —');
     fireEvent.change(anySelects[0], { target: { value: 'Option A' } });
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as SurveyRecommendationConfig;
@@ -642,7 +642,7 @@ describe('SurveyRecommendationEditor — edge cases', () => {
       ],
     });
     renderEditor(config, []);
-    expect(screen.getByText('Offerings (2)')).toBeInTheDocument();
+    expect(screen.getByText('Ofertas (2)')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Alpha')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Beta')).toBeInTheDocument();
   });
@@ -691,11 +691,11 @@ describe('SurveyRecommendationEditor — edge cases', () => {
 
   it('renders overrides count of 0 when overrides is undefined', () => {
     renderEditor(makeConfig(), []);
-    expect(screen.getByText('Overrides (0)')).toBeInTheDocument();
+    expect(screen.getByText('Anulaciones (0)')).toBeInTheDocument();
   });
 
   it('renders overrides count of 0 when overrides is empty array', () => {
     renderEditor(makeConfig({ overrides: [] }), []);
-    expect(screen.getByText('Overrides (0)')).toBeInTheDocument();
+    expect(screen.getByText('Anulaciones (0)')).toBeInTheDocument();
   });
 });

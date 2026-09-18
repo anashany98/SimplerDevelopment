@@ -47,7 +47,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
     patch({
       offerings: [
         ...c.offerings,
-        { key, name: 'New Offering', tagline: '', youGet: '', price: '', duration: '' },
+        { key, name: 'Nueva oferta', tagline: '', youGet: '', price: '', duration: '' },
       ],
     });
   }
@@ -82,7 +82,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
     patch({ offerings });
   }
   function removeOffering(idx: number) {
-    if (!confirm('Remove this offering? Any references to it in routing/overrides will be left dangling.')) return;
+    if (!confirm('¿Quitar esta oferta? Las referencias a ella en el enrutado y las anulaciones quedarán huérfanas.')) return;
     patch({ offerings: c.offerings.filter((_, i) => i !== idx) });
   }
 
@@ -158,16 +158,16 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
     return (
       <div className="bg-card border border-border rounded-xl p-8 text-center">
         <span className="material-icons text-3xl text-muted-foreground/60 mb-2 block">recommend</span>
-        <p className="text-sm font-medium text-foreground">No recommendation slide configured</p>
+        <p className="text-sm font-medium text-foreground">No hay diapositiva de recomendación configurada</p>
         <p className="text-xs text-muted-foreground mt-1 mb-4">
-          A recommendation renders after the survey thank-you, computing a primary offering from the respondent&rsquo;s answers.
+          Una recomendación se muestra después del agradecimiento de la encuesta y calcula una oferta principal a partir de las respuestas del encuestado.
         </p>
         <button
           onClick={() => onChange({ offerings: [], questions: [], bookUrl: '' })}
           className="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          Add Recommendation
+          Añadir recomendación
         </button>
       </div>
     );
@@ -176,29 +176,29 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
   return (
     <div className="space-y-4">
       {/* ─── Header ─── */}
-      <Card title="Header & CTA" icon="title">
-        <Field label="Eyebrow" hint="Small label above the headline">
+      <Card title="Encabezado y CTA" icon="title">
+        <Field label="Antetítulo" hint="Etiqueta pequeña sobre el titular">
           <input
             type="text"
             value={c.eyebrow ?? ''}
             onChange={e => patch({ eyebrow: e.target.value })}
             className={inputCls}
-            placeholder="e.g. Here's where this lands"
+            placeholder="p. ej. Aquí es donde aterriza esto"
           />
         </Field>
         <Field
-          label="Narrative template"
-          hint="Supports {{primary}} (offering name) and {{q1Context}}, {{q2Context}}, … (per-question context phrases)"
+          label="Plantilla de narrativa"
+          hint="Admite {{primary}} (nombre de la oferta) y {{q1Context}}, {{q2Context}}, … (frases de contexto por pregunta)"
         >
           <textarea
             value={c.narrativeTemplate ?? ''}
             onChange={e => patch({ narrativeTemplate: e.target.value })}
             rows={3}
             className={`${inputCls} resize-none font-mono text-xs`}
-            placeholder="You're {{q1Context}}, {{q3Context}}. Based on that, **{{primary}}** is the right starting point."
+            placeholder="Eres {{q1Context}}, {{q3Context}}. Según eso, **{{primary}}** es el punto de partida adecuado."
           />
         </Field>
-        <Field label="Book URL" hint="Where the primary CTA button links">
+        <Field label="URL de reserva" hint="A dónde enlaza el botón principal de CTA">
           <input
             type="url"
             value={c.bookUrl ?? ''}
@@ -207,13 +207,13 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
             placeholder="https://calendly.com/..."
           />
         </Field>
-        <Field label="Always-also offering" hint="Optional backstop card shown alongside the primary recommendation">
+        <Field label="Oferta siempre incluida" hint="Tarjeta de respaldo opcional que se muestra junto a la recomendación principal">
           <select
             value={c.alwaysAlsoOfferingKey ?? ''}
             onChange={e => patch({ alwaysAlsoOfferingKey: e.target.value || undefined })}
             className={inputCls}
           >
-            <option value="">— None —</option>
+            <option value="">— Ninguna —</option>
             {c.offerings.map(o => (
               <option key={o.key} value={o.key}>{o.name} ({o.key})</option>
             ))}
@@ -223,18 +223,18 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
 
       {/* ─── Offerings ─── */}
       <Card
-        title={`Offerings (${c.offerings.length})`}
+        title={`Ofertas (${c.offerings.length})`}
         icon="inventory_2"
         action={
           <button onClick={addOffering} className={btnSecondaryCls}>
             <span className="material-icons text-sm">add</span>
-            Add Offering
+            Añadir oferta
           </button>
         }
       >
         {c.offerings.length === 0 ? (
           <p className="text-xs text-muted-foreground text-center py-4">
-            No offerings yet. Add one to start routing answers to recommendations.
+            Aún no hay ofertas. Añade una para empezar a dirigir respuestas a recomendaciones.
           </p>
         ) : (
           <div className="space-y-3">
@@ -242,7 +242,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
               <div key={idx} className="border border-border rounded-lg p-3 space-y-2 bg-background/50">
                 <div className="flex items-start gap-2">
                   <div className="flex-1 grid grid-cols-2 gap-2">
-                    <Field label="Key" hint="Stable id used by routing rules" inline>
+                    <Field label="Clave" hint="Id estable que usan las reglas de enrutado" inline>
                       <input
                         type="text"
                         value={off.key}
@@ -262,12 +262,12 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                   <button
                     onClick={() => removeOffering(idx)}
                     className="mt-5 p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
-                    title="Remove offering"
+                    title="Quitar oferta"
                   >
                     <span className="material-icons text-base">delete</span>
                   </button>
                 </div>
-                <Field label="Tagline" inline>
+                <Field label="Eslogan" inline>
                   <textarea
                     value={off.tagline}
                     onChange={e => updateOffering(idx, { tagline: e.target.value })}
@@ -275,7 +275,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                     className={`${inputCls} resize-none`}
                   />
                 </Field>
-                <Field label="You get" inline>
+                <Field label="Qué incluye" inline>
                   <textarea
                     value={off.youGet}
                     onChange={e => updateOffering(idx, { youGet: e.target.value })}
@@ -299,7 +299,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                       value={off.duration}
                       onChange={e => updateOffering(idx, { duration: e.target.value })}
                       className={inputCls}
-                      placeholder="3-4 weeks"
+                      placeholder="3-4 semanas"
                     />
                   </Field>
                 </div>
@@ -310,10 +310,10 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
       </Card>
 
       {/* ─── Question Routing ─── */}
-      <Card title="Question Routing" icon="route">
+      <Card title="Enrutado de preguntas" icon="route">
         {routableFields.length === 0 ? (
           <p className="text-xs text-muted-foreground text-center py-4">
-            No radio/select questions in this survey. Routing requires fixed-option questions.
+            No hay preguntas de opción única o selección en esta encuesta. El enrutado requiere preguntas con opciones fijas.
           </p>
         ) : (
           <div className="space-y-4">
@@ -326,7 +326,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                     <span className="font-mono text-xs text-muted-foreground">{field.id}</span>
                     <span className="text-sm text-foreground truncate">{field.label}</span>
                     <span className="ml-auto text-[10px] text-muted-foreground">
-                      {Object.keys(q?.optionToOffering ?? {}).length}/{field.options.length} routed
+                      {Object.keys(q?.optionToOffering ?? {}).length}/{field.options.length} enrutadas
                     </span>
                   </summary>
                   <div className="mt-2 pl-6 space-y-2">
@@ -335,23 +335,23 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                         <p className="text-xs text-foreground line-clamp-2" title={option}>{option}</p>
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="text-[10px] text-muted-foreground">Context phrase</label>
+                            <label className="text-[10px] text-muted-foreground">Frase de contexto</label>
                             <input
                               type="text"
                               value={q?.context?.[option] ?? ''}
                               onChange={e => setOptionContext(field.id, option, e.target.value)}
                               className={`${inputCls} text-xs`}
-                              placeholder="fills {{q1Context}} etc."
+                              placeholder="rellena {{q1Context}}, etc."
                             />
                           </div>
                           <div>
-                            <label className="text-[10px] text-muted-foreground">Votes for offering</label>
+                            <label className="text-[10px] text-muted-foreground">Vota por la oferta</label>
                             <select
                               value={q?.optionToOffering?.[option] ?? ''}
                               onChange={e => setOptionVote(field.id, option, e.target.value)}
                               className={`${inputCls} text-xs`}
                             >
-                              <option value="">— No vote —</option>
+                              <option value="">— Sin voto —</option>
                               {c.offerings.map(o => (
                                 <option key={o.key} value={o.key}>{o.name}</option>
                               ))}
@@ -370,26 +370,26 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
 
       {/* ─── Overrides ─── */}
       <Card
-        title={`Overrides (${c.overrides?.length ?? 0})`}
+        title={`Anulaciones (${c.overrides?.length ?? 0})`}
         icon="priority_high"
         action={
           <button onClick={addOverride} className={btnSecondaryCls}>
             <span className="material-icons text-sm">add</span>
-            Add Override
+            Añadir anulación
           </button>
         }
       >
         <p className="text-xs text-muted-foreground mb-2">
-          Force a specific offering as primary when any of these answers match. First override that matches wins.
+          Fuerza una oferta concreta como principal cuando coincida cualquiera de estas respuestas. Gana la primera anulación que coincida.
         </p>
         {(c.overrides ?? []).length === 0 ? (
-          <p className="text-xs text-muted-foreground text-center py-4">No overrides.</p>
+          <p className="text-xs text-muted-foreground text-center py-4">Sin anulaciones.</p>
         ) : (
           <div className="space-y-3">
             {(c.overrides ?? []).map((ov, idx) => (
               <div key={idx} className="border border-border rounded-lg p-3 bg-background/50 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-foreground">Override {idx + 1}</span>
+                  <span className="text-xs font-medium text-foreground">Anulación {idx + 1}</span>
                   <button
                     onClick={() => removeOverride(idx)}
                     className="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
@@ -398,20 +398,20 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                     <span className="material-icons text-sm">delete</span>
                   </button>
                 </div>
-                <Field label="Force offering" inline>
+                <Field label="Forzar oferta" inline>
                   <select
                     value={ov.forceOfferingKey}
                     onChange={e => updateOverride(idx, { forceOfferingKey: e.target.value })}
                     className={inputCls}
                   >
-                    <option value="">— Select —</option>
+                    <option value="">— Seleccionar —</option>
                     {c.offerings.map(o => (
                       <option key={o.key} value={o.key}>{o.name} ({o.key})</option>
                     ))}
                   </select>
                 </Field>
                 <div>
-                  <label className="text-[10px] text-muted-foreground block mb-1">When any of these answers match:</label>
+                  <label className="text-[10px] text-muted-foreground block mb-1">Cuando coincida cualquiera de estas respuestas:</label>
                   <div className="space-y-1.5">
                     {routableFields.map(field => {
                       const matchedValues = ov.whenAnyAnswer.find(w => w.fieldId === field.id)?.values ?? [];
@@ -463,7 +463,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
 
       {/* ─── Hybrid ─── */}
       <Card
-        title="Hybrid Rule"
+        title="Regla híbrida"
         icon="merge"
         action={c.hybrid ? (
           <button onClick={disableHybrid} className={btnSecondaryCls}>
@@ -474,10 +474,10 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
         )}
       >
         <p className="text-xs text-muted-foreground mb-2">
-          Render a combined hybrid card when this exact set of answers all match.
+          Muestra una tarjeta híbrida combinada cuando coincida exactamente este conjunto de respuestas.
         </p>
         {!c.hybrid ? (
-          <p className="text-xs text-muted-foreground text-center py-4">No hybrid rule.</p>
+          <p className="text-xs text-muted-foreground text-center py-4">Sin regla híbrida.</p>
         ) : (
           <div className="space-y-2">
             <Field label="Título" inline>
@@ -486,7 +486,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                 value={c.hybrid.title}
                 onChange={e => updateHybrid({ title: e.target.value })}
                 className={inputCls}
-                placeholder="e.g. A Snapshot into a Roadmap."
+                placeholder="p. ej. Una instantánea de la hoja de ruta."
               />
             </Field>
             <Field label="Cuerpo" inline>
@@ -497,7 +497,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                 className={`${inputCls} resize-none`}
               />
             </Field>
-            <Field label="Offerings to show (in order)" inline>
+            <Field label="Ofertas que mostrar (en orden)" inline>
               <div className="space-y-1">
                 {c.offerings.map(o => {
                   const idx = c.hybrid!.offeringKeys.indexOf(o.key);
@@ -526,7 +526,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
             </Field>
             <div>
               <label className="text-[10px] text-muted-foreground block mb-1">
-                Required answers (ALL must match for hybrid to fire):
+                Respuestas requeridas (TODAS deben coincidir para que se active la regla híbrida):
               </label>
               <div className="space-y-1.5">
                 {routableFields.map(field => (
@@ -542,7 +542,7 @@ export function SurveyRecommendationEditor({ config, surveyFields, onChange }: P
                       }}
                       className={`${inputCls} text-xs`}
                     >
-                      <option value="">— Any —</option>
+                      <option value="">— Cualquiera —</option>
                       {field.options.map(opt => (
                         <option key={opt} value={opt}>{opt.length > 60 ? opt.slice(0, 60) + '…' : opt}</option>
                       ))}

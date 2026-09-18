@@ -85,12 +85,12 @@ afterEach(() => {
 describe('SurveyBuilder — empty state', () => {
   it('renders the section header', () => {
     renderBuilder();
-    expect(screen.getByText('Survey / Intake Form')).toBeInTheDocument();
+    expect(screen.getByText('Encuesta / Formulario de solicitud')).toBeInTheDocument();
   });
 
   it('shows the empty-state placeholder when no fields exist', () => {
     renderBuilder();
-    expect(screen.getByText(/No fields yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Aún no hay campos/i)).toBeInTheDocument();
   });
 
   it('shows the "Add Field" button', () => {
@@ -100,7 +100,7 @@ describe('SurveyBuilder — empty state', () => {
 
   it('does not show the type picker by default', () => {
     renderBuilder();
-    expect(screen.queryByText('Choose field type')).toBeNull();
+    expect(screen.queryByText('Elige el tipo de campo')).toBeNull();
   });
 });
 
@@ -112,15 +112,15 @@ describe('SurveyBuilder — type picker', () => {
   it('opens the type picker when "Add Field" is clicked', () => {
     renderBuilder();
     fireEvent.click(screen.getByText('Añadir campo'));
-    expect(screen.getByText(/Choose field type/i)).toBeInTheDocument();
+    expect(screen.getByText(/Elige el tipo de campo/i)).toBeInTheDocument();
   });
 
   it('closes the type picker when "Cancel" is clicked', () => {
     renderBuilder();
     fireEvent.click(screen.getByText('Añadir campo'));
-    expect(screen.getByText(/Choose field type/i)).toBeInTheDocument();
+    expect(screen.getByText(/Elige el tipo de campo/i)).toBeInTheDocument();
     fireEvent.click(screen.getByText('Cancelar'));
-    expect(screen.queryByText(/Choose field type/i)).toBeNull();
+    expect(screen.queryByText(/Elige el tipo de campo/i)).toBeNull();
   });
 
   it('renders all 16 field type buttons in the picker', () => {
@@ -144,7 +144,7 @@ describe('SurveyBuilder — type picker', () => {
     renderBuilder();
     fireEvent.click(screen.getByText('Añadir campo'));
     fireEvent.click(screen.getByText('Short Text'));
-    expect(screen.queryByText(/Choose field type/i)).toBeNull();
+    expect(screen.queryByText(/Elige el tipo de campo/i)).toBeNull();
   });
 });
 
@@ -173,7 +173,7 @@ describe('SurveyBuilder — addField', () => {
     fireEvent.click(screen.getByText('Dropdown'));
     const [newFields] = onChange.mock.calls[0];
     expect(newFields[0].type).toBe('select');
-    expect(newFields[0].options).toEqual(['Option 1', 'Option 2']);
+    expect(newFields[0].options).toEqual(['Opción 1', 'Opción 2']);
   });
 
   it('initialises slider fields with min/max/step defaults', () => {
@@ -218,13 +218,13 @@ describe('SurveyBuilder — field list', () => {
     renderBuilder([field]);
     expect(screen.getByText('What is your name?')).toBeInTheDocument();
     // No empty-state placeholder
-    expect(screen.queryByText(/No fields yet/i)).toBeNull();
+    expect(screen.queryByText(/Aún no hay campos/i)).toBeNull();
   });
 
   it('renders a page_break as a visual divider with page number', () => {
     const pageBreak = makeField({ id: 'pb-1', type: 'page_break', label: 'Page Break', order: 1 });
     renderBuilder([pageBreak]);
-    expect(screen.getByText(/Page 2/)).toBeInTheDocument();
+    expect(screen.getByText(/Página 2/)).toBeInTheDocument();
   });
 
   it('renders required badge when field.required is true', () => {
@@ -261,18 +261,18 @@ describe('SurveyBuilder — expand/collapse field editor', () => {
     const field = makeField();
     renderBuilder([field]);
     // Editor not visible yet
-    expect(screen.queryByText('Field Type')).toBeNull();
+    expect(screen.queryByText('Tipo de campo')).toBeNull();
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Field Type')).toBeInTheDocument();
+    expect(screen.getByText('Tipo de campo')).toBeInTheDocument();
   });
 
   it('collapses when "Done editing" is clicked', () => {
     const field = makeField();
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Field Type')).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Done editing'));
-    expect(screen.queryByText('Field Type')).toBeNull();
+    expect(screen.getByText('Tipo de campo')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Terminar edición'));
+    expect(screen.queryByText('Tipo de campo')).toBeNull();
   });
 
   it('shows field ID in expanded editor', () => {
@@ -294,7 +294,7 @@ describe('SurveyBuilder — updateField', () => {
     render(<SurveyBuilder fields={[field]} onChange={onChange} />);
     fireEvent.click(screen.getByTitle('Editar'));
 
-    const labelInput = screen.getByPlaceholderText('e.g. What is your domain name?');
+    const labelInput = screen.getByPlaceholderText('p. ej. ¿Cuál es tu nombre de dominio?');
     fireEvent.change(labelInput, { target: { value: 'New Label' } });
 
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -308,7 +308,7 @@ describe('SurveyBuilder — updateField', () => {
     render(<SurveyBuilder fields={[field]} onChange={onChange} />);
     fireEvent.click(screen.getByTitle('Editar'));
 
-    const placeholderInput = screen.getByPlaceholderText('e.g. example.com');
+    const placeholderInput = screen.getByPlaceholderText('p. ej. ejemplo.com');
     fireEvent.change(placeholderInput, { target: { value: 'Enter name' } });
 
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -322,7 +322,7 @@ describe('SurveyBuilder — updateField', () => {
     render(<SurveyBuilder fields={[field]} onChange={onChange} />);
     fireEvent.click(screen.getByTitle('Editar'));
 
-    const helpInput = screen.getByPlaceholderText('Optional hint shown below the field');
+    const helpInput = screen.getByPlaceholderText('Pista opcional mostrada debajo del campo');
     fireEvent.change(helpInput, { target: { value: 'Some hint' } });
 
     expect(onChange).toHaveBeenCalledTimes(1);
@@ -354,7 +354,7 @@ describe('SurveyBuilder — updateField', () => {
     fireEvent.click(screen.getByTitle('Editar'));
 
     // Change label — should fire onChange with the same id
-    const labelInput = screen.getByPlaceholderText('e.g. What is your domain name?');
+    const labelInput = screen.getByPlaceholderText('p. ej. ¿Cuál es tu nombre de dominio?');
     fireEvent.change(labelInput, { target: { value: 'Updated' } });
 
     const [updated] = onChange.mock.calls[0];
@@ -422,7 +422,7 @@ describe('SurveyBuilder — options textarea', () => {
     const field = makeField({ type: 'select', options: ['Option 1', 'Option 2'] });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    const textarea = screen.getByPlaceholderText(/Option 1/);
+    const textarea = screen.getByPlaceholderText(/Opción 1/);
     expect(textarea).toBeInTheDocument();
     expect((textarea as HTMLTextAreaElement).value).toBe('Option 1\nOption 2');
   });
@@ -433,7 +433,7 @@ describe('SurveyBuilder — options textarea', () => {
     render(<SurveyBuilder fields={[field]} onChange={onChange} />);
     fireEvent.click(screen.getByTitle('Editar'));
 
-    const textarea = screen.getByPlaceholderText(/Option 1/);
+    const textarea = screen.getByPlaceholderText(/Opción 1/);
     fireEvent.change(textarea, { target: { value: 'Yes\nNo\nMaybe' } });
 
     const [updated] = onChange.mock.calls[0];
@@ -444,7 +444,7 @@ describe('SurveyBuilder — options textarea', () => {
     const field = makeField({ type: 'text' });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.queryByPlaceholderText(/Option 1/)).toBeNull();
+    expect(screen.queryByPlaceholderText(/Opción 1/)).toBeNull();
   });
 });
 
@@ -457,9 +457,9 @@ describe('SurveyBuilder — slider fields', () => {
     const field = makeField({ type: 'slider', min: 0, max: 100, step: 10 });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Min')).toBeInTheDocument();
-    expect(screen.getByText('Max')).toBeInTheDocument();
-    expect(screen.getByText('Step')).toBeInTheDocument();
+    expect(screen.getByText('Mín')).toBeInTheDocument();
+    expect(screen.getByText('Máx')).toBeInTheDocument();
+    expect(screen.getByText('Paso')).toBeInTheDocument();
   });
 
   it('calls onChange when slider min is changed', () => {
@@ -486,14 +486,14 @@ describe('SurveyBuilder — required toggle', () => {
     const field = makeField({ type: 'text' });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Required field')).toBeInTheDocument();
+    expect(screen.getByText('Campo obligatorio')).toBeInTheDocument();
   });
 
   it('does not show required toggle for heading fields', () => {
     const field = makeField({ type: 'heading', label: 'A Heading' });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.queryByText('Required field')).toBeNull();
+    expect(screen.queryByText('Campo obligatorio')).toBeNull();
   });
 
   it('toggles required on click', () => {
@@ -542,10 +542,10 @@ describe('SurveyBuilder — deleteField', () => {
     const field = makeField();
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Field Type')).toBeInTheDocument();
+    expect(screen.getByText('Tipo de campo')).toBeInTheDocument();
     fireEvent.click(screen.getByTitle('Eliminar'));
     // After deletion, field list re-renders; the expanded editor should be gone
-    expect(screen.queryByText('Field Type')).toBeNull();
+    expect(screen.queryByText('Tipo de campo')).toBeNull();
   });
 });
 
@@ -561,7 +561,7 @@ describe('SurveyBuilder — moveField', () => {
     render(<SurveyBuilder fields={[f1, f2]} onChange={onChange} />);
 
     // "Move up" on second field (index 1)
-    const upButtons = screen.getAllByTitle('Move up');
+    const upButtons = screen.getAllByTitle('Subir');
     fireEvent.click(upButtons[1]); // second field's up button
 
     const [updated] = onChange.mock.calls[0];
@@ -577,7 +577,7 @@ describe('SurveyBuilder — moveField', () => {
     const onChange = vi.fn();
     render(<SurveyBuilder fields={[f1, f2]} onChange={onChange} />);
 
-    const downButtons = screen.getAllByTitle('Move down');
+    const downButtons = screen.getAllByTitle('Bajar');
     fireEvent.click(downButtons[0]); // first field's down button
 
     const [updated] = onChange.mock.calls[0];
@@ -590,7 +590,7 @@ describe('SurveyBuilder — moveField', () => {
     const onChange = vi.fn();
     render(<SurveyBuilder fields={[f1]} onChange={onChange} />);
     // Move up button is disabled for first field
-    const upBtn = screen.getByTitle('Move up');
+    const upBtn = screen.getByTitle('Subir');
     expect(upBtn).toBeDisabled();
     fireEvent.click(upBtn);
     expect(onChange).not.toHaveBeenCalled();
@@ -599,7 +599,7 @@ describe('SurveyBuilder — moveField', () => {
   it('disables Move down on last field', () => {
     const f1 = makeField({ id: 'f1' });
     renderBuilder([f1]);
-    expect(screen.getByTitle('Move down')).toBeDisabled();
+    expect(screen.getByTitle('Bajar')).toBeDisabled();
   });
 });
 
@@ -663,14 +663,14 @@ describe('SurveyBuilder — scoring panel', () => {
     const field = makeField({ type: 'rating' });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText(/Scoring/)).toBeInTheDocument();
+    expect(screen.getByText(/Puntuación/)).toBeInTheDocument();
   });
 
   it('does not show scoring section for text fields', () => {
     const field = makeField({ type: 'text' });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.queryByText(/Scoring \(optional\)/)).toBeNull();
+    expect(screen.queryByText(/Puntuación \(opcional\)/)).toBeNull();
   });
 
   it('enables numeric scoring for rating field when scoring toggle is clicked', () => {
@@ -739,7 +739,7 @@ describe('SurveyBuilder — scoring panel', () => {
     const field = makeField({ type: 'rating', scoring: { type: 'numeric', weight: 2 } });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Weight')).toBeInTheDocument();
+    expect(screen.getByText('Peso')).toBeInTheDocument();
   });
 
   it('shows NPS button only for rating/slider fields', () => {
@@ -772,7 +772,7 @@ describe('SurveyBuilder — scoring panel', () => {
     const field = makeField({ type: 'rating', scoring: { type: 'nps' } });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText(/NPS bucketing/i)).toBeInTheDocument();
+    expect(screen.getByText(/Agrupación NPS/i)).toBeInTheDocument();
   });
 
   it('shows option values editor for select with option_map scoring', () => {
@@ -783,7 +783,7 @@ describe('SurveyBuilder — scoring panel', () => {
     });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText('Option values')).toBeInTheDocument();
+    expect(screen.getByText('Valores de opción')).toBeInTheDocument();
     expect(screen.getByText('Alpha')).toBeInTheDocument();
     expect(screen.getByText('Beta')).toBeInTheDocument();
   });
@@ -796,7 +796,7 @@ describe('SurveyBuilder — scoring panel', () => {
     });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText(/Add options above to assign scoring values/i)).toBeInTheDocument();
+    expect(screen.getByText(/Añade opciones arriba para asignar valores de puntuación/i)).toBeInTheDocument();
   });
 
   it('shows checkbox sum note for checkbox fields with option_map scoring', () => {
@@ -807,7 +807,7 @@ describe('SurveyBuilder — scoring panel', () => {
     });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.getByText(/Checkboxes sum the values/i)).toBeInTheDocument();
+    expect(screen.getByText(/Las casillas suman los valores/i)).toBeInTheDocument();
   });
 
   it('shows Yes/No options for toggle with option_map scoring', () => {
@@ -849,7 +849,7 @@ describe('SurveyBuilder — skip logic (branching)', () => {
     const field = makeField({ type: 'select', options: ['Yes', 'No'] });
     renderBuilder([field]);
     fireEvent.click(screen.getByTitle('Editar'));
-    expect(screen.queryByText(/Skip Logic/i)).toBeNull();
+    expect(screen.queryByText(/Lógica de salto/i)).toBeNull();
   });
 
   it('shows skip logic for select field when a page_break exists', () => {
@@ -858,7 +858,7 @@ describe('SurveyBuilder — skip logic (branching)', () => {
     renderBuilder([pageBreak, selectField]);
     // Open the select field editor
     fireEvent.click(screen.getAllByTitle('Editar')[0]);
-    expect(screen.getByText(/Skip Logic/i)).toBeInTheDocument();
+    expect(screen.getByText(/Lógica de salto/i)).toBeInTheDocument();
   });
 
   it('does not show skip logic for text fields even with page breaks', () => {
@@ -866,7 +866,7 @@ describe('SurveyBuilder — skip logic (branching)', () => {
     const textField = makeField({ id: 'tf', type: 'text', label: 'Name', order: 1 });
     renderBuilder([pageBreak, textField]);
     fireEvent.click(screen.getAllByTitle('Editar')[0]);
-    expect(screen.queryByText(/Skip Logic/i)).toBeNull();
+    expect(screen.queryByText(/Lógica de salto/i)).toBeNull();
   });
 
   it('calls onChange with goToPage when a skip-logic page is selected', () => {
@@ -878,7 +878,7 @@ describe('SurveyBuilder — skip logic (branching)', () => {
 
     const selects = screen.getAllByRole('combobox');
     // The skip-logic selects are the last ones; each option has its own select
-    const skipSelect = selects.find(s => s.textContent?.includes('Next page'));
+    const skipSelect = selects.find(s => s.textContent?.includes('Página siguiente'));
     expect(skipSelect).toBeTruthy();
     fireEvent.change(skipSelect!, { target: { value: '0' } });
 
@@ -896,15 +896,15 @@ describe('SurveyBuilder — page break rendering', () => {
   it('shows "Page 2" for first page break', () => {
     const pb = makeField({ id: 'pb1', type: 'page_break', order: 0 });
     renderBuilder([pb]);
-    expect(screen.getByText('Page 2')).toBeInTheDocument();
+    expect(screen.getByText('Página 2')).toBeInTheDocument();
   });
 
   it('shows "Page 3" for second page break', () => {
     const pb1 = makeField({ id: 'pb1', type: 'page_break', order: 0 });
     const pb2 = makeField({ id: 'pb2', type: 'page_break', order: 1 });
     renderBuilder([pb1, pb2]);
-    expect(screen.getByText('Page 2')).toBeInTheDocument();
-    expect(screen.getByText('Page 3')).toBeInTheDocument();
+    expect(screen.getByText('Página 2')).toBeInTheDocument();
+    expect(screen.getByText('Página 3')).toBeInTheDocument();
   });
 
   it('page break delete removes it from the list', () => {

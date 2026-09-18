@@ -167,7 +167,7 @@ export function Segmented<T extends string>({ options, value, onChange }: {
 }
 
 /** Search input with a leading icon. Controlled. */
-export function SearchField({ value, onChange, placeholder = 'Search…', className = '' }: {
+export function SearchField({ value, onChange, placeholder = 'Buscar…', className = '' }: {
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;

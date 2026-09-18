@@ -30,7 +30,7 @@ export default function AdminTopbar({
         WebkitBackdropFilter: 'saturate(180%) blur(12px)',
       }}
     >
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 min-w-0 text-[13px] text-muted-foreground">
+      <nav aria-label="Ruta de navegación" className="flex items-center gap-2 min-w-0 text-[13px] text-muted-foreground">
         <span className="material-icons text-base shrink-0">{pathname === '/admin' ? 'space_dashboard' : 'chevron_right'}</span>
         {crumbs.map((c, i) => {
           const last = i === crumbs.length - 1;
@@ -52,14 +52,14 @@ export default function AdminTopbar({
         className="ml-auto flex items-center gap-2 h-8 pl-2.5 pr-2 min-w-[230px] rounded-md border border-border bg-[var(--admin-surface-2)] text-muted-foreground text-[13px] hover:border-[var(--admin-border-strong)] transition-colors"
       >
         <span className="material-icons text-base">search</span>
-        <span className="truncate">Search clients, pages, actions…</span>
+        <span className="truncate">Buscar clientes, páginas, acciones…</span>
         <kbd className="ml-auto font-mono text-[11px] px-1.5 py-px rounded border border-border bg-card text-muted-foreground">⌘K</kbd>
       </button>
 
       <button
-        onClick={() => alert('Notifications — coming soon')}
+        onClick={() => alert('Notificaciones — próximamente')}
         className="grid place-items-center w-8 h-8 rounded-md border border-border bg-[var(--admin-surface-2)] text-foreground hover:border-[var(--admin-border-strong)] transition-colors"
-        aria-label="Notifications"
+        aria-label="Notificaciones"
       >
         <span className="material-icons text-[18px]">notifications</span>
       </button>
@@ -67,7 +67,7 @@ export default function AdminTopbar({
       <button
         onClick={onToggleTheme}
         className="grid place-items-center w-8 h-8 rounded-md border border-border bg-[var(--admin-surface-2)] text-foreground hover:border-[var(--admin-border-strong)] transition-colors"
-        aria-label="Toggle theme"
+        aria-label="Cambiar tema"
       >
         <span className="material-icons text-[18px]">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>
       </button>

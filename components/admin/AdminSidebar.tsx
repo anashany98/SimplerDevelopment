@@ -81,7 +81,7 @@ export default function AdminSidebar() {
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         className="lg:hidden fixed top-3 left-3 z-50 w-9 h-9 grid place-items-center rounded-md bg-card border border-border text-foreground"
-        aria-label="Toggle navigation"
+        aria-label="Alternar navegación"
       >
         <span className="material-icons text-xl">{isMobileOpen ? 'close' : 'menu'}</span>
       </button>
@@ -102,7 +102,7 @@ export default function AdminSidebar() {
           <button
             onClick={toggleCollapsed}
             className="hidden lg:grid place-items-center w-7 h-7 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-            aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-label={isCollapsed ? 'Expandir barra lateral' : 'Contraer barra lateral'}
           >
             <span className="material-icons text-lg">{isCollapsed ? 'chevron_right' : 'chevron_left'}</span>
           </button>
@@ -207,18 +207,18 @@ export default function AdminSidebar() {
                 {userInitials}
               </span>
               <div className="min-w-0 flex-1 leading-tight">
-                <div className="text-[12.5px] font-medium text-foreground truncate">{session?.user?.name ?? 'Staff'}</div>
+                <div className="text-[12.5px] font-medium text-foreground truncate">{session?.user?.name ?? 'Personal'}</div>
                 <div className="text-[11px] text-muted-foreground truncate">{session?.user?.email}</div>
               </div>
-              <Link href="/" title="Back to site" className="grid place-items-center w-7 h-7 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
+              <Link href="/" title="Volver al sitio" className="grid place-items-center w-7 h-7 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
                 <span className="material-icons text-lg">logout</span>
               </Link>
             </div>
           ) : (
-            <Link href="/" title="Back to site" className="group relative grid place-items-center w-full py-2 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
+            <Link href="/" title="Volver al sitio" className="group relative grid place-items-center w-full py-2 rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors">
               <span className="material-icons text-lg">logout</span>
               <span className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground border border-border text-xs rounded-md opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-opacity z-50 shadow-sm">
-                Back to site
+                Volver al sitio
               </span>
             </Link>
           )}

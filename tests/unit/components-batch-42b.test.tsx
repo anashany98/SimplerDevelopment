@@ -180,7 +180,7 @@ describe('MediaDetailModal', () => {
     render(
       <MediaDetailModal media={baseMedia} onClose={() => {}} onUpdate={() => {}} />,
     );
-    expect(screen.getByText('Media Details')).toBeTruthy();
+    expect(screen.getByText('Detalles del archivo')).toBeTruthy();
     expect(screen.getByText('photo.jpg')).toBeTruthy();
     expect(screen.getByText('image/jpeg')).toBeTruthy();
     // 2048 bytes -> "2.0 KB"
@@ -217,9 +217,9 @@ describe('MediaDetailModal', () => {
     render(
       <MediaDetailModal media={baseMedia} onClose={() => {}} onUpdate={() => {}} />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /copy url/i }));
+    fireEvent.click(screen.getByRole('button', { name: /copiar url/i }));
     expect((navigator.clipboard as { writeText: (text: string) => Promise<void> }).writeText).toHaveBeenCalledWith(baseMedia.url);
-    expect((global as Record<string, unknown>).alert).toHaveBeenCalledWith('URL copied to clipboard');
+    expect((global as Record<string, unknown>).alert).toHaveBeenCalledWith('URL copiada al portapapeles');
   });
 
   it('toggles edit mode and saves metadata via PUT /api/media/:id', async () => {
@@ -230,12 +230,12 @@ describe('MediaDetailModal', () => {
     render(
       <MediaDetailModal media={baseMedia} onClose={() => {}} onUpdate={onUpdate} />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /edit metadata/i }));
+    fireEvent.click(screen.getByRole('button', { name: /editar metadatos/i }));
 
     const altInput = screen.getByDisplayValue('A photo') as HTMLInputElement;
     fireEvent.change(altInput, { target: { value: 'New alt' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /^save$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^guardar$/i }));
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });

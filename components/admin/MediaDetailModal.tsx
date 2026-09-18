@@ -46,14 +46,14 @@ export default function MediaDetailModal({
         onUpdate();
       }
     } catch (error) {
-      alert('Failed to update');
+      alert('Error al actualizar');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this media?')) return;
+    if (!confirm('¿Seguro que quieres eliminar este archivo?')) return;
 
     try {
       const response = await fetch(`/api/media/${media.id}`, {
@@ -65,13 +65,13 @@ export default function MediaDetailModal({
         onClose();
       }
     } catch (error) {
-      alert('Failed to delete');
+      alert('Error al eliminar');
     }
   };
 
   const copyUrl = () => {
     navigator.clipboard.writeText(media.url);
-    alert('URL copied to clipboard');
+    alert('URL copiada al portapapeles');
   };
 
   return (
@@ -79,7 +79,7 @@ export default function MediaDetailModal({
       <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="p-6 space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-foreground">Media Details</h2>
+            <h2 className="text-2xl font-bold text-foreground">Detalles del archivo</h2>
             <button
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground"
@@ -108,22 +108,22 @@ export default function MediaDetailModal({
           {/* Details */}
           <div className="space-y-2 text-sm">
             <div>
-              <span className="font-medium">Filename:</span> {media.filename}
+              <span className="font-medium">Nombre del archivo:</span> {media.filename}
             </div>
             <div>
-              <span className="font-medium">Type:</span> {media.mimeType}
+              <span className="font-medium">Tipo:</span> {media.mimeType}
             </div>
             <div>
-              <span className="font-medium">Size:</span> {formatBytes(media.fileSize)}
+              <span className="font-medium">Tamaño:</span> {formatBytes(media.fileSize)}
             </div>
             {media.width && media.height && (
               <div>
-                <span className="font-medium">Dimensions:</span> {media.width} ×{' '}
+                <span className="font-medium">Dimensiones:</span> {media.width} ×{' '}
                 {media.height}
               </div>
             )}
             <div>
-              <span className="font-medium">Uploaded:</span>{' '}
+              <span className="font-medium">Subido:</span>{' '}
               {new Date(media.createdAt).toLocaleString()}
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function MediaDetailModal({
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground">
-                  Alt Text
+                  Texto alternativo
                 </label>
                 <input
                   type="text"
@@ -144,7 +144,7 @@ export default function MediaDetailModal({
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground">
-                  Caption
+                  Descripción
                 </label>
                 <textarea
                   value={caption}
@@ -159,7 +159,7 @@ export default function MediaDetailModal({
                   disabled={saving}
                   className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
                 >
-                  {saving ? 'Saving...' : 'Save'}
+                  {saving ? 'Guardando...' : 'Guardar'}
                 </button>
                 <button
                   onClick={() => setEditing(false)}
@@ -171,12 +171,12 @@ export default function MediaDetailModal({
             <div className="space-y-2">
               {media.alt && (
                 <div>
-                  <span className="font-medium text-sm">Alt:</span> {media.alt}
+                  <span className="font-medium text-sm">Texto alternativo:</span> {media.alt}
                 </div>
               )}
               {media.caption && (
                 <div>
-                  <span className="font-medium text-sm">Caption:</span>{' '}
+                  <span className="font-medium text-sm">Descripción:</span>{' '}
                   {media.caption}
                 </div>
               )}
@@ -189,14 +189,14 @@ export default function MediaDetailModal({
               onClick={copyUrl}
               className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
             >
-              Copy URL
+              Copiar URL
             </button>
             {!editing && (
               <button
                 onClick={() => setEditing(true)}
                 className="px-4 py-2 text-sm bg-card border border-border rounded-md hover:bg-accent"
               >
-                Edit Metadata
+                Editar metadatos
               </button>
             )}
             <button
