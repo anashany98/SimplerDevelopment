@@ -105,7 +105,7 @@ describe('CommandPalette — basic rendering', () => {
 
   it('renders the search input', () => {
     const { getByLabelText } = renderPalette();
-    expect(getByLabelText('Search')).toBeInTheDocument();
+    expect(getByLabelText('Buscar')).toBeInTheDocument();
   });
 
   it('shows the Quick actions header when no recent and no query', () => {
@@ -198,7 +198,7 @@ describe('CommandPalette — recent notes', () => {
 describe('CommandPalette — search', () => {
   it('debounces the search request', async () => {
     const { getByLabelText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'hello' } });
     // Wait beyond the 150ms debounce
     await waitFor(
@@ -218,7 +218,7 @@ describe('CommandPalette — search', () => {
       success: true,
       data: { items: [makeNote({ id: 7, title: 'Found Note' })] },
     });
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'foun' } });
     expect(await findByText('Found Note')).toBeInTheDocument();
   });
@@ -226,7 +226,7 @@ describe('CommandPalette — search', () => {
   it('shows "No matches." with a typed query and no results', async () => {
     mockFetchJson({ success: true, data: { items: [] } });
     const { getByLabelText, findByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'zzz' } });
     expect(await findByText('No matches.')).toBeInTheDocument();
   });
@@ -234,7 +234,7 @@ describe('CommandPalette — search', () => {
   it('handles search fetch returning ok=false', async () => {
     mockFetchJson({ success: false }, false);
     const { getByLabelText, findByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'fail' } });
     expect(await findByText('No matches.')).toBeInTheDocument();
   });
@@ -242,14 +242,14 @@ describe('CommandPalette — search', () => {
   it('handles search fetch throwing', async () => {
     mockFetchReject();
     const { getByLabelText, findByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'oops' } });
     expect(await findByText('No matches.')).toBeInTheDocument();
   });
 
   it('does not search when the query is just whitespace', async () => {
     const { getByLabelText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     const initialCalls = ((global as any).fetch as any).mock.calls.length;
     fireEvent.change(input, { target: { value: '   ' } });
     await new Promise((r) => setTimeout(r, 250));
@@ -267,7 +267,7 @@ describe('CommandPalette — quick action filter (> prefix)', () => {
       selectedNoteId: 42,
       onShowTrash: vi.fn(),
     });
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '>' } });
     expect(await findByText('Quick actions')).toBeInTheDocument();
     expect(await findByText('New note')).toBeInTheDocument();
@@ -280,7 +280,7 @@ describe('CommandPalette — quick action filter (> prefix)', () => {
       selectedNoteId: 42,
       onShowTrash: vi.fn(),
     });
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '>trash' } });
     expect(await findByText('Browse trash')).toBeInTheDocument();
     await waitFor(() => {
@@ -290,14 +290,14 @@ describe('CommandPalette — quick action filter (> prefix)', () => {
 
   it('shows "No matches." when > filter matches nothing', async () => {
     const { getByLabelText, findByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '>nothing-matches' } });
     expect(await findByText('No matches.')).toBeInTheDocument();
   });
 
   it('does not search when query starts with >', async () => {
     const { getByLabelText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '>new' } });
     await new Promise((r) => setTimeout(r, 250));
     const calls = ((global as any).fetch as any).mock.calls;
@@ -317,7 +317,7 @@ describe('CommandPalette — interaction', () => {
   it('does not close when clicking inside the inner panel', () => {
     const onOpenChange = vi.fn();
     const { getByLabelText } = renderPalette({ onOpenChange });
-    fireEvent.click(getByLabelText('Search'));
+    fireEvent.click(getByLabelText('Buscar'));
     expect(onOpenChange).not.toHaveBeenCalled();
   });
 
@@ -354,7 +354,7 @@ describe('CommandPalette — interaction', () => {
       data: { items: [makeNote({ id: 33, title: 'Hit' })] },
     });
     const { getByLabelText, findByText } = renderPalette({ onOpenChange });
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'hit' } });
     const hit = await findByText('Hit');
     fireEvent.click(hit);
@@ -374,7 +374,7 @@ describe('CommandPalette — interaction', () => {
       },
     });
     const { getByLabelText, findByText, getByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'x' } });
     const b = await findByText('B');
     fireEvent.mouseEnter(b.closest('button')!);
@@ -435,7 +435,7 @@ describe('CommandPalette — keyboard navigation', () => {
     // Force a state with no selectable rows: query yields no results, no recent.
     mockFetchJson({ success: true, data: { items: [] } });
     const { getByLabelText, getByRole, findByText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'zzz' } });
     await findByText('No matches.');
     expect(() =>
@@ -458,7 +458,7 @@ describe('CommandPalette — note row display', () => {
       data: { items: [makeNote({ id: 5, title: '' })] },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('Untitled')).toBeInTheDocument();
   });
 
@@ -468,7 +468,7 @@ describe('CommandPalette — note row display', () => {
       data: { items: [makeNote({ id: 5, title: 'P', pinned: true })] },
     });
     const { getByLabelText, findByText, container } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     await findByText('P');
     expect(container.textContent).toContain('push_pin');
   });
@@ -481,7 +481,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText, queryByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     await findByText('T');
     expect(queryByText('a')).toBeInTheDocument();
     expect(queryByText('b')).toBeInTheDocument();
@@ -503,7 +503,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('just now')).toBeInTheDocument();
   });
 
@@ -522,7 +522,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('5m ago')).toBeInTheDocument();
   });
 
@@ -541,7 +541,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('3h ago')).toBeInTheDocument();
   });
 
@@ -560,7 +560,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('4d ago')).toBeInTheDocument();
   });
 
@@ -572,7 +572,7 @@ describe('CommandPalette — note row display', () => {
       },
     });
     const { getByLabelText, findByText } = renderPalette();
-    fireEvent.change(getByLabelText('Search'), { target: { value: 'q' } });
+    fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
     expect(await findByText('Bad')).toBeInTheDocument();
   });
 });
@@ -580,7 +580,7 @@ describe('CommandPalette — note row display', () => {
 describe('CommandPalette — open/close lifecycle', () => {
   it('resets query state when re-opened', async () => {
     const { rerender, getByLabelText } = renderPalette();
-    const input = getByLabelText('Search') as HTMLInputElement;
+    const input = getByLabelText('Buscar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'persist?' } });
     expect(input.value).toBe('persist?');
 
@@ -588,7 +588,7 @@ describe('CommandPalette — open/close lifecycle', () => {
     rerender(<CommandPalette {...(defaultProps as any)} open={true} />);
 
     const input2 = (await waitFor(() =>
-      getByLabelText('Search'),
+      getByLabelText('Buscar'),
     )) as HTMLInputElement;
     expect(input2.value).toBe('');
   });
