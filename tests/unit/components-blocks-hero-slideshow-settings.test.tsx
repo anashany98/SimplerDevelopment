@@ -315,7 +315,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const ctaText = screen.getByPlaceholderText('Button text');
+      const ctaText = screen.getByPlaceholderText('Texto del botón');
       fireEvent.change(ctaText, { target: { value: 'Click Me' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -341,7 +341,7 @@ describe('HeroSlideshowBlockSettings', () => {
       const onChange = vi.fn();
       const block = makeBlock({ slides: [makeSlide({ id: 's1' })] });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      const inputs = screen.getAllByPlaceholderText('Optional');
+      const inputs = screen.getAllByPlaceholderText('Opcional');
       fireEvent.change(inputs[0], { target: { value: 'Learn More' } });
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -395,7 +395,7 @@ describe('HeroSlideshowBlockSettings', () => {
       });
       renderSettings(block);
       expect(screen.getByText('Change')).toBeInTheDocument();
-      expect(screen.getByText('Remove')).toBeInTheDocument();
+      expect(screen.getByText('Quitar')).toBeInTheDocument();
     });
 
     it('clicking "Choose Image" shows MediaPicker', () => {
@@ -419,7 +419,7 @@ describe('HeroSlideshowBlockSettings', () => {
         slides: [makeSlide({ id: 's1', backgroundImage: 'https://example.com/img.jpg' })],
       });
       render(<HeroSlideshowBlockSettings block={block} onChange={onChange} />);
-      fireEvent.click(screen.getByText('Remove'));
+      fireEvent.click(screen.getByText('Quitar'));
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
           slides: expect.arrayContaining([expect.objectContaining({ backgroundImage: '' })]),
