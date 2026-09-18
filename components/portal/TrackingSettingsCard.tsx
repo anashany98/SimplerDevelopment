@@ -56,13 +56,13 @@ export default function TrackingSettingsCard({
         continue;
       }
       if (provider.maxLength && trimmed.length > provider.maxLength) {
-        errs[provider.key] = `Too long (max ${provider.maxLength}).`;
+        errs[provider.key] = `Demasiado largo (máx. ${provider.maxLength}).`;
         continue;
       }
       if (provider.kind === 'rawHtml') {
         // Match server-side guard in normalizeTrackingValue.
         if (/\bjavascript:/i.test(trimmed)) {
-          errs[provider.key] = 'Cannot contain javascript: URLs.';
+          errs[provider.key] = 'No puede contener URLs javascript:.';
         } else {
           errs[provider.key] = null;
         }
@@ -72,7 +72,7 @@ export default function TrackingSettingsCard({
       // client-side regex check so users see the same outcome as on save.
       const normalized = provider.kind === 'script' ? trimmed.toUpperCase() : trimmed;
       if (provider.pattern && !provider.pattern.test(normalized)) {
-        errs[provider.key] = provider.patternError || `${provider.label} is not in the expected format.`;
+        errs[provider.key] = provider.patternError || `${provider.label} no tiene el formato esperado.`;
       } else {
         errs[provider.key] = null;
       }
@@ -141,15 +141,15 @@ export default function TrackingSettingsCard({
         setBaseline(next);
         setEnabled(nextEnabled);
         setBaselineEnabled(nextEnabled);
-        setMessage('Tracking settings saved.');
+        setMessage('Ajustes de seguimiento guardados.');
         setMessageKind('success');
         router.refresh();
       } else {
-        setMessage(json?.message || 'Failed to save tracking settings.');
+        setMessage(json?.message || 'No se pudieron guardar los ajustes de seguimiento.');
         setMessageKind('error');
       }
     } catch {
-      setMessage('Failed to save tracking settings.');
+      setMessage('No se pudieron guardar los ajustes de seguimiento.');
       setMessageKind('error');
     } finally {
       setSaving(false);
@@ -164,17 +164,17 @@ export default function TrackingSettingsCard({
     <div className="bg-card border border-border rounded-xl p-5 space-y-5">
       <div className="flex items-center gap-3">
         <span className="material-icons text-muted-foreground text-lg">analytics</span>
-        <h3 className="font-semibold text-sm text-foreground">Tracking & Analytics</h3>
+        <h3 className="font-semibold text-sm text-foreground">Seguimiento y analítica</h3>
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Connect analytics, ad pixels, and search-engine verification to this website. Values are
-        injected on every public page when tracking is enabled.
+        Conecta analítica, píxeles de anuncios y verificación para buscadores a este sitio web. Los valores se
+        inyectan en todas las páginas públicas cuando el seguimiento está activado.
       </p>
       {!deployed && (
         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
           <span className="material-icons text-sm">schedule</span>
-          This site isn&apos;t deployed yet — settings save now and apply automátically when the site goes live.
+          Este sitio aún no está desplegado — los ajustes se guardan ahora y se aplican automáticamente cuando el sitio se publique.
         </p>
       )}
 
@@ -182,12 +182,12 @@ export default function TrackingSettingsCard({
       <div className="flex items-center justify-between py-3 border-t border-border">
         <div>
           <label className="block text-sm font-medium text-foreground">
-            Enable tracking on this site
+            Activar seguimiento en este sitio
           </label>
           <p className="text-xs text-muted-foreground mt-0.5">
             {enabled
-              ? 'Configured scripts and meta tags are emitted on every public page.'
-              : 'All tracking is suppressed regardless of the IDs configured below.'}
+              ? 'Los scripts y metaetiquetas configurados se emiten en todas las páginas públicas.'
+              : 'Todo el seguimiento se suprime independientemente de los IDs configurados abajo.'}
           </p>
         </div>
         <button
@@ -197,7 +197,7 @@ export default function TrackingSettingsCard({
             enabled ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
           }`}
           aria-pressed={enabled}
-          aria-label="Toggle tracking"
+          aria-label="Activar seguimiento"
         >
           <span
             className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
@@ -209,7 +209,7 @@ export default function TrackingSettingsCard({
 
       {/* Analytics & Tag Managers */}
       <ProviderGroup
-        title="Analytics & Tag Managers"
+        title="Analítica y gestores de etiquetas"
         icon="insights"
         providers={scriptProviders}
         values={values}
@@ -219,7 +219,7 @@ export default function TrackingSettingsCard({
 
       {/* Search-engine verification */}
       <ProviderGroup
-        title="Search-engine verification"
+        title="Verificación para buscadores"
         icon="travel_explore"
         providers={verificationProviders}
         values={values}
@@ -239,11 +239,11 @@ export default function TrackingSettingsCard({
             {showAdvanced ? 'expand_less' : 'expand_more'}
           </span>
           <span className="material-icons text-muted-foreground text-base">code</span>
-          Advanced HTML
+          HTML avanzado
         </button>
         <p className="text-xs text-muted-foreground mt-1 ml-7">
-          Inject custom HTML into &lt;head&gt; or the top of &lt;body&gt; for vendors not listed
-          above. Use sparingly.
+          Inyecta HTML personalizado en &lt;head&gt; o al principio de &lt;body&gt; para proveedores que no aparecen
+          arriba. Úsalo con moderación.
         </p>
         {showAdvanced && (
           <div className="mt-4 space-y-4">
@@ -267,12 +267,12 @@ export default function TrackingSettingsCard({
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-          {saving ? 'Saving...' : 'Save Tracking Settings'}
+          {saving ? 'Guardando...' : 'Guardar ajustes de seguimiento'}
         </button>
         {hasErrors && !message && (
           <p className="text-sm text-red-600 flex items-center gap-1">
             <span className="material-icons text-base">error_outline</span>
-            Fix the errors above before saving.
+            Corrige los errores de arriba antes de guardar.
           </p>
         )}
         {message && (
@@ -356,9 +356,9 @@ function ProviderField({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-            title={`${provider.label} setup docs`}
+            title={`${provider.label} — documentación de configuración`}
           >
-            Docs
+            Documentación
             <span className="material-icons text-sm">open_in_new</span>
           </a>
         )}

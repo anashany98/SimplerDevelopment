@@ -21,9 +21,9 @@ interface RetroData {
 }
 
 const COLUMN_META: Record<Kind, { label: string; icon: string; color: string }> = {
-  went_well:    { label: 'Went well',    icon: 'sentiment_satisfied',     color: 'text-emerald-600' },
-  went_poorly:  { label: 'Went poorly',  icon: 'sentiment_dissatisfied',  color: 'text-rose-600' },
-  action_item:  { label: 'Action items', icon: 'checklist',               color: 'text-amber-600' },
+  went_well:    { label: 'Salió bien',    icon: 'sentiment_satisfied',     color: 'text-emerald-600' },
+  went_poorly:  { label: 'Salió mal',     icon: 'sentiment_dissatisfied',  color: 'text-rose-600' },
+  action_item:  { label: 'Puntos de acción', icon: 'checklist',               color: 'text-amber-600' },
 };
 
 const KINDS: Kind[] = ['went_well', 'went_poorly', 'action_item'];
@@ -81,20 +81,20 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
   };
 
   const onDelete = async (itemId: number) => {
-    if (!confirm('Delete this item?')) return;
+    if (!confirm('¿Eliminar este elemento?')) return;
     await fetch(`/api/portal/retro-items/${itemId}`, { method: 'DELETE' });
     await load();
   };
 
   if (loading) {
-    return <div className="bg-card border border-border rounded-xl p-6 text-center text-sm text-muted-foreground">Loading retro…</div>;
+    return <div className="bg-card border border-border rounded-xl p-6 text-center text-sm text-muted-foreground">Cargando retrospectiva…</div>;
   }
 
   if (!data?.retro) {
     return (
       <div className="bg-card border border-border rounded-xl p-10 text-center">
         <span className="material-icons text-5xl text-muted-foreground">forum</span>
-        <h3 className="mt-3 font-semibold text-foreground">Retro for {sprintName}</h3>
+        <h3 className="mt-3 font-semibold text-foreground">Retrospectiva de {sprintName}</h3>
         <p className="mt-1 text-sm text-muted-foreground">Registra qué salió bien, qué salió mal y los puntos de acción que asume el equipo.</p>
         <button
           onClick={onCreateRetro}
@@ -102,7 +102,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
           className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
         >
           <span className="material-icons text-base">add</span>
-          {creatingRetro ? 'Starting…' : 'Start retro'}
+          {creatingRetro ? 'Iniciando…' : 'Iniciar retrospectiva'}
         </button>
       </div>
     );
@@ -111,7 +111,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">Retro · {sprintName}</h3>
+        <h3 className="text-sm font-semibold text-foreground">Retrospectiva · {sprintName}</h3>
         <span className={`text-xs px-2 py-0.5 rounded font-medium ${data.retro.status === 'closed' ? 'bg-muted text-muted-foreground' : 'bg-emerald-100 text-emerald-700'}`}>
           {data.retro.status}
         </span>
@@ -134,7 +134,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
                   rows={2}
                   value={drafts[kind]}
                   onChange={e => setDrafts(d => ({ ...d, [kind]: e.target.value }))}
-                  placeholder={`Add a ${meta.label.toLowerCase()} item…`}
+                  placeholder={`Añade un elemento de tipo «${meta.label.toLowerCase()}»…`}
                   className="w-full px-2 py-1.5 rounded border border-border bg-background text-xs focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
                 />
                 <button
@@ -146,20 +146,20 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
 
               <div className="space-y-1.5 pt-2 border-t border-border">
                 {items.length === 0 ? (
-                  <p className="text-xs text-muted-foreground italic">No items yet.</p>
+                  <p className="text-xs text-muted-foreground italic">Aún no hay elementos.</p>
                 ) : (
                   items.map(it => (
                     <div key={it.id} className="bg-background border border-border rounded-lg p-2">
                       <p className="text-xs text-foreground whitespace-pre-wrap">{it.text}</p>
                       <div className="flex items-center justify-between mt-1.5">
                         <span className="text-[10px] text-muted-foreground">
-                          {it.authorName ?? 'Anonymous'}
+                          {it.authorName ?? 'Anónimo'}
                         </span>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => onVote(it.id)}
                             className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-primary"
-                            title="Upvote"
+                            title="Votar"
                           >
                             <span className="material-icons text-xs">thumb_up</span>
                             <span className="font-semibold text-foreground">{it.votes}</span>

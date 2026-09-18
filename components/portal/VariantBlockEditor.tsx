@@ -71,45 +71,45 @@ interface FieldDef {
 
 // Per-block-type: flat scalar fields to surface
 const BLOCK_FIELDS: Record<string, FieldDef[]> = {
-  text:    [{ key: 'content', label: 'Text content', kind: 'textarea' }],
-  heading: [{ key: 'content', label: 'Heading text', kind: 'text' }],
+  text:    [{ key: 'content', label: 'Contenido de texto', kind: 'textarea' }],
+  heading: [{ key: 'content', label: 'Texto del encabezado', kind: 'text' }],
   quote:   [
     { key: 'content', label: 'Cita', kind: 'textarea' },
     { key: 'author',  label: 'Autor', kind: 'text' },
-    { key: 'citation', label: 'Citation', kind: 'text' },
+    { key: 'citation', label: 'Cita bibliográfica', kind: 'text' },
   ],
   button: [
-    { key: 'text', label: 'Button label', kind: 'text' },
-    { key: 'url',  label: 'Button URL', kind: 'url' },
+    { key: 'text', label: 'Texto del botón', kind: 'text' },
+    { key: 'url',  label: 'URL del botón', kind: 'url' },
   ],
   image: [
     { key: 'url', label: 'URL de imagen', kind: 'url' },
-    { key: 'alt', label: 'Alt text', kind: 'text' },
+    { key: 'alt', label: 'Texto alternativo', kind: 'text' },
   ],
   video: [
-    { key: 'url',     label: 'Video URL', kind: 'url' },
+    { key: 'url',     label: 'URL del vídeo', kind: 'url' },
     { key: 'caption', label: 'Leyenda', kind: 'text' },
   ],
   youtube: [
-    { key: 'url',     label: 'YouTube URL', kind: 'url' },
+    { key: 'url',     label: 'URL de YouTube', kind: 'url' },
     { key: 'caption', label: 'Leyenda', kind: 'text' },
   ],
   hero: [
     { key: 'title',              label: 'Título', kind: 'text' },
     { key: 'subtitle',           label: 'Subtítulo', kind: 'text' },
     { key: 'description',        label: 'Descripción', kind: 'textarea' },
-    { key: 'ctaText',            label: 'CTA button text', kind: 'text' },
-    { key: 'ctaLink',            label: 'CTA button URL', kind: 'url' },
-    { key: 'secondaryCtaText',   label: 'Secondary CTA text', kind: 'text' },
-    { key: 'secondaryCtaLink',   label: 'Secondary CTA URL', kind: 'url' },
+    { key: 'ctaText',            label: 'Texto del botón CTA', kind: 'text' },
+    { key: 'ctaLink',            label: 'URL del botón CTA', kind: 'url' },
+    { key: 'secondaryCtaText',   label: 'Texto del CTA secundario', kind: 'text' },
+    { key: 'secondaryCtaLink',   label: 'URL del CTA secundario', kind: 'url' },
   ],
   cta: [
     { key: 'title',              label: 'Título', kind: 'text' },
     { key: 'description',        label: 'Descripción', kind: 'textarea' },
-    { key: 'primaryButtonText',  label: 'Primary button text', kind: 'text' },
-    { key: 'primaryButtonUrl',   label: 'Primary button URL', kind: 'url' },
-    { key: 'secondaryButtonText', label: 'Secondary button text', kind: 'text' },
-    { key: 'secondaryButtonUrl', label: 'Secondary button URL', kind: 'url' },
+    { key: 'primaryButtonText',  label: 'Texto del botón principal', kind: 'text' },
+    { key: 'primaryButtonUrl',   label: 'URL del botón principal', kind: 'url' },
+    { key: 'secondaryButtonText', label: 'Texto del botón secundario', kind: 'text' },
+    { key: 'secondaryButtonUrl', label: 'URL del botón secundario', kind: 'url' },
   ],
   'services-grid': [
     { key: 'overline',    label: 'Antetítulo', kind: 'text' },
@@ -117,17 +117,17 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
     { key: 'description', label: 'Descripción de sección', kind: 'textarea' },
   ],
   testimonial: [
-    { key: 'content', label: 'Quote text', kind: 'textarea' },
-    { key: 'quote',   label: 'Quote text (alt field)', kind: 'textarea' },
-    { key: 'author',  label: 'Author name', kind: 'text' },
-    { key: 'role',    label: 'Author role', kind: 'text' },
+    { key: 'content', label: 'Texto de la cita', kind: 'textarea' },
+    { key: 'quote',   label: 'Texto de la cita (campo alternativo)', kind: 'textarea' },
+    { key: 'author',  label: 'Nombre del autor', kind: 'text' },
+    { key: 'role',    label: 'Cargo del autor', kind: 'text' },
     { key: 'company', label: 'Empresa', kind: 'text' },
   ],
   'featured-content': [
     { key: 'title',       label: 'Título', kind: 'text' },
     { key: 'description', label: 'Descripción', kind: 'textarea' },
-    { key: 'ctaText',     label: 'CTA text', kind: 'text' },
-    { key: 'ctaLink',     label: 'CTA URL', kind: 'url' },
+    { key: 'ctaText',     label: 'Texto del CTA', kind: 'text' },
+    { key: 'ctaLink',     label: 'URL del CTA', kind: 'url' },
   ],
   'card-grid': [
     { key: 'title',       label: 'Título de sección', kind: 'text' },
@@ -150,10 +150,10 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
     { key: 'description', label: 'Descripción', kind: 'textarea' },
   ],
   'store-banner': [
-    { key: 'title',       label: 'Banner headline', kind: 'text' },
-    { key: 'description', label: 'Banner description', kind: 'textarea' },
-    { key: 'ctaText',     label: 'CTA text', kind: 'text' },
-    { key: 'ctaLink',     label: 'CTA URL', kind: 'url' },
+    { key: 'title',       label: 'Titular del banner', kind: 'text' },
+    { key: 'description', label: 'Descripción del banner', kind: 'textarea' },
+    { key: 'ctaText',     label: 'Texto del CTA', kind: 'text' },
+    { key: 'ctaLink',     label: 'URL del CTA', kind: 'url' },
   ],
   timeline: [
     { key: 'title',       label: 'Título de sección', kind: 'text' },
@@ -166,15 +166,15 @@ const BLOCK_FIELDS: Record<string, FieldDef[]> = {
 const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; fields: FieldDef[] }> = {
   'hero-slideshow': {
     listKey: 'slides',
-    label: 'Slides',
+    label: 'Diapositivas',
     fields: [
       { key: 'title',            label: 'Título', kind: 'text' },
       { key: 'subtitle',         label: 'Subtítulo', kind: 'text' },
       { key: 'description',      label: 'Descripción', kind: 'textarea' },
-      { key: 'ctaText',          label: 'CTA text', kind: 'text' },
-      { key: 'ctaLink',          label: 'CTA URL', kind: 'url' },
-      { key: 'secondaryCtaText', label: 'Secondary CTA text', kind: 'text' },
-      { key: 'secondaryCtaLink', label: 'Secondary CTA URL', kind: 'url' },
+      { key: 'ctaText',          label: 'Texto del CTA', kind: 'text' },
+      { key: 'ctaLink',          label: 'URL del CTA', kind: 'url' },
+      { key: 'secondaryCtaText', label: 'Texto del CTA secundario', kind: 'text' },
+      { key: 'secondaryCtaLink', label: 'URL del CTA secundario', kind: 'url' },
     ],
   },
   'services-grid': {
@@ -183,8 +183,8 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     fields: [
       { key: 'title',       label: 'Título', kind: 'text' },
       { key: 'description', label: 'Descripción', kind: 'textarea' },
-      { key: 'link',        label: 'Link URL', kind: 'url' },
-      { key: 'linkText',    label: 'Link text', kind: 'text' },
+      { key: 'link',        label: 'URL del enlace', kind: 'url' },
+      { key: 'linkText',    label: 'Texto del enlace', kind: 'text' },
     ],
   },
   stats: {
@@ -192,12 +192,12 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     label: 'Estadísticas',
     fields: [
       { key: 'value', label: 'Valor', kind: 'text' },
-      { key: 'label', label: 'Label', kind: 'text' },
+      { key: 'label', label: 'Etiqueta', kind: 'text' },
     ],
   },
   'card-grid': {
     listKey: 'cards',
-    label: 'Cards',
+    label: 'Tarjetas',
     fields: [
       { key: 'title',       label: 'Título', kind: 'text' },
       { key: 'description', label: 'Descripción', kind: 'textarea' },
@@ -205,36 +205,36 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
   },
   'flip-card-grid': {
     listKey: 'cards',
-    label: 'Flip cards',
+    label: 'Tarjetas volteables',
     fields: [
-      { key: 'frontTitle', label: 'Front title', kind: 'text' },
-      { key: 'backText',   label: 'Back text', kind: 'textarea' },
-      { key: 'backLinkText', label: 'Back link text', kind: 'text' },
+      { key: 'frontTitle', label: 'Título frontal', kind: 'text' },
+      { key: 'backText',   label: 'Texto trasero', kind: 'textarea' },
+      { key: 'backLinkText', label: 'Texto del enlace trasero', kind: 'text' },
     ],
   },
   'metric-cards': {
     listKey: 'metrics',
-    label: 'Metrics',
+    label: 'Métricas',
     fields: [
       { key: 'value',  label: 'Valor', kind: 'text' },
-      { key: 'label',  label: 'Label', kind: 'text' },
-      { key: 'change', label: 'Change / note', kind: 'text' },
+      { key: 'label',  label: 'Etiqueta', kind: 'text' },
+      { key: 'change', label: 'Cambio / nota', kind: 'text' },
     ],
   },
   testimonial: {
     listKey: 'items',
-    label: 'Testimonials',
+    label: 'Testimonios',
     fields: [
       { key: 'content', label: 'Cita', kind: 'textarea' },
       { key: 'author',  label: 'Autor', kind: 'text' },
-      { key: 'role',    label: 'Role', kind: 'text' },
+      { key: 'role',    label: 'Cargo', kind: 'text' },
     ],
   },
   timeline: {
     listKey: 'items',
-    label: 'Steps',
+    label: 'Pasos',
     fields: [
-      { key: 'title',       label: 'Step title', kind: 'text' },
+      { key: 'title',       label: 'Título del paso', kind: 'text' },
       { key: 'description', label: 'Descripción', kind: 'textarea' },
     ],
   },
@@ -242,7 +242,7 @@ const LIST_BLOCK_ITEM_FIELDS: Record<string, { listKey: string; label: string; f
     listKey: 'logos',
     label: 'Logos',
     fields: [
-      { key: 'alt',      label: 'Alt text / name', kind: 'text' },
+      { key: 'alt',      label: 'Texto alternativo / nombre', kind: 'text' },
       { key: 'imageUrl', label: 'URL de imagen', kind: 'url' },
     ],
   },
@@ -382,7 +382,7 @@ function BlockCard({
         <div className="px-4 py-4 space-y-4">
           {!hasContent ? (
             <p className="text-xs text-gray-400 italic">
-              This block type has no text fields — edit via Advanced JSON if needed.
+              Este tipo de bloque no tiene campos de texto — edítalo desde el JSON avanzado si es necesario.
             </p>
           ) : null}
 
@@ -426,7 +426,7 @@ function BlockCard({
               </p>
               {(block[listMeta.listKey] as Record<string, unknown>[]).map((item, itemIdx) => (
                 <div key={itemIdx} className="border border-gray-100 rounded-md p-3 space-y-2 bg-white">
-                  <p className="text-xs text-gray-400 font-mono">Item {itemIdx + 1}</p>
+                  <p className="text-xs text-gray-400 font-mono">Elemento {itemIdx + 1}</p>
                   {listMeta.fields.map(f => {
                     const v = item[f.key];
                     if (v === undefined && f.kind !== 'text') return null;
@@ -520,7 +520,7 @@ export function VariantBlockEditor({
       JSON.parse(localJson);
       setRawError(null);
     } catch {
-      setRawError('Invalid JSON — fix before saving.');
+      setRawError('JSON no válido — corrígelo antes de guardar.');
     }
   };
 
@@ -532,16 +532,16 @@ export function VariantBlockEditor({
         <div className="border border-dashed border-gray-200 rounded-lg px-4 py-6 text-center">
           <span className="material-icons text-gray-300 text-3xl block mb-2">view_module</span>
           <p className="text-sm text-gray-400">
-            {placeholder ?? `No override — this variant uses the live ${kindLabel.toLowerCase()} content.`}
+            {placeholder ?? `Sin sobrescritura — esta variante usa el contenido en vivo de ${kindLabel.toLowerCase()}.`}
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            Use <strong>Seed from {kindLabel.toLowerCase()}</strong> to copy the current content and start editing.
+            Usa <strong>Rellenar desde {kindLabel.toLowerCase()}</strong> para copiar el contenido actual y empezar a editar.
           </p>
         </div>
       ) : tree ? (
         <div className="space-y-2">
           {tree.blocks.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">Block tree is empty.</p>
+            <p className="text-sm text-gray-400 italic">El árbol de bloques está vacío.</p>
           ) : (
             tree.blocks.map((block, index) => (
               <BlockCard
@@ -557,7 +557,7 @@ export function VariantBlockEditor({
         <div className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 flex items-start gap-2">
           <span className="material-icons text-base mt-0.5 flex-shrink-0">warning</span>
           <span>
-            This variant&apos;s JSON could not be parsed as a block tree. Edit it in Advanced JSON below.
+            No se pudo analizar el JSON de esta variante como un árbol de bloques. Edítalo en el JSON avanzado de abajo.
           </span>
         </div>
       )}
@@ -572,7 +572,7 @@ export function VariantBlockEditor({
           >
             <span className="text-xs font-medium text-gray-500 flex items-center gap-1">
               <span className="material-icons text-sm">code</span>
-              Advanced — raw JSON
+              Avanzado — JSON sin procesar
             </span>
             <span className="material-icons text-sm text-gray-400">
               {showRaw ? 'expand_less' : 'expand_more'}

@@ -16,10 +16,10 @@ interface StatusData {
 }
 
 const STEPS = [
-  { key: 'repo', label: 'Creating repository', icon: 'source' },
-  { key: 'vercel', label: 'Setting up deployment', icon: 'cloud_upload' },
-  { key: 'dns', label: 'Configuring DNS', icon: 'dns' },
-  { key: 'done', label: 'Live', icon: 'check_circle' },
+  { key: 'repo', label: 'Creando repositorio', icon: 'source' },
+  { key: 'vercel', label: 'Configurando el despliegue', icon: 'cloud_upload' },
+  { key: 'dns', label: 'Configurando el DNS', icon: 'dns' },
+  { key: 'done', label: 'Activo', icon: 'check_circle' },
 ];
 
 function getCompletedStep(data: StatusData): number {
@@ -83,9 +83,9 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
             <span className="material-icons text-blue-500">rocket_launch</span>
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Deploy your website</h3>
+            <h3 className="font-semibold text-foreground">Despliega tu sitio web</h3>
             <p className="text-sm text-muted-foreground">
-              Set up a GitHub repo, Vercel deployment, and your CRM AGENTS subdomain.
+              Configura un repositorio de GitHub, un despliegue en Vercel y tu subdominio de CRM AGENTS.
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {provisioning && <span className="material-icons text-base animate-spin">refresh</span>}
-          {provisioning ? 'Starting...' : 'Deploy Now'}
+          {provisioning ? 'Iniciando...' : 'Desplegar ahora'}
         </button>
       </div>
     );
@@ -106,7 +106,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
       <div className="bg-card border border-border rounded-xl p-5 space-y-4">
         <div className="flex items-center gap-3">
           <span className="material-icons text-blue-500 animate-spin">settings</span>
-          <h3 className="font-semibold text-foreground">Setting up your website...</h3>
+          <h3 className="font-semibold text-foreground">Configurando tu sitio web...</h3>
         </div>
         <div className="space-y-3">
           {STEPS.map((step, i) => {
@@ -133,7 +133,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
       <div className="bg-card border border-red-200 dark:border-red-800 rounded-xl p-5 space-y-3">
         <div className="flex items-center gap-3">
           <span className="material-icons text-red-500">error</span>
-          <h3 className="font-semibold text-foreground">Provisioning failed</h3>
+          <h3 className="font-semibold text-foreground">El aprovisionamiento falló</h3>
         </div>
         {data.provisionError && (
           <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg font-mono text-xs">
@@ -146,7 +146,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {provisioning && <span className="material-icons text-base animate-spin">refresh</span>}
-          {provisioning ? 'Retrying...' : 'Retry'}
+          {provisioning ? 'Reintentando...' : 'Reintentar'}
         </button>
       </div>
     );
@@ -158,11 +158,11 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="px-5 py-3 border-b border-border bg-muted/20 flex items-center justify-between">
-        <h3 className="font-semibold text-sm text-foreground">Infrastructure</h3>
+        <h3 className="font-semibold text-sm text-foreground">Infraestructura</h3>
         <div className="flex items-center gap-2">
           {isManaged && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-              Managed
+              Gestionado
             </span>
           )}
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
@@ -176,7 +176,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
             <div className="flex items-center gap-2 min-w-0">
               <span className="material-icons text-muted-foreground text-lg">language</span>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground">Website URL</p>
+                <p className="text-xs text-muted-foreground">URL del sitio web</p>
                 <a href={`https://${data.fullDomain}`} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline font-mono truncate block">
                   {data.fullDomain}
                 </a>
@@ -185,7 +185,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
             <button
               onClick={() => navigator.clipboard.writeText(`https://${data.fullDomain}`)}
               className="text-muted-foreground hover:text-foreground transition-colors"
-              title="Copy URL"
+              title="Copiar URL"
             >
               <span className="material-icons text-lg">content_copy</span>
             </button>
@@ -196,7 +196,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
             <span className="material-icons text-muted-foreground text-lg">info</span>
             <p className="text-xs text-muted-foreground">
-              Hosted by CRM AGENTS — manage content with the block editor. Add a custom domain in settings.
+              Alojado por CRM AGENTS — gestiona el contenido con el editor de bloques. Añade un dominio personalizado en ajustes.
             </p>
           </div>
         )}
@@ -206,7 +206,7 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           <div className="flex items-center gap-2">
             <span className="material-icons text-muted-foreground text-lg">source</span>
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground">Repository</p>
+              <p className="text-xs text-muted-foreground">Repositorio</p>
               <a href={data.githubRepoUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline truncate block">
                 {data.githubRepoName}
               </a>
@@ -219,9 +219,9 @@ export default function ProvisioningStatus({ siteId }: { siteId: number }) {
           <div className="flex items-center gap-2">
             <span className="material-icons text-muted-foreground text-lg">cloud</span>
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground">Vercel Dashboard</p>
+              <p className="text-xs text-muted-foreground">Panel de Vercel</p>
               <a href={data.vercelProjectUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline truncate block">
-                Open Dashboard
+                Abrir panel
               </a>
             </div>
           </div>

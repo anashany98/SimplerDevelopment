@@ -24,15 +24,15 @@ const ROLE_OPTIONS: ProjectRole[] = ['owner', 'editor', 'commenter', 'viewer'];
 const roleLabel: Record<ProjectRole, string> = {
   owner: 'Propietario',
   editor: 'Editor',
-  commenter: 'Commenter',
-  viewer: 'Viewer',
+  commenter: 'Comentador',
+  viewer: 'Visualizador',
 };
 
 const roleDescription: Record<ProjectRole, string> = {
-  owner: 'Full control, including managing members and deleting the project',
-  editor: 'Can create and edit cards, columns, sprints, labels, files, webhooks',
-  commenter: 'Can comment on cards, log time, attach files',
-  viewer: 'Read-only access',
+  owner: 'Control total, incluida la gestión de miembros y la eliminación del proyecto',
+  editor: 'Puede crear y editar tarjetas, columnas, sprints, etiquetas, archivos y webhooks',
+  commenter: 'Puede comentar tarjetas, registrar tiempo y adjuntar archivos',
+  viewer: 'Acceso de solo lectura',
 };
 
 export default function ProjectMembersTab({ projectId, canManage }: { projectId: number; canManage: boolean }) {
@@ -63,7 +63,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
     e.preventDefault();
     const targetUserId = typeof form.userId === 'number' ? form.userId : parseInt(String(form.userId), 10);
     if (Number.isNaN(targetUserId)) {
-      setError('Pick a teammate to add');
+      setError('Elige un compañero para añadir');
       return;
     }
     setSubmitting(true);
@@ -76,7 +76,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
       });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message ?? 'Failed to add member');
+        setError(data.message ?? 'No se pudo añadir el miembro');
         return;
       }
       setShowAdd(false);
@@ -98,15 +98,15 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
       body: JSON.stringify({ userId, role }),
     });
     const data = await res.json();
-    if (!data.success) setError(data.message ?? 'Failed to change role');
+    if (!data.success) setError(data.message ?? 'No se pudo cambiar el rol');
     else await load();
   };
 
   const onRemove = async (userId: number) => {
-    if (!confirm('Remove this member from the project?')) return;
+    if (!confirm('¿Quitar a este miembro del proyecto?')) return;
     const res = await fetch(`/api/portal/projects/${projectId}/members?userId=${userId}`, { method: 'DELETE' });
     const data = await res.json();
-    if (!data.success) setError(data.message ?? 'Failed to remove member');
+    if (!data.success) setError(data.message ?? 'No se pudo quitar el miembro');
     else await load();
   };
 
@@ -114,9 +114,9 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
     <div className="space-y-4 max-w-3xl">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Members</h2>
+          <h2 className="text-lg font-semibold text-foreground">Miembros</h2>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Each member has a role that controls what they can do on this project.
+            Cada miembro tiene un rol que controla lo que puede hacer en este proyecto.
           </p>
         </div>
         {canManage && (
@@ -125,7 +125,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-base">{showAdd ? 'close' : 'person_add'}</span>
-            {showAdd ? 'Cancel' : 'Add Member'}
+            {showAdd ? 'Cancelar' : 'Añadir miembro'}
           </button>
         )}
       </div>
@@ -138,30 +138,30 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
 
       {showAdd && canManage && (
         <form onSubmit={onAdd} className="bg-card border border-border rounded-xl p-5 space-y-4">
-          <h3 className="text-sm font-semibold text-foreground">Añadir miembro</h3>
+          <h3 className="text-sm font-semibold text-foreground">Nuevo miembro</h3>
           {availableTeam.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              Everyone on your team is already a member of this project. Invite new teammates from{' '}
+              Todo tu equipo ya es miembro de este proyecto. Invita a nuevos compañeros desde{' '}
               <a href="/portal/settings/team" className="text-primary hover:underline">Ajustes del equipo</a>.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Teammate <span className="text-destructive">*</span></label>
+                <label className="text-sm font-medium text-foreground">Compañero <span className="text-destructive">*</span></label>
                 <select
                   required
                   value={String(form.userId)}
                   onChange={e => setForm(p => ({ ...p, userId: parseInt(e.target.value, 10) }))}
                   className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                 >
-                  <option value="">Choose teammate…</option>
+                  <option value="">Elige compañero…</option>
                   {availableTeam.map(t => (
                     <option key={t.userId} value={t.userId}>{t.name ?? t.email} ({t.email})</option>
                   ))}
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Role</label>
+                <label className="text-sm font-medium text-foreground">Rol</label>
                 <select
                   value={form.role}
                   onChange={e => setForm(p => ({ ...p, role: e.target.value as ProjectRole }))}
@@ -182,7 +182,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
                 className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
               >
                 {submitting && <span className="material-icons text-base animate-spin">refresh</span>}
-                Add Member
+                Añadir miembro
               </button>
             </div>
           )}
@@ -196,15 +196,15 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
           </div>
         ) : members.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
-            No members yet.
+            Aún no hay miembros.
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Member</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Role</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Added</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Miembro</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Rol</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Añadido</th>
                 {canManage && <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>}
               </tr>
             </thead>

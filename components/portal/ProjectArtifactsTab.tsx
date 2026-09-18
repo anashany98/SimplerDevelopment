@@ -29,15 +29,15 @@ interface AvailableArtifact {
 }
 
 const ARTIFACT_LABELS: Record<string, string> = {
-  website: 'Website',
-  email_campaign: 'Email Campaign',
-  pitch_deck: 'Pitch Deck',
-  proposal: 'Proposal',
-  booking: 'Booking',
-  survey: 'Survey',
-  post: 'Post',
-  brain_note: 'Brain Note',
-  path_chart: 'Path chart',
+  website: 'Sitio web',
+  email_campaign: 'Campaña de email',
+  pitch_deck: 'Presentación',
+  proposal: 'Propuesta',
+  booking: 'Reserva',
+  survey: 'Encuesta',
+  post: 'Publicación',
+  brain_note: 'Nota de Brain',
+  path_chart: 'Gráfico de ruta',
 };
 
 const ARTIFACT_ICONS: Record<string, string> = {
@@ -212,7 +212,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
     return (
       <div className="bg-card border border-border rounded-xl p-12 flex items-center justify-center text-muted-foreground">
         <span className="material-icons animate-spin mr-2">refresh</span>
-        Loading artifacts…
+        Cargando artefactos…
       </div>
     );
   }
@@ -223,12 +223,12 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
       <div className="flex items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-semibold text-foreground">
-            Artifacts {artifacts.length > 0 && (
+            Artefactos {artifacts.length > 0 && (
               <span className="text-sm text-muted-foreground font-normal">({artifacts.length})</span>
             )}
           </h2>
           <p className="text-xs text-muted-foreground">
-            Websites, decks, proposals, surveys, and other workspace items linked to this project.
+            Webs, presentaciones, propuestas, encuestas y otros elementos del espacio de trabajo vinculados a este proyecto.
           </p>
         </div>
         {canEdit && (
@@ -239,7 +239,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               <span className="material-icons text-base">{showPicker ? 'close' : 'add'}</span>
-              {showPicker ? 'Close' : 'Link artifact'}
+              {showPicker ? 'Cerrar' : 'Vincular artefacto'}
             </button>
 
             {showPicker && (
@@ -277,9 +277,9 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                       <span className="material-icons animate-spin text-sm">refresh</span>Cargando…</p>
                   ) : filteredAvailable.length === 0 ? (
                     <p className="text-xs text-muted-foreground text-center py-4">
-                      No available artifacts
-                      {typeFilter ? ` of type "${ARTIFACT_LABELS[typeFilter] ?? typeFilter}"` : ''}
-                      {search ? ` matching "${search}"` : ''}.
+                      No hay artefactos disponibles
+                      {typeFilter ? ` del tipo "${ARTIFACT_LABELS[typeFilter] ?? typeFilter}"` : ''}
+                      {search ? ` que coincidan con "${search}"` : ''}.
                     </p>
                   ) : (
                     filteredAvailable.map(a => (
@@ -310,9 +310,9 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
       {sorted.length === 0 && (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">attachment</span>
-          <h3 className="mt-4 font-semibold text-foreground">No artifacts linked yet</h3>
+          <h3 className="mt-4 font-semibold text-foreground">Aún no hay artefactos vinculados</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            Link websites, pitch decks, proposals, or surveys so the team can find them from this project.
+            Vincula webs, presentaciones, propuestas o encuestas para que el equipo pueda encontrarlas desde este proyecto.
           </p>
           {canEdit && (
             <button
@@ -321,7 +321,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
               className="mt-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               <span className="material-icons text-base">add</span>
-              Link your first artifact
+              Vincula tu primer artefacto
             </button>
           )}
         </div>
@@ -346,7 +346,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 min-w-0 group"
-                    title="Open artifact"
+                    title="Abrir artefacto"
                   >
                     <p className="text-sm font-medium text-foreground truncate group-hover:text-primary group-hover:underline">
                       {a.displayTitle}
@@ -384,7 +384,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                       type="button"
                       onClick={() => togglePin(a.id, !a.pinned)}
                       className={`p-1.5 rounded transition-colors ${a.pinned ? 'text-primary hover:bg-primary/10' : 'text-muted-foreground hover:bg-accent'}`}
-                      title={a.pinned ? 'Unpin' : 'Pin'}
+                      title={a.pinned ? 'Desanclar' : 'Anclar'}
                     >
                       <span className="material-icons text-base">push_pin</span>
                     </button>
@@ -392,7 +392,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                       type="button"
                       onClick={() => unlink(a.id)}
                       className="p-1.5 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                      title="Unlink"
+                      title="Desvincular"
                     >
                       <span className="material-icons text-base">close</span>
                     </button>

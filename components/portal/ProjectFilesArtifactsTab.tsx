@@ -18,14 +18,14 @@ import ProjectFilesTab from '@/components/portal/ProjectFilesTab';
 // original bundle-splitting intent — the Artifacts chunk only ships once the
 // sub-tab is actually selected.
 const ProjectArtifactsTab = dynamic(() => import('@/components/portal/ProjectArtifactsTab'), {
-  loading: () => <div className="p-8 text-sm text-muted-foreground">Loading artifacts…</div>,
+  loading: () => <div className="p-8 text-sm text-muted-foreground">Cargando artefactos…</div>,
 });
 
 type SubTab = 'files' | 'artifacts';
 
 const SUB_TABS: { key: SubTab; label: string; icon: string }[] = [
-  { key: 'files', label: 'Files', icon: 'folder' },
-  { key: 'artifacts', label: 'Artifacts', icon: 'attachment' },
+  { key: 'files', label: 'Archivos', icon: 'folder' },
+  { key: 'artifacts', label: 'Artefactos', icon: 'attachment' },
 ];
 
 interface Props {

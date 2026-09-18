@@ -83,11 +83,11 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
         });
         const json = await r.json();
         if (!r.ok || !json.success) {
-          throw new Error(json.message || `${method} failed`);
+          throw new Error(json.message || `Error al enviar la solicitud ${method}`);
         }
         await onSaved();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Save failed');
+        setError(err instanceof Error ? err.message : 'No se pudo guardar');
       } finally {
         setSaving(false);
       }
@@ -108,7 +108,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
         onSubmit={onSubmit}
       >
         <h3 className="text-lg font-semibold mb-3">
-          {isEdit ? 'Edit campaign' : 'New campaign'}
+          {isEdit ? 'Editar campaña' : 'Nueva campaña'}
         </h3>
 
         {error && (
@@ -131,11 +131,11 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
               }));
             }}
             className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1.5 text-sm"
-            placeholder="Fall 2026 outbound"
+            placeholder="Prospección otoño 2026"
           />
         </Field>
 
-        <Field label="Slug" hint="Used internally; auto-generated from name.">
+        <Field label="Slug" hint="Uso interno; se genera automáticamente a partir del nombre.">
           <input
             type="text"
             value={form.slug}
@@ -144,7 +144,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
               setForm({ ...form, slug: slugify(e.target.value) });
             }}
             className="w-full rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1.5 text-sm font-mono text-xs"
-            placeholder="fall-2026-outbound"
+            placeholder="prospeccion-otono-2026"
           />
         </Field>
 
@@ -211,7 +211,7 @@ export default function CampaignEditor({ campaign, onSaved, onCancel }: Props) {
             disabled={saving || !form.name.trim()}
             className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create campaign'}
+            {saving ? 'Guardando…' : isEdit ? 'Guardar cambios' : 'Crear campaña'}
           </button>
         </div>
       </form>

@@ -85,7 +85,7 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
     return (
       <div className="bg-card border border-border rounded-xl p-12 text-center">
         <span className="material-icons text-5xl text-muted-foreground">timeline</span>
-        <h3 className="mt-3 font-semibold text-foreground">No dated sprints yet</h3>
+        <h3 className="mt-3 font-semibold text-foreground">Aún no hay sprints con fechas</h3>
         <p className="mt-1 text-sm text-muted-foreground">Define startDate y endDate en los sprints para verlos en la hoja de ruta.</p>
       </div>
     );
@@ -111,15 +111,15 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
   return (
     <div className="space-y-4 max-w-5xl">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Roadmap</h2>
+        <h2 className="text-lg font-semibold text-foreground">Hoja de ruta</h2>
         <p className="text-sm text-muted-foreground mt-0.5">
-          Sprints with start + end dates plotted on a single timeline. Card due-dates show as dots inside each sprint row.
-          {backlogDueCount > 0 && <span className="text-amber-600"> · {backlogDueCount} backlog card{backlogDueCount === 1 ? '' : 's'} with due dates not yet pulled into a sprint.</span>}
+          Sprints con fechas de inicio y fin en una sola línea de tiempo. Las fechas límite de las tarjetas aparecen como puntos dentro de cada fila de sprint.
+          {backlogDueCount > 0 && <span className="text-amber-600"> · {backlogDueCount} tarjeta{backlogDueCount === 1 ? '' : 's'} del backlog con fecha límite, aún sin asignar a un sprint.</span>}
         </p>
       </div>
 
       <div className="bg-card border border-border rounded-xl p-4 overflow-x-auto">
-        <svg viewBox={`0 0 ${W} ${totalH}`} className="w-full h-auto" role="img" aria-label="Project roadmap">
+        <svg viewBox={`0 0 ${W} ${totalH}`} className="w-full h-auto" role="img" aria-label="Hoja de ruta del proyecto">
           {/* Month grid */}
           {ticks.map((tk, i) => (
             <g key={`tick-${i}`}>
@@ -131,7 +131,7 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
           {range && now >= range.min && now <= range.max && (
             <g>
               <line x1={xAt(now)} x2={xAt(now)} y1={20} y2={totalH - 20} stroke="hsl(var(--primary, 222 47% 51%))" strokeOpacity="0.5" strokeDasharray="3 3" />
-              <text x={xAt(now)} y={totalH - 6} fontSize="10" textAnchor="middle" fill="hsl(var(--primary, 222 47% 51%))" fillOpacity="0.85">today</text>
+              <text x={xAt(now)} y={totalH - 6} fontSize="10" textAnchor="middle" fill="hsl(var(--primary, 222 47% 51%))" fillOpacity="0.85">hoy</text>
             </g>
           )}
           {/* Sprint rows */}
@@ -155,7 +155,7 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
                   opacity={s.status === 'completed' ? 0.6 : 1}
                 />
                 <text x={x1 + 6} y={y + barH / 2 + 4} fontSize="10" fill="currentColor" fillOpacity="0.85">
-                  {s.cards.length} card{s.cards.length === 1 ? '' : 's'}
+                  {s.cards.length} tarjeta{s.cards.length === 1 ? '' : 's'}
                 </text>
                 {/* Card dots */}
                 {s.cards.filter(c => c.dueDate).map(c => {
@@ -180,11 +180,11 @@ export default function ProjectRoadmapTab({ projectId, projectKey }: { projectId
 
       {/* Legend + sprint links */}
       <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
-        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-amber-300/70 rounded-sm"></span>Planning</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-amber-300/70 rounded-sm"></span>Planificación</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-primary rounded-sm"></span>Activo</span>
         <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 bg-emerald-300/70 rounded-sm"></span>Completado</span>
-        <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-rose-500 rounded-full"></span>Open card due</span>
-        <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-emerald-500 rounded-full"></span>Done card</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-rose-500 rounded-full"></span>Tarjeta abierta con vencimiento</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-2 h-2 bg-emerald-500 rounded-full"></span>Tarjeta completada</span>
       </div>
 
       <div className="flex flex-wrap gap-2 pt-2">

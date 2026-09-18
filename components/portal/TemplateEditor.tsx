@@ -82,7 +82,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
           setBlocks(initial);
           setSavedBlocks(initial);
         } else {
-          setError(tplRes.message || 'Failed to load template.');
+          setError(tplRes.message || 'No se pudo cargar la plantilla.');
         }
         if (codeRes.success) {
           setCustomCss(codeRes.data?.customCss || '');
@@ -91,7 +91,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
           setSavedJs(codeRes.data?.customJs || '');
         }
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load.');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'No se pudo cargar.');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -134,7 +134,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ template }),
           }).then(r => r.json()).then((res: { success?: boolean; data?: { template?: { blocks?: Block[] } }; message?: string }) => {
-            if (!res.success) throw new Error(res.message || 'Template save failed');
+            if (!res.success) throw new Error(res.message || 'No se pudo guardar la plantilla');
             const next = (res.data?.template?.blocks ?? []) as Block[];
             setBlocks(next);
             setSavedBlocks(next);
@@ -148,7 +148,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ customCss, customJs }),
           }).then(r => r.json()).then((res: { success?: boolean; data?: { customCss?: string; customJs?: string }; message?: string }) => {
-            if (!res.success) throw new Error(res.message || 'Code save failed');
+            if (!res.success) throw new Error(res.message || 'No se pudo guardar el código');
             setSavedCss(res.data?.customCss || '');
             setSavedJs(res.data?.customJs || '');
           })
@@ -158,7 +158,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
       setSavedAt(new Date());
       setIframeBust(v => v + 1); // force iframe reload to pick up persisted CSS/JS
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Save failed.');
+      setError(e instanceof Error ? e.message : 'No se pudo guardar.');
     } finally {
       setSaving(false);
     }
@@ -167,8 +167,8 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
   if (!siteUrl) {
     return (
       <div className="max-w-3xl mx-auto p-6 bg-amber-50 border border-amber-200 text-amber-900 rounded-lg">
-        This site doesn’t have a domain or subdomain configured yet. Set one in the website settings before editing
-        templates so the preview iframe has somewhere to load.
+        Este sitio aún no tiene un dominio o subdominio configurado. Configura uno en los ajustes del sitio antes de editar
+        plantillas para que el iframe de vista previa tenga dónde cargar.
       </div>
     );
   }
@@ -181,7 +181,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
             <div className="min-w-0">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span className="material-icons text-sm">view_quilt</span>
-                <span>Content type</span>
+                <span>Tipo de contenido</span>
                 <span>·</span>
                 <code className="font-mono">{typeSlug}</code>
               </div>
@@ -189,16 +189,16 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <span className="text-xs text-muted-foreground">
-                {dirty ? 'Unsaved changes' : savedAt ? `Saved ${savedAt.toLocaleTimeString()}` : !blocks.length ? 'No template — post renders raw' : 'Saved'}
+                {dirty ? 'Cambios sin guardar' : savedAt ? `Guardado ${savedAt.toLocaleTimeString()}` : !blocks.length ? 'Sin plantilla — el post se renderiza en bruto' : 'Guardado'}
               </span>
               <button
                 type="button"
                 onClick={() => setCodeModalOpen(true)}
                 className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg border border-border hover:bg-accent transition-colors"
-                title="Edit custom CSS / JS for this content type"
+                title="Editar CSS / JS personalizado para este tipo de contenido"
               >
                 <span className="material-icons text-base">code</span>
-                Code
+                Código
                 {(customCss || customJs) && (
                   <span className="ml-1 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">
                     {[customCss && 'CSS', customJs && 'JS'].filter(Boolean).join(' + ')}
@@ -220,7 +220,7 @@ export function TemplateEditor({ siteId, typeId, typeName, typeSlug, siteUrl, pr
             <div className="px-4 py-2 bg-amber-50 border-b border-amber-200 text-amber-900 text-xs flex items-center gap-2 shrink-0">
               <span className="material-icons text-sm">warning</span>
               <span>
-                Templates require a <strong>Post Content</strong> block — drag one in from the Layout category, or save now to have one auto-added at the top.
+                Las plantillas requieren un bloque <strong>Post Content</strong> — arrastra uno desde la categoría Layout, o guarda ahora para que se añada uno automáticamente arriba.
               </span>
             </div>
           )}

@@ -95,7 +95,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
   };
 
   const onDelete = async (id: number) => {
-    if (!confirm('Delete this goal?')) return;
+    if (!confirm('¿Eliminar este objetivo?')) return;
     await fetch(`/api/portal/goals/${id}`, { method: 'DELETE' });
     await load();
   };
@@ -104,9 +104,9 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
     <div className="bg-card border border-border rounded-xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Goals &amp; OKRs</h3>
+          <h3 className="text-sm font-semibold text-foreground">Objetivos y OKR</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Track project-level objectives. Update progress manually as you measure.
+            Haz seguimiento de los objetivos del proyecto. Actualiza el progreso manualmente a medida que lo midas.
           </p>
         </div>
         {canEdit && (
@@ -115,7 +115,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
             className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
           >
             <span className="material-icons text-sm">{showForm ? 'close' : 'flag'}</span>
-            {showForm ? 'Cancel' : 'New goal'}
+            {showForm ? 'Cancelar' : 'Nuevo objetivo'}
           </button>
         )}
       </div>
@@ -129,7 +129,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
                 value={form.title}
                 onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
                 required
-                placeholder="e.g. Onboard 25 new customers"
+                placeholder="p. ej. Incorporar 25 clientes nuevos"
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
@@ -143,7 +143,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Current</label>
+              <label className="text-xs font-medium text-foreground">Actual</label>
               <input
                 type="number" min={0}
                 value={form.currentValue}
@@ -161,16 +161,16 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Unit</label>
+              <label className="text-xs font-medium text-foreground">Unidad</label>
               <input
                 value={form.unitLabel}
                 onChange={e => setForm(p => ({ ...p, unitLabel: e.target.value }))}
-                placeholder="%, users, $..."
+                placeholder="%, usuarios, $..."
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Target date</label>
+              <label className="text-xs font-medium text-foreground">Fecha objetivo</label>
               <input
                 type="date"
                 value={form.targetDate}
@@ -191,7 +191,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
           </div>
           <div className="flex justify-end">
             <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
-              {saving ? 'Saving…' : 'Add goal'}
+              {saving ? 'Guardando…' : 'Añadir objetivo'}
             </button>
           </div>
         </form>
@@ -200,7 +200,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
       {loading ? (
         <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground italic">No goals yet.</p>
+        <p className="text-sm text-muted-foreground italic">Aún no hay objetivos.</p>
       ) : (
         <div className="space-y-3">
           {rows.map(g => {
@@ -216,7 +216,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
                         {g.status}
                       </span>
                       {overdue && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium">overdue</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium">vencido</span>
                       )}
                     </div>
                     {g.description && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{g.description}</p>}
@@ -256,13 +256,13 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
                         if (!Number.isNaN(v) && v !== g.currentValue) onUpdateValue(g, v);
                       }}
                       className="w-16 px-1.5 py-0.5 rounded border border-border bg-background text-xs"
-                      title="Update current value (blur to save)"
+                      title="Actualizar el valor actual (se guarda al salir del campo)"
                     />
                   )}
                 </div>
                 {g.targetDate && (
                   <p className="text-[10px] text-muted-foreground">
-                    Target: {new Date(g.targetDate).toLocaleDateString('en-US')}
+                    Fecha objetivo: {new Date(g.targetDate).toLocaleDateString('en-US')}
                   </p>
                 )}
               </div>
