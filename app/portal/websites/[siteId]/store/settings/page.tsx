@@ -660,7 +660,7 @@ export default function StoreSettingsPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">toggle_on</span>
-          Features
+          Funciones
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-1.5">
@@ -712,7 +712,7 @@ export default function StoreSettingsPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">person</span>
-          Customer Portal
+          Portal de clientes
         </h2>
         <p className="text-sm text-muted-foreground">Configura el portal de cuentas para tus clientes.</p>
 
@@ -803,7 +803,7 @@ export default function StoreSettingsPage() {
               <span className="text-sm font-medium text-green-700 dark:text-green-400">Stripe conectado</span>
             </div>
             {settings.stripeAccountId && (
-              <p className="text-xs text-muted-foreground font-mono">Account: {settings.stripeAccountId}</p>
+              <p className="text-xs text-muted-foreground font-mono">Cuenta: {settings.stripeAccountId}</p>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {settings.payoutSchedule && (
@@ -823,7 +823,7 @@ export default function StoreSettingsPage() {
         ) : (
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              Connect your Stripe account to accept payments. You will be redirected to Stripe to complete onboarding.
+              Conecta tu cuenta de Stripe para aceptar pagos. Te redirigiremos a Stripe para completar el registro.
             </p>
             <button
               onClick={connectStripe}
@@ -845,10 +845,10 @@ export default function StoreSettingsPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">local_shipping</span>
-          Shipping Provider
+          Proveedor de envíos
         </h2>
         <p className="text-sm text-muted-foreground">
-          Choose how shipping rates are calculated. Manual uses your zone-based rates; EasyPost fetches live carrier rates and prints labels.
+          Elige cómo se calculan las tarifas de envío. Manual usa tus tarifas por zonas; EasyPost obtiene tarifas en vivo de las compañías de transporte e imprime etiquetas.
         </p>
 
         <div className="flex flex-wrap gap-3">
@@ -887,7 +887,7 @@ export default function StoreSettingsPage() {
                 </span>
                 <span className={settings.easypostApiKeyConfigured ? 'text-foreground' : 'text-muted-foreground'}>
                   {settings.easypostApiKeyConfigured
-                    ? `Key set, ends in …${settings.easypostApiKeyLast4 ?? '????'}`
+                    ? `Clave configurada, termina en …${settings.easypostApiKeyLast4 ?? '????'}`
                     : 'Sin clave configurada'}
                 </span>
                 {settings.easypostApiKeyConfigured && (
@@ -898,7 +898,7 @@ export default function StoreSettingsPage() {
                     className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs hover:bg-muted/40 transition-colors disabled:opacity-50"
                   >
                     <span className="material-icons text-sm">delete</span>
-                    Clear key
+                    Eliminar clave
                   </button>
                 )}
               </div>
@@ -918,11 +918,11 @@ export default function StoreSettingsPage() {
                   className={`${pBtnPrimary} whitespace-nowrap`}
                 >
                   {savingApiKey && <span className="material-icons text-base animate-spin">refresh</span>}
-                  Save key
+                  Guardar clave
                 </button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Stored encrypted at rest (AES-256-GCM). The plaintext is never echoed back to the browser.
+                    Se guarda cifrada en reposo (AES-256-GCM). El texto plano nunca se devuelve al navegador.
               </p>
             </div>
 
@@ -950,11 +950,11 @@ export default function StoreSettingsPage() {
                   className={pInput}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Set this in EasyPost dashboard → Webhooks → secret. URL to register:{' '}
+                  Configúralo en el panel de EasyPost → Webhooks → secret. URL que debes registrar:{' '}
                   <code className="font-mono text-[11px] bg-muted/40 px-1 py-0.5 rounded">
                     https://&lt;your-site&gt;/api/webhooks/easypost?websiteId={siteId}
                   </code>{' '}
-                  (replace with your actual domain).
+                  (sustitúyela por tu dominio real).
                 </p>
               </div>
             </div>
@@ -963,7 +963,7 @@ export default function StoreSettingsPage() {
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <span className="material-icons text-base text-muted-foreground">place</span>
-                Ship-From Address
+                Dirección de origen
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -1046,7 +1046,7 @@ export default function StoreSettingsPage() {
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <span className="material-icons text-base text-muted-foreground">inventory_2</span>
-                Default Parcel
+                Paquete predeterminado
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="space-y-1.5">
@@ -1123,7 +1123,7 @@ export default function StoreSettingsPage() {
                 <div>
                   <h3 className="text-sm font-semibold text-foreground">Probar conexión</h3>
                   <p className="text-xs text-muted-foreground">
-                    Sends a synthetic shipment from your ship-from address to San Francisco and quotes rates.
+                    Envía un envío sintético desde tu dirección de origen a San Francisco y cotiza tarifas.
                   </p>
                 </div>
                 <button
@@ -1144,7 +1144,7 @@ export default function StoreSettingsPage() {
                 <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300">
                   <div className="flex items-center gap-2 font-medium">
                     <span className="material-icons text-base">check_circle</span>
-                    Got {testResult.rateCount} rate{testResult.rateCount === 1 ? '' : 's'}
+                    Resultados: {testResult.rateCount} tarifa{testResult.rateCount === 1 ? '' : 's'}
                   </div>
                   {testResult.sampleRates.length > 0 && (
                     <ul className="mt-2 space-y-1 text-xs">
@@ -1177,10 +1177,10 @@ export default function StoreSettingsPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">print</span>
-          Fulfillment
+          Logística
         </h2>
         <p className="text-sm text-muted-foreground">
-          Choose how orders are fulfilled. Manual means you handle fulfillment yourself; Printful automátically submits print-on-demand orders.
+          Elige cómo se preparan los pedidos. Manual significa que gestionas la preparación tú mismo; Printful envía automáticamente los pedidos de impresión bajo demanda.
         </p>
 
         <div className="flex flex-wrap gap-3">
@@ -1219,7 +1219,7 @@ export default function StoreSettingsPage() {
                 </span>
                 <span className={settings.printfulApiKeyConfigured ? 'text-foreground' : 'text-muted-foreground'}>
                   {settings.printfulApiKeyConfigured
-                    ? `Key set, ends in …${settings.printfulApiKeyLast4 ?? '????'}`
+                    ? `Clave configurada, termina en …${settings.printfulApiKeyLast4 ?? '????'}`
                     : 'Sin clave configurada'}
                 </span>
                 {settings.printfulApiKeyConfigured && (
@@ -1230,7 +1230,7 @@ export default function StoreSettingsPage() {
                     className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs hover:bg-muted/40 transition-colors disabled:opacity-50"
                   >
                     <span className="material-icons text-sm">delete</span>
-                    Clear key
+                    Eliminar clave
                   </button>
                 )}
               </div>
@@ -1250,11 +1250,11 @@ export default function StoreSettingsPage() {
                   className={`${pBtnPrimary} whitespace-nowrap`}
                 >
                   {savingPrintfulApiKey && <span className="material-icons text-base animate-spin">refresh</span>}
-                  Save key
+                  Guardar clave
                 </button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Enter your Printful API key from Printful &rarr; Dashboard &rarr; API &rarr; Keys. Stored encrypted at rest (AES-256-GCM).
+                Introduce tu clave API de Printful desde Printful &rarr; Dashboard &rarr; API &rarr; Keys. Se guarda cifrada en reposo (AES-256-GCM).
               </p>
             </div>
 
@@ -1265,7 +1265,7 @@ export default function StoreSettingsPage() {
                 type="text"
                 value={settings.printfulStoreId ?? ''}
                 onChange={(e) => updateField('printfulStoreId', e.target.value || null)}
-                placeholder="e.g. 12345678"
+                placeholder="p. ej. 12345678"
                 className={pInput}
               />
               <p className="text-xs text-muted-foreground">Se encuentra en la URL de tu panel de Printful o en los ajustes de la tienda. Se guarda con el botón principal &quot;Guardar ajustes&quot;.</p>
@@ -1278,7 +1278,7 @@ export default function StoreSettingsPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">account_balance</span>
-          Stripe Payment Provider
+          Proveedor de pagos Stripe
         </h2>
 
         {!stripeByokAllowed ? (
@@ -1287,14 +1287,14 @@ export default function StoreSettingsPage() {
             <div>
               <p className="text-foreground font-medium">Stripe BYOK no está activado para este sitio.</p>
               <p className="text-muted-foreground mt-1">
-                Contact CRM AGENTS to enable using your own Stripe account.
+                Contacta con CRM AGENTS para activar el uso de tu propia cuenta de Stripe.
               </p>
             </div>
           </div>
         ) : (
           <>
             <p className="text-sm text-muted-foreground">
-              Choose whether payments route through CRM AGENTS Connect or your own Stripe account (BYOK).
+              Elige si los pagos pasan por CRM AGENTS Connect o por tu propia cuenta de Stripe (BYOK).
             </p>
 
             {/* Mode radio */}
@@ -1336,7 +1336,7 @@ export default function StoreSettingsPage() {
                     </span>
                     <span className={settings.stripeSecretKeyConfigured ? 'text-foreground' : 'text-muted-foreground'}>
                       {settings.stripeSecretKeyConfigured
-                        ? `Configured (ends in …${settings.stripeSecretKeyLast4 ?? '????'})`
+                        ? `Configurada (termina en …${settings.stripeSecretKeyLast4 ?? '????'})`
                         : 'Sin clave configurada'}
                     </span>
                     {settings.stripeSecretKeyConfigured && (
@@ -1347,7 +1347,7 @@ export default function StoreSettingsPage() {
                         className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs hover:bg-muted/40 transition-colors disabled:opacity-50"
                       >
                         <span className="material-icons text-sm">delete</span>
-                        Clear key
+                        Eliminar clave
                       </button>
                     )}
                   </div>
@@ -1356,7 +1356,7 @@ export default function StoreSettingsPage() {
                       type="password"
                       value={stripeSecretInput}
                       onChange={(e) => setStripeSecretInput(e.target.value)}
-                      placeholder="sk_test_… or sk_live_…"
+                      placeholder="sk_test_… o sk_live_…"
                       className={pInput}
                       autoComplete="off"
                     />
@@ -1367,11 +1367,11 @@ export default function StoreSettingsPage() {
                       className={`${pBtnPrimary} whitespace-nowrap`}
                     >
                       {savingStripeSecret && <span className="material-icons text-base animate-spin">refresh</span>}
-                      Save key
+                      Guardar clave
                     </button>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Stored encrypted at rest (AES-256-GCM). The plaintext is never echoed back to the browser.
+                Se guarda cifrada en reposo (AES-256-GCM). El texto plano nunca se devuelve al navegador.
                   </p>
                 </div>
 
@@ -1382,7 +1382,7 @@ export default function StoreSettingsPage() {
                     type="text"
                     value={settings.stripePublishableKey ?? ''}
                     onChange={(e) => updateField('stripePublishableKey', e.target.value || null)}
-                    placeholder="pk_test_… or pk_live_…"
+                    placeholder="pk_test_… o pk_live_…"
                     className={pInput}
                     autoComplete="off"
                   />
@@ -1407,7 +1407,7 @@ export default function StoreSettingsPage() {
                         className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs hover:bg-muted/40 transition-colors disabled:opacity-50"
                       >
                         <span className="material-icons text-sm">delete</span>
-                        Clear secret
+                        Eliminar secreto
                       </button>
                     )}
                   </div>
@@ -1427,11 +1427,11 @@ export default function StoreSettingsPage() {
                       className={`${pBtnPrimary} whitespace-nowrap`}
                     >
                       {savingStripeWebhook && <span className="material-icons text-base animate-spin">refresh</span>}
-                      Save secret
+                      Guardar secreto
                     </button>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Signing secret from Stripe Dashboard → Developers → Webhooks. Stored encrypted at rest.
+                    Secreto de firma del panel de Stripe → Developers → Webhooks. Se guarda cifrado en reposo.
                   </p>
                 </div>
 
@@ -1458,7 +1458,7 @@ export default function StoreSettingsPage() {
                     </button>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Paste this into your Stripe dashboard → Developers → Webhooks → Add endpoint. Listen for{' '}
+                    Pega esto en tu panel de Stripe → Developers → Webhooks → Add endpoint. Escucha los eventos{' '}
                     <code className="font-mono text-[11px] bg-muted/40 px-1 py-0.5 rounded">payment_intent.succeeded</code>,{' '}
                     <code className="font-mono text-[11px] bg-muted/40 px-1 py-0.5 rounded">payment_intent.payment_failed</code>,{' '}
                     <code className="font-mono text-[11px] bg-muted/40 px-1 py-0.5 rounded">charge.refunded</code>.
@@ -1471,7 +1471,7 @@ export default function StoreSettingsPage() {
                     <div>
                       <h3 className="text-sm font-semibold text-foreground">Probar conexión</h3>
                       <p className="text-xs text-muted-foreground">
-                        Verifies the secret key by retrieving your Stripe account.
+                        Verifica la clave secreta obteniendo tu cuenta de Stripe.
                       </p>
                     </div>
                     <button
@@ -1492,16 +1492,16 @@ export default function StoreSettingsPage() {
                     <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300">
                       <div className="flex items-center gap-2 font-medium">
                         <span className="material-icons text-base">check_circle</span>
-                        Connected to Stripe
+                        Conectado a Stripe
                       </div>
                       <ul className="mt-2 space-y-1 text-xs font-mono">
-                        <li>Account: {stripeTestResult.data.account.id}</li>
+                        <li>Cuenta: {stripeTestResult.data.account.id}</li>
                         {stripeTestResult.data.account.business_name && (
-                          <li>Business: {stripeTestResult.data.account.business_name}</li>
+                          <li>Empresa: {stripeTestResult.data.account.business_name}</li>
                         )}
                         <li>
-                          Charges: {stripeTestResult.data.account.charges_enabled ? 'enabled' : 'disabled'} · Payouts:{' '}
-                          {stripeTestResult.data.account.payouts_enabled ? 'enabled' : 'disabled'}
+                          Cargos: {stripeTestResult.data.account.charges_enabled ? 'habilitados' : 'deshabilitados'} · Pagos:{' '}
+                          {stripeTestResult.data.account.payouts_enabled ? 'habilitados' : 'deshabilitados'}
                         </li>
                       </ul>
                     </div>

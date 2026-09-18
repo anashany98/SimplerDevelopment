@@ -160,10 +160,10 @@ describe('StoreSettingsPage — main render', () => {
     await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     expect(container.textContent).toContain('General');
     expect(container.textContent).toContain('Impuesto');
-    expect(container.textContent).toContain('Features');
-    expect(container.textContent).toContain('Customer Portal');
+    expect(container.textContent).toContain('Funciones');
+    expect(container.textContent).toContain('Portal de clientes');
     expect(container.textContent).toContain('Stripe Connect');
-    expect(container.textContent).toContain('Shipping Provider');
+    expect(container.textContent).toContain('Proveedor de envíos');
   });
 
   it('populates storeName input from settings', async () => {
@@ -502,8 +502,8 @@ describe('StoreSettingsPage — shipping provider', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Clave API de EasyPost');
       expect(container.textContent).toContain('…1234');
-      expect(container.textContent).toContain('Ship-From Address');
-      expect(container.textContent).toContain('Default Parcel');
+      expect(container.textContent).toContain('Dirección de origen');
+      expect(container.textContent).toContain('Paquete predeterminado');
     });
   });
 
@@ -527,7 +527,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       'input[placeholder="EZAK… o EZTK…"]',
     ) as HTMLInputElement;
     fireEvent.change(apiKeyInput, { target: { value: 'EZAK_test_key' } });
-    fireEvent.click(findBtn(container, 'Save key')!);
+    fireEvent.click(findBtn(container, 'Guardar clave')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Clave API de EasyPost guardada.');
     });
@@ -550,7 +550,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       'input[placeholder="EZAK… o EZTK…"]',
     ) as HTMLInputElement;
     fireEvent.change(apiKeyInput, { target: { value: 'EZAK_bad' } });
-    fireEvent.click(findBtn(container, 'Save key')!);
+    fireEvent.click(findBtn(container, 'Guardar clave')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Invalid key');
     });
@@ -572,7 +572,7 @@ describe('StoreSettingsPage — shipping provider', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('…5678'));
-    fireEvent.click(findBtn(container, 'Clear key')!);
+    fireEvent.click(findBtn(container, 'Eliminar clave')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Clave API de EasyPost eliminada.');
     });
@@ -597,7 +597,7 @@ describe('StoreSettingsPage — shipping provider', () => {
     await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
     fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('3 rates');
+      expect(container.textContent).toContain('3 tarifas');
       expect(container.textContent).toContain('USPS');
     });
   });
@@ -650,7 +650,7 @@ describe('StoreSettingsPage — shipping provider', () => {
     await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
     fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Got 1 rate');
+      expect(container.textContent).toContain('Resultados: 1 tarifa');
     });
   });
 
@@ -700,7 +700,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Ship-From Address'));
+    await waitFor(() => expect(container.textContent).toContain('Dirección de origen'));
     // Address Line 1 input
     const line1Inputs = Array.from(container.querySelectorAll('input')).filter(
       (i) => (i as HTMLInputElement).value === '123 Main',
@@ -722,7 +722,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Default Parcel'));
+    await waitFor(() => expect(container.textContent).toContain('Paquete predeterminado'));
     // Length input should show "12"
     const lengthInput = Array.from(container.querySelectorAll('input[type="number"]')).find(
       (i) => (i as HTMLInputElement).value === '12',
@@ -736,7 +736,7 @@ describe('StoreSettingsPage — shipping provider', () => {
 describe('StoreSettingsPage — customer portal', () => {
   it('renders Customer Portal section', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     expect(container.textContent).toContain('Cuentas de clientes');
     expect(container.textContent).toContain('Compra como invitado');
     expect(container.textContent).toContain('Lista de deseos');
@@ -746,7 +746,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('updates support email field', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const emailInput = container.querySelector(
       'input[placeholder="support@yourstore.com"]',
     ) as HTMLInputElement;
@@ -756,7 +756,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('updates return policy URL field', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const returnInput = container.querySelector(
       'input[placeholder="https://yourstore.com/returns"]',
     ) as HTMLInputElement;
@@ -766,7 +766,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('updates welcome message textarea', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Welcome!' } });
     expect(textarea.value).toBe('Welcome!');
@@ -774,7 +774,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('customer portal toggle buttons work', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
     ) as HTMLButtonElement[];
@@ -789,7 +789,7 @@ describe('StoreSettingsPage — customer portal', () => {
 describe('StoreSettingsPage — Stripe BYOK', () => {
   it('shows "not enabled" notice when stripeByokAllowed is false', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Stripe Payment Provider'));
+    await waitFor(() => expect(container.textContent).toContain('Proveedor de pagos Stripe'));
     expect(container.textContent).toContain('Stripe BYOK no está activado para este sitio.');
   });
 
@@ -801,7 +801,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Stripe Payment Provider'));
+    await waitFor(() => expect(container.textContent).toContain('Proveedor de pagos Stripe'));
     expect(container.textContent).toContain('Conectar');
     expect(container.textContent).toContain('BYOK');
   });
@@ -843,12 +843,12 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Clave secreta'));
     const secretInput = container.querySelector(
-      'input[placeholder="sk_test_… or sk_live_…"]',
+      'input[placeholder="sk_test_… o sk_live_…"]',
     ) as HTMLInputElement;
     fireEvent.change(secretInput, { target: { value: 'sk_test_abc123' } });
     // Find the save key button in the secret section
     const saveKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Save key' || b.textContent?.includes('Save key'),
+      (b) => b.textContent?.trim() === 'Guardar clave' || b.textContent?.includes('Guardar clave'),
     ) as HTMLButtonElement;
     expect(saveKeyBtn).toBeTruthy();
     fireEvent.click(saveKeyBtn!);
@@ -874,11 +874,11 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Clave secreta'));
     const secretInput = container.querySelector(
-      'input[placeholder="sk_test_… or sk_live_…"]',
+      'input[placeholder="sk_test_… o sk_live_…"]',
     ) as HTMLInputElement;
     fireEvent.change(secretInput, { target: { value: 'sk_test_bad' } });
     const saveKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save key'),
+      (b) => b.textContent?.includes('Guardar clave'),
     ) as HTMLButtonElement;
     fireEvent.click(saveKeyBtn!);
     await waitFor(() => {
@@ -904,7 +904,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('…abcd'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear key'),
+      (b) => b.textContent?.includes('Eliminar clave'),
     ) as HTMLButtonElement;
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn!);
@@ -930,7 +930,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     ) as HTMLInputElement;
     fireEvent.change(webhookInput, { target: { value: 'whsec_test123' } });
     const saveSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save secret'),
+      (b) => b.textContent?.includes('Guardar secreto'),
     ) as HTMLButtonElement;
     expect(saveSecretBtn).toBeTruthy();
     fireEvent.click(saveSecretBtn!);
@@ -958,7 +958,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const webhookInput = container.querySelector('input[placeholder="whsec_…"]') as HTMLInputElement;
     fireEvent.change(webhookInput, { target: { value: 'whsec_bad' } });
     const saveSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save secret'),
+      (b) => b.textContent?.includes('Guardar secreto'),
     ) as HTMLButtonElement;
     fireEvent.click(saveSecretBtn!);
     await waitFor(() => {
@@ -983,7 +983,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Configurado'));
     const clearSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear secret'),
+      (b) => b.textContent?.includes('Eliminar secreto'),
     ) as HTMLButtonElement;
     expect(clearSecretBtn).toBeTruthy();
     fireEvent.click(clearSecretBtn!);
@@ -1025,7 +1025,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     // Click the stripe one (second occurrence or first if only one)
     fireEvent.click(testBtns[testBtns.length - 1]);
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected to Stripe');
+      expect(container.textContent).toContain('Conectado a Stripe');
       expect(container.textContent).toContain('acct_xyz');
       expect(container.textContent).toContain('Acme Inc');
     });
@@ -1129,7 +1129,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Clave publicable'));
     const pkInput = container.querySelector(
-      'input[placeholder="pk_test_… or pk_live_…"]',
+      'input[placeholder="pk_test_… o pk_live_…"]',
     ) as HTMLInputElement;
     expect(pkInput).toBeTruthy();
     expect(pkInput.value).toBe('pk_test_existing');
