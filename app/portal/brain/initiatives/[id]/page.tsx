@@ -78,7 +78,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
 
   const load = useCallback(async () => {
     if (!Number.isFinite(initiativeId) || initiativeId <= 0) {
-      setError('Invalid initiative id');
+      setError('ID de iniciativa no válido');
       setLoading(false);
       return;
     }
@@ -88,13 +88,13 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
       const r = await fetch(`/api/portal/brain/initiatives/${initiativeId}?includeGoals=true&includeLinks=true`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load initiative');
+        setError(json.message || 'No se pudo cargar la iniciativa');
         setData(null);
         return;
       }
       setData(json.data as DetailResponse);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -150,7 +150,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         }),
       });
       const json = await r.json();
-      if (!r.ok || !json.success) throw new Error(json.message || 'Update failed');
+      if (!r.ok || !json.success) throw new Error(json.message || 'No se pudo actualizar');
       setEditing(false);
       await load();
     } finally {
@@ -171,7 +171,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         }),
       });
       const json = await r.json();
-      if (!r.ok || !json.success) throw new Error(json.message || 'Close failed');
+      if (!r.ok || !json.success) throw new Error(json.message || 'No se pudo cerrar');
       setClosing(false);
       await load();
     } finally {
@@ -180,7 +180,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
   };
 
   const onReopen = async () => {
-    if (!confirm('Reopen this initiative? Its status will be set to Active.')) return;
+    if (!confirm('¿Reabrir esta iniciativa? Su estado pasará a Activa.')) return;
     setBusy(true);
     try {
       const r = await fetch(`/api/portal/brain/initiatives/${initiativeId}/reopen`, {
@@ -189,7 +189,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Reopen failed');
+        setError(json.message || 'No se pudo reabrir');
         return;
       }
       await load();
@@ -199,13 +199,13 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
   };
 
   const onCancel = async () => {
-    if (!confirm('Cancel this initiative? It will be soft-cancelled (recoverable via reopen).')) return;
+    if (!confirm('¿Cancelar esta iniciativa? Se cancelará de forma reversible (podrás reabrirla).')) return;
     setBusy(true);
     try {
       const r = await fetch(`/api/portal/brain/initiatives/${initiativeId}`, { method: 'DELETE' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Cancel failed');
+        setError(json.message || 'No se pudo cancelar');
         return;
       }
       // Soft-cancel — go back to list.
@@ -223,18 +223,18 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         body: JSON.stringify(args),
       });
       const json = await r.json();
-      if (!r.ok || !json.success) throw new Error(json.message || 'Check-in failed');
+      if (!r.ok || !json.success) throw new Error(json.message || 'No se pudo registrar el avance');
       await load();
     },
     [load],
   );
 
   const onGoalDelete = useCallback(async (goalId: number) => {
-    if (!confirm('Delete this goal? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar este objetivo? Esta acción no se puede deshacer.')) return;
     const r = await fetch(`/api/portal/brain/goals/${goalId}`, { method: 'DELETE' });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      alert(json.message || 'Delete failed');
+      alert(json.message || 'No se pudo eliminar');
       return;
     }
     await load();
@@ -257,11 +257,11 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
         >
           <span className="material-icons text-sm">chevron_left</span>
-          Initiatives
+          Iniciativas
         </Link>
         <div className="mt-4 bg-destructive/10 border border-destructive/30 rounded-md p-4 text-sm text-destructive flex items-center gap-2">
           <span className="material-icons text-base">error_outline</span>
-          {error || 'Initiative not found'}
+          {error || 'Iniciativa no encontrada'}
         </div>
       </div>
     );
@@ -275,7 +275,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
   const status = initiativeStatusChip(initiative.status);
   const priority = initiativePriorityChip(initiative.priority);
   const owner = initiative.ownerId !== null ? ownerLookup[initiative.ownerId] : null;
-  const ownerName = owner?.name || owner?.email || (initiative.ownerId !== null ? `User #${initiative.ownerId}` : null);
+  const ownerName = owner?.name || owner?.email || (initiative.ownerId !== null ? `Usuario #${initiative.ownerId}` : null);
   const days = daysUntil(initiative.targetDate);
   const overdue = days !== null && days < 0 && !isTerminal;
 
@@ -294,7 +294,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <span className="material-icons text-sm">chevron_left</span>
-        Initiatives
+        Iniciativas
       </Link>
 
       {/* Header */}
@@ -329,7 +329,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                 className={pBtnGhost}
               >
                 <span className="material-icons text-sm">restart_alt</span>
-                Reopen
+                Reabrir
               </button>
             )}
             {!isTerminal && (
@@ -374,10 +374,10 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
               <span className="material-icons text-base">
                 {overdue ? 'event_busy' : 'event'}
               </span>
-              target {new Date(initiative.targetDate).toLocaleDateString()}
+              fecha objetivo {new Date(initiative.targetDate).toLocaleDateString()}
               {days !== null && !isTerminal && (
                 <span className="ml-1 opacity-70">
-                  ({days < 0 ? `${Math.abs(days)}d overdue` : `${days}d left`})
+                  ({days < 0 ? `${Math.abs(days)}d de retraso` : `${days}d restantes`})
                 </span>
               )}
             </span>
@@ -385,13 +385,13 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
           {initiative.startDate && (
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-base">play_circle</span>
-              started {new Date(initiative.startDate).toLocaleDateString()}
+              iniciada {new Date(initiative.startDate).toLocaleDateString()}
             </span>
           )}
           {initiative.closedAt && (
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-base">archive</span>
-              closed {relativeTime(initiative.closedAt)} ago
+              cerrada hace {relativeTime(initiative.closedAt)}
             </span>
           )}
         </div>
@@ -407,7 +407,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                   onClick={() => setShowFullDescription(true)}
                   className="text-primary hover:underline text-xs"
                 >
-                  show more
+                  mostrar más
                 </button>
               </>
             ) : (
@@ -419,7 +419,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
                     onClick={() => setShowFullDescription(false)}
                     className="ml-2 text-primary hover:underline text-xs"
                   >
-                    show less
+                    mostrar menos
                   </button>
                 )}
               </>
@@ -455,7 +455,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
           <div className="mt-4 pt-4 border-t border-border">
             <h2 className={`${pSectionTitle} mb-3 inline-flex items-center gap-1.5`}>
               <span className="material-icons text-base">archive</span>
-              Close initiative
+              Cerrar iniciativa
             </h2>
             <InitiativeForm
               mode="close"
@@ -471,7 +471,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
             <span className="material-icons text-base text-primary">track_changes</span>
-            Goals
+            Objetivos
             <span className="text-xs text-muted-foreground font-normal">({goals.length})</span>
           </h2>
           <button
@@ -515,7 +515,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-3">
           {goals.length === 0 ? (
             <div className="lg:col-span-2 text-center py-6 text-xs text-muted-foreground bg-muted/30 rounded-md border border-dashed border-border">
-              No goals yet. Add one to track measurable progress on this initiative.
+              Aún no hay objetivos. Añade uno para hacer seguimiento del progreso medible de esta iniciativa.
             </div>
           ) : (
             goals.map((g) => (
@@ -543,11 +543,11 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
         <section className={pCardPad}>
           <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
             <span className="material-icons text-base text-primary">menu_book</span>
-            Lessons learned
+            Lecciones aprendidas
           </h2>
           {initiative.closeReason && (
             <p className="mt-2 text-xs text-muted-foreground">
-              Reason: {initiative.closeReason}
+              Motivo: {initiative.closeReason}
             </p>
           )}
           <p className="mt-3 text-sm text-foreground/90 whitespace-pre-wrap">
@@ -583,7 +583,7 @@ function AddGoalForm({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      setErr('Title is required');
+      setErr('El título es obligatorio');
       return;
     }
     setSubmitting(true);
@@ -607,12 +607,12 @@ function AddGoalForm({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setErr(json.message || 'Create failed');
+        setErr(json.message || 'No se pudo crear');
         return;
       }
       onCreated();
     } catch (e2) {
-      setErr(e2 instanceof Error ? e2.message : 'Network error');
+      setErr(e2 instanceof Error ? e2.message : 'Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -624,7 +624,7 @@ function AddGoalForm({
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Goal title"
+        placeholder="Título del objetivo"
         required
         autoFocus
         className={pInput}
@@ -633,22 +633,22 @@ function AddGoalForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={2}
-        placeholder="Description (optional)"
+        placeholder="Descripción (opcional)"
         className={pInput}
       />
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Unit</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Unidad</span>
           <select
             value={unit}
             onChange={(e) => setUnit(e.target.value as typeof unit)}
             className={`mt-1 ${pSelect}`}
           >
-            <option value="">none</option>
+            <option value="">ninguna</option>
             <option value="percent">%</option>
-            <option value="usd_cents">$ (cents)</option>
-            <option value="count">count</option>
-            <option value="boolean">yes/no</option>
+            <option value="usd_cents">$ (céntimos)</option>
+            <option value="count">recuento</option>
+            <option value="boolean">sí/no</option>
           </select>
         </label>
         <label className="block">
@@ -672,7 +672,7 @@ function AddGoalForm({
           />
         </label>
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Target date</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Fecha objetivo</span>
           <input
             type="date"
             value={targetDate}
@@ -711,7 +711,7 @@ function AddGoalForm({
           className={pBtnPrimary}
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Adding…</>
+            ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Añadiendo…</>
             : <><span className="material-icons text-sm">add</span>Añadir objetivo</>}
         </button>
       </div>

@@ -254,7 +254,7 @@ describe('InitiativeDetailPage — invalid id', () => {
     fetchMock.mockImplementation(() => new Promise(() => { /* pending */ }));
     const { container } = renderPage('abc');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid initiative id');
+      expect(container.textContent).toContain('ID de iniciativa no válido');
     });
   });
 
@@ -262,7 +262,7 @@ describe('InitiativeDetailPage — invalid id', () => {
     fetchMock.mockImplementation(() => new Promise(() => { /* pending */ }));
     const { container } = renderPage('0');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid initiative id');
+      expect(container.textContent).toContain('ID de iniciativa no válido');
     });
   });
 });
@@ -292,7 +292,7 @@ describe('InitiativeDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load initiative');
+      expect(container.textContent).toContain('No se pudo cargar la iniciativa');
     });
   });
 
@@ -333,7 +333,7 @@ describe('InitiativeDetailPage — error state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // data is null → !data → error branch, no error message set → "Initiative not found"
-      expect(container.textContent).toMatch(/not found|Failed to load/i);
+      expect(container.textContent).toMatch(/no encontrada|No se pudo cargar/i);
     });
   });
 });
@@ -373,7 +373,7 @@ describe('InitiativeDetailPage — successful render', () => {
   it('renders Goals section', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Goals');
+      expect(container.textContent).toContain('Objetivos');
     });
   });
 
@@ -387,7 +387,7 @@ describe('InitiativeDetailPage — successful render', () => {
   it('renders "No goals yet" when goals list is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No goals yet');
+      expect(container.textContent).toContain('Aún no hay objetivos');
     });
   });
 });
@@ -474,7 +474,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 
@@ -484,7 +484,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     await waitFor(() => {
       // The date is rendered via toLocaleDateString() — value may vary by timezone,
       // so we just verify the "target" label and a year appear together.
-      expect(container.textContent).toMatch(/target.*2025/);
+      expect(container.textContent).toMatch(/objetivo.*2025/);
     });
   });
 
@@ -493,7 +493,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // The date is rendered via toLocaleDateString() — value may vary by timezone.
-      expect(container.textContent).toContain('started');
+      expect(container.textContent).toContain('iniciada');
       expect(container.textContent).toContain('2025');
     });
   });
@@ -502,7 +502,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     setupDefault({ targetDate: '2020-01-01', status: 'active' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('overdue');
+      expect(container.textContent).toContain('de retraso');
     });
   });
 
@@ -512,7 +512,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     setupDefault({ targetDate: future, status: 'active' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('d left');
+      expect(container.textContent).toContain('d restantes');
     });
   });
 
@@ -520,7 +520,7 @@ describe('InitiativeDetailPage — owner and dates', () => {
     setupDefault({ status: 'completed', closedAt: '2024-06-01T10:00:00Z' });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('closed');
+      expect(container.textContent).toContain('cerrada');
     });
   });
 });
@@ -542,7 +542,7 @@ describe('InitiativeDetailPage — description', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const showMoreBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       );
       expect(showMoreBtn).toBeTruthy();
     });
@@ -554,14 +554,14 @@ describe('InitiativeDetailPage — description', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       ) as HTMLButtonElement;
       expect(btn).toBeTruthy();
       fireEvent.click(btn);
     });
     await waitFor(() => {
       const showLessBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show less'),
+        (b) => b.textContent?.includes('mostrar menos'),
       );
       expect(showLessBtn).toBeTruthy();
     });
@@ -573,19 +573,19 @@ describe('InitiativeDetailPage — description', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const showMoreBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       ) as HTMLButtonElement;
       fireEvent.click(showMoreBtn);
     });
     await waitFor(() => {
       const showLessBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show less'),
+        (b) => b.textContent?.includes('mostrar menos'),
       ) as HTMLButtonElement;
       fireEvent.click(showLessBtn);
     });
     await waitFor(() => {
       const showMoreBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       );
       expect(showMoreBtn).toBeTruthy();
     });
@@ -631,7 +631,7 @@ describe('InitiativeDetailPage — action buttons (active)', () => {
       expect(container.textContent).toContain('Test Initiative');
     });
     const reopenBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reopen'),
+      (b) => b.textContent?.includes('Reabrir'),
     );
     expect(reopenBtn).toBeFalsy();
   });
@@ -645,7 +645,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const reopenBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       );
       expect(reopenBtn).toBeTruthy();
     });
@@ -896,7 +896,7 @@ describe('InitiativeDetailPage — reopen flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -914,7 +914,7 @@ describe('InitiativeDetailPage — reopen flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -939,7 +939,7 @@ describe('InitiativeDetailPage — reopen flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -1199,7 +1199,7 @@ describe('AddGoalForm', () => {
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
     await waitFor(() => {
-      expect(container.textContent).toContain('Title is required');
+      expect(container.textContent).toContain('El título es obligatorio');
     });
   });
 
@@ -1215,7 +1215,7 @@ describe('AddGoalForm', () => {
     });
     const { container } = renderPage();
     await openAddGoal(container);
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'New Goal' } });
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
@@ -1239,7 +1239,7 @@ describe('AddGoalForm', () => {
     });
     const { container } = renderPage();
     await openAddGoal(container);
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'New Goal' } });
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
@@ -1260,12 +1260,12 @@ describe('AddGoalForm', () => {
     });
     const { container } = renderPage();
     await openAddGoal(container);
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'New Goal' } });
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -1294,7 +1294,7 @@ describe('AddGoalForm', () => {
     const { container } = renderPage();
     await openAddGoal(container);
 
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Full Goal' } });
 
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
@@ -1344,7 +1344,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Lessons learned');
+      expect(container.textContent).toContain('Lecciones aprendidas');
       expect(container.textContent).toContain('We learned a lot');
     });
   });
@@ -1377,7 +1377,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Completada');
     });
-    expect(container.textContent).not.toContain('Lessons learned');
+    expect(container.textContent).not.toContain('Lecciones aprendidas');
   });
 });
 

@@ -96,13 +96,13 @@ export default function BrainConnectPage() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setGenerateError(json.message ?? 'Failed to generate key.');
+        setGenerateError(json.message ?? 'No se pudo generar la clave.');
         return;
       }
       setNewKey(json.data.key as string);
       await load();
     } catch (err) {
-      setGenerateError(err instanceof Error ? err.message : 'Network error');
+      setGenerateError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setGenerating(false);
     }
@@ -117,18 +117,18 @@ export default function BrainConnectPage() {
       if (r.ok && json?.success) {
         setTestResult({
           ok: true,
-          message: 'Brain is reachable from this browser session.',
+          message: 'Brain es accesible desde esta sesión del navegador.',
         });
       } else {
         setTestResult({
           ok: false,
-          message: json?.message ?? `Request failed (${r.status})`,
+          message: json?.message ?? `La solicitud falló (${r.status})`,
         });
       }
     } catch (err) {
       setTestResult({
         ok: false,
-        message: err instanceof Error ? err.message : 'Network error',
+        message: err instanceof Error ? err.message : 'Error de red',
       });
     } finally {
       setTesting(false);
@@ -186,12 +186,12 @@ export default function BrainConnectPage() {
             Brain
           </Link>
           <span className="material-icons text-base">chevron_right</span>
-          <span>Connect Claude Desktop</span>
+          <span>Conectar Claude Desktop</span>
         </div>
         <h1 className="mt-2 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-[1.05] tracking-[-0.028em] text-foreground">Conecta Claude Desktop con Brain</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Generate an API key, paste a one-line config into Claude Desktop, and your Brain&apos;s
-          knowledge, meetings, tasks, and CRM become available as MCP tools.
+          Genera una clave de API, pega una configuración de una línea en Claude Desktop y el
+          conocimiento, reuniones, tareas y CRM de tu Brain estarán disponibles como herramientas MCP.
         </p>
       </div>
 
@@ -201,30 +201,30 @@ export default function BrainConnectPage() {
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
               <span className="material-icons text-base">power</span>
-              Connection status
+              Estado de la conexión
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Brain is connected as soon as you have at least one active API key with brain scopes.
+              Brain está conectado en cuanto tienes al menos una clave de API activa con permisos de brain.
             </p>
           </div>
           {isConnected ? (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium text-green-700 dark:text-green-400">
               <span className="material-icons text-base">check_circle</span>
-              Connected
+              Conectado
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
               <span className="material-icons text-base">cancel</span>
-              Not connected
+              Sin conexión
             </span>
           )}
         </div>
 
         {loadingKeys ? (
-          <p className="text-sm text-muted-foreground">Loading keys…</p>
+          <p className="text-sm text-muted-foreground">Cargando claves…</p>
         ) : brainKeys.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No API keys with brain scopes yet. Generate one below to get started.
+            Aún no hay claves de API con permisos de brain. Genera una abajo para empezar.
           </p>
         ) : (
           <div className="rounded-xl border border-border overflow-x-auto -mx-4 sm:mx-0">
@@ -232,8 +232,8 @@ export default function BrainConnectPage() {
               <thead className="bg-muted/50">
                 <tr className="text-left">
                   <th className="px-3 py-2 font-medium">Nombre</th>
-                  <th className="px-3 py-2 font-medium">Key</th>
-                  <th className="px-3 py-2 font-medium">Scopes</th>
+                  <th className="px-3 py-2 font-medium">Clave</th>
+                  <th className="px-3 py-2 font-medium">Permisos</th>
                   <th className="px-3 py-2 font-medium">Último uso</th>
                   <th className="px-3 py-2 font-medium">Creado</th>
                 </tr>
@@ -255,7 +255,7 @@ export default function BrainConnectPage() {
                       </div>
                     </td>
                     <td className="px-3 py-2 text-muted-foreground">
-                      {k.lastUsedAt ? formatDate(k.lastUsedAt) : 'Never'}
+                      {k.lastUsedAt ? formatDate(k.lastUsedAt) : 'Nunca'}
                     </td>
                     <td className="px-3 py-2 text-muted-foreground">{formatDate(k.createdAt)}</td>
                   </tr>
@@ -265,9 +265,9 @@ export default function BrainConnectPage() {
           </div>
         )}
         <p className="text-xs text-muted-foreground">
-          Manage all keys (including non-brain ones) in{' '}
+          Gestiona todas las claves (incluidas las que no son de brain) en{' '}
           <Link href="/portal/settings/api-keys" className="text-primary underline">
-            Settings &raquo; API Keys
+            Ajustes &raquo; Claves de API
           </Link>
           .
         </p>
@@ -278,14 +278,14 @@ export default function BrainConnectPage() {
         <div>
           <h2 className="text-lg font-semibold flex items-center gap-2">
             <span className="material-icons text-base">vpn_key</span>
-            Generate API key
+            Generar clave de API
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Creates a new portal API key with{' '}
+            Crea una nueva clave de API del portal con los permisos{' '}
             <code className="text-xs px-1 py-0.5 bg-muted rounded">brain:read</code>,{' '}
-            <code className="text-xs px-1 py-0.5 bg-muted rounded">brain:write</code>, and{' '}
-            <code className="text-xs px-1 py-0.5 bg-muted rounded">brain:approve</code> scopes —
-            exactly what Claude Desktop needs to use the Brain MCP server.
+            <code className="text-xs px-1 py-0.5 bg-muted rounded">brain:write</code> y{' '}
+            <code className="text-xs px-1 py-0.5 bg-muted rounded">brain:approve</code> —
+            exactamente lo que Claude Desktop necesita para usar el servidor MCP de Brain.
           </p>
         </div>
 
@@ -297,7 +297,7 @@ export default function BrainConnectPage() {
           <span className="material-icons text-base">
             {generating ? 'hourglass_top' : 'add'}
           </span>
-          {generating ? 'Generating…' : 'Generate API key for Claude Desktop'}
+          {generating ? 'Generando…' : 'Generar clave de API para Claude Desktop'}
         </button>
 
         {generateError && (
@@ -308,13 +308,13 @@ export default function BrainConnectPage() {
           <div className="rounded-md border border-amber-400 bg-amber-50 dark:bg-amber-950/20 p-4 space-y-2">
             <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-medium">
               <span className="material-icons text-base">warning</span>
-              Save this key now — you won&apos;t see it again
+              Guarda esta clave ahora — no volverás a verla
             </div>
             <p className="text-xs text-amber-800/80 dark:text-amber-200/80">
-              For security we only show the full key on creation. Subsequent visits will show only
-              the last-4 preview. If you lose it, just generate a new one and revoke the old key in{' '}
+              Por seguridad solo mostramos la clave completa al crearla. Las visitas posteriores
+              solo mostrarán los últimos 4 caracteres. Si la pierdes, genera una nueva y revoca la antigua en{' '}
               <Link href="/portal/settings/api-keys" className="underline">
-                Settings &raquo; API Keys
+                Ajustes &raquo; Claves de API
               </Link>
               .
             </p>
@@ -329,13 +329,13 @@ export default function BrainConnectPage() {
                 <span className="material-icons text-sm">
                   {copiedKey ? 'check' : 'content_copy'}
                 </span>
-                {copiedKey ? 'Copied' : 'Copy key'}
+                {copiedKey ? 'Copiada' : 'Copiar clave'}
               </button>
               <button
                 onClick={() => setNewKey(null)}
                 className="text-xs px-2 py-1 border border-border rounded-lg hover:bg-muted"
               >
-                I&apos;ve saved it
+                La he guardado
               </button>
             </div>
           </div>
@@ -347,16 +347,16 @@ export default function BrainConnectPage() {
         <div>
           <h2 className="text-lg font-semibold flex items-center gap-2">
             <span className="material-icons text-base">settings</span>
-            Claude Desktop config
+            Configuración de Claude Desktop
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Paste this into{' '}
+            Pega esto en{' '}
             <code className="text-xs px-1 py-0.5 bg-muted rounded">
               ~/.claude/claude_desktop_config.json
             </code>
-            . Replace{' '}
-            <code className="text-xs px-1 py-0.5 bg-muted rounded">YOUR_KEY</code> with the API key
-            you generated above.
+            . Sustituye{' '}
+            <code className="text-xs px-1 py-0.5 bg-muted rounded">YOUR_KEY</code> por la clave de
+            API que generaste arriba.
           </p>
         </div>
 
@@ -371,25 +371,25 @@ export default function BrainConnectPage() {
             <span className="material-icons text-sm">
               {copiedConfig ? 'check' : 'content_copy'}
             </span>
-            {copiedConfig ? 'Copied' : 'Copy'}
+            {copiedConfig ? 'Copiado' : 'Copiar'}
           </button>
         </div>
 
         <ol className="list-decimal pl-5 space-y-2 text-sm">
           <li>
-            Paste the JSON above into{' '}
+            Pega el JSON de arriba en{' '}
             <code className="text-xs px-1 py-0.5 bg-muted rounded">
               ~/.claude/claude_desktop_config.json
             </code>{' '}
-            (create the file if it doesn&apos;t exist) and replace{' '}
-            <code className="text-xs px-1 py-0.5 bg-muted rounded">YOUR_KEY</code> with your key.
+            (crea el archivo si no existe) y sustituye{' '}
+            <code className="text-xs px-1 py-0.5 bg-muted rounded">YOUR_KEY</code> por tu clave.
           </li>
-          <li>Restart Claude Desktop.</li>
+          <li>Reinicia Claude Desktop.</li>
           <li>
-            Brain tools appear automátically. Try{' '}
-            <code className="text-xs px-1 py-0.5 bg-muted rounded">/mcp</code> in Claude Desktop to
-              verify <code className="text-xs px-1 py-0.5 bg-muted rounded">crm-agents-brain</code>{' '}
-            is listed.
+            Las herramientas de Brain aparecen automáticamente. Prueba{' '}
+            <code className="text-xs px-1 py-0.5 bg-muted rounded">/mcp</code> en Claude Desktop para
+              comprobar que <code className="text-xs px-1 py-0.5 bg-muted rounded">crm-agents-brain</code>{' '}
+            aparece en la lista.
           </li>
         </ol>
       </section>
@@ -399,12 +399,12 @@ export default function BrainConnectPage() {
         <div>
           <h2 className="text-lg font-semibold flex items-center gap-2">
             <span className="material-icons text-base">network_check</span>
-            Test connection
+            Probar conexión
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Confirms your portal session has access to the Brain backend. Note: this tests the
-            <em> backend</em>, not Claude Desktop&apos;s outbound connection — but if it passes,
-            your account and Brain are healthy.
+            Confirma que tu sesión del portal tiene acceso al backend de Brain. Nota: esto prueba el
+            <em> backend</em>, no la conexión saliente de Claude Desktop — pero si pasa,
+            tu cuenta y Brain están en buen estado.
           </p>
         </div>
 
@@ -416,7 +416,7 @@ export default function BrainConnectPage() {
           <span className="material-icons text-base">
             {testing ? 'hourglass_top' : 'play_arrow'}
           </span>
-          {testing ? 'Testing…' : 'Test connection'}
+          {testing ? 'Probando…' : 'Probar conexión'}
         </button>
 
         {testResult && testResult.ok && (

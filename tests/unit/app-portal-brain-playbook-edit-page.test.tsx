@@ -296,7 +296,7 @@ describe('PlaybookEditPage — error-only state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load playbook');
+      expect(container.textContent).toContain('No se pudo cargar el playbook');
     });
   });
 
@@ -329,21 +329,21 @@ describe('PlaybookEditPage — error-only state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
   it('shows "Invalid playbook id" for a non-numeric id', async () => {
     const { container } = renderPage('abc');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid playbook id');
+      expect(container.textContent).toContain('ID de playbook no válido');
     });
   });
 
   it('shows "Invalid playbook id" for id zero', async () => {
     const { container } = renderPage('0');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid playbook id');
+      expect(container.textContent).toContain('ID de playbook no válido');
     });
   });
 
@@ -366,7 +366,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
   it('renders the "Edit playbook" heading after load', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit playbook');
+      expect(container.textContent).toContain('Editar playbook');
     });
   });
 
@@ -431,14 +431,14 @@ describe('PlaybookEditPage — happy-path shell', () => {
   it('renders the Steps section heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Steps');
+      expect(container.textContent).toContain('Pasos');
     });
   });
 
   it('renders "Add step" label in the steps section', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Add step');
+      expect(container.textContent).toContain('Añadir paso');
     });
   });
 
@@ -459,7 +459,7 @@ describe('PlaybookEditPage — empty steps state', () => {
   it('renders the empty-steps placeholder when no steps exist', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No steps yet');
+      expect(container.textContent).toContain('Aún no hay pasos');
     });
   });
 
@@ -510,7 +510,7 @@ describe('PlaybookEditPage — steps rendered', () => {
     withSteps([makeStep()]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).not.toContain('No steps yet');
+      expect(container.textContent).not.toContain('Aún no hay pasos');
     });
   });
 });
@@ -520,7 +520,7 @@ describe('PlaybookEditPage — steps rendered', () => {
 describe('PlaybookEditPage — add step', () => {
   async function renderAndWaitLoaded() {
     const r = renderPage();
-    await waitFor(() => expect(r.container.textContent).toContain('Add step'));
+    await waitFor(() => expect(r.container.textContent).toContain('Añadir paso'));
     return r;
   }
 
@@ -568,7 +568,7 @@ describe('PlaybookEditPage — add step', () => {
       return makeRes({ success: true });
     });
     const r = renderPage();
-    await waitFor(() => expect(r.container.textContent).toContain('Add step'));
+    await waitFor(() => expect(r.container.textContent).toContain('Añadir paso'));
     const btn = findAddButton(r.container, 'Task');
     fireEvent.click(btn);
     await waitFor(() => {
@@ -1050,7 +1050,7 @@ describe('PlaybookEditPage — inline error banner', () => {
       return makeRes({ success: true });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Add step'));
+    await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Task'),
     ) as HTMLButtonElement;
@@ -1058,7 +1058,7 @@ describe('PlaybookEditPage — inline error banner', () => {
     await waitFor(() => {
       // Both the error message and the page heading are visible simultaneously.
       expect(container.textContent).toContain('Inline error');
-      expect(container.textContent).toContain('Edit playbook');
+      expect(container.textContent).toContain('Editar playbook');
     });
   });
 });
@@ -1091,7 +1091,7 @@ describe('PlaybookEditPage — team fetch', () => {
     });
     // We can only assert that the page loads without crashing.
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Edit playbook'));
+    await waitFor(() => expect(container.textContent).toContain('Editar playbook'));
   });
 
   it('silently ignores team fetch failure', async () => {
@@ -1101,6 +1101,6 @@ describe('PlaybookEditPage — team fetch', () => {
     });
     const { container } = renderPage();
     // Page still loads despite team fetch failure.
-    await waitFor(() => expect(container.textContent).toContain('Edit playbook'));
+    await waitFor(() => expect(container.textContent).toContain('Editar playbook'));
   });
 });

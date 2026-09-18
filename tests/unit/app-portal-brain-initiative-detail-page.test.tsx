@@ -259,7 +259,7 @@ describe('InitiativeDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load initiative');
+      expect(container.textContent).toContain('No se pudo cargar la iniciativa');
     });
   });
 
@@ -289,7 +289,7 @@ describe('InitiativeDetailPage — error state', () => {
   it('shows "Invalid initiative id" for non-numeric id', async () => {
     const { container } = renderPage('notanid');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid initiative id');
+      expect(container.textContent).toContain('ID de iniciativa no válido');
     });
   });
 });
@@ -338,7 +338,7 @@ describe('InitiativeDetailPage — header (active initiative)', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('started');
+      expect(container.textContent).toContain('iniciada');
     });
   });
 
@@ -354,7 +354,7 @@ describe('InitiativeDetailPage — header (active initiative)', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('target');
+      expect(container.textContent).toContain('fecha objetivo');
     });
   });
 
@@ -370,7 +370,7 @@ describe('InitiativeDetailPage — header (active initiative)', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('overdue');
+      expect(container.textContent).toContain('de retraso');
     });
   });
 
@@ -405,7 +405,7 @@ describe('InitiativeDetailPage — header (active initiative)', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('closed');
+      expect(container.textContent).toContain('cerrada');
     });
   });
 });
@@ -461,14 +461,14 @@ describe('InitiativeDetailPage — owner display', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 
   it('does not show owner chip when ownerId is null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
-    expect(container.textContent).not.toContain('User #');
+    expect(container.textContent).not.toContain('Usuario #');
   });
 });
 
@@ -509,7 +509,7 @@ describe('InitiativeDetailPage — action buttons (non-terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Reopen',
+      (b) => b.textContent?.trim() === 'Reabrir',
     );
     expect(btn).toBeUndefined();
   });
@@ -533,7 +533,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       );
       expect(btn).toBeTruthy();
     });
@@ -544,7 +544,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       );
       expect(btn).toBeTruthy();
     });
@@ -705,12 +705,12 @@ describe('InitiativeDetailPage — onReopen', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       );
       expect(btn).toBeTruthy();
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reopen'),
+      (b) => b.textContent?.includes('Reabrir'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -725,12 +725,12 @@ describe('InitiativeDetailPage — onReopen', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       )).toBe(true);
     });
     const beforeCalls = fetchMock.mock.calls.length;
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reopen'),
+      (b) => b.textContent?.includes('Reabrir'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await new Promise((r) => setTimeout(r, 50));
@@ -754,11 +754,11 @@ describe('InitiativeDetailPage — onReopen', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Reopen'),
+        (b) => b.textContent?.includes('Reabrir'),
       )).toBe(true);
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Reopen'),
+      (b) => b.textContent?.includes('Reabrir'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -857,7 +857,7 @@ describe('InitiativeDetailPage — description', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       );
       expect(btn).toBeTruthy();
     });
@@ -875,17 +875,17 @@ describe('InitiativeDetailPage — description', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       );
       expect(btn).toBeTruthy();
     });
     const showMoreBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('show more'),
+      (b) => b.textContent?.includes('mostrar más'),
     ) as HTMLButtonElement;
     fireEvent.click(showMoreBtn);
     await waitFor(() => {
       const showLessBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('show less'),
+        (b) => b.textContent?.includes('mostrar menos'),
       );
       expect(showLessBtn).toBeTruthy();
       expect(container.textContent).toContain(longDesc);
@@ -905,25 +905,25 @@ describe('InitiativeDetailPage — description', () => {
     // expand first
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       )).toBe(true);
     });
     const showMoreBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('show more'),
+      (b) => b.textContent?.includes('mostrar más'),
     ) as HTMLButtonElement;
     fireEvent.click(showMoreBtn);
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('show less'),
+        (b) => b.textContent?.includes('mostrar menos'),
       )).toBe(true);
     });
     const showLessBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('show less'),
+      (b) => b.textContent?.includes('mostrar menos'),
     ) as HTMLButtonElement;
     fireEvent.click(showLessBtn);
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('show more'),
+        (b) => b.textContent?.includes('mostrar más'),
       )).toBe(true);
     });
   });
@@ -935,7 +935,7 @@ describe('InitiativeDetailPage — goals section', () => {
   it('shows "No goals yet" empty state when goals array is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No goals yet');
+      expect(container.textContent).toContain('Aún no hay objetivos');
     });
   });
 
@@ -989,27 +989,27 @@ describe('InitiativeDetailPage — goals section', () => {
 
   it('shows AddGoalForm when "Add goal" button is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No goals yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay objetivos'));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
         (b) => b.textContent?.includes('Agregar objetivo'),
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
       // The add form renders an input for the goal title
-      const input = container.querySelector('input[placeholder="Goal title"]');
+      const input = container.querySelector('input[placeholder="Título del objetivo"]');
       expect(input).toBeTruthy();
     });
   });
 
   it('closes AddGoalForm when Cancel is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No goals yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay objetivos'));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
         (b) => b.textContent?.includes('Agregar objetivo'),
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Goal title"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Título del objetivo"]')).toBeTruthy();
     });
     // The AddGoalForm has its own Cancel button
     const cancelBtns = Array.from(container.querySelectorAll('button')).filter(
@@ -1017,7 +1017,7 @@ describe('InitiativeDetailPage — goals section', () => {
     );
     fireEvent.click(cancelBtns[cancelBtns.length - 1]);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Goal title"]')).toBeNull();
+      expect(container.querySelector('input[placeholder="Título del objetivo"]')).toBeNull();
     });
   });
 });
@@ -1031,19 +1031,19 @@ describe('InitiativeDetailPage — AddGoalForm', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Goal title"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Título del objetivo"]')).toBeTruthy();
     });
   }
 
   it('shows validation error when submitted with empty title', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No goals yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay objetivos'));
     await openAddGoalForm(container);
     // submit the form directly (title is blank)
     const form = container.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Title is required');
+      expect(container.textContent).toContain('El título es obligatorio');
     });
   });
 
@@ -1056,9 +1056,9 @@ describe('InitiativeDetailPage — AddGoalForm', () => {
       return makeRes({ success: true, data: makeDetailData() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No goals yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay objetivos'));
     await openAddGoalForm(container);
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'New Goal' } });
     const form = container.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -1079,9 +1079,9 @@ describe('InitiativeDetailPage — AddGoalForm', () => {
       return makeRes({ success: true, data: makeDetailData() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No goals yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay objetivos'));
     await openAddGoalForm(container);
-    const titleInput = container.querySelector('input[placeholder="Goal title"]') as HTMLInputElement;
+    const titleInput = container.querySelector('input[placeholder="Título del objetivo"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Bad Goal' } });
     const form = container.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
@@ -1110,7 +1110,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Lessons learned');
+      expect(container.textContent).toContain('Lecciones aprendidas');
       expect(container.textContent).toContain('We should have started earlier.');
       expect(container.textContent).toContain('All goals met');
     });
@@ -1119,7 +1119,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
   it('does NOT show lessons learned section when non-terminal', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
-    expect(container.textContent).not.toContain('Lessons learned');
+    expect(container.textContent).not.toContain('Lecciones aprendidas');
   });
 
   it('does NOT show lessons learned section when terminal but no lessons', async () => {
@@ -1134,7 +1134,7 @@ describe('InitiativeDetailPage — lessons learned', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Launch Product Alpha'));
-    expect(container.textContent).not.toContain('Lessons learned');
+    expect(container.textContent).not.toContain('Lecciones aprendidas');
   });
 });
 

@@ -136,14 +136,14 @@ describe('BrainConnectPage — static content', () => {
   it('renders "Connect Claude Desktop" breadcrumb text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connect Claude Desktop');
+      expect(container.textContent).toContain('Conectar Claude Desktop');
     });
   });
 
   it('renders the page description about MCP tools', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('MCP tools');
+      expect(container.textContent).toContain('herramientas MCP');
     });
   });
 
@@ -152,10 +152,10 @@ describe('BrainConnectPage — static content', () => {
     await waitFor(() => {
       const h2s = Array.from(container.querySelectorAll('h2')).map((h) => h.textContent);
       const joined = h2s.join(' ');
-      expect(joined).toContain('Connection status');
-      expect(joined).toContain('Generate API key');
-      expect(joined).toContain('Claude Desktop config');
-      expect(joined).toContain('Test connection');
+      expect(joined).toContain('Estado de la conexión');
+      expect(joined).toContain('Generar clave de API');
+      expect(joined).toContain('Configuración de Claude Desktop');
+      expect(joined).toContain('Probar conexión');
     });
   });
 
@@ -215,7 +215,7 @@ describe('BrainConnectPage — claudeConfig section', () => {
       // The copy-config button contains Material Icon text "content_copy" + "Copy"
       const buttons = Array.from(container.querySelectorAll('button'));
       const copyBtn = buttons.find(
-        (b) => b.textContent?.includes('Copy') && b.textContent?.includes('content_copy'),
+        (b) => b.textContent?.includes('Copiar') && b.textContent?.includes('content_copy'),
       );
       expect(copyBtn).toBeTruthy();
     });
@@ -224,7 +224,7 @@ describe('BrainConnectPage — claudeConfig section', () => {
   it('renders the numbered install steps (Restart Claude Desktop)', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Restart Claude Desktop');
+      expect(container.textContent).toContain('Reinicia Claude Desktop');
     });
   });
 });
@@ -235,7 +235,7 @@ describe('BrainConnectPage — loading state', () => {
   it('shows loading keys message while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise<FetchResp>(() => { /* never resolves */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading keys');
+    expect(container.textContent).toContain('Cargando claves');
   });
 });
 
@@ -254,7 +254,7 @@ describe('BrainConnectPage — connected state', () => {
   it('shows "Connected" badge when brain key exists', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected');
+      expect(container.textContent).toContain('Conectado');
     });
   });
 
@@ -284,7 +284,7 @@ describe('BrainConnectPage — connected state', () => {
   it('shows "Never" for last used when lastUsedAt is null', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Never');
+      expect(container.textContent).toContain('Nunca');
     });
   });
 
@@ -293,8 +293,8 @@ describe('BrainConnectPage — connected state', () => {
     await waitFor(() => {
       const text = container.textContent ?? '';
       expect(text).toContain('Nombre');
-      expect(text).toContain('Key');
-      expect(text).toContain('Scopes');
+      expect(text).toContain('Clave');
+      expect(text).toContain('Permisos');
       expect(text).toContain('Último uso');
       expect(text).toContain('Creado');
     });
@@ -326,14 +326,14 @@ describe('BrainConnectPage — not connected state', () => {
   it('shows "Not connected" badge when no brain keys', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not connected');
+      expect(container.textContent).toContain('Sin conexión');
     });
   });
 
   it('shows descriptive empty state text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No API keys with brain scopes');
+      expect(container.textContent).toContain('Aún no hay claves de API con permisos de brain');
     });
   });
 
@@ -360,7 +360,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected');
+      expect(container.textContent).toContain('Conectado');
     });
   });
 
@@ -376,7 +376,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected');
+      expect(container.textContent).toContain('Conectado');
     });
   });
 
@@ -392,7 +392,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not connected');
+      expect(container.textContent).toContain('Sin conexión');
     });
   });
 
@@ -408,7 +408,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not connected');
+      expect(container.textContent).toContain('Sin conexión');
     });
   });
 
@@ -424,7 +424,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not connected');
+      expect(container.textContent).toContain('Sin conexión');
     });
   });
 
@@ -440,7 +440,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected');
+      expect(container.textContent).toContain('Conectado');
     });
   });
 
@@ -456,7 +456,7 @@ describe('BrainConnectPage — hasBrainScope filtering', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected');
+      expect(container.textContent).toContain('Conectado');
     });
   });
 });
@@ -522,7 +522,7 @@ describe('BrainConnectPage — generate key (happy path)', () => {
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
       expect(
-        btns.some((b) => b.textContent?.includes('Generate API key')),
+        btns.some((b) => b.textContent?.includes('Generar clave de API')),
       ).toBe(true);
     });
   });
@@ -532,7 +532,7 @@ describe('BrainConnectPage — generate key (happy path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
@@ -546,12 +546,12 @@ describe('BrainConnectPage — generate key (happy path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain("Save this key now");
+      expect(container.textContent).toContain("Guarda esta clave ahora");
     });
   });
 
@@ -560,13 +560,13 @@ describe('BrainConnectPage — generate key (happy path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Copy key'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Copiar clave'))).toBe(true);
     });
   });
 
@@ -575,16 +575,16 @@ describe('BrainConnectPage — generate key (happy path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain("I've saved it");
+      expect(container.textContent).toContain("La he guardado");
     });
 
     const savedBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes("I've saved it"),
+      (b) => b.textContent?.includes("La he guardado"),
     ) as HTMLButtonElement;
     fireEvent.click(savedBtn);
 
@@ -612,7 +612,7 @@ describe('BrainConnectPage — generate key (error path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
@@ -633,12 +633,12 @@ describe('BrainConnectPage — generate key (error path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to generate key.');
+      expect(container.textContent).toContain('No se pudo generar la clave.');
     });
   });
 
@@ -654,7 +654,7 @@ describe('BrainConnectPage — generate key (error path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
@@ -676,12 +676,12 @@ describe('BrainConnectPage — generate key (error path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -698,13 +698,13 @@ describe('BrainConnectPage — generate key (error path)', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Generating'),
+        (b) => b.textContent?.includes('Generando'),
       );
       expect(btn).toBeTruthy();
     });
@@ -714,7 +714,7 @@ describe('BrainConnectPage — generate key (error path)', () => {
 // Helper: find the "Test connection" button (it contains Material Icon text too)
 function findTestConnectionBtn(container: HTMLElement): HTMLButtonElement | undefined {
   return Array.from(container.querySelectorAll('button')).find(
-    (b) => b.textContent?.includes('Test connection') || b.textContent?.includes('Testing'),
+    (b) => b.textContent?.includes('Probar conexión') || b.textContent?.includes('Probando'),
   ) as HTMLButtonElement | undefined;
 }
 
@@ -724,11 +724,11 @@ describe('BrainConnectPage — test connection', () => {
   it('renders "Test connection" button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Loading keys');
+      expect(container.textContent).not.toContain('Cargando claves');
     });
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Test connection'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Probar conexión'))).toBe(true);
     });
   });
 
@@ -741,14 +741,14 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
     fireEvent.click(testBtn!);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain is reachable from this browser session.');
+      expect(container.textContent).toContain('Brain es accesible desde esta sesión del navegador.');
     });
   });
 
@@ -761,7 +761,7 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
@@ -781,7 +781,7 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
@@ -801,7 +801,7 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
@@ -821,7 +821,7 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
@@ -842,14 +842,14 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
     fireEvent.click(testBtn!);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -862,7 +862,7 @@ describe('BrainConnectPage — test connection', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const testBtn = findTestConnectionBtn(container);
     expect(testBtn).toBeTruthy();
@@ -870,7 +870,7 @@ describe('BrainConnectPage — test connection', () => {
 
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Testing'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Probando'))).toBe(true);
     });
   });
 });
@@ -898,23 +898,23 @@ describe('BrainConnectPage — copy key button', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Copy key'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Copiar clave'))).toBe(true);
     });
 
     const copyKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Copy key'),
+      (b) => b.textContent?.includes('Copiar clave'),
     ) as HTMLButtonElement;
     fireEvent.click(copyKeyBtn);
 
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Copied'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Copiada'))).toBe(true);
     });
 
     expect(clipboardMock.writeText).toHaveBeenCalledWith('sdpk_copy-me-key');
@@ -928,17 +928,17 @@ describe('BrainConnectPage — copy key button', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
 
     const generateBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate API key'),
+      (b) => b.textContent?.includes('Generar clave de API'),
     ) as HTMLButtonElement;
     fireEvent.click(generateBtn);
 
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('Copy key'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Copiar clave'))).toBe(true);
     });
 
     const copyKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Copy key'),
+      (b) => b.textContent?.includes('Copiar clave'),
     ) as HTMLButtonElement;
 
     // Should not throw
@@ -953,7 +953,7 @@ describe('BrainConnectPage — copy key button', () => {
 // The copy-config button contains Material Icon text "content_copy" then "Copy"
 function findCopyConfigBtn(container: HTMLElement): HTMLButtonElement | undefined {
   return Array.from(container.querySelectorAll('button')).find(
-    (b) => b.textContent?.includes('content_copy') && b.textContent?.includes('Copy'),
+    (b) => b.textContent?.includes('content_copy') && b.textContent?.includes('Copiar'),
   ) as HTMLButtonElement | undefined;
 }
 
@@ -963,7 +963,7 @@ describe('BrainConnectPage — copy config button', () => {
     vi.stubGlobal('navigator', { clipboard: clipboardMock });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const copyConfigBtn = findCopyConfigBtn(container);
     expect(copyConfigBtn).toBeTruthy();
@@ -972,7 +972,7 @@ describe('BrainConnectPage — copy config button', () => {
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
       // After copy, icon changes to 'check' and label changes to 'Copied'
-      expect(btns.some((b) => b.textContent?.includes('Copied'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Copiado'))).toBe(true);
     });
 
     expect(clipboardMock.writeText).toHaveBeenCalled();
@@ -985,7 +985,7 @@ describe('BrainConnectPage — copy config button', () => {
     vi.stubGlobal('navigator', { clipboard: clipboardMock });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).not.toContain('Loading keys'));
+    await waitFor(() => expect(container.textContent).not.toContain('Cargando claves'));
 
     const copyConfigBtn = findCopyConfigBtn(container);
     expect(copyConfigBtn).toBeTruthy();

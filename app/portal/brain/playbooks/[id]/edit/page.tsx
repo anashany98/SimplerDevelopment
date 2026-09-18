@@ -61,7 +61,7 @@ export default function PlaybookEditPage({
 
   const load = useCallback(async () => {
     if (!Number.isFinite(playbookId) || playbookId <= 0) {
-      setError('Invalid playbook id');
+      setError('ID de playbook no válido');
       setLoading(false);
       return;
     }
@@ -71,14 +71,14 @@ export default function PlaybookEditPage({
       const r = await fetch(`/api/portal/brain/playbooks/${playbookId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load playbook');
+        setError(json.message || 'No se pudo cargar el playbook');
         return;
       }
       const data = json.data as DetailResponse;
       setPlaybook(data.playbook);
       setSteps(data.steps);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -145,7 +145,7 @@ export default function PlaybookEditPage({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        throw new Error(json.message || 'Update failed');
+        throw new Error(json.message || 'No se pudo actualizar');
       }
       await load();
     },
@@ -181,12 +181,12 @@ export default function PlaybookEditPage({
         );
         const json = await r.json();
         if (!r.ok || !json.success) {
-          setError(json.message || 'Step update failed');
+          setError(json.message || 'No se pudo actualizar el paso');
           // Reload to surface the canonical state.
           await load();
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Network error');
+        setError(e instanceof Error ? e.message : 'Error de red');
         await load();
       }
     },
@@ -195,7 +195,7 @@ export default function PlaybookEditPage({
 
   const onRemoveStep = useCallback(
     async (stepId: number) => {
-      if (!confirm('Remove this step? Any references in other steps’ nextStepKeys will be cleaned up.')) return;
+      if (!confirm('¿Eliminar este paso? Se limpiarán las referencias en los nextStepKeys de los demás pasos.')) return;
       setBusy(true);
       setError(null);
       try {
@@ -205,7 +205,7 @@ export default function PlaybookEditPage({
         );
         const json = await r.json().catch(() => ({}));
         if (!r.ok || !json.success) {
-          setError(json.message || 'Remove failed');
+          setError(json.message || 'No se pudo eliminar');
           return;
         }
         await load();
@@ -237,7 +237,7 @@ export default function PlaybookEditPage({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               key,
-              name: `New ${playbookStepKindChip(kind).label.toLowerCase()} step`,
+              name: `Paso nuevo de ${playbookStepKindChip(kind).label.toLowerCase()}`,
               kind,
               config: {},
               nextStepKeys: [],
@@ -246,7 +246,7 @@ export default function PlaybookEditPage({
         );
         const json = await r.json();
         if (!r.ok || !json.success) {
-          setError(json.message || 'Add step failed');
+          setError(json.message || 'No se pudo añadir el paso');
           return;
         }
         await load();
@@ -274,7 +274,7 @@ export default function PlaybookEditPage({
         );
         const json = await r.json();
         if (!r.ok || !json.success) {
-          setError(json.message || 'Reorder failed');
+          setError(json.message || 'No se pudo reordenar');
           await load();
           return;
         }
@@ -351,7 +351,7 @@ export default function PlaybookEditPage({
         </Link>
         <div className="mt-4 bg-destructive/10 border border-destructive/30 rounded-md p-4 text-sm text-destructive flex items-center gap-2">
           <span className="material-icons text-base">error_outline</span>
-          {error || 'Playbook not found'}
+          {error || 'Playbook no encontrado'}
         </div>
       </div>
     );
@@ -368,7 +368,7 @@ export default function PlaybookEditPage({
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <span className="material-icons text-sm">chevron_left</span>
-        Back to playbook
+        Volver al playbook
       </Link>
 
       <PortalPageHeader
@@ -376,7 +376,7 @@ export default function PlaybookEditPage({
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">edit_note</span>
-            Edit playbook
+            Editar playbook
           </span>
         }
         subtitle={
@@ -406,7 +406,7 @@ export default function PlaybookEditPage({
           team={team}
           initial={formInitial}
           onSubmit={onMetaSubmit}
-          submitLabel="Save details"
+          submitLabel="Guardar detalles"
         />
       </section>
 
@@ -415,19 +415,19 @@ export default function PlaybookEditPage({
         <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
           <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
             <span className="material-icons text-base text-primary">account_tree</span>
-            Steps
+            Pasos
             <span className="text-xs text-muted-foreground font-normal">
               ({steps.length})
             </span>
           </h2>
           <p className="text-[11px] text-muted-foreground">
-            Drag to reorder. Changes save automátically.
+            Arrastra para reordenar. Los cambios se guardan automáticamente.
           </p>
         </div>
 
         {steps.length === 0 ? (
           <div className="text-center py-6 text-xs text-muted-foreground bg-muted/30 rounded-md border border-dashed border-border">
-            No steps yet. Use the buttons below to add your first step.
+            Aún no hay pasos. Usa los botones de abajo para añadir el primero.
           </div>
         ) : (
           <div className="space-y-2">
@@ -458,7 +458,7 @@ export default function PlaybookEditPage({
 
         <div className="mt-4 pt-4 border-t border-border">
           <span className="block text-xs font-medium text-muted-foreground mb-2">
-            Add step
+            Añadir paso
           </span>
           <div className="flex items-center gap-1.5 flex-wrap">
             {PLAYBOOK_STEP_KINDS.map((k) => {
