@@ -110,7 +110,7 @@ describe('ButtonsTab — basic render', () => {
 
   it('renders the Preview section label', () => {
     renderTab();
-    expect(screen.getByText('Preview')).toBeInTheDocument();
+    expect(screen.getByText('Vista previa')).toBeInTheDocument();
   });
 
   it('renders "Add preset" button', () => {
@@ -396,9 +396,9 @@ describe('ButtonsTab — preset rendering', () => {
 
   it('renders move-up, move-down, and delete buttons for each preset', () => {
     renderTab({ buttonPresets: [makePreset({ id: 'p1', name: 'One' })] });
-    expect(screen.getByTitle('Move up')).toBeInTheDocument();
-    expect(screen.getByTitle('Move down')).toBeInTheDocument();
-    expect(screen.getByTitle('Delete preset')).toBeInTheDocument();
+    expect(screen.getByTitle('Subir')).toBeInTheDocument();
+    expect(screen.getByTitle('Bajar')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar preajuste')).toBeInTheDocument();
   });
 
   it('renders two presets as two separate cards', () => {
@@ -408,7 +408,7 @@ describe('ButtonsTab — preset rendering', () => {
         makePreset({ id: 'p2', name: 'Second' }),
       ],
     });
-    expect(screen.getAllByTitle('Delete preset')).toHaveLength(2);
+    expect(screen.getAllByTitle('Eliminar preajuste')).toHaveLength(2);
   });
 });
 
@@ -472,7 +472,7 @@ describe('ButtonsTab — removePreset', () => {
   it('removes the preset when delete button is clicked', () => {
     const preset = makePreset({ id: 'p1', name: 'Gone' });
     renderTab({ buttonPresets: [preset] });
-    fireEvent.click(screen.getByTitle('Delete preset'));
+    fireEvent.click(screen.getByTitle('Eliminar preajuste'));
     expect(setButtonPresets).toHaveBeenCalledOnce();
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg).toHaveLength(0);
@@ -484,7 +484,7 @@ describe('ButtonsTab — removePreset', () => {
       makePreset({ id: 'p2', name: 'Delete' }),
     ];
     renderTab({ buttonPresets: presets });
-    const deleteBtns = screen.getAllByTitle('Delete preset');
+    const deleteBtns = screen.getAllByTitle('Eliminar preajuste');
     fireEvent.click(deleteBtns[1]); // delete "Delete"
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg).toHaveLength(1);
@@ -503,7 +503,7 @@ describe('ButtonsTab — movePreset', () => {
       makePreset({ id: 'p2', name: 'Second' }),
     ];
     renderTab({ buttonPresets: presets });
-    const upBtns = screen.getAllByTitle('Move up');
+    const upBtns = screen.getAllByTitle('Subir');
     // Move "Second" (index 1) up
     fireEvent.click(upBtns[1]);
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
@@ -513,12 +513,12 @@ describe('ButtonsTab — movePreset', () => {
 
   it('disables move-up button for the first preset', () => {
     renderTab({ buttonPresets: [makePreset({ id: 'p1', name: 'Only' })] });
-    expect(screen.getByTitle('Move up')).toBeDisabled();
+    expect(screen.getByTitle('Subir')).toBeDisabled();
   });
 
   it('disables move-down button for the last preset', () => {
     renderTab({ buttonPresets: [makePreset({ id: 'p1', name: 'Only' })] });
-    expect(screen.getByTitle('Move down')).toBeDisabled();
+    expect(screen.getByTitle('Bajar')).toBeDisabled();
   });
 
   it('moves preset down when move-down button is clicked', () => {
@@ -527,7 +527,7 @@ describe('ButtonsTab — movePreset', () => {
       makePreset({ id: 'p2', name: 'Beta' }),
     ];
     renderTab({ buttonPresets: presets });
-    const downBtns = screen.getAllByTitle('Move down');
+    const downBtns = screen.getAllByTitle('Bajar');
     fireEvent.click(downBtns[0]); // Move "Alpha" down
     const arg = setButtonPresets.mock.calls[0][0] as ButtonPreset[];
     expect(arg[0].name).toBe('Beta');
@@ -536,7 +536,7 @@ describe('ButtonsTab — movePreset', () => {
 
   it('does not call setButtonPresets when clicking disabled move-up on first item', () => {
     renderTab({ buttonPresets: [makePreset({ id: 'p1', name: 'Solo' })] });
-    const upBtn = screen.getByTitle('Move up');
+    const upBtn = screen.getByTitle('Subir');
     fireEvent.click(upBtn); // disabled — should be a no-op
     expect(setButtonPresets).not.toHaveBeenCalled();
   });
