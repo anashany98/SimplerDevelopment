@@ -107,7 +107,7 @@ describe('DecisionForm — create mode rendering', () => {
   it('renders Decision and Rationale fields in create mode', () => {
     render(<DecisionForm {...makeProps()} />);
     expect(screen.getByPlaceholderText(/concrete decision/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/reasoning, key trade-offs/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/razonamiento, los intercambios clave/i)).toBeInTheDocument();
   });
 
   it('renders Alternatives field in create mode', () => {
@@ -148,7 +148,7 @@ describe('DecisionForm — edit mode rendering', () => {
   it('hides Decision and Rationale in edit mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'edit' })} />);
     expect(screen.queryByPlaceholderText(/concrete decision/i)).not.toBeInTheDocument();
-    expect(screen.queryByPlaceholderText(/reasoning, key trade-offs/i)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/razonamiento, los intercambios clave/i)).not.toBeInTheDocument();
   });
 
   it('hides Reversibility pills in edit mode', () => {
@@ -257,7 +257,7 @@ describe('DecisionForm — successful submit payload', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'We chose X' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning, key trade-offs/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento, los intercambios clave/i), {
       target: { value: 'Because Y' },
     });
 
@@ -288,7 +288,7 @@ describe('DecisionForm — successful submit payload', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'Decision' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
       target: { value: 'Rationale' },
     });
     submitForm();
@@ -305,7 +305,7 @@ describe('DecisionForm — successful submit payload', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'Decision' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
       target: { value: 'Rationale' },
     });
     submitForm();
@@ -325,7 +325,7 @@ describe('DecisionForm — successful submit payload', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'Decision' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
       target: { value: 'Rationale' },
     });
     submitForm();
@@ -529,7 +529,7 @@ describe('DecisionForm — topic toggle', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'Decision' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
       target: { value: 'Rationale' },
     });
     submitForm();
@@ -607,7 +607,7 @@ describe('DecisionForm — confidentiality select', () => {
     fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
       target: { value: 'Decision' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/reasoning/i), {
+    fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
       target: { value: 'Rationale' },
     });
     submitForm();
