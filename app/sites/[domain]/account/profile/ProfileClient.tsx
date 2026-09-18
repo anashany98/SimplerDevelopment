@@ -85,7 +85,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Profile updated successfully.');
+        setSuccess('Perfil actualizado correctamente.');
         if (refreshCustomer) refreshCustomer();
       }
     } catch {
@@ -145,7 +145,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
   };
 
   const deleteAddress = async (id: number) => {
-    if (!token || !confirm('Remove this address?')) return;
+    if (!token || !confirm('¿Eliminar esta dirección?')) return;
     try {
       const res = await fetch(`/api/storefront/${siteId}/account/addresses/${id}`, {
         method: 'DELETE',
@@ -163,8 +163,8 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
       <AccountLayout siteId={siteId} domain={domain}>
         <div className="space-y-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-            <p className="text-gray-500 text-sm mt-1">Manage your personal information and addresses.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Mi perfil</h1>
+            <p className="text-gray-500 text-sm mt-1">Gestiona tu información personal y tus direcciones.</p>
           </div>
 
           {loading ? (
@@ -177,7 +177,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
               <form onSubmit={handleProfileSave} className="border border-gray-200 rounded-xl p-5 space-y-4">
                 <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <span className="material-icons text-gray-400" style={{ fontSize: '20px' }}>person</span>
-                  Personal Information
+                  Información personal
                 </h2>
 
                 {success && (
@@ -226,7 +226,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                    placeholder="(555) 123-4567"
+                    placeholder="+34 600 123 456"
                   />
                 </div>
 
@@ -236,7 +236,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                     disabled={saving}
                     className="px-5 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                   >
-                    {saving ? 'Saving...' : 'Save Changes'}
+                    {saving ? 'Guardando...' : 'Guardar cambios'}
                   </button>
                 </div>
               </form>
@@ -246,14 +246,14 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                 <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
                   <h2 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                     <span className="material-icons text-gray-400" style={{ fontSize: '20px' }}>location_on</span>
-                    Address Book
+                    Libreta de direcciones
                   </h2>
                   <button
                     onClick={() => openAddressForm()}
                     className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900"
                   >
                     <span className="material-icons" style={{ fontSize: '18px' }}>add</span>
-                    Add Address
+                    Añadir dirección
                   </button>
                 </div>
 
@@ -261,17 +261,17 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                 {showAddressForm && (
                   <form onSubmit={handleAddressSave} className="p-5 border-b border-gray-200 space-y-4 bg-gray-50/50">
                     <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-1">Label (optional)</label>
+                      <label className="block text-sm font-medium text-gray-900 mb-1">Etiqueta (opcional)</label>
                       <input
                         type="text"
                         value={addressForm.label}
                         onChange={e => setAddressForm(prev => ({ ...prev, label: e.target.value }))}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                        placeholder="e.g. Home, Office"
+                        placeholder="p. ej. Casa, Oficina"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-1">Address Line 1</label>
+                      <label className="block text-sm font-medium text-gray-900 mb-1">Dirección (línea 1)</label>
                       <input
                         type="text"
                         value={addressForm.line1}
@@ -281,7 +281,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-1">Address Line 2 (optional)</label>
+                      <label className="block text-sm font-medium text-gray-900 mb-1">Dirección (línea 2, opcional)</label>
                       <input
                         type="text"
                         value={addressForm.line2}
@@ -342,7 +342,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                         disabled={savingAddress}
                         className="px-5 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                       >
-                        {savingAddress ? 'Saving...' : (editingAddressId ? 'Update Address' : 'Add Address')}
+                        {savingAddress ? 'Guardando...' : (editingAddressId ? 'Actualizar dirección' : 'Añadir dirección')}
                       </button>
                     </div>
                   </form>
@@ -352,7 +352,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                 {(!profile?.addresses || profile.addresses.length === 0) && !showAddressForm ? (
                   <div className="p-8 text-center">
                     <span className="material-icons text-gray-300" style={{ fontSize: '48px' }}>location_off</span>
-                    <p className="text-sm text-gray-500 mt-2">No saved addresses.</p>
+                    <p className="text-sm text-gray-500 mt-2">No hay direcciones guardadas.</p>
                   </div>
                 ) : (
                   <div className="divide-y divide-gray-200">
@@ -361,7 +361,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                         <span className="material-icons text-gray-400 mt-0.5" style={{ fontSize: '20px' }}>location_on</span>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium text-gray-900">{addr.label || 'Address'}</p>
+                            <p className="text-sm font-medium text-gray-900">{addr.label || 'Dirección'}</p>
                             {addr.isDefault && (
                               <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full font-medium">Predeterminado</span>
                             )}
@@ -373,14 +373,14 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
                           <button
                             onClick={() => openAddressForm(addr)}
                             className="p-1.5 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
-                            title="Edit address"
+                            title="Editar dirección"
                           >
                             <span className="material-icons" style={{ fontSize: '18px' }}>edit</span>
                           </button>
                           <button
                             onClick={() => deleteAddress(addr.id)}
                             className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors"
-                            title="Delete address"
+                            title="Eliminar dirección"
                           >
                             <span className="material-icons" style={{ fontSize: '18px' }}>delete</span>
                           </button>

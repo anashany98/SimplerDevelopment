@@ -149,13 +149,13 @@ describe('ProfileClient', () => {
   it('renders the My Profile heading after load', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('My Profile')).toBeTruthy();
+    expect(screen.getByText('Mi perfil')).toBeTruthy();
   });
 
   it('renders the Personal Information section after load', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Personal Information')).toBeTruthy();
+    expect(screen.getByText('Información personal')).toBeTruthy();
   });
 
   it('populates firstName field with fetched data', async () => {
@@ -193,13 +193,13 @@ describe('ProfileClient', () => {
   it('renders the Address Book section', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Address Book')).toBeTruthy();
+    expect(screen.getByText('Libreta de direcciones')).toBeTruthy();
   });
 
   it('renders "No saved addresses." when addresses list is empty', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('No saved addresses.')).toBeTruthy();
+    expect(screen.getByText('No hay direcciones guardadas.')).toBeTruthy();
   });
 
   it('does not set profile fields when API returns success=false', async () => {
@@ -257,7 +257,7 @@ describe('ProfileClient', () => {
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
     await flush();
-    expect(screen.getByText('Profile updated successfully.')).toBeTruthy();
+    expect(screen.getByText('Perfil actualizado correctamente.')).toBeTruthy();
   });
 
   it('calls refreshCustomer after successful profile save', async () => {
@@ -309,13 +309,13 @@ describe('ProfileClient', () => {
     const form = document.querySelector('form') as HTMLFormElement;
     await act(async () => { fireEvent.submit(form); });
     await flush();
-    expect(screen.queryByText('Profile updated successfully.')).toBeNull();
+    expect(screen.queryByText('Perfil actualizado correctamente.')).toBeNull();
   });
 
   it('shows Save Changes button by default', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Save Changes')).toBeTruthy();
+    expect(screen.getByText('Guardar cambios')).toBeTruthy();
   });
 
   it('success message shows a check_circle icon', async () => {
@@ -360,7 +360,7 @@ describe('ProfileClient', () => {
     });
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Default')).toBeTruthy();
+    expect(screen.getByText('Predeterminado')).toBeTruthy();
   });
 
   it('renders address line2 when present', async () => {
@@ -410,7 +410,7 @@ describe('ProfileClient', () => {
     });
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Address')).toBeTruthy();
+    expect(screen.getByText('Dirección')).toBeTruthy();
   });
 
   it('does not show "Default" badge for non-default address', async () => {
@@ -427,7 +427,7 @@ describe('ProfileClient', () => {
     });
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.queryByText('Default')).toBeNull();
+    expect(screen.queryByText('Predeterminado')).toBeNull();
   });
 
   // ── Add address form ───────────────────────────────────────────────────────
@@ -435,32 +435,32 @@ describe('ProfileClient', () => {
   it('shows "Add Address" button', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    expect(screen.getByText('Add Address')).toBeTruthy();
+    expect(screen.getByText('Añadir dirección')).toBeTruthy();
   });
 
   it('clicking "Add Address" shows the address form', async () => {
     await act(async () => { renderProfile(); });
     await flush();
     await act(async () => {
-      fireEvent.click(screen.getByText('Add Address'));
+      fireEvent.click(screen.getByText('Añadir dirección'));
     });
-    expect(screen.getByText('Address Line 1')).toBeTruthy();
-    expect(screen.getByText('Label (optional)')).toBeTruthy();
+    expect(screen.getByText('Dirección (línea 1)')).toBeTruthy();
+    expect(screen.getByText('Etiqueta (opcional)')).toBeTruthy();
   });
 
   it('clicking "Cancel" in address form hides it', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
-    await act(async () => { fireEvent.click(screen.getByText('Cancel')); });
-    expect(screen.queryByText('Address Line 1')).toBeNull();
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
+    await act(async () => { fireEvent.click(screen.getByText('Cancelar')); });
+    expect(screen.queryByText('Dirección (línea 1)')).toBeNull();
   });
 
   it('submitting the add address form calls POST to addresses endpoint', async () => {
     const fetchMock = installFetchMock(defaultFetch);
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
 
     // Fill required fields
     const allForms = document.querySelectorAll('form');
@@ -480,22 +480,22 @@ describe('ProfileClient', () => {
   it('hides address form after successful address save', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
 
     const allForms = document.querySelectorAll('form');
     const addressForm = allForms[1] as HTMLFormElement;
     await act(async () => { fireEvent.submit(addressForm); });
     await flush();
-    expect(screen.queryByText('Address Line 1')).toBeNull();
+    expect(screen.queryByText('Dirección (línea 1)')).toBeNull();
   });
 
   it('address form submit button label shows "Add Address" when not editing', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
     // The submit button text in the form
     const submitBtns = Array.from(document.querySelectorAll('button[type="submit"]'));
-    expect(submitBtns.some((b) => b.textContent?.includes('Add Address'))).toBe(true);
+    expect(submitBtns.some((b) => b.textContent?.includes('Añadir dirección'))).toBe(true);
   });
 
   // ── Edit address form ──────────────────────────────────────────────────────
@@ -514,11 +514,11 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
 
-    const editBtn = document.querySelector('button[title="Edit address"]') as HTMLButtonElement;
+    const editBtn = document.querySelector('button[title="Editar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(editBtn); });
 
     const submitBtns = Array.from(document.querySelectorAll('button[type="submit"]'));
-    expect(submitBtns.some((b) => b.textContent?.includes('Update Address'))).toBe(true);
+    expect(submitBtns.some((b) => b.textContent?.includes('Actualizar dirección'))).toBe(true);
   });
 
   it('edit form pre-fills with address data', async () => {
@@ -535,7 +535,7 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
 
-    const editBtn = document.querySelector('button[title="Edit address"]') as HTMLButtonElement;
+    const editBtn = document.querySelector('button[title="Editar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(editBtn); });
 
     // The label field should be pre-filled with 'Home'
@@ -558,7 +558,7 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
 
-    const editBtn = document.querySelector('button[title="Edit address"]') as HTMLButtonElement;
+    const editBtn = document.querySelector('button[title="Editar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(editBtn); });
 
     const allForms = document.querySelectorAll('form');
@@ -589,9 +589,9 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
 
-    const deleteBtn = document.querySelector('button[title="Delete address"]') as HTMLButtonElement;
+    const deleteBtn = document.querySelector('button[title="Eliminar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(deleteBtn); });
-    expect(window.confirm).toHaveBeenCalledWith('Remove this address?');
+    expect(window.confirm).toHaveBeenCalledWith('¿Eliminar esta dirección?');
   });
 
   it('sends DELETE when confirm returns true', async () => {
@@ -608,7 +608,7 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
 
-    const deleteBtn = document.querySelector('button[title="Delete address"]') as HTMLButtonElement;
+    const deleteBtn = document.querySelector('button[title="Eliminar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(deleteBtn); });
     await flush();
 
@@ -635,7 +635,7 @@ describe('ProfileClient', () => {
     await flush();
     fetchMock.mockClear();
 
-    const deleteBtn = document.querySelector('button[title="Delete address"]') as HTMLButtonElement;
+    const deleteBtn = document.querySelector('button[title="Eliminar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(deleteBtn); });
     await flush();
 
@@ -650,14 +650,14 @@ describe('ProfileClient', () => {
   it('can type into address label field', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
 
     const allTextInputs = document.querySelectorAll('input[type="text"]') as NodeListOf<HTMLInputElement>;
     // In the address form, label is first input after the profile form inputs (2)
     // Profile: firstName[0], lastName[1]; address form starts at different position
     // Find the label input by placeholder
     const labelInput = Array.from(allTextInputs).find(
-      (i) => i.placeholder === 'e.g. Home, Office',
+      (i) => i.placeholder === 'p. ej. Casa, Oficina',
     ) as HTMLInputElement;
     expect(labelInput).toBeTruthy();
     await act(async () => {
@@ -683,7 +683,7 @@ describe('ProfileClient', () => {
       ([url, init]) => url.includes('/account') && (init?.method ?? 'GET') === 'GET',
     ).length;
 
-    const deleteBtn = document.querySelector('button[title="Delete address"]') as HTMLButtonElement;
+    const deleteBtn = document.querySelector('button[title="Eliminar dirección"]') as HTMLButtonElement;
     await act(async () => { fireEvent.click(deleteBtn); });
     await flush();
 
@@ -732,7 +732,7 @@ describe('ProfileClient', () => {
     // Should not throw
     await act(async () => { fireEvent.submit(form); });
     await flush();
-    expect(screen.queryByText('Profile updated successfully.')).toBeNull();
+    expect(screen.queryByText('Perfil actualizado correctamente.')).toBeNull();
   });
 
   // ── Address form fields: city, state, zip, country ─────────────────────────
@@ -740,22 +740,22 @@ describe('ProfileClient', () => {
   it('shows City, State, ZIP, Country fields in address form', async () => {
     await act(async () => { renderProfile(); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Add Address')); });
-    expect(screen.getByText('City')).toBeTruthy();
-    expect(screen.getByText('State')).toBeTruthy();
+    await act(async () => { fireEvent.click(screen.getByText('Añadir dirección')); });
+    expect(screen.getByText('Ciudad')).toBeTruthy();
+    expect(screen.getByText('Estado')).toBeTruthy();
     expect(screen.getByText('ZIP')).toBeTruthy();
-    expect(screen.getByText('Country')).toBeTruthy();
+    expect(screen.getByText('País')).toBeTruthy();
   });
 
   // ── waitFor-based success banner ───────────────────────────────────────────
 
   it('success banner appears after save (waitFor variant)', async () => {
     renderProfile();
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
     const form = document.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
     await waitFor(() => {
-      expect(screen.getByText('Profile updated successfully.')).toBeTruthy();
+      expect(screen.getByText('Perfil actualizado correctamente.')).toBeTruthy();
     });
   });
 });

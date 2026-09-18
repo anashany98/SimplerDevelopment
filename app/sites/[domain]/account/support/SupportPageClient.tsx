@@ -21,13 +21,19 @@ const statusColor: Record<string, string> = {
   resolved: 'bg-gray-100 text-gray-700',
 };
 
+const statusLabel: Record<string, string> = {
+  open: 'Abierto',
+  replied: 'Respondido',
+  resolved: 'Resuelto',
+};
+
 const categories = [
-  { value: 'order', label: 'Order Issue' },
-  { value: 'product', label: 'Product Question' },
-  { value: 'shipping', label: 'Shipping & Delivery' },
-  { value: 'return', label: 'Returns & Refunds' },
-  { value: 'account', label: 'Account Help' },
-  { value: 'other', label: 'Other' },
+  { value: 'order', label: 'Problema con el pedido' },
+  { value: 'product', label: 'Pregunta sobre un producto' },
+  { value: 'shipping', label: 'Envío y entrega' },
+  { value: 'return', label: 'Devoluciones y reembolsos' },
+  { value: 'account', label: 'Ayuda con la cuenta' },
+  { value: 'other', label: 'Otro' },
 ];
 
 export function SupportPageClient({ siteId, domain }: { siteId: number; domain: string }) {
@@ -86,15 +92,15 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Support</h1>
-              <p className="text-gray-500 text-sm mt-1">Get help with your orders and account.</p>
+              <h1 className="text-2xl font-bold text-gray-900">Soporte</h1>
+              <p className="text-gray-500 text-sm mt-1">Obtén ayuda con tus pedidos y tu cuenta.</p>
             </div>
             <button
               onClick={() => setShowForm(!showForm)}
               className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
             >
               <span className="material-icons" style={{ fontSize: '18px' }}>{showForm ? 'close' : 'add'}</span>
-              {showForm ? 'Cancel' : 'New Message'}
+              {showForm ? 'Cancelar' : 'Nuevo mensaje'}
             </button>
           </div>
 
@@ -108,7 +114,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                   value={form.subject}
                   onChange={e => setForm(prev => ({ ...prev, subject: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  placeholder="Brief description of your issue"
+                  placeholder="Breve descripción de tu problema"
                   required
                 />
               </div>
@@ -131,7 +137,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                   onChange={e => setForm(prev => ({ ...prev, body: e.target.value }))}
                   rows={5}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 resize-none focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                  placeholder="Describe your issue in detail..."
+                  placeholder="Describe tu problema en detalle..."
                   required
                 />
               </div>
@@ -141,7 +147,7 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                   disabled={submitting}
                   className="px-5 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                 >
-                  {submitting ? 'Sending...' : 'Send Message'}
+                  {submitting ? 'Enviando...' : 'Enviar mensaje'}
                 </button>
               </div>
             </form>
@@ -155,12 +161,12 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
           ) : messages.length === 0 && !showForm ? (
             <div className="border border-gray-200 rounded-xl p-12 text-center">
               <span className="material-icons text-gray-300" style={{ fontSize: '48px' }}>support_agent</span>
-              <p className="text-sm text-gray-500 mt-3">No support messages yet.</p>
+              <p className="text-sm text-gray-500 mt-3">Aún no tienes mensajes de soporte.</p>
               <button
                 onClick={() => setShowForm(true)}
                 className="inline-block mt-4 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800"
               >
-                Contact Support
+                Contactar con soporte
               </button>
             </div>
           ) : (
@@ -180,11 +186,11 @@ export function SupportPageClient({ siteId, domain }: { siteId: number; domain: 
                       <p className="text-xs text-gray-500">
                         {categories.find(c => c.value === msg.category)?.label ?? msg.category}
                         {' -- '}
-                        {new Date(msg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        {new Date(msg.createdAt).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
                       </p>
                     </div>
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColor[msg.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                      {msg.status}
+                      {statusLabel[msg.status] ?? msg.status}
                     </span>
                     <span className="material-icons text-gray-400" style={{ fontSize: '18px' }}>chevron_right</span>
                   </Link>
