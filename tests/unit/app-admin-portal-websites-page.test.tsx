@@ -325,7 +325,7 @@ describe('AdminPortalWebsitesPage — create modal', () => {
     await renderPage();
     fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
     await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(screen.queryByText('Add Website', { selector: 'h2' })).toBeNull();
   });
 
@@ -393,7 +393,7 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
   it('opens edit modal with pre-populated values', async () => {
     await renderPage();
     // Click the Edit (pencil) button
-    const editBtn = screen.getByTitle('Edit');
+    const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
     await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
     const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
@@ -402,7 +402,7 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
 
   it('client select is disabled in edit mode', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
     const sel = document.querySelector('select') as HTMLSelectElement;
     expect(sel.disabled).toBe(true);
@@ -416,7 +416,7 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
     const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Updated Site' } });
@@ -433,7 +433,7 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
     fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
     await waitFor(() => expect(screen.getByText('Forbidden')).toBeTruthy());
@@ -443,15 +443,15 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
 describe('AdminPortalWebsitesPage — delete flow', () => {
   it('opens delete confirmation dialog when Delete button clicked', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     expect(screen.getByText('Delete website?')).toBeTruthy();
   });
 
   it('cancels deletion via Cancel button', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     await waitFor(() => expect(screen.getByText('Delete website?')).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(screen.queryByText('Delete website?')).toBeNull();
     // Site still present
     expect(screen.getByText('Acme Site')).toBeTruthy();
@@ -467,9 +467,9 @@ describe('AdminPortalWebsitesPage — delete flow', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     await waitFor(() => expect(screen.getByText('Delete website?')).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
     await waitFor(() => {
       expect(deleteCalled).toBe(true);
       expect(screen.queryByText('Acme Site')).toBeNull();
