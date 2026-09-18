@@ -39,20 +39,20 @@ interface LoadedData {
 const CATEGORIES: BrainDocumentCategory[] = ['sop', 'policy', 'guide', 'reference', 'announcement', 'other'];
 const CATEGORY_LABEL: Record<BrainDocumentCategory, string> = {
   sop: 'SOP',
-  policy: 'Policy',
-  guide: 'Guide',
-  reference: 'Reference',
-  announcement: 'Announcement',
-  other: 'Other',
+  policy: 'Política',
+  guide: 'Guía',
+  reference: 'Referencia',
+  announcement: 'Anuncio',
+  other: 'Otra',
 };
 
 function relativeTime(d: Date | null): string {
   if (!d) return '';
   const seconds = Math.floor((Date.now() - d.getTime()) / 1000);
-  if (seconds < 5) return 'just now';
-  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 5) return 'ahora mismo';
+  if (seconds < 60) return `hace ${seconds}s`;
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `hace ${minutes}m`;
   return d.toLocaleTimeString();
 }
 
@@ -99,7 +99,7 @@ export default function BrainDocumentEditPage({
       const r = await fetch(`/api/portal/brain/documents/${documentId}?includeBody=true`);
       const json = await r.json();
       if (!r.ok || !json.success || !json.data) {
-        setLoadError(json.message || 'Failed to load document.');
+        setLoadError(json.message || 'No se pudo cargar el documento.');
         return;
       }
       const loaded = json.data as LoadedData;
@@ -113,7 +113,7 @@ export default function BrainDocumentEditPage({
       setSummary(seed?.summary ?? '');
       setChangeNotes(seed?.changeNotes ?? '');
     } catch (err) {
-      setLoadError(err instanceof Error ? err.message : 'Network error');
+      setLoadError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -130,7 +130,7 @@ export default function BrainDocumentEditPage({
       const r = await fetch(`/api/portal/brain/documents/${documentId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: title.trim() || 'Untitled', category }),
+        body: JSON.stringify({ title: title.trim() || 'Sin título', category }),
       });
       const json = await r.json();
       if (r.ok && json.success) {
@@ -207,15 +207,15 @@ export default function BrainDocumentEditPage({
       if (!r.ok || !json.success) {
         const message = json?.message ?? '';
         if (/empty body|add content/i.test(message)) {
-          setPublishError('Add some content before publishing.');
+          setPublishError('Añade contenido antes de publicar.');
         } else {
-          setPublishError(message || 'Publish failed.');
+          setPublishError(message || 'No se pudo publicar.');
         }
         return;
       }
       router.push(`/portal/brain/documents/${documentId}`);
     } catch (err) {
-      setPublishError(err instanceof Error ? err.message : 'Network error');
+      setPublishError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setPublishing(false);
     }
@@ -234,27 +234,27 @@ export default function BrainDocumentEditPage({
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load this document
+            No se pudo cargar este documento
           </div>
-          <p>{loadError ?? 'Not found'}</p>
+          <p>{loadError ?? 'No encontrado'}</p>
           <Link href="/portal/brain/documents" className="inline-flex items-center gap-1 mt-3 text-xs underline">
             <span className="material-icons text-sm">arrow_back</span>
-            Back to documents
+            Volver a documentos
           </Link>
         </div>
       </div>
     );
   }
 
-  const titleSavedHint = savingTitle ? 'Saving…' : titleSavedAt ? `Saved ${relativeTime(titleSavedAt)}` : '';
-  const bodySavedHint = savingBody ? 'Saving…' : bodySavedAt ? `Saved ${relativeTime(bodySavedAt)}` : '';
+  const titleSavedHint = savingTitle ? 'Guardando…' : titleSavedAt ? `Guardado ${relativeTime(titleSavedAt)}` : '';
+  const bodySavedHint = savingBody ? 'Guardando…' : bodySavedAt ? `Guardado ${relativeTime(bodySavedAt)}` : '';
 
   return (
     <div className="max-w-5xl mx-auto py-6 px-4 space-y-4">
       <nav className="text-xs text-muted-foreground flex items-center gap-1">
         <Link href="/portal/brain/documents" className="hover:text-foreground inline-flex items-center gap-0.5">
           <span className="material-icons text-sm">description</span>
-          Documents
+          Documentos
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
         <Link href={`/portal/brain/documents/${documentId}`} className="hover:text-foreground truncate max-w-[20rem]">
@@ -269,7 +269,7 @@ export default function BrainDocumentEditPage({
           <h1 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-primary">edit_note</span>Editar borrador</h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Changes save automátically. Publish when ready — the document becomes the canonical answer.
+            Los cambios se guardan automáticamente. Publica cuando estés listo — el documento se convierte en la respuesta canónica.
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -285,7 +285,7 @@ export default function BrainDocumentEditPage({
             className={pBtnPrimary}
           >
             {publishing
-              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Publishing…</>
+              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Publicando…</>
               : <><span className="material-icons text-base">publish</span>Publicar</>}
           </button>
         </div>
@@ -332,7 +332,7 @@ export default function BrainDocumentEditPage({
         </div>
 
         <div>
-          <label htmlFor="doc-edit-summary" className="block text-xs font-medium text-foreground mb-1">Summary (optional)</label>
+          <label htmlFor="doc-edit-summary" className="block text-xs font-medium text-foreground mb-1">Resumen (opcional)</label>
           <input
             id="doc-edit-summary"
             type="text"
@@ -344,7 +344,7 @@ export default function BrainDocumentEditPage({
         </div>
 
         <div>
-          <label htmlFor="doc-edit-notes" className="block text-xs font-medium text-foreground mb-1">Change notes (optional)</label>
+          <label htmlFor="doc-edit-notes" className="block text-xs font-medium text-foreground mb-1">Notas de cambio (opcional)</label>
           <textarea
             id="doc-edit-notes"
             value={changeNotes}

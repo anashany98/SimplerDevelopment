@@ -139,7 +139,7 @@ function InitiativesListContent() {
       const r = await fetch(`/api/portal/brain/initiatives?${params.toString()}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load initiatives');
+        setError(json.message || 'No se pudieron cargar las iniciativas');
         setItems([]);
         setHasMore(false);
         return;
@@ -148,7 +148,7 @@ function InitiativesListContent() {
       setHasMore(all.length > PAGE_SIZE);
       setItems(all.slice(0, PAGE_SIZE));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -164,12 +164,12 @@ function InitiativesListContent() {
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
           eyebrow="Cerebro de empresa"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">flag</span>Initiatives</span>}
-          subtitle="Multi-quarter efforts. Bundle goals, tasks, decisions, notes, and meetings under one banner."
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">flag</span>Iniciativas</span>}
+          subtitle="Esfuerzos de varios trimestres. Agrupa objetivos, tareas, decisiones, notas y reuniones bajo un mismo paraguas."
           actions={
             <Link href="/portal/brain/initiatives/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New initiative
+              Nueva iniciativa
             </Link>
           }
           className="mb-0 pb-3"
@@ -179,7 +179,7 @@ function InitiativesListContent() {
         <div className="mt-3 flex items-center gap-1 overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {STATUS_FILTERS.map((s) => {
             const active = status === s;
-            const label = s === 'all' ? 'All' : initiativeStatusChip(s as BrainInitiativeStatus).label;
+            const label = s === 'all' ? 'Todas' : initiativeStatusChip(s as BrainInitiativeStatus).label;
             return (
               <button
                 key={s}
@@ -217,7 +217,7 @@ function InitiativesListContent() {
             onChange={(e) => setParam({ ownerId: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">Any owner</option>
+            <option value="">Cualquier responsable</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -230,11 +230,11 @@ function InitiativesListContent() {
               onChange={(e) => setParam({ hasOpenGoals: e.target.checked ? 'true' : null })}
               className="h-3.5 w-3.5 rounded border-border accent-primary"
             />
-            Has open goals
+            Con objetivos abiertos
           </label>
 
           <label className="inline-flex items-center gap-1.5 text-muted-foreground">
-            target before
+            con objetivo antes de
             <input
               type="date"
               value={targetDateBeforeParam}
@@ -274,14 +274,14 @@ function InitiativesListContent() {
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">flag</span>
           <p className="text-foreground text-sm font-medium">Aún no hay iniciativas.</p>
           <p className="text-muted-foreground text-xs mt-1 mb-4">
-            Kick off your first cross-functional effort.
+            Empieza tu primer esfuerzo interfuncional.
           </p>
           <Link
             href="/portal/brain/initiatives/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New initiative
+            Nueva iniciativa
           </Link>
         </div>
       ) : (

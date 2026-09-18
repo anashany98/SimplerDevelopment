@@ -97,12 +97,12 @@ export default function BrainDocumentDetailPage({
       const r = await fetch(`/api/portal/brain/documents/${documentId}?includeBody=true`);
       const json = await r.json();
       if (!r.ok || !json.success || !json.data) {
-        setError(json.message || 'Failed to load document.');
+        setError(json.message || 'No se pudo cargar el documento.');
       } else {
         setData(json.data as DetailData);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -160,7 +160,7 @@ export default function BrainDocumentDetailPage({
       const r = await fetch(`/api/portal/brain/documents/${documentId}/publish`, { method: 'POST' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        alert(json.message || 'Publish failed.');
+        alert(json.message || 'No se pudo publicar.');
         return;
       }
       load();
@@ -171,7 +171,7 @@ export default function BrainDocumentDetailPage({
   };
 
   const handleArchive = async () => {
-    const reason = window.prompt('Optional reason for archiving:');
+    const reason = window.prompt('Motivo opcional para archivar:');
     if (reason === null) return; // cancelled
     setBusyAction('archive');
     try {
@@ -182,7 +182,7 @@ export default function BrainDocumentDetailPage({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        alert(json.message || 'Archive failed.');
+        alert(json.message || 'No se pudo archivar.');
         return;
       }
       load();
@@ -197,7 +197,7 @@ export default function BrainDocumentDetailPage({
       const r = await fetch(`/api/portal/brain/documents/${documentId}/unarchive`, { method: 'POST' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        alert(json.message || 'Unarchive failed.');
+        alert(json.message || 'No se pudo desarchivar.');
         return;
       }
       load();
@@ -209,7 +209,7 @@ export default function BrainDocumentDetailPage({
   const handleDelete = useCallback(async (force = false) => {
     if (!data) return;
     if (!force) {
-      if (!confirm(`Delete "${data.document.title}"? This cannot be undone.`)) return;
+      if (!confirm(`¿Eliminar "${data.document.title}"? Esta acción no se puede deshacer.`)) return;
     }
     setBusyAction('delete');
     try {
@@ -220,8 +220,8 @@ export default function BrainDocumentDetailPage({
         const ackCount = json?.ackCount ?? 0;
         if (
           confirm(
-            `This document has ${ackCount} acknowledgment${ackCount === 1 ? '' : 's'} on it. ` +
-            `Force delete anyway? You will lose the ack history.`,
+            `Este documento tiene ${ackCount} confirmación${ackCount === 1 ? '' : 'es'}. ` +
+            `¿Forzar la eliminación de todos modos? Perderás el historial de confirmaciones.`,
           )
         ) {
           await handleDelete(true);
@@ -229,7 +229,7 @@ export default function BrainDocumentDetailPage({
         return;
       }
       if (!r.ok || !json.success) {
-        alert(json.message || 'Delete failed.');
+        alert(json.message || 'No se pudo eliminar.');
         return;
       }
       router.push('/portal/brain/documents');
@@ -252,12 +252,12 @@ export default function BrainDocumentDetailPage({
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load this document
+            No se pudo cargar este documento
           </div>
-          <p>{error ?? 'Not found'}</p>
+          <p>{error ?? 'No encontrado'}</p>
           <Link href="/portal/brain/documents" className="inline-flex items-center gap-1 mt-3 text-xs underline">
             <span className="material-icons text-sm">arrow_back</span>
-            Back to documents
+            Volver a documentos
           </Link>
         </div>
       </div>
@@ -266,7 +266,7 @@ export default function BrainDocumentDetailPage({
 
   const { document, currentPublishedVersion, currentDraftVersion, versions, links } = data;
   const ownerName = document.ownerId
-    ? users.find((u) => u.id === document.ownerId)?.name ?? `User #${document.ownerId}`
+    ? users.find((u) => u.id === document.ownerId)?.name ?? `Usuario #${document.ownerId}`
     : null;
 
   const hasDraftWithBody = !!(currentDraftVersion && currentDraftVersion.body && currentDraftVersion.body.trim());
@@ -283,7 +283,7 @@ export default function BrainDocumentDetailPage({
       <nav className="text-xs text-muted-foreground flex items-center gap-1">
         <Link href="/portal/brain/documents" className="hover:text-foreground inline-flex items-center gap-0.5">
           <span className="material-icons text-sm">description</span>
-          Documents
+          Documentos
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
         <span className="truncate">{document.title}</span>
@@ -311,9 +311,9 @@ export default function BrainDocumentDetailPage({
             )}
             <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] text-muted-foreground" title="Última publicación">
               <span className="material-icons text-[12px]">schedule</span>
-              Published {formatDate(document.publishedAt)}
+              Publicado {formatDate(document.publishedAt)}
             </span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono rounded bg-muted/50 text-muted-foreground" title="Stable slug">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono rounded bg-muted/50 text-muted-foreground" title="Slug estable">
               /{document.slug}
             </span>
           </div>
@@ -335,7 +335,7 @@ export default function BrainDocumentDetailPage({
                 {busyAction === 'publish'
                   ? <span className="material-icons text-base animate-spin">progress_activity</span>
                   : <span className="material-icons text-base">publish</span>}
-                Publish
+                Publicar
               </button>
             )}
             {document.status === 'published' && (
@@ -355,7 +355,7 @@ export default function BrainDocumentDetailPage({
                 className={`${pBtnGhost} disabled:opacity-50`}
               >
                 <span className="material-icons text-base">unarchive</span>
-                Unarchive
+                Desarchivar
               </button>
             )}
             <button
@@ -367,7 +367,7 @@ export default function BrainDocumentDetailPage({
               {busyAction === 'delete'
                 ? <span className="material-icons text-base animate-spin">progress_activity</span>
                 : <span className="material-icons text-base">delete</span>}
-              Delete
+              Eliminar
             </button>
           </div>
         }
@@ -386,8 +386,8 @@ export default function BrainDocumentDetailPage({
         <div className="flex items-center justify-between gap-2 flex-wrap mb-3">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {selectedVersionId !== null && displayedVersion
-              ? `Version v${displayedVersion.versionNumber}`
-              : 'Current published version'}
+              ? `Versión v${displayedVersion.versionNumber}`
+              : 'Versión publicada actual'}
           </h2>
           {selectedVersionId !== null && (
             <button
@@ -396,14 +396,14 @@ export default function BrainDocumentDetailPage({
               className="text-[11px] text-muted-foreground hover:text-foreground inline-flex items-center gap-0.5"
             >
               <span className="material-icons text-sm">close</span>
-              Back to current
+              Volver a la actual
             </button>
           )}
         </div>
         {selectedVersionLoading ? (
           <div className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
             <span className="material-icons animate-spin text-sm">progress_activity</span>
-            Loading version…
+            Cargando versión…
           </div>
         ) : displayedVersion && displayedVersion.body ? (
           <div className="text-sm text-foreground leading-relaxed">
@@ -411,10 +411,10 @@ export default function BrainDocumentDetailPage({
           </div>
         ) : (
           <p className="text-sm text-muted-foreground italic">
-            No published version yet — only a draft exists.{' '}
+            Aún no hay una versión publicada — solo existe un borrador.{' '}
             <Link href={`/portal/brain/documents/${document.id}/edit`} className="underline hover:text-foreground">
-              Open the editor
-            </Link>{' '}to add content and publish.
+              Abrir el editor
+            </Link>{' '}para añadir contenido y publicar.
           </p>
         )}
       </section>
@@ -423,7 +423,7 @@ export default function BrainDocumentDetailPage({
       <section className={pCardPad}>
         <h2 className={`${pSectionTitle} mb-3 inline-flex items-center gap-2`}>
           <span className="material-icons text-base text-primary">history</span>
-          Version history
+          Historial de versiones
           <span className="text-xs text-muted-foreground font-normal">({versions.length})</span>
         </h2>
         <DocumentVersionHistory

@@ -57,7 +57,7 @@ export default function NewBrainMeetingPage() {
   const submit = async (alsoProcess: boolean) => {
     setError(null);
     if (!transcript.trim()) {
-      setError('Transcript is required.');
+      setError('La transcripción es obligatoria.');
       return;
     }
     setCreating(true);
@@ -94,7 +94,7 @@ export default function NewBrainMeetingPage() {
       });
       const createJson = await createRes.json();
       if (!createRes.ok || !createJson.success) {
-        setError(createJson.message || 'Failed to create communication.');
+        setError(createJson.message || 'No se pudo crear la comunicación.');
         return;
       }
 
@@ -109,13 +109,13 @@ export default function NewBrainMeetingPage() {
       const procRes = await fetch(`/api/portal/brain/communications/${meetingId}/process`, { method: 'POST' });
       const procJson = await procRes.json();
       if (!procRes.ok || !procJson.success) {
-        setError(`Communication created, but AI processing failed: ${procJson.message || 'unknown error'}`);
+        setError(`Comunicación creada, pero el procesamiento con IA falló: ${procJson.message || 'error desconocido'}`);
         router.push(`/portal/brain/communications/${meetingId}`);
         return;
       }
       router.push(`/portal/brain/communications/${meetingId}/review`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setCreating(false);
       setProcessing(false);
@@ -132,7 +132,7 @@ export default function NewBrainMeetingPage() {
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Back to communications
+          Volver a comunicaciones
         </Link>
         <PortalPageHeader
           eyebrow="Cerebro de empresa"
@@ -167,7 +167,7 @@ export default function NewBrainMeetingPage() {
         </div>
         {selectedAdapter && adapters.length === 1 && (
           <p className="text-xs text-muted-foreground mt-2">
-            More sources (file upload, Google Docs, Drive watch) ship in upcoming phases.
+            Más fuentes (subida de archivos, Google Docs, vigilancia de Drive) llegarán en fases próximas.
           </p>
         )}
       </Section>
@@ -175,16 +175,16 @@ export default function NewBrainMeetingPage() {
       {/* Title + date */}
       <Section title="Detalles" icon="info">
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Title (optional)" help="Defaults to a timestamped title if blank.">
+          <Field label="Título (opcional)" help="Si se deja en blanco, se usa un título con marca de tiempo.">
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Acme Q1 review"
+              placeholder="p. ej. Revisión Q1 de Acme"
               className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
             />
           </Field>
-          <Field label="Date (optional)" htmlFor="communication-date">
+          <Field label="Fecha (opcional)" htmlFor="communication-date">
             <input
               id="communication-date"
               type="datetime-local"
@@ -197,7 +197,7 @@ export default function NewBrainMeetingPage() {
       </Section>
 
       {/* Relationship link */}
-      <Section title="Linked relationship (optional)" icon="group_work">
+      <Section title="Relación vinculada (opcional)" icon="group_work">
         <RelationshipPicker
           value={link}
           onChange={setLink}
@@ -205,7 +205,7 @@ export default function NewBrainMeetingPage() {
       </Section>
 
       {/* Participants */}
-      <Section title="Participants (optional)" icon="group">
+      <Section title="Participantes (opcional)" icon="group">
         <div className="space-y-2">
           {participants.map((p, i) => (
             <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
@@ -227,7 +227,7 @@ export default function NewBrainMeetingPage() {
                 onClick={() => removeParticipant(i)}
                 disabled={participants.length === 1}
                 className="rounded-xl border border-border bg-card px-2 py-2 text-muted-foreground hover:border-foreground/25 disabled:opacity-30 inline-flex items-center justify-center"
-                aria-label="Remove participant"
+                aria-label="Quitar participante"
               >
                 <span className="material-icons text-base">remove</span>
               </button>
@@ -238,14 +238,14 @@ export default function NewBrainMeetingPage() {
             className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">add</span>
-            Add participant
+            Añadir participante
           </button>
         </div>
       </Section>
 
       {/* Transcript / file upload */}
       <Section
-        title={adapterId === 'upload' ? 'File' : 'Transcript'}
+        title={adapterId === 'upload' ? 'Archivo' : 'Transcripción'}
         icon={adapterId === 'upload' ? 'upload_file' : 'description'}
       >
         {adapterId === 'upload' && (
@@ -264,11 +264,11 @@ export default function NewBrainMeetingPage() {
           value={transcript}
           onChange={(e) => setTranscript(e.target.value)}
           rows={adapterId === 'upload' ? 8 : 14}
-          placeholder={adapterId === 'upload' ? 'Parsed file text appears here. Edit if needed.' : 'Paste communication notes, transcript, or recording text here…'}
+          placeholder={adapterId === 'upload' ? 'El texto del archivo procesado aparece aquí. Edítalo si hace falta.' : 'Pega aquí notas de la comunicación, transcripción o texto de la grabación…'}
           className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground font-mono outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
         />
         <p className="text-xs text-muted-foreground mt-1">
-          {transcript.length.toLocaleString()} characters. Long transcripts (&gt;60k chars) will be truncated.
+          {transcript.length.toLocaleString()} caracteres. Las transcripciones largas (&gt;60k caracteres) se truncarán.
         </p>
       </Section>
 
@@ -279,7 +279,7 @@ export default function NewBrainMeetingPage() {
           disabled={creating || !transcript.trim()}
           className={`${pBtnGhost} disabled:opacity-50`}
         >
-          Save as draft
+          Guardar como borrador
         </button>
         <button
           onClick={() => submit(true)}
@@ -287,9 +287,9 @@ export default function NewBrainMeetingPage() {
           className={pBtnPrimary}
         >
           {processing
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Processing…</>
+            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Procesando…</>
             : creating
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Saving…</>
+              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Guardando…</>
               : <><span className="material-icons text-base">auto_awesome</span>Guardar y procesar con IA</>
           }
         </button>
@@ -383,7 +383,7 @@ function RelationshipPicker({
         className="w-full text-left px-3 py-2 rounded-md border border-dashed border-border text-sm text-muted-foreground hover:bg-accent inline-flex items-center gap-1.5"
       >
         <span className="material-icons text-base">link</span>
-        Link to a CRM company or deal…
+        Vincular a una empresa u oportunidad del CRM…
       </button>
     );
   }
@@ -422,7 +422,7 @@ function RelationshipPicker({
           </button>
         ))}
         {results && results.companies.length === 0 && results.deals.length === 0 && (
-          <p className="text-xs text-muted-foreground py-3 text-center">No matches.</p>
+          <p className="text-xs text-muted-foreground py-3 text-center">Sin resultados.</p>
         )}
       </div>
       <button onClick={() => setOpen(false)} className="text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
@@ -447,12 +447,12 @@ function FilePicker({
   const handleFile = async (file: File) => {
     onError('');
     if (file.size > MAX_FILE_BYTES) {
-      onError('File is larger than 5MB.');
+      onError('El archivo supera los 5 MB.');
       return;
     }
     const ext = `.${file.name.split('.').pop()?.toLowerCase() ?? ''}`;
     if (!ACCEPTED_EXTENSIONS.includes(ext)) {
-      onError(`Unsupported file type ${ext}. Allowed: ${ACCEPTED_EXTENSIONS.join(', ')}`);
+      onError(`Tipo de archivo no admitido ${ext}. Permitidos: ${ACCEPTED_EXTENSIONS.join(', ')}`);
       return;
     }
     try {
@@ -460,12 +460,12 @@ function FilePicker({
       const cleaned = ext === '.vtt' ? stripVtt(raw) : ext === '.srt' ? stripSrt(raw) : raw;
       const trimmed = cleaned.trim();
       if (!trimmed) {
-        onError('Parsed file is empty.');
+        onError('El archivo procesado está vacío.');
         return;
       }
       onLoaded(trimmed, { name: file.name, mimeType: file.type || 'text/plain', byteCount: file.size });
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to read file.');
+      onError(err instanceof Error ? err.message : 'No se pudo leer el archivo.');
     }
   };
 
@@ -491,7 +491,7 @@ function FilePicker({
       <label className="flex flex-col items-center justify-center gap-1 border-2 border-dashed border-border rounded-2xl p-6 cursor-pointer hover:bg-accent/30 transition-colors">
         <span className="material-icons text-3xl text-muted-foreground">cloud_upload</span>
         <span className="text-sm text-foreground font-medium">Elegir un archivo</span>
-        <span className="text-xs text-muted-foreground">{ACCEPTED_EXTENSIONS.join(', ')} · up to 5MB</span>
+        <span className="text-xs text-muted-foreground">{ACCEPTED_EXTENSIONS.join(', ')} · hasta 5 MB</span>
         <input
           type="file"
           className="hidden"

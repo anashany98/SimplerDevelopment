@@ -141,15 +141,15 @@ describe('NewBrainMeetingPage — initial render', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Fuente');
       expect(container.textContent).toContain('Detalles');
-      expect(container.textContent).toContain('Participants');
-      expect(container.textContent).toContain('Transcript');
+      expect(container.textContent).toContain('Participantes');
+      expect(container.textContent).toContain('Transcripción');
     });
   });
 
   it('renders "Save as draft" and "Save and process with AI" buttons', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Save as draft');
+      expect(container.textContent).toContain('Guardar como borrador');
       expect(container.textContent).toContain('Guardar y procesar con IA');
     });
   });
@@ -164,7 +164,7 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders the "More sources" note when only one adapter is loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('More sources');
+      expect(container.textContent).toContain('Más fuentes');
     });
   });
 
@@ -180,7 +180,7 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders "Linked relationship (optional)" section', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Linked relationship');
+      expect(container.textContent).toContain('Relación vinculada');
     });
   });
 });
@@ -244,7 +244,7 @@ describe('NewBrainMeetingPage — adapter loading', () => {
     fireEvent.click(uploadBtn!);
     await waitFor(() => {
       // After switching to upload, section title changes
-      expect(container.textContent).toContain('File');
+      expect(container.textContent).toContain('Archivo');
     });
   });
 
@@ -300,7 +300,7 @@ describe('NewBrainMeetingPage — details fields', () => {
     fireEvent.change(textarea, { target: { value: 'ABCDE' } });
     await waitFor(() => {
       expect(container.textContent).toContain('5');
-      expect(container.textContent).toContain('characters');
+      expect(container.textContent).toContain('caracteres');
     });
   });
 });
@@ -319,7 +319,7 @@ describe('NewBrainMeetingPage — participants', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add participant'),
+      b.textContent?.includes('Añadir participante'),
     );
     expect(addBtn).toBeTruthy();
     fireEvent.click(addBtn!);
@@ -334,14 +334,14 @@ describe('NewBrainMeetingPage — participants', () => {
     await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     // Add one row first
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add participant'),
+      b.textContent?.includes('Añadir participante'),
     );
     fireEvent.click(addBtn!);
     await waitFor(() => {
       expect(container.querySelectorAll('input[placeholder="Nombre"]').length).toBe(2);
     });
     // Click the first remove button (should be enabled now)
-    const removeBtns = Array.from(container.querySelectorAll('button[aria-label="Remove participant"]'));
+    const removeBtns = Array.from(container.querySelectorAll('button[aria-label="Quitar participante"]'));
     expect(removeBtns.length).toBe(2);
     fireEvent.click(removeBtns[0]);
     await waitFor(() => {
@@ -352,7 +352,7 @@ describe('NewBrainMeetingPage — participants', () => {
   it('disables the remove button when only one participant exists', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
-    const removeBtn = container.querySelector('button[aria-label="Remove participant"]') as HTMLButtonElement;
+    const removeBtn = container.querySelector('button[aria-label="Quitar participante"]') as HTMLButtonElement;
     expect(removeBtn).toBeTruthy();
     expect(removeBtn.disabled).toBe(true);
   });
@@ -380,15 +380,15 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
   it('shows "Link to a CRM company or deal" button initially', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Link to a CRM company or deal');
+      expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM');
     });
   });
 
   it('opens picker when link button is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
@@ -399,9 +399,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
 
   it('closes picker via Cancel button', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
@@ -413,7 +413,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Link to a CRM company or deal');
+      expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM');
     });
   });
 
@@ -434,9 +434,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
@@ -468,9 +468,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => {
@@ -492,16 +492,16 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => {
       await new Promise((r) => setTimeout(r, 300));
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('No matches.');
+      expect(container.textContent).toContain('Sin resultados.');
     });
   });
 
@@ -522,9 +522,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => {
@@ -560,9 +560,9 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => {
@@ -598,10 +598,10 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     // Open picker and select
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => { await new Promise((r) => setTimeout(r, 300)); });
@@ -618,7 +618,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Link to a CRM company or deal');
+      expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM');
       expect(container.textContent).not.toContain('(company)');
     });
   });
@@ -631,7 +631,7 @@ describe('NewBrainMeetingPage — submit validation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save as draft'),
+      b.textContent?.includes('Guardar como borrador'),
     );
     expect(draftBtn).toBeTruthy();
     // The button is disabled when transcript is empty, so simulate enabling manually
@@ -648,7 +648,7 @@ describe('NewBrainMeetingPage — submit validation', () => {
     fireEvent.change(textarea, { target: { value: 'Some transcript text' } });
     await waitFor(() => {
       const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Save as draft'),
+        b.textContent?.includes('Guardar como borrador'),
       ) as HTMLButtonElement;
       expect(draftBtn.disabled).toBe(false);
     });
@@ -663,7 +663,7 @@ describe('NewBrainMeetingPage — Save as draft', () => {
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'This is the transcript.' } });
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save as draft'),
+      b.textContent?.includes('Guardar como borrador'),
     )!;
     await act(async () => { fireEvent.click(draftBtn); });
   }
@@ -723,7 +723,7 @@ describe('NewBrainMeetingPage — Save as draft', () => {
     const { container } = renderPage();
     await fillAndSubmitDraft(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to create communication');
+      expect(container.textContent).toContain('No se pudo crear la comunicación');
     });
   });
 
@@ -765,7 +765,7 @@ describe('NewBrainMeetingPage — Save as draft', () => {
     const { container } = renderPage();
     await fillAndSubmitDraft(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -796,9 +796,9 @@ describe('NewBrainMeetingPage — Save as draft', () => {
     });
     const { container } = renderPage();
     // Open picker and select company
-    await waitFor(() => expect(container.textContent).toContain('Link to a CRM company or deal'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a una empresa u oportunidad del CRM'));
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link to a CRM company or deal'),
+      b.textContent?.includes('Vincular a una empresa u oportunidad del CRM'),
     );
     fireEvent.click(linkBtn!);
     await act(async () => { await new Promise((r) => setTimeout(r, 300)); });
@@ -812,7 +812,7 @@ describe('NewBrainMeetingPage — Save as draft', () => {
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'transcript content here' } });
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save as draft'),
+      b.textContent?.includes('Guardar como borrador'),
     )!;
     await act(async () => { fireEvent.click(draftBtn); });
     await waitFor(() => {
@@ -895,7 +895,7 @@ describe('NewBrainMeetingPage — Save and process', () => {
     const { container } = renderPage();
     await fillAndProcess(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('unknown error');
+      expect(container.textContent).toContain('error desconocido');
     });
   });
 });
@@ -922,11 +922,11 @@ describe('NewBrainMeetingPage — spinner state', () => {
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Test transcript' } });
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save as draft'),
+      b.textContent?.includes('Guardar como borrador'),
     )!;
     fireEvent.click(draftBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Saving…');
+      expect(container.textContent).toContain('Guardando…');
     });
     resolveCreate(makeRes({ success: true, data: { id: 1 } }));
   });
@@ -970,7 +970,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
     Object.defineProperty(fileInput, 'files', { value: [bigFile], configurable: true });
     fireEvent.change(fileInput);
     await waitFor(() => {
-      expect(container.textContent).toContain('larger than 5MB');
+      expect(container.textContent).toContain('supera los 5 MB');
     });
   });
 
@@ -988,7 +988,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
     Object.defineProperty(fileInput, 'files', { value: [badFile], configurable: true });
     fireEvent.change(fileInput);
     await waitFor(() => {
-      expect(container.textContent).toContain('Unsupported file type');
+      expect(container.textContent).toContain('Tipo de archivo no admitido');
     });
   });
 
