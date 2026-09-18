@@ -167,7 +167,7 @@ async function renderPage() {
   const result = render(<AgenticOsPage />);
   // Wait for loading spinner to disappear
   await waitFor(() => {
-    expect(screen.queryByText('Loading Agentic OS…')).toBeNull();
+    expect(screen.queryByText('Cargando Agentic OS…')).toBeNull();
   });
   return result;
 }
@@ -212,7 +212,7 @@ describe('AgenticOsPage', () => {
   describe('loading state', () => {
     it('shows loading spinner before fetch resolves', () => {
       render(<AgenticOsPage />);
-      expect(screen.getByText('Loading Agentic OS…')).toBeTruthy();
+      expect(screen.getByText('Cargando Agentic OS…')).toBeTruthy();
     });
   });
 
@@ -221,7 +221,7 @@ describe('AgenticOsPage', () => {
       setHandler(() => jsonResp({ success: false, message: 'Catalog unavailable' }));
       render(<AgenticOsPage />);
       await waitFor(() =>
-        expect(screen.getByText("Couldn't load Agentic OS")).toBeTruthy(),
+        expect(screen.getByText('No se pudo cargar Agentic OS')).toBeTruthy(),
       );
       expect(screen.getByText('Catalog unavailable')).toBeTruthy();
     });
@@ -230,7 +230,7 @@ describe('AgenticOsPage', () => {
       global.fetch = vi.fn(() => Promise.reject(new Error('Network error'))) as unknown as typeof fetch;
       render(<AgenticOsPage />);
       await waitFor(() =>
-        expect(screen.getByText("Couldn't load Agentic OS")).toBeTruthy(),
+        expect(screen.getByText('No se pudo cargar Agentic OS')).toBeTruthy(),
       );
       expect(screen.getByText('Network error')).toBeTruthy();
     });
@@ -239,9 +239,9 @@ describe('AgenticOsPage', () => {
       setHandler(() => jsonResp({ success: false }));
       render(<AgenticOsPage />);
       await waitFor(() =>
-        expect(screen.getByText("Couldn't load Agentic OS")).toBeTruthy(),
+        expect(screen.getByText('No se pudo cargar Agentic OS')).toBeTruthy(),
       );
-      expect(screen.getByText('Failed to load catalog')).toBeTruthy();
+      expect(screen.getByText('No se pudo cargar el catálogo')).toBeTruthy();
     });
   });
 
@@ -253,7 +253,7 @@ describe('AgenticOsPage', () => {
 
     it('shows "Local executor available" badge when executor is available', async () => {
       await renderPage();
-      expect(screen.getByText('Local executor available')).toBeTruthy();
+      expect(screen.getByText('Ejecutor local disponible')).toBeTruthy();
     });
 
     it('shows "Catalog mode" badge when executor is unavailable', async () => {
@@ -261,7 +261,7 @@ describe('AgenticOsPage', () => {
         jsonResp({ success: true, data: makeCatalog({ executorAvailable: false }) }),
       );
       await renderPage();
-      expect(screen.getByText('Catalog mode')).toBeTruthy();
+      expect(screen.getByText('Modo catálogo')).toBeTruthy();
     });
 
     it('shows executor host hint when unavailable and hint is set', async () => {
@@ -294,7 +294,7 @@ describe('AgenticOsPage', () => {
     it('renders stat card labels', async () => {
       await renderPage();
       expect(screen.getAllByText('Skills').length).toBeGreaterThan(0);
-      expect(screen.getAllByText('On-demand').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Bajo demanda').length).toBeGreaterThan(0);
       expect(screen.getByText('Exitoso')).toBeTruthy();
       expect(screen.getByText('Fallido')).toBeTruthy();
     });
@@ -316,13 +316,13 @@ describe('AgenticOsPage', () => {
   describe('rules panel', () => {
     it('rules panel is hidden by default', async () => {
       await renderPage();
-      expect(screen.queryByText('Cross-cutting rules')).toBeNull();
+      expect(screen.queryByText('Reglas transversales')).toBeNull();
     });
 
     it('toggles rules panel open when Rules button is clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Rules \(2\)/ }));
-      expect(screen.getByText('Cross-cutting rules')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Reglas \(2\)/ }));
+      expect(screen.getByText('Reglas transversales')).toBeTruthy();
       // "Rule One" also appears as a skill-card tag so use getAllByText
       expect(screen.getAllByText('Rule One').length).toBeGreaterThan(0);
       expect(screen.getByText('Rule Two')).toBeTruthy();
@@ -331,15 +331,15 @@ describe('AgenticOsPage', () => {
 
     it('toggles rules panel closed when Rules button is clicked again', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Rules \(2\)/ }));
-      expect(screen.getByText('Cross-cutting rules')).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: /Rules \(2\)/ }));
-      expect(screen.queryByText('Cross-cutting rules')).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: /Reglas \(2\)/ }));
+      expect(screen.getByText('Reglas transversales')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Reglas \(2\)/ }));
+      expect(screen.queryByText('Reglas transversales')).toBeNull();
     });
 
     it('rules button shows count of rules', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /Rules \(2\)/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Reglas \(2\)/ })).toBeTruthy();
     });
   });
 
@@ -392,12 +392,12 @@ describe('AgenticOsPage', () => {
 
     it('shows "Cron-managed" label for scheduled skills', async () => {
       await renderPage();
-      expect(screen.getByText('Cron-managed')).toBeTruthy();
+      expect(screen.getByText('Programado por cron')).toBeTruthy();
     });
 
     it('shows "Cloud-triggered" label for cloud skills', async () => {
       await renderPage();
-      expect(screen.getByText('Cloud-triggered')).toBeTruthy();
+      expect(screen.getByText('Invocada desde la nube')).toBeTruthy();
     });
 
     it('renders manualRunPath as code snippet on skill card', async () => {
@@ -416,15 +416,15 @@ describe('AgenticOsPage', () => {
   describe('filter bar', () => {
     it('renders all filter buttons', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /All domains/ })).toBeTruthy();
-      expect(screen.getByRole('button', { name: /On-demand only/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Todos los dominios/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Solo bajo demanda/ })).toBeTruthy();
       expect(screen.getByRole('button', { name: /Programado/ })).toBeTruthy();
-      expect(screen.getByRole('button', { name: /Run history/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Historial de ejecuciones/ })).toBeTruthy();
     });
 
     it('on-demand filter shows alpha skill card heading in the grid', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /On-demand only/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Solo bajo demanda/ }));
       // Alpha Skill should still appear (it's on-demand)
       expect(screen.getAllByText('Alpha Skill').length).toBeGreaterThan(0);
       // Beta Skill should not appear anywhere in the DOM after filter
@@ -450,14 +450,14 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /On-demand only/ }));
-      expect(screen.getByText('No skills match this filter')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Solo bajo demanda/ }));
+      expect(screen.getByText('Ninguna skill coincide con este filtro')).toBeTruthy();
     });
 
     it('restores multi-skill count after resetting to All domains', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /On-demand only/ }));
-      fireEvent.click(screen.getByRole('button', { name: /All domains/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Solo bajo demanda/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Todos los dominios/ }));
       // marketing now has 2 skills again
       expect(screen.getByText('2 skills')).toBeTruthy();
     });
@@ -466,21 +466,21 @@ describe('AgenticOsPage', () => {
   describe('run history tab', () => {
     it('switches to run history view', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       // The full RunHistory section renders "Run history" as its heading
-      expect(screen.getAllByText('Run history').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Historial de ejecuciones').length).toBeGreaterThan(0);
     });
 
     it('shows succeeded and failed status badges in history', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('succeeded').length).toBeGreaterThan(0);
       expect(screen.getAllByText('failed').length).toBeGreaterThan(0);
     });
 
     it('shows skill name for known skillId', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('Alpha Skill').length).toBeGreaterThan(0);
     });
 
@@ -505,20 +505,20 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('unknown-skill-xyz').length).toBeGreaterThan(0);
     });
 
     it('shows formatted duration in history rows', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('1.5s').length).toBeGreaterThan(0);
       expect(screen.getAllByText('3.0s').length).toBeGreaterThan(0);
     });
 
     it('shows error message text when run has errorMessage', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getByText('Script exited 1')).toBeTruthy();
     });
 
@@ -543,7 +543,7 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('--').length).toBeGreaterThan(0);
     });
 
@@ -555,14 +555,14 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
-      expect(screen.getByText('No runs yet')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
+      expect(screen.getByText('Aún no hay ejecuciones')).toBeTruthy();
     });
 
     it('compact recent runs section appears in all-domains view', async () => {
       await renderPage();
       // "Recent runs" heading in the compact footer (below skill grid)
-      expect(screen.getByText('Recent runs')).toBeTruthy();
+      expect(screen.getByText('Ejecuciones recientes')).toBeTruthy();
     });
   });
 
@@ -582,12 +582,12 @@ describe('AgenticOsPage', () => {
       await renderPage();
       clickSkillCardRunBtn();
       // Wait for drawer to appear
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
     }
 
     it('opens run drawer when skill-card Run is clicked', async () => {
       await openDrawer();
-      expect(screen.getByLabelText('Close drawer')).toBeTruthy();
+      expect(screen.getByLabelText('Cerrar panel')).toBeTruthy();
       expect(screen.getAllByText('Alpha Skill').length).toBeGreaterThan(0);
     });
 
@@ -596,13 +596,13 @@ describe('AgenticOsPage', () => {
       // The backdrop is the first child div of the fixed overlay
       const backdrop = document.querySelector('.fixed.inset-0 > div') as HTMLElement;
       if (backdrop) fireEvent.click(backdrop);
-      await waitFor(() => expect(screen.queryByLabelText('Close drawer')).toBeNull());
+      await waitFor(() => expect(screen.queryByLabelText('Cerrar panel')).toBeNull());
     });
 
     it('closes drawer when close button is clicked', async () => {
       await openDrawer();
-      fireEvent.click(screen.getByLabelText('Close drawer'));
-      await waitFor(() => expect(screen.queryByLabelText('Close drawer')).toBeNull());
+      fireEvent.click(screen.getByLabelText('Cerrar panel'));
+      await waitFor(() => expect(screen.queryByLabelText('Cerrar panel')).toBeNull());
     });
 
     it('renders skill description in drawer body', async () => {
@@ -642,7 +642,7 @@ describe('AgenticOsPage', () => {
       );
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
       const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
       expect(textarea).toBeTruthy();
     });
@@ -672,7 +672,7 @@ describe('AgenticOsPage', () => {
       );
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
       expect(screen.getByText('Pick one')).toBeTruthy();
       expect(screen.getByText('staging')).toBeTruthy();
       expect(screen.getByText('production')).toBeTruthy();
@@ -689,8 +689,8 @@ describe('AgenticOsPage', () => {
       );
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
-      expect(screen.getByText('This skill takes no inputs.')).toBeTruthy();
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
+      expect(screen.getByText('Esta skill no admite entradas.')).toBeTruthy();
     });
 
     it('shows rendered prompt with substituted variable', async () => {
@@ -703,12 +703,12 @@ describe('AgenticOsPage', () => {
 
     it('shows char count in prompt panel', async () => {
       await openDrawer();
-      expect(screen.getByText(/chars/)).toBeTruthy();
+      expect(screen.getByText(/caracteres/)).toBeTruthy();
     });
 
     it('copies prompt to clipboard when Copy prompt is clicked', async () => {
       await openDrawer();
-      fireEvent.click(screen.getByRole('button', { name: /Copy prompt/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Copiar prompt/ }));
       expect((navigator.clipboard.writeText as ReturnType<typeof vi.fn>)).toHaveBeenCalled();
     });
 
@@ -718,8 +718,8 @@ describe('AgenticOsPage', () => {
       );
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
-      expect(screen.getByText(/Executor disabled/)).toBeTruthy();
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
+      expect(screen.getByText(/Ejecutor deshabilitado/)).toBeTruthy();
     });
 
     it('drawer Run button is disabled when executor unavailable', async () => {
@@ -728,7 +728,7 @@ describe('AgenticOsPage', () => {
       );
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
       const footerRunBtn = Array.from(document.querySelectorAll('button')).find(
         (b) =>
           (b as HTMLButtonElement).className.includes('hover:opacity-90') &&
@@ -806,7 +806,7 @@ describe('AgenticOsPage', () => {
         await Promise.resolve();
       });
       await waitFor(() =>
-        expect(screen.getByText(/Executor disabled on this host/)).toBeTruthy(),
+        expect(screen.getByText(/Ejecutor deshabilitado en este host/)).toBeTruthy(),
       );
     });
   });
@@ -833,7 +833,7 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getByText('500ms')).toBeTruthy();
     });
 
@@ -858,7 +858,7 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getByText('2m 5s')).toBeTruthy();
     });
 
@@ -877,7 +877,7 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Run history/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Historial de ejecuciones/ }));
       expect(screen.getAllByText('pending').length).toBeGreaterThan(0);
       expect(screen.getAllByText('running').length).toBeGreaterThan(0);
       expect(screen.getByText('cancelled')).toBeTruthy();
@@ -906,7 +906,7 @@ describe('AgenticOsPage', () => {
       // EventSource stays open (no done event) — run stays in "running" state.
       await renderPage();
       clickSkillCardRunBtn();
-      await waitFor(() => expect(screen.getByLabelText('Close drawer')).toBeTruthy());
+      await waitFor(() => expect(screen.getByLabelText('Cerrar panel')).toBeTruthy());
       const input = screen.getByPlaceholderText('e.g. site') as HTMLInputElement;
       fireEvent.change(input, { target: { value: 'mysite' } });
       await act(async () => {
@@ -932,7 +932,7 @@ describe('AgenticOsPage', () => {
         }),
       );
       await renderPage();
-      expect(screen.getByText('No skills match this filter')).toBeTruthy();
+      expect(screen.getByText('Ninguna skill coincide con este filtro')).toBeTruthy();
     });
   });
 });

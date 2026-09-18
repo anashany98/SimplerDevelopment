@@ -56,7 +56,7 @@ export default function TagsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('¿Seguro?')) return;
     await fetch(`/api/tags/${id}`, { method: 'DELETE' });
     fetchTags();
   };
@@ -74,14 +74,14 @@ export default function TagsPage() {
             }}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
           >
-            {showForm ? 'Cancel' : 'Add Tag'}
+            {showForm ? 'Cancelar' : 'Añadir etiqueta'}
           </button>
         </div>
 
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-card border border-border shadow rounded-lg p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-foreground">Name *</label>
+              <label className="block text-sm font-medium text-foreground">Nombre *</label>
               <input
                 type="text"
                 required
@@ -105,7 +105,7 @@ export default function TagsPage() {
                 type="submit"
                 className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
               >
-                {editingTag ? 'Update' : 'Create'} Tag
+                {editingTag ? 'Actualizar' : 'Crear'} etiqueta
               </button>
               <button
                 type="button"
@@ -155,7 +155,7 @@ export default function TagsPage() {
               {tags.length === 0 && (
                 <tr>
                   <td colSpan={3} className="px-6 py-12 text-center text-muted-foreground">
-                    No tags yet. Create your first tag to get started!
+                    Aún no hay etiquetas. ¡Crea la primera para empezar!
                   </td>
                 </tr>
               )}

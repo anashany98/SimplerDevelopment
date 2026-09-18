@@ -63,7 +63,7 @@ export default function CategoriesPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('¿Seguro?')) return;
     await fetch(`/api/categories/${id}`, { method: 'DELETE' });
     fetchCategories();
   };
@@ -72,7 +72,7 @@ export default function CategoriesPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Categories</h1>
+          <h1 className="text-3xl font-bold text-foreground">Categorías</h1>
           <button
             onClick={() => {
               setShowForm(!showForm);
@@ -81,14 +81,14 @@ export default function CategoriesPage() {
             }}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
           >
-            {showForm ? 'Cancel' : 'Add Category'}
+            {showForm ? 'Cancelar' : 'Añadir categoría'}
           </button>
         </div>
 
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-card border border-border shadow rounded-lg p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-foreground">Name *</label>
+              <label className="block text-sm font-medium text-foreground">Nombre *</label>
               <input
                 type="text"
                 required
@@ -121,7 +121,7 @@ export default function CategoriesPage() {
                 type="submit"
                 className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
               >
-                {editingCategory ? 'Update' : 'Create'} Category
+                {editingCategory ? 'Actualizar' : 'Crear'} categoría
               </button>
               <button
                 type="button"
@@ -175,7 +175,7 @@ export default function CategoriesPage() {
               {categories.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
-                    No categories yet. Create your first category to get started!
+                    Aún no hay categorías. ¡Crea la primera para empezar!
                   </td>
                 </tr>
               )}

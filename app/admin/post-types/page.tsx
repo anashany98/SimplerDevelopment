@@ -98,7 +98,7 @@ export default function PostTypesPage() {
       setEditingPostType(null);
     } else {
       const data = await response.json();
-      alert(data.error || 'Failed to save post type');
+      alert(data.error || 'No se pudo guardar el tipo de contenido');
     }
   };
 
@@ -115,7 +115,7 @@ export default function PostTypesPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure? This will delete all custom fields associated with this post type.')) return;
+    if (!confirm('¿Seguro? Esto eliminará todos los campos personalizados asociados a este tipo de contenido.')) return;
     const response = await fetch(`/api/post-types/${id}`, { method: 'DELETE' });
     if (response.ok) {
       fetchPostTypes();
@@ -126,7 +126,7 @@ export default function PostTypesPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Post Types</h1>
+          <h1 className="text-3xl font-bold text-foreground">Tipos de contenido</h1>
           <button
             onClick={() => {
               setShowForm(true);
@@ -135,7 +135,7 @@ export default function PostTypesPage() {
             }}
             className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
           >
-            Add Post Type
+            Añadir tipo de contenido
           </button>
         </div>
 
@@ -150,7 +150,7 @@ export default function PostTypesPage() {
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-foreground">
-                  {editingPostType ? 'Edit Post Type' : 'Add Post Type'}
+                  {editingPostType ? 'Editar tipo de contenido' : 'Añadir tipo de contenido'}
                 </h2>
                 <button
                   onClick={handleCancel}
@@ -165,7 +165,7 @@ export default function PostTypesPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground">Name *</label>
+                    <label className="block text-sm font-medium text-foreground">Nombre *</label>
                     <input
                       type="text"
                       required
@@ -203,7 +203,7 @@ export default function PostTypesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Icon *</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Icono *</label>
                   <div className="grid grid-cols-8 gap-2">
                     {materialIcons.map((iconName) => (
                       <button
@@ -238,7 +238,7 @@ export default function PostTypesPage() {
                     type="submit"
                     className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
                   >
-                    {editingPostType ? 'Update' : 'Create'} Post Type
+                    {editingPostType ? 'Actualizar' : 'Crear'} tipo de contenido
                   </button>
                   <button
                     type="button"
@@ -287,7 +287,7 @@ export default function PostTypesPage() {
                           : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                       }`}
                     >
-                      {postType.active ? 'Active' : 'Inactive'}
+                      {postType.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
@@ -295,7 +295,7 @@ export default function PostTypesPage() {
                       href={`/admin/post-types/${postType.id}/fields`}
                       className="text-primary hover:text-primary/80"
                     >
-                      Fields
+                      Campos
                     </Link>
                     <button
                       onClick={() => handleEdit(postType)}
@@ -311,7 +311,7 @@ export default function PostTypesPage() {
               {postTypes.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                    No post types yet. Create your first post type to get started!
+                    Aún no hay tipos de contenido. ¡Crea el primero para empezar!
                   </td>
                 </tr>
               )}
