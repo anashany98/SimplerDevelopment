@@ -865,7 +865,7 @@ describe('SurveyFormInline — multi-page', () => {
       fireEvent.click(nextBtn);
     });
     const backBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Back'),
+      b.textContent?.includes('Atrás'),
     );
     expect(backBtn).toBeTruthy();
   });
@@ -885,7 +885,7 @@ describe('SurveyFormInline — multi-page', () => {
       fireEvent.click(next);
     });
     const back = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Back'),
+      b.textContent?.includes('Atrás'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(back);
