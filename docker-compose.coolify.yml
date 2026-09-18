@@ -337,8 +337,9 @@ services:
     volumes:
       - simplerdev-backups:/backups
     command: >
-      sh -lc "mkdir -p /backups &&
+      sh -lc "mkdir -p /backups && touch /backups/.heartbeat &&
       while true; do
+        touch /backups/.heartbeat;
         ts=$$(date -u +%Y%m%d-%H%M%S);
         out=/backups/simplerdev-$${ts}.sql.gz;
         if pg_dump --no-owner --no-privileges > /tmp/backup.sql && [ -s /tmp/backup.sql ] && gzip -9 < /tmp/backup.sql > $${out}.part; then
@@ -352,6 +353,15 @@ services:
         find /backups -maxdepth 1 -name 'simplerdev-*.sql.gz' -mtime +$${BACKUP_RETENTION_DAYS} -delete;
         sleep $${BACKUP_INTERVAL_SECONDS};
       done"
+    healthcheck:
+      # Heartbeat touched by the loop at every iteration (and at boot). If the
+      # loop dies the container exits and the restart policy kicks in, so an
+      # existing heartbeat == a live worker (also feeds Coolify's status).
+      test: ["CMD-SHELL", "test -f /backups/.heartbeat"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     deploy:
       resources:
         limits:
