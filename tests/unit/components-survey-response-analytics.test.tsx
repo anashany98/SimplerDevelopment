@@ -133,12 +133,12 @@ describe('ResponseAnalytics — empty state', () => {
     const { container } = render(
       <ResponseAnalytics survey={makeSurvey()} responses={[]} stats={makeStats()} />,
     );
-    expect(container.textContent).toContain('No responses to analyze yet');
+    expect(container.textContent).toContain('Aún no hay respuestas para analizar');
   });
 
   it('does not render summary cards in empty state', () => {
     render(<ResponseAnalytics survey={makeSurvey()} responses={[]} stats={makeStats()} />);
-    expect(screen.queryByText('Total Responses')).toBeNull();
+    expect(screen.queryByText('Total de respuestas')).toBeNull();
   });
 });
 
@@ -151,8 +151,8 @@ describe('ResponseAnalytics — summary cards', () => {
     expect(screen.getByText('20')).toBeTruthy();
     expect(screen.getByText('15')).toBeTruthy();
     expect(screen.getByText('7')).toBeTruthy();
-    expect(screen.getByText('Total Responses')).toBeTruthy();
-    expect(screen.getByText('Completed')).toBeTruthy();
+    expect(screen.getByText('Total de respuestas')).toBeTruthy();
+    expect(screen.getByText('Completado')).toBeTruthy();
     expect(screen.getByText('Identified')).toBeTruthy();
   });
 
@@ -162,7 +162,7 @@ describe('ResponseAnalytics — summary cards', () => {
       <ResponseAnalytics survey={makeSurvey()} responses={[makeResponse()]} stats={stats} />,
     );
     expect(screen.getByText('75%')).toBeTruthy();
-    expect(screen.getByText('Completion Rate')).toBeTruthy();
+    expect(screen.getByText('Tasa de finalización')).toBeTruthy();
   });
 
   it('shows 0% completion rate when total is 0 (edge case guard)', () => {
