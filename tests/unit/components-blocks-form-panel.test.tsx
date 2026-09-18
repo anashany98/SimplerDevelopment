@@ -150,7 +150,7 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('updates size via select', () => {
     const { onChange } = renderPanel(baseBtn);
-    const select = screen.getByDisplayValue('Medium') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Media') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lg' } });
     expect(onChange).toHaveBeenCalledWith({ size: 'lg' });
   });
@@ -188,7 +188,7 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('updates hoverEffect via select', () => {
     const { onChange } = renderPanel(baseBtn);
-    const select = screen.getByDisplayValue('None') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Ninguno') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lift' } });
     expect(onChange).toHaveBeenCalledWith({ hoverEffect: 'lift' });
   });
@@ -226,7 +226,7 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('defaults size to md when not set', () => {
     renderPanel({ ...baseBtn, size: undefined });
-    expect(screen.getByDisplayValue('Medium')).toBeTruthy();
+    expect(screen.getByDisplayValue('Media')).toBeTruthy();
   });
 });
 
@@ -650,7 +650,7 @@ describe('FormPanel — EmailHeaderBlockSettings', () => {
 
   it('changes alignment via select', () => {
     const { onChange } = renderPanel(baseEmailHeader);
-    const select = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ alignment: 'left' });
   });
