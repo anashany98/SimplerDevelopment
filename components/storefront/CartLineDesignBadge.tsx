@@ -28,7 +28,7 @@ export function CartLineDesignBadge({ design, productSlug }: CartLineDesignBadge
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={design.thumbnailUrl}
-          alt={design.name || 'Saved design'}
+          alt={design.name || 'Diseño guardado'}
           className="w-16 h-16 rounded border border-border object-cover bg-white"
         />
       ) : (
@@ -38,7 +38,7 @@ export function CartLineDesignBadge({ design, productSlug }: CartLineDesignBadge
       )}
       <div className="min-w-0 flex-1">
         <p className="text-xs italic text-muted-foreground truncate">
-          {design.name || 'Untitled design'}
+          {design.name || 'Diseño sin título'}
         </p>
         {productSlug && (
           <Link
@@ -46,7 +46,7 @@ export function CartLineDesignBadge({ design, productSlug }: CartLineDesignBadge
             className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-[14px]">edit</span>
-            Edit design
+            Editar diseño
           </Link>
         )}
       </div>

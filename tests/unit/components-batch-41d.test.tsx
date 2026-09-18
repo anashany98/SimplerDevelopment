@@ -360,22 +360,22 @@ describe('AccountLayout', () => {
     expect(screen.getByTestId('account-child')).toBeTruthy();
 
     // Each label exists in both desktop and mobile nav -> use getAllByText
-    for (const label of ['Dashboard', 'Orders', 'Wishlist', 'Support', 'Profile']) {
+    for (const label of ['Panel', 'Pedidos', 'Mis diseños', 'Lista de deseos', 'Soporte', 'Perfil']) {
       const matches = screen.getAllByText(label);
       expect(matches.length).toBeGreaterThanOrEqual(1);
     }
 
     // Sign Out is desktop-only
-    expect(screen.getByText('Sign Out')).toBeTruthy();
+    expect(screen.getByText('Cerrar sesión')).toBeTruthy();
   });
 
-  it('marks the Dashboard link as active when pathname is exactly /account', async () => {
+  it('marks the Panel link as active when pathname is exactly /account', async () => {
     renderAccountLayout({ pathname: '/account', customer: null });
 
-    // Multiple "Dashboard" texts (desktop + mobile). The desktop one wraps in
+    // Multiple "Panel" texts (desktop + mobile). The desktop one wraps in
     // an <a> with the active class set.
     const dashLinks = screen
-      .getAllByText('Dashboard')
+      .getAllByText('Panel')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(dashLinks.length).toBeGreaterThan(0);
@@ -383,18 +383,18 @@ describe('AccountLayout', () => {
     expect(dashLinks.some(a => a.className.includes('bg-gray-100'))).toBe(true);
   });
 
-  it('marks Orders as active when pathname starts with /account/orders', async () => {
+  it('marks Pedidos as active when pathname starts with /account/orders', async () => {
     renderAccountLayout({ pathname: '/account/orders/123', customer: null });
 
     const ordersLinks = screen
-      .getAllByText('Orders')
+      .getAllByText('Pedidos')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(ordersLinks.some(a => a.className.includes('bg-gray-100'))).toBe(true);
 
-    // Dashboard should NOT be active for /account/orders
+    // Panel should NOT be active for /account/orders
     const dashLinks = screen
-      .getAllByText('Dashboard')
+      .getAllByText('Panel')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(dashLinks.every(a => !a.className.includes('bg-gray-100'))).toBe(true);
@@ -466,7 +466,7 @@ describe('AccountLayout', () => {
     });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Sign Out'));
+      fireEvent.click(screen.getByText('Cerrar sesión'));
     });
     expect(logoutFetchCalled).toBe(true);
     expect(localStorage.getItem('customer_token_1')).toBeNull();
