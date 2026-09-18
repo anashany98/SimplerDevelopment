@@ -21,6 +21,11 @@ import { registerCrmDealExtrasTools } from './crm-deal-extras';
 import { registerCrmProposalsContractsTools } from './crm-proposals-contracts';
 import { registerCrmCustomFieldsTools } from './crm-custom-fields';
 import { registerCmsTools } from './cms';
+import { registerCmsPostsForkTools } from './cms-posts-fork';
+import { registerCmsMediaTaxonomyTools } from './cms-media-taxonomy';
+import { registerCmsSitesTools } from './cms-sites';
+import { registerCmsTemplatesTools } from './cms-templates';
+import { registerCmsDomainsTools } from './cms-domains';
 import { registerEmailTools } from './email';
 import { registerPitchDecksTools } from './pitch-decks';
 import { registerSurveysTools } from './surveys';
@@ -62,6 +67,11 @@ export {
   registerTicketsTools,
   registerCrmTools,
   registerCmsTools,
+  registerCmsPostsForkTools,
+  registerCmsMediaTaxonomyTools,
+  registerCmsSitesTools,
+  registerCmsTemplatesTools,
+  registerCmsDomainsTools,
   registerEmailTools,
   registerPitchDecksTools,
   registerSurveysTools,
@@ -121,6 +131,11 @@ export const allToolRegistrars: readonly McpToolRegistrar[] = [
   registerCrmProposalsContractsTools,
   registerCrmCustomFieldsTools,
   registerCmsTools,
+  registerCmsPostsForkTools,
+  registerCmsMediaTaxonomyTools,
+  registerCmsSitesTools,
+  registerCmsTemplatesTools,
+  registerCmsDomainsTools,
   registerEmailTools,
   registerPitchDecksTools,
   registerSurveysTools,

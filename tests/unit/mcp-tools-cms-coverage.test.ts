@@ -325,6 +325,11 @@ vi.mock('@/lib/mcp/blocks-schema', () => ({
 // ── imports ──────────────────────────────────────────────────────────────────
 
 import { registerCmsTools } from '@/lib/mcp/tools/cms';
+import { registerCmsPostsForkTools } from '@/lib/mcp/tools/cms-posts-fork';
+import { registerCmsMediaTaxonomyTools } from '@/lib/mcp/tools/cms-media-taxonomy';
+import { registerCmsSitesTools } from '@/lib/mcp/tools/cms-sites';
+import { registerCmsTemplatesTools } from '@/lib/mcp/tools/cms-templates';
+import { registerCmsDomainsTools } from '@/lib/mcp/tools/cms-domains';
 
 interface CapturedTool {
   name: string;
@@ -361,6 +366,16 @@ function registerAll(scopes: string[] = ['*']) {
   const { stub, tools } = makeServer();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerCmsTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsPostsForkTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsMediaTaxonomyTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsSitesTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsTemplatesTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsDomainsTools(stub as any, ctxFor(scopes));
   return tools;
 }
 

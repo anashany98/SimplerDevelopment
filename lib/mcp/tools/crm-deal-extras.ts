@@ -1,5 +1,5 @@
 /**
- * MCP tools — crm deal extras (comments, artifacts, activities)
+ * MCP tools — crm deal extras (comments, artifacts, pipelines, activities)
  *
  * Split out of lib/mcp/tools/crm.ts to keep the per-domain registrar under
  * the god-file ratchet (scripts/check-file-budget.ts) and the function-size
