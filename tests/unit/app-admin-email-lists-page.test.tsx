@@ -105,7 +105,7 @@ async function renderPage() {
   const result = render(<EmailListsPage />);
   // Wait for loading to finish
   await waitFor(() => {
-    expect(screen.queryByText('Loading…')).toBeNull();
+    expect(screen.queryByText('Cargando…')).toBeNull();
   });
   return result;
 }
@@ -126,12 +126,12 @@ describe('EmailListsPage', () => {
       // Don't await — capture the loading state
       setHandler(() => new Promise(() => {}) as unknown as FetchResp);
       render(<EmailListsPage />);
-      expect(screen.getByText('Loading…')).toBeTruthy();
+      expect(screen.getByText('Cargando…')).toBeTruthy();
     });
 
     it('hides loading text after data arrives', async () => {
       await renderPage();
-      expect(screen.queryByText('Loading…')).toBeNull();
+      expect(screen.queryByText('Cargando…')).toBeNull();
     });
   });
 
@@ -167,7 +167,7 @@ describe('EmailListsPage', () => {
     it('renders "Select a list" in subscriber panel when nothing selected', async () => {
       await renderPage();
       expect(screen.getByText('Select a list')).toBeTruthy();
-      expect(screen.getByText('Click a list to view subscribers.')).toBeTruthy();
+      expect(screen.getByText('Haz clic en una lista para ver suscriptores.')).toBeTruthy();
     });
   });
 
@@ -273,7 +273,7 @@ describe('EmailListsPage', () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: /New List/i }));
       expect(screen.getByPlaceholderText('e.g. Newsletter')).toBeTruthy();
-      expect(screen.getByPlaceholderText('Optional')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Opcional')).toBeTruthy();
     });
 
     it('submits create form and adds list to state', async () => {
@@ -499,7 +499,7 @@ describe('EmailListsPage', () => {
 
     it('renders email and name inputs in add-subscriber form', async () => {
       await openPanel();
-      expect(screen.getByPlaceholderText('Email address')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Dirección de email')).toBeTruthy();
       expect(screen.getByPlaceholderText('Name (optional)')).toBeTruthy();
     });
 
@@ -516,7 +516,7 @@ describe('EmailListsPage', () => {
       await openPanel();
       await waitFor(() => expect(screen.getByText('alice@example.com')).toBeTruthy());
 
-      fireEvent.change(screen.getByPlaceholderText('Email address'), {
+      fireEvent.change(screen.getByPlaceholderText('Dirección de email'), {
         target: { value: 'bob@example.com' },
       });
       fireEvent.change(screen.getByPlaceholderText('Name (optional)'), {
@@ -549,7 +549,7 @@ describe('EmailListsPage', () => {
       });
       await openPanel();
       await waitFor(() => expect(screen.getByText('No subscribers yet.')).toBeTruthy());
-      fireEvent.change(screen.getByPlaceholderText('Email address'), {
+      fireEvent.change(screen.getByPlaceholderText('Dirección de email'), {
         target: { value: 'dup@example.com' },
       });
       const forms = document.querySelectorAll('form');
@@ -568,7 +568,7 @@ describe('EmailListsPage', () => {
         return defaultHandler(url, init);
       });
       await openPanel();
-      fireEvent.change(screen.getByPlaceholderText('Email address'), {
+      fireEvent.change(screen.getByPlaceholderText('Dirección de email'), {
         target: { value: 'x@example.com' },
       });
       const forms = document.querySelectorAll('form');
