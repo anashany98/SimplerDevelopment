@@ -200,19 +200,19 @@ describe('AISettingsPage', () => {
   it('renders Email Requests card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Email Requests')).toBeTruthy();
+    expect(screen.getByText('Solicitudes por email')).toBeTruthy();
   });
 
   it('renders Chat Conversations card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Chat Conversations')).toBeTruthy();
+    expect(screen.getByText('Conversaciones de chat')).toBeTruthy();
   });
 
   it('renders Credits Remaining card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Credits Remaining')).toBeTruthy();
+    expect(screen.getByText('Créditos restantes')).toBeTruthy();
   });
 
   it('displays correct email conversation count', async () => {
@@ -220,7 +220,7 @@ describe('AISettingsPage', () => {
     await flush();
     // 1 email conversation in baseConversations
     const cards = document.querySelectorAll('.bg-card');
-    const emailCard = Array.from(cards).find((c) => c.textContent?.includes('Email Requests'));
+    const emailCard = Array.from(cards).find((c) => c.textContent?.includes('Solicitudes por email'));
     expect(emailCard?.textContent).toContain('1');
   });
 
@@ -229,15 +229,15 @@ describe('AISettingsPage', () => {
     await flush();
     // 1 chat conversation in baseConversations
     const cards = document.querySelectorAll('.bg-card');
-    const chatCard = Array.from(cards).find((c) => c.textContent?.includes('Chat Conversations'));
+    const chatCard = Array.from(cards).find((c) => c.textContent?.includes('Conversaciones de chat'));
     expect(chatCard?.textContent).toContain('1');
   });
 
   it('displays formatted credit balance', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    // 8500 formatted as 8,500
-    expect(document.body.textContent).toContain('8,500');
+    // 8500 formatted with the runtime locale (es-ES renders 8500, en-US renders 8,500)
+    expect(document.body.textContent).toContain((8500).toLocaleString());
   });
 
   it('shows --- for credits when credit fetch fails', async () => {
@@ -313,13 +313,13 @@ describe('AISettingsPage', () => {
   it('renders Token Receipts heading', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Token Receipts')).toBeTruthy();
+    expect(screen.getByText('Recibos de tokens')).toBeTruthy();
   });
 
   it('renders the monthly usage count in Token Receipts', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(document.body.textContent).toContain('1,500');
+    expect(document.body.textContent).toContain((1500).toLocaleString());
   });
 
   it('renders ledger rows in Token Receipts table', async () => {
@@ -338,7 +338,7 @@ describe('AISettingsPage', () => {
     });
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('No token activity yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay actividad de tokens.')).toBeTruthy();
   });
 
   it('shows View all button when ledger has >5 entries', async () => {
@@ -552,14 +552,14 @@ describe('AISettingsPage', () => {
   it('renders Request Log heading', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Request Log')).toBeTruthy();
+    expect(screen.getByText('Registro de solicitudes')).toBeTruthy();
   });
 
   it('renders All / Email / Chat filter buttons', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('All')).toBeTruthy();
-    expect(screen.getByText('Email')).toBeTruthy();
+    expect(screen.getByText('Todos')).toBeTruthy();
+    expect(screen.getByText('Correo')).toBeTruthy();
     expect(screen.getByText('Chat')).toBeTruthy();
   });
 
@@ -575,7 +575,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const emailBtn = screen.getByText('Email');
+    const emailBtn = screen.getByText('Correo');
     await act(async () => { fireEvent.click(emailBtn); });
 
     expect(document.body.textContent).toContain('Order inquiry');
@@ -615,7 +615,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const emailBtn = screen.getByText('Email');
+    const emailBtn = screen.getByText('Correo');
     await act(async () => { fireEvent.click(emailBtn); });
 
     expect(screen.getByText('No email requests yet. Send an email to your AI address to get started.')).toBeTruthy();
@@ -641,7 +641,7 @@ describe('AISettingsPage', () => {
   it('shows conversation detail placeholder when nothing selected', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Select a request to view the conversation')).toBeTruthy();
+    expect(screen.getByText('Selecciona una solicitud para ver la conversación')).toBeTruthy();
   });
 
   it('opens a conversation and fetches messages on click', async () => {
@@ -677,7 +677,7 @@ describe('AISettingsPage', () => {
     await act(async () => { fireEvent.click(convBtn!); });
     await flush();
 
-    expect(screen.getByText('Token Receipt')).toBeTruthy();
+    expect(screen.getByText('Recibo de tokens')).toBeTruthy();
   });
 
   it('deselects conversation when filter changes', async () => {
@@ -691,7 +691,7 @@ describe('AISettingsPage', () => {
     // Switch filter
     await act(async () => { fireEvent.click(screen.getByText('Chat')); });
     // Detail panel should return to placeholder
-    expect(screen.getByText('Select a request to view the conversation')).toBeTruthy();
+    expect(screen.getByText('Selecciona una solicitud para ver la conversación')).toBeTruthy();
   });
 
   it('shows flag icon for flagged conversations', async () => {
@@ -723,7 +723,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
     // Should not crash; overview cards still render
-    expect(screen.getByText('Email Requests')).toBeTruthy();
+    expect(screen.getByText('Solicitudes por email')).toBeTruthy();
   });
 
   // ── Image usage — monthCount display ──────────────────────────────────────
