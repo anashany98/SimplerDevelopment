@@ -31,14 +31,21 @@ The portal-side MCP server: tool catalogue exposed to AI clients (Claude Code, C
 |---|---|
 | New MCP tool | `simplerdev-mcp-tool` skill |
 | Tool response feels heavy | `simplerdev-mcp-token-budget` skill (audit + slim projections) |
-| Cross-cutting question over all tools | Spawn `Explore` subagent — `tools/cms.ts` and `tools/crm.ts` are >1600 lines each |
+| Cross-cutting question over all tools | Spawn `Explore` subagent — registrars are split per domain under `tools/` (see God-file warning) |
 
 ## God-file warning
 
 Don't Read these into the main thread:
 
-- `lib/brain/mcp-sdk-adapter.ts` (5630) — the brain MCP adapter; largest file in the repo. Consumed by the brain registrar.
-- `tools/cms.ts` (2216), `tools/crm.ts` (1670), `approvals.ts` (1193)
+- `tools/approvals.ts` (1193) — the approvals primitive; still one large module.
+- The registrars were decomposed (function-size budget + file-size ratchet):
+  `tools/crm.ts` has siblings `crm-deal-extras.ts` / `crm-proposals-contracts.ts`
+  / `crm-custom-fields.ts`; `tools/cms.ts` has `cms-posts-fork.ts` /
+  `cms-media-taxonomy.ts` / `cms-sites.ts` / `cms-templates.ts` /
+  `cms-domains.ts`; the brain adapter is a 225-line orchestrator over
+  `lib/brain/adapters/*` (reads, writes, notes, taxonomy, crm-reads,
+  initiatives-goals, playbooks, documents + people/decisions/topics/glossary).
+  Add a tool next to its domain module; re-check `bun scripts/check-file-budget.ts`.
 - `tools/kanban.ts` is now 988 — it was split under the file-size ratchet; card
   artifacts / templates / propose-sprint / recurrences live in
   `tools/kanban-artifacts.ts` (472). Adding a kanban tool means checking the
