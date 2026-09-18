@@ -132,17 +132,17 @@ describe('ProductPage', () => {
   it('shows error state when API returns failure', async () => {
     mockErrorResponse('Product not found');
     render(<ProductPage siteId={1} productSlug="missing" />);
-    await waitFor(() => expect(screen.getByText('Product Not Found')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Producto no encontrado')).toBeTruthy());
     expect(screen.getByText(/Product not found/)).toBeTruthy();
     // Back to Shop link
-    expect(screen.getByRole('link', { name: /Back to Shop/ })).toBeTruthy();
+    expect(screen.getByRole('link', { name: /Volver a la tienda/ })).toBeTruthy();
   });
 
   it('shows error state on network failure', async () => {
     mockNetworkError();
     render(<ProductPage siteId={1} productSlug="bad" />);
-    await waitFor(() => expect(screen.getByText('Product Not Found')).toBeTruthy());
-    expect(screen.getByText(/Failed to load product/)).toBeTruthy();
+    await waitFor(() => expect(screen.getByText('Producto no encontrado')).toBeTruthy());
+    expect(screen.getByText(/No se pudo cargar el producto/)).toBeTruthy();
   });
 
   // ── Basic render ───────────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ describe('ProductPage', () => {
   it('shows full description via dangerouslySetInnerHTML', async () => {
     mockSuccessResponse(makeProduct());
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByRole('heading', { name: 'Description' })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Descripción' })).toBeTruthy());
     expect(screen.getByText('Full description here.')).toBeTruthy();
   });
 
@@ -172,7 +172,7 @@ describe('ProductPage', () => {
     mockSuccessResponse(makeProduct({ description: null }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Test Widget' })).toBeTruthy());
-    expect(screen.queryByRole('heading', { name: 'Description' })).toBeNull();
+    expect(screen.queryByRole('heading', { name: 'Descripción' })).toBeNull();
   });
 
   // ── Breadcrumb ─────────────────────────────────────────────────────────────
@@ -181,7 +181,7 @@ describe('ProductPage', () => {
     mockSuccessResponse(makeProduct());
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Test Widget' })).toBeTruthy());
-    expect(screen.getByRole('link', { name: 'Shop' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Tienda' })).toBeTruthy();
     // category link should not appear
     expect(screen.queryByRole('link', { name: /Widgets/ })).toBeNull();
   });
@@ -200,19 +200,19 @@ describe('ProductPage', () => {
   it('shows In Stock when trackInventory is false', async () => {
     mockSuccessResponse(makeProduct({ trackInventory: false }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText(/In Stock/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/En stock/)).toBeTruthy());
   });
 
   it('shows Out of Stock when trackInventory=true and quantity=0', async () => {
     mockSuccessResponse(makeProduct({ trackInventory: true, quantity: 0 }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getAllByText(/Out of Stock/).length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText(/Agotado/).length).toBeGreaterThan(0));
   });
 
   it('shows "Only N left" warning when stock ≤ 10 and trackInventory=true', async () => {
     mockSuccessResponse(makeProduct({ trackInventory: true, quantity: 5 }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText(/Only 5 left/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Solo quedan 5/)).toBeTruthy());
   });
 
   // ── Images ─────────────────────────────────────────────────────────────────
@@ -267,9 +267,9 @@ describe('ProductPage', () => {
   it('shows sale badge when compareAtPrice > price', async () => {
     mockSuccessResponse(makeProduct({ price: 2000, compareAtPrice: 4000 }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText(/% OFF/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/% DTO/)).toBeTruthy());
     // 50% off
-    expect(screen.getByText(/50% OFF/)).toBeTruthy();
+    expect(screen.getByText(/50% DTO/)).toBeTruthy();
   });
 
   it('shows strikethrough compare price', async () => {
@@ -285,7 +285,7 @@ describe('ProductPage', () => {
     mockSuccessResponse(makeProduct({ price: 2000, compareAtPrice: 2000 }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Test Widget' })).toBeTruthy());
-    expect(screen.queryByText(/% OFF/)).toBeNull();
+    expect(screen.queryByText(/% DTO/)).toBeNull();
   });
 
   // ── SKU and tags ───────────────────────────────────────────────────────────
@@ -310,7 +310,7 @@ describe('ProductPage', () => {
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Test Widget' })).toBeTruthy());
     expect(screen.queryByText(/SKU:/)).toBeNull();
-    expect(screen.queryByText(/Tags:/)).toBeNull();
+    expect(screen.queryByText(/Etiquetas:/)).toBeNull();
   });
 
   // ── Variant options ────────────────────────────────────────────────────────
@@ -448,15 +448,15 @@ describe('ProductPage', () => {
   it('add to cart button shows "Add to Cart" for in-stock product', async () => {
     mockSuccessResponse(makeProduct());
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText(/Add to Cart/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Añadir al carrito/)).toBeTruthy());
   });
 
   it('add to cart button is disabled when out of stock', async () => {
     mockSuccessResponse(makeProduct({ trackInventory: true, quantity: 0 }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getAllByText(/Out of Stock/).length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText(/Agotado/).length).toBeGreaterThan(0));
     // The add button itself should be disabled
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Out of Stock'));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Agotado'));
     expect(addBtn).toBeTruthy();
     expect(addBtn!.hasAttribute('disabled')).toBe(true);
   });
@@ -491,7 +491,7 @@ describe('ProductPage', () => {
     });
     mockSuccessResponse(product2);
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText('Select Options')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Selecciona opciones')).toBeTruthy());
   });
 
   it('successfully adds to cart and shows success message', async () => {
@@ -503,12 +503,12 @@ describe('ProductPage', () => {
 
     const dispatchSpy = vi.spyOn(window, 'dispatchEvent');
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => screen.getByText(/Add to Cart/));
+    await waitFor(() => screen.getByText(/Añadir al carrito/));
 
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Add to Cart'));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Añadir al carrito'));
     expect(addBtn).toBeTruthy();
     await act(async () => { fireEvent.click(addBtn!); });
-    await waitFor(() => expect(screen.getByText('Added to cart!')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('¡Añadido al carrito!')).toBeTruthy());
     expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: 'cart-updated' }));
   });
 
@@ -519,8 +519,8 @@ describe('ProductPage', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: false, message: 'Cart full' }) } as Response);
 
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => screen.getByText(/Add to Cart/));
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Add to Cart'));
+    await waitFor(() => screen.getByText(/Añadir al carrito/));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Añadir al carrito'));
     await act(async () => { fireEvent.click(addBtn!); });
     await waitFor(() => expect(screen.getByText('Cart full')).toBeTruthy());
   });
@@ -532,10 +532,10 @@ describe('ProductPage', () => {
       .mockRejectedValueOnce(new Error('network'));
 
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => screen.getByText(/Add to Cart/));
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Add to Cart'));
+    await waitFor(() => screen.getByText(/Añadir al carrito/));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Añadir al carrito'));
     await act(async () => { fireEvent.click(addBtn!); });
-    await waitFor(() => expect(screen.getByText('Something went wrong')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Algo salió mal')).toBeTruthy());
   });
 
   it('cart message includes "View Cart" link on success', async () => {
@@ -545,10 +545,10 @@ describe('ProductPage', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true }) } as Response);
 
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => screen.getByText(/Add to Cart/));
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Add to Cart'));
+    await waitFor(() => screen.getByText(/Añadir al carrito/));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Añadir al carrito'));
     await act(async () => { fireEvent.click(addBtn!); });
-    await waitFor(() => expect(screen.getByRole('link', { name: 'View Cart' })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('link', { name: 'Ver carrito' })).toBeTruthy());
   });
 
   // ── Designable product ─────────────────────────────────────────────────────
@@ -556,14 +556,14 @@ describe('ProductPage', () => {
   it('shows "Customize this product" link when product.designable is true', async () => {
     mockSuccessResponse(makeProduct({ designable: true }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getAllByText(/Customize this product/).length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText(/Personalizar este producto/).length).toBeGreaterThan(0));
   });
 
   it('shows the designer link when designable=true', async () => {
     mockSuccessResponse(makeProduct({ designable: true }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => {
-      const link = screen.getByRole('link', { name: /Customize this product/ });
+      const link = screen.getByRole('link', { name: /Personalizar este producto/ });
       expect(link.getAttribute('href')).toContain('/design/test-widget');
     });
   });
@@ -571,7 +571,7 @@ describe('ProductPage', () => {
   it('shows "Buy as-is" in add button when designable=true', async () => {
     mockSuccessResponse(makeProduct({ designable: true }));
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText(/Buy as-is/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Comprar tal cual/)).toBeTruthy());
   });
 
   // ── Bulk pricing ───────────────────────────────────────────────────────────
@@ -585,9 +585,9 @@ describe('ProductPage', () => {
     });
     mockSuccessResponse(product);
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => expect(screen.getByText('Bulk Pricing')).toBeTruthy());
-    expect(screen.getByText(/5–10 units/)).toBeTruthy();
-    expect(screen.getByText(/11\+ units/)).toBeTruthy();
+    await waitFor(() => expect(screen.getByText('Precios por volumen')).toBeTruthy());
+    expect(screen.getByText(/5–10 unidades/)).toBeTruthy();
+    expect(screen.getByText(/11\+ unidades/)).toBeTruthy();
   });
 
   it('applies bulk fixed_price discount when quantity matches', async () => {
@@ -607,7 +607,7 @@ describe('ProductPage', () => {
     );
     fireEvent.click(addBtn!);
 
-    await waitFor(() => expect(screen.getByText('Bulk discount applied')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Descuento por volumen aplicado')).toBeTruthy());
     // effectivePrice = 1500 cents = $15.00 — appears in price area and bulk pricing table
     expect(screen.getAllByText('$15.00').length).toBeGreaterThan(0);
   });
@@ -640,8 +640,8 @@ describe('ProductPage', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true }) } as Response);
 
     render(<ProductPage siteId={1} productSlug="test-widget" />);
-    await waitFor(() => screen.getByText(/Add to Cart/));
-    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Add to Cart'));
+    await waitFor(() => screen.getByText(/Añadir al carrito/));
+    const addBtn = screen.getAllByRole('button').find((b) => b.textContent?.includes('Añadir al carrito'));
     await act(async () => { fireEvent.click(addBtn!); });
 
     // sessionId should have been stored
