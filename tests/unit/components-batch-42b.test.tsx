@@ -259,7 +259,7 @@ describe('MediaDetailModal', () => {
     render(
       <MediaDetailModal media={baseMedia} onClose={onClose} onUpdate={onUpdate} />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /delete/i }));
+    fireEvent.click(screen.getByRole('button', { name: /eliminar/i }));
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });
@@ -278,7 +278,7 @@ describe('MediaDetailModal', () => {
     render(
       <MediaDetailModal media={baseMedia} onClose={() => {}} onUpdate={() => {}} />,
     );
-    fireEvent.click(screen.getByRole('button', { name: /delete/i }));
+    fireEvent.click(screen.getByRole('button', { name: /eliminar/i }));
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
