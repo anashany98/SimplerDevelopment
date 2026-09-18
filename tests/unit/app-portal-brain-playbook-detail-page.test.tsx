@@ -272,7 +272,7 @@ describe('PlaybookDetailPage — error states', () => {
   it('shows "Invalid playbook id" for a non-numeric id', async () => {
     const { container } = renderWithId('abc');
     await waitFor(() => {
-      expect(container.textContent).toContain('Invalid playbook id');
+      expect(container.textContent).toContain('ID de playbook no válido');
     });
   });
 
@@ -299,7 +299,7 @@ describe('PlaybookDetailPage — error states', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load playbook');
+      expect(container.textContent).toContain('No se pudo cargar el playbook');
     });
   });
 });
@@ -353,7 +353,7 @@ describe('PlaybookDetailPage — successful render', () => {
   it('renders the step count (0 steps)', async () => {
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('0 steps');
+      expect(container.textContent).toContain('0 pasos');
     });
   });
 
@@ -369,13 +369,13 @@ describe('PlaybookDetailPage — successful render', () => {
       const txt = container.textContent ?? '';
       // The header renders "1 step" (singular); the icon text is adjacent
       // in textContent so we search for the substring directly.
-      expect(txt).toContain('1 step');
+      expect(txt).toContain('1 paso');
       // The stub used a unique marker so we can confirm it rendered
       expect(txt).toContain('step-graph-count:1');
       // Ensure the page does NOT show "1 steps" (plural) anywhere
       // outside of the step-graph stub marker
       const withoutMarker = txt.replace('step-graph-count:1', '');
-      expect(withoutMarker).not.toContain('1 steps');
+      expect(withoutMarker).not.toContain('1 pasos');
     });
   });
 
@@ -455,7 +455,7 @@ describe('PlaybookDetailPage — successful render', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 
@@ -468,8 +468,8 @@ describe('PlaybookDetailPage — successful render', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('Topic #10');
-      expect(container.textContent).toContain('Topic #20');
+      expect(container.textContent).toContain('Tema #10');
+      expect(container.textContent).toContain('Tema #20');
     });
   });
 
@@ -494,7 +494,7 @@ describe('PlaybookDetailPage — trigger sections', () => {
   it('shows "Manual — runs are started explicitly" for manual trigger', async () => {
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('Manual — runs are started explicitly');
+      expect(container.textContent).toContain('Manual: un usuario inicia las ejecuciones');
     });
   });
 
@@ -530,7 +530,7 @@ describe('PlaybookDetailPage — trigger sections', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('— not set —');
+      expect(container.textContent).toContain('— sin definir —');
     });
   });
 
@@ -560,7 +560,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
     const { container } = renderWithId();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Activate'),
+        b.textContent?.includes('Activar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -573,7 +573,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
       expect(h1).toBeTruthy(); // page loaded
     });
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Start a run'),
+      b.textContent?.includes('Iniciar ejecución'),
     );
     expect(btn).toBeFalsy();
   });
@@ -588,7 +588,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
     const { container } = renderWithId();
     await waitFor(() => {
       const startBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Start a run'),
+        b.textContent?.includes('Iniciar ejecución'),
       );
       const archiveBtn = Array.from(container.querySelectorAll('button')).find(
         (b) => b.textContent?.includes('Archivar'),
@@ -612,7 +612,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
       expect(h1).toBeTruthy();
     });
     const activateBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Activate',
+      b.textContent?.trim() === 'Activar',
     );
     expect(activateBtn).toBeFalsy();
   });
@@ -631,7 +631,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
     const { container } = renderWithId();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Activate'),
+        b.textContent?.includes('Activar'),
       ) as HTMLButtonElement | undefined;
       expect(btn?.disabled).toBe(true);
     });
@@ -646,7 +646,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('Validate');
+      expect(container.textContent).toContain('Validar');
     });
   });
 });
@@ -657,7 +657,7 @@ describe('PlaybookDetailPage — active runs section', () => {
   it('shows "No active runs" when count is 0', async () => {
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('No active runs of this playbook.');
+      expect(container.textContent).toContain('No hay ejecuciones activas de este playbook.');
     });
   });
 
@@ -679,7 +679,7 @@ describe('PlaybookDetailPage — active runs section', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('1 run currently in flight.');
+      expect(container.textContent).toContain('1 ejecución en curso.');
     });
   });
 
@@ -706,7 +706,7 @@ describe('PlaybookDetailPage — active runs section', () => {
     });
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('2 runs currently in flight.');
+      expect(container.textContent).toContain('2 ejecuciones en curso.');
     });
   });
 });
@@ -738,7 +738,7 @@ describe('PlaybookDetailPage — Activate action', () => {
   it('calls the activate endpoint on click', async () => {
     const { container } = await renderWithSteps();
     const activateBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Activate'),
+      b.textContent?.includes('Activar'),
     ) as HTMLButtonElement;
     fireEvent.click(activateBtn);
     await waitFor(() => {
@@ -768,7 +768,7 @@ describe('PlaybookDetailPage — Activate action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Activate'),
+      b.textContent?.includes('Activar'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -790,7 +790,7 @@ describe('PlaybookDetailPage — Activate action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Activate'),
+      b.textContent?.includes('Activar'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -959,7 +959,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
     await waitFor(() => expect(r.container.querySelector('h1')).toBeTruthy());
     // Open dialog via "Start a run" button
     const startBtn = Array.from(r.container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Start a run'),
+      b.textContent?.includes('Iniciar ejecución'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(startBtn);
@@ -1011,7 +1011,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
     const form = container.querySelector('form') as HTMLFormElement;
     fireEvent.submit(form);
     await waitFor(() => {
-      expect(container.textContent).toContain('Label is required');
+      expect(container.textContent).toContain('La etiqueta es obligatoria');
     });
   });
 
@@ -1080,7 +1080,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
   it('can add and remove a link row', async () => {
     const { container } = await renderActive();
     const addLinkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add link'),
+      b.textContent?.includes('Añadir vínculo'),
     ) as HTMLButtonElement;
     fireEvent.click(addLinkBtn);
     await waitFor(() => {
@@ -1098,7 +1098,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
 
   it('shows "Optional. Anchor this run…" when no links added', async () => {
     const { container } = await renderActive();
-    expect(container.textContent).toContain('Optional. Anchor this run');
+    expect(container.textContent).toContain('Opcional. Vincula esta ejecución');
   });
 
   it('shows the context editor component in the dialog', async () => {

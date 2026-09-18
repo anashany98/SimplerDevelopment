@@ -203,7 +203,7 @@ describe('PlaybooksListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load playbooks');
+      expect(container.textContent).toContain('No se pudieron cargar los playbooks');
     });
   });
 
@@ -226,7 +226,7 @@ describe('PlaybooksListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -347,7 +347,7 @@ describe('PlaybooksListPage — header', () => {
 // ─── Status filter pills ──────────────────────────────────────────────────────
 
 describe('PlaybooksListPage — status filter pills', () => {
-  const statusLabels = ['Active', 'Draft', 'Archived', 'All'];
+  const statusLabels = ['Active', 'Draft', 'Archived', 'Todos'];
 
   statusLabels.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -374,7 +374,7 @@ describe('PlaybooksListPage — status filter pills', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     // Find the "All" button among the status pills (first row of pills)
     const buttons = Array.from(container.querySelectorAll('button'));
-    const allBtn = buttons.find((b) => b.textContent?.trim() === 'All');
+    const allBtn = buttons.find((b) => b.textContent?.trim() === 'Todos');
     expect(allBtn).toBeTruthy();
     fireEvent.click(allBtn!);
     expect(replaceMock).toHaveBeenCalled();
@@ -426,7 +426,7 @@ describe('PlaybooksListPage — trigger-kind filter', () => {
   it('renders "Trigger:" label for the filter row', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Trigger:');
+    expect(container.textContent).toContain('Disparador:');
   });
 });
 
@@ -443,7 +443,7 @@ describe('PlaybooksListPage — category and owner selects', () => {
   it('renders "Any owner" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Any owner');
+      expect(container.textContent).toContain('Todos los responsables');
     });
   });
 

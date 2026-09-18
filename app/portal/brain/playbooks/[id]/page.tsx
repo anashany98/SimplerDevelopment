@@ -73,7 +73,7 @@ export default function PlaybookDetailPage({
 
   const load = useCallback(async () => {
     if (!Number.isFinite(playbookId) || playbookId <= 0) {
-      setError('Invalid playbook id');
+      setError('ID de playbook no válido');
       setLoading(false);
       return;
     }
@@ -83,13 +83,13 @@ export default function PlaybookDetailPage({
       const r = await fetch(`/api/portal/brain/playbooks/${playbookId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load playbook');
+        setError(json.message || 'No se pudo cargar el playbook');
         setData(null);
         return;
       }
       setData(json.data as DetailResponse);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -165,7 +165,7 @@ export default function PlaybookDetailPage({
       const json = await r.json();
       if (!r.ok || !json.success) {
         // Surface DAG errors inline if present.
-        const msg = json.message || 'Activate failed';
+        const msg = json.message || 'No se pudo activar';
         if (/DAG invalid/i.test(msg)) {
           const parts = msg.replace(/^.*?DAG invalid:\s*/i, '').split(/;\s*/);
           setDagErrors(parts);
@@ -181,7 +181,7 @@ export default function PlaybookDetailPage({
 
   const onArchive = useCallback(async () => {
     if (!data) return;
-    if (!confirm('Archive this playbook? Any active runs will block archiving unless forced.'))
+    if (!confirm('¿Archivar este playbook? Las ejecuciones activas bloquearán el archivado a menos que se fuerce.'))
       return;
     setBusy(true);
     setError(null);
@@ -191,7 +191,7 @@ export default function PlaybookDetailPage({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Archive failed');
+        setError(json.message || 'No se pudo archivar');
         return;
       }
       await load();
@@ -202,7 +202,7 @@ export default function PlaybookDetailPage({
 
   const onDelete = useCallback(async () => {
     if (!data) return;
-    if (!confirm('Delete this playbook? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar este playbook? Esta acción no se puede deshacer.')) return;
     setBusy(true);
     setError(null);
     try {
@@ -211,7 +211,7 @@ export default function PlaybookDetailPage({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Delete failed');
+        setError(json.message || 'No se pudo eliminar');
         return;
       }
       router.push('/portal/brain/playbooks');
@@ -241,7 +241,7 @@ export default function PlaybookDetailPage({
         </Link>
         <div className="mt-4 bg-destructive/10 border border-destructive/30 rounded-md p-4 text-sm text-destructive flex items-center gap-2">
           <span className="material-icons text-base">error_outline</span>
-          {error || 'Playbook not found'}
+          {error || 'Playbook no encontrado'}
         </div>
       </div>
     );
@@ -256,7 +256,7 @@ export default function PlaybookDetailPage({
   const ownerName =
     owner?.name ||
     owner?.email ||
-    (playbook.ownerId !== null ? `User #${playbook.ownerId}` : null);
+    (playbook.ownerId !== null ? `Usuario #${playbook.ownerId}` : null);
 
   const isDraft = playbook.status === 'draft';
   const isActive = playbook.status === 'active';
@@ -285,7 +285,7 @@ export default function PlaybookDetailPage({
             )}
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-base">format_list_numbered</span>
-              {steps.length} step{steps.length === 1 ? '' : 's'}
+              {steps.length} paso{steps.length === 1 ? '' : 's'}
             </span>
           </span>
         }
@@ -301,11 +301,11 @@ export default function PlaybookDetailPage({
                 type="button"
                 onClick={onActivate}
                 disabled={busy || steps.length === 0}
-                title={steps.length === 0 ? 'Add at least one step before activating' : ''}
+                title={steps.length === 0 ? 'Añade al menos un paso antes de activar' : ''}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-50"
               >
                 <span className="material-icons text-sm">play_arrow</span>
-                Activate
+                Activar
               </button>
             )}
             {isActive && (
@@ -316,7 +316,7 @@ export default function PlaybookDetailPage({
                 className={`${pBtnPrimary} disabled:opacity-50`}
               >
                 <span className="material-icons text-sm">play_circle</span>
-                Start a run
+                Iniciar ejecución
               </button>
             )}
             {isActive && (
@@ -387,22 +387,22 @@ export default function PlaybookDetailPage({
       <section className={pCardPad}>
         <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
           <span className="material-icons text-base text-primary">{trigger.icon}</span>
-          Trigger
+          Disparador
         </h2>
         <div className="mt-3 text-sm">
           {playbook.triggerKind === 'manual' && (
             <p className="text-muted-foreground">
-              Manual — runs are started explicitly by a user from this page or the MCP.
+              Manual: un usuario inicia las ejecuciones explícitamente desde esta página o el MCP.
             </p>
           )}
           {playbook.triggerKind === 'event' && (
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">Event:</span>
+              <span className="text-muted-foreground">Evento:</span>
               <code className="px-2 py-0.5 rounded-md bg-muted/60 text-foreground font-mono text-xs">
-                {playbook.triggerConfig?.event ?? '— not set —'}
+                {playbook.triggerConfig?.event ?? '— sin definir —'}
               </code>
               <span className="text-[11px] text-muted-foreground italic">
-                (event-triggered firing is reserved for Phase G — runs still start manually for now)
+                (la activación por eventos está reservada para la fase G; por ahora las ejecuciones se siguen iniciando manualmente)
               </span>
             </div>
           )}
@@ -410,10 +410,10 @@ export default function PlaybookDetailPage({
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-muted-foreground">Cron:</span>
               <code className="px-2 py-0.5 rounded-md bg-muted/60 text-foreground font-mono text-xs">
-                {playbook.triggerConfig?.cron ?? '— not set —'}
+                {playbook.triggerConfig?.cron ?? '— sin definir —'}
               </code>
               <span className="text-[11px] text-muted-foreground italic">
-                (scheduled firing is reserved for Phase G — runs still start manually for now)
+                (la activación programada está reservada para la fase G; por ahora las ejecuciones se siguen iniciando manualmente)
               </span>
             </div>
           )}
@@ -425,7 +425,7 @@ export default function PlaybookDetailPage({
         <section className={pCardPad}>
           <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
             <span className="material-icons text-base text-primary">sell</span>
-            Default topics
+            Temas predeterminados
           </h2>
           <div className="mt-3 flex items-center gap-1.5 flex-wrap">
             {playbook.defaultTopicIds.map((tid) => (
@@ -434,7 +434,7 @@ export default function PlaybookDetailPage({
                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-muted/60 text-foreground"
               >
                 <span className="material-icons text-[14px]">sell</span>
-                Topic #{tid}
+                Tema #{tid}
               </span>
             ))}
           </div>
@@ -446,7 +446,7 @@ export default function PlaybookDetailPage({
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
             <span className="material-icons text-base text-primary">account_tree</span>
-            Steps
+            Pasos
             <span className="text-xs text-muted-foreground font-normal">
               ({steps.length})
             </span>
@@ -456,7 +456,7 @@ export default function PlaybookDetailPage({
             className={pBtnGhost}
           >
             <span className="material-icons text-sm">edit</span>
-            Edit steps
+            Editar pasos
           </Link>
         </div>
 
@@ -474,7 +474,7 @@ export default function PlaybookDetailPage({
               className={`${pBtnGhost} disabled:opacity-50`}
             >
               <span className="material-icons text-sm">verified</span>
-              Validate &amp; activate
+              Validar y activar
             </button>
           </div>
         )}
@@ -486,19 +486,19 @@ export default function PlaybookDetailPage({
           <div>
             <h2 className={`${pSectionTitle} inline-flex items-center gap-2`}>
               <span className="material-icons text-base text-primary">playlist_play</span>
-              Active runs
+              Ejecuciones activas
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
               {activeRunCount === 0
-                ? 'No active runs of this playbook.'
-                : `${activeRunCount} run${activeRunCount === 1 ? '' : 's'} currently in flight.`}
+                ? 'No hay ejecuciones activas de este playbook.'
+                : `${activeRunCount} ${activeRunCount === 1 ? 'ejecución' : 'ejecuciones'} en curso.`}
             </p>
           </div>
           <Link
             href={`/portal/brain/playbook-runs?playbookId=${playbookId}`}
             className={pBtnGhost}
           >
-            View all runs
+            Ver todas las ejecuciones
             <span className="material-icons text-sm">chevron_right</span>
           </Link>
         </div>
@@ -549,7 +549,7 @@ function StartRunDialog({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!label.trim()) {
-      setErr('Label is required');
+      setErr('La etiqueta es obligatoria');
       return;
     }
     setSubmitting(true);
@@ -570,12 +570,12 @@ function StartRunDialog({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setErr(json.message || 'Failed to start run');
+        setErr(json.message || 'No se pudo iniciar la ejecución');
         return;
       }
       onStarted(json.data.runId);
     } catch (e2) {
-      setErr(e2 instanceof Error ? e2.message : 'Network error');
+      setErr(e2 instanceof Error ? e2.message : 'Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -587,7 +587,7 @@ function StartRunDialog({
         <div className="flex items-center justify-between px-5 py-3 border-b border-border">
           <h2 className="text-base font-semibold text-foreground inline-flex items-center gap-2">
             <span className="material-icons text-base text-primary">play_circle</span>
-            Start a run
+            Iniciar ejecución
           </h2>
           <button
             type="button"
@@ -611,20 +611,20 @@ function StartRunDialog({
               required
               autoFocus
               maxLength={255}
-              placeholder="e.g. New hire: Jane Doe"
+              placeholder="p. ej. Nueva incorporación: Jane Doe"
               className={pInput}
             />
             <p className="mt-1 text-[11px] text-muted-foreground">
-              Human-readable identifier for this run.
+              Identificador legible para esta ejecución.
             </p>
           </div>
 
           <div>
             <span className="block text-xs font-medium text-muted-foreground mb-1.5">
-              Context variables
+              Variables de contexto
             </span>
             <p className="text-[11px] text-muted-foreground mb-2">
-              These seed the run&apos;s context — step configs can reference them via{' '}
+              Estas inicializan el contexto de la ejecución; las configuraciones de los pasos pueden referenciarlas con{' '}
               <code className="px-1 py-0.5 rounded bg-muted/60 font-mono">{`{{varName}}`}</code>.
             </p>
             <PlaybookContextEditor
@@ -636,7 +636,7 @@ function StartRunDialog({
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-medium text-muted-foreground">Links</span>
+              <span className="text-xs font-medium text-muted-foreground">Vínculos</span>
               <button
                 type="button"
                 onClick={addLink}
@@ -644,13 +644,13 @@ function StartRunDialog({
                 className="inline-flex items-center gap-1 px-2 py-1 text-[11px] rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
               >
                 <span className="material-icons text-sm">add</span>
-                Add link
+                Añadir vínculo
               </button>
             </div>
             {links.length === 0 ? (
               <p className="text-[11px] text-muted-foreground italic">
-                Optional. Anchor this run to an existing initiative, person, company, deal,
-                meeting, or decision.
+                Opcional. Vincula esta ejecución a una iniciativa, persona, empresa, negocio,
+                reunión o decisión existente.
               </p>
             ) : (
               <div className="space-y-2">
@@ -690,7 +690,7 @@ function StartRunDialog({
                           ),
                         )
                       }
-                      placeholder="entity id"
+                      placeholder="id de entidad"
                       disabled={submitting}
                       className={`col-span-6 ${pInput}`}
                     />
@@ -730,12 +730,12 @@ function StartRunDialog({
               {submitting ? (
                 <>
                   <span className="material-icons animate-spin text-base">progress_activity</span>
-                  Starting…
+                  Iniciando…
                 </>
               ) : (
                 <>
                   <span className="material-icons text-base">play_circle</span>
-                  Start run
+                  Iniciar ejecución
                 </>
               )}
             </button>
