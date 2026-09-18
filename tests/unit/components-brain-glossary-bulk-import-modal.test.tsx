@@ -107,14 +107,14 @@ describe('GlossaryBulkImportModal', () => {
   it('calls onClose when the × button is clicked', () => {
     const onClose = vi.fn();
     renderModal({ onClose });
-    fireEvent.click(screen.getByTitle('Close'));
+    fireEvent.click(screen.getByTitle('Cerrar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when Cancel button is clicked', () => {
     const onClose = vi.fn();
     renderModal({ onClose });
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

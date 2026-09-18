@@ -74,7 +74,6 @@ vi.mock('@/lib/db/schema', () => ({
   orderItems: makeTableProxy('orderItems'),
   products: makeTableProxy('products'),
   bulkPricingRules: makeTableProxy('bulkPricingRules'),
-  // Required by resolveStoreSite → hasServiceAccess (added in portal-auth.ts)
   services: makeTableProxy('services'),
   clientServices: makeTableProxy('clientServices'),
   clients: makeTableProxy('clients'),
@@ -135,10 +134,6 @@ const selectQueue: Row[][] = [];
 const insertQueue: Row[][] = [];
 const updateQueue: Row[][] = [];
 const deleteQueue: Row[][] = [];
-
-function allowStoreAccess() {
-  selectQueue.push([{ category: 'store' }]);
-}
 
 vi.mock('@/lib/db', () => {
   function makeSelectChain() {
@@ -252,7 +247,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('returns 404 when client site cannot be resolved', async () => {
-    allowStoreAccess();
     resolveClientSiteMock.mockResolvedValueOnce(null);
     const { GET } = await import(
       '@/app/api/portal/websites/[siteId]/store/analytics/route'
@@ -265,7 +259,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
 
   it('returns empty/zero analytics when no orders exist (default 30d period)', async () => {
     // 4 select calls: revenue, topProducts, revenueByDay, ordersByStatus
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: null, totalOrders: 0 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -288,7 +281,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('computes averageOrderValue and projects topProducts + revenueByDay', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '1000', totalOrders: 4 }]);
     selectQueue.push([
       { productId: 1, productName: 'Hat', totalRevenue: '500', totalQuantity: '5' },
@@ -328,7 +320,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('handles null/missing totalRevenue and totalQuantity in topProducts', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: null, totalOrders: 0 }]);
     selectQueue.push([
       { productId: 3, productName: 'Free', totalRevenue: null, totalQuantity: null },
@@ -349,7 +340,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('echoes the requested period back when 7d', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '0', totalOrders: 0 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -364,7 +354,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('echoes the requested period back when 90d', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '0', totalOrders: 0 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -378,7 +367,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('echoes the requested period back when 12m', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '0', totalOrders: 0 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -392,7 +380,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('falls back to 30d when period is an unknown value', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '0', totalOrders: 0 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -406,7 +393,6 @@ describe('GET /api/portal/websites/[siteId]/store/analytics', () => {
   });
 
   it('rounds averageOrderValue (integer math)', async () => {
-    allowStoreAccess();
     selectQueue.push([{ totalRevenue: '100', totalOrders: 3 }]);
     selectQueue.push([]);
     selectQueue.push([]);
@@ -460,8 +446,7 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when product does not exist for the site', async () => {
-      // resolveStoreSite → hasServiceAccess (1 select), then product lookup → empty
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
+      // resolveStoreSite resolves via the mocked resolver, then product lookup → empty
       selectQueue.push([]);
       const { GET } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -471,7 +456,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('lists rules for the product when authorized', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10, name: 'Hat' }]); // product
       selectQueue.push([
         { id: 11, productId: 1, minQuantity: 5, amount: 90 },
@@ -500,7 +484,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when product does not exist', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([]); // product lookup fails
       const { POST } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -510,7 +493,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 400 when minQuantity is missing', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       const { POST } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -522,7 +504,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 400 when amount is missing', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       const { POST } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -532,7 +513,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('inserts a rule and returns 201 with defaults applied', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]); // product
       insertQueue.push([
         {
@@ -557,7 +537,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('inserts a rule with optional variantId/maxQuantity/priceType coerced from strings', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       insertQueue.push([
         {
@@ -602,7 +581,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when product does not exist', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([]);
       const { PUT } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -612,7 +590,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 400 when id query param is missing', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       const { PUT } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -624,7 +601,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when the rule does not belong to the product', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]); // product
       selectQueue.push([]); // rule lookup misses
       const { PUT } = await import(
@@ -637,7 +613,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('updates only the fields provided in the body', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]); // product
       selectQueue.push([{ id: 11, productId: 1, minQuantity: 5, amount: 90 }]); // existing
       updateQueue.push([
@@ -676,7 +651,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('accepts null for nullable variantId/maxQuantity', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       selectQueue.push([{ id: 12, productId: 1 }]);
       updateQueue.push([
@@ -707,7 +681,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when product does not exist', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([]);
       const { DELETE } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -717,7 +690,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 400 when id query param is missing', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]);
       const { DELETE } = await import(
         '@/app/api/portal/websites/[siteId]/store/products/[productId]/bulk-pricing/route'
@@ -727,7 +699,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('returns 404 when the rule does not exist for this product', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]); // product
       selectQueue.push([]); // rule lookup misses
       const { DELETE } = await import(
@@ -738,7 +709,6 @@ describe('bulk-pricing route', () => {
     });
 
     it('deletes the rule and returns success', async () => {
-      selectQueue.push([{ category: 'store' }]); // hasServiceAccess: store subscription
       selectQueue.push([{ id: 1, websiteId: 10 }]); // product
       selectQueue.push([{ id: 11, productId: 1 }]); // existing rule
       deleteQueue.push([]); // delete completes
