@@ -379,13 +379,13 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
