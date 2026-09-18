@@ -283,16 +283,18 @@ describe('lib/portal-auth.ts', () => {
   });
 
   // -------- authorizePortal: requireService gate --------
-  it('returns 403 with upsell payload when requireService is missing', async () => {
+  // Billing removed (2026-08): hasServiceAccess now always returns true, so a
+  // requireService gate no longer produces the old 403 upsell envelope — access
+  // is granted unconditionally.
+  it('grants access when requireService is set (billing removed: every gate grants access)', async () => {
     authMock.mockResolvedValue({ user: { id: '7' } });
     getPortalClientMock.mockResolvedValue({ id: 99, userId: 7 }); // owner
-    dbQueue.push([]); // hasServiceAccess query — empty
 
     const result: any = await authorizePortal({ action: 'read', requireService: 'crm' });
-    expect(result.response.status).toBe(403);
-    expect(result.response._body.requiresService).toBe('crm');
-    expect(result.response._body.upsellUrl).toBe('/portal/services');
-    expect(result.response._body.message).toMatch(/active crm subscription/);
+    expect(isAuthError(result)).toBe(false);
+    expect(result.role).toBe('owner');
+    expect(result.client.id).toBe(99);
+    expect(result.userId).toBe(7);
   });
 
   it('allows access when client has a direct service subscription', async () => {
@@ -325,14 +327,14 @@ describe('lib/portal-auth.ts', () => {
     await expect(hasServiceAccess(1, 'crm')).resolves.toBe(true);
   });
 
-  it('hasServiceAccess returns false when no row matches and no bundle', async () => {
+  it('hasServiceAccess returns true when no row matches and no bundle (billing removed)', async () => {
     dbQueue.push([{ category: 'analytics' }]);
-    await expect(hasServiceAccess(1, 'crm')).resolves.toBe(false);
+    await expect(hasServiceAccess(1, 'crm')).resolves.toBe(true);
   });
 
-  it('hasServiceAccess returns false on no subscriptions at all', async () => {
+  it('hasServiceAccess returns true on no subscriptions at all (billing removed)', async () => {
     dbQueue.push([]);
-    await expect(hasServiceAccess(1, 'crm')).resolves.toBe(false);
+    await expect(hasServiceAccess(1, 'crm')).resolves.toBe(true);
   });
 });
 
