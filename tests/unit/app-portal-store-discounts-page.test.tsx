@@ -198,7 +198,7 @@ describe('DiscountsPage', () => {
     it('renders "Add Discount" button', async () => {
       const { container } = await renderLoaded();
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       );
       expect(btn).toBeTruthy();
     });
@@ -311,7 +311,7 @@ describe('DiscountsPage', () => {
     it('opens "New Discount" modal when "Add Discount" is clicked', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       expect(container.textContent).toContain('Nuevo descuento');
@@ -320,7 +320,7 @@ describe('DiscountsPage', () => {
     it('clicking outside the modal closes it', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       expect(container.textContent).toContain('Nuevo descuento');
@@ -333,7 +333,7 @@ describe('DiscountsPage', () => {
     it('clicking close icon in modal header closes modal', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const closeBtn = Array.from(container.querySelectorAll('button')).find(
@@ -346,7 +346,7 @@ describe('DiscountsPage', () => {
     it('Cancel button in modal footer closes modal', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
@@ -363,7 +363,7 @@ describe('DiscountsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -383,7 +383,7 @@ describe('DiscountsPage', () => {
     it('closes modal and shows success message on create success', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -405,7 +405,7 @@ describe('DiscountsPage', () => {
       });
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -428,7 +428,7 @@ describe('DiscountsPage', () => {
       });
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       fireEvent.submit(container.querySelector('form')!);
@@ -451,7 +451,7 @@ describe('DiscountsPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       fireEvent.submit(container.querySelector('form')!);
@@ -467,7 +467,7 @@ describe('DiscountsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -491,7 +491,7 @@ describe('DiscountsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -516,7 +516,7 @@ describe('DiscountsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -639,7 +639,7 @@ describe('DiscountsPage', () => {
     it('clicking toggle switches active state from true to false', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       // Default is active=true, toggle button is a rounded-full button
@@ -662,7 +662,7 @@ describe('DiscountsPage', () => {
     it('clicking toggle twice restores active=true', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const toggleBtn = Array.from(container.querySelectorAll('button')).find(
@@ -752,18 +752,18 @@ describe('DiscountsPage', () => {
     it('changing type to "fixed" updates the amount label', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const select = container.querySelector('select') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'fixed_amount' } });
-      expect(container.textContent).toContain('Amount ($)');
+      expect(container.textContent).toContain('Monto ($)');
     });
 
     it('changing type to "free_shipping" disables amount input', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const select = container.querySelector('select') as HTMLSelectElement;
@@ -777,10 +777,10 @@ describe('DiscountsPage', () => {
     it('changing type to "percent" shows "Discount (%)" label', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
-      expect(container.textContent).toContain('Discount (%)');
+      expect(container.textContent).toContain('Descuento (%)');
     });
   });
 
@@ -790,7 +790,7 @@ describe('DiscountsPage', () => {
     it('success banner is visible outside modal after create', async () => {
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       const form = container.querySelector('form')!;
@@ -814,7 +814,7 @@ describe('DiscountsPage', () => {
       });
       const { container } = await renderLoaded();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add Discount'),
+        (b) => b.textContent?.includes('Agregar descuento'),
       )!;
       fireEvent.click(addBtn);
       fireEvent.submit(container.querySelector('form')!);

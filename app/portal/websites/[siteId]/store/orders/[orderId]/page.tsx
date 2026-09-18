@@ -447,7 +447,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">swap_horiz</span>
-          Update Status
+          Actualizar estado
         </h2>
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
@@ -470,7 +470,7 @@ export default function OrderDetailPage() {
             className={pBtnPrimary}
           >
             {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-            Update
+            Actualizar
           </button>
         </div>
       </div>
@@ -547,11 +547,11 @@ export default function OrderDetailPage() {
                         {item.variantName && <p className="text-xs text-muted-foreground">{item.variantName}</p>}
                         {item.design ? (
                           <p className="text-xs italic text-muted-foreground mt-0.5">
-                            Custom design: {item.design.name || 'Untitled design'}
+                            Diseño personalizado: {item.design.name || 'Sin título'}
                           </p>
                         ) : item.designId ? (
                           <p className="text-xs italic text-muted-foreground/70 mt-0.5">
-                            Design no longer available
+                            El diseño ya no está disponible
                           </p>
                         ) : null}
                       </div>
@@ -596,7 +596,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">local_shipping</span>
-          Fulfillment
+          Preparación
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
@@ -614,7 +614,7 @@ export default function OrderDetailPage() {
             disabled={saving}
             className={pBtnGhost}
           >
-            Save Tracking
+            Guardar rastreo
           </button>
           {order.status !== 'shipped' && order.status !== 'delivered' && (
             <button
@@ -623,7 +623,7 @@ export default function OrderDetailPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">local_shipping</span>
-              Mark as Shipped
+              Marcar como enviado
             </button>
           )}
         </div>
@@ -633,7 +633,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">label</span>
-          Shipping Label
+          Etiqueta de envío
         </h2>
 
         {labelError && (
@@ -697,7 +697,7 @@ export default function OrderDetailPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">download</span>
-                View Label
+                Ver etiqueta
               </a>
               <button
                 onClick={refundLabel}
@@ -709,7 +709,7 @@ export default function OrderDetailPage() {
                 ) : (
                   <span className="material-icons text-base">cancel</span>
                 )}
-                Refund Label
+                Reembolsar etiqueta
               </button>
             </div>
           </div>
@@ -727,7 +727,7 @@ export default function OrderDetailPage() {
                 ) : (
                   <span className="material-icons text-base">calculate</span>
                 )}
-                Compute Rates
+                Calcular tarifas
               </button>
             )}
 
@@ -771,13 +771,13 @@ export default function OrderDetailPage() {
                               {isCheapest && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                                   <span className="material-icons text-[10px]">star</span>
-                                  Best value
+                                  Mejor precio
                                 </span>
                               )}
                             </div>
                             {r.estDeliveryDays != null && (
                               <p className="text-xs text-muted-foreground">
-                                Est. {r.estDeliveryDays} day{r.estDeliveryDays === 1 ? '' : 's'}
+                                Entrega estimada: {r.estDeliveryDays} día{r.estDeliveryDays === 1 ? '' : 's'}
                               </p>
                             )}
                           </div>
@@ -801,7 +801,7 @@ export default function OrderDetailPage() {
                     ) : (
                       <span className="material-icons text-base">shopping_cart</span>
                     )}
-                    Buy Label
+                    Comprar etiqueta
                   </button>
                   <button
                     onClick={computeRates}
@@ -809,7 +809,7 @@ export default function OrderDetailPage() {
                     className={pBtnSoft}
                   >
                     <span className="material-icons text-base">refresh</span>
-                    Refresh rates
+                    Actualizar tarifas
                   </button>
                 </div>
               </>
@@ -823,7 +823,7 @@ export default function OrderDetailPage() {
         <div className={`${pCard} p-6 space-y-4`}>
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">print</span>
-            Printful Fulfillment
+            Preparación en Printful
           </h2>
 
           {printfulError && (
@@ -843,7 +843,7 @@ export default function OrderDetailPage() {
                       printfulStatusColors[order.printfulFulfillmentStatus || ''] || 'bg-muted text-muted-foreground'
                     }`}
                   >
-                    {order.printfulFulfillmentStatus || 'unknown'}
+                    {order.printfulFulfillmentStatus || 'desconocido'}
                   </span>
                 </div>
                 <div>
@@ -878,7 +878,7 @@ export default function OrderDetailPage() {
                   ) : (
                     <span className="material-icons text-base">send</span>
                   )}
-                  Submit to Printful
+                  Enviar a Printful
                 </button>
               )}
             </div>
@@ -890,7 +890,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">sticky_note_2</span>
-          Internal Notes
+          Notas internas
         </h2>
         <textarea
           value={internalNotes}
@@ -904,7 +904,7 @@ export default function OrderDetailPage() {
           disabled={saving}
           className={pBtnGhost}
         >
-          Save Notes
+          Guardar notas
         </button>
       </div>
 
@@ -912,7 +912,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">history</span>
-          Status History
+          Historial de estado
         </h2>
         {order.statusHistory.length === 0 ? (
           <p className="text-sm text-muted-foreground">No hay cambios de estado registrados.</p>

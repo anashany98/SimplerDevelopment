@@ -262,11 +262,11 @@ describe('OrderDetailPage — main render', () => {
   it('renders all section headings', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).toContain('Update Status');
-    expect(container.textContent).toContain('Fulfillment');
-    expect(container.textContent).toContain('Shipping Label');
-    expect(container.textContent).toContain('Internal Notes');
-    expect(container.textContent).toContain('Status History');
+    expect(container.textContent).toContain('Actualizar estado');
+    expect(container.textContent).toContain('Preparación');
+    expect(container.textContent).toContain('Etiqueta de envío');
+    expect(container.textContent).toContain('Notas internas');
+    expect(container.textContent).toContain('Historial de estado');
   });
 });
 
@@ -289,7 +289,7 @@ describe('OrderDetailPage — updateStatus', () => {
   it('Update button is disabled when newStatus equals current order status', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    const btn = findBtn(container, 'Update') as HTMLButtonElement;
+    const btn = findBtn(container, 'Actualizar') as HTMLButtonElement;
     expect(btn.disabled).toBe(true);
   });
 
@@ -307,10 +307,10 @@ describe('OrderDetailPage — updateStatus', () => {
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'confirmed' } });
     await waitFor(() => {
-      const btn = findBtn(container, 'Update') as HTMLButtonElement;
+      const btn = findBtn(container, 'Actualizar') as HTMLButtonElement;
       expect(btn.disabled).toBe(false);
     });
-    fireEvent.click(findBtn(container, 'Update')!);
+    fireEvent.click(findBtn(container, 'Actualizar')!);
     await waitFor(() => {
       expect(putCalled).toBe(true);
       expect(container.textContent).toContain('Estado actualizado.');
@@ -328,8 +328,8 @@ describe('OrderDetailPage — updateStatus', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'delivered' } });
-    await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
-    fireEvent.click(findBtn(container, 'Update')!);
+    await waitFor(() => expect(findBtn(container, 'Actualizar')?.disabled).toBe(false));
+    fireEvent.click(findBtn(container, 'Actualizar')!);
     await waitFor(() => expect(container.textContent).toContain('Invalid transition'));
   });
 
@@ -344,8 +344,8 @@ describe('OrderDetailPage — updateStatus', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'cancelled' } });
-    await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
-    fireEvent.click(findBtn(container, 'Update')!);
+    await waitFor(() => expect(findBtn(container, 'Actualizar')?.disabled).toBe(false));
+    fireEvent.click(findBtn(container, 'Actualizar')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar el estado.'));
   });
 
@@ -358,8 +358,8 @@ describe('OrderDetailPage — updateStatus', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'processing' } });
-    await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
-    fireEvent.click(findBtn(container, 'Update')!);
+    await waitFor(() => expect(findBtn(container, 'Actualizar')?.disabled).toBe(false));
+    fireEvent.click(findBtn(container, 'Actualizar')!);
     await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
@@ -375,8 +375,8 @@ describe('OrderDetailPage — updateStatus', () => {
     expect(noteInput.value).toBe('My note');
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'confirmed' } });
-    await waitFor(() => expect(findBtn(container, 'Update')?.disabled).toBe(false));
-    fireEvent.click(findBtn(container, 'Update')!);
+    await waitFor(() => expect(findBtn(container, 'Actualizar')?.disabled).toBe(false));
+    fireEvent.click(findBtn(container, 'Actualizar')!);
     await waitFor(() => expect(noteInput.value).toBe(''));
   });
 });
@@ -395,7 +395,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => {
       expect(putCalled).toBe(true);
       expect(container.textContent).toContain('Preparación actualizada.');
@@ -411,7 +411,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => expect(container.textContent).toContain('Bad tracking'));
   });
 
@@ -424,7 +424,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar.'));
   });
 
@@ -435,7 +435,7 @@ describe('OrderDetailPage — updateFulfillment', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
@@ -460,21 +460,21 @@ describe('OrderDetailPage — markAsShipped', () => {
   it('shows "Mark as Shipped" button when status is pending', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(findBtn(container, 'Mark as Shipped')).toBeTruthy();
+    expect(findBtn(container, 'Marcar como enviado')).toBeTruthy();
   });
 
   it('does not show "Mark as Shipped" when status is shipped', async () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: baseOrder({ status: 'shipped' }) }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(findBtn(container, 'Mark as Shipped')).toBeFalsy();
+    expect(findBtn(container, 'Marcar como enviado')).toBeFalsy();
   });
 
   it('does not show "Mark as Shipped" when status is delivered', async () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: baseOrder({ status: 'delivered' }) }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(findBtn(container, 'Mark as Shipped')).toBeFalsy();
+    expect(findBtn(container, 'Marcar como enviado')).toBeFalsy();
   });
 
   it('calls status PUT and shows success on markAsShipped without tracking', async () => {
@@ -488,7 +488,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Mark as Shipped')!);
+    fireEvent.click(findBtn(container, 'Marcar como enviado')!);
     await waitFor(() => {
       expect(statusBody).toBeTruthy();
       expect((statusBody as { status: string }).status).toBe('shipped');
@@ -513,7 +513,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     const inputs = Array.from(container.querySelectorAll('input')) as HTMLInputElement[];
     const trackInput = inputs.find((i) => i.placeholder === 'Ingresa el número de rastreo') as HTMLInputElement;
     fireEvent.change(trackInput, { target: { value: 'TRACK123' } });
-    fireEvent.click(findBtn(container, 'Mark as Shipped')!);
+    fireEvent.click(findBtn(container, 'Marcar como enviado')!);
     await waitFor(() => {
       expect(fulfillmentCalled).toBe(true);
       expect(container.textContent).toContain('Pedido marcado como enviado.');
@@ -529,7 +529,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Mark as Shipped')!);
+    fireEvent.click(findBtn(container, 'Marcar como enviado')!);
     await waitFor(() => expect(container.textContent).toContain('Forbidden'));
   });
 
@@ -542,7 +542,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Mark as Shipped')!);
+    fireEvent.click(findBtn(container, 'Marcar como enviado')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudo actualizar.'));
   });
 
@@ -553,7 +553,7 @@ describe('OrderDetailPage — markAsShipped', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Mark as Shipped')!);
+    fireEvent.click(findBtn(container, 'Marcar como enviado')!);
     await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 });
@@ -574,7 +574,7 @@ describe('OrderDetailPage — saveNotes', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Private note' } });
-    fireEvent.click(findBtn(container, 'Save Notes')!);
+    fireEvent.click(findBtn(container, 'Guardar notas')!);
     await waitFor(() => {
       expect(patchCalled).toBe(true);
       expect(container.textContent).toContain('Notas guardadas.');
@@ -588,7 +588,7 @@ describe('OrderDetailPage — saveNotes', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Notes')!);
+    fireEvent.click(findBtn(container, 'Guardar notas')!);
     await waitFor(() => expect(container.textContent).toContain('Unauthorized'));
   });
 
@@ -599,7 +599,7 @@ describe('OrderDetailPage — saveNotes', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Notes')!);
+    fireEvent.click(findBtn(container, 'Guardar notas')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudieron guardar las notas.'));
   });
 
@@ -610,7 +610,7 @@ describe('OrderDetailPage — saveNotes', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Notes')!);
+    fireEvent.click(findBtn(container, 'Guardar notas')!);
     await waitFor(() => expect(container.textContent).toContain('Algo salió mal.'));
   });
 
@@ -629,7 +629,7 @@ describe('OrderDetailPage — computeRates', () => {
   it('shows Compute Rates button when labelUrl is null', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(findBtn(container, 'Compute Rates')).toBeTruthy();
+    expect(findBtn(container, 'Calcular tarifas')).toBeTruthy();
   });
 
   it('shows rates after successful computeRates', async () => {
@@ -651,11 +651,11 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => {
       expect(container.textContent).toContain('USPS');
       expect(container.textContent).toContain('Priority');
-      expect(container.textContent).toContain('Best value');
+      expect(container.textContent).toContain('Mejor precio');
       expect(container.textContent).toContain('UPS');
       expect(container.textContent).toContain('$8.99');
     });
@@ -677,7 +677,7 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => {
       expect(container.textContent).toContain('12');
       expect(container.textContent).toContain('Paquete');
@@ -696,7 +696,7 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('No se devolvieron tarifas para este envío.'));
   });
 
@@ -709,7 +709,7 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('Address invalid'));
   });
 
@@ -722,7 +722,7 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudieron calcular las tarifas.'));
   });
 
@@ -733,7 +733,7 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudieron calcular las tarifas.'));
   });
 
@@ -753,8 +753,8 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
-    await waitFor(() => expect(container.textContent).toContain('Est. 1 day'));
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
+    await waitFor(() => expect(container.textContent).toContain('Entrega estimada: 1 día'));
   });
 
   it('shows plural days for multi-day delivery', async () => {
@@ -773,8 +773,8 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
-    await waitFor(() => expect(container.textContent).toContain('Est. 5 days'));
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
+    await waitFor(() => expect(container.textContent).toContain('Entrega estimada: 5 días'));
   });
 
   it('hides delivery estimate when estDeliveryDays is null', async () => {
@@ -793,9 +793,9 @@ describe('OrderDetailPage — computeRates', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('DHL'));
-    expect(container.textContent).not.toContain('Est.');
+    expect(container.textContent).not.toContain('Entrega estimada');
   });
 });
 
@@ -804,7 +804,7 @@ describe('OrderDetailPage — computeRates', () => {
 describe('OrderDetailPage — buyLabel', () => {
   async function loadRates(container: HTMLElement) {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('USPS'));
   }
 
@@ -829,7 +829,7 @@ describe('OrderDetailPage — buyLabel', () => {
     withRatesMock(async () => makeRes({ success: true }));
     const { container } = renderPage();
     await loadRates(container);
-    fireEvent.click(findBtn(container, 'Buy Label')!);
+    fireEvent.click(findBtn(container, 'Comprar etiqueta')!);
     await waitFor(() => expect(container.textContent).toContain('Etiqueta comprada.'));
   });
 
@@ -837,7 +837,7 @@ describe('OrderDetailPage — buyLabel', () => {
     withRatesMock(async () => makeRes({ success: false, message: 'Payment declined' }));
     const { container } = renderPage();
     await loadRates(container);
-    fireEvent.click(findBtn(container, 'Buy Label')!);
+    fireEvent.click(findBtn(container, 'Comprar etiqueta')!);
     await waitFor(() => expect(container.textContent).toContain('Payment declined'));
   });
 
@@ -845,7 +845,7 @@ describe('OrderDetailPage — buyLabel', () => {
     withRatesMock(async () => makeRes({ success: false }));
     const { container } = renderPage();
     await loadRates(container);
-    fireEvent.click(findBtn(container, 'Buy Label')!);
+    fireEvent.click(findBtn(container, 'Comprar etiqueta')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudo comprar la etiqueta.'));
   });
 
@@ -853,7 +853,7 @@ describe('OrderDetailPage — buyLabel', () => {
     withRatesMock(async () => { throw new Error('net'); });
     const { container } = renderPage();
     await loadRates(container);
-    fireEvent.click(findBtn(container, 'Buy Label')!);
+    fireEvent.click(findBtn(container, 'Comprar etiqueta')!);
     await waitFor(() => expect(container.textContent).toContain('No se pudo comprar la etiqueta.'));
   });
 
@@ -876,7 +876,7 @@ describe('OrderDetailPage — buyLabel', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('UPS'));
     // Select the UPS radio
     const radios = Array.from(container.querySelectorAll('input[type="radio"]')) as HTMLInputElement[];
@@ -917,7 +917,7 @@ describe('OrderDetailPage — refundLabel', () => {
     expect(container.textContent).toContain('USPS');
     expect(container.textContent).toContain('Priority Mail');
     expect(container.textContent).toContain('$7.99');
-    expect(container.textContent).toContain('View Label');
+    expect(container.textContent).toContain('Ver etiqueta');
   });
 
   it('renders tracking link when trackingUrl is set', async () => {
@@ -935,9 +935,9 @@ describe('OrderDetailPage — refundLabel', () => {
     withLabelOrder();
     vi.stubGlobal('confirm', vi.fn(() => true));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('View Label'));
+    await waitFor(() => expect(container.textContent).toContain('Ver etiqueta'));
     await act(async () => {
-      fireEvent.click(findBtn(container, 'Refund Label')!);
+      fireEvent.click(findBtn(container, 'Reembolsar etiqueta')!);
     });
     await waitFor(() => {
       const deleteCalls = fetchMock.mock.calls.filter(
@@ -952,8 +952,8 @@ describe('OrderDetailPage — refundLabel', () => {
     withLabelOrder();
     vi.stubGlobal('confirm', vi.fn(() => false));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('View Label'));
-    fireEvent.click(findBtn(container, 'Refund Label')!);
+    await waitFor(() => expect(container.textContent).toContain('Ver etiqueta'));
+    fireEvent.click(findBtn(container, 'Reembolsar etiqueta')!);
     // No delete should happen
     const deleteCalls = fetchMock.mock.calls.filter(
       ([url, init]) => url.includes('/label') && (init as RequestInit | undefined)?.method === 'DELETE',
@@ -968,8 +968,8 @@ describe('OrderDetailPage — refundLabel', () => {
     });
     vi.stubGlobal('confirm', vi.fn(() => true));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('View Label'));
-    await act(async () => { fireEvent.click(findBtn(container, 'Refund Label')!); });
+    await waitFor(() => expect(container.textContent).toContain('Ver etiqueta'));
+    await act(async () => { fireEvent.click(findBtn(container, 'Reembolsar etiqueta')!); });
     await waitFor(() => expect(container.textContent).toContain('Already refunded'));
   });
 
@@ -980,8 +980,8 @@ describe('OrderDetailPage — refundLabel', () => {
     });
     vi.stubGlobal('confirm', vi.fn(() => true));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('View Label'));
-    await act(async () => { fireEvent.click(findBtn(container, 'Refund Label')!); });
+    await waitFor(() => expect(container.textContent).toContain('Ver etiqueta'));
+    await act(async () => { fireEvent.click(findBtn(container, 'Reembolsar etiqueta')!); });
     await waitFor(() => expect(container.textContent).toContain('No se pudo reembolsar la etiqueta.'));
   });
 
@@ -992,8 +992,8 @@ describe('OrderDetailPage — refundLabel', () => {
     });
     vi.stubGlobal('confirm', vi.fn(() => true));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('View Label'));
-    await act(async () => { fireEvent.click(findBtn(container, 'Refund Label')!); });
+    await waitFor(() => expect(container.textContent).toContain('Ver etiqueta'));
+    await act(async () => { fireEvent.click(findBtn(container, 'Reembolsar etiqueta')!); });
     await waitFor(() => expect(container.textContent).toContain('No se pudo reembolsar la etiqueta.'));
   });
 
@@ -1065,7 +1065,7 @@ describe('OrderDetailPage — design item variants', () => {
     await waitFor(() => expect(container.textContent).toContain('Custom Hat'));
     // placeholder div with brush icon
     expect(container.querySelector('.material-icons')).toBeTruthy();
-    expect(container.textContent).toContain('Untitled design');
+    expect(container.textContent).toContain('Sin título');
   });
 
   it('shows "Design no longer available" when designId set but design is null', async () => {
@@ -1087,7 +1087,7 @@ describe('OrderDetailPage — design item variants', () => {
     }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Deleted Design Product'));
-    expect(container.textContent).toContain('Design no longer available');
+    expect(container.textContent).toContain('El diseño ya no está disponible');
   });
 });
 
@@ -1143,7 +1143,7 @@ describe('OrderDetailPage — banners', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Server error');
       // Error banner has red styling
@@ -1163,7 +1163,7 @@ describe('OrderDetailPage — banners', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Save Tracking')!);
+    fireEvent.click(findBtn(container, 'Guardar rastreo')!);
     await waitFor(() => {
       const successDiv = Array.from(container.querySelectorAll('div')).find(
         (d) => d.classList.contains('bg-green-50'),
@@ -1223,10 +1223,10 @@ describe('OrderDetailPage — refresh rates button', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    fireEvent.click(findBtn(container, 'Compute Rates')!);
+    fireEvent.click(findBtn(container, 'Calcular tarifas')!);
     await waitFor(() => expect(container.textContent).toContain('USPS'));
     expect(rateCallCount).toBe(1);
-    fireEvent.click(findBtn(container, 'Refresh rates')!);
+    fireEvent.click(findBtn(container, 'Actualizar tarifas')!);
     await waitFor(() => expect(rateCallCount).toBe(2));
   });
 });

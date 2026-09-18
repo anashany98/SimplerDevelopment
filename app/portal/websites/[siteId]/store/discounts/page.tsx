@@ -179,7 +179,7 @@ export default function DiscountsPage() {
         actions={
           <button onClick={openCreate} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            Add Discount
+            Agregar descuento
           </button>
         }
       />
@@ -230,7 +230,7 @@ export default function DiscountsPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-foreground">
-                    {form.discountType === 'percent' ? 'Discount (%)' : form.discountType === 'fixed_amount' ? 'Amount ($)' : 'Monto'}
+                    {form.discountType === 'percent' ? 'Descuento (%)' : form.discountType === 'fixed_amount' ? 'Monto ($)' : 'Monto'}
                   </label>
                   <input
                     type="number"
@@ -331,7 +331,7 @@ export default function DiscountsPage() {
                   className={`${pBtnPrimary} disabled:opacity-50`}
                 >
                   {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-                  {editing ? 'Actualizar' : 'Crear'} Discount
+                  {editing ? 'Actualizar' : 'Crear'} descuento
                 </button>
               </div>
             </form>
