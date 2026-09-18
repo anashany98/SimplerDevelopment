@@ -151,18 +151,18 @@ describe('SurveySettings — section rendering', () => {
 
   it('renders Save Settings and Delete Survey buttons', () => {
     renderSettings();
-    expect(screen.getByRole('button', { name: /Save Settings/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Guardar ajustes/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Delete Survey/i })).toBeInTheDocument();
   });
 
   it('shows "Saving..." text when saving prop is true', () => {
     renderSettings({ saving: true });
-    expect(screen.getByText('Saving...')).toBeInTheDocument();
+    expect(screen.getByText('Guardando...')).toBeInTheDocument();
   });
 
   it('Save button is disabled when saving', () => {
     renderSettings({ saving: true });
-    const saveBtn = screen.getByRole('button', { name: /Saving.../i });
+    const saveBtn = screen.getByRole('button', { name: /Guardando.../i });
     expect(saveBtn).toBeDisabled();
   });
 });
@@ -198,7 +198,7 @@ describe('SurveySettings — branding profile', () => {
 describe('SurveySettings — color inputs', () => {
   it('renders color picker inputs for primary color', () => {
     renderSettings();
-    const labels = screen.getAllByText('Primary');
+    const labels = screen.getAllByText('Principal');
     expect(labels.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -258,7 +258,7 @@ describe('SurveySettings — layout toggles', () => {
   it('calls setEditStyling when Hide title checkbox is toggled', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
-    const labels = screen.getAllByText(/Hide title on public page/i);
+    const labels = screen.getAllByText(/Ocultar título en la página pública/i);
     const label = labels[0];
     const hideTitle = label.closest('label')?.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(hideTitle);
@@ -273,7 +273,7 @@ describe('SurveySettings — layout toggles', () => {
   it('calls setEditStyling when Hide logo checkbox is toggled', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
-    const labels = screen.getAllByText(/Hide logo/i);
+    const labels = screen.getAllByText(/Ocultar logotipo/i);
     const label = labels[0];
     const hideLogo = label.closest('label')?.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(hideLogo);
@@ -349,7 +349,7 @@ describe('SurveySettings — response setting toggles', () => {
 
   it('calls setEditNotify when checkbox toggled', () => {
     const props = renderSettings({ editNotify: false });
-    const cb = findCheckboxByText(/Email notification on new response/i);
+    const cb = findCheckboxByText(/Notificación por correo al recibir una respuesta/i);
     fireEvent.click(cb);
     expect(props.setEditNotify).toHaveBeenCalledWith(true);
   });
@@ -372,14 +372,14 @@ describe('SurveySettings — response setting toggles', () => {
 describe('SurveySettings — digest select', () => {
   it('renders digest select with current value', () => {
     renderSettings({ editDigest: 'daily' });
-    const digestOption = screen.getByRole('option', { name: 'Daily digest' }) as HTMLOptionElement;
+    const digestOption = screen.getByRole('option', { name: 'Resumen diario' }) as HTMLOptionElement;
     expect(digestOption.selected).toBe(true);
   });
 
   it('calls setEditDigest when digest option changes', () => {
     const props = renderSettings();
     // Digest select is identified by its unique options (Off/Daily/Weekly)
-    const offOption = screen.getByRole('option', { name: 'Off' });
+    const offOption = screen.getByRole('option', { name: 'Desactivado' });
     const digestSelect = offOption.closest('select')!;
     fireEvent.change(digestSelect, { target: { value: 'weekly' } });
     expect(props.setEditDigest).toHaveBeenCalledWith('weekly');
@@ -459,7 +459,7 @@ describe('SurveySettings — closes at / max responses', () => {
 describe('SurveySettings — Save / Delete callbacks', () => {
   it('calls onSave when Save Settings is clicked', () => {
     const props = renderSettings();
-    fireEvent.click(screen.getByRole('button', { name: /Save Settings/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes/i }));
     expect(props.onSave).toHaveBeenCalledOnce();
   });
 
@@ -485,12 +485,12 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
 
   it('does NOT render Auto-route section when no fields have scoring', () => {
     renderSettings({ editFields: [], editScoringConfig: null });
-    expect(screen.queryByText('Auto-route to CRM')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enrutar automáticamente al CRM')).not.toBeInTheDocument();
   });
 
   it('renders Auto-route to CRM section when a scored field exists', () => {
     renderSettings({ editFields: [scoredField], editScoringConfig: null });
-    expect(screen.getByText('Auto-route to CRM')).toBeInTheDocument();
+    expect(screen.getByText('Enrutar automáticamente al CRM')).toBeInTheDocument();
   });
 
   it('fetches pipelines when scored field exists', async () => {
@@ -563,8 +563,8 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
     const spinbuttons = screen.getAllByRole('spinbutton');
     expect(spinbuttons.length).toBeGreaterThanOrEqual(1);
     // Pipeline and Stage selects: "Select a pipeline…" and "Select a stage…" options exist
-    expect(screen.getByRole('option', { name: 'Select a pipeline…' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Select a stage…' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Selecciona un pipeline…' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Selecciona una etapa…' })).toBeInTheDocument();
   });
 
   it('calls setEditScoringConfig when minimum score changes', async () => {
