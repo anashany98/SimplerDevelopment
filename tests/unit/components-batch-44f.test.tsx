@@ -112,7 +112,7 @@ describe('CardActivity', () => {
     const { container } = render(
       <CardActivity activities={[]} showActivity={true} setShowActivity={() => {}} />,
     );
-    expect(container.textContent).toContain('No activity yet.');
+    expect(container.textContent).toContain('Aún no hay actividad.');
     // Chevron should now carry the rotate-90 class.
     const chevron = container.querySelector('.material-icons');
     expect(chevron?.className).toContain('rotate-90');
@@ -172,7 +172,7 @@ describe('WebsiteAutomationSettings', () => {
     const { getByTestId } = render(<WebsiteAutomationSettings />);
     const el = getByTestId('product-automation-settings');
     expect(el.getAttribute('data-scope')).toBe('website');
-    expect(el.getAttribute('data-title')).toBe('Automations');
+    expect(el.getAttribute('data-title')).toBe('Automatizaciones');
     expect(el.getAttribute('data-description')).toBe(
       'Automate CRM workflows and customer follow-ups',
     );
