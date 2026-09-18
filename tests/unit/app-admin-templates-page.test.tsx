@@ -129,7 +129,7 @@ import TemplatesPage from '@/app/admin/templates/page';
 
 async function renderPage() {
   const result = render(<TemplatesPage />);
-  await waitFor(() => expect(screen.queryByText('Loading templates...')).toBeNull());
+  await waitFor(() => expect(screen.queryByText('Cargando plantillas...')).toBeNull());
   return result;
 }
 
@@ -144,22 +144,22 @@ describe('TemplatesPage', () => {
     it('shows loading text before data arrives', () => {
       global.fetch = vi.fn(() => new Promise(() => {}));
       render(<TemplatesPage />);
-      expect(screen.getByText('Loading templates...')).toBeTruthy();
+      expect(screen.getByText('Cargando plantillas...')).toBeTruthy();
     });
 
     it('renders page heading', async () => {
       await renderPage();
-      expect(screen.getByText('Block Templates')).toBeTruthy();
+      expect(screen.getByText('Plantillas de bloques')).toBeTruthy();
     });
 
     it('renders subtitle text', async () => {
       await renderPage();
-      expect(screen.getByText(/Reusable block configurations/)).toBeTruthy();
+      expect(screen.getByText(/Configuraciones de bloques reutilizables/)).toBeTruthy();
     });
 
     it('renders "+ New Template" button', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: '+ New Template' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: '+ Nueva plantilla' })).toBeTruthy();
     });
 
     it('renders scope filter buttons', async () => {
@@ -172,7 +172,7 @@ describe('TemplatesPage', () => {
 
     it('renders search input', async () => {
       await renderPage();
-      expect(screen.getByPlaceholderText('Search templates...')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Buscar plantillas...')).toBeTruthy();
     });
   });
 
@@ -180,21 +180,21 @@ describe('TemplatesPage', () => {
     it('shows empty state when no templates exist', async () => {
       setupFetch([]);
       await renderPage();
-      expect(screen.getByText('No templates yet')).toBeTruthy();
-      expect(screen.getByText(/Save blocks as templates/)).toBeTruthy();
+      expect(screen.getByText('Aún no hay plantillas')).toBeTruthy();
+      expect(screen.getByText(/Guarda bloques como plantillas/)).toBeTruthy();
     });
 
     it('shows "Create your first template" button in empty state', async () => {
       setupFetch([]);
       await renderPage();
-      expect(screen.getByRole('button', { name: 'Create your first template' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Crear tu primera plantilla' })).toBeTruthy();
     });
 
     it('opens form from empty state button', async () => {
       setupFetch([]);
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Create your first template' }));
-      expect(screen.getByText('New Template')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Crear tu primera plantilla' }));
+      expect(screen.getByText('Nueva plantilla')).toBeTruthy();
     });
   });
 
@@ -259,13 +259,13 @@ describe('TemplatesPage', () => {
     it('shows block count for multi-block template', async () => {
       setupFetch([sectionTemplate]);
       await renderPage();
-      expect(screen.getByText('2 blocks')).toBeTruthy();
+      expect(screen.getByText('2 bloques')).toBeTruthy();
     });
 
     it('shows "Empty" for template with no blocks', async () => {
       setupFetch([globalTemplate]);
       await renderPage();
-      expect(screen.getByText('Empty')).toBeTruthy();
+      expect(screen.getByText('Vacío')).toBeTruthy();
     });
 
     it('shows hyphenated block type capitalised correctly', async () => {
@@ -301,7 +301,7 @@ describe('TemplatesPage', () => {
     it('typing in search input re-fetches with search param', async () => {
       await renderPage();
       mockFetch.mockClear();
-      fireEvent.change(screen.getByPlaceholderText('Search templates...'), { target: { value: 'hero' } });
+      fireEvent.change(screen.getByPlaceholderText('Buscar plantillas...'), { target: { value: 'hero' } });
       await flush();
       const fetchedUrls = mockFetch.mock.calls.map(([url]) => url as string);
       expect(fetchedUrls.some((u) => u.includes('search=hero'))).toBe(true);
@@ -311,13 +311,13 @@ describe('TemplatesPage', () => {
   describe('create template form', () => {
     it('shows form with "New Template" heading when button clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
-      expect(screen.getByText('New Template')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
+      expect(screen.getByText('Nueva plantilla')).toBeTruthy();
     });
 
     it('auto-generates slug from name', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
       // Name is the first required text input in the form
       const form = document.querySelector('form') as HTMLFormElement;
       const inputs = form.querySelectorAll('input[type="text"]');
@@ -329,7 +329,7 @@ describe('TemplatesPage', () => {
 
     it('slug field is editable when not editing', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
       const form = document.querySelector('form') as HTMLFormElement;
       const inputs = form.querySelectorAll('input[type="text"]');
       const slugInput = inputs[1] as HTMLInputElement;
@@ -338,7 +338,7 @@ describe('TemplatesPage', () => {
 
     it('submits POST and closes form on success', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
       const form = document.querySelector('form') as HTMLFormElement;
       const nameInput = form.querySelectorAll('input[type="text"]')[0] as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'New' } });
@@ -353,15 +353,15 @@ describe('TemplatesPage', () => {
 
     it('cancel button closes form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
-      expect(screen.getByText('New Template')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
+      expect(screen.getByText('Nueva plantilla')).toBeTruthy();
       fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
-      expect(screen.queryByText('New Template')).toBeNull();
+      expect(screen.queryByText('Nueva plantilla')).toBeNull();
     });
 
     it('renders scope dropdown with all options', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
       const scopeSelect = screen.getByRole('combobox') as HTMLSelectElement;
       const options = Array.from(scopeSelect.options).map((o) => o.value);
       expect(options).toContain('block');
@@ -371,8 +371,8 @@ describe('TemplatesPage', () => {
 
     it('tags field accepts comma-separated values', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ New Template' }));
-      const tagsInput = screen.getByPlaceholderText(/e.g., hero, landing/) as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: '+ Nueva plantilla' }));
+      const tagsInput = screen.getByPlaceholderText(/p\. ej\., hero, landing/) as HTMLInputElement;
       fireEvent.change(tagsInput, { target: { value: 'a, b, c' } });
       expect(tagsInput.value).toBe('a, b, c');
     });
@@ -383,7 +383,7 @@ describe('TemplatesPage', () => {
       await renderPage();
       const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
-      expect(screen.getByText('Edit Template')).toBeTruthy();
+      expect(screen.getByText('Editar plantilla')).toBeTruthy();
       expect(screen.getByDisplayValue('Hero Block')).toBeTruthy();
     });
 
@@ -424,7 +424,7 @@ describe('TemplatesPage', () => {
       await renderPage();
       const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
-      fireEvent.click(screen.getByRole('button', { name: 'Update' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Actualizar' }));
       await waitFor(() => {
         const putCall = mockFetch.mock.calls.find(
           ([url, init]) => /\/api\/block-templates\/1$/.test(url as string) && (init as RequestInit)?.method === 'PUT',
@@ -517,13 +517,13 @@ describe('TemplatesPage', () => {
     it('shows Cancel deletion button for pending-delete templates', async () => {
       setupFetch([pendingDeleteTemplate]);
       await renderPage();
-      expect(screen.getByRole('button', { name: /Cancel deletion/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Cancelar eliminación/ })).toBeTruthy();
     });
 
     it('calls cancel-delete endpoint when Cancel deletion clicked', async () => {
       setupFetch([pendingDeleteTemplate]);
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Cancel deletion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Cancelar eliminación/ }));
       await waitFor(() => {
         const cancelCall = mockFetch.mock.calls.find(
           ([url, init]) => /\/api\/block-templates\/5\/cancel-delete$/.test(url as string) && (init as RequestInit)?.method === 'POST',
@@ -540,7 +540,7 @@ describe('TemplatesPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Cancel deletion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Cancelar eliminación/ }));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Cancel failed'));
     });
   });
@@ -555,7 +555,7 @@ describe('TemplatesPage', () => {
     it('shows "Pending delete" badge for pending-delete template', async () => {
       setupFetch([pendingDeleteTemplate]);
       await renderPage();
-      expect(screen.getByText('Pending delete')).toBeTruthy();
+      expect(screen.getByText('Eliminación pendiente')).toBeTruthy();
     });
 
     it('template name is struck-through when pending delete', async () => {
@@ -569,14 +569,14 @@ describe('TemplatesPage', () => {
       setupFetch([draftTemplate]);
       await renderPage();
       const draftBadge = screen.getByText('Borrador').closest('[title]') as HTMLElement;
-      expect(draftBadge?.getAttribute('title')).toContain('by user 42');
+      expect(draftBadge?.getAttribute('title')).toContain('por el usuario 42');
     });
 
     it('formatDraftTooltip falls back to "Unpublished draft" when no metadata', async () => {
       setupFetch([{ ...draftTemplate, draft: { pendingDelete: false } }]);
       await renderPage();
       const draftBadge = screen.getByText('Borrador').closest('[title]') as HTMLElement;
-      expect(draftBadge?.getAttribute('title')).toBe('Unpublished draft');
+      expect(draftBadge?.getAttribute('title')).toBe('Borrador sin publicar');
     });
   });
 });

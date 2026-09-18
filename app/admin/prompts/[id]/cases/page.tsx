@@ -47,13 +47,13 @@ function fmtAge(iso: string | null): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (ms < 0) return new Date(iso).toLocaleString();
   const s = Math.round(ms / 1000);
-  if (s < 60) return `${s}s ago`;
+  if (s < 60) return `hace ${s}s`;
   const m = Math.round(s / 60);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `hace ${m}m`;
   const h = Math.round(m / 60);
-  if (h < 48) return `${h}h ago`;
+  if (h < 48) return `hace ${h}h`;
   const d = Math.round(h / 24);
-  return `${d}d ago`;
+  return `hace ${d}d`;
 }
 
 function truncateJson(val: unknown, maxLen = 60): string {
@@ -109,7 +109,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
 
     const parsedInput = tryParseJson(editInput);
     if (!parsedInput.ok) {
-      setSaveError('input: invalid JSON');
+      setSaveError('input: JSON no válido');
       return;
     }
 
@@ -117,7 +117,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
     if (editExpected.trim() !== '') {
       const r = tryParseJson(editExpected);
       if (!r.ok) {
-        setSaveError('expected: invalid JSON');
+        setSaveError('expected: JSON no válido');
         return;
       }
       parsedExpected = r.value;
@@ -127,7 +127,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
     if (editMock.trim() !== '') {
       const r = tryParseJson(editMock);
       if (!r.ok) {
-        setSaveError('mockOutput: invalid JSON');
+        setSaveError('mockOutput: JSON no válido');
         return;
       }
       parsedMock = r.value;
@@ -135,12 +135,12 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
 
     const orderNum = parseInt(editOrder, 10);
     if (isNaN(orderNum)) {
-      setSaveError('order: must be a number');
+      setSaveError('order: debe ser un número');
       return;
     }
 
     if (!editKey.trim()) {
-      setSaveError('caseKey is required');
+      setSaveError('caseKey es obligatorio');
       return;
     }
 
@@ -153,7 +153,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
       order: orderNum,
     });
     setSaving(false);
-    if (!result.ok) setSaveError(result.error ?? 'Failed to save case');
+    if (!result.ok) setSaveError(result.error ?? 'No se pudo guardar el caso');
   }
 
   return (
@@ -174,7 +174,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
         {/* Order */}
         <td className="px-3 py-2 text-xs text-muted-foreground font-mono">{c.order}</td>
 
-        {/* Case key */}
+        {/* Clave del caso */}
         <td className="px-3 py-2 text-xs font-mono text-foreground">{c.caseKey}</td>
 
         {/* Enabled toggle / indicator */}
@@ -183,7 +183,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
             <button
               onClick={handleToggle}
               disabled={toggling}
-              title={c.enabled ? 'Disable case' : 'Enable case'}
+              title={c.enabled ? 'Desactivar caso' : 'Activar caso'}
               className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               style={
                 c.enabled
@@ -194,7 +194,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
               <span className="material-icons text-xs leading-none">
                 {toggling ? 'refresh' : c.enabled ? 'toggle_on' : 'toggle_off'}
               </span>
-              {c.enabled ? 'enabled' : 'disabled'}
+              {c.enabled ? 'activado' : 'desactivado'}
             </button>
           ) : (
             <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border font-medium">
@@ -204,7 +204,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                 {c.enabled ? 'check_circle' : 'cancel'}
               </span>
               <span className={c.enabled ? 'text-green-700' : 'text-red-700'}>
-                {c.enabled ? 'enabled' : 'disabled'}
+                {c.enabled ? 'activado' : 'desactivado'}
               </span>
             </span>
           )}
@@ -220,7 +220,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
           <td className="px-3 py-2 text-xs">
             <span
               className="inline-flex items-center gap-0.5 text-muted-foreground hover:text-foreground transition-colors"
-              title="Expand to edit"
+              title="Expandir para editar"
             >
               <span className="material-icons text-base leading-none">edit</span>
             </span>
@@ -243,7 +243,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                   {/* caseKey */}
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      Case key
+                      Clave del caso
                     </label>
                     <input
                       type="text"
@@ -280,28 +280,28 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                 {/* expected */}
                 <div>
                   <label className="block text-xs font-medium text-muted-foreground mb-1">
-                    expected (JSON, optional)
+                    expected (JSON, opcional)
                   </label>
                   <textarea
                     value={editExpected}
                     onChange={(e) => setEditExpected(e.target.value)}
                     rows={4}
                     className="w-full text-xs font-mono border border-border rounded px-2 py-1.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-y"
-                    placeholder="Leave empty to clear"
+                    placeholder="Deja vacío para borrar"
                   />
                 </div>
 
                 {/* mockOutput */}
                 <div>
                   <label className="block text-xs font-medium text-muted-foreground mb-1">
-                    mockOutput (JSON, optional)
+                    mockOutput (JSON, opcional)
                   </label>
                   <textarea
                     value={editMock}
                     onChange={(e) => setEditMock(e.target.value)}
                     rows={4}
                     className="w-full text-xs font-mono border border-border rounded px-2 py-1.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-y"
-                    placeholder="Leave empty to clear"
+                    placeholder="Deja vacío para borrar"
                   />
                 </div>
 
@@ -320,7 +320,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                     <span className={`material-icons text-base leading-none ${saving ? 'animate-spin' : ''}`}>
                       {saving ? 'refresh' : 'save'}
                     </span>
-                    {saving ? 'Saving…' : 'Save'}
+                    {saving ? 'Guardando…' : 'Guardar'}
                   </button>
                   <button
                     type="button"
@@ -334,7 +334,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Case key</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Clave del caso</div>
                     <div className="text-xs font-mono text-foreground">{c.caseKey}</div>
                   </div>
                   <div>
@@ -399,13 +399,13 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
     setSaveError(null);
 
     if (!caseKey.trim()) {
-      setSaveError('caseKey is required');
+      setSaveError('caseKey es obligatorio');
       return;
     }
 
     const parsedInput = tryParseJson(inputStr);
     if (!parsedInput.ok) {
-      setSaveError('input: invalid JSON');
+      setSaveError('input: JSON no válido');
       return;
     }
 
@@ -413,7 +413,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
     if (expectedStr.trim() !== '') {
       const r = tryParseJson(expectedStr);
       if (!r.ok) {
-        setSaveError('expected: invalid JSON');
+        setSaveError('expected: JSON no válido');
         return;
       }
       parsedExpected = r.value;
@@ -423,7 +423,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
     if (mockStr.trim() !== '') {
       const r = tryParseJson(mockStr);
       if (!r.ok) {
-        setSaveError('mockOutput: invalid JSON');
+        setSaveError('mockOutput: JSON no válido');
         return;
       }
       parsedMock = r.value;
@@ -431,12 +431,12 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
 
     const orderNum = parseInt(orderStr, 10);
     if (isNaN(orderNum)) {
-      setSaveError('order: must be a number');
+      setSaveError('order: debe ser un número');
       return;
     }
 
     if (datasetId === null) {
-      setSaveError('No dataset available. Create a dataset first.');
+      setSaveError('No hay ningún dataset disponible. Crea uno primero.');
       return;
     }
 
@@ -456,7 +456,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
       });
       const d = await res.json();
       if (!d.success) {
-        setSaveError(d.message ?? 'Failed to create case');
+        setSaveError(d.message ?? 'No se pudo crear el caso');
         setSaving(false);
         return;
       }
@@ -469,7 +469,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
       setOpen(false);
       onCreated();
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Unknown error');
+      setSaveError(err instanceof Error ? err.message : 'Error desconocido');
     }
     setSaving(false);
   }
@@ -479,11 +479,11 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
       <button
         onClick={() => setOpen(true)}
         disabled={datasetId === null}
-        title={datasetId === null ? 'No dataset selected' : 'Add a new eval case'}
+        title={datasetId === null ? 'Ningún dataset seleccionado' : 'Añadir un nuevo caso de prueba'}
         className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg border border-border bg-background text-foreground hover:bg-accent/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         <span className="material-icons text-base leading-none">add</span>
-        Add case
+        Añadir caso
       </button>
     );
   }
@@ -494,7 +494,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
         <div className="flex items-center gap-2">
           <span className="material-icons text-muted-foreground text-lg">add_circle_outline</span>
           <h3 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-            Add case
+            Añadir caso
           </h3>
         </div>
         <button
@@ -507,7 +507,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
 
       {datasetId === null && (
         <div className="text-xs text-muted-foreground bg-muted/50 border border-border rounded p-3">
-          A dataset must be selected before adding cases.
+          Debes seleccionar un dataset antes de añadir casos.
         </div>
       )}
 
@@ -515,14 +515,14 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Case key <span className="text-red-500">*</span>
+              Clave del caso <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={caseKey}
               onChange={(e) => setCaseKey(e.target.value)}
               className="w-full text-xs font-mono border border-border rounded px-2 py-1.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-              placeholder="e.g. summarize_simple"
+              placeholder="p. ej. summarize_simple"
             />
           </div>
           <div>
@@ -550,27 +550,27 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
 
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            expected (JSON, optional)
+            expected (JSON, opcional)
           </label>
           <textarea
             value={expectedStr}
             onChange={(e) => setExpectedStr(e.target.value)}
             rows={4}
             className="w-full text-xs font-mono border border-border rounded px-2 py-1.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-y"
-            placeholder="Leave empty to omit"
+            placeholder="Deja vacío para omitir"
           />
         </div>
 
         <div>
           <label className="block text-xs font-medium text-muted-foreground mb-1">
-            mockOutput (JSON, optional)
+            mockOutput (JSON, opcional)
           </label>
           <textarea
             value={mockStr}
             onChange={(e) => setMockStr(e.target.value)}
             rows={4}
             className="w-full text-xs font-mono border border-border rounded px-2 py-1.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary resize-y"
-            placeholder="Leave empty to omit"
+            placeholder="Deja vacío para omitir"
           />
         </div>
 
@@ -589,7 +589,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
             <span className={`material-icons text-base leading-none ${saving ? 'animate-spin' : ''}`}>
               {saving ? 'refresh' : 'add'}
             </span>
-            {saving ? 'Creating…' : 'Create case'}
+            {saving ? 'Creando…' : 'Crear caso'}
           </button>
           <button
             type="button"
@@ -650,10 +650,10 @@ export default function PromptCasesPage() {
         if (d.success) {
           setPrompt(d.data?.prompt ?? null);
         } else {
-          setPromptErr(d.message ?? 'Failed to load prompt');
+          setPromptErr(d.message ?? 'No se pudo cargar el prompt');
         }
       })
-      .catch((e) => setPromptErr(e instanceof Error ? e.message : 'Failed to load prompt'))
+      .catch((e) => setPromptErr(e instanceof Error ? e.message : 'No se pudo cargar el prompt'))
       .finally(() => setPromptLoading(false));
   }, [promptId]);
 
@@ -711,11 +711,11 @@ export default function PromptCasesPage() {
               setCases([]);
             } else {
                
-              setCasesErr(d.message ?? 'Failed to load cases');
+              setCasesErr(d.message ?? 'No se pudieron cargar los casos');
             }
           }
         })
-        .catch((e) => setCasesErr(e instanceof Error ? e.message : 'Failed to load cases'))
+        .catch((e) => setCasesErr(e instanceof Error ? e.message : 'No se pudieron cargar los casos'))
         .finally(() => setCasesLoading(false));
     },
     [],
@@ -749,10 +749,10 @@ export default function PromptCasesPage() {
         setNewDatasetOpen(false);
         loadDatasets(prompt.key, (d.data as EvalDataset).id);
       } else {
-        setDatasetActionError(d.message ?? 'Failed to create dataset');
+        setDatasetActionError(d.message ?? 'No se pudo crear el dataset');
       }
     } catch (e) {
-      setDatasetActionError(e instanceof Error ? e.message : 'Failed to create dataset');
+      setDatasetActionError(e instanceof Error ? e.message : 'No se pudo crear el dataset');
     } finally {
       setDatasetActionBusy(false);
     }
@@ -774,10 +774,10 @@ export default function PromptCasesPage() {
         setRenameName('');
         if (prompt?.key) loadDatasets(prompt.key, selectedDatasetId);
       } else {
-        setDatasetActionError(d.message ?? 'Failed to rename dataset');
+        setDatasetActionError(d.message ?? 'No se pudo renombrar el dataset');
       }
     } catch (e) {
-      setDatasetActionError(e instanceof Error ? e.message : 'Failed to rename dataset');
+      setDatasetActionError(e instanceof Error ? e.message : 'No se pudo renombrar el dataset');
     } finally {
       setDatasetActionBusy(false);
     }
@@ -793,14 +793,14 @@ export default function PromptCasesPage() {
       });
       const d = await res.json();
       if (res.status === 409 || !d.success) {
-        setDatasetActionError(d.message ?? 'Cannot delete dataset');
+        setDatasetActionError(d.message ?? 'No se puede eliminar el dataset');
         setDeleteConfirm(false);
       } else {
         setDeleteConfirm(false);
         if (prompt?.key) loadDatasets(prompt.key);
       }
     } catch (e) {
-      setDatasetActionError(e instanceof Error ? e.message : 'Failed to delete dataset');
+      setDatasetActionError(e instanceof Error ? e.message : 'No se pudo eliminar el dataset');
     } finally {
       setDatasetActionBusy(false);
     }
@@ -843,9 +843,9 @@ export default function PromptCasesPage() {
         setCases((prev) => prev.map((c) => (c.id === id ? (d.data as EvalCase) : c)));
         return { ok: true };
       }
-      return { ok: false, error: d.message ?? 'Failed to save case' };
+      return { ok: false, error: d.message ?? 'No se pudo guardar el caso' };
     } catch (e) {
-      return { ok: false, error: e instanceof Error ? e.message : 'Failed to save case' };
+      return { ok: false, error: e instanceof Error ? e.message : 'No se pudo guardar el caso' };
     }
   }
 
@@ -861,7 +861,7 @@ export default function PromptCasesPage() {
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <span className="material-icons text-base">arrow_back</span>
-        Back to prompt
+        Volver al prompt
       </Link>
 
       {/* Heading */}
@@ -880,7 +880,7 @@ export default function PromptCasesPage() {
             <div className="flex items-center gap-2 mt-0.5">
               <code className="text-xs text-muted-foreground font-mono">{prompt.key}</code>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">Eval test cases</p>
+            <p className="text-sm text-muted-foreground mt-1">Casos de prueba de evaluación</p>
           </div>
 
           {/* Cases section */}
@@ -889,7 +889,7 @@ export default function PromptCasesPage() {
               <div className="flex items-center gap-2">
                 <span className="material-icons text-muted-foreground text-lg">dataset</span>
                 <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                  Cases
+                  Casos
                 </h2>
                 {!casesLoading && (
                   <span className="text-xs text-muted-foreground">({cases.length})</span>
@@ -912,7 +912,7 @@ export default function PromptCasesPage() {
                 Dataset
               </label>
               {datasets.length === 0 ? (
-                <span className="text-xs text-muted-foreground italic">No datasets yet</span>
+                <span className="text-xs text-muted-foreground italic">Aún no hay datasets</span>
               ) : (
                 <select
                   id="dataset-select"
@@ -947,7 +947,7 @@ export default function PromptCasesPage() {
                         value={newDatasetName}
                         onChange={(e) => setNewDatasetName(e.target.value)}
                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleCreateDataset(); } }}
-                        placeholder="Dataset name"
+                        placeholder="Nombre del dataset"
                         autoFocus
                         className="text-xs border border-border rounded px-2 py-1 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary w-36"
                       />
@@ -988,7 +988,7 @@ export default function PromptCasesPage() {
                           value={renameName}
                           onChange={(e) => setRenameName(e.target.value)}
                           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleRenameDataset(); } }}
-                          placeholder="New name"
+                          placeholder="Nuevo nombre"
                           autoFocus
                           className="text-xs border border-border rounded px-2 py-1 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary w-32"
                         />
@@ -1026,7 +1026,7 @@ export default function PromptCasesPage() {
                   {selectedDataset && (
                     deleteConfirm ? (
                       <div className="flex items-center gap-1.5 bg-red-50 border border-red-200 rounded px-2 py-1 text-xs">
-                        <span className="text-red-900">Delete &ldquo;{selectedDataset.name}&rdquo;?</span>
+                        <span className="text-red-900">¿Eliminar «{selectedDataset.name}»?</span>
                         <button
                           onClick={handleDeleteDataset}
                           disabled={datasetActionBusy}
@@ -1034,7 +1034,7 @@ export default function PromptCasesPage() {
                         >
                           {datasetActionBusy ? (
                             <span className="material-icons text-sm leading-none animate-spin">refresh</span>
-                          ) : 'Delete'}
+                          ) : 'Eliminar'}
                         </button>
                         <button
                           onClick={() => { setDeleteConfirm(false); setDatasetActionError(null); }}
@@ -1087,12 +1087,12 @@ export default function PromptCasesPage() {
                 <span className="material-icons text-4xl text-muted-foreground/40">dataset</span>
                 <div className="text-sm">
                   {selectedDatasetId === null
-                    ? 'No datasets yet. Create one above to get started.'
-                    : 'No cases found for this dataset.'}
+                    ? 'Aún no hay datasets. Crea uno arriba para empezar.'
+                    : 'No se encontraron casos para este dataset.'}
                 </div>
                 {isAdmin && selectedDatasetId === null && (
                   <div className="text-xs text-muted-foreground/70 max-w-xs">
-                    A dataset must be created first before cases can be added.
+                    Debes crear un dataset antes de poder añadir casos.
                   </div>
                 )}
               </div>
@@ -1104,11 +1104,11 @@ export default function PromptCasesPage() {
                       <th className="px-3 py-2 w-6"></th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pedido</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Case key
+                        Clave del caso
                       </th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Activado</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                        Input preview
+                        Vista previa del input
                       </th>
                       {isAdmin && (
                         <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Editar</th>
