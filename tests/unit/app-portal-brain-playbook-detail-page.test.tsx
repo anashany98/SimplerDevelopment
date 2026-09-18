@@ -236,7 +236,7 @@ describe('PlaybookDetailPage — loading', () => {
       () => new Promise<FetchResp>(() => { /* never resolves */ }),
     );
     const { container } = renderWithId();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -591,7 +591,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
         b.textContent?.includes('Start a run'),
       );
       const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       );
       expect(startBtn).toBeTruthy();
       expect(archiveBtn).toBeTruthy();
@@ -621,7 +621,7 @@ describe('PlaybookDetailPage — status-dependent buttons', () => {
     const { container } = renderWithId();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Delete'),
+        b.textContent?.includes('Eliminar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -822,7 +822,7 @@ describe('PlaybookDetailPage — Archive action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -839,7 +839,7 @@ describe('PlaybookDetailPage — Archive action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -863,7 +863,7 @@ describe('PlaybookDetailPage — Archive action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -891,7 +891,7 @@ describe('PlaybookDetailPage — Delete action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Delete'),
+      b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -904,7 +904,7 @@ describe('PlaybookDetailPage — Delete action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Delete'),
+      b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     // Wait a tick to ensure no async calls happened
@@ -927,7 +927,7 @@ describe('PlaybookDetailPage — Delete action', () => {
     const { container } = renderWithId();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const deleteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Delete'),
+      b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -985,7 +985,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
   it('closes the dialog when Cancel is clicked', async () => {
     const { container } = await renderActive();
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -996,7 +996,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
   it('closes the dialog when the close icon button is clicked', async () => {
     const { container } = await renderActive();
     const closeBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.getAttribute('aria-label') === 'Close',
+      (b) => b.getAttribute('aria-label') === 'Cerrar',
     );
     expect(closeBtns.length).toBeGreaterThan(0);
     fireEvent.click(closeBtns[0]);
@@ -1088,7 +1088,7 @@ describe('PlaybookDetailPage — StartRunDialog', () => {
     });
     // Remove the link
     const removeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('aria-label') === 'Remove this link',
+      (b) => b.getAttribute('aria-label') === 'Quitar este vínculo',
     ) as HTMLButtonElement;
     fireEvent.click(removeBtn);
     await waitFor(() => {
