@@ -153,7 +153,7 @@ describe('NoteListPane — base rendering', () => {
   it('renders header tabs Notes and Trash', async () => {
     render(<NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />);
     await flush();
-    expect(screen.getByRole('button', { name: /Notes/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Notas/ })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Trash/ })).toBeTruthy();
   });
 
@@ -360,10 +360,10 @@ describe('NoteListPane — search and sort', () => {
       <NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />,
     );
     await flush();
-    const sortBtn = container.querySelector('[aria-label="Sort"]') as HTMLButtonElement;
+    const sortBtn = container.querySelector('[aria-label="Ordenar"]') as HTMLButtonElement;
     fireEvent.click(sortBtn);
     await flush();
-    expect(screen.getByText('Sort by')).toBeTruthy();
+    expect(screen.getByText('Ordenar por')).toBeTruthy();
   });
 
   it('changes the sort field via the radio buttons', async () => {
@@ -371,7 +371,7 @@ describe('NoteListPane — search and sort', () => {
       <NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />,
     );
     await flush();
-    fireEvent.click(container.querySelector('[aria-label="Sort"]') as HTMLButtonElement);
+    fireEvent.click(container.querySelector('[aria-label="Ordenar"]') as HTMLButtonElement);
     await flush();
     const titleRadio = container.querySelector('input[type="radio"][value]') as HTMLInputElement | null;
     // Just click the "title" label which carries the radio for the 'title' sort
@@ -389,7 +389,7 @@ describe('NoteListPane — search and sort', () => {
       <NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />,
     );
     await flush();
-    fireEvent.click(container.querySelector('[aria-label="Sort"]') as HTMLButtonElement);
+    fireEvent.click(container.querySelector('[aria-label="Ordenar"]') as HTMLButtonElement);
     await flush();
     const ascBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent === 'Asc',
@@ -684,8 +684,8 @@ describe('NoteListPane — saved searches', () => {
     expect(moreBtn).toBeTruthy();
     fireEvent.click(moreBtn);
     await flush();
-    expect(screen.getByText('Rename')).toBeTruthy();
-    expect(screen.getByText('Delete')).toBeTruthy();
+    expect(screen.getByText('Renombrar')).toBeTruthy();
+    expect(screen.getByText('Eliminar')).toBeTruthy();
   });
 });
 
@@ -724,7 +724,7 @@ describe('NoteListPane — sort persistence', () => {
       <NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />,
     );
     await flush();
-    fireEvent.click(container.querySelector('[aria-label="Sort"]') as HTMLButtonElement);
+    fireEvent.click(container.querySelector('[aria-label="Ordenar"]') as HTMLButtonElement);
     await flush();
     const titleLabel = Array.from(container.querySelectorAll('label')).find((l) =>
       l.textContent?.toLowerCase().includes('title'),
