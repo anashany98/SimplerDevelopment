@@ -124,7 +124,7 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders the page heading "New note"', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
   });
 
@@ -139,8 +139,8 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('renders section headings: Source, Details, Participants, Transcript', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Source');
-      expect(container.textContent).toContain('Details');
+      expect(container.textContent).toContain('Fuente');
+      expect(container.textContent).toContain('Detalles');
       expect(container.textContent).toContain('Participants');
       expect(container.textContent).toContain('Transcript');
     });
@@ -150,7 +150,7 @@ describe('NewBrainMeetingPage — initial render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Save as draft');
-      expect(container.textContent).toContain('Save and process with AI');
+      expect(container.textContent).toContain('Guardar y procesar con IA');
     });
   });
 
@@ -171,7 +171,7 @@ describe('NewBrainMeetingPage — initial render', () => {
   it('does NOT render error banner by default', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
     const errorBanner = container.querySelector('.text-destructive');
     expect(errorBanner).toBeNull();
@@ -206,7 +206,7 @@ describe('NewBrainMeetingPage — adapter loading', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // page still renders; no crash
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
   });
 
@@ -219,7 +219,7 @@ describe('NewBrainMeetingPage — adapter loading', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New note');
+      expect(container.textContent).toContain('Nueva nota');
     });
     // No adapter cards should appear
     expect(container.textContent).not.toContain('Paste text');
@@ -268,7 +268,7 @@ describe('NewBrainMeetingPage — adapter loading', () => {
 describe('NewBrainMeetingPage — details fields', () => {
   it('updates title field on input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const titleInput = container.querySelector('input[type="text"][placeholder*="Acme"]') as HTMLInputElement;
     expect(titleInput).toBeTruthy();
     fireEvent.change(titleInput, { target: { value: 'Test Meeting' } });
@@ -277,7 +277,7 @@ describe('NewBrainMeetingPage — details fields', () => {
 
   it('updates meetingDate field on input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const dateInput = container.querySelector('input[type="datetime-local"]') as HTMLInputElement;
     expect(dateInput).toBeTruthy();
     fireEvent.change(dateInput, { target: { value: '2026-06-04T10:00' } });
@@ -286,7 +286,7 @@ describe('NewBrainMeetingPage — details fields', () => {
 
   it('updates transcript textarea on input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     expect(textarea).toBeTruthy();
     fireEvent.change(textarea, { target: { value: 'Hello meeting transcript' } });
@@ -295,7 +295,7 @@ describe('NewBrainMeetingPage — details fields', () => {
 
   it('shows character count for transcript', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'ABCDE' } });
     await waitFor(() => {
@@ -310,48 +310,48 @@ describe('NewBrainMeetingPage — details fields', () => {
 describe('NewBrainMeetingPage — participants', () => {
   it('starts with one participant row', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
-    const nameInputs = container.querySelectorAll('input[placeholder="Name"]');
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
+    const nameInputs = container.querySelectorAll('input[placeholder="Nombre"]');
     expect(nameInputs.length).toBe(1);
   });
 
   it('adds a participant row when "Add participant" is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Add participant'),
     );
     expect(addBtn).toBeTruthy();
     fireEvent.click(addBtn!);
     await waitFor(() => {
-      const nameInputs = container.querySelectorAll('input[placeholder="Name"]');
+      const nameInputs = container.querySelectorAll('input[placeholder="Nombre"]');
       expect(nameInputs.length).toBe(2);
     });
   });
 
   it('removes a participant row when remove button is clicked (with 2 rows)', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     // Add one row first
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Add participant'),
     );
     fireEvent.click(addBtn!);
     await waitFor(() => {
-      expect(container.querySelectorAll('input[placeholder="Name"]').length).toBe(2);
+      expect(container.querySelectorAll('input[placeholder="Nombre"]').length).toBe(2);
     });
     // Click the first remove button (should be enabled now)
     const removeBtns = Array.from(container.querySelectorAll('button[aria-label="Remove participant"]'));
     expect(removeBtns.length).toBe(2);
     fireEvent.click(removeBtns[0]);
     await waitFor(() => {
-      expect(container.querySelectorAll('input[placeholder="Name"]').length).toBe(1);
+      expect(container.querySelectorAll('input[placeholder="Nombre"]').length).toBe(1);
     });
   });
 
   it('disables the remove button when only one participant exists', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const removeBtn = container.querySelector('button[aria-label="Remove participant"]') as HTMLButtonElement;
     expect(removeBtn).toBeTruthy();
     expect(removeBtn.disabled).toBe(true);
@@ -359,15 +359,15 @@ describe('NewBrainMeetingPage — participants', () => {
 
   it('updates participant name on input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
-    const nameInput = container.querySelector('input[placeholder="Name"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
+    const nameInput = container.querySelector('input[placeholder="Nombre"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Alice' } });
     expect(nameInput.value).toBe('Alice');
   });
 
   it('updates participant email on input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const emailInput = container.querySelector('input[type="email"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'alice@example.com' } });
     expect(emailInput.value).toBe('alice@example.com');
@@ -392,7 +392,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
-      const searchInput = container.querySelector('input[placeholder="Search companies or deals…"]');
+      const searchInput = container.querySelector('input[placeholder="Buscar empresas u oportunidades…"]');
       expect(searchInput).toBeTruthy();
     });
   });
@@ -405,10 +405,10 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Search companies or deals…"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Buscar empresas u oportunidades…"]')).toBeTruthy();
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn!);
@@ -440,7 +440,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     );
     fireEvent.click(linkBtn!);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Search companies or deals…"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Buscar empresas u oportunidades…"]')).toBeTruthy();
     });
     // Wait for debounced fetch (200ms) to fire
     await act(async () => {
@@ -613,7 +613,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
     await waitFor(() => expect(container.textContent).toContain('(company)'));
     // Clear it
     const clearBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Clear'),
+      b.textContent?.includes('Limpiar'),
     );
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn!);
@@ -629,7 +629,7 @@ describe('NewBrainMeetingPage — RelationshipPicker', () => {
 describe('NewBrainMeetingPage — submit validation', () => {
   it('shows error when transcript is empty and Save as draft is clicked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
       b.textContent?.includes('Save as draft'),
     );
@@ -643,7 +643,7 @@ describe('NewBrainMeetingPage — submit validation', () => {
 
   it('enables Save as draft button when transcript has content', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Some transcript text' } });
     await waitFor(() => {
@@ -659,7 +659,7 @@ describe('NewBrainMeetingPage — submit validation', () => {
 
 describe('NewBrainMeetingPage — Save as draft', () => {
   async function fillAndSubmitDraft(container: HTMLElement) {
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'This is the transcript.' } });
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -825,11 +825,11 @@ describe('NewBrainMeetingPage — Save as draft', () => {
 
 describe('NewBrainMeetingPage — Save and process', () => {
   async function fillAndProcess(container: HTMLElement) {
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Long meeting transcript for AI.' } });
     const processBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save and process with AI'),
+      b.textContent?.includes('Guardar y procesar con IA'),
     )!;
     await act(async () => { fireEvent.click(processBtn); });
   }
@@ -918,7 +918,7 @@ describe('NewBrainMeetingPage — spinner state', () => {
       return makeRes({ success: true, data: {} });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New note'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva nota'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Test transcript' } });
     const draftBtn = Array.from(container.querySelectorAll('button')).find((b) =>
@@ -952,7 +952,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
     );
     fireEvent.click(uploadBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Choose a file');
+      expect(container.textContent).toContain('Elegir un archivo');
     });
   });
 
@@ -963,7 +963,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
       b.textContent?.includes('Upload file'),
     );
     fireEvent.click(uploadAdapterBtn!);
-    await waitFor(() => expect(container.textContent).toContain('Choose a file'));
+    await waitFor(() => expect(container.textContent).toContain('Elegir un archivo'));
 
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const bigFile = new File(['x'.repeat(6 * 1024 * 1024)], 'big.txt', { type: 'text/plain' });
@@ -981,7 +981,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
       b.textContent?.includes('Upload file'),
     );
     fireEvent.click(uploadAdapterBtn!);
-    await waitFor(() => expect(container.textContent).toContain('Choose a file'));
+    await waitFor(() => expect(container.textContent).toContain('Elegir un archivo'));
 
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const badFile = new File(['content'], 'notes.pdf', { type: 'application/pdf' });
@@ -999,7 +999,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
       b.textContent?.includes('Upload file'),
     );
     fireEvent.click(uploadAdapterBtn!);
-    await waitFor(() => expect(container.textContent).toContain('Choose a file'));
+    await waitFor(() => expect(container.textContent).toContain('Elegir un archivo'));
 
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const fileContent = 'This is a transcript.';
@@ -1022,7 +1022,7 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
       b.textContent?.includes('Upload file'),
     );
     fireEvent.click(uploadAdapterBtn!);
-    await waitFor(() => expect(container.textContent).toContain('Choose a file'));
+    await waitFor(() => expect(container.textContent).toContain('Elegir un archivo'));
 
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const fileContent = 'Some text.';
@@ -1035,13 +1035,13 @@ describe('NewBrainMeetingPage — FilePicker (upload adapter)', () => {
     File.prototype.text = originalText;
 
     const clearBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Clear'),
+      b.textContent?.includes('Limpiar'),
     );
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn!);
     await waitFor(() => {
       expect(container.textContent).not.toContain('notes.txt');
-      expect(container.textContent).toContain('Choose a file');
+      expect(container.textContent).toContain('Elegir un archivo');
     });
   });
 });
