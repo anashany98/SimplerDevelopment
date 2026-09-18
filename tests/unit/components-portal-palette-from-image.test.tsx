@@ -327,7 +327,7 @@ describe('PaletteFromImage', () => {
         expect(screen.getByText('photo.jpg')).toBeInTheDocument();
       });
 
-      const clearBtn = screen.getByRole('button', { name: /clear/i });
+      const clearBtn = screen.getByRole('button', { name: /limpiar/i });
       await act(async () => {
         fireEvent.click(clearBtn);
       });
@@ -370,7 +370,7 @@ describe('PaletteFromImage', () => {
 
       // Clear the state first
       // The error persists until clear or next upload; trigger clear
-      const clearBtn = screen.getByRole('button', { name: /clear/i });
+      const clearBtn = screen.getByRole('button', { name: /limpiar/i });
       await act(async () => {
         fireEvent.click(clearBtn);
       });
