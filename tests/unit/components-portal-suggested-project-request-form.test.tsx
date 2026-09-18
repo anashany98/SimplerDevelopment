@@ -82,7 +82,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
 
   it('renders message textarea when no survey fields', () => {
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    expect(screen.getByPlaceholderText(/Describe your goals/)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Describe tus objetivos/)).toBeInTheDocument();
   });
 
   it('renders breadcrumb links', () => {
@@ -93,7 +93,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
 
   it('renders Back link and Submit button', () => {
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    expect(screen.getByText('Back')).toBeInTheDocument();
+    expect(screen.getByText('Atrás')).toBeInTheDocument();
     expect(screen.getByText('Submit Request')).toBeInTheDocument();
   });
 
@@ -105,7 +105,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
   it('submits message and navigates on success', async () => {
     global.fetch = mockFetch(true);
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Describe your goals/), {
+    fireEvent.change(screen.getByPlaceholderText(/Describe tus objetivos/), {
       target: { value: 'My project message' },
     });
     await act(async () => {
@@ -123,7 +123,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
   it('shows server error message on failure response', async () => {
     global.fetch = mockFetch(false);
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Describe your goals/), {
+    fireEvent.change(screen.getByPlaceholderText(/Describe tus objetivos/), {
       target: { value: 'hello' },
     });
     await act(async () => {
@@ -138,7 +138,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
   it('shows generic error when fetch throws', async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Describe your goals/), {
+    fireEvent.change(screen.getByPlaceholderText(/Describe tus objetivos/), {
       target: { value: 'hello' },
     });
     await act(async () => {
@@ -152,7 +152,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
   it('sends message undefined and answers undefined for no-survey mode', async () => {
     global.fetch = mockFetch(true);
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Describe your goals/), {
+    fireEvent.change(screen.getByPlaceholderText(/Describe tus objetivos/), {
       target: { value: 'My note' },
     });
     await act(async () => {
@@ -170,7 +170,7 @@ describe('SuggestedProjectRequestForm — no survey (message mode)', () => {
     let resolveFetch!: (v: unknown) => void;
     global.fetch = vi.fn().mockReturnValue(new Promise(r => { resolveFetch = r; }));
     render(<SuggestedProjectRequestForm {...baseProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Describe your goals/), {
+    fireEvent.change(screen.getByPlaceholderText(/Describe tus objetivos/), {
       target: { value: 'hello' },
     });
     act(() => {
