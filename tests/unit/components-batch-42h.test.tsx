@@ -297,7 +297,7 @@ describe('SidebarCreditBadge', () => {
 
     const link = container.querySelector('a');
     expect(link?.getAttribute('href')).toBe('/portal/settings/ai');
-    expect(link?.textContent).toContain('AI Credits');
+    expect(link?.textContent).toContain('Créditos de IA');
     expect(link?.textContent).toContain('12K');
     // Material icon, not emoji
     const icon = container.querySelector('.material-icons');
@@ -331,7 +331,7 @@ describe('SidebarCreditBadge', () => {
     await flushMicrotasks();
 
     const link = container.querySelector('a');
-    expect(link?.getAttribute('title')).toBe('AI Credits: 1.5M');
+    expect(link?.getAttribute('title')).toBe('Créditos de IA: 1.5M');
   });
 });
 
@@ -374,7 +374,7 @@ describe('AISettingsPage — credit purchase controls', () => {
     expect(container.textContent).toContain('PAYG Off');
     expect(container.textContent).toContain('+50K $5');
     // The page's read-only balance card still renders alongside the controls
-    expect(container.textContent).toContain('Credits Remaining');
+    expect(container.textContent).toContain('Créditos restantes');
   });
 });
 
@@ -669,9 +669,7 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={11} />);
     await flushMicrotasks();
     expect(container.textContent).toContain('Deploy your website');
-    expect(container.textContent).toContain(
-      'acme.simplerdevelopment.com subdomain',
-    );
+    expect(container.textContent).toContain('CRM AGENTS subdomain');
     expect(container.textContent).toContain('Deploy Now');
   });
 
@@ -808,7 +806,7 @@ describe('ProvisioningStatus', () => {
     await flushMicrotasks();
 
     expect(container.textContent).toContain('Infrastructure');
-    expect(container.textContent).toContain('Active');
+    expect(container.textContent).toContain('Activo');
     // domain
     expect(container.textContent).toContain('live.simplerdevelopment.com');
     const links = Array.from(container.querySelectorAll('a'));
@@ -844,7 +842,7 @@ describe('ProvisioningStatus', () => {
 
     expect(container.textContent).toContain('Managed');
     expect(container.textContent).toContain(
-      'Hosted on simplerdevelopment.com',
+      'Hosted by CRM AGENTS',
     );
   });
 });
