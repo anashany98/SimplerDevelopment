@@ -107,19 +107,19 @@ function renderPanel(sequences: unknown[] = [SEQ_BASE]) {
  */
 function getSaveButton(): HTMLButtonElement {
   const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
-  const saveBtn = btns.find((b) => b.textContent?.trim().endsWith('Save') && !b.textContent?.trim().endsWith('Saving…'));
+  const saveBtn = btns.find((b) => b.textContent?.trim().endsWith('Guardar') && !b.textContent?.trim().endsWith('Guardando…'));
   if (!saveBtn) throw new Error('Save button not found');
   return saveBtn;
 }
 
 function querySaveButton(): HTMLButtonElement | undefined {
   const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
-  return btns.find((b) => b.textContent?.trim().endsWith('Save') && !b.textContent?.trim().endsWith('Saving…'));
+  return btns.find((b) => b.textContent?.trim().endsWith('Guardar') && !b.textContent?.trim().endsWith('Guardando…'));
 }
 
 function countSaveButtons(): number {
   const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
-  return btns.filter((b) => b.textContent?.trim().endsWith('Save') && !b.textContent?.trim().endsWith('Saving…')).length;
+  return btns.filter((b) => b.textContent?.trim().endsWith('Guardar') && !b.textContent?.trim().endsWith('Guardando…')).length;
 }
 
 beforeEach(() => {
@@ -141,26 +141,26 @@ describe('EmailSequencesPanel — initial render', () => {
   it('shows loading spinner then the sequence list', async () => {
     renderPanel([SEQ_BASE]);
     // loading state briefly visible — heading stays throughout
-    expect(screen.getByText('Email Follow-up Sequences')).toBeTruthy();
+    expect(screen.getByText('Secuencias de seguimiento por correo')).toBeTruthy();
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
   });
 
   it('renders empty state when no sequences exist', async () => {
     renderPanel([]);
     await waitFor(() =>
-      expect(screen.getByText('No follow-up sequences configured yet.')).toBeTruthy(),
+      expect(screen.getByText('Aún no hay secuencias de seguimiento configuradas.')).toBeTruthy(),
     );
   });
 
   it('renders the "Add a sequence" form on mount', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
-    expect(screen.getByRole('button', { name: /Add sequence/i })).toBeTruthy();
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
+    expect(screen.getByRole('button', { name: /Añadir secuencia/i })).toBeTruthy();
   });
 
   it('filters out heading/page_break/file fields for condition selector', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
     // field-1 (text) should appear in select options; field-2 (heading) should not
     const selects = screen.getAllByRole('combobox');
     expect(selects[0]).toBeTruthy();
@@ -201,28 +201,28 @@ describe('EmailSequencesPanel — sequence list display', () => {
 
   it('shows "Paused" badge for disabled sequences', async () => {
     renderPanel([SEQ_2]);
-    await waitFor(() => expect(screen.getByText('Paused')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('En pausa')).toBeTruthy());
   });
 
   it('does not show "Paused" badge for enabled sequences', async () => {
     renderPanel([SEQ_BASE]);
-    await waitFor(() => expect(screen.queryByText('Paused')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('En pausa')).toBeNull());
   });
 });
 
 describe('EmailSequencesPanel — create sequence', () => {
   it('calls POST with correct payload on valid form submission', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     // Fill subject
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'Welcome email' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
     await waitFor(() => {
@@ -239,14 +239,14 @@ describe('EmailSequencesPanel — create sequence', () => {
 
   it('shows error and skips POST when subject is empty', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     // Clear default body to get a fresh state — subject starts empty (default)
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
-    expect(screen.getByText('Subject is required')).toBeTruthy();
+    expect(screen.getByText('El asunto es obligatorio')).toBeTruthy();
     const postCalls = (global.fetch as any).mock.calls.filter(
       (c: any[]) => c[1]?.method === 'POST',
     );
@@ -255,11 +255,11 @@ describe('EmailSequencesPanel — create sequence', () => {
 
   it('shows error when body HTML is blank', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     // Set subject but blank out body
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'My subject' } });
 
@@ -267,18 +267,18 @@ describe('EmailSequencesPanel — create sequence', () => {
     fireEvent.change(textarea, { target: { value: '' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
-    expect(screen.getByText('Body HTML is required')).toBeTruthy();
+    expect(screen.getByText('El cuerpo HTML es obligatorio')).toBeTruthy();
   });
 
   it('shows error when delay is negative', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'Negative delay test' } });
 
@@ -286,10 +286,10 @@ describe('EmailSequencesPanel — create sequence', () => {
     fireEvent.change(delayInput, { target: { value: '-5' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
-    expect(screen.getByText('Delay must be a non-negative integer (hours)')).toBeTruthy();
+    expect(screen.getByText('La demora debe ser un entero no negativo (horas)')).toBeTruthy();
   });
 
   it('shows error when POST returns success:false', async () => {
@@ -301,15 +301,15 @@ describe('EmailSequencesPanel — create sequence', () => {
     }) as any;
 
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'Some subject' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Duplicate subject')).toBeTruthy());
@@ -330,15 +330,15 @@ describe('EmailSequencesPanel — create sequence', () => {
     }) as any;
 
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'New seq' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
     // After create+refresh, subject input should be reset to empty
@@ -349,10 +349,10 @@ describe('EmailSequencesPanel — create sequence', () => {
 
   it('disables conditionValue input when no conditionField is selected', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const condValueInputs = screen.getAllByRole('textbox').filter(
-      (i) => (i as HTMLInputElement).placeholder === 'e.g. Yes',
+      (i) => (i as HTMLInputElement).placeholder === 'ej. Sí',
     );
     expect(condValueInputs[0]).toBeTruthy();
     expect((condValueInputs[0] as HTMLInputElement).disabled).toBe(true);
@@ -364,28 +364,28 @@ describe('EmailSequencesPanel — create sequence', () => {
     ];
     global.fetch = vi.fn(() => makeOk({ success: true, data: [] })) as any;
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={fieldsWithText} />);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const select = screen.getAllByRole('combobox')[0] as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'q1' } });
 
     const condValueInputs = screen.getAllByRole('textbox').filter(
-      (i) => (i as HTMLInputElement).placeholder === 'e.g. Yes',
+      (i) => (i as HTMLInputElement).placeholder === 'ej. Sí',
     );
     expect((condValueInputs[0] as HTMLInputElement).disabled).toBe(false);
   });
 
   it('sends conditionField=null when no field selected (omits conditionValue)', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const subjectInput = screen.getAllByRole('textbox').find(
-      (i) => (i as HTMLInputElement).placeholder === 'Thanks for your feedback',
+      (i) => (i as HTMLInputElement).placeholder === 'Gracias por tu opinión',
     ) as HTMLInputElement;
     fireEvent.change(subjectInput, { target: { value: 'Unconditional' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add sequence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir secuencia/i }));
     });
 
     await waitFor(() => {
@@ -422,7 +422,7 @@ describe('EmailSequencesPanel — toggle enabled', () => {
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
     // The pause button (enabled=true → pause icon)
-    const pauseBtn = screen.getByTitle('Pause');
+    const pauseBtn = screen.getByTitle('Pausar');
     await act(async () => {
       fireEvent.click(pauseBtn);
     });
@@ -450,7 +450,7 @@ describe('EmailSequencesPanel — toggle enabled', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const pauseBtn = screen.getByTitle('Pause');
+    const pauseBtn = screen.getByTitle('Pausar');
     await act(async () => {
       fireEvent.click(pauseBtn);
     });
@@ -484,7 +484,7 @@ describe('EmailSequencesPanel — delete sequence', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const deleteBtn = screen.getByTitle('Delete');
+    const deleteBtn = screen.getByTitle('Eliminar');
     await act(async () => {
       fireEvent.click(deleteBtn);
     });
@@ -502,7 +502,7 @@ describe('EmailSequencesPanel — delete sequence', () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const deleteBtn = screen.getByTitle('Delete');
+    const deleteBtn = screen.getByTitle('Eliminar');
     fireEvent.click(deleteBtn);
 
     const delCalls = (global.fetch as any).mock.calls.filter(
@@ -524,7 +524,7 @@ describe('EmailSequencesPanel — delete sequence', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const deleteBtn = screen.getByTitle('Delete');
+    const deleteBtn = screen.getByTitle('Eliminar');
     await act(async () => {
       fireEvent.click(deleteBtn);
     });
@@ -540,23 +540,23 @@ describe('EmailSequencesPanel — inline edit', () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const editBtn = screen.getByTitle('Edit');
+    const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
 
     // Edit form should appear — Save and Cancel buttons become visible
     // Save button accessible name includes material-icon text "save" + label "Save"
     await waitFor(() => expect(document.querySelector('button[class*="bg-primary"]')).toBeTruthy());
-    expect(screen.getByRole('button', { name: /Cancel/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Cancelar/i })).toBeTruthy();
   });
 
   it('closes edit form on Cancel button click', async () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByRole('button', { name: /Cancel/i }));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByRole('button', { name: /Cancelar/i }));
 
-    fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Cancelar/i }));
     expect(querySaveButton()).toBeUndefined();
   });
 
@@ -564,7 +564,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    const editBtn = screen.getByTitle('Edit');
+    const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
     await waitFor(() => getSaveButton());
     fireEvent.click(editBtn);
@@ -575,7 +575,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
 
     // The edit subject input should be pre-filled
     await waitFor(() => {
@@ -601,7 +601,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => getSaveButton());
 
     // Update subject in edit form
@@ -635,7 +635,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => getSaveButton());
 
     await act(async () => {
@@ -651,7 +651,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     renderPanel([SEQ_BASE]);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => getSaveButton());
 
     // There are two spinbuttons now (create delay + edit delay); edit one is second
@@ -663,7 +663,7 @@ describe('EmailSequencesPanel — inline edit', () => {
       fireEvent.click(getSaveButton());
     });
 
-    expect(screen.getByText('Delay must be a non-negative integer (hours)')).toBeTruthy();
+    expect(screen.getByText('La demora debe ser un entero no negativo (horas)')).toBeTruthy();
   });
 
   it('closes edit form on successful save', async () => {
@@ -677,7 +677,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Thanks for your feedback')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     await waitFor(() => getSaveButton());
 
     await act(async () => {
@@ -700,7 +700,7 @@ describe('EmailSequencesPanel — inline edit', () => {
     render(<EmailSequencesPanel surveyId={SURVEY_ID} surveyFields={[]} />);
     await waitFor(() => expect(screen.getByText('Seq One')).toBeTruthy());
 
-    const editBtns = screen.getAllByTitle('Edit');
+    const editBtns = screen.getAllByTitle('Editar');
     // Open edit for first sequence
     fireEvent.click(editBtns[0]);
     await waitFor(() => getSaveButton());
@@ -715,7 +715,7 @@ describe('EmailSequencesPanel — inline edit', () => {
 describe('EmailSequencesPanel — enabled checkbox in create form', () => {
   it('toggles enabled checkbox', async () => {
     renderPanel([]);
-    await waitFor(() => screen.getByRole('button', { name: /Add sequence/i }));
+    await waitFor(() => screen.getByRole('button', { name: /Añadir secuencia/i }));
 
     const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
     // The first checkbox in the create form is the "Enabled" checkbox
