@@ -167,7 +167,7 @@ describe('DiscountsPage', () => {
 
     it('renders the page heading after load', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('Discount Codes');
+      expect(container.textContent).toContain('Códigos de descuento');
     });
 
     it('renders empty state when no discounts', async () => {
@@ -179,9 +179,9 @@ describe('DiscountsPage', () => {
       });
       const { container } = render(<DiscountsPage />);
       await waitFor(() => {
-        expect(container.textContent).toContain('No discount codes');
+        expect(container.textContent).toContain('Sin códigos de descuento');
       });
-      expect(container.textContent).toContain('Create your first discount code');
+      expect(container.textContent).toContain('Crea tu primer código de descuento');
     });
 
     it('silently handles fetch failure on load', async () => {
@@ -191,7 +191,7 @@ describe('DiscountsPage', () => {
       const { container } = render(<DiscountsPage />);
       // Should not crash — just stays empty after loading
       await waitFor(() => {
-        expect(container.textContent).toContain('No discount codes');
+        expect(container.textContent).toContain('Sin códigos de descuento');
       });
     });
 
@@ -231,11 +231,11 @@ describe('DiscountsPage', () => {
       await waitFor(() => {
         expect(container.textContent).toContain('FREESHIP');
       });
-      expect(container.textContent).toContain('Free Ship');
+      expect(container.textContent).toContain('Envío gratis');
       // free_shipping amount column shows '--'
       const tds = container.querySelectorAll('td');
       const amountCell = Array.from(tds).find(
-        (td) => td.textContent === '--' && td.previousElementSibling?.textContent?.includes('Free Ship'),
+        (td) => td.textContent === '--' && td.previousElementSibling?.textContent?.includes('Envío gratis'),
       );
       expect(amountCell ?? container.textContent).toBeTruthy();
     });
@@ -267,12 +267,12 @@ describe('DiscountsPage', () => {
 
     it('renders "Active" badge for active discount', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activo');
     });
 
     it('renders "Inactive" badge for inactive discount', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('Inactive');
+      expect(container.textContent).toContain('Inactivo');
     });
 
     it('renders start and end dates for discount1', async () => {
@@ -314,7 +314,7 @@ describe('DiscountsPage', () => {
         (b) => b.textContent?.includes('Add Discount'),
       )!;
       fireEvent.click(addBtn);
-      expect(container.textContent).toContain('New Discount');
+      expect(container.textContent).toContain('Nuevo descuento');
     });
 
     it('clicking outside the modal closes it', async () => {
@@ -323,11 +323,11 @@ describe('DiscountsPage', () => {
         (b) => b.textContent?.includes('Add Discount'),
       )!;
       fireEvent.click(addBtn);
-      expect(container.textContent).toContain('New Discount');
+      expect(container.textContent).toContain('Nuevo descuento');
       // Click the overlay (fixed inset-0)
       const overlay = container.querySelector('[class*="fixed inset-0"]') as HTMLElement;
       fireEvent.click(overlay);
-      expect(container.textContent).not.toContain('New Discount');
+      expect(container.textContent).not.toContain('Nuevo descuento');
     });
 
     it('clicking close icon in modal header closes modal', async () => {
@@ -340,7 +340,7 @@ describe('DiscountsPage', () => {
         (b) => b.querySelector('.material-icons')?.textContent === 'close',
       )!;
       fireEvent.click(closeBtn);
-      expect(container.textContent).not.toContain('New Discount');
+      expect(container.textContent).not.toContain('Nuevo descuento');
     });
 
     it('Cancel button in modal footer closes modal', async () => {
@@ -350,10 +350,10 @@ describe('DiscountsPage', () => {
       )!;
       fireEvent.click(addBtn);
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Cancel',
+        (b) => b.textContent === 'Cancelar',
       )!;
       fireEvent.click(cancelBtn);
-      expect(container.textContent).not.toContain('New Discount');
+      expect(container.textContent).not.toContain('Nuevo descuento');
     });
 
     it('submitting the form POSTs to the discounts endpoint', async () => {
@@ -391,9 +391,9 @@ describe('DiscountsPage', () => {
       fireEvent.change(codeInput, { target: { value: 'NEWCODE' } });
       fireEvent.submit(form);
       await waitFor(() => {
-        expect(container.textContent).toContain('Discount created.');
+        expect(container.textContent).toContain('Descuento creado.');
       });
-      expect(container.textContent).not.toContain('New Discount');
+      expect(container.textContent).not.toContain('Nuevo descuento');
     });
 
     it('shows error message inside modal when create fails', async () => {
@@ -416,7 +416,7 @@ describe('DiscountsPage', () => {
         expect(container.textContent).toContain('Duplicate code');
       });
       // Modal stays open
-      expect(container.textContent).toContain('New Discount');
+      expect(container.textContent).toContain('Nuevo descuento');
     });
 
     it('shows fallback error when create API returns no message', async () => {
@@ -433,7 +433,7 @@ describe('DiscountsPage', () => {
       fireEvent.click(addBtn);
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to save discount.');
+        expect(container.textContent).toContain('No se pudo guardar el descuento.');
       });
     });
 
@@ -456,7 +456,7 @@ describe('DiscountsPage', () => {
       fireEvent.click(addBtn);
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Something went wrong.');
+        expect(container.textContent).toContain('Algo salió mal.');
       });
     });
 
@@ -542,7 +542,7 @@ describe('DiscountsPage', () => {
         (b) => b.querySelector('.material-icons')?.textContent === 'edit',
       );
       fireEvent.click(editBtns[0]!);
-      expect(container.textContent).toContain('Edit Discount');
+      expect(container.textContent).toContain('Editar descuento');
       const codeInput = container.querySelector(
         'input[placeholder="SAVE20"]',
       ) as HTMLInputElement;
@@ -568,7 +568,7 @@ describe('DiscountsPage', () => {
       fireEvent.click(editBtns[1]!);
       // Toggle button for active: when inactive it says "Inactive"
       const toggleArea = Array.from(container.querySelectorAll('span')).find(
-        (s) => s.textContent === 'Inactive',
+        (s) => s.textContent === 'Inactivo',
       );
       expect(toggleArea).toBeTruthy();
     });
@@ -600,7 +600,7 @@ describe('DiscountsPage', () => {
       fireEvent.click(editBtns[0]!);
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Discount updated.');
+        expect(container.textContent).toContain('Descuento actualizado.');
       });
     });
 
@@ -613,7 +613,7 @@ describe('DiscountsPage', () => {
       // discount1 has maxUses=100
       const inputs = container.querySelectorAll('input');
       const maxUsesInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Unlimited',
+        (i) => (i as HTMLInputElement).placeholder === 'Ilimitado',
       ) as HTMLInputElement;
       expect(maxUsesInput.value).toBe('100');
     });
@@ -646,15 +646,15 @@ describe('DiscountsPage', () => {
       const toggleBtn = Array.from(container.querySelectorAll('button')).find(
         (b) => b.className.includes('rounded-full'),
       )!;
-      // Before click: shows 'Active'
+      // Before click: shows 'Activo'
       const beforeSpan = Array.from(container.querySelectorAll('span')).find(
-        (s) => s.textContent === 'Active',
+        (s) => s.textContent === 'Activo',
       );
       expect(beforeSpan).toBeTruthy();
       fireEvent.click(toggleBtn);
-      // After click: shows 'Inactive'
+      // After click: shows 'Inactivo'
       const afterSpan = Array.from(container.querySelectorAll('span')).find(
-        (s) => s.textContent === 'Inactive',
+        (s) => s.textContent === 'Inactivo',
       );
       expect(afterSpan).toBeTruthy();
     });
@@ -671,7 +671,7 @@ describe('DiscountsPage', () => {
       fireEvent.click(toggleBtn);
       fireEvent.click(toggleBtn);
       const activeSpan = Array.from(container.querySelectorAll('span')).find(
-        (s) => s.textContent === 'Active',
+        (s) => s.textContent === 'Activo',
       );
       expect(activeSpan).toBeTruthy();
     });
@@ -705,7 +705,7 @@ describe('DiscountsPage', () => {
       );
       fireEvent.click(deleteBtns[0]!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Discount deleted.');
+        expect(container.textContent).toContain('Descuento eliminado.');
       });
     });
 
@@ -741,7 +741,7 @@ describe('DiscountsPage', () => {
       );
       fireEvent.click(deleteBtns[0]!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to delete.');
+        expect(container.textContent).toContain('No se pudo eliminar.');
       });
     });
   });
@@ -756,7 +756,7 @@ describe('DiscountsPage', () => {
       )!;
       fireEvent.click(addBtn);
       const select = container.querySelector('select') as HTMLSelectElement;
-      fireEvent.change(select, { target: { value: 'fixed' } });
+      fireEvent.change(select, { target: { value: 'fixed_amount' } });
       expect(container.textContent).toContain('Amount ($)');
     });
 
@@ -798,7 +798,7 @@ describe('DiscountsPage', () => {
       fireEvent.change(codeInput, { target: { value: 'SUMMER' } });
       fireEvent.submit(form);
       await waitFor(() => {
-        expect(container.textContent).toContain('Discount created.');
+        expect(container.textContent).toContain('Descuento creado.');
       });
     });
 
