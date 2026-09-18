@@ -26,8 +26,8 @@ interface StatusVerdict {
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 function classifyStatus(row: JobRow): StatusVerdict {
-  if (!row.tracked) return { kind: 'untracked', label: 'External' };
-  if (!row.lastRunAt) return { kind: 'never', label: 'Never run' };
+  if (!row.tracked) return { kind: 'untracked', label: 'Externo' };
+  if (!row.lastRunAt) return { kind: 'never', label: 'Nunca ejecutado' };
 
   const lastRun = new Date(row.lastRunAt).getTime();
   const age = Date.now() - lastRun;
@@ -36,10 +36,10 @@ function classifyStatus(row: JobRow): StatusVerdict {
     row.lastErrorAt !== null &&
     Date.now() - new Date(row.lastErrorAt).getTime() < ONE_DAY_MS;
 
-  if (hasRecentError) return { kind: 'red', label: 'Failing' };
-  if (age > ONE_DAY_MS) return { kind: 'yellow', label: 'Stale' };
-  if (row.lastError) return { kind: 'yellow', label: 'Recovered' };
-  return { kind: 'green', label: 'Healthy' };
+  if (hasRecentError) return { kind: 'red', label: 'Con errores' };
+  if (age > ONE_DAY_MS) return { kind: 'yellow', label: 'Obsoleto' };
+  if (row.lastError) return { kind: 'yellow', label: 'Recuperado' };
+  return { kind: 'green', label: 'Correcto' };
 }
 
 function statusBadgeClass(kind: StatusKind): string {
@@ -79,18 +79,18 @@ function fmtAge(iso: string | null): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (ms < 0) return new Date(iso).toLocaleString();
   const s = Math.round(ms / 1000);
-  if (s < 60) return `${s}s ago`;
+  if (s < 60) return `hace ${s}s`;
   const m = Math.round(s / 60);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `hace ${m}m`;
   const h = Math.round(m / 60);
-  if (h < 48) return `${h}h ago`;
+  if (h < 48) return `hace ${h}h`;
   const d = Math.round(h / 24);
-  return `${d}d ago`;
+  return `hace ${d}d`;
 }
 
 const AREA_LABELS: Record<JobRow['area'], string> = {
-  'api-cron': 'API Cron (Vercel)',
-  'routine': 'Routines (GitHub Actions)',
+  'api-cron': 'Cron de API (Vercel)',
+  'routine': 'Rutinas (GitHub Actions)',
 };
 
 const AREA_ICONS: Record<JobRow['area'], string> = {
@@ -110,9 +110,9 @@ export default function SystemHealthPage() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) setJobs(d.data ?? []);
-        else setErr(d.message ?? 'Failed to load');
+        else setErr(d.message ?? 'No se pudo cargar');
       })
-      .catch((e) => setErr(e instanceof Error ? e.message : 'Failed to load'))
+      .catch((e) => setErr(e instanceof Error ? e.message : 'No se pudo cargar'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -138,20 +138,20 @@ export default function SystemHealthPage() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">System Health</h1>
+          <h1 className="text-2xl font-bold text-foreground">Estado del sistema</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            Status of every scheduled/recurring job in the platform. Read-only.
+            Estado de cada tarea programada o recurrente de la plataforma. Solo lectura.
           </p>
         </div>
       </div>
 
       {/* Summary stats */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <StatCard icon="check_circle" label="Healthy" value={stats.greens} color="text-green-600" />
-        <StatCard icon="warning" label="Stale / Recovered" value={stats.yellows} color={stats.yellows > 0 ? 'text-yellow-600' : undefined} />
-        <StatCard icon="error" label="Failing" value={stats.reds} color={stats.reds > 0 ? 'text-red-600' : undefined} urgent={stats.reds > 0} />
-        <StatCard icon="help_outline" label="Never Run" value={stats.nevers} />
-        <StatCard icon="schedule" label="Total Tracked" value={stats.total} />
+        <StatCard icon="check_circle" label="Correctos" value={stats.greens} color="text-green-600" />
+        <StatCard icon="warning" label="Obsoletos / Recuperados" value={stats.yellows} color={stats.yellows > 0 ? 'text-yellow-600' : undefined} />
+        <StatCard icon="error" label="Con errores" value={stats.reds} color={stats.reds > 0 ? 'text-red-600' : undefined} urgent={stats.reds > 0} />
+        <StatCard icon="help_outline" label="Nunca ejecutados" value={stats.nevers} />
+        <StatCard icon="schedule" label="Total monitorizados" value={stats.total} />
       </div>
 
       {err && (
@@ -185,12 +185,12 @@ export default function SystemHealthPage() {
                   <table className="w-full text-sm">
                     <thead className="bg-muted/50 border-b border-border">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Job</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Schedule</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Run</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Success</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tarea</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Programación</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Última ejecución</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Último éxito</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Error</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Último error</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -211,7 +211,7 @@ export default function SystemHealthPage() {
                               <div className="text-xs text-foreground">{fmtAge(j.lastRunAt)}</div>
                               {j.runCount > 0 && (
                                 <div className="text-xs text-muted-foreground mt-0.5">
-                                  {j.runCount} run{j.runCount === 1 ? '' : 's'}
+                                  {j.runCount} ejecución{j.runCount === 1 ? '' : 'es'}
                                 </div>
                               )}
                             </td>
@@ -236,7 +236,7 @@ export default function SystemHealthPage() {
                                   </pre>
                                   {j.lastErrorAt && (
                                     <div className="text-[10px] text-muted-foreground mt-1">
-                                      at {new Date(j.lastErrorAt).toLocaleString()}
+                                      el {new Date(j.lastErrorAt).toLocaleString()}
                                     </div>
                                   )}
                                 </details>
@@ -258,13 +258,13 @@ export default function SystemHealthPage() {
 
       <div className="text-xs text-muted-foreground border-t border-border pt-4">
         <p>
-          <strong>Status logic:</strong> green = last run &lt; 24h and no recent error.
-          Yellow = stale (last run &gt; 24h) or recovered (last run was clean but a
-          stale error message is still on file). Red = error logged in the last 24h.
+          <strong>Lógica de estado:</strong> verde = última ejecución &lt; 24 h y sin error reciente.
+          Amarillo = obsoleto (última ejecución &gt; 24 h) o recuperado (la última ejecución fue limpia pero
+          sigue habiendo un mensaje de error antiguo). Rojo = error registrado en las últimas 24 h.
         </p>
         <p className="mt-1">
-          GitHub Actions routines and BRAIN-12 one-shots are not instrumented; check the
-          workflow run history for their status.
+          Las rutinas de GitHub Actions y los one-shots de BRAIN-12 no están instrumentados; consulta el
+          historial de ejecuciones del flujo de trabajo para ver su estado.
         </p>
       </div>
     </div>

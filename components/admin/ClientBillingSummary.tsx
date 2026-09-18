@@ -37,21 +37,21 @@ export default function ClientBillingSummary({ clientId }: Props) {
   useEffect(() => {
     fetch(`/api/admin/portal/clients/${clientId}/billing`)
       .then((r) => {
-        if (!r.ok) return r.json().then((d) => Promise.reject(d.message ?? 'Failed to load billing'));
+        if (!r.ok) return r.json().then((d) => Promise.reject(d.message ?? 'No se pudo cargar la facturación'));
         return r.json();
       })
       .then((d) => {
-        if (!d.success) throw new Error(d.message ?? 'Failed to load billing');
+        if (!d.success) throw new Error(d.message ?? 'No se pudo cargar la facturación');
         setData(d.data);
       })
-      .catch((e) => setError(typeof e === 'string' ? e : (e?.message ?? 'Unknown error')))
+      .catch((e) => setError(typeof e === 'string' ? e : (e?.message ?? 'Error desconocido')))
       .finally(() => setLoading(false));
   }, [clientId]);
 
   if (loading) {
     return (
       <div className="bg-card border border-border rounded-lg px-5 py-4 text-sm text-muted-foreground">
-        Loading billing summary…
+        Cargando resumen de facturación…
       </div>
     );
   }
@@ -60,28 +60,28 @@ export default function ClientBillingSummary({ clientId }: Props) {
     return (
       <div className="bg-card border border-border rounded-lg px-5 py-4 text-sm text-destructive">
         <span className="material-icons text-base align-middle mr-1">error_outline</span>
-        {error ?? 'Could not load billing summary.'}
+        {error ?? 'No se pudo cargar el resumen de facturación.'}
       </div>
     );
   }
 
   const hasBundle = !!data.bundle;
   const moduleLabel = hasBundle
-    ? 'Everything bundle'
-    : `${data.modules.length} module${data.modules.length !== 1 ? 's' : ''}`;
+    ? 'Paquete completo'
+    : `${data.modules.length} módulo${data.modules.length !== 1 ? 's' : ''}`;
 
   return (
     <div className="bg-card border border-border rounded-lg">
       <header className="flex items-center justify-between px-5 py-3 border-b border-border">
         <h2 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
           <span className="material-icons text-base text-primary">receipt_long</span>
-          Billing summary
+          Resumen de facturación
         </h2>
         <Link
           href={`/admin/clients/${clientId}/plan`}
           className="text-xs text-primary hover:underline flex items-center gap-0.5"
         >
-          Manage billing
+          Gestionar facturación
           <span className="material-icons text-sm">arrow_forward</span>
         </Link>
       </header>
@@ -89,11 +89,11 @@ export default function ClientBillingSummary({ clientId }: Props) {
       <dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 px-5 py-4 text-sm">
         {/* Net MRR */}
         <div>
-          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Net MRR</dt>
+          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">MRR neto</dt>
           <dd className="text-lg font-bold text-foreground">{formatCents(data.netMrrCents)}</dd>
           {data.grossMrrCents !== data.netMrrCents && (
             <p className="text-xs text-muted-foreground">
-              gross {formatCents(data.grossMrrCents)}
+              bruto {formatCents(data.grossMrrCents)}
             </p>
           )}
         </div>
@@ -107,31 +107,31 @@ export default function ClientBillingSummary({ clientId }: Props) {
             </span>
             {moduleLabel}
           </dd>
-          <p className="text-xs text-muted-foreground capitalize">{data.billingMode} billing</p>
+          <p className="text-xs text-muted-foreground capitalize">facturación {data.billingMode}</p>
         </div>
 
         {/* Seats */}
         <div>
-          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Seats</dt>
+          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Licencias</dt>
           <dd className="font-medium text-foreground">{data.seats.effective}</dd>
           {data.seats.seatTotalCents > 0 && (
             <p className="text-xs text-muted-foreground">
-              +{formatCents(data.seats.perSeatCents)}/seat → {formatCents(data.seats.seatTotalCents)}
+              +{formatCents(data.seats.perSeatCents)}/licencia → {formatCents(data.seats.seatTotalCents)}
             </p>
           )}
         </div>
 
         {/* Volume discount */}
         <div>
-          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Volume discount</dt>
+          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Descuento por volumen</dt>
           <dd className="font-medium text-foreground">
-            {data.discountPercent > 0 ? `${data.discountPercent}% off` : '—'}
+            {data.discountPercent > 0 ? `${data.discountPercent}% de descuento` : '—'}
           </dd>
         </div>
 
         {/* Comp */}
         <div>
-          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Comp</dt>
+          <dt className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">Cortesía</dt>
           <dd className="font-medium text-foreground">
             {(data.compDiscountPercent ?? 0) > 0 ? `${data.compDiscountPercent}%` : '—'}
           </dd>
@@ -144,7 +144,7 @@ export default function ClientBillingSummary({ clientId }: Props) {
             <span className={`material-icons text-base ${data.byokEligible ? 'text-green-600' : 'text-muted-foreground'}`}>
               {data.byokEligible ? 'check_circle' : 'cancel'}
             </span>
-            {data.byokEligible ? 'Eligible' : 'Not eligible'}
+            {data.byokEligible ? 'Elegible' : 'No elegible'}
           </dd>
         </div>
       </dl>
