@@ -145,7 +145,7 @@ test.describe('A/B experiment deck lifecycle @ab @critical', () => {
 
     // Variant editor renders. The "Seed from <kind>" button uses
     // kindLabel.toLowerCase() — so for a deck it reads "Seed from pitch deck".
-    await expect(page.getByRole('button', { name: /Seed from pitch deck/i }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /Rellenar desde pitch deck/i }).first()).toBeVisible();
   });
 
   test('portal: PATCH status → running and UI reflects', async ({ clientApi, page }) => {
@@ -157,7 +157,7 @@ test.describe('A/B experiment deck lifecycle @ab @critical', () => {
     await loginAsClient(page);
     await page.goto(`/portal/experiments/${experimentId}`);
     await expect(page.getByText('running').first()).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Stop' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Detener' })).toBeVisible();
   });
 
   test('public: SSR records a view for the deck visitor', async () => {

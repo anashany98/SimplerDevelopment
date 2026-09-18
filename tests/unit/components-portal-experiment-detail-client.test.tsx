@@ -178,7 +178,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    const link = screen.getByRole('link', { name: 'Experiments' });
+    const link = screen.getByRole('link', { name: 'Experimentos' });
     expect(link).toHaveAttribute('href', '/portal/experiments');
   });
 
@@ -240,7 +240,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('Hypothesis')).toBeInTheDocument();
+    expect(screen.getByText('Hipótesis')).toBeInTheDocument();
   });
 
   it('shows the hypothesis text in the textarea', () => {
@@ -252,7 +252,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    const textarea = screen.getByPlaceholderText(/What do you expect/);
+    const textarea = screen.getByPlaceholderText(/Qué esperas/);
     expect((textarea as HTMLTextAreaElement).defaultValue).toBe('Lifts signups by 10%');
   });
 
@@ -265,7 +265,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('Goal')).toBeInTheDocument();
+    expect(screen.getByText('Objetivo')).toBeInTheDocument();
   });
 
   it('renders the goalMetric select with correct initial value', () => {
@@ -290,7 +290,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('Traffic split')).toBeInTheDocument();
+    expect(screen.getByText('Reparto de tráfico')).toBeInTheDocument();
   });
 
   it('renders each variant split key as a label', () => {
@@ -318,7 +318,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('Variants')).toBeInTheDocument();
+    expect(screen.getByText('Variantes')).toBeInTheDocument();
   });
 
   it('renders a card for each variant', () => {
@@ -356,7 +356,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: /Add variant/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir variante/ })).toBeInTheDocument();
   });
 
   it('shows the Results section heading', () => {
@@ -368,7 +368,7 @@ describe('ExperimentDetailClient — basic rendering', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('Results')).toBeInTheDocument();
+    expect(screen.getByText('Resultados')).toBeInTheDocument();
   });
 
   it('renders kindLabel in target info line', () => {
@@ -397,7 +397,7 @@ describe('ExperimentDetailClient — status transitions', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: 'Start' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Iniciar' })).toBeInTheDocument();
   });
 
   it('shows "Archive" button for draft experiments', () => {
@@ -409,7 +409,7 @@ describe('ExperimentDetailClient — status transitions', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: 'Archive' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Archivar' })).toBeInTheDocument();
   });
 
   it('shows "Stop" and "Archive" buttons for running experiments', () => {
@@ -421,8 +421,8 @@ describe('ExperimentDetailClient — status transitions', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: 'Stop' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Archive' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Detener' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Archivar' })).toBeInTheDocument();
   });
 
   it('shows "Reopen" button for archived experiments', () => {
@@ -434,7 +434,7 @@ describe('ExperimentDetailClient — status transitions', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: 'Reopen' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Reabrir' })).toBeInTheDocument();
   });
 
   it('calls PATCH with status=running when Start is clicked', async () => {
@@ -465,7 +465,7 @@ describe('ExperimentDetailClient — status transitions', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Iniciar' }));
     });
 
     await waitFor(() => {
@@ -501,7 +501,7 @@ describe('ExperimentDetailClient — status transitions', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Iniciar' }));
     });
 
     await waitFor(() => {
@@ -523,7 +523,7 @@ describe('ExperimentDetailClient — name editing', () => {
         siteName={null}
       />,
     );
-    const nameSpan = screen.getByTitle('Click to edit name');
+    const nameSpan = screen.getByTitle('Haz clic para editar el nombre');
     fireEvent.click(nameSpan);
     // Located by its 255-char limit (a real, asserted constraint) rather than a colour
     // class: the page moved onto theme tokens for dark-mode legibility, and a selector
@@ -542,13 +542,13 @@ describe('ExperimentDetailClient — name editing', () => {
         siteName={null}
       />,
     );
-    fireEvent.click(screen.getByTitle('Click to edit name'));
+    fireEvent.click(screen.getByTitle('Haz clic para editar el nombre'));
     const input = document.querySelector('input[maxlength="255"]') as HTMLInputElement;
     expect(input).not.toBeNull();
     fireEvent.change(input, { target: { value: 'Changed Name' } });
     fireEvent.keyDown(input, { key: 'Escape' });
     expect(document.querySelector('input[maxlength="255"]')).toBeNull();
-    expect(screen.getByTitle('Click to edit name').textContent).toBe('Original Name');
+    expect(screen.getByTitle('Haz clic para editar el nombre').textContent).toBe('Original Name');
   });
 
   it('PATCHes the new name on Enter', async () => {
@@ -575,7 +575,7 @@ describe('ExperimentDetailClient — name editing', () => {
       />,
     );
 
-    fireEvent.click(screen.getByTitle('Click to edit name'));
+    fireEvent.click(screen.getByTitle('Haz clic para editar el nombre'));
     const input = document.querySelector('input[maxlength="255"]') as HTMLInputElement;
     expect(input).not.toBeNull();
     fireEvent.change(input, { target: { value: 'New Name' } });
@@ -610,7 +610,7 @@ describe('ExperimentDetailClient — name editing', () => {
       />,
     );
 
-    fireEvent.click(screen.getByTitle('Click to edit name'));
+    fireEvent.click(screen.getByTitle('Haz clic para editar el nombre'));
     const input = document.querySelector('input[maxlength="255"]') as HTMLInputElement;
     expect(input).not.toBeNull();
     fireEvent.change(input, { target: { value: '' } });
@@ -620,7 +620,7 @@ describe('ExperimentDetailClient — name editing', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Name cannot be empty')).toBeInTheDocument();
+      expect(screen.getByText('El nombre no puede estar vacío')).toBeInTheDocument();
     });
   });
 
@@ -641,7 +641,7 @@ describe('ExperimentDetailClient — name editing', () => {
       />,
     );
 
-    fireEvent.click(screen.getByTitle('Click to edit name'));
+    fireEvent.click(screen.getByTitle('Haz clic para editar el nombre'));
     const input = document.querySelector('input[maxlength="255"]') as HTMLInputElement;
     expect(input).not.toBeNull();
     fireEvent.change(input, { target: { value: 'x'.repeat(256) } });
@@ -651,7 +651,7 @@ describe('ExperimentDetailClient — name editing', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Name must be 255 characters or fewer')).toBeInTheDocument();
+      expect(screen.getByText('El nombre debe tener 255 caracteres o menos')).toBeInTheDocument();
     });
   });
 });
@@ -672,7 +672,7 @@ describe('ExperimentDetailClient — traffic split', () => {
     // Change 'a' to 60 — total becomes 110
     const numberInputs = document.querySelectorAll('input[type="number"]');
     fireEvent.change(numberInputs[0], { target: { value: '60' } });
-    expect(screen.getByText(/Total must equal 100%/)).toBeInTheDocument();
+    expect(screen.getByText(/Total debe ser 100%/)).toBeInTheDocument();
   });
 
   it('does not show warning when draft split totals 100', () => {
@@ -684,7 +684,7 @@ describe('ExperimentDetailClient — traffic split', () => {
         siteName={null}
       />,
     );
-    expect(screen.queryByText(/Total must equal 100%/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Total debe ser 100%/)).not.toBeInTheDocument();
   });
 
   it('shows "Save split" button', () => {
@@ -696,7 +696,7 @@ describe('ExperimentDetailClient — traffic split', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByRole('button', { name: 'Save split' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Guardar reparto' })).toBeInTheDocument();
   });
 
   it('calls PATCH with variantSplit when Save split is clicked', async () => {
@@ -724,7 +724,7 @@ describe('ExperimentDetailClient — traffic split', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Save split' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar reparto' }));
     });
 
     await waitFor(() => {
@@ -759,11 +759,11 @@ describe('ExperimentDetailClient — traffic split', () => {
     fireEvent.change(numberInputs[1], { target: { value: '0' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Save split' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar reparto' }));
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Split must include at least one positive weight')).toBeInTheDocument();
+      expect(screen.getByText('El reparto debe incluir al menos un peso positivo')).toBeInTheDocument();
     });
   });
 
@@ -777,7 +777,7 @@ describe('ExperimentDetailClient — traffic split', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Rebalance to even' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Equilibrar a partes iguales' }));
 
     // After rebalance with 2 variants: a=50, b=50
     const numberInputs = document.querySelectorAll('input[type="number"]');
@@ -794,7 +794,7 @@ describe('ExperimentDetailClient — traffic split', () => {
         siteName={null}
       />,
     );
-    expect(screen.getByText('saved total: 100%')).toBeInTheDocument();
+    expect(screen.getByText('total guardado: 100%')).toBeInTheDocument();
   });
 });
 
@@ -811,7 +811,7 @@ describe('ExperimentDetailClient — variant management', () => {
         siteName={null}
       />,
     );
-    const seedBtns = screen.getAllByRole('button', { name: /Seed from page/ });
+    const seedBtns = screen.getAllByRole('button', { name: /Rellenar desde page/ });
     expect(seedBtns).toHaveLength(2);
   });
 
@@ -832,7 +832,7 @@ describe('ExperimentDetailClient — variant management', () => {
     );
     const toggleCountBefore = togglesBefore.length;
 
-    const seedBtns = screen.getAllByRole('button', { name: /Seed from page/ });
+    const seedBtns = screen.getAllByRole('button', { name: /Rellenar desde page/ });
     await act(async () => {
       fireEvent.click(seedBtns[0]);
     });
@@ -870,7 +870,7 @@ describe('ExperimentDetailClient — variant management', () => {
         siteName={null}
       />,
     );
-    const saveBtns = screen.getAllByRole('button', { name: 'Save' });
+    const saveBtns = screen.getAllByRole('button', { name: 'Guardar' });
     expect(saveBtns).toHaveLength(2);
   });
 
@@ -898,7 +898,7 @@ describe('ExperimentDetailClient — variant management', () => {
       />,
     );
 
-    const saveBtns = screen.getAllByRole('button', { name: 'Save' });
+    const saveBtns = screen.getAllByRole('button', { name: 'Guardar' });
     await act(async () => {
       fireEvent.click(saveBtns[0]);
     });
@@ -947,13 +947,13 @@ describe('ExperimentDetailClient — variant management', () => {
     expect(textareas.length).toBeGreaterThanOrEqual(1);
     fireEvent.change(textareas[0], { target: { value: '{not valid json}' } });
 
-    const saveBtns = screen.getAllByRole('button', { name: 'Save' });
+    const saveBtns = screen.getAllByRole('button', { name: 'Guardar' });
     await act(async () => {
       fireEvent.click(saveBtns[0]);
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Invalid JSON in variant/)).toBeInTheDocument();
+      expect(screen.getByText(/JSON no válido en la variante/)).toBeInTheDocument();
     });
   });
 
@@ -994,7 +994,7 @@ describe('ExperimentDetailClient — variant management', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add variant/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir variante/ }));
     });
 
     await waitFor(() => {
@@ -1028,11 +1028,11 @@ describe('ExperimentDetailClient — variant management', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add variant/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir variante/ }));
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Maximum 26 variants reached.')).toBeInTheDocument();
+      expect(screen.getByText('Máximo de 26 variantes alcanzado.')).toBeInTheDocument();
     });
   });
 
@@ -1048,9 +1048,9 @@ describe('ExperimentDetailClient — variant management', () => {
         siteName={null}
       />,
     );
-    const btn = screen.getByRole('button', { name: /Add variant/ }) as HTMLButtonElement;
+    const btn = screen.getByRole('button', { name: /Añadir variante/ }) as HTMLButtonElement;
     expect(btn.disabled).toBe(true);
-    expect(screen.getByText('Maximum 26 variants reached.')).toBeInTheDocument();
+    expect(screen.getByText('Máximo de 26 variantes alcanzado.')).toBeInTheDocument();
   });
 
   it('disables control variant remove button', () => {
@@ -1063,7 +1063,7 @@ describe('ExperimentDetailClient — variant management', () => {
       />,
     );
     // The control variant 'a' remove button should be disabled
-    const removeBtns = screen.getAllByTitle(/The control variant cannot be removed/);
+    const removeBtns = screen.getAllByTitle(/La variante de control no se puede eliminar/);
     expect(removeBtns[0]).toBeDisabled();
   });
 
@@ -1104,7 +1104,7 @@ describe('ExperimentDetailClient — variant management', () => {
       />,
     );
 
-    const removeBtns = screen.getAllByLabelText(/Remove variant/);
+    const removeBtns = screen.getAllByLabelText(/Eliminar variante/);
     // Find the 'b' remove button (not the disabled control)
     const enabledRemoveBtns = removeBtns.filter((btn) => !btn.hasAttribute('disabled') || btn.getAttribute('disabled') === null);
 
@@ -1142,7 +1142,7 @@ describe('ExperimentDetailClient — variant management', () => {
       />,
     );
 
-    const removeBtns = screen.getAllByLabelText(/Remove variant/);
+    const removeBtns = screen.getAllByLabelText(/Eliminar variante/);
     const enabledRemoveBtns = removeBtns.filter((btn) => !btn.hasAttribute('disabled') || btn.getAttribute('disabled') === null);
 
     await act(async () => {
@@ -1150,7 +1150,7 @@ describe('ExperimentDetailClient — variant management', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('The control variant cannot be removed.')).toBeInTheDocument();
+      expect(screen.getByText('La variante de control no se puede eliminar.')).toBeInTheDocument();
     });
   });
 });
@@ -1222,7 +1222,7 @@ describe('ExperimentDetailClient — variant label editing', () => {
     fireEvent.keyDown(labelInput, { key: 'Enter' });
 
     await waitFor(() => {
-      expect(screen.getByText('Variant label cannot be empty.')).toBeInTheDocument();
+      expect(screen.getByText('La etiqueta de la variante no puede estar vacía.')).toBeInTheDocument();
     });
   });
 
@@ -1384,7 +1384,7 @@ describe('ExperimentDetailClient — results display', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole('columnheader', { name: 'Views' })).toBeInTheDocument();
+      expect(screen.getByRole('columnheader', { name: 'Visitas' })).toBeInTheDocument();
     });
   });
 
@@ -1421,8 +1421,8 @@ describe('ExperimentDetailClient — results display', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Significance vs control')).toBeInTheDocument();
-      expect(screen.getByRole('columnheader', { name: 'Lift' })).toBeInTheDocument();
+      expect(screen.getByText('Significancia frente al control')).toBeInTheDocument();
+      expect(screen.getByRole('columnheader', { name: 'Incremento' })).toBeInTheDocument();
     });
   });
 
@@ -1606,8 +1606,8 @@ describe('ExperimentDetailClient — delete experiment', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
-    expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
-    expect(screen.getByText(/Are you sure you want to delete/)).toBeInTheDocument();
+    expect(screen.getByText('Eliminar experimento')).toBeInTheDocument();
+    expect(screen.getByText(/Seguro que quieres eliminar/)).toBeInTheDocument();
   });
 
   it('cancels the modal when Cancel is clicked', () => {
@@ -1622,7 +1622,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
-    expect(screen.queryByText('Delete Experiment')).not.toBeInTheDocument();
+    expect(screen.queryByText('Eliminar experimento')).not.toBeInTheDocument();
   });
 
   it('calls DELETE /experiments/:id and redirects on success', async () => {
@@ -1653,7 +1653,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
     fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     // Wait for modal to appear then click the confirm button inside the modal
     await waitFor(() => {
-      expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
+      expect(screen.getByText('Eliminar experimento')).toBeInTheDocument();
     });
     // The confirm button is inside the modal (fixed overlay), find it by its destructive styling
     const confirmBtn = document.querySelector('button.bg-destructive') as HTMLButtonElement | null;
@@ -1693,7 +1693,7 @@ describe('ExperimentDetailClient — delete experiment', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     await waitFor(() => {
-      expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
+      expect(screen.getByText('Eliminar experimento')).toBeInTheDocument();
     });
     const confirmBtn = document.querySelector('button.bg-destructive') as HTMLButtonElement | null;
     expect(confirmBtn).not.toBeNull();
@@ -1720,12 +1720,12 @@ describe('ExperimentDetailClient — delete experiment', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Eliminar/ }));
     await waitFor(() => {
-      expect(screen.getByText('Delete Experiment')).toBeInTheDocument();
+      expect(screen.getByText('Eliminar experimento')).toBeInTheDocument();
     });
     // The experiment name appears in the confirmation text inside a <strong>
     // Scope to the confirmation sentence: `.bg-card` now also matches page cards
     // since the retheme, so a bare `.bg-card strong` grabs the first card's text.
-    const strongEl = screen.getByText(/Are you sure/).querySelector('strong');
+    const strongEl = screen.getByText(/Seguro que quieres eliminar/).querySelector('strong');
     expect(strongEl?.textContent).toBe('Test Experiment Alpha');
   });
 });
@@ -1758,7 +1758,7 @@ describe('ExperimentDetailClient — hypothesis textarea', () => {
       />,
     );
 
-    const hypothesisTextarea = screen.getByPlaceholderText(/What do you expect/);
+    const hypothesisTextarea = screen.getByPlaceholderText(/Qué esperas/);
     fireEvent.change(hypothesisTextarea, { target: { value: 'New hypothesis' } });
 
     await act(async () => {
@@ -1792,7 +1792,7 @@ describe('ExperimentDetailClient — hypothesis textarea', () => {
       />,
     );
 
-    const hypothesisTextarea = screen.getByPlaceholderText(/What do you expect/);
+    const hypothesisTextarea = screen.getByPlaceholderText(/Qué esperas/);
 
     await act(async () => {
       fireEvent.blur(hypothesisTextarea);

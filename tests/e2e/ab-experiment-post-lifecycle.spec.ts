@@ -135,24 +135,24 @@ test.describe('A/B experiment post lifecycle @ab @critical', () => {
     await expect(page.getByRole('link', { name: postTitle })).toBeVisible();
 
     // Hypothesis textarea — contents seeded from POST body.
-    const hypothesis = page.getByPlaceholder(/What do you expect this test to prove/);
+    const hypothesis = page.getByPlaceholder(/Qué esperas/);
     await expect(hypothesis).toBeVisible();
     await expect(hypothesis).toHaveValue(/Action-first CTA outperforms value-first/);
 
     // Goal config — metric select + selector input.
-    await expect(page.getByText('Metric', { exact: true })).toBeVisible();
+    await expect(page.getByText('Métrica', { exact: true })).toBeVisible();
     await expect(page.getByRole('combobox')).toHaveValue('page_view');
     await expect(page.getByPlaceholder(/.cta-primary/)).toBeVisible();
 
     // Traffic split — both keys plus a 50% input apiece.
-    await expect(page.getByText('Traffic split', { exact: true })).toBeVisible();
+    await expect(page.getByText('Reparto de tráfico', { exact: true })).toBeVisible();
     const splitInputs = page.locator('input[type="number"][max="100"]');
     await expect(splitInputs).toHaveCount(2);
     await expect(splitInputs.nth(0)).toHaveValue('50');
     await expect(splitInputs.nth(1)).toHaveValue('50');
 
     // Variant editor — both variants render with a JSON textarea apiece.
-    await expect(page.getByText('Variants', { exact: true })).toBeVisible();
+    await expect(page.getByText('Variantes', { exact: true })).toBeVisible();
     await expect(page.getByText('(control)')).toBeVisible();
   });
 
@@ -168,7 +168,7 @@ test.describe('A/B experiment post lifecycle @ab @critical', () => {
     // Status badge surfaces the running state next to the play_circle icon.
     await expect(page.getByText('running').first()).toBeVisible();
     // The Stop transition replaces the Start button when running.
-    await expect(page.getByRole('button', { name: 'Stop' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Detener' })).toBeVisible();
   });
 
   test('public: SSR view event de-duplicates per visitor cookie', async () => {
