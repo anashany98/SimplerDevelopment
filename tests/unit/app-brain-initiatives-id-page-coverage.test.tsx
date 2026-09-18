@@ -242,7 +242,7 @@ describe('InitiativeDetailPage — loading state', () => {
   it('shows loading spinner before data resolves', () => {
     fetchMock.mockImplementation(() => new Promise(() => { /* pending */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -609,7 +609,7 @@ describe('InitiativeDetailPage — action buttons (active)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const closeBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       );
       expect(closeBtn).toBeTruthy();
     });
@@ -658,7 +658,7 @@ describe('InitiativeDetailPage — action buttons (terminal)', () => {
       expect(container.textContent).toContain('Completed');
     });
     const editBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Edit',
+      (b) => b.textContent?.trim() === 'Editar',
     );
     expect(editBtn).toBeFalsy();
   });
@@ -780,7 +780,7 @@ describe('InitiativeDetailPage — close flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const closeBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       ) as HTMLButtonElement;
       fireEvent.click(closeBtn);
     });
@@ -793,7 +793,7 @@ describe('InitiativeDetailPage — close flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const closeBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       ) as HTMLButtonElement;
       fireEvent.click(closeBtn);
     });
@@ -819,7 +819,7 @@ describe('InitiativeDetailPage — close flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -854,7 +854,7 @@ describe('InitiativeDetailPage — close flow', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Close'),
+        (b) => b.textContent?.includes('Cerrar'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -1051,7 +1051,7 @@ describe('InitiativeDetailPage — goals section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
       ) as HTMLButtonElement;
       fireEvent.click(addBtn);
     });
@@ -1064,7 +1064,7 @@ describe('InitiativeDetailPage — goals section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
       ) as HTMLButtonElement;
       fireEvent.click(addBtn);
     });
@@ -1072,7 +1072,7 @@ describe('InitiativeDetailPage — goals section', () => {
       expect(container.querySelector('form')).toBeTruthy();
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -1184,7 +1184,7 @@ describe('AddGoalForm', () => {
   async function openAddGoal(container: HTMLElement) {
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add goal'),
+        (b) => b.textContent?.includes('Agregar objetivo'),
       ) as HTMLButtonElement;
       fireEvent.click(btn);
     });
@@ -1273,7 +1273,7 @@ describe('AddGoalForm', () => {
     const { container } = renderPage();
     await openAddGoal(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
