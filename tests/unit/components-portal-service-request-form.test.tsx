@@ -102,7 +102,7 @@ describe('ServiceRequestForm', () => {
     it('renders message textarea when no survey fields', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      expect(screen.getByPlaceholderText(/Describe what you need/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/Describe qué necesitas/i)).toBeInTheDocument();
       expect(screen.getByText(/Tell us about your project/i)).toBeInTheDocument();
     });
 
@@ -120,7 +120,7 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      fireEvent.change(screen.getByPlaceholderText(/Describe what you need/i), {
+      fireEvent.change(screen.getByPlaceholderText(/Describe qué necesitas/i), {
         target: { value: 'I need a landing page.' },
       });
 
@@ -465,7 +465,7 @@ describe('ServiceRequestForm', () => {
       fireEvent.change(slider, { target: { value: '5000' } });
 
       await waitFor(() => {
-        expect(screen.getByText('$5,000')).toBeInTheDocument();
+        expect(screen.getByText('$5000')).toBeInTheDocument();
       });
     });
   });
