@@ -99,7 +99,7 @@ export default function PitchDecksPage() {
       setDecks(prev => prev.filter(deck => deck.id !== deckId));
       setDeletingId(null);
     } catch {
-      setDeleteError('Failed to delete deck.');
+      setDeleteError('No se pudo eliminar la presentación.');
     }
   }
 
@@ -197,7 +197,7 @@ export default function PitchDecksPage() {
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
           <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading pitch decks...
+          Cargando presentaciones...
         </div>
       ) : decks.length === 0 ? (
         <div className={`${pCard} p-10 text-center space-y-4`}>
@@ -217,27 +217,27 @@ export default function PitchDecksPage() {
           <h2 className={pSectionTitle}>Ninguna presentación coincide con tus filtros</h2>
           <p className="text-muted-foreground text-sm">
             {search && <>Ningún título o descripción de presentaciones contiene &ldquo;<span className="font-medium">{search}</span>&rdquo;. </>}
-            {statusFilter !== 'all' && <>No <span className="font-medium">{statusFilter}</span> decks. </>}
-            Adjust your search or filters above.
+            {statusFilter !== 'all' && <>Sin <span className="font-medium">{statusFilter}</span> presentaciones. </>}
+            Ajusta tu búsqueda o los filtros de arriba.
           </p>
           <button
             onClick={() => { setSearchInput(''); setStatusFilter('all'); }}
             className={pBtnGhost}
           >
             <span className="material-icons text-sm">refresh</span>
-            Reset filters
+            Restablecer filtros
           </button>
         </div>
       ) : (
         <>
           <div className="text-xs text-muted-foreground">
-            Showing {filteredDecks.length} of {decks.length} {decks.length === 1 ? 'deck' : 'decks'}
+            Mostrando {filteredDecks.length} de {decks.length} {decks.length === 1 ? 'presentación' : 'presentaciones'}
             {(search || statusFilter !== 'all') && (
               <button
                 onClick={() => { setSearchInput(''); setStatusFilter('all'); }}
                 className="ml-2 underline hover:text-foreground transition-colors"
               >
-                clear filters
+                limpiar filtros
               </button>
             )}
           </div>
@@ -276,7 +276,7 @@ export default function PitchDecksPage() {
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <span className="material-icons text-sm">layers</span>
-                      {slides.length} slide{slides.length !== 1 ? 's' : ''}
+                      {slides.length} diapositiva{slides.length !== 1 ? 's' : ''}
                     </span>
                     <span className="flex items-center gap-1">
                       <span className="material-icons text-sm">schedule</span>
@@ -299,8 +299,8 @@ export default function PitchDecksPage() {
               <h2 className={`${pSectionTitle} flex items-center gap-2`}>
                 <span className="material-icons text-destructive">delete_forever</span>Eliminar presentación</h2>
               <p className="text-sm text-muted-foreground">
-                Are you sure you want to delete{' '}
-                <strong className="text-foreground">{deck?.title ?? 'this deck'}</strong>? This cannot be undone.
+                ¿Seguro que quieres eliminar{' '}
+                <strong className="text-foreground">{deck?.title ?? 'esta presentación'}</strong>? Esta acción no se puede deshacer.
               </p>
               {deleteError && (
                 <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">

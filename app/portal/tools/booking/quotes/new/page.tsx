@@ -76,7 +76,7 @@ export default function NewQuotePage() {
         setError(data.message || 'No se pudo crear la cotización');
       }
     } catch {
-      setError('Something went wrong');
+      setError('Algo salió mal');
     } finally {
       setSaving(false);
     }
@@ -103,11 +103,11 @@ export default function NewQuotePage() {
 
         {/* Quote details */}
         <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Quote Details</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Detalles de la cotización</h2>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Title *</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Título *</label>
             <input type="text" required value={title} onChange={e => setTitle(e.target.value)}
-              placeholder="Private Tour Package" className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
+              placeholder="Paquete de visita privada" className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
           </div>
           <div>
             <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
@@ -118,15 +118,15 @@ export default function NewQuotePage() {
 
         {/* Customer */}
         <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Customer</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Cliente</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="quote-customer-name" className="block text-sm font-medium text-foreground mb-1">Name *</label>
+              <label htmlFor="quote-customer-name" className="block text-sm font-medium text-foreground mb-1">Nombre *</label>
               <input id="quote-customer-name" type="text" required value={customerName} onChange={e => setCustomerName(e.target.value)}
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
             </div>
             <div>
-              <label htmlFor="quote-customer-email" className="block text-sm font-medium text-foreground mb-1">Email *</label>
+              <label htmlFor="quote-customer-email" className="block text-sm font-medium text-foreground mb-1">Correo electrónico *</label>
               <input id="quote-customer-email" type="email" required value={customerEmail} onChange={e => setCustomerEmail(e.target.value)}
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
             </div>
@@ -141,7 +141,7 @@ export default function NewQuotePage() {
         {/* Line items */}
         <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Line Items</h2>
+            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Conceptos</h2>
             <button type="button" onClick={addLineItem}
               className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
               <span className="material-icons text-sm">add</span>Agregar elemento</button>
@@ -149,17 +149,17 @@ export default function NewQuotePage() {
           {lineItems.map((item, i) => (
             <div key={i} className="flex items-end gap-3">
               <div className="flex-1">
-                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Item</label>}
+                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Concepto</label>}
                 <input type="text" value={item.name} onChange={e => updateLineItem(i, 'name', e.target.value)}
-                  placeholder="Tour name" className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
+                  placeholder="Nombre del servicio" className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
               </div>
               <div className="w-20">
-                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Qty</label>}
+                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Cant.</label>}
                 <input type="number" min="1" value={item.quantity} onChange={e => updateLineItem(i, 'quantity', e.target.value)}
                   className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
               </div>
               <div className="w-28">
-                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Price ($)</label>}
+                {i === 0 && <label className="block text-xs text-muted-foreground mb-1">Precio ($)</label>}
                 <input type="number" min="0" step="0.01" value={(item.unitPrice / 100).toFixed(2)}
                   onChange={e => updateLineItem(i, 'unitPrice', e.target.value)}
                   className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
@@ -179,7 +179,7 @@ export default function NewQuotePage() {
 
         {/* Optional scheduling */}
         <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Scheduling (optional)</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Programación (opcional)</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Comenzar</label>
@@ -187,13 +187,13 @@ export default function NewQuotePage() {
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">End</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Fin</label>
               <input type="datetime-local" value={endTime} onChange={e => setEndTime(e.target.value)}
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Quote expires on</label>
+            <label className="block text-sm font-medium text-foreground mb-1">La cotización caduca el</label>
             <input type="date" value={expiresAt} onChange={e => setExpiresAt(e.target.value)}
               className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
           </div>
@@ -201,7 +201,7 @@ export default function NewQuotePage() {
 
         <button type="submit" disabled={saving || !title.trim() || !customerName.trim() || !customerEmail.trim() || totalCents <= 0}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-2.5 text-sm font-bold text-background transition hover:-translate-y-px hover:shadow-lg hover:shadow-foreground/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 w-full">
-          {saving ? 'Creating...' : 'Crear cotización y generar enlace de pago'}
+          {saving ? 'Creando...' : 'Crear cotización y generar enlace de pago'}
         </button>
       </form>
     </div>

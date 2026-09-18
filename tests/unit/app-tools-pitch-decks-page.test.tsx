@@ -91,7 +91,7 @@ import PitchDecksPage from '@/app/portal/tools/pitch-decks/page';
 async function renderPage() {
   const result = render(<PitchDecksPage />);
   await waitFor(() => {
-    expect(result.container.textContent).not.toContain('Loading pitch decks...');
+    expect(result.container.textContent).not.toContain('Cargando presentaciones...');
   });
   return result;
 }
@@ -115,9 +115,9 @@ describe('PitchDecksPage', () => {
 
     it('renders deck cards with slide counts (plural & singular)', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('3 slides');
-      expect(container.textContent).toContain('0 slides');
-      expect(container.textContent).toContain('1 slide');
+      expect(container.textContent).toContain('3 diapositivas');
+      expect(container.textContent).toContain('0 diapositivas');
+      expect(container.textContent).toContain('1 diapositiva');
     });
 
     it('renders status pills (published, draft, archived)', async () => {
@@ -259,7 +259,7 @@ describe('PitchDecksPage', () => {
       fireEvent.change(searchInput, { target: { value: 'zzz' } });
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
-      const reset = screen.getByText('Reset filters');
+      const reset = screen.getByText('Restablecer filtros');
       fireEvent.click(reset);
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
@@ -273,7 +273,7 @@ describe('PitchDecksPage', () => {
       fireEvent.click(draftPill!);
       await act(async () => { await Promise.resolve(); });
       const clear = Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent === 'clear filters');
+        b.textContent === 'limpiar filtros');
       expect(clear).toBeTruthy();
       fireEvent.click(clear!);
       expect(container.textContent).toContain('Sales Deck');
@@ -395,7 +395,7 @@ describe('PitchDecksPage', () => {
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Eliminar');
       fireEvent.click(deleteBtn!);
       await waitFor(() => {
-        expect(screen.getByText('Failed to delete deck.')).toBeTruthy();
+        expect(screen.getByText('No se pudo eliminar la presentación.')).toBeTruthy();
       });
     });
 

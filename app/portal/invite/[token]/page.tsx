@@ -30,12 +30,12 @@ export default function AcceptInvitePage() {
     setError('');
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError('La contraseña debe tener al menos 8 caracteres');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Las contraseñas no coinciden');
       return;
     }
 
@@ -50,7 +50,7 @@ export default function AcceptInvitePage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Something went wrong');
+        setError(data.error || 'Algo salió mal');
         return;
       }
 
@@ -70,7 +70,7 @@ export default function AcceptInvitePage() {
         setTimeout(() => router.push('/portal/login'), 2000);
       }
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -90,7 +90,7 @@ export default function AcceptInvitePage() {
 
   return (
     <AuthShell panelSubtitle="Te han invitado a unirte a un portal de equipo: define tu contraseña para empezar.">
-      <div className={authEyebrow}>{"// You're invited"}</div>
+      <div className={authEyebrow}>{"// Te han invitado"}</div>
       <h1 className={authHeading}>Define tu contraseña.</h1>
       <p className={authSubtext}>Crea una contraseña para acceder al portal de tu equipo.</p>
 
@@ -104,13 +104,13 @@ export default function AcceptInvitePage() {
 
         <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={authLabel}>Password</label>
+            <label className={authLabel}>Contraseña</label>
             <AuthField icon="lock_outline">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="At least 8 characters"
+                placeholder="Al menos 8 caracteres"
                 className={`${authInput} pr-11`}
                 required
                 minLength={8}
@@ -122,7 +122,7 @@ export default function AcceptInvitePage() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground transition-colors hover:text-foreground"
                 tabIndex={-1}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
                 <span className="material-icons text-lg">{showPassword ? 'visibility_off' : 'visibility'}</span>
               </button>
@@ -130,7 +130,7 @@ export default function AcceptInvitePage() {
           </div>
 
           <div>
-            <label className={authLabel}>Confirm password</label>
+            <label className={authLabel}>Confirmar contraseña</label>
             <AuthField icon="lock">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -147,7 +147,7 @@ export default function AcceptInvitePage() {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground transition-colors hover:text-foreground"
                 tabIndex={-1}
-                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
                 <span className="material-icons text-lg">{showConfirmPassword ? 'visibility_off' : 'visibility'}</span>
               </button>
@@ -158,11 +158,11 @@ export default function AcceptInvitePage() {
             {loading ? (
               <>
                 <span className="material-icons animate-spin text-base">refresh</span>
-                Setting up…
+                Configurando…
               </>
             ) : (
               <>
-                Set Password &amp; Sign In
+                Establecer contraseña e iniciar sesión
                 <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">arrow_forward</span>
               </>
             )}
@@ -170,9 +170,9 @@ export default function AcceptInvitePage() {
         </form>
 
         <p className="mt-6 text-sm text-muted-foreground">
-          Already have an account?{' '}
+          ¿Ya tienes una cuenta?{' '}
           <a href="/portal/login" className="font-bold text-foreground hover:text-primary">
-            Sign in
+            Iniciar sesión
           </a>
         </p>
       </div>

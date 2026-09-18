@@ -29,14 +29,14 @@ function ResetPasswordForm() {
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-destructive/20 bg-destructive/10">
           <span className="material-icons text-3xl text-destructive">link_off</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>Invalid reset link.</h1>
+        <h1 className={`${authHeading} mt-5`}>Enlace de restablecimiento no válido.</h1>
         <p className={authSubtext}>Este enlace de restablecimiento de contraseña no es válido o ha caducado.</p>
         <a
           href="/portal/forgot-password"
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
         >
           <span className="material-icons text-sm">refresh</span>
-          Request a new link
+          Solicitar un enlace nuevo
         </a>
       </AuthShell>
     );
@@ -47,11 +47,11 @@ function ResetPasswordForm() {
     setError('');
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters.');
+      setError('La contraseña debe tener al menos 8 caracteres.');
       return;
     }
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Las contraseñas no coinciden.');
       return;
     }
 
@@ -66,10 +66,10 @@ function ResetPasswordForm() {
       if (data.success) {
         setSuccess(true);
       } else {
-        setError(data.error || 'Something went wrong.');
+        setError(data.error || 'Algo salió mal.');
       }
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -81,15 +81,15 @@ function ResetPasswordForm() {
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10">
           <span className="material-icons text-3xl text-emerald-500">check_circle</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>Password reset.</h1>
+        <h1 className={`${authHeading} mt-5`}>Contraseña restablecida.</h1>
         <p className={authSubtext}>
-          Your password has been updated. You can now sign in with your new password.
+          Tu contraseña se ha actualizado. Ya puedes iniciar sesión con tu nueva contraseña.
         </p>
         <a
           href="/portal/login"
           className={`${authPrimaryBtn} mt-6`}
         >
-          Sign in
+          Iniciar sesión
           <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">arrow_forward</span>
         </a>
       </AuthShell>
@@ -101,7 +101,7 @@ function ResetPasswordForm() {
       <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
         <span className="material-icons text-3xl text-primary">lock_reset</span>
       </div>
-      <div className={authEyebrow}>{'// Account recovery'}</div>
+      <div className={authEyebrow}>{'// Recuperación de cuenta'}</div>
       <h1 className={authHeading}>Establece una nueva contraseña.</h1>
       <p className={authSubtext}>Introduce tu nueva contraseña a continuación. Debe tener al menos 8 caracteres.</p>
 
@@ -126,7 +126,7 @@ function ResetPasswordForm() {
                 autoComplete="new-password"
                 autoFocus
                 className={authInput}
-                placeholder="At least 8 characters"
+                placeholder="Al menos 8 caracteres"
               />
               <button
                 type="button"
@@ -157,11 +157,11 @@ function ResetPasswordForm() {
             {loading ? (
               <>
                 <span className="material-icons animate-spin text-base">refresh</span>
-                Resetting…
+                Restableciendo…
               </>
             ) : (
               <>
-                Reset password
+                Restablecer contraseña
                 <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">lock_open</span>
               </>
             )}
@@ -173,7 +173,7 @@ function ResetPasswordForm() {
           className="mt-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Back to sign in
+          Volver al inicio de sesión
         </a>
       </div>
     </AuthShell>
