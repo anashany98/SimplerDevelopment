@@ -219,7 +219,7 @@ describe('IconPicker', () => {
     fireEvent.click(trigger);
 
     // Search input should appear after opening
-    const search = screen.getByPlaceholderText('Search icons...') as HTMLInputElement;
+    const search = screen.getByPlaceholderText('Buscar iconos...') as HTMLInputElement;
     expect(search).toBeTruthy();
 
     // The icon set arrives via a dynamic import (it is 4,300 components — see
@@ -247,7 +247,7 @@ describe('IconPicker', () => {
   it('filters icons by search query and shows the empty-state when nothing matches', () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
     fireEvent.click(screen.getByText('Choose icon...').closest('button')!);
-    const search = screen.getByPlaceholderText('Search icons...') as HTMLInputElement;
+    const search = screen.getByPlaceholderText('Buscar iconos...') as HTMLInputElement;
 
     fireEvent.change(search, { target: { value: 'zzzzzzzz-no-match' } });
     expect(screen.getByText(/No icons match/i)).toBeTruthy();
@@ -277,9 +277,9 @@ describe('resolvePortalTitle', () => {
   });
 
   it('resolves parameterised routes', () => {
-    expect(resolvePortalTitle('/portal/projects/42')).toBe('Project');
-    expect(resolvePortalTitle('/portal/projects')).toBe('Projects');
-    expect(resolvePortalTitle('/portal/crm/contacts/9')).toBe('Contact');
+    expect(resolvePortalTitle('/portal/projects/42')).toBe('Proyecto');
+    expect(resolvePortalTitle('/portal/projects')).toBe('Proyectos');
+    expect(resolvePortalTitle('/portal/crm/contacts/9')).toBe('Contacto');
     expect(resolvePortalTitle('/portal/websites/1/posts/2/edit')).toBe('Edit Post');
   });
 
@@ -296,9 +296,9 @@ describe('resolvePortalTitle', () => {
     // These sections all rendered a generic "Portal" tab for months —
     // the drift the fallback chain exists to kill.
     expect(resolvePortalTitle('/portal/seo')).toBe('SEO Intelligence');
-    expect(resolvePortalTitle('/portal/brain/decisions')).toBe('Decisions');
-    expect(resolvePortalTitle('/portal/brain/decisions/123')).toBe('Decisions');
-    expect(resolvePortalTitle('/portal/publishing/board')).toBe('Board');
+    expect(resolvePortalTitle('/portal/brain/decisions')).toBe('Decisiones');
+    expect(resolvePortalTitle('/portal/brain/decisions/123')).toBe('Decisiones');
+    expect(resolvePortalTitle('/portal/publishing/board')).toBe('Tablero');
   });
 
   it('humanizes trailing static segments past the nav match', () => {
