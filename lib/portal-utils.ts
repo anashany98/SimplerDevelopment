@@ -1,7 +1,7 @@
 // Client-safe portal utilities — no DB or server imports
 
 export function formatCents(cents: number): string {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 export function invoiceStatusColor(status: string): string {
