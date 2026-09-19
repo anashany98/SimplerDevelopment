@@ -50,7 +50,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     lineItems = [{ price: svc.stripePriceId, quantity: 1 }];
   } else {
     const priceData: Record<string, unknown> = {
-      currency: 'usd',
+      currency: 'eur',
       unit_amount: svc.price,
       product_data: { name: svc.name, description: svc.description ?? undefined },
     };

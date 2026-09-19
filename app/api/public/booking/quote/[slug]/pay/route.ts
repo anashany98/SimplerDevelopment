@@ -26,7 +26,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
 
     let stripeParams: Parameters<typeof stripe.paymentIntents.create>[0] = {
       amount: quote.price,
-      currency: 'usd',
+      currency: 'eur',
       metadata: {
         type: 'booking_quote',
         quoteId: String(quote.id),
@@ -49,7 +49,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
         const applicationFee = Math.round(quote.price * (platformFeePercent / 100));
         stripeParams = {
           ...stripeParams,
-          currency: store.currency?.toLowerCase() || 'usd',
+          currency: store.currency?.toLowerCase() || 'eur',
           application_fee_amount: applicationFee,
           transfer_data: { destination: store.stripeAccountId },
         };

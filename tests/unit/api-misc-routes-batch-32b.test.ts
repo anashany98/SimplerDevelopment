@@ -612,7 +612,7 @@ describe('POST /api/portal/services/[id]/checkout', () => {
     expect(callArg.mode).toBe('payment');
     const lineItems = callArg.line_items as Array<Record<string, unknown>>;
     expect(lineItems[0].price_data).toMatchObject({
-      currency: 'usd',
+      currency: 'eur',
       unit_amount: 2500,
       product_data: { name: 'One-time', description: 'desc' },
     });

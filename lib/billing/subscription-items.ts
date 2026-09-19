@@ -76,7 +76,7 @@ export function buildDesiredItems(input: BuildInput): {
 /** Monthly recurring price_data for a desired item. */
 export function toPriceData(item: DesiredItem): Stripe.SubscriptionCreateParams.Item.PriceData {
   return {
-    currency: 'usd',
+    currency: 'eur',
     product: item.productId,
     unit_amount: item.unitAmountCents,
     recurring: { interval: 'month' },
@@ -96,7 +96,7 @@ export function toNamedCheckoutLineItem(
   return {
     quantity: item.quantity,
     price_data: {
-      currency: 'usd',
+      currency: 'eur',
       product_data: { name },
       unit_amount: item.unitAmountCents,
       recurring: { interval: 'month' },
@@ -109,7 +109,7 @@ export function toCheckoutLineItem(item: DesiredItem): Stripe.Checkout.SessionCr
   return {
     quantity: item.quantity,
     price_data: {
-      currency: 'usd',
+      currency: 'eur',
       product: item.productId,
       unit_amount: item.unitAmountCents,
       recurring: { interval: 'month' },

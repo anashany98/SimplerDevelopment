@@ -449,7 +449,7 @@ describe('POST /api/portal/invoices/[id]/checkout', () => {
     expect(arg.mode).toBe('payment');
     expect(arg.payment_method_types).toEqual(['card']);
     expect(arg.line_items).toHaveLength(2);
-    expect(arg.line_items[0].price_data.currency).toBe('usd');
+    expect(arg.line_items[0].price_data.currency).toBe('eur');
     expect(arg.line_items[0].price_data.unit_amount).toBe(1000);
     expect(arg.line_items[0].price_data.product_data.name).toBe('Service A');
     expect(arg.line_items[0].quantity).toBe(2);

@@ -270,7 +270,7 @@ export async function POST(req: Request) {
       namedItems = rows.map((r) => ({
         quantity: 1,
         price_data: {
-          currency: 'usd',
+          currency: 'eur',
           product_data: { name: r.name },
           unit_amount: r.price as number,
           recurring: { interval: 'month' },

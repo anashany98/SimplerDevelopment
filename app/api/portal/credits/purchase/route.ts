@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     mode: 'payment',
     line_items: [{
       price_data: {
-        currency: 'usd',
+        currency: 'eur',
         product_data: { name: pkg.name, description: `${(pkg.tokens / 1000).toFixed(0)}K AI tokens` },
         unit_amount: pkg.price,
       },

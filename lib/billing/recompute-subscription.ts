@@ -31,7 +31,7 @@ type ItemUpdate = Stripe.SubscriptionUpdateParams.Item;
 
 function monthlyPriceData(productId: string, unitAmountCents: number): Stripe.SubscriptionUpdateParams.Item.PriceData {
   return {
-    currency: 'usd',
+    currency: 'eur',
     product: productId,
     unit_amount: unitAmountCents,
     recurring: { interval: 'month' },

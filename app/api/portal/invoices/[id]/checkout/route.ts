@@ -54,7 +54,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       payment_method_types: ['card'],
       line_items: items.map((item) => ({
         price_data: {
-          currency: 'usd',
+          currency: 'eur',
           unit_amount: item.unitPrice,
           product_data: { name: item.description },
         },

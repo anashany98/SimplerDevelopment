@@ -123,7 +123,7 @@ describe('subscription line items', () => {
   it('converts items to Stripe price_data and checkout lines', () => {
     const { items } = buildDesiredItems({ modules, seatCount: 2, seatProductId: 'prod_seat' });
     const priceData = toPriceData(items[0]);
-    expect(priceData).toMatchObject({ currency: 'usd', product: 'prod_crm', unit_amount: 2_500 });
+    expect(priceData).toMatchObject({ currency: 'eur', product: 'prod_crm', unit_amount: 2_500 });
     expect(priceData.recurring).toMatchObject({ interval: 'month' });
 
     const checkout = toCheckoutLineItem(items[2]);

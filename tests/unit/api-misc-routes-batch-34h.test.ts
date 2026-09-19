@@ -584,7 +584,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
     expect(stripePaymentIntentsCreateMock).toHaveBeenCalledTimes(1);
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs.amount).toBe(2500);
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
     expect(piArgs).not.toHaveProperty('application_fee_amount');
     expect(piArgs).not.toHaveProperty('transfer_data');
     const meta = piArgs.metadata as Record<string, unknown>;
@@ -672,7 +672,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
 
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs.application_fee_amount).toBe(500); // 5% default
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
   });
 
   it('does NOT use Stripe Connect when onboarding incomplete', async () => {
@@ -710,7 +710,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs).not.toHaveProperty('application_fee_amount');
     expect(piArgs).not.toHaveProperty('transfer_data');
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
   });
 
   it('returns 500 when Stripe throws', async () => {
