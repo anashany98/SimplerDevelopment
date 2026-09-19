@@ -178,10 +178,10 @@ describe('ContractSigningPage', () => {
     // Clauses
     expect(screen.getByText('1. Confidentiality')).toBeTruthy();
     expect(screen.getByText('2. Optional clause')).toBeTruthy();
-    // Pricing - subtotal = 100000 + 2*50000 = 200000 cents = $2,000.00
-    // tax = 10% of 200000 = 20000 cents = $200.00; flat = 5000 cents = $50.00
-    // total = 200000 + 20000 + 5000 = 225000 cents = $2,250.00
-    expect(screen.getByText('$2,250.00')).toBeTruthy();
+    // Pricing - subtotal = 100000 + 2*50000 = 200000 cents = 2.000,00 €
+    // tax = 10% of 200000 = 20000 cents = 200,00 €; flat = 5000 cents = 50,00 €
+    // total = 200000 + 20000 + 5000 = 225000 cents = 2.250,00 €
+    expect(screen.getByText('2250,00 €')).toBeTruthy();
     // Footer
     expect(screen.getByText('Footer text here')).toBeTruthy();
   });

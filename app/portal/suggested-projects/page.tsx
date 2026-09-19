@@ -31,7 +31,7 @@ const categoryIcon: Record<string, string> = {
 const categoryOrder = ['website', 'ecommerce', 'mobile', 'development', 'maintenance', 'branding', 'other'];
 
 function formatCents(cents: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(cents / 100);
 }
 
 export default async function SuggestedProjectsPage() {

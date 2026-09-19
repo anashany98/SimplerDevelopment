@@ -113,7 +113,7 @@ const configs: Record<string, CategoryConfig> = {
     accentBorder: 'border-amber-200 dark:border-amber-800/50',
     iconBg: 'bg-amber-100 dark:bg-amber-900/40',
     tagline: 'Tu sitio web, siempre en línea. Sin preocupaciones.',
-    subtagline: 'Un sitio web hackeado o descompuesto cuesta en promedio $200/hora en negocios perdidos. Nuestro plan de mantenimiento detecta los problemas antes de que ocurran — para que nunca te enteres de la peor manera.',
+    subtagline: 'Un sitio web hackeado o descompuesto cuesta en promedio 200 €/hora en negocios perdidos. Nuestro plan de mantenimiento detecta los problemas antes de que ocurran — para que nunca te enteres de la peor manera.',
     valueProps: [
       { icon: 'security', title: 'Seguridad antes de que sea un problema', body: 'Las actualizaciones de plugins, parches de vulnerabilidad y escaneos de malware se ejecutan en un horario estricto — no después de un incidente.' },
       { icon: 'backup', title: 'Copias diarias, restauración instantánea', body: 'Copias de seguridad completas cada 24 horas. Si algo sale mal, restauramos en minutos, no en días.' },
@@ -217,7 +217,7 @@ const configs: Record<string, CategoryConfig> = {
 };
 
 function formatCents(cents: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(cents / 100);
 }
 
 const categoryLabel: Record<string, string> = {

@@ -814,8 +814,8 @@ describe('formatDate — via RunHistory rows', () => {
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
     await waitFor(() => {
-      // Should contain some form of "Mar" or the month
-      expect(container.textContent).toMatch(/Mar|Feb|Apr/);
+      // Should contain some form of the month (es-ES renders the abbreviation lowercase, e.g. "mar")
+      expect(container.textContent).toMatch(/Mar|Feb|Apr/i);
     });
   });
 });

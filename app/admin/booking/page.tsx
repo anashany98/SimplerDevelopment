@@ -53,7 +53,7 @@ function bookingStatusBadge(status: string) {
 }
 
 function formatDateTime(d: string) {
-  return new Date(d).toLocaleDateString('en-US', {
+  return new Date(d).toLocaleDateString('es-ES', {
     month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
   });
 }

@@ -76,7 +76,7 @@ function renderPromptTemplate(template: string, values: Record<string, string | 
 
 function formatDate(d: string | null) {
   if (!d) return '--';
-  return new Date(d).toLocaleDateString('en-US', {
+  return new Date(d).toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',

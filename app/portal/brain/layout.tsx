@@ -69,7 +69,7 @@ export default async function BrainLayout({ children }: { children: React.ReactN
 type TrialState = 'none' | 'active' | 'expired';
 
 function formatTrialDate(d: Date): string {
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function BrainUpsell({
@@ -81,7 +81,7 @@ function BrainUpsell({
   trialState: TrialState;
   trialUntil: Date | null;
 }) {
-  const price = brainService ? formatCents(brainService.price) : '$49';
+  const price = brainService ? formatCents(brainService.price) : formatCents(4900);
   const cycle: string = brainService?.billingCycle ?? 'monthly';
   const description = brainService?.description
     ?? 'A structured AI operating layer for your business. Capture meetings, decisions, and commitments; AI proposes tasks and connections; humans approve.';

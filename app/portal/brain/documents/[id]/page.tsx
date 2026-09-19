@@ -59,7 +59,7 @@ const STATUS_ICONS = {
 function formatDate(d: string | Date | null | undefined): string {
   if (!d) return '—';
   try {
-    return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(d).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch {
     return String(d);
   }

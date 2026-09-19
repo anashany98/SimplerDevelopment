@@ -26,12 +26,12 @@ interface PaymentMethod {
 }
 
 function formatCents(cents: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 function formatDate(iso: string | null) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(iso).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 const invoiceStatusStyles: Record<string, string> = {

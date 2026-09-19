@@ -63,7 +63,7 @@ function statusBadge(status: string) {
 
 function formatDate(d: string | null) {
   if (!d) return '--';
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+  return new Date(d).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
 
 export default function AdminAutomationsPage() {

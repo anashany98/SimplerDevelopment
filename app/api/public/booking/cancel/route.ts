@@ -81,7 +81,7 @@ export async function POST(req: Request) {
             from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'bookings@simplerdevelopment.com'}>`,
             to: host.email,
             subject: `Booking Cancelled: ${booking.guestName} — ${page.title}`,
-            html: `<p><strong>${booking.guestName}</strong> cancelled their ${page.title} appointment on ${new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short', timeZone: booking.timezone }).format(booking.startTime)}.</p>`,
+            html: `<p><strong>${booking.guestName}</strong> cancelled their ${page.title} appointment on ${new Intl.DateTimeFormat('es-ES', { dateStyle: 'full', timeStyle: 'short', timeZone: booking.timezone }).format(booking.startTime)}.</p>`,
           }).catch(() => {});
         } catch {
           // Resend unconfigured — cancellation must still succeed.

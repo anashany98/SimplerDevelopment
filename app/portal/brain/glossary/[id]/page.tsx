@@ -71,7 +71,7 @@ function looksLikeMarkdown(s: string): boolean {
 
 function formatDate(iso: string): string {
   try {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch {
     return iso;
   }
