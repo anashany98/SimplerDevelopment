@@ -286,14 +286,14 @@ describe('OrderDetailPage', () => {
 
     it('renders formatted money totals', async () => {
       await renderPage();
-      // subtotal $65.00
-      expect(screen.getByText('$65.00')).toBeTruthy();
-      // shipping $5.00
-      expect(screen.getByText('$5.00')).toBeTruthy();
-      // tax $2.00
-      expect(screen.getByText('$2.00')).toBeTruthy();
-      // total $72.00
-      expect(screen.getByText('$72.00')).toBeTruthy();
+      // subtotal 65,00 €
+      expect(screen.getByText('65,00 €')).toBeTruthy();
+      // shipping 5,00 €
+      expect(screen.getByText('5,00 €')).toBeTruthy();
+      // tax 2,00 €
+      expect(screen.getByText('2,00 €')).toBeTruthy();
+      // total 72,00 €
+      expect(screen.getByText('72,00 €')).toBeTruthy();
     });
 
     it('does not render discount row when discountCents is 0', async () => {
@@ -310,7 +310,7 @@ describe('OrderDetailPage', () => {
       });
       await renderPage();
       expect(screen.getByText('Descuento')).toBeTruthy();
-      expect(screen.getByText('-$5.00')).toBeTruthy();
+      expect(screen.getByText('-5,00 €')).toBeTruthy();
     });
 
     it('renders the breadcrumb link to orders list', async () => {
@@ -767,7 +767,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('$8.99')).toBeTruthy();
+      expect(screen.getByText('8,99 €')).toBeTruthy();
     });
 
     it('renders tracking number as link when trackingUrl is present', async () => {

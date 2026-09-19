@@ -215,16 +215,16 @@ describe('OrderDetailPage — main render', () => {
     expect(container.textContent).toContain('Widget');
     expect(container.textContent).toContain('Red'); // variantName
     expect(container.textContent).toContain('WID-R'); // sku
-    expect(container.textContent).toContain('$10.00');
-    expect(container.textContent).toContain('$20.00');
+    expect(container.textContent).toContain('10,00\u00A0€');
+    expect(container.textContent).toContain('20,00\u00A0€');
   });
 
   it('renders order totals', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
-    expect(container.textContent).toContain('$5.00');   // shipping
-    expect(container.textContent).toContain('$1.50');   // tax
-    expect(container.textContent).toContain('$26.50');  // total
+    expect(container.textContent).toContain('5,00\u00A0€');   // shipping
+    expect(container.textContent).toContain('1,50\u00A0€');   // tax
+    expect(container.textContent).toContain('26,50\u00A0€');  // total
   });
 
   it('does not render discount row when discountCents is 0', async () => {
@@ -237,7 +237,7 @@ describe('OrderDetailPage — main render', () => {
     fetchMock.mockResolvedValue(makeRes({ success: true, data: baseOrder({ discountCents: 200 }) }));
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Descuento'));
-    expect(container.textContent).toContain('-$2.00');
+    expect(container.textContent).toContain('-2,00\u00A0€');
   });
 
   it('renders SKU as "--" when not provided', async () => {
@@ -916,7 +916,7 @@ describe('OrderDetailPage — refundLabel', () => {
     await waitFor(() => expect(container.textContent).toContain('ORD-0042'));
     expect(container.textContent).toContain('USPS');
     expect(container.textContent).toContain('Priority Mail');
-    expect(container.textContent).toContain('$7.99');
+    expect(container.textContent).toContain('7,99\u00A0€');
     expect(container.textContent).toContain('Ver etiqueta');
   });
 

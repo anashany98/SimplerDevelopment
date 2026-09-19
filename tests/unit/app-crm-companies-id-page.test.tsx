@@ -1033,8 +1033,8 @@ describe('CrmCompanyDetailPage', () => {
     it('formats deal values as currency', async () => {
       const result = await renderPage();
       await openDeals(result);
-      expect(result.container.textContent).toContain('$1,500.00');
-      expect(result.container.textContent).toContain('$500.00');
+      expect(result.container.textContent).toContain('1500,00\u00A0€');
+      expect(result.container.textContent).toContain('500,00\u00A0€');
     });
 
     it('shows stageName, contactName, expectedCloseDate when present', async () => {

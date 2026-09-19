@@ -600,19 +600,19 @@ describe('lib/portal-utils', () => {
   describe('formatCents', () => {
     it('formats whole dollars', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(0)).toBe('$0.00');
-      expect(formatCents(100)).toBe('$1.00');
-      expect(formatCents(99)).toBe('$0.99');
+      expect(formatCents(0)).toBe('0,00\u00A0€');
+      expect(formatCents(100)).toBe('1,00\u00A0€');
+      expect(formatCents(99)).toBe('0,99\u00A0€');
     });
 
     it('handles thousands separator', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(123456)).toBe('$1,234.56');
+      expect(formatCents(123456)).toBe('1234,56\u00A0€');
     });
 
     it('formats negative cents', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(-500)).toBe('-$5.00');
+      expect(formatCents(-500)).toBe('-5,00\u00A0€');
     });
   });
 

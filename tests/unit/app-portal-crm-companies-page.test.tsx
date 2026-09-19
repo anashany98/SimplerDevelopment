@@ -251,8 +251,8 @@ describe('CrmCompaniesPage — initial render', () => {
 
   it('renders formatted deal values', async () => {
     const { container } = await renderPage();
-    // $1,500.00 (totalDealValue is in cents — 150000 cents = $1,500)
-    expect(container.textContent).toMatch(/\$1[,.]?500/);
+    // 1500,00 € (totalDealValue is in cents — 150000 cents = 1.500 euros)
+    expect(container.textContent).toMatch(/1500,00\u00A0€/);
   });
 
   it('renders the company map stub', async () => {

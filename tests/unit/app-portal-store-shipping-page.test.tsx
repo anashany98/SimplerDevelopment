@@ -914,7 +914,7 @@ describe('ShippingSettingsPage — rate table display', () => {
     await flush();
 
     expect(container.textContent).toContain('Ground');
-    expect(container.textContent).toContain('$7.99');
+    expect(container.textContent).toContain('7,99\u00A0€');
   });
 
   it('renders EasyPost live badge for live rate', async () => {
@@ -1006,7 +1006,7 @@ describe('ShippingSettingsPage — rate table display', () => {
     fireEvent.click(header);
     await flush();
 
-    expect(container.textContent).toContain('$50.00');
+    expect(container.textContent).toContain('50,00\u00A0€');
   });
 
   it('renders carrier code for live rate', async () => {

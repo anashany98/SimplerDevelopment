@@ -152,7 +152,7 @@ describe('ProductPage', () => {
     render(<ProductPage siteId={1} productSlug="test-widget" />);
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Test Widget' })).toBeTruthy());
     // $29.99 — 2999 cents
-    expect(screen.getByText('$29.99')).toBeTruthy();
+    expect(screen.getByText('29,99 €')).toBeTruthy();
   });
 
   it('shows short description when present', async () => {
@@ -609,7 +609,7 @@ describe('ProductPage', () => {
 
     await waitFor(() => expect(screen.getByText('Descuento por volumen aplicado')).toBeTruthy());
     // effectivePrice = 1500 cents = $15.00 — appears in price area and bulk pricing table
-    expect(screen.getAllByText('$15.00').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('15,00 €').length).toBeGreaterThan(0);
   });
 
   it('applies bulk percent discount correctly', async () => {
@@ -628,7 +628,7 @@ describe('ProductPage', () => {
     );
     fireEvent.click(addBtn!);
     // 50% off $20.00 = $10.00
-    await waitFor(() => expect(screen.getByText('$10.00')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('10,00 €')).toBeTruthy());
   });
 
   // ── Session ID ────────────────────────────────────────────────────────────

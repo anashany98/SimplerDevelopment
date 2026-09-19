@@ -938,14 +938,14 @@ describe('ProposalEditorPage', () => {
     it('renders subtotal / fees / grand total', async () => {
       const { container } = await renderPage();
       // baseProposal: 2 line items, only first (Dev qty 2 * 50000) counts (optional excluded)
-      // subtotal = 100000c = $1,000.00
-      expect(container.textContent).toContain('$1,000.00');
-      // Flat fee 5000c = $50.00
-      expect(container.textContent).toContain('$50.00');
-      // Percent 10% of subtotal = 10000c = $100.00
-      expect(container.textContent).toContain('$100.00');
-      // Grand total = 100000 + 5000 + 10000 = 115000c = $1,150.00
-      expect(container.textContent).toContain('$1,150.00');
+      // subtotal = 100000c = 1000,00 €
+      expect(container.textContent).toContain('1000,00\u00A0€');
+      // Flat fee 5000c = 50,00 €
+      expect(container.textContent).toContain('50,00\u00A0€');
+      // Percent 10% of subtotal = 10000c = 100,00 €
+      expect(container.textContent).toContain('100,00\u00A0€');
+      // Grand total = 100000 + 5000 + 10000 = 115000c = 1150,00 €
+      expect(container.textContent).toContain('1150,00\u00A0€');
     });
   });
 

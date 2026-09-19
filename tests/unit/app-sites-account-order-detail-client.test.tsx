@@ -141,8 +141,8 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('$49.99')).toBeInTheDocument(); // subtotal
-      expect(screen.getByText('$58.99')).toBeInTheDocument(); // total
+      expect(screen.getByText('49,99 €')).toBeInTheDocument(); // subtotal
+      expect(screen.getByText('58,99 €')).toBeInTheDocument(); // total
     });
   });
 
@@ -171,7 +171,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('$5.00 cada uno')).toBeInTheDocument();
+      expect(screen.getByText('5,00 € cada uno')).toBeInTheDocument();
     });
   });
 

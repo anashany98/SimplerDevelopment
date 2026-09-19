@@ -435,8 +435,8 @@ describe('PublicProposalPage — pricing section', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       // After toggling, the optional subtotal is added
-      // $1000 required + $500 optional = $1500
-      expect(container.textContent).toContain('$1,500.00');
+      // 1000 € required + 500 € optional = 1500 €
+      expect(container.textContent).toContain('1500,00\u00A0€');
     });
   });
 
@@ -450,8 +450,8 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      // flat fee $50 + service $1000 = $1050 grand total
-      expect(container.textContent).toContain('$1,050.00');
+      // flat fee 50 € + service 1000 € = 1050 € grand total
+      expect(container.textContent).toContain('1050,00\u00A0€');
       expect(container.textContent).toContain('Setup fee');
     });
   });
@@ -466,8 +466,8 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      // 10% of $1000 = $100, total $1100
-      expect(container.textContent).toContain('$1,100.00');
+      // 10% of 1000 € = 100 €, total 1100 €
+      expect(container.textContent).toContain('1100,00\u00A0€');
       expect(container.textContent).toContain('Tax');
       expect(container.textContent).toContain('(10%)');
     });
@@ -484,7 +484,7 @@ describe('PublicProposalPage — pricing section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Subtotal');
-      expect(container.textContent).toContain('$500.00');
+      expect(container.textContent).toContain('500,00\u00A0€');
     });
   });
 

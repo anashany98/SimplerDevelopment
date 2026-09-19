@@ -217,7 +217,7 @@ describe('DiscountsPage', () => {
     it('renders fixed discount row with dollar amount', async () => {
       const { container } = await renderLoaded();
       expect(container.textContent).toContain('FLAT5');
-      expect(container.textContent).toContain('$5.00');
+      expect(container.textContent).toContain('5,00\u00A0€');
     });
 
     it('renders free_shipping discount as "Free Ship" type', async () => {
@@ -242,7 +242,7 @@ describe('DiscountsPage', () => {
 
     it('renders minOrderAmount as currency when set', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('$50.00');
+      expect(container.textContent).toContain('50,00\u00A0€');
     });
 
     it('renders "--" for minOrderAmount when null', async () => {

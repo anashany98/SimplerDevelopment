@@ -356,14 +356,14 @@ describe('ProposalsPage', () => {
     it('formats currency for proposal value', async () => {
       const { container } = await renderPage();
       // Acme: subtotal 2*50000 = 100000, fees flat 5000 + 10% of 100000 = 15000
-      // total = 115000 cents = $1,150.00
-      expect(container.textContent).toContain('$1,150.00');
+      // total = 115000 cents = 1150,00 €
+      expect(container.textContent).toContain('1150,00\u00A0€');
     });
 
     it('handles proposals with empty lineItems / fees', async () => {
       const { container } = await renderPage();
-      // viewedProposal has empty lineItems and fees => $0.00
-      expect(container.textContent).toContain('$0.00');
+      // viewedProposal has empty lineItems and fees => 0,00 €
+      expect(container.textContent).toContain('0,00\u00A0€');
     });
 
     it('renders sent and last viewed dates', async () => {

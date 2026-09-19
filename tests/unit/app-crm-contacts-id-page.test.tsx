@@ -1239,7 +1239,7 @@ describe('CrmContactDetailPage', () => {
       openDealsTab(container);
       expect(container.textContent).toContain('Big Deal');
       expect(container.textContent).toContain('Proposal');
-      expect(container.textContent).toContain('$1,500.00');
+      expect(container.textContent).toContain('1500,00\u00A0€');
       expect(container.textContent).toContain('Abierto');
       expect(container.textContent).toContain('Lost Cause');
       expect(container.textContent).toContain('Perdido');
