@@ -29,6 +29,24 @@ const DEV_TUNNEL_APP_HOSTS = new Set(
     .filter(Boolean),
 );
 
+// Hostnames derived from the configured app URL (NEXT_PUBLIC_APP_URL /
+// NEXT_PUBLIC_SITE_URL). Mirrors middleware.ts isAppHostname: a custom
+// deployment domain (e.g. anaxia.tech) must be treated as an app host, or the
+// root layout classifies it as a client site, skips the SessionProvider, and
+// every useSession() caller in the portal/admin chrome throws at render time.
+const CONFIGURED_APP_HOSTS = new Set(
+  [process.env.NEXT_PUBLIC_APP_URL, process.env.NEXT_PUBLIC_SITE_URL]
+    .map((url) => {
+      if (!url) return null;
+      try {
+        return new URL(url).hostname.toLowerCase();
+      } catch {
+        return null;
+      }
+    })
+    .filter((value): value is string => Boolean(value)),
+);
+
 // preload: false — these app/portal fonts were being <link rel=preload>ed on
 // EVERY route (~180KB of woff2), including public client sites that use their
 // own brand fonts (Raleway/Open Sans) and never reference these. With preload
@@ -86,11 +104,12 @@ export default async function RootLayout({
   // host that multiplexes BOTH the app (/) and client sites
   // (/sites/<domain>) on one host, so hostname alone can't tell them apart —
   // the middleware forwards `x-site-pathname` on /sites/* routes to mark them.
-  const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com"];
+  const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com", "anaxia.tech", "www.anaxia.tech"];
   const hostname = host.split(":")[0].toLowerCase();
   const isSitesRoute = headersList.get("x-site-pathname") !== null;
   const isAppHost =
     APP_HOSTS.includes(hostname) ||
+    CONFIGURED_APP_HOSTS.has(hostname) ||
     hostname.endsWith(".railway.app") ||
     // Temporary Cloudflare Quick Tunnels are app surfaces too (portal, auth).
     // Mirrors the `.trycloudflare.com` allowance in middleware.ts isAppHostname
