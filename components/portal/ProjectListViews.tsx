@@ -162,7 +162,7 @@ export function ProjectTable({
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">{project.myRole ? roleLabel[project.myRole] : '—'}</td>
                     <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.startDate ? new Date(project.startDate).toLocaleDateString('es-ES') : '—'}</td>
-                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.dueDate ? new Date(project.dueDate).toLocaleDateString('en-US') : '—'}</td>
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{project.dueDate ? new Date(project.dueDate).toLocaleDateString('es-ES') : '—'}</td>
                   </tr>
                 );
               })}

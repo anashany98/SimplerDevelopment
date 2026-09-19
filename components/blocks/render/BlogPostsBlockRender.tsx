@@ -128,7 +128,7 @@ export function BlogPostsBlockRender({ block }: BlogPostsBlockRenderProps) {
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       {post.publishedAt && (
                         <time dateTime={new Date(post.publishedAt).toISOString()}>
-                          {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                          {new Date(post.publishedAt).toLocaleDateString('es-ES', {
                             month: 'short',
                             day: 'numeric',
                             year: 'numeric',

@@ -166,7 +166,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
                     : h.events.map(ev => <span key={ev} className="bg-muted rounded px-1.5 py-0.5 font-mono">{ev}</span>)}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground flex gap-3">
-                  {h.lastFiredAt && <span>Último envío {new Date(h.lastFiredAt).toLocaleString('en-US')} · {h.lastStatus ?? '—'}</span>}
+                  {h.lastFiredAt && <span>Último envío {new Date(h.lastFiredAt).toLocaleString('es-ES')} · {h.lastStatus ?? '—'}</span>}
                   {h.failureCount > 0 && <span className="text-destructive">{h.failureCount} fallo{h.failureCount === 1 ? '' : 's'} reciente{h.failureCount === 1 ? '' : 's'}</span>}
                 </div>
               </div>

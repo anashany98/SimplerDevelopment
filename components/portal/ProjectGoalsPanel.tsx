@@ -262,7 +262,7 @@ export default function ProjectGoalsPanel({ projectId, canEdit }: { projectId: n
                 </div>
                 {g.targetDate && (
                   <p className="text-[10px] text-muted-foreground">
-                    Fecha objetivo: {new Date(g.targetDate).toLocaleDateString('en-US')}
+                    Fecha objetivo: {new Date(g.targetDate).toLocaleDateString('es-ES')}
                   </p>
                 )}
               </div>

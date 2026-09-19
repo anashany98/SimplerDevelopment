@@ -19,7 +19,7 @@ function formatCurrency(n: number): string {
 
 function formatNumber(n: number): string {
   if (!isFinite(n)) return '0';
-  return Math.round(n).toLocaleString('en-US');
+  return Math.round(n).toLocaleString('es-ES');
 }
 
 export function RoiCalculatorBlockRender({ block }: RoiCalculatorBlockRenderProps) {

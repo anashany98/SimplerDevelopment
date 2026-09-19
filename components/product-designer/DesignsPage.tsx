@@ -30,7 +30,7 @@ export const DesignsPage: React.FC<DesignsPageProps> = ({
   const list = Array.isArray(designs) ? designs : [];
   
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

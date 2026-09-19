@@ -231,7 +231,7 @@ export function CardSidebar({
         ) : (
           <span className="text-sm text-foreground">
             {card.dueDate ? (
-              new Date(card.dueDate).toLocaleDateString('en-US')
+              new Date(card.dueDate).toLocaleDateString('es-ES')
             ) : (
               <span className="text-muted-foreground">—</span>
             )}
