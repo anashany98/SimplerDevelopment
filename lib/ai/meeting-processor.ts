@@ -81,7 +81,7 @@ Rules:
 - Tasks must be concrete next actions, not aspirations. "Send proposal by Friday" is a task; "consider improving processes" is not.
 - Mark complianceFlag=true on any task touching SSN, account numbers, tax IDs, medical info, or anything that triggers regulated review.
 - If something is ambiguous, add it to missingContext rather than inventing a value.
-- Never fabricate names, emails, dates, or dollar amounts that aren't in the transcript.
+- Never fabricate names, emails, dates, or amounts that aren't in the transcript.
 - Empty arrays are valid. Don't pad output.`;
 
 /**

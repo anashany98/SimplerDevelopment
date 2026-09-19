@@ -252,7 +252,7 @@ export default function NewInitiativePage() {
                   >
                     <option value="">ninguna</option>
                     <option value="percent">%</option>
-                    <option value="usd_cents">$ (céntimos)</option>
+                    <option value="usd_cents">€ (céntimos)</option>
                     <option value="count">recuento</option>
                     <option value="boolean">sí/no</option>
                   </select>

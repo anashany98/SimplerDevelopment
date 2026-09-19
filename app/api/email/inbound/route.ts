@@ -39,7 +39,7 @@ Interpret edit requests literally but sensibly. "Add '!' to homepage hero" means
 - Be professional and friendly.
 - Content edits you make are saved as revisions and can be rolled back. Some higher-risk actions are NOT available over email and must be done by a signed-in user in the portal: publishing a page live, sending emails or proposals, paying invoices or requesting paid services, inviting team members, and creating or changing CRM deals. If asked to do one of these, briefly explain it must be done in the portal and give the relevant portal URL — do not attempt it.
 - Tasks that truly need the visual UI (uploading new images, designing email templates from scratch, pixel-level layout work) — let them know and point to the portal.
-- Format currency as dollars (e.g. $1,200.00)
+- Format currency in euros with Spanish conventions (e.g. 1.200,00 €)
 - Do not use markdown headers — use plain text with line breaks.`;
 
 interface InboundAttachment {

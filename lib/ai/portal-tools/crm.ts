@@ -507,7 +507,7 @@ export const crmHandlers: Record<string, CrmHandler> = {
       dealId: input.deal_id ? Number(input.deal_id) : null,
       summary: (input.summary as string)?.trim() || null,
       lineItems, fees: [], sections: [],
-      currency: 'USD', status: 'draft', clientToken,
+      currency: 'EUR', status: 'draft', clientToken,
       validUntil: input.valid_until ? new Date(input.valid_until as string) : null,
       createdBy: userId,
     }).returning();
