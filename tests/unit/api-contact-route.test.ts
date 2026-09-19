@@ -206,6 +206,7 @@ describe('POST /api/contact — CRM lead capture', () => {
 
   it('captures the lead even when no mail provider is configured', async () => {
     delete process.env.RESEND_API_KEY;
+    delete process.env.EMAIL_TRANSPORT;
     mocks.upsertContactByEmail.mockResolvedValue({ contactId: 78, created: true });
     mocks.ensureDefaultPipeline.mockResolvedValue({ id: 5 });
     mocks.dbQueue.push([{ id: 42 }]);

@@ -81,6 +81,11 @@ vi.mock('@/lib/db/schema', () => ({
 // Env helpers
 // ---------------------------------------------------------------------------
 const ORIG_ENV = { ...process.env };
+// A dev's .env.local sets EMAIL_TRANSPORT=mailpit for local dev. These tests
+// assert the Resend path, so pin the transport off in both the live env and
+// the snapshot that resetEnv() restores from.
+delete ORIG_ENV.EMAIL_TRANSPORT;
+delete process.env.EMAIL_TRANSPORT;
 function resetEnv() {
   for (const k of Object.keys(process.env)) delete process.env[k];
   Object.assign(process.env, ORIG_ENV);

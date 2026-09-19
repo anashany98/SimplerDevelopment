@@ -48,7 +48,11 @@ describe('Channels settings Meta configuration', () => {
     expect(screen.getByLabelText('Secreto de la app de Meta')).toHaveAttribute('type', 'password');
     expect(screen.getByLabelText('Token de verificación del webhook')).toHaveAttribute('type', 'password');
     for (const button of screen.getAllByRole('button', { name: 'Conectar' })) expect(button).toBeDisabled();
-    expect(screen.getByText('http://localhost:3000/api/portal/channels/meta/callback')).toBeTruthy();
+    // The callback URL arrives with the async config fetch — wait for it
+    // instead of assuming the state update already landed.
+    expect(
+      await screen.findByText('http://localhost:3000/api/portal/channels/meta/callback'),
+    ).toBeTruthy();
   });
 
   it('saves through the tenant API, enables Connect, and clears secret inputs', async () => {

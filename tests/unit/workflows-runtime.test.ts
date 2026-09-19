@@ -198,6 +198,8 @@ function extractEqValue(filter: unknown): number | null {
 }
 
 beforeEach(() => {
+  // A dev's .env.local sets EMAIL_TRANSPORT=mailpit; this suite mocks Resend.
+  delete process.env.EMAIL_TRANSPORT;
   state.workflows.length = 0;
   state.workflowRuns.length = 0;
   state.workflowStepLogs.length = 0;

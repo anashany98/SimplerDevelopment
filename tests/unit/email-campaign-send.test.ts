@@ -221,6 +221,8 @@ beforeEach(() => {
   // Ensure the platform Resend key is present so the else-branch in
   // executeCampaignSend doesn't throw before reaching the mocked Resend ctor.
   process.env.RESEND_API_KEY = 'test-platform-key';
+  // A dev's .env.local sets EMAIL_TRANSPORT=mailpit; this suite mocks Resend.
+  delete process.env.EMAIL_TRANSPORT;
   H.dbState.alreadySent = [];
   H.dbState.activeSubs = [];
   H.resetSubFetches();
