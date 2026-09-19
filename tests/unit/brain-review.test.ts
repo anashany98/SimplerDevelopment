@@ -740,7 +740,7 @@ describe('approveReviewItem', () => {
     expect(state.brainMeetings[0].dealId).toBe(d.id);
   });
 
-  it('crm_deal_create: defaults currency to USD and value to null for non-positive numbers', async () => {
+  it('crm_deal_create: defaults currency to EUR and value to null for non-positive numbers', async () => {
     state.crmPipelines.push({ id: 1, clientId: 1, isDefault: true });
     state.crmPipelineStages.push({ id: 11, pipelineId: 1, sortOrder: 1 });
     state.brainAiReviewItems.push({
@@ -756,7 +756,7 @@ describe('approveReviewItem', () => {
     await approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 });
     const d = state.crmDeals[0];
     expect(d.value).toBeNull();
-    expect(d.currency).toBe('USD');
+    expect(d.currency).toBe('EUR');
     expect(d.priority).toBe('medium'); // default
   });
 
