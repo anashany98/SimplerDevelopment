@@ -474,7 +474,7 @@ function TaskCard({
         {task.dueDate && (
           <span className="text-xs text-muted-foreground flex items-center gap-0.5">
             <span className="material-icons text-xs">event</span>
-            {new Date(task.dueDate).toLocaleDateString()}
+            {new Date(task.dueDate).toLocaleDateString('es-ES')}
           </span>
         )}
         {task.createdByAi && (
@@ -979,7 +979,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                     )}
                     {meeting?.meetingDate && (
                       <span className="text-xs text-muted-foreground ml-2">
-                        {new Date(meeting.meetingDate).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                        {new Date(meeting.meetingDate).toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' })}
                       </span>
                     )}
                   </div>
@@ -1123,7 +1123,7 @@ function describeProposal(item: ReviewItem): string {
     case 'crm_deal_link': return `Vincular a negocio #${n('dealId')}`;
     case 'crm_deal_create': {
       const value = n('value');
-      const v = value !== null ? ` (${formatCents(value, s('currency') || 'USD')})` : '';
+      const v = value !== null ? ` (${formatCents(value, s('currency') || 'EUR')})` : '';
       return `Crear negocio: ${s('title') || '(sin título)'}${v}`;
     }
     case 'crm_company_link': {
@@ -1184,7 +1184,7 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
 
 function formatCents(cents: number, currency: string): string {
   try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(cents / 100);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency }).format(cents / 100);
   } catch {
     return `${(cents / 100).toFixed(2)} ${currency}`;
   }

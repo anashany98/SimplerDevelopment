@@ -59,7 +59,7 @@ function formatLimit(value: number | string | undefined): string {
   if (value === undefined || value === null) return '—';
   if (typeof value === 'string') return value;
   if (value >= 9_000) return 'Ilimitado';
-  return value.toLocaleString();
+  return value.toLocaleString('es-ES');
 }
 
 export default function ClientPlanPage({ params }: { params: Promise<{ id: string }> }) {
@@ -351,7 +351,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
             <p className="text-lg font-semibold text-foreground">{active ? active.name : 'Sin nivel asignado'}</p>
             {active?.startDate && (
               <p className="text-xs text-muted-foreground">
-                Iniciado el {new Date(active.startDate).toLocaleDateString()}
+                Iniciado el {new Date(active.startDate).toLocaleDateString('es-ES')}
               </p>
             )}
           </div>
@@ -391,7 +391,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                 <h3 className="text-lg font-semibold text-foreground">{tier.name}</h3>
                 <p className="text-sm text-muted-foreground mt-1 min-h-[3rem]">{tier.description ?? ''}</p>
                 <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-foreground">${(tier.price / 100).toFixed(0)}</span>
+                  <span className="text-3xl font-bold text-foreground">{formatCents(tier.price)}</span>
                   <span className="text-sm text-muted-foreground">/{tier.billingCycle ?? 'mes'}</span>
                 </div>
 

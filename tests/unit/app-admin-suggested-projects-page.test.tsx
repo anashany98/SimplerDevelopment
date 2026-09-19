@@ -28,7 +28,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/lib/portal-utils', () => ({
-  formatCents: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+  formatCents: (cents: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100),
 }));
 
 // SurveyBuilder renders nothing — it just needs to be a valid React component
@@ -181,7 +181,7 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('renders estimated price via formatCents', async () => {
       await renderPage();
-      expect(screen.getByText('$1500.00')).toBeTruthy();
+      expect(screen.getByText('1500,00 €')).toBeTruthy();
     });
 
     it('renders "Quote on request" when no price', async () => {

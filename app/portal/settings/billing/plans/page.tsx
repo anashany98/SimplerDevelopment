@@ -16,6 +16,7 @@ import { type ReactNode, Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { VOLUME_TIERS, volumeTierFor, nextVolumeTier, SEAT_PRICE_CAP_CENTS, INCLUDED_SEATS } from '@/lib/billing/domain-catalog';
+import { formatMoney } from '@/lib/utils/money';
 import { pBtnPrimary, pBtnGhost } from '@/components/portal/portal-ui';
 import { verifyCheckoutSession } from '@/components/portal/billing/verify-checkout-session';
 
@@ -99,17 +100,15 @@ interface ModulesResponse {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(0)}`;
-}
+function formatCents(cents: number): string { return formatMoney(cents, { fractionDigits: 0 }); }
 
 function formatMeterLabel(meter: DomainMeter): string {
-  const included = meter.includedPerMonth.toLocaleString();
+  const included = meter.includedPerMonth.toLocaleString('es-ES');
   const overageUnit = meter.overageUnitSize === 1
     ? meter.unit
-    : `${meter.overageUnitSize.toLocaleString()} ${meter.unit}`;
-  const overageDollars = (meter.overageRateCents / 100).toFixed(2);
-  return `${included} ${meter.unit}/mes incluidos, luego $${overageDollars} por ${overageUnit}`;
+    : `${meter.overageUnitSize.toLocaleString('es-ES')} ${meter.unit}`;
+  const overageDollars = (meter.overageRateCents / 100).toFixed(2).replace('.', ',');
+  return `${included} ${meter.unit}/mes incluidos, luego ${overageDollars} € por ${overageUnit}`;
 }
 
 // ── Module Card ───────────────────────────────────────────────────────────────

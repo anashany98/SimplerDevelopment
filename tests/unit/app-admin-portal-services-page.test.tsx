@@ -20,7 +20,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/lib/portal-utils', () => ({
-  formatCents: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+  formatCents: (cents: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100),
 }));
 
 // SurveyBuilder renders complex conditional logic — stub it to a simple pass-through.
@@ -161,7 +161,7 @@ describe('AdminPortalServicesPage — service list', () => {
   it('renders service name and formatted price', async () => {
     await renderAndLoad([makeService({ price: 4999 })]);
     expect(screen.getByText('Website Maintenance')).toBeInTheDocument();
-    expect(screen.getByText('$49.99')).toBeInTheDocument();
+    expect(screen.getByText('49,99 €')).toBeInTheDocument();
   });
 
   it('renders billing cycle when not "once"', async () => {
@@ -271,7 +271,7 @@ describe('AdminPortalServicesPage — create form', () => {
     fireEvent.click(screen.getByText('Nuevo servicio'));
     expect(screen.getByText('Nombre del servicio')).toBeInTheDocument();
     expect(screen.getByText('Categoría')).toBeInTheDocument();
-    expect(screen.getByText('Precio (USD)')).toBeInTheDocument();
+    expect(screen.getByText('Precio (EUR)')).toBeInTheDocument();
     expect(screen.getByText('Ciclo de facturación')).toBeInTheDocument();
     expect(screen.getByText('Características (una por línea)')).toBeInTheDocument();
   });

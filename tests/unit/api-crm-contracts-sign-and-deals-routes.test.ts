@@ -694,14 +694,14 @@ describe('POST /api/portal/crm/deals', () => {
     expect(body.success).toBe(true);
     expect(body.data.id).toBe(99);
 
-    // Inserted with defaults: currency=USD, status=open, priority=medium,
+    // Inserted with defaults: currency=EUR, status=open, priority=medium,
     // ownerId fell back to userId (42), sortOrder=0.
     expect(insertCalls).toHaveLength(1);
     expect(insertCalls[0].table).toBe('crmDeals');
     expect(insertCalls[0].values).toMatchObject({
       clientId: 10,
       title: 'New Deal',
-      currency: 'USD',
+      currency: 'EUR',
       status: 'open',
       priority: 'medium',
       sortOrder: 0,

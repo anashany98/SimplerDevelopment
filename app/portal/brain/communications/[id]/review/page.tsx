@@ -265,7 +265,7 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
   } else if (item.proposedType === 'crm_deal_link') {
     summary = `Vincular este correo al negocio #${p.dealId}`;
   } else if (item.proposedType === 'crm_deal_create') {
-    const value = typeof p.value === 'number' ? ` (${formatCents(p.value, typeof p.currency === 'string' ? p.currency : 'USD')})` : '';
+    const value = typeof p.value === 'number' ? ` (${formatCents(p.value, typeof p.currency === 'string' ? p.currency : 'EUR')})` : '';
     summary = `Crear negocio: ${typeof p.title === 'string' ? p.title : '(sin título)'}${value}`;
   } else if (item.proposedType === 'crm_company_link') {
     const candidates = Array.isArray(p.candidateCompanyIds) ? p.candidateCompanyIds : [];
@@ -415,7 +415,7 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
 
 function formatCents(cents: number, currency: string): string {
   try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(cents / 100);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency }).format(cents / 100);
   } catch {
     return `${(cents / 100).toFixed(2)} ${currency}`;
   }

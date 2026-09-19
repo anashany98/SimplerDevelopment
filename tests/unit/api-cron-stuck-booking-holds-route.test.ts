@@ -238,7 +238,7 @@ describe('GET /api/cron/stuck-booking-holds', () => {
     expect(call.body).toContain('Discovery Call');
     expect(call.body).toContain('Ada Lovelace');
     expect(call.body).toContain('ada@example.com');
-    expect(call.body).toContain('$125.00');
+    expect(call.body).toContain('125,00\u00A0€');
     expect(call.body).toContain('Stripe PI: pi_123');
     expect(call.body).toContain('PREVIEW MODE');
     expect(call.body).toContain('Scheduled for: 2026-06-01T12:00:00.000Z');

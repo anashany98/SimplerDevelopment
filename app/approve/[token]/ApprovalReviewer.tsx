@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { BlockRenderer } from '@/components/blocks/render/BlockRenderer';
+import { formatCents } from '@/lib/portal-utils';
 import { PostPreview } from './PostPreview';
 
 export type ApprovalEntityPreview =
@@ -496,7 +497,7 @@ function PreviewBody({ preview }: { preview: ApprovalEntityPreview }) {
             <div>
               <div className="text-xs uppercase tracking-wider text-gray-500 mb-1">Precio</div>
               <div className="text-gray-900">
-                {preview.priceLabel ?? (preview.price > 0 ? `$${(preview.price / 100).toFixed(2)}` : 'Gratis')}
+                {preview.priceLabel ?? (preview.price > 0 ? formatCents(preview.price) : 'Gratis')}
               </div>
             </div>
             <div>

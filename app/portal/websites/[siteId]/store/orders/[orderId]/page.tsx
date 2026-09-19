@@ -426,7 +426,7 @@ export default function OrderDetailPage() {
             </span>
           </span>
         }
-        subtitle={new Date(order.createdAt).toLocaleString()}
+        subtitle={new Date(order.createdAt).toLocaleString('es-ES')}
       />
 
       {/* Messages */}
@@ -679,7 +679,7 @@ export default function OrderDetailPage() {
               {order.labelPurchasedAt && (
                 <div>
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Comprado</p>
-                  <p className="text-foreground">{new Date(order.labelPurchasedAt).toLocaleString()}</p>
+                  <p className="text-foreground">{new Date(order.labelPurchasedAt).toLocaleString('es-ES')}</p>
                 </div>
               )}
               {order.labelCostCents != null && (
@@ -853,7 +853,7 @@ export default function OrderDetailPage() {
                 {order.printfulSubmittedAt && (
                   <div>
                     <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Enviado el</p>
-                    <p className="text-foreground mt-1">{new Date(order.printfulSubmittedAt).toLocaleString()}</p>
+                    <p className="text-foreground mt-1">{new Date(order.printfulSubmittedAt).toLocaleString('es-ES')}</p>
                   </div>
                 )}
               </div>
@@ -931,7 +931,7 @@ export default function OrderDetailPage() {
                     >
                       {event.status}
                     </span>
-                    <span className="text-xs text-muted-foreground">{new Date(event.createdAt).toLocaleString()}</span>
+                    <span className="text-xs text-muted-foreground">{new Date(event.createdAt).toLocaleString('es-ES')}</span>
                   </div>
                   {event.note && <p className="text-sm text-muted-foreground mt-1">{event.note}</p>}
                 </div>

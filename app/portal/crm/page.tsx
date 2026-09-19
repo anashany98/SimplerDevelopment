@@ -53,9 +53,9 @@ const activityIcons: Record<string, string> = {
 
 function formatCompact(cents: number): string {
   const dollars = cents / 100;
-  if (dollars >= 1_000_000) return `$${(dollars / 1_000_000).toFixed(1)}M`;
-  if (dollars >= 1_000) return `$${(dollars / 1_000).toFixed(1)}K`;
-  return `$${dollars.toFixed(0)}`;
+  if (dollars >= 1_000_000) return `${(dollars / 1_000_000).toFixed(1).replace('.', ',')}M €`;
+  if (dollars >= 1_000) return `${(dollars / 1_000).toFixed(1).replace('.', ',')}K €`;
+  return `${dollars.toFixed(0)} €`;
 }
 
 function relativeTime(dateStr: string): string {
@@ -67,7 +67,7 @@ function relativeTime(dateStr: string): string {
   if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
   if (days < 7) return `hace ${days} d`;
-  return new Date(dateStr).toLocaleDateString();
+  return new Date(dateStr).toLocaleDateString('es-ES');
 }
 
 // --- SVG Chart Components ---

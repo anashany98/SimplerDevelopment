@@ -28,7 +28,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/lib/portal-utils', () => ({
-  formatCents: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+  formatCents: (cents: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100),
 }));
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -200,8 +200,8 @@ describe('AdminSubscriptionsPage', () => {
     it('shows MRR stat card', async () => {
       await renderPage();
       expect(screen.getByText('MRR')).toBeTruthy();
-      // baseSub is active + monthly + price 5000 cents = $50.00; appears in stat card AND table cell
-      expect(screen.getAllByText('$50.00').length).toBeGreaterThanOrEqual(1);
+      // baseSub is active + monthly + price 5000 cents = 50,00 €; appears in stat card AND table cell
+      expect(screen.getAllByText('50,00 €').length).toBeGreaterThanOrEqual(1);
     });
 
     it('shows Annual Revenue stat card with $0.00 when no annual subs', async () => {
@@ -229,9 +229,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      // MRR stat card = $30.00 (only monthly active); appears in stat + table
+      // MRR stat card = 30,00 € (only monthly active); appears in stat + table
       const mrrCard = screen.getByText('MRR').closest('div') as HTMLElement;
-      expect(mrrCard.textContent).toContain('$30.00');
+      expect(mrrCard.textContent).toContain('30,00\u00A0€');
     });
 
     it('counts annual revenue for annual active subs', async () => {
@@ -245,9 +245,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      // Annual revenue stat card = $1200.00
+      // Annual revenue stat card = 1200,00 €
       const annualCard = screen.getByText('Ingresos anuales').closest('div') as HTMLElement;
-      expect(annualCard.textContent).toContain('$1200.00');
+      expect(annualCard.textContent).toContain('1200,00\u00A0€');
     });
   });
 
@@ -281,8 +281,8 @@ describe('AdminSubscriptionsPage', () => {
 
     it('renders price formatted via formatCents', async () => {
       await renderPage();
-      // $50.00 appears in both the MRR stat card and the table cell
-      expect(screen.getAllByText('$50.00').length).toBeGreaterThanOrEqual(1);
+      // 50,00 € appears in both the MRR stat card and the table cell
+      expect(screen.getAllByText('50,00 €').length).toBeGreaterThanOrEqual(1);
     });
 
     it('renders billing cycle', async () => {
@@ -676,7 +676,7 @@ describe('AdminSubscriptionsPage', () => {
     it('shows amount input field', async () => {
       await openActionMenu();
       fireEvent.click(screen.getByText('Reembolso'));
-      await waitFor(() => screen.getByText('Importe (USD, opcional)'));
+      await waitFor(() => screen.getByText('Importe (EUR, opcional)'));
       expect(screen.getByPlaceholderText('Déjalo en blanco para reembolso completo')).toBeTruthy();
     });
 

@@ -217,8 +217,8 @@ describe('BookingFormInline — initial render', () => {
 
   it('renders the price badge when price > 0', async () => {
     const { container } = await renderWithInfo({ price: 5000, priceLabel: 'per session' });
-    // $50.00
-    expect(container.textContent).toContain('$50.00');
+    // 50,00 € (es-ES EUR, NBSP before the symbol)
+    expect(container.textContent).toContain('50,00\u00A0€');
     expect(container.textContent).toContain('per session');
   });
 

@@ -107,10 +107,10 @@ export default function NewInvoicePage() {
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Impuesto ($)</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Impuesto (EUR)</label>
               <input type="number" min="0" step="0.01" placeholder="0.00" value={form.tax} onChange={e => setForm({ ...form, tax: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-              <p className="text-xs text-muted-foreground mt-0.5">Introduce en dólares (p. ej. 5.00 = $5.00)</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Introduce en euros (p. ej. 5.00 = 5,00 €)</p>
             </div>
           </div>
 
@@ -131,7 +131,7 @@ export default function NewInvoicePage() {
                   <input type="number" min="1" placeholder="Cant." value={item.quantity}
                     onChange={e => updateItem(idx, 'quantity', parseInt(e.target.value, 10) || 1)}
                     className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-                  <input type="number" min="0" step="0.01" placeholder="Precio ($)" value={item.unitPrice}
+                  <input type="number" min="0" step="0.01" placeholder="Precio (EUR)" value={item.unitPrice}
                     onChange={e => updateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
                     className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
                   <button type="button" onClick={() => removeItem(idx)} disabled={items.length === 1}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { BookingPaymentForm } from './BookingPaymentForm';
+import { formatMoney as formatCents } from '@/lib/utils/money';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -123,10 +124,6 @@ function getFirstDayOfMonth(year: number, month: number) {
 
 function formatDate(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 const MONTH_NAMES = [

@@ -184,7 +184,7 @@ export default function AdminPortalServicesPage() {
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Precio (USD) <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-medium text-foreground mb-1">Precio (EUR) <span className="text-destructive">*</span></label>
         <input type="number" required min="0" step="0.01" placeholder="0.00" value={values.price}
           onChange={e => setValues({ ...values, price: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />

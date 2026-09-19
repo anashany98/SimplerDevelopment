@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pCard } from '@/components/portal/portal-ui';
+import { formatCents } from '@/lib/portal-utils';
 
 interface Quote {
   id: number;
@@ -16,10 +17,6 @@ interface Quote {
   paidAt: string | null;
   expiresAt: string | null;
   createdAt: string;
-}
-
-function formatCents(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 const STATUS_STYLES: Record<string, string> = {

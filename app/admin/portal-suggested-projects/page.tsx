@@ -111,7 +111,7 @@ function SuggestedProjectForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Precio estimado (USD)</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Precio estimado (EUR)</label>
         <input
           type="number" min="0" step="0.01" placeholder="Déjalo en blanco = Cotización a petición"
           value={values.estimatedPrice}

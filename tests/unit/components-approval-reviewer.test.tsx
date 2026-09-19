@@ -486,7 +486,7 @@ describe('ApprovalReviewer', () => {
     };
     render(<ApprovalReviewer {...buildProps({ preview })} />);
     expect(screen.getByText('60 min')).toBeTruthy();
-    expect(screen.getByText('$150.00')).toBeTruthy();
+    expect(screen.getByText('150,00 €')).toBeTruthy();
     expect(screen.getByText('America/New_York')).toBeTruthy();
     expect(screen.getByText('A one-hour consultation.')).toBeTruthy();
   });

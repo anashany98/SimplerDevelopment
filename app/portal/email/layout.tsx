@@ -80,7 +80,7 @@ function EmailUpsell({
 }: {
   emailService: typeof services.$inferSelect | null;
 }) {
-  const price = emailService ? formatCents(emailService.price) : '$19';
+  const price = emailService ? formatCents(emailService.price) : formatCents(1900);
   const cycle: string = emailService?.billingCycle ?? 'monthly';
   const description = emailService?.description
     ?? 'Envía campañas de email bonitas a tu audiencia. Gestiona listas de suscriptores, diseña emails con un editor enriquecido y sigue aperturas, clics y bajas — todo desde tu portal de cliente.';

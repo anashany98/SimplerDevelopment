@@ -362,7 +362,7 @@ export default function AdminSubscriptionsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {sub.renewalDate ? new Date(sub.renewalDate).toLocaleDateString() : '--'}
+                    {sub.renewalDate ? new Date(sub.renewalDate).toLocaleDateString('es-ES') : '--'}
                   </td>
                   <td className="px-4 py-3 relative">
                     <button
@@ -505,7 +505,7 @@ export default function AdminSubscriptionsPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      Importe (USD, opcional)
+                      Importe (EUR, opcional)
                     </label>
                     <input
                       type="number"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { BookingPaymentForm } from '@/components/blocks/render/BookingPaymentForm';
+import { formatMoney as formatCents } from '@/lib/utils/money';
 
 interface QuoteData {
   id: number;
@@ -15,10 +16,6 @@ interface QuoteData {
   endTime: string | null;
   status: string;
   alreadyPaid?: boolean;
-}
-
-function formatCents(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function QuotePaymentPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -138,9 +135,9 @@ export default function QuotePaymentPage({ params }: { params: Promise<{ slug: s
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-xl p-3">
                 <span className="material-icons text-base">event</span>
                 <span>
-                  {new Date(quote.startTime).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                  {new Date(quote.startTime).toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                   {' at '}
-                  {new Date(quote.startTime).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
+                  {new Date(quote.startTime).toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: false })}
                 </span>
               </div>
             )}

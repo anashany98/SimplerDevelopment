@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pBtnGhost, pCard, pInput } from '@/components/portal/portal-ui';
+import { formatCents } from '@/lib/portal-utils';
 
 interface GiftCert {
   id: number;
@@ -17,10 +18,6 @@ interface GiftCert {
   recipientEmail: string | null;
   redeemableAt: string;
   createdAt: string;
-}
-
-function formatCents(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -127,7 +124,7 @@ export default function GiftCertificatesPage() {
           <p className="text-xs text-muted-foreground">Esto crea un certificado activo de inmediato - sin pago requerido.</p>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Amount ($) *</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Amount (€) *</label>
               <input type="number" step="0.01" min="1" required value={amount} onChange={e => setAmount(e.target.value)}
                 placeholder="50.00" className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15" />
             </div>

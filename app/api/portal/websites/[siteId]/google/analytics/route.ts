@@ -102,8 +102,8 @@ export async function POST(
         requestBody: {
           parent: body.accountId,
           displayName: body.displayName || site.name,
-          timeZone: 'America/New_York',
-          currencyCode: 'USD',
+          timeZone: 'Europe/Madrid',
+          currencyCode: 'EUR',
         },
       });
       propertyId = propRes.data.name!;

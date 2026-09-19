@@ -769,8 +769,8 @@ describe('CrmDashboardPage — currency formatting', () => {
   it('renders formatCompact for revenue axis labels', async () => {
     const { container } = await renderLoaded();
     // The SVG line chart renders axis labels using formatCompact; max revenue is 150000 cents
-    // formatCompact(150000) → "$1.5K"
-    expect(container.textContent).toContain('$1.5K');
+    // formatCompact(150000) → "1,5K €"
+    expect(container.textContent).toContain('1,5K €');
   });
 });
 

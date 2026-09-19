@@ -379,7 +379,7 @@ describe('POST /api/portal/crm/contracts', () => {
       clauses: [],
       lineItems: [],
       fees: [],
-      currency: 'USD',
+      currency: 'EUR',
       accentColor: '#2563eb',
       createdBy: 7,
       clientToken: 'tok',

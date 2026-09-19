@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pCardPad, pSectionTitle, pInput } from '@/components/portal/portal-ui';
+import { formatCents } from '@/lib/portal-utils';
 
 interface AnalyticsData {
   totalRevenue: number;
@@ -16,10 +17,6 @@ interface AnalyticsData {
   byDay: { date: string; revenue: number; bookings: number; guests: number }[];
   byPage: { pageId: number; title: string; revenue: number; bookings: number }[];
   topAddOns: { name: string; revenue: number; count: number }[];
-}
-
-function formatCents(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function BookingAnalyticsPage() {

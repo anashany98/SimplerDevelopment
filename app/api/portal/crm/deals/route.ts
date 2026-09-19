@@ -171,7 +171,7 @@ export async function POST(req: Request) {
       companyId: body.companyId || null,
       title: body.title.trim(),
       value: body.value != null ? body.value : null,
-      currency: body.currency || 'USD',
+      currency: body.currency || 'EUR',
       status: body.status || 'open',
       priority: body.priority || 'medium',
       expectedCloseDate: body.expectedCloseDate ? new Date(body.expectedCloseDate) : null,

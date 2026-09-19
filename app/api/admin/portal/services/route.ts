@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       const priceParams: Record<string, unknown> = {
         product: product.id,
         unit_amount: body.price,
-        currency: 'usd',
+        currency: 'eur',
         metadata: { serviceId: String(svc.id) },
       };
       if (body.billingCycle === 'monthly') priceParams.recurring = { interval: 'month' };
