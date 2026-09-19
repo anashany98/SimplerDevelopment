@@ -85,7 +85,7 @@ export async function sendTrialWillEndEmail(opts: {
   trialEndDate: Date;
 }): Promise<void> {
   const greeting = opts.companyName ? `Hi ${opts.companyName},` : 'Hi there,';
-  const formatted = opts.trialEndDate.toLocaleDateString('en-US', {
+  const formatted = opts.trialEndDate.toLocaleDateString('es-ES', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',

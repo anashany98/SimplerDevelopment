@@ -318,7 +318,7 @@ describe('extractContentForEntity — deals', () => {
     expect(out.text).toContain('Big Co Renewal');
     expect(out.text).toContain('Status: open');
     expect(out.text).toContain('Priority: high');
-    expect(out.text).toContain('Value: $12,345.00');
+    expect(out.text).toContain('Value: 12.345,00\u00a0US$');
     expect(out.text).toContain('Company: Acme');
     expect(out.text).toContain('Contact: Jane Doe');
     expect(out.text).toContain('deal notes');
@@ -347,7 +347,7 @@ describe('extractContentForEntity — deals', () => {
     const out = await extractContentForEntity(1, 'deal', 1);
     // 100000 cents -> 1,000.00 EUR — locale formatting varies but value must appear
     expect(out.text).toMatch(/Euro/);
-    expect(out.text).toMatch(/Value: .*1,000\.00/);
+    expect(out.text).toContain('Value: 1000,00\u00a0€');
   });
 
   it('renders just the title when all meta is null', async () => {

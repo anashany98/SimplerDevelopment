@@ -331,7 +331,7 @@ describe('renderContractPdf', () => {
         lineItems: [{ description: 'Item', quantity: 3 }],
       });
       const texts = allDrawnTexts();
-      expect(texts.some((t) => t.includes('0.00'))).toBe(true);
+      expect(texts.some((t) => t.includes('0,00'))).toBe(true);
     });
 
     it('defaults quantity to 1 when omitted — total = unitPrice cents / 100', async () => {
@@ -341,7 +341,7 @@ describe('renderContractPdf', () => {
         lineItems: [{ description: 'Item', unitPrice: 10000 }],
       });
       const texts = allDrawnTexts();
-      expect(texts.some((t) => t.includes('100.00'))).toBe(true);
+      expect(texts.some((t) => t.includes('100,00'))).toBe(true);
     });
 
     it('uses provided total when present (overrides qty×price) — cents input', async () => {
@@ -351,7 +351,7 @@ describe('renderContractPdf', () => {
         lineItems: [{ description: 'X', quantity: 1, unitPrice: 10000, total: 99900 }],
       });
       const texts = allDrawnTexts();
-      expect(texts.some((t) => t.includes('999.00'))).toBe(true);
+      expect(texts.some((t) => t.includes('999,00'))).toBe(true);
     });
 
     it('draws fees with label and formatted amount from cents', async () => {
@@ -363,7 +363,7 @@ describe('renderContractPdf', () => {
       });
       const texts = allDrawnTexts();
       expect(texts.some((t) => t.includes('Setup fee'))).toBe(true);
-      expect(texts.some((t) => t.includes('25.00'))).toBe(true);
+      expect(texts.some((t) => t.includes('25,00'))).toBe(true);
     });
 
     it('falls back to "Fee" when fee label is omitted', async () => {
@@ -387,7 +387,7 @@ describe('renderContractPdf', () => {
       const texts = allDrawnTexts();
       // "Total:" and the formatted amount are drawn as separate drawText calls
       expect(texts.some((t) => t === 'Total:')).toBe(true);
-      expect(texts.some((t) => t.includes('110.00'))).toBe(true);
+      expect(texts.some((t) => t.includes('110,00'))).toBe(true);
     });
 
     it('uses default currency USD when currency is null', async () => {
@@ -397,8 +397,8 @@ describe('renderContractPdf', () => {
         currency: null,
       });
       const texts = allDrawnTexts();
-      // Intl.NumberFormat with USD produces "$" not "USD" literally; check for $
-      expect(texts.some((t) => t.includes('$'))).toBe(true);
+      // Intl.NumberFormat with EUR produces "€" not "EUR" literally; check for €
+      expect(texts.some((t) => t.includes('€'))).toBe(true);
     });
 
     it('respects a custom currency code', async () => {

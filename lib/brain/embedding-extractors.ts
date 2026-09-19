@@ -227,7 +227,7 @@ async function extractDeal(clientId: number, id: number): Promise<ExtractedConte
   }
 
   const valueStr = d.value !== null && d.value !== undefined
-    ? `${(d.value / 100).toLocaleString('en-US', { style: 'currency', currency: d.currency ?? 'USD' })}`
+    ? `${(d.value / 100).toLocaleString('es-ES', { style: 'currency', currency: d.currency ?? 'EUR' })}`
     : null;
 
   const meta = [

@@ -26,7 +26,7 @@ function monthKeys(n: number): { key: string; label: string }[] {
     const m = new Date(now.getFullYear(), now.getMonth() - i, 1);
     out.push({
       key: `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, '0')}`,
-      label: m.toLocaleString('en-US', { month: 'short' }),
+      label: m.toLocaleString('es-ES', { month: 'short' }),
     });
   }
   return out;

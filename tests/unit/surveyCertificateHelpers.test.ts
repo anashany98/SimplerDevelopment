@@ -24,11 +24,11 @@ describe('formatCompletionDate', () => {
   it('formats a Date as "Month Day, Year"', () => {
     // 2026-05-12 UTC noon — well clear of any DST edge.
     const d = new Date('2026-05-12T12:00:00Z');
-    expect(formatCompletionDate(d)).toBe('May 12, 2026');
+    expect(formatCompletionDate(d)).toBe('12 de mayo de 2026');
   });
 
   it('accepts an ISO string', () => {
-    expect(formatCompletionDate('2026-01-03T12:00:00Z')).toBe('January 3, 2026');
+    expect(formatCompletionDate('2026-01-03T12:00:00Z')).toBe('3 de enero de 2026');
   });
 
   it('falls back to today for missing / invalid input', () => {
