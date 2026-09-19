@@ -69,14 +69,14 @@ function isToday(d: Date) {
 }
 
 function formatMonthYear(d: Date) {
-  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 }
 
 function formatWeekRange(d: Date) {
   const s = startOfWeek(d);
   const e = endOfWeek(d);
   const fmt = (x: Date) =>
-    x.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    x.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
   return `${fmt(s)} - ${fmt(e)}, ${e.getFullYear()}`;
 }
 
@@ -315,7 +315,7 @@ function CreatePostModal({
         </div>
 
         <p className="text-sm text-muted-foreground mb-4">
-          {date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          {date.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
         </p>
 
         {error && (

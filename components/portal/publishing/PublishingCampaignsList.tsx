@@ -203,7 +203,7 @@ function StatusChip({ status }: { status: string }) {
 
 function formatRange(start: string | null, end: string | null): string {
   if (!start && !end) return '—';
-  const fmt = (s: string) => new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const fmt = (s: string) => new Date(s).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
   if (start && end) return `${fmt(start)} → ${fmt(end)}`;
   if (start) return `desde ${fmt(start)}`;
   return `hasta ${fmt(end!)}`;

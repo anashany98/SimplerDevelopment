@@ -198,7 +198,7 @@ describe('ContentCalendar — toolbar', () => {
 
   it('shows the current month label by default', async () => {
     const { container } = await renderCalendar();
-    const expected = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const expected = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
     expect(container.textContent).toContain(expected);
   });
 
@@ -254,7 +254,7 @@ describe('ContentCalendar — navigation', () => {
     fireEvent.click(nextBtn);
 
     fireEvent.click(screen.getByRole('button', { name: /hoy/i }));
-    const expected = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const expected = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
     await waitFor(() => expect(container.textContent).toContain(expected));
   });
 

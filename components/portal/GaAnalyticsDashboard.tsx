@@ -116,7 +116,7 @@ function formatDate(dateStr: string): string {
   const y = dateStr.slice(0, 4);
   const m = dateStr.slice(4, 6);
   const d = dateStr.slice(6, 8);
-  return new Date(`${y}-${m}-${d}`).toLocaleDateString('en-US', {
+  return new Date(`${y}-${m}-${d}`).toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric',
   });

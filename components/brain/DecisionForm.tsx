@@ -18,9 +18,8 @@
  * the decision row exists.
  */
 import { useEffect, useMemo, useState } from 'react';
-import type {
-  BrainDecisionReversibility,
-} from '@/lib/db/schema';
+import type { BrainDecisionReversibility } from '@/lib/db/schema';
+import { formatCents } from '@/lib/portal-utils';
 import EntityPicker, { type EntityPickerRow } from './EntityPicker';
 
 interface TeamMember {
@@ -551,7 +550,7 @@ function meetingDisplayRow(raw: unknown): EntityPickerRow | null {
   const date = r.meetingDate ?? r.createdAt;
   const dateStr =
     typeof date === 'string' || date instanceof Date
-      ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      ? new Date(date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' })
       : null;
   return {
     id: r.id,
@@ -567,7 +566,7 @@ function noteDisplayRow(raw: unknown): EntityPickerRow | null {
   const updated = r.updatedAt;
   const dateStr =
     typeof updated === 'string' || updated instanceof Date
-      ? new Date(updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      ? new Date(updated).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })
       : null;
   return {
     id: r.id,
@@ -593,7 +592,7 @@ function dealDisplayRow(raw: unknown): EntityPickerRow | null {
   if (typeof r.id !== 'number') return null;
   const sec: string[] = [];
   if (typeof r.companyName === 'string' && r.companyName.trim()) sec.push(r.companyName);
-  if (typeof r.value === 'number') sec.push(`$${r.value.toLocaleString()}`);
+  if (typeof r.value === 'number') sec.push(formatCents(r.value));
   return {
     id: r.id,
     primary: typeof r.title === 'string' && r.title.trim() ? r.title : `Deal #${r.id}`,

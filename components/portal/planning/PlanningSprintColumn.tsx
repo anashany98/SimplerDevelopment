@@ -18,7 +18,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: string 
 
 function formatDate(d: string | null) {
   if (!d) return null;
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(d).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 interface Props {

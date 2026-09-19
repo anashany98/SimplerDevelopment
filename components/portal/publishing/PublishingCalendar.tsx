@@ -69,12 +69,12 @@ function isToday(d: Date) {
   return isSameDay(d, new Date());
 }
 function formatMonthYear(d: Date) {
-  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 }
 function formatWeekRange(d: Date) {
   const s = startOfWeek(d);
   const e = endOfWeek(d);
-  const fmt = (x: Date) => x.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const fmt = (x: Date) => x.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
   return `${fmt(s)} - ${fmt(e)}, ${e.getFullYear()}`;
 }
 function getDaysInMonthView(d: Date): Date[] {

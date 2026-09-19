@@ -165,7 +165,7 @@ describe('ProjectMembersTab', () => {
       render(<ProjectMembersTab projectId={1} canManage={false} />);
       await waitFor(() =>
         expect(
-          screen.getByText(new Date('2025-01-15T10:00:00Z').toLocaleDateString('en-US')),
+          screen.getByText(new Date('2025-01-15T10:00:00Z').toLocaleDateString('es-ES')),
         ).toBeTruthy(),
       );
     });

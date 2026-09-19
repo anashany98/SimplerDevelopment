@@ -396,7 +396,7 @@ describe('ServicePaywall', () => {
     const { container } = render(<ServicePaywall {...baseProps} />);
     expect(container.textContent).toContain('Premium Plan');
     expect(container.textContent).toContain('All the features');
-    expect(container.textContent).toContain('$49.99');
+    expect(container.textContent).toContain('49,99\u00A0€');
     expect(container.textContent).toContain('/mo');
   });
 
@@ -411,7 +411,7 @@ describe('ServicePaywall', () => {
     const { container } = render(
       <ServicePaywall {...baseProps} billingCycle="once" />,
     );
-    expect(container.textContent).toContain('$49.99');
+    expect(container.textContent).toContain('49,99\u00A0€');
     expect(container.textContent).not.toContain('/mo');
     expect(container.textContent).not.toContain('/yr');
   });
