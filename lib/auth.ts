@@ -139,8 +139,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // deploy (VERCEL_ENV==='production'); previews/local stay host-only
         // (undefined), since pinning a domain on a `*.vercel.app` preview or
         // localhost makes the browser reject the cookie outright.
+        // Empty/whitespace counts as unset: a bare `AUTH_COOKIE_DOMAIN=` in a
+        // .env would otherwise pin `domain` to '' and the browser would reject
+        // the cookie (same rule as lib/plugins/tenant-cookie.ts).
         domain:
-          process.env.AUTH_COOKIE_DOMAIN ??
+          process.env.AUTH_COOKIE_DOMAIN?.trim() ||
           (process.env.VERCEL_ENV === 'production' ? '.simplerdevelopment.com' : undefined),
       },
     },
