@@ -1246,15 +1246,12 @@ describe('DecisionDetailPage — Section collapse/expand', () => {
       ) as HTMLButtonElement | undefined;
     await waitFor(() => expect(findBtn('Mostrar', 'Ocultar')).toBeTruthy());
     await act(async () => { fireEvent.click(findBtn('Mostrar', 'Ocultar')!); });
-    await waitFor(
-      () => expect(findBtn('Ocultar', 'Mostrar')).toBeTruthy(),
-      { timeout: 3000 },
-    );
+    // Use the global asyncUtilTimeout (5s, tests/setup.ts) instead of a
+    // tighter 3s: under full-suite load the toggle re-render can exceed 3s.
+    // A section that never toggles still fails — just later.
+    await waitFor(() => expect(findBtn('Ocultar', 'Mostrar')).toBeTruthy());
     await act(async () => { fireEvent.click(findBtn('Ocultar', 'Mostrar')!); });
-    await waitFor(
-      () => expect(findBtn('Mostrar', 'Ocultar')).toBeTruthy(),
-      { timeout: 3000 },
-    );
+    await waitFor(() => expect(findBtn('Mostrar', 'Ocultar')).toBeTruthy());
   });
 });
 
