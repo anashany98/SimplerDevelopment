@@ -38,6 +38,7 @@ export async function GET(request: Request) {
   const trashed = url.searchParams.get('trashed') === 'true';
   const untagged = url.searchParams.get('untagged') === 'true';
   const orphans = url.searchParams.get('orphans') === 'true';
+  const needsReviewRaw = url.searchParams.get('needsReview');
 
   const sortRaw = url.searchParams.get('sort');
   const orderRaw = url.searchParams.get('order');
@@ -72,6 +73,7 @@ export async function GET(request: Request) {
     untagged,
     orphans,
     trashed,
+    needsReview: needsReviewRaw === 'true' ? true : needsReviewRaw === 'false' ? false : undefined,
   };
 
   const [items, total] = await Promise.all([

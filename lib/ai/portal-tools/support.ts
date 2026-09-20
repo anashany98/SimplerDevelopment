@@ -5,6 +5,8 @@ import type Anthropic from '@anthropic-ai/sdk';
 import { db } from '@/lib/db';
 import { supportTickets, ticketMessages } from '@/lib/db/schema';
 import { eq, and, desc, asc } from 'drizzle-orm';
+import { computeSlaDeadlines } from '@/lib/tickets/sla';
+import { emitEvent } from '@/lib/automation/event-bus';
 
 export const supportTools: Anthropic.Tool[] = [
   {
@@ -115,13 +117,15 @@ export const supportHandlers: Record<string, SupportHandler> = {
     // app/api/portal/tickets/route.ts and lib/mcp/tools/tickets.ts's
     // tickets_create — no transaction, no unique constraint on
     // supportTickets.number, so concurrent creates from this client can
-    // collide on the same ticket number. Also skips lib/tickets/sla.ts, so
-    // tickets created via the chat assistant get no SLA deadlines.
+    // collide on the same ticket number.
     const [last] = await db.select({ number: supportTickets.number })
       .from(supportTickets).where(eq(supportTickets.clientId, clientId))
       .orderBy(desc(supportTickets.number)).limit(1);
 
     const ticketNumber = (last?.number ?? 0) + 1;
+
+    // Stamp SLA deadlines from priority, mirroring app/api/portal/tickets.
+    const { firstResponseDueAt, resolutionDueAt } = computeSlaDeadlines(priority);
 
     const [ticket] = await db.insert(supportTickets).values({
       number: ticketNumber,
@@ -131,6 +135,8 @@ export const supportHandlers: Record<string, SupportHandler> = {
       priority,
       category,
       createdBy: userId,
+      firstResponseDueAt,
+      resolutionDueAt,
     }).returning();
 
     await db.insert(ticketMessages).values({
@@ -138,6 +144,15 @@ export const supportHandlers: Record<string, SupportHandler> = {
       authorId: userId,
       body,
       isInternal: false,
+    });
+
+    emitEvent('ticket.created', clientId, userId, {
+      id: ticket.id,
+      number: ticket.number,
+      subject: ticket.subject,
+      category: ticket.category,
+      priority: ticket.priority,
+      status: 'open',
     });
 
     return {

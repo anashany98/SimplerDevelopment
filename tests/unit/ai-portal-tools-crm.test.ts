@@ -747,6 +747,27 @@ describe('create_crm_contact', () => {
       expect.objectContaining({ id: expect.any(Number) }),
     );
   });
+
+  it('returns first_name error when first_name is missing', async () => {
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_contact({}, 10, 1);
+    expect(res).toEqual({ error: 'first_name is required' });
+    expect(state.crmContacts).toHaveLength(0);
+  });
+
+  it('returns first_name error when first_name is blank', async () => {
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_contact({ first_name: '   ' }, 10, 1);
+    expect(res).toEqual({ error: 'first_name is required' });
+    expect(state.crmContacts).toHaveLength(0);
+  });
+
+  it('returns first_name error when first_name is not a string', async () => {
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_contact({ first_name: 42 }, 10, 1);
+    expect(res).toEqual({ error: 'first_name is required' });
+    expect(state.crmContacts).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------

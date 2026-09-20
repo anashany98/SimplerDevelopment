@@ -549,6 +549,48 @@ describe('POST /api/email/inbound — request validation', () => {
     expect(await res.json()).toEqual({ error: 'Unauthorized' });
   });
 
+  it('rejects (silently) when Authentication-Results shows a DKIM failure', async () => {
+    const POST = await importHandler();
+    const res = await POST(
+      makeReq({
+        secret: INBOUND_SECRET,
+        from: 'owner@acme.test',
+        to: 'acme@simplerdevelopment.com',
+        subject: 's',
+        body: 'b',
+        authResults: 'mx.google.com; spf=pass; dkim=fail header.d=acme.test',
+      }),
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      status: 'rejected',
+      reason: 'sender authentication failed',
+    });
+  });
+
+  it('requires a passing SPF/DKIM result when INBOUND_REQUIRE_SENDER_AUTH=1', async () => {
+    process.env.INBOUND_REQUIRE_SENDER_AUTH = '1';
+    try {
+      const POST = await importHandler();
+      const res = await POST(
+        makeReq({
+          secret: INBOUND_SECRET,
+          from: 'owner@acme.test',
+          to: 'acme@simplerdevelopment.com',
+          subject: 's',
+          body: 'b',
+        }),
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({
+        status: 'rejected',
+        reason: 'sender authentication required',
+      });
+    } finally {
+      delete process.env.INBOUND_REQUIRE_SENDER_AUTH;
+    }
+  });
+
   it('rejects with 400 when required fields are missing', async () => {
     const POST = await importHandler();
     const res = await POST(

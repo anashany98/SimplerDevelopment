@@ -347,10 +347,12 @@ export const crmHandlers: Record<string, CrmHandler> = {
   },
 
   create_crm_contact: async (input, clientId, userId) => {
-    const { first_name, last_name, email, phone, title, company_id, source, status, notes } = input as Record<string, string | number | undefined>;
+    const firstName = typeof input.first_name === 'string' ? input.first_name.trim() : '';
+    if (!firstName) return { error: 'first_name is required' };
+    const { last_name, email, phone, title, company_id, source, status, notes } = input as Record<string, string | number | undefined>;
     const [contact] = await db.insert(crmContacts).values({
       clientId,
-      firstName: (first_name as string).trim(),
+      firstName,
       lastName: (last_name as string)?.trim() || null,
       email: (email as string)?.trim() || null,
       phone: (phone as string)?.trim() || null,
@@ -404,13 +406,41 @@ export const crmHandlers: Record<string, CrmHandler> = {
 
     let pipelineId = input.pipeline_id ? Number(input.pipeline_id) : null;
     let stageId = input.stage_id ? Number(input.stage_id) : null;
+    const contactId = input.contact_id ? Number(input.contact_id) : null;
+    const companyId = input.company_id ? Number(input.company_id) : null;
 
     if (!pipelineId) {
       const pipeline = await ensureDefaultPipeline(clientId);
       pipelineId = pipeline.id;
+    } else {
+      // Caller-supplied pipeline must belong to this client before use.
+      const [pipeline] = await db.select({ id: crmPipelines.id }).from(crmPipelines)
+        .where(and(eq(crmPipelines.id, pipelineId), eq(crmPipelines.clientId, clientId)))
+        .limit(1);
+      if (!pipeline) return { error: 'Pipeline not found' };
     }
 
-    if (!stageId) {
+    // Reject cross-tenant FKs before they are attached to the deal.
+    if (contactId) {
+      const [contact] = await db.select({ id: crmContacts.id }).from(crmContacts)
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)))
+        .limit(1);
+      if (!contact) return { error: 'Contact not found' };
+    }
+    if (companyId) {
+      const [company] = await db.select({ id: crmCompanies.id }).from(crmCompanies)
+        .where(and(eq(crmCompanies.id, companyId), eq(crmCompanies.clientId, clientId)))
+        .limit(1);
+      if (!company) return { error: 'Company not found' };
+    }
+
+    if (stageId) {
+      // The chosen stage must belong to the resolved pipeline.
+      const [stage] = await db.select({ id: crmPipelineStages.id }).from(crmPipelineStages)
+        .where(and(eq(crmPipelineStages.id, stageId), eq(crmPipelineStages.pipelineId, pipelineId)))
+        .limit(1);
+      if (!stage) return { error: 'Stage not found' };
+    } else {
       const [firstStage] = await db.select({ id: crmPipelineStages.id }).from(crmPipelineStages)
         .where(eq(crmPipelineStages.pipelineId, pipelineId))
         .orderBy(asc(crmPipelineStages.sortOrder), asc(crmPipelineStages.id))
@@ -427,8 +457,8 @@ export const crmHandlers: Record<string, CrmHandler> = {
       value: valueCents,
       pipelineId,
       stageId,
-      contactId: input.contact_id ? Number(input.contact_id) : null,
-      companyId: input.company_id ? Number(input.company_id) : null,
+      contactId,
+      companyId,
       priority: (input.priority as string) || 'medium',
       expectedCloseDate: input.expected_close_date ? new Date(input.expected_close_date as string) : null,
       notes: (input.notes as string)?.trim() || null,
@@ -464,16 +494,36 @@ export const crmHandlers: Record<string, CrmHandler> = {
   },
 
   log_crm_activity: async (input, clientId, _userId) => {
+    const contactId = input.contact_id ? Number(input.contact_id) : null;
+    const dealId = input.deal_id ? Number(input.deal_id) : null;
+
+    // Reject cross-tenant links before inserting the activity. Without this a
+    // caller could attach an activity to another tenant's contact / deal, and
+    // the contact update below could write across tenants.
+    if (contactId) {
+      const [contact] = await db.select({ id: crmContacts.id }).from(crmContacts)
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)))
+        .limit(1);
+      if (!contact) return { error: 'Contact not found' };
+    }
+    if (dealId) {
+      const [deal] = await db.select({ id: crmDeals.id }).from(crmDeals)
+        .where(and(eq(crmDeals.id, dealId), eq(crmDeals.clientId, clientId)))
+        .limit(1);
+      if (!deal) return { error: 'Deal not found' };
+    }
+
     const [activity] = await db.insert(crmActivities).values({
       clientId,
       type: (input.type as string).trim(),
       title: (input.title as string).trim(),
       description: (input.description as string)?.trim() || null,
-      contactId: input.contact_id ? Number(input.contact_id) : null,
-      dealId: input.deal_id ? Number(input.deal_id) : null,
+      contactId,
+      dealId,
     }).returning();
-    if (input.contact_id) {
-      await db.update(crmContacts).set({ lastContactedAt: new Date() }).where(eq(crmContacts.id, Number(input.contact_id)));
+    if (contactId) {
+      await db.update(crmContacts).set({ lastContactedAt: new Date() })
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)));
     }
     return { success: true, activityId: activity.id, message: `Activity logged: ${activity.title}` };
   },

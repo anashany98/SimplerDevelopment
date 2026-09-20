@@ -87,11 +87,11 @@ export async function checkGroundedness(
       }
     }
 
-    // Intentionally optimistic: the grounder API call succeeded but returned no
-    // tool_use block (e.g. a pure conversational model response). This is an
-    // unexpected but non-fatal shape — we allow it through rather than surfacing
-    // a spurious "I don't know" disclaimer for answers that don't need retrieval.
-    return { confidence: 0.8, grounded: true, sources: [], uncertain: false };
+    // Fail CLOSED: the API call succeeded but returned no `grade` tool_use
+    // block, so we have no verdict. Treat it like the catch path below —
+    // surface the "I don't know" disclaimer rather than optimistically passing
+    // an unverified answer through as grounded.
+    return { confidence: 0, grounded: false, sources: [], uncertain: true };
   } catch {
     // Fail CLOSED: if the grounder call throws (network error, API failure,
     // unparseable response, etc.) we must NOT silently pass the answer through

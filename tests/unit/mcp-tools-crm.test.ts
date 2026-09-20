@@ -546,8 +546,18 @@ describe('crm_contacts_search', () => {
     const tools = registerAll(['*']);
     const res = await tools.get('crm_contacts_search')!.handler({});
     expect(res.isError).toBe(true);
-    const body = parseJson(res) as { pgCode: string };
+    const body = parseJson(res) as {
+      pgCode: string;
+      pgMessage: string;
+      pgDetail?: unknown;
+      drizzleMessage?: unknown;
+    };
     expect(body.pgCode).toBe('42703');
+    expect(body.pgMessage).toBe('column "x" does not exist');
+    // Internal schema/query details (rendered SQL + params, column detail) must
+    // not leak to external agent clients.
+    expect(body.pgDetail).toBeUndefined();
+    expect(body.drizzleMessage).toBeUndefined();
   });
 });
 
@@ -622,6 +632,14 @@ describe('crm_companies_search', () => {
     const tools = registerAll(['*']);
     const res = await tools.get('crm_companies_search')!.handler({});
     expect(res.isError).toBe(true);
+    const body = parseJson(res) as {
+      error: string;
+      pgDetail?: unknown;
+      drizzleMessage?: unknown;
+    };
+    expect(body.error).toMatch(/failed/);
+    expect(body.pgDetail).toBeUndefined();
+    expect(body.drizzleMessage).toBeUndefined();
   });
 });
 

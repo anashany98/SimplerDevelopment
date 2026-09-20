@@ -36,10 +36,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!wf) return NextResponse.json({ success: false, error: 'Workflow not found' }, { status: 404 });
 
   const body = (await req.json().catch(() => ({}))) as { context?: Record<string, unknown> };
+  // Caller context is merged FIRST: clientId and triggeredAt must never be
+  // overridable — a crafted body could otherwise point the run at another
+  // tenant's projects / Resend key.
   const context = {
+    ...(body.context ?? {}),
     clientId: client.id,
     triggeredAt: new Date().toISOString(),
-    ...(body.context ?? {}),
   };
 
   const result = await runWorkflow(wf.id, context, { triggeredBy: 'test-run' });

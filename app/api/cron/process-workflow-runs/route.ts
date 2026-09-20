@@ -22,9 +22,10 @@ export const runtime = 'nodejs';
  *  1. STUCK-RUN RECOVERY — reset steps stuck in `running` > 10 min back to
  *     `pending`, consuming a retry attempt so orphaned runs still hit the
  *     dead-letter limit.
- *  2. MAIN CLAIM — CAS-claim up to 100 pending/due steps, execute each,
- *     on success enqueue downstream nodes; on failure apply exponential
- *     backoff (1 min / 5 min) and dead-letter after 3 total attempts.
+ *  2. MAIN CLAIM — CAS-claim up to 100 claimable/due steps (`pending`, plus
+ *     `failed` steps whose backoff window has elapsed), execute each, on
+ *     success enqueue downstream nodes; on failure apply exponential backoff
+ *     (1 min / 5 min) and dead-letter after 3 total attempts.
  *
  * Backoff schedule (platform-wide, non-configurable in Phase 2):
  *   attempt 1 → status='failed', nextRetryAt = now + 1 min
@@ -105,15 +106,17 @@ async function _GET(req: Request) {
   }
 
   // ── PASS 2: MAIN CLAIM ────────────────────────────────────────────────────
-  // Select up to 100 steps that are pending and due (nextRetryAt is null or
-  // in the past). Order nulls first so fresh steps are executed before delayed
-  // retries.
+  // Select up to 100 steps that are claimable and due: fresh `pending` steps
+  // (nextRetryAt null) plus `failed` steps whose backoff window has elapsed.
+  // Without the `failed` arm the backoff contract never fires — a failed step
+  // keeps its nextRetryAt but is never re-claimed. Order nulls first so fresh
+  // steps are executed before delayed retries.
   const due = await db
     .select()
     .from(workflowRunSteps)
     .where(
       and(
-        eq(workflowRunSteps.status, 'pending'),
+        inArray(workflowRunSteps.status, ['pending', 'failed']),
         or(isNull(workflowRunSteps.nextRetryAt), lte(workflowRunSteps.nextRetryAt, now)),
       ),
     )
@@ -134,7 +137,7 @@ async function _GET(req: Request) {
       .where(
         and(
           eq(workflowRunSteps.id, step.id),
-          eq(workflowRunSteps.status, 'pending'),
+          inArray(workflowRunSteps.status, ['pending', 'failed']),
           or(isNull(workflowRunSteps.nextRetryAt), lte(workflowRunSteps.nextRetryAt, now)),
         ),
       )
@@ -347,6 +350,18 @@ async function handleStepFailure(
       .update(workflowRuns)
       .set({ status: 'failed', completedAt: now, error })
       .where(eq(workflowRuns.id, step.runId));
+
+    // The run is terminal — park its remaining steps so neither a pending
+    // sibling nor a scheduled retry can execute against a failed run.
+    await db
+      .update(workflowRunSteps)
+      .set({ status: 'dead_letter', error: 'parent run failed', updatedAt: now })
+      .where(
+        and(
+          eq(workflowRunSteps.runId, step.runId),
+          inArray(workflowRunSteps.status, ['pending', 'failed']),
+        ),
+      );
   } else {
     // Schedule a retry with exponential backoff.
     const backoffMs = BACKOFF_MS[newAttemptCount] ?? BACKOFF_MS[2];

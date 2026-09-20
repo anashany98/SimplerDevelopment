@@ -8,6 +8,11 @@ import {
   suggestedProjects, suggestedProjectRequests,
 } from '@/lib/db/schema';
 import { eq, and, isNull, or } from 'drizzle-orm';
+import { randomBytes } from 'crypto';
+import { sendInviteEmail } from '@/lib/email/invite-email';
+import { hashToken } from '@/lib/security/token-hash';
+
+const VALID_ROLES = ['admin', 'member', 'viewer'] as const;
 
 export const teamTools: PortalTool[] = [
   {
@@ -145,19 +150,15 @@ export const teamHandlers: Record<string, TeamHandler> = {
     return { success: true, requestId: req.id, message: `Request for "${sp.title}" submitted. The team will review it shortly.` };
   },
 
-  update_profile: async (input, clientId, _userId) => {
+  update_profile: async (input, clientId, userId) => {
     const { name, company, phone, website, address } = input as {
       name?: string; company?: string; phone?: string; website?: string; address?: string;
     };
 
-    // Update user name if provided
+    // Update the acting user's name — not the client owner's (clients.userId).
     if (name) {
-      const [client] = await db.select({ userId: clients.userId })
-        .from(clients).where(eq(clients.id, clientId)).limit(1);
-      if (client) {
-        await db.update(users).set({ name, updatedAt: new Date() })
-          .where(eq(users.id, client.userId));
-      }
+      await db.update(users).set({ name, updatedAt: new Date() })
+        .where(eq(users.id, userId));
     }
 
     // Update client fields if provided
@@ -176,22 +177,45 @@ export const teamHandlers: Record<string, TeamHandler> = {
   invite_team_member: async (input, clientId, userId) => {
     const name = input.name as string;
     const email = input.email as string;
-    const role = input.role as string;
+    const requestedRole = input.role as string;
+
+    if (!name?.trim() || !email?.trim()) {
+      return { error: 'Name and email are required' };
+    }
+
+    // Only the canonical client-member roles are assignable; anything else
+    // falls back to 'member', mirroring app/api/portal/team/route.ts.
+    const role = (VALID_ROLES as readonly string[]).includes(requestedRole)
+      ? requestedRole
+      : 'member';
+
+    // Raw invite token is emailed to the recipient; only its SHA-256 hash is
+    // stored. Mirrors the canonical invite flow.
+    const rawInviteToken = randomBytes(32).toString('hex');
+    const inviteTokenHash = hashToken(rawInviteToken);
+    const inviteExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
     // Check if user already exists
     let [existingUser] = await db.select().from(users)
-      .where(eq(users.email, email)).limit(1);
+      .where(eq(users.email, email.trim())).limit(1);
 
     if (!existingUser) {
       // Create a new user with a temporary password (they'll need to set it up)
       const bcrypt = await import('bcryptjs');
       const tempPassword = await bcrypt.hash(Math.random().toString(36).slice(2), 10);
       [existingUser] = await db.insert(users).values({
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim(),
         password: tempPassword,
         role: 'client',
+        active: true,
+        inviteToken: inviteTokenHash,
+        inviteExpiresAt,
       }).returning();
+    } else {
+      // Existing user — allow them to use the invite link too.
+      await db.update(users).set({ inviteToken: inviteTokenHash, inviteExpiresAt })
+        .where(eq(users.id, existingUser.id));
     }
 
     // Check if already a member
@@ -205,6 +229,25 @@ export const teamHandlers: Record<string, TeamHandler> = {
       role,
       invitedBy: userId,
     });
+
+    // Send invite email — best-effort, don't fail the invite if email fails.
+    try {
+      const [client] = await db.select({ company: clients.company }).from(clients)
+        .where(eq(clients.id, clientId)).limit(1);
+      const inviter = userId > 0
+        ? (await db.select({ name: users.name }).from(users).where(eq(users.id, userId)).limit(1))[0]
+        : undefined;
+      await sendInviteEmail({
+        recipientEmail: existingUser.email,
+        recipientName: existingUser.name,
+        companyName: client?.company || 'Your Team',
+        inviterName: inviter?.name || 'A team member',
+        role,
+        inviteToken: rawInviteToken,
+      });
+    } catch (emailError) {
+      console.error('Failed to send invite email:', emailError);
+    }
 
     return { success: true, message: `${name} (${email}) invited as ${role}.` };
   },

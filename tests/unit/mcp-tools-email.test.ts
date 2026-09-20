@@ -281,7 +281,6 @@ describe('registerEmailTools — registration', () => {
     for (const name of [
       'email_campaigns_create',
       'email_campaigns_update',
-      'email_campaigns_schedule',
       'email_lists_create',
       'email_lists_update',
       'email_subscribers_add',
@@ -295,6 +294,13 @@ describe('registerEmailTools — registration', () => {
     for (const name of ['email_campaigns_delete', 'email_lists_delete', 'email_subscribers_remove']) {
       expect(tools.has(name), `should NOT register ${name} under email:write alone`).toBe(false);
     }
+  });
+
+  it('registers email_campaigns_schedule only when email:send scope is granted', () => {
+    // Scheduling commits the campaign to a cron-driven send, so it needs the
+    // same scope as the immediate send — not just email:write.
+    expect(registerAll(['email:read', 'email:write']).has('email_campaigns_schedule')).toBe(false);
+    expect(registerAll(['email:send']).has('email_campaigns_schedule')).toBe(true);
   });
 
   it('registers the delete tools only when email:delete scope is granted', () => {

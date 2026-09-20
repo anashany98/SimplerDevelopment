@@ -534,7 +534,9 @@ export async function POST(req: Request): Promise<Response> {
             const planText = plan.steps
               .map((s, i) => `${i + 1}. ${s.action} (tool: ${s.tool})`)
               .join('\n');
-            systemPrompt = `${SYSTEM_PROMPT}\n\n## Your plan for this query\n${planText}`;
+            // Append to the existing prompt so the preference text and the
+            // MANDATORY-first-action rule (added above for read intents) survive.
+            systemPrompt += `\n\n## Your plan for this query\n${planText}`;
           }
         }
 

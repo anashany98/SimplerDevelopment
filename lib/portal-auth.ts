@@ -47,11 +47,14 @@ interface AuthorizeError {
  * Role/action gate shared by authorizePortal and authorizePortalSite. Returns an
  * AuthorizeError when the role is insufficient, or null when allowed.
  *
- * When `observe` is set (the AUTH79-020 rollout on newly-guarded routes) an
- * insufficient role is LOGGED but ALLOWED until AUTH_ROLE_ENFORCE=1 — so we can
- * watch real multi-member traffic before turning enforcement on for routes that
- * never had a role gate. Routes that already enforced roles (the original
- * authorizePortal callers) pass observe=false and keep hard-enforcing.
+ * Enforcement is ON BY DEFAULT. Newly-guarded routes (the AUTH79-020 rollout)
+ * pass `observe=true`, which makes them eligible for the log-only opt-out:
+ * setting `AUTH_ROLE_ENFORCE=0` logs the would-be denial and allows it. Routes
+ * that already enforced roles (the original authorizePortal callers) pass
+ * observe=false and always hard-enforce regardless of the env var.
+ *
+ * Only explicitly-lower roles are denied (a viewer attempting a write, etc.);
+ * a role that cannot be resolved never reaches this gate as a denial.
  */
 function roleGate(
   role: PortalRole,
@@ -60,7 +63,7 @@ function roleGate(
   ctx: { clientId: number; userId: number },
 ): AuthorizeError | null {
   if (ROLE_LEVELS[role] >= ACTION_REQUIRED_LEVEL[action]) return null;
-  if (observe && process.env.AUTH_ROLE_ENFORCE !== '1') {
+  if (observe && process.env.AUTH_ROLE_ENFORCE === '0') {
     console.warn(
       JSON.stringify({
         level: 'warn',
@@ -98,9 +101,9 @@ function roleGate(
  * @param opts.requireService - Service category that must be subscribed (or bundle)
  * @param opts.scope - Explicit OAuth scope this route requires (for routes with no
  *   requireService). When omitted, the scope is derived from requireService+action.
- * @param opts.observeRole - Log-only role enforcement (AUTH79-020 rollout): when
- *   true, an insufficient role is logged but allowed until AUTH_ROLE_ENFORCE=1.
- *   Set on newly-guarded routes; omit on routes that already enforced roles.
+ * @param opts.observeRole - Marks a newly-guarded route (AUTH79-020) as eligible
+ *   for the log-only opt-out: enforcement is on by default, but `AUTH_ROLE_ENFORCE=0`
+ *   logs an insufficient role and allows it. Omit on routes that always enforce.
  */
 export async function authorizePortal(opts?: {
   action?: PortalAction;
@@ -163,7 +166,8 @@ export async function authorizePortal(opts?: {
     }
   }
 
-  // Resolve role + gate the action (log-only when observeRole is set).
+  // Resolve role + gate the action (enforced by default; observeRole routes can
+  // be relaxed to log-only with AUTH_ROLE_ENFORCE=0).
   const role = await resolveRole(userId, client);
   const gate = roleGate(role, opts?.action ?? 'read', opts?.observeRole ?? false, {
     clientId: client.id,
@@ -206,8 +210,9 @@ interface AuthorizeSiteResult {
  * Site-scoped authorization for `app/api/portal/websites/[siteId]/**` routes.
  * Resolves the `[siteId]` with ownership (existing behavior, via resolveClientSite)
  * AND gates the caller's role (new — AUTH79-020). Session-only: these routes don't
- * accept bearer tokens. Role enforcement defaults to LOG-ONLY (observeRole) since
- * every caller is a newly-guarded route — flip AUTH_ROLE_ENFORCE=1 to enforce.
+ * accept bearer tokens. Every caller is a newly-guarded route, so they default to
+ * observeRole=true — eligible for the AUTH_ROLE_ENFORCE=0 log-only opt-out;
+ * enforcement is the default.
  */
 export async function authorizePortalSite(opts: {
   siteId: number;

@@ -49,12 +49,14 @@ import Anthropic from '@anthropic-ai/sdk';
 
 import { db } from '@/lib/db';
 import { aiConversations, aiMessages } from '@/lib/db/schema';
-import { resolvePortalFromRequest } from '@/lib/mcp-auth';
+import { resolvePortalFromRequest, hasScope } from '@/lib/mcp-auth';
+import { authorizePortal } from '@/lib/portal-auth';
 import { hasCredits, deductCredits, getBalance } from '@/lib/ai-credits';
 import { resolveClientApiKey } from '@/lib/ai/resolve-client-key';
 import { recordAiUsage } from '@/lib/ai/audit';
 import { checkAiPlanGate } from '@/lib/ai/plan-gate';
 import { PORTAL_TOOLS, executePortalTool } from '@/lib/ai/portal-tools';
+import { requiredScopeFor } from '@/lib/ai/portal-tools/scopes';
 import { classifyPortalRequest } from '@/lib/ai/portal-tools/classifier';
 import { toolsForDomains } from '@/lib/ai/portal-tools/domains';
 import { PORTAL_CHAT_SYSTEM_PROMPT } from '@/lib/ai/portal-chat-prompt';
@@ -122,6 +124,28 @@ export async function POST(req: Request) {
     return jsonError(401, 'Unauthorized');
   }
   const { userId, client } = ctx;
+
+  // Role gate — the same ladder as every REST route (write → member+). The
+  // bearer resolves to a real user; previously this mobile surface accepted
+  // writes from viewer-role credentials that the web chat refuses.
+  const authz = await authorizePortal({
+    action: 'write',
+    requireService: 'ai',
+    observeRole: true,
+  });
+  if ('response' in authz) return authz.response;
+
+  // Per-tool scopes (bearer path): the credential's consented scopes bound the
+  // tool surface — the same boundary the MCP registrar guards enforce. Sessions
+  // carry no scope list and stay role-gated.
+  const credentialScopes = Array.isArray(ctx.scopes) ? ctx.scopes : null;
+  const scopeAllowsTool = (name: string): boolean => {
+    if (!credentialScopes) return true;
+    const required = requiredScopeFor(name);
+    return required != null && hasScope(credentialScopes, required);
+  };
+  const scopedTools = (tools: typeof PORTAL_TOOLS): typeof PORTAL_TOOLS =>
+    credentialScopes ? tools.filter((t) => scopeAllowsTool(t.name)) : tools;
 
   // UAG-003: gate the assistant's high-risk writes when the credential requires
   // approval OR the client opted in (clients.ai_chat_requires_approval). When
@@ -340,15 +364,15 @@ export async function POST(req: Request) {
         // predicted domains' tools; 'shadow' keeps the full set with no extra
         // call (protecting time-to-first-token). Classifier failures fail open
         // to the full surface. Used for every turn of the loop.
-        let loopTools = PORTAL_TOOLS;
+        let loopTools = scopedTools(PORTAL_TOOLS);
         if (STREAM_TOOLS_ENABLED && resolveRouterMode() === 'active') {
           try {
             const classification = await classifyPortalRequest(lastTurn.content.trim(), anthropic);
-            loopTools = toolsForDomains(classification.domains, PORTAL_TOOLS);
+            loopTools = scopedTools(toolsForDomains(classification.domains, PORTAL_TOOLS));
             inputTokens += classification.inputTokens;
             outputTokens += classification.outputTokens;
           } catch {
-            loopTools = PORTAL_TOOLS;
+            loopTools = scopedTools(PORTAL_TOOLS);
           }
         }
 
@@ -433,21 +457,26 @@ export async function POST(req: Request) {
             );
 
             let result: unknown;
-            try {
-              result = await executePortalTool(
-                block.name,
-                input,
-                client.id,
-                userId,
-                { source: 'assistant', gate: gateCtx },
-              );
-            } catch (toolErr) {
-              // Serialize the failure into the tool_result so the model can
-              // recover/retry rather than aborting the whole stream.
-              result = {
-                error:
-                  toolErr instanceof Error ? toolErr.message : 'Tool execution failed',
-              };
+            if (!scopeAllowsTool(block.name)) {
+              // Deny before dispatch — mirrors the MCP registrar scope guards.
+              result = { error: `Missing required scope for tool: ${block.name}` };
+            } else {
+              try {
+                result = await executePortalTool(
+                  block.name,
+                  input,
+                  client.id,
+                  userId,
+                  { source: 'assistant', gate: gateCtx },
+                );
+              } catch (toolErr) {
+                // Serialize the failure into the tool_result so the model can
+                // recover/retry rather than aborting the whole stream.
+                result = {
+                  error:
+                    toolErr instanceof Error ? toolErr.message : 'Tool execution failed',
+                };
+              }
             }
 
             allToolCalls.push({ name: block.name, input, result });

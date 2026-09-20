@@ -212,9 +212,9 @@ export function isReadOnlyTool(name: string): boolean {
  * survivable while a token covered one company; spanning companies multiplies it
  * by the size of the roster.
  *
- * Rolled out log-only exactly like `roleGate` did — set `AUTH_ROLE_ENFORCE=1` to
- * deny — so real multi-member traffic can be observed first. Returns a denial
- * message when the call should be refused, else null.
+ * ENFORCED BY DEFAULT. The log-only rollout is over — set `AUTH_ROLE_ENFORCE=0`
+ * to opt back into observe-mode (log the would-be denial and allow). Returns a
+ * denial message when the call should be refused, else null.
  */
 export function roleDenial(toolName: string, target: ReachableClient, userId: number): string | null {
   const { role } = target;
@@ -224,7 +224,7 @@ export function roleDenial(toolName: string, target: ReachableClient, userId: nu
   const action = isReadOnlyTool(toolName) ? 'read' : 'write';
   if (ROLE_LEVELS[role] >= ACTION_REQUIRED_LEVEL[action]) return null;
 
-  const enforced = process.env.AUTH_ROLE_ENFORCE === '1';
+  const enforced = process.env.AUTH_ROLE_ENFORCE !== '0';
   console.warn(
     JSON.stringify({
       level: 'warn',

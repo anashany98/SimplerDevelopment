@@ -234,12 +234,13 @@ describe('roleDenial', () => {
     expect(roleDenial('posts_list', BETA, 7)).toBeNull();
   });
 
-  it('denies a write for a viewer once enforcement is on', () => {
-    process.env.AUTH_ROLE_ENFORCE = '1';
+  it('denies a write for a viewer by default (enforcement is on)', () => {
+    // No AUTH_ROLE_ENFORCE set — the flipped default must deny.
     expect(roleDenial('posts_create', BETA, 7)).toContain('viewer');
   });
 
-  it('logs but allows during the log-only rollout', () => {
+  it('logs but allows when AUTH_ROLE_ENFORCE=0 (explicit log-only opt-out)', () => {
+    process.env.AUTH_ROLE_ENFORCE = '0';
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     try {
       expect(roleDenial('posts_create', BETA, 7)).toBeNull();

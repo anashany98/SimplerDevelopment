@@ -786,6 +786,29 @@ describe('GET /api/portal/brain/knowledge', () => {
     expect(filters.sort).toBe('title');
     expect(filters.order).toBe('asc');
   });
+
+  it('parses needsReview=true|false and leaves it undefined when omitted', async () => {
+    requireBrainEntitlementMock.mockResolvedValue({
+      client: { id: 5 },
+      userId: 1,
+      role: 'read',
+    });
+    listNotesMock.mockResolvedValue([]);
+    countNotesMock.mockResolvedValue(0);
+
+    await knowledgeRoute.GET(
+      makeReq('http://x/api/portal/brain/knowledge?needsReview=true'),
+    );
+    expect(listNotesMock.mock.calls[0][1].needsReview).toBe(true);
+
+    await knowledgeRoute.GET(
+      makeReq('http://x/api/portal/brain/knowledge?needsReview=false'),
+    );
+    expect(listNotesMock.mock.calls[1][1].needsReview).toBe(false);
+
+    await knowledgeRoute.GET(makeReq('http://x/api/portal/brain/knowledge'));
+    expect(listNotesMock.mock.calls[2][1].needsReview).toBeUndefined();
+  });
 });
 
 describe('POST /api/portal/brain/knowledge', () => {

@@ -75,6 +75,8 @@ interface RunRow {
   prompt: string;
   variables: Record<string, string>;
   createdBy: number | null;
+  clientId?: number | null;
+  runId?: string | null;
   host: string;
   errorMessage?: string;
   startedAt?: Date;
@@ -146,6 +148,8 @@ vi.mock('@/lib/db', () => {
               prompt: String(vals.prompt ?? ''),
               variables: (vals.variables ?? {}) as Record<string, string>,
               createdBy: typeof vals.createdBy === 'number' ? vals.createdBy : null,
+              clientId: typeof vals.clientId === 'number' ? vals.clientId : null,
+              runId: typeof vals.runId === 'string' ? vals.runId : null,
               host: String(vals.host ?? ''),
             };
             if (table.__table === 'agenticOsRuns') runs.push(row);
@@ -575,6 +579,37 @@ describe('POST /api/admin/agentic-os/run — happy path', () => {
     // The last argument in the argv array should be the rendered prompt
     const promptArg = spawnArgs[1][spawnArgs[1].length - 1];
     expect(promptArg).toContain('write tests');
+  });
+
+  it('persists a UUID runId and injects it as AGENTIC_RUN_ID into the child env', async () => {
+    makeMockChild();
+    const res = await POST(makeReq({ skillId: 'test-skill', variables: { task: 'do it' } }));
+    expect(res.status).toBe(200);
+
+    const row = runs[0];
+    expect(row?.runId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+    );
+
+    const spawnArgs = spawnMock.mock.calls[0] as [
+      string,
+      string[],
+      { env: Record<string, string> },
+    ];
+    expect(spawnArgs[2].env.AGENTIC_RUN_ID).toBe(row?.runId);
+  });
+
+  it('persists the optional clientId when supplied and null otherwise', async () => {
+    makeMockChild();
+    await POST(makeReq({ skillId: 'test-skill', variables: { task: 'do it' }, clientId: 55 }));
+    expect(runs[0]?.clientId).toBe(55);
+
+    runs.length = 0;
+    runIdCounter = 1;
+    spawnMock.mockClear();
+    makeMockChild();
+    await POST(makeReq({ skillId: 'test-skill', variables: { task: 'do it' } }));
+    expect(runs[0]?.clientId).toBeNull();
   });
 });
 

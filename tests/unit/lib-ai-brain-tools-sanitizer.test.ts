@@ -62,6 +62,119 @@ describe('sanitizeToolResult — password redaction', () => {
   });
 });
 
+describe('sanitizeToolResult — secret key=value redaction', () => {
+  it('redacts api_key= quoted values', () => {
+    const input = `api_key="abcdef1234567890"`; // pragma: allowlist secret
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('abcdef1234567890');
+    expect(out).toContain('api_key=[REDACTED]');
+  });
+
+  it('redacts client_secret= quoted values', () => {
+    const input = `client_secret='verysecretvalue'`;
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('verysecretvalue');
+    expect(out).toContain('client_secret=[REDACTED]');
+  });
+
+  it('redacts access_token= and refresh_token= quoted values', () => {
+    const access = sanitizeToolResult(`access_token="access-value-1234"`); // pragma: allowlist secret
+    expect(access).not.toContain('access-value-1234');
+    expect(access).toContain('access_token=[REDACTED]');
+    const refresh = sanitizeToolResult(`refresh_token="refresh-value-1234"`); // pragma: allowlist secret
+    expect(refresh).not.toContain('refresh-value-1234');
+    expect(refresh).toContain('refresh_token=[REDACTED]');
+  });
+
+  it('redacts db_password= quoted values', () => {
+    const input = `db_password="dbpass1234"`;
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('dbpass1234');
+    expect(out).toContain('db_password=[REDACTED]');
+  });
+
+  it('redacts private_key= quoted values', () => {
+    const input = `private_key="pk-value-1234"`;
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('pk-value-1234');
+    expect(out).toContain('private_key=[REDACTED]');
+  });
+});
+
+describe('sanitizeToolResult — secret JSON keys', () => {
+  it('redacts a JSON "apiKey" field', () => {
+    const input = JSON.stringify({ apiKey: 'abcdefgh1234' });
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('abcdefgh1234');
+    expect(out).toContain('"apiKey": "[REDACTED]"');
+  });
+
+  it('redacts a JSON "api_key" field', () => {
+    const input = JSON.stringify({ api_key: 'abcdefgh1234' });
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('abcdefgh1234');
+    expect(out).toContain('"api_key": "[REDACTED]"');
+  });
+
+  it('redacts a JSON "token" field', () => {
+    const input = JSON.stringify({ token: 'abcdefgh1234' });
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('abcdefgh1234');
+    expect(out).toContain('"token": "[REDACTED]"');
+  });
+
+  it('redacts a JSON "secret" field', () => {
+    const input = JSON.stringify({ secret: 'abcdefgh1234' });
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('abcdefgh1234');
+    expect(out).toContain('"secret": "[REDACTED]"');
+  });
+
+  it('does not double-redact an already-redacted JSON value', () => {
+    const input = JSON.stringify({ token: 'ghp_' + 'A'.repeat(36) });
+    const out = sanitizeToolResult(input);
+    // The GitHub PAT pattern wins; the generic JSON key pattern must leave it alone.
+    expect(out).toContain('[REDACTED_GH_TOKEN]');
+  });
+});
+
+describe('sanitizeToolResult — cloud credentials and JWTs', () => {
+  it('redacts an AWS access key ID', () => {
+    const input = 'aws_access_key_id=AKIAIOSFODNN7EXAMPLE'; // pragma: allowlist secret
+    const out = sanitizeToolResult(input);
+    expect(out).not.toContain('AKIAIOSFODNN7EXAMPLE'); // pragma: allowlist secret
+    expect(out).toContain('[REDACTED_AWS_KEY]');
+  });
+
+  it('redacts a Google API key', () => {
+    const key = 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'; // pragma: allowlist secret
+    const out = sanitizeToolResult(`key: ${key}`);
+    expect(out).not.toContain(key);
+    expect(out).toContain('[REDACTED_GOOGLE_KEY]');
+  });
+
+  it('redacts a JWT', () => {
+    const jwt =
+      'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    const out = sanitizeToolResult(`token=${jwt}`);
+    expect(out).not.toContain(jwt);
+    expect(out).toContain('[REDACTED_JWT]');
+  });
+
+  it('redacts a full PEM private key block to the END marker', () => {
+    const pem = '-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA\n-----END RSA PRIVATE KEY-----'; // pragma: allowlist secret
+    const out = sanitizeToolResult(pem);
+    expect(out).not.toContain('MIIEowIBAAKCAQEA');
+    expect(out).not.toContain('END RSA PRIVATE KEY');
+    expect(out).toContain('[REDACTED_PRIVATE_KEY]');
+  });
+
+  it('redacts a lone PEM BEGIN line when there is no END marker', () => {
+    const out = sanitizeToolResult('-----BEGIN PRIVATE KEY-----'); // pragma: allowlist secret
+    expect(out).toContain('[REDACTED_PRIVATE_KEY]');
+  });
+});
+
 describe('sanitizeToolResult — PII redaction', () => {
   it('redacts a US Social Security Number', () => {
     const input = 'SSN: 123-45-6789';

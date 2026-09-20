@@ -75,8 +75,9 @@ vi.mock('@/lib/brain/agent-preferences', () => ({
   trackIntentUsage: (...args: unknown[]) => trackIntentUsageMock(...args),
 }));
 
+const formatPreferencesForPromptMock = vi.fn();
 vi.mock('@/lib/brain/agent-preferences-api', () => ({
-  formatPreferencesForPrompt: () => '',
+  formatPreferencesForPrompt: (...args: unknown[]) => formatPreferencesForPromptMock(...args),
 }));
 
 vi.mock('@/lib/ai/tracer', () => ({
@@ -301,6 +302,7 @@ beforeEach(() => {
     sources: ['brain_search'],
   });
   getAgentPreferencesMock.mockReset().mockResolvedValue([]);
+  formatPreferencesForPromptMock.mockReset().mockReturnValue('');
   trackIntentUsageMock.mockReset().mockResolvedValue(undefined);
   agentsServiceConfiguredMock.mockReset().mockReturnValue(false);
   runBrainWorkflowOnServiceMock.mockReset();
@@ -389,5 +391,29 @@ describe('POST /api/portal/brain/agent — dual path', () => {
     expect(tokenFrame?.text).toContain('In-process answer.');
     const assistant = state.aiMessages.find((m) => m.role === 'assistant');
     expect(assistant?.content).toContain('In-process answer.');
+  });
+
+  it('appends the complex-query plan without dropping prefs or the mandatory-first-action rule', async () => {
+    agentsServiceConfiguredMock.mockReturnValue(false);
+    classifyIntentMock.mockResolvedValue({ intent: 'lookup', complexity: 'complex', reasoning: 'multi-hop' });
+    generatePlanMock.mockResolvedValue({
+      steps: [{ action: 'Search the brain', tool: 'brain_search', reasoning: 'find notes' }],
+    });
+    formatPreferencesForPromptMock.mockReturnValue('\n\nUSER PREFERENCES: be terse');
+    messagesCreateMock.mockResolvedValueOnce({
+      content: [{ type: 'text', text: 'Planned answer.' }],
+      stop_reason: 'end_turn',
+      usage: { input_tokens: 10, output_tokens: 5 },
+    });
+
+    const res = await POST(makeRequest({ message: 'compare our shipping costs across vendors' }));
+    await readFrames(res);
+
+    expect(messagesCreateMock).toHaveBeenCalled();
+    const systemPrompt = (messagesCreateMock.mock.calls[0][0] as { system: string }).system;
+    expect(systemPrompt).toContain('USER PREFERENCES: be terse');
+    expect(systemPrompt).toContain('MANDATORY FIRST ACTION');
+    expect(systemPrompt).toContain('## Your plan for this query');
+    expect(systemPrompt).toContain('Search the brain');
   });
 });

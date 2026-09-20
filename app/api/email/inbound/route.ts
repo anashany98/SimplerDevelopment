@@ -58,6 +58,9 @@ interface InboundPayload {
   body: string;
   messageId?: string;
   attachments?: InboundAttachment[];
+  // Receiving server's Authentication-Results header, forwarded by the mail
+  // Worker when available — used to reject failed SPF/DKIM senders.
+  authResults?: string;
 }
 
 export async function POST(req: Request) {
@@ -73,6 +76,21 @@ export async function POST(req: Request) {
     // Verify shared secret
     if (payload.secret !== INBOUND_SECRET) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Sender authentication (best effort). The shared secret proves the request
+    // came from the mail Worker - NOT that the `From` header is authentic (From
+    // is spoofable). When the Worker forwards the receiving server's
+    // Authentication-Results, refuse explicit SPF/DKIM failures; with
+    // INBOUND_REQUIRE_SENDER_AUTH=1 also refuse anything without a pass.
+    const authResults = typeof payload.authResults === 'string' ? payload.authResults : '';
+    if (/(?:^|[;\s])(?:spf|dkim)\s*=\s*(?:fail|softfail|temperror|permerror)/i.test(authResults)) {
+      console.warn(`[inbound] Rejected email from ${payload.from} to ${payload.to} - sender auth failed: ${authResults.slice(0, 120)}`);
+      return NextResponse.json({ status: 'rejected', reason: 'sender authentication failed' });
+    }
+    if (process.env.INBOUND_REQUIRE_SENDER_AUTH === '1' && !/(?:spf|dkim)\s*=\s*pass/i.test(authResults)) {
+      console.warn(`[inbound] Rejected email from ${payload.from} to ${payload.to} - no passing SPF/DKIM (strict mode)`);
+      return NextResponse.json({ status: 'rejected', reason: 'sender authentication required' });
     }
 
     const { from, to, subject, body: emailBody, messageId, attachments = [] } = payload;
