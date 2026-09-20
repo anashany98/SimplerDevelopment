@@ -40,6 +40,15 @@ vi.mock('drizzle-orm', () => ({
 }));
 
 // Mock svix so Webhook.verify() doesn't actually verify — just parse the raw body as JSON.
+vi.mock('@/lib/email', () => ({
+  getEmailPlatformConfig: async () => ({
+    webhookSecret: process.env.RESEND_WEBHOOK_SECRET ?? null,
+    resendApiKey: null,
+    fromEmail: '',
+    transport: 'resend',
+  }),
+}));
+
 vi.mock('svix', () => ({
   Webhook: class {
     verify(rawBody: string, _headers: Record<string, string>) {

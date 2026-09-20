@@ -11,11 +11,10 @@ import { escapeHtml } from '@/lib/utils/html';
 import { db } from '@/lib/db';
 import { crmNotifications, users, clients } from '@/lib/db/schema';
 import { and, eq, gt, inArray, sql } from 'drizzle-orm';
-import { resend } from './index';
+import { resend, getConfiguredFromEmail, getEmailPlatformConfig } from './index';
 import { shouldDeliverNotification } from '@/lib/crm/notifications';
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'portal@simplerdevelopment.com';
 const COOLDOWN_MINUTES = 10;
 const EMAILS_ENABLED = process.env.MCP_APPROVAL_EMAILS_ENABLED !== 'false';
 
@@ -97,7 +96,8 @@ export interface SendApprovalEmailsParams {
 export async function sendApprovalEmails(params: SendApprovalEmailsParams): Promise<void> {
   if (!EMAILS_ENABLED) return;
   if (params.userIds.length === 0) return;
-  if (!process.env.RESEND_API_KEY) return;
+  const emailCfg = await getEmailPlatformConfig();
+  if (!emailCfg.resendApiKey && emailCfg.transport !== 'mailpit') return;
 
   try {
     const [client] = await db
@@ -168,8 +168,9 @@ export async function sendApprovalEmails(params: SendApprovalEmailsParams): Prom
         const recentCount = countByUser.get(u.id) ?? 0;
         if (recentCount > 1) return; // flurry cooldown; another email was sent recently
         try {
+          const fromEmail = (await getConfiguredFromEmail()) || 'portal@simplerdevelopment.com';
           await resend.emails.send({
-            from: `CRM AGENTS <${FROM_EMAIL}>`,
+            from: `CRM AGENTS <${fromEmail}>`,
             to: u.email,
             subject,
             html,

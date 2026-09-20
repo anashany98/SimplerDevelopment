@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import type { SendMailOptions } from 'nodemailer';
 import { Resend, type CreateEmailOptions } from 'resend';
+import { getEmailPlatformConfig } from './config';
 
 type EmailAddress = string | string[];
 
@@ -37,16 +38,6 @@ type TransportOptions = {
   resendApiKey?: string;
 };
 
-let defaultTransport: EmailTransport | null = null;
-
-function getTransportMode(): 'mailpit' | 'resend' {
-  return process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend';
-}
-
-export function isMailpitEmailTransport(): boolean {
-  return getTransportMode() === 'mailpit';
-}
-
 function createMailpitTransport(): EmailTransport {
   const transport = nodemailer.createTransport({
     host: process.env.MAILPIT_SMTP_HOST ?? 'localhost',
@@ -80,19 +71,34 @@ function createResendTransport(apiKey: string): EmailTransport {
   };
 }
 
-export function createEmailTransport(options: TransportOptions = {}): EmailTransport {
-  if (getTransportMode() === 'mailpit') return createMailpitTransport();
+/**
+ * Transport mode follows the platform email config (admin setting → env):
+ * `mailpit` captures locally (dev), anything else sends through Resend.
+ */
+export async function isMailpitEmailTransport(): Promise<boolean> {
+  return (await getEmailPlatformConfig()).transport === 'mailpit';
+}
 
-  const key = options.resendApiKey ?? process.env.RESEND_API_KEY;
-  if (!key) throw new Error('RESEND_API_KEY is not set');
+export async function createEmailTransport(options: TransportOptions = {}): Promise<EmailTransport> {
+  const cfg = await getEmailPlatformConfig();
+  if (cfg.transport === 'mailpit') return createMailpitTransport();
+
+  const key = options.resendApiKey ?? cfg.resendApiKey;
+  if (!key) {
+    throw new Error('Resend API key is not configured (Admin → Email → Ajustes, or RESEND_API_KEY)');
+  }
   return createResendTransport(key);
 }
 
-export function getEmailTransport(): EmailTransport {
-  if (!defaultTransport) defaultTransport = createEmailTransport();
-  return defaultTransport;
+/**
+ * Fresh transport per call on purpose: the platform config can change at
+ * runtime (admin save / rotated key) and must take effect on the next send.
+ */
+export async function getEmailTransport(): Promise<EmailTransport> {
+  return createEmailTransport();
 }
 
 export async function sendEmail(payload: EmailPayload): Promise<EmailSendResponse> {
-  return getEmailTransport().send(payload);
+  const transport = await getEmailTransport();
+  return transport.send(payload);
 }

@@ -1,7 +1,7 @@
 import { resend } from './index';
+import { getConfiguredFromEmail } from './config';
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'portal@simplerdevelopment.com';
 
 interface InviteEmailData {
   recipientEmail: string;
@@ -59,7 +59,7 @@ export async function sendInviteEmail(data: InviteEmailData) {
   `;
 
   return resend.emails.send({
-    from: `CRM AGENTS <${FROM_EMAIL}>`,
+    from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'portal@simplerdevelopment.com'}>`,
     to: data.recipientEmail,
     subject: `${data.inviterName} te ha invitado a ${data.companyName}`,
     html,

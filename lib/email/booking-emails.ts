@@ -1,11 +1,9 @@
-import { resend } from './index';
+import { resend, getConfiguredFromEmailOr } from './index';
 import { db } from '@/lib/db';
 import { bookingPages, brandingProfiles, brandingMessaging, clients } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
-import crypto from 'crypto';
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'bookings@simplerdevelopment.com';
 
 /**
  * Brand snapshot threaded through the booking emails so confirmations,
@@ -134,8 +132,8 @@ function toIcsDate(date: Date): string {
 }
 
 /** Generate an .ics calendar file for a booking */
-function generateIcs(data: BookingEmailData): string {
-  const uid = crypto.randomUUID() + '@simplerdevelopment.com';
+function generateIcs(data: BookingEmailData, fromEmail: string): string {
+  const uid = globalThis.crypto.randomUUID() + '@simplerdevelopment.com';
   const now = toIcsDate(new Date());
   const dtStart = toIcsDate(data.startTime);
   const dtEnd = toIcsDate(data.endTime);
@@ -158,7 +156,7 @@ function generateIcs(data: BookingEmailData): string {
     `SUMMARY:${data.pageTitle}`,
     `DESCRIPTION:${description}`,
     location ? `LOCATION:${location}` : '',
-    `ORGANIZER;CN=CRM AGENTS:mailto:${FROM_EMAIL}`,
+    `ORGANIZER;CN=CRM AGENTS:mailto:${fromEmail}`,
     `ATTENDEE;CN=${data.guestName};RSVP=TRUE:mailto:${data.guestEmail}`,
     data.hostEmail ? `ATTENDEE;CN=Anfitrión;RSVP=TRUE:mailto:${data.hostEmail}` : '',
     'STATUS:CONFIRMED',
@@ -308,11 +306,12 @@ export async function sendGuestConfirmation(data: BookingEmailData): Promise<voi
     </p>
   `, `Tu reserva de ${data.pageTitle} está confirmada para el ${formattedStart}`, data.brand);
 
-  const icsContent = generateIcs(data);
+  const fromEmail = await getConfiguredFromEmailOr('bookings@simplerdevelopment.com');
+  const icsContent = generateIcs(data, fromEmail);
 
   try {
     await resend.emails.send({
-      from: `Confirmación de reserva <${FROM_EMAIL}>`,
+      from: `Confirmación de reserva <${fromEmail}>`,
       to: data.guestEmail,
       subject: `Confirmada: ${data.pageTitle}`,
       html,
@@ -379,11 +378,12 @@ export async function sendHostNotification(
     <a href="${portalUrl}" style="display:inline-block;padding:10px 24px;background:${accent};color:#ffffff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:500;">Ver en el portal</a>
   `, `Nueva reserva: ${data.guestName} — ${data.pageTitle}`, data.brand);
 
-  const icsContent = generateIcs({ ...data, hostEmail });
+  const fromEmail = await getConfiguredFromEmailOr('bookings@simplerdevelopment.com');
+  const icsContent = generateIcs({ ...data, hostEmail }, fromEmail);
 
   try {
     await resend.emails.send({
-      from: `${fromBrandName} <${FROM_EMAIL}>`,
+      from: `${fromBrandName} <${fromEmail}>`,
       to: hostEmail,
       subject: `Nueva reserva: ${data.guestName} — ${data.pageTitle}`,
       html,
@@ -439,7 +439,7 @@ export async function sendCancellationEmail(
 
   try {
     await resend.emails.send({
-      from: `Actualización de reserva <${FROM_EMAIL}>`,
+      from: `Actualización de reserva <${await getConfiguredFromEmailOr('bookings@simplerdevelopment.com')}>`,
       to: guestEmail,
       subject: `Cancelada: ${pageTitle} — ${formattedStart}`,
       html,
@@ -518,7 +518,7 @@ export async function sendRescheduleEmail(data: {
 
   try {
     await resend.emails.send({
-      from: `${fromBrandName} <${FROM_EMAIL}>`,
+      from: `${fromBrandName} <${await getConfiguredFromEmailOr('bookings@simplerdevelopment.com')}>`,
       to: data.guestEmail,
       subject: `Reprogramada: ${data.pageTitle} — ${formattedNew}`,
       html: guestHtml,
@@ -557,7 +557,7 @@ export async function sendRescheduleEmail(data: {
 
     try {
       await resend.emails.send({
-        from: `${fromBrandName} <${FROM_EMAIL}>`,
+        from: `${fromBrandName} <${await getConfiguredFromEmailOr('bookings@simplerdevelopment.com')}>`,
         to: data.hostEmail,
         subject: `Reprogramada: ${data.guestName} — ${data.pageTitle}`,
         html: hostHtml,
@@ -621,7 +621,7 @@ export async function sendBookingReminder(data: BookingEmailData): Promise<void>
 
   try {
     await resend.emails.send({
-      from: `${fromBrandName} <${FROM_EMAIL}>`,
+      from: `${fromBrandName} <${await getConfiguredFromEmailOr('bookings@simplerdevelopment.com')}>`,
       to: data.guestEmail,
       subject: `Recordatorio: ${data.pageTitle} — ${formattedStart}`,
       html,

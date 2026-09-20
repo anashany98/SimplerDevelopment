@@ -31,14 +31,14 @@ import {
   surveyEmailSequenceSends,
 } from '@/lib/db/schema';
 import { and, asc, eq, isNotNull, sql } from 'drizzle-orm';
-import { resend, buildUnsubscribeUrl, generateUnsubscribeToken } from '@/lib/email';
+import { resend, buildUnsubscribeUrl, generateUnsubscribeToken, getConfiguredFromEmail } from '@/lib/email';
 import { isEligibleForFollowup } from '@/lib/surveys/email-followup-gate';
 import { isAuthorizedCron } from '@/lib/cron-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'surveys@simplerdevelopment.com';
+
 const FROM_NAME = 'CRM AGENTS';
 const MAX_SENDS_PER_TICK = 100;
 
@@ -177,8 +177,9 @@ async function _GET(req: Request) {
       let resendId: string | null = null;
       let errMsg: string | null = null;
       try {
+        const fromEmail = (await getConfiguredFromEmail()) || 'surveys@simplerdevelopment.com';
         const result = await resend.emails.send({
-          from: `${FROM_NAME} <${FROM_EMAIL}>`,
+          from: `${FROM_NAME} <${fromEmail}>`,
           to: response.respondentEmail!,
           subject: sequence.subject,
           html,

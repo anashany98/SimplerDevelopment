@@ -18,6 +18,7 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => sendMock(...args),
     },
   },
+  getConfiguredFromEmailOr: async (fallback: string) => process.env.RESEND_FROM_EMAIL ?? fallback,
 }));
 
 // booking-emails.ts imports `db` from @/lib/db at module top (used only by

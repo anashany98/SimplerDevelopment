@@ -18,6 +18,7 @@ import { db } from '@/lib/db';
 import { clientApiKeys, clients } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { decryptApiKey } from '@/lib/crypto/api-key';
+import { getEmailPlatformConfig } from './config';
 
 export interface ResolvedResendKey {
   key: string;
@@ -85,9 +86,11 @@ export async function resolveResendKey(clientId: number): Promise<ResolvedResend
     if (billingMode === 'byok') {
       throw new Error('BYOK client has no Resend key connected — add one in Settings → API Keys');
     }
-    const platform = process.env.RESEND_API_KEY;
+    const platform = (await getEmailPlatformConfig()).resendApiKey;
     if (!platform) {
-      throw new Error('[resolveResendKey] RESEND_API_KEY is not set and no BYOK key found');
+      throw new Error(
+        '[resolveResendKey] Resend API key is not configured (Admin → Email → Ajustes, or RESEND_API_KEY) and no BYOK key found',
+      );
     }
     resolved = { key: platform, source: 'platform' };
   }

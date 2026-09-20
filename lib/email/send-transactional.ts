@@ -5,8 +5,8 @@
  * applies branding, and sends via Resend. Falls back to default templates
  * if no custom template exists.
  *
- * BYOK note: this always sends through the platform Resend key (the `resend`
- * proxy from ./index, ultimately process.env.RESEND_API_KEY) — it never calls
+ * BYOK note: this always sends through the platform Resend key (resolved by
+ * lib/email/config.ts: admin setting → RESEND_API_KEY env) — it never calls
  * resolveResendKey() the way campaign sends do (lib/email/campaign-send.ts,
  * ab-promotion.ts). Deliberate: order confirmations, booking reminders, invites,
  * and MCP approvals are platform-originated sends, not client-COGS sends, so
@@ -17,13 +17,14 @@ import { db } from '@/lib/db';
 import { websiteEmailTemplates, clientWebsites, brandingProfiles } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { resend } from './index';
+import { getEmailPlatformConfig } from './config';
 import { renderBlocksToEmailHtml } from './render-blocks-to-email';
 import { replaceVariables, getEventDefinition } from './website-email-events';
 import { getDefaultTemplates } from './default-email-templates';
 import { applyBrandingToBlocks, brandingProfileToEmailBranding } from './apply-branding-to-blocks';
 import type { Block, BlockEditorData } from '@/types/blocks';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+const FROM_EMAIL_FALLBACK = 'noreply@simplerdevelopment.com';
 
 interface SendTransactionalEmailOptions {
   websiteId: number;
@@ -223,10 +224,11 @@ export async function sendTransactionalEmail(
       htmlContent = await renderDefaultTemplate(event, allVars, websiteId);
     }
 
-    // Send via Resend
+    // Send via the platform Resend transport (admin settings → env).
     const senderName = fromName || siteInfo.siteName;
+    const { fromEmail } = await getEmailPlatformConfig();
     const result = await resend.emails.send({
-      from: `${senderName} <${FROM_EMAIL}>`,
+      from: `${senderName} <${fromEmail || FROM_EMAIL_FALLBACK}>`,
       to,
       subject,
       html: htmlContent,

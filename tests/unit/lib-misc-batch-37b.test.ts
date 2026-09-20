@@ -148,6 +148,7 @@ vi.mock('@/lib/email', () => ({
   resend: {
     emails: { send: resendSendMock },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // Mock the components module purely to satisfy the `import type` re-export

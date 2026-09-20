@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { supportTickets, ticketMessages, clients, users } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { eq, and } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -71,7 +71,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         if (clientRow?.userEmail) {
           const baseUrl = process.env.NEXTAUTH_URL || 'https://app.simplerdevelopment.com';
           const portalLink = `${baseUrl}/portal/tickets/${ticketId}`;
-          const from = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+          const from = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
 
           await resend.emails.send({
             from: `CRM AGENTS Support <${from}>`,

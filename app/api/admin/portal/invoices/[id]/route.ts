@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { invoices, invoiceItems, clients, users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 async function requireStaff() {
   const session = await auth();
@@ -55,7 +55,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       if (clientRow?.userEmail) {
         const baseUrl = process.env.NEXTAUTH_URL || 'https://app.simplerdevelopment.com';
         const invoiceLink = `${baseUrl}/portal/invoices/${invoiceId}`;
-        const from = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+        const from = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
         const invoiceNumber = invoice?.number ?? existing.number;
 
         await resend.emails.send({

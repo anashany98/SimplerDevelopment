@@ -9,9 +9,11 @@
 // All functions are intentionally standalone (no DB imports) so they can be
 // tested independently of the webhook handler.
 
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'portal@simplerdevelopment.com';
+async function resolveFromEmail(): Promise<string> {
+  return (await getConfiguredFromEmail()) || 'portal@simplerdevelopment.com';
+}
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
 const BILLING_URL = `${BASE_URL}/portal/settings/billing/plans`;
 
@@ -68,7 +70,7 @@ export async function sendPaymentFailedEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${await resolveFromEmail()}>`,
     to: opts.toEmail,
     subject: 'Action required: your CRM AGENTS payment failed',
     html,
@@ -107,7 +109,7 @@ export async function sendTrialWillEndEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${await resolveFromEmail()}>`,
     to: opts.toEmail,
     subject: 'Your CRM AGENTS trial ends in 3 days',
     html,
@@ -143,7 +145,7 @@ export async function sendSubscriptionSuspendedEmail(opts: {
   );
 
   await resend.emails.send({
-    from: `CRM AGENTS Billing <${FROM_EMAIL}>`,
+    from: `CRM AGENTS Billing <${await resolveFromEmail()}>`,
     to: opts.toEmail,
     subject: 'Your CRM AGENTS access has been suspended',
     html,

@@ -1,6 +1,6 @@
 import { resend } from './index';
+import { getConfiguredFromEmail } from './config';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'store@simplerdevelopment.com';
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
 
@@ -19,7 +19,7 @@ export async function sendCartRecoveryEmail(opts: {
   const link = `${BASE_URL}/api/storefront/${opts.websiteId}/cart/recover?token=${encodeURIComponent(opts.recoveryToken)}`;
   const dollars = (opts.cartValue / 100).toFixed(2);
   await resend.emails.send({
-    from: `Tu carrito <${FROM_EMAIL}>`,
+    from: `Tu carrito <${(await getConfiguredFromEmail()) || 'store@simplerdevelopment.com'}>`,
     to: opts.to,
     subject: 'Dejaste artículos en tu carrito',
     html: `<p>Todavía tienes ${opts.itemCount} ${opts.itemCount === 1 ? 'artículo' : 'artículos'} esperando en tu carrito (total $${dollars}).</p>

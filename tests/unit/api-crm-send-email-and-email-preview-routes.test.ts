@@ -70,6 +70,7 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => H.resendSendMock(...args),
     },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
   buildUnsubscribeUrl: (...args: unknown[]) => H.buildUnsubscribeUrlMock(...(args as [string])),
 }));
 

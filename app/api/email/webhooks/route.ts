@@ -3,6 +3,7 @@ import { Webhook } from 'svix';
 import { db } from '@/lib/db';
 import { emailCampaignSends, emailCampaigns, emailSubscribers } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
+import { getEmailPlatformConfig } from '@/lib/email';
 
 // Resend webhook event types we care about
 type ResendEvent =
@@ -16,7 +17,7 @@ type ResendEvent =
   | { type: 'email.complained'; data: { email_id: string } };
 
 export async function POST(req: Request) {
-  const secret = process.env.RESEND_WEBHOOK_SECRET;
+  const secret = (await getEmailPlatformConfig()).webhookSecret;
   if (!secret) {
     return new NextResponse('Unauthorized', { status: 401 });
   }

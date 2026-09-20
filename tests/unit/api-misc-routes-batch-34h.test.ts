@@ -85,6 +85,7 @@ vi.mock('@/lib/zoom', () => ({
 const resendSendMock = vi.fn();
 vi.mock('@/lib/email/index', () => ({
   resend: { emails: { send: (...args: unknown[]) => resendSendMock(...args) } },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // Stripe — the pay route does `(await import('stripe')).default`.

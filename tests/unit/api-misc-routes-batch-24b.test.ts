@@ -21,15 +21,17 @@ vi.mock('@/lib/auth', () => ({
 const resendDomainsListMock = vi.fn();
 const resendDomainsCreateMock = vi.fn();
 const generateUnsubscribeTokenMock = vi.fn(() => 'tok_FAKE');
-vi.mock('@/lib/email', () => ({
-  resend: {
-    domains: {
-      list: (...args: unknown[]) => resendDomainsListMock(...args),
-      create: (...args: unknown[]) => resendDomainsCreateMock(...args),
-    },
-  },
-  generateUnsubscribeToken: () => generateUnsubscribeTokenMock(),
-}));
+vi.mock('@/lib/email', () => {
+  const domains = {
+    list: (...args: unknown[]) => resendDomainsListMock(...args),
+    create: (...args: unknown[]) => resendDomainsCreateMock(...args),
+  };
+  return {
+    resend: { domains },
+    getResendClient: async () => ({ domains }),
+    generateUnsubscribeToken: () => generateUnsubscribeTokenMock(),
+  };
+});
 
 vi.mock('drizzle-orm', () => ({
   eq: (a: unknown, b: unknown) => ({ op: 'eq', a, b }),

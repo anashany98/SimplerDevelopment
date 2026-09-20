@@ -4,7 +4,7 @@
 
 import { NextResponse } from 'next/server';
 import { createSelfServeAccount, SignupError } from '@/lib/signup/service';
-import { sendEmail } from '@/lib/email';
+import { sendEmail, getConfiguredFromEmail } from '@/lib/email';
 import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
 
 export async function POST(req: Request) {
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     let verificationSent = false;
     try {
       await sendEmail({
-        from: process.env.RESEND_FROM_EMAIL ?? 'CRM AGENTS <noreply@simplerdevelopment.com>',
+        from: (await getConfiguredFromEmail()) ?? 'CRM AGENTS <noreply@simplerdevelopment.com>',
         to: body.email.trim().toLowerCase(),
         subject: 'Verify your email to get started',
         html: [

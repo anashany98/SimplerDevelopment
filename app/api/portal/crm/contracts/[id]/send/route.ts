@@ -16,7 +16,7 @@ import { crmContracts, crmContractSigners } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 import crypto from 'crypto';
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -65,7 +65,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   // Send signing emails to each signer
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://simplerdevelopment.com';
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+  const fromEmail = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
 
   for (const signer of signers) {
     const signingUrl = `${baseUrl}/contract/${signer.token}`;

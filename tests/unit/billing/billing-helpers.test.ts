@@ -16,6 +16,7 @@ const H = vi.hoisted(() => ({ sendMock: vi.fn() }));
 
 vi.mock('@/lib/email', () => ({
   resend: { emails: { send: (...args: unknown[]) => H.sendMock(...args) } },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 import {

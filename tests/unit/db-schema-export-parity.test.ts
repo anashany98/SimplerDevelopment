@@ -68,6 +68,7 @@ function collectSchemaExportNames(): string[] {
 // + manually appended agent_flow_runs + agent_flow_run_events 2026-08-03 (executions, same module).
 // + regenerated 2026-08-12: seo_* tables (SEO Intelligence core audit + GSC history, lib/db/schema/seo.ts).
 // + appended omnichannel tables/types 2026-08-25 (lib/db/schema/chat.ts).
+// + appended platform_settings + PlatformSettingRow 2026-09-20 (admin email settings, lib/db/schema/settings.ts).
 const EXPECTED_EXPORTS: readonly string[] = [
   'AB_TARGET_TYPES',
   'AbAssignment',
@@ -241,6 +242,7 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'PitchDeckSlide',
   'PitchDeckSlideV2',
   'PitchDeckTheme',
+  'PlatformSettingRow',
   'PromptAuditAction',
   'PromptVersionStatus',
   'ProposalFee',
@@ -500,6 +502,7 @@ const EXPECTED_EXPORTS: readonly string[] = [
   'pitchDeckVersions',
   'pitchDeckViews',
   'pitchDecks',
+  'platformSettings',
   'portalApiKeys',
   'postCategories',
   'postCustomFieldValues',
@@ -832,6 +835,7 @@ const EXPECTED_TABLE_NAMES: Readonly<Record<string, string>> = {
   pitchDeckVersions: 'pitch_deck_versions',
   pitchDeckViews: 'pitch_deck_views',
   pitchDecks: 'pitch_decks',
+  platformSettings: 'platform_settings',
   portalApiKeys: 'portal_api_keys',
   postCategories: 'post_categories',
   postCustomFieldValues: 'post_custom_field_values',
@@ -973,13 +977,13 @@ describe('lib/db/schema export parity', () => {
     expect(actualTables).toEqual(EXPECTED_TABLE_NAMES);
   });
 
-  it('reports the recorded number of tables (321)', () => {
+  it('reports the recorded number of tables (322)', () => {
     const schemaMap = Schema as unknown as Record<string, unknown>;
     let count = 0;
     for (const value of Object.values(schemaMap)) {
       if (value && typeof value === 'object' && isTable(value)) count += 1;
     }
     expect(count).toBe(Object.keys(EXPECTED_TABLE_NAMES).length);
-    expect(count).toBe(321);
+    expect(count).toBe(322);
   });
 });

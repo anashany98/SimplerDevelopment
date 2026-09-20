@@ -72,10 +72,10 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   // "Send" gets the actionable error immediately instead of via a stranded
   // 'sending' campaign.
   try {
-    if (isMailpitEmailTransport()) {
-      createEmailTransport();
+    if (await isMailpitEmailTransport()) {
+      await createEmailTransport();
     } else {
-      createEmailTransport({ resendApiKey: (await resolveResendKey(client.id)).key });
+      await createEmailTransport({ resendApiKey: (await resolveResendKey(client.id)).key });
     }
   } catch {
     return NextResponse.json(

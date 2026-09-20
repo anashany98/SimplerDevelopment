@@ -91,17 +91,17 @@ export async function executeAbPromotion(
     cachedText = r.text;
   }
 
-  // 5) Resolve email transport — BYOK first, platform fallback.
+  // 5) Resolve email transport — BYOK first, platform fallback (admin settings → env).
   let emailTransport: EmailTransport;
-  if (isMailpitEmailTransport()) {
-    emailTransport = createEmailTransport();
+  if (await isMailpitEmailTransport()) {
+    emailTransport = await createEmailTransport();
   } else if (campaign.clientId != null) {
     const { key } = await resolveResendKey(campaign.clientId);
-    emailTransport = createEmailTransport({ resendApiKey: key });
+    emailTransport = await createEmailTransport({ resendApiKey: key });
   } else {
-    const platformKey = process.env.RESEND_API_KEY;
-    if (!platformKey) throw new Error('[executeAbPromotion] RESEND_API_KEY is not set');
-    emailTransport = createEmailTransport({ resendApiKey: platformKey });
+    // Platform config resolves the key (admin setting → RESEND_API_KEY env) and
+    // throws with an actionable message when nothing is configured.
+    emailTransport = await createEmailTransport();
   }
 
   // 6) Record winner BEFORE dispatching so partial failures are recoverable.

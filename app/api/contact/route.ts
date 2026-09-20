@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { asc, eq } from 'drizzle-orm';
-import { sendEmail } from '@/lib/email';
+import { sendEmail, getConfiguredFromEmail, getEmailPlatformConfig } from '@/lib/email';
 import { escapeHtml } from '@/lib/utils/html';
 import { db } from '@/lib/db';
 import { crmDeals, crmPipelineStages } from '@/lib/db/schema';
@@ -18,7 +18,7 @@ const HONEYPOT_FIELD = 'website';
 
 // Where contact-form submissions are delivered.
 const CONTACT_INBOX = process.env.CONTACT_INBOX || 'info@simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'CRM AGENTS <noreply@simplerdevelopment.com>';
+
 
 // This is CRM AGENTS's OWN marketing form, not a tenant route — there
 // is no session and no site-resolver to derive a tenant from, so the owning
@@ -163,17 +163,19 @@ export async function POST(request: NextRequest) {
     `;
 
     // No provider configured: log and succeed so the form still works without
-    // a mail provider. Mailpit local dev sets EMAIL_TRANSPORT=mailpit and uses
-    // the same send path as production.
-    if (process.env.EMAIL_TRANSPORT !== 'mailpit' && !process.env.RESEND_API_KEY) {
-      console.warn('[contact] RESEND_API_KEY not set — submission logged, not emailed:', {
+    // a mail provider. Mailpit mode (dev capture) uses the same send path as
+    // production.
+    const emailCfg = await getEmailPlatformConfig();
+    if (emailCfg.transport !== 'mailpit' && !emailCfg.resendApiKey) {
+      console.warn('[contact] Resend API key not configured — submission logged, not emailed:', {
         name, email, subject,
       });
       return NextResponse.json({ message: 'Message sent successfully' }, { status: 200 });
     }
 
+    const fromEmail = (await getConfiguredFromEmail()) || 'CRM AGENTS <noreply@simplerdevelopment.com>';
     const result = await sendEmail({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: CONTACT_INBOX,
       replyTo: email,
       subject: subject ? `Contact form: ${subject}` : 'New Contact Form Submission',

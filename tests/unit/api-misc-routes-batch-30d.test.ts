@@ -41,6 +41,7 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => resendSendMock(...args),
     },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // portal-auth — mock authorizePortal to pass through (esign entitlement granted)

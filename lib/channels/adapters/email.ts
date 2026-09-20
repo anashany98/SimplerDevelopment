@@ -17,7 +17,8 @@ export class EmailChannelAdapter implements ChannelAdapter {
   async sendMessage(connection: AdapterConnection, message: OutboundMessage) {
     const from = connection.credentials.from || connection.externalAccountId;
     const subject = connection.credentials.defaultSubject || 'New message';
-    const response = await createEmailTransport({ resendApiKey: connection.credentials.apiKey }).send({
+    const transport = await createEmailTransport({ resendApiKey: connection.credentials.apiKey });
+    const response = await transport.send({
       from, to: message.recipientId, subject, text: message.text ?? '',
       headers: { 'X-Idempotency-Key': message.idempotencyKey },
     });

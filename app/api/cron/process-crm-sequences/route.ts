@@ -24,12 +24,12 @@ import {
   crmContacts,
 } from '@/lib/db/schema';
 import { and, asc, eq } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'crm@simplerdevelopment.com';
+
 const FROM_NAME = 'CRM AGENTS';
 const MAX_SENDS_PER_TICK = 100;
 
@@ -96,8 +96,9 @@ async function _GET(req: Request): Promise<Response> {
     let resendEmailId: string | null = null;
     let error: string | null = null;
     try {
+      const fromEmail = (await getConfiguredFromEmail()) || 'crm@simplerdevelopment.com';
       const result = await resend.emails.send({
-        from: `${FROM_NAME} <${FROM_EMAIL}>`,
+        from: `${FROM_NAME} <${fromEmail}>`,
         to: contact.email,
         subject: step.subject,
         html: step.bodyHtml,

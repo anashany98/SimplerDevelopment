@@ -192,6 +192,7 @@ vi.mock('@/lib/email', () => ({
   resend: {
     emails: { send: (...args: unknown[]) => resendSendMock(...args) },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 vi.mock('crypto', () => ({

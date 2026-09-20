@@ -21,10 +21,10 @@ import { assertSafeUrl } from '@/lib/ssrf-guard';
 import { recordAiUsage } from '@/lib/ai/audit';
 import { complete } from '@/lib/ai/llm';
 import { delimitUntrusted, UNTRUSTED_DATA_SYSTEM_RULE } from '@/lib/ai/untrusted';
+import { getEmailPlatformConfig } from '@/lib/email';
 
 const ATTACHMENT_WORKER_URL = process.env.BRAIN_ATTACHMENT_WORKER_URL
   || 'https://sd-email-inbound.lingering-bush-dcd7.workers.dev';
-const INBOUND_SECRET = process.env.INBOUND_EMAIL_SECRET || '';
 const SIGNED_URL_TTL_SECONDS = 120;
 const MAX_BYTES = 5 * 1024 * 1024; // Claude's per-file input cap is ~5MB
 
@@ -52,10 +52,11 @@ function isText(t: string): boolean {
 }
 
 /** Generate a signed worker URL pointing at /attachment for this R2 key. */
-function signedUrl(key: string): string {
-  if (!INBOUND_SECRET) throw new Error('INBOUND_EMAIL_SECRET is not set');
+async function signedUrl(key: string): Promise<string> {
+  const secret = (await getEmailPlatformConfig()).inboundSecret;
+  if (!secret) throw new Error('INBOUND_EMAIL_SECRET is not set');
   const exp = Math.floor(Date.now() / 1000) + SIGNED_URL_TTL_SECONDS;
-  const sig = createHmac('sha256', INBOUND_SECRET).update(`${key}\n${exp}`).digest('hex');
+  const sig = createHmac('sha256', secret).update(`${key}\n${exp}`).digest('hex');
   return `${ATTACHMENT_WORKER_URL}/attachment?key=${encodeURIComponent(key)}&exp=${exp}&sig=${sig}`;
 }
 
@@ -92,7 +93,7 @@ export async function analyzeAttachment(att: AttachmentLike, clientId?: number):
   // resolveClientApiKey will use the platform key for clientId=0.
   const effectiveClientId = typeof clientId === 'number' ? clientId : 0;
 
-  const bytes = await fetchBytes(signedUrl(att.key));
+  const bytes = await fetchBytes(await signedUrl(att.key));
 
   const systemPrompt = `You analyze files attached to business meetings. Respond with a single dense paragraph (3–5 sentences max) describing what the file is, what it contains, and why it might be relevant in a business context. Do not include preamble like "this file is" — just describe it directly. Do not use markdown. ${UNTRUSTED_DATA_SYSTEM_RULE}`;
 

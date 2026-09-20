@@ -124,6 +124,11 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => H.resendSendMock(...args),
     },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
+  getEmailPlatformConfig: async () => ({
+    resendApiKey: process.env.RESEND_API_KEY ?? null,
+    transport: process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend',
+  }),
 }));
 
 // BAR-003: mock the digest-preference gate. Default mode is 'instant' unless

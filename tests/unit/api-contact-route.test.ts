@@ -68,7 +68,23 @@ vi.mock('drizzle-orm', () => ({ asc: vi.fn(), eq: vi.fn() }));
 vi.mock('@/lib/crm/contacts', () => ({ upsertContactByEmail: mocks.upsertContactByEmail }));
 vi.mock('@/lib/crm/default-pipeline', () => ({ ensureDefaultPipeline: mocks.ensureDefaultPipeline }));
 vi.mock('@/lib/automation/event-bus', () => ({ emitEvent: mocks.emitEvent }));
-vi.mock('@/lib/email', () => ({ sendEmail: mocks.sendEmail }));
+vi.mock('@/lib/email', () => ({
+  sendEmail: mocks.sendEmail,
+  // Mirror the real DB→env→default resolution, env-only here.
+  getEmailPlatformConfig: async () => ({
+    resendApiKey: process.env.RESEND_API_KEY ?? null,
+    resendApiKeySource: process.env.RESEND_API_KEY ? 'env' : 'none',
+    fromEmail: process.env.RESEND_FROM_EMAIL ?? 'noreply@simplerdevelopment.com',
+    fromEmailSource: process.env.RESEND_FROM_EMAIL ? 'env' : 'default',
+    transport: process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend',
+    transportSource: process.env.EMAIL_TRANSPORT ? 'env' : 'default',
+    webhookSecret: null,
+    webhookSecretSource: 'none',
+    inboundSecret: null,
+    inboundSecretSource: 'none',
+  }),
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
+}));
 
 const VALID_BODY = {
   name: 'Jane Doe',

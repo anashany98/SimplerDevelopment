@@ -445,6 +445,20 @@ vi.mock('@/lib/email', () => ({
       }),
     },
   },
+  // Mirror the real DB→env→default resolution, env-only here.
+  getEmailPlatformConfig: vi.fn(async () => ({
+    resendApiKey: process.env.RESEND_API_KEY ?? null,
+    resendApiKeySource: process.env.RESEND_API_KEY ? 'env' : 'none',
+    fromEmail: process.env.RESEND_FROM_EMAIL ?? 'noreply@simplerdevelopment.com',
+    fromEmailSource: process.env.RESEND_FROM_EMAIL ? 'env' : 'default',
+    transport: process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend',
+    transportSource: process.env.EMAIL_TRANSPORT ? 'env' : 'default',
+    webhookSecret: process.env.RESEND_WEBHOOK_SECRET ?? null,
+    webhookSecretSource: process.env.RESEND_WEBHOOK_SECRET ? 'env' : 'none',
+    inboundSecret: process.env.INBOUND_EMAIL_SECRET ?? null,
+    inboundSecretSource: process.env.INBOUND_EMAIL_SECRET ? 'env' : 'none',
+  })),
+  getConfiguredFromEmail: vi.fn(async () => process.env.RESEND_FROM_EMAIL ?? null),
 }));
 
 // ---------------------------------------------------------------------------

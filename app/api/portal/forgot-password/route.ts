@@ -3,11 +3,9 @@ import { db } from '@/lib/db';
 import { users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { randomBytes } from 'crypto';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 import { hashToken } from '@/lib/security/token-hash';
 import { checkRateLimit, getClientIp, isAuthRateLimitDisabled } from '@/lib/security/rate-limit';
-
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
 
 export async function POST(req: Request) {
@@ -53,7 +51,7 @@ export async function POST(req: Request) {
 
   try {
     const result = await resend.emails.send({
-      from: `CRM AGENTS <${FROM_EMAIL}>`,
+      from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`,
       to: email.toLowerCase().trim(),
       subject: 'Reset your password — CRM AGENTS',
       html: `<!DOCTYPE html>

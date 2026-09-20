@@ -5,16 +5,16 @@ import { eq, sql } from 'drizzle-orm';
 import { completeAgentLoop, anthropicToolsToToolSet } from '@/lib/ai/agent-loop';
 import { PORTAL_TOOLS, executePortalTool, isApprovalRequired, unattendedRefusal } from '@/lib/ai/portal-tools';
 import { hasCredits, deductCredits } from '@/lib/ai-credits';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail, getEmailPlatformConfig } from '@/lib/email';
 import { processBrainMeeting } from '@/lib/brain/process-meeting';
 import { resolveClientApiKey } from '@/lib/ai/resolve-client-key';
 import { recordAiUsage } from '@/lib/ai/audit';
 import { checkAiPlanGate } from '@/lib/ai/plan-gate';
 
-// Shared secret between CF Worker and this endpoint. Validated per-request
-// (not at module load) so `next build` can collect page data without the
-// env var set in the build environment.
-const INBOUND_SECRET = process.env.INBOUND_EMAIL_SECRET;
+// Shared secret between the CF Worker and this endpoint. Resolved per-request
+// from the platform email config (admin setting → INBOUND_EMAIL_SECRET) so
+// `next build` can collect page data without the env var set, and admins can
+// rotate it from Admin → Email → Ajustes.
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant for CRM AGENTS. A client is contacting you via email. You have access to tools that query and modify their portal data — projects, invoices, tickets, websites, email campaigns, booking pages, pitch decks, CRM, and more.
 
@@ -64,9 +64,10 @@ interface InboundPayload {
 }
 
 export async function POST(req: Request) {
+  const { inboundSecret: INBOUND_SECRET } = await getEmailPlatformConfig();
   if (!INBOUND_SECRET || INBOUND_SECRET === 'sd-inbound-secret-change-me') {
     return NextResponse.json(
-      { error: 'INBOUND_EMAIL_SECRET env var is required and must not be the placeholder.' },
+      { error: 'INBOUND_EMAIL_SECRET is required and must not be the placeholder (set it in Admin → Email → Ajustes or as an env var).' },
       { status: 500 },
     );
   }
@@ -165,7 +166,7 @@ export async function POST(req: Request) {
     const gate = await checkAiPlanGate({ clientId: client.id, provider: 'anthropic' });
     if (!gate.allowed) {
       await resend.emails.send({
-        from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+        from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`,
         to: senderEmail,
         subject: `Re: ${subject}`,
         text: gate.message ?? 'AI access is not available on the current plan.',
@@ -183,7 +184,7 @@ export async function POST(req: Request) {
       if (!canProceed) {
         // Send a reply saying they're out of credits
         await resend.emails.send({
-          from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+          from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`,
           to: senderEmail,
           subject: `Re: ${subject}`,
           text: `Your AI credits are depleted. Please purchase more credits or enable pay-as-you-go at https://simplerdevelopment.com/portal/dashboard, or add a BYOK key at https://simplerdevelopment.com/portal/integrations/api-keys, to continue using the email assistant.`,
@@ -278,7 +279,7 @@ export async function POST(req: Request) {
     void recordAiUsage({ clientId: client.id, source: resolved.source, tokens: totalTokens });
 
     // Send reply via Resend
-    const replyFrom = `${client.company || 'CRM AGENTS'} AI <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`;
+    const replyFrom = `${client.company || 'CRM AGENTS'} AI <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`;
 
     await resend.emails.send({
       from: replyFrom,

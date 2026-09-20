@@ -5,7 +5,7 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { crmNotifications, mcpPendingChanges, users, clients } from '@/lib/db/schema';
 import { escapeHtml } from '@/lib/utils/html';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -49,7 +49,7 @@ export const runtime = 'nodejs';
  */
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'portal@simplerdevelopment.com';
+
 const EMAILS_ENABLED = process.env.MCP_APPROVAL_EMAILS_ENABLED !== 'false';
 
 type DigestRow = {
@@ -188,9 +188,10 @@ async function _GET(req: Request) {
       const reviewUrl = `${BASE_URL}/portal/approvals?status=pending`;
       const subject = `[${clientName}] ${items.length} change${items.length === 1 ? '' : 's'} awaiting your review`;
       const html = renderDigestEmail({ clientName, items, reviewUrl });
+      const fromEmail = (await getConfiguredFromEmail()) || 'portal@simplerdevelopment.com';
 
       await resend.emails.send({
-        from: `CRM AGENTS <${FROM_EMAIL}>`,
+        from: `CRM AGENTS <${fromEmail}>`,
         to: user.email,
         subject,
         html,

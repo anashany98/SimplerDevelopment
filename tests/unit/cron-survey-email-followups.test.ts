@@ -104,6 +104,7 @@ vi.mock('@/lib/email', () => ({
   resend: { emails: { send: (...args: unknown[]) => sendMock(...args) } },
   generateUnsubscribeToken: () => 'tok_test',
   buildUnsubscribeUrl: (t: string) => `https://example.test/unsubscribe?t=${t}`,
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // The gate has its own 100% unit suite (surveyEmailFollowupGate.test.ts) so

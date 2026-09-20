@@ -22,6 +22,12 @@ vi.hoisted(() => {
 // Mocks
 // ---------------------------------------------------------------------------
 
+vi.mock('@/lib/email', () => ({
+  getEmailPlatformConfig: async () => ({
+    inboundSecret: process.env.INBOUND_EMAIL_SECRET ?? null,
+  }),
+}));
+
 const requireBrainEntitlementMock = vi.fn();
 vi.mock('@/lib/brain/entitlement', () => ({
   requireBrainEntitlement: (...args: unknown[]) => requireBrainEntitlementMock(...args),

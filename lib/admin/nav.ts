@@ -65,6 +65,7 @@ export function getNavSections(): NavSection[] {
             { href: '/admin/email/campaigns', label: 'Campaigns', icon: 'send' },
             { href: '/admin/email/lists', label: 'Lists', icon: 'list' },
             { href: '/admin/email/domains', label: 'Domains', icon: 'dns' },
+            { href: '/admin/email/settings', label: 'Settings', icon: 'settings' },
           ],
         },
         { href: '/admin/booking', label: 'Booking', icon: 'calendar_month' },

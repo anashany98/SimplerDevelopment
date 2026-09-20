@@ -76,9 +76,9 @@ export async function POST(req: Request) {
         // synchronously when RESEND_API_KEY is unset — the promise .catch
         // alone doesn't cover that, so wrap the whole send.
         try {
-          const { resend } = await import('@/lib/email/index');
+          const { resend, getConfiguredFromEmail } = await import('@/lib/email/index');
           resend.emails.send({
-            from: `CRM AGENTS <${process.env.RESEND_FROM_EMAIL || 'bookings@simplerdevelopment.com'}>`,
+            from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'bookings@simplerdevelopment.com'}>`,
             to: host.email,
             subject: `Booking Cancelled: ${booking.guestName} — ${page.title}`,
             html: `<p><strong>${booking.guestName}</strong> cancelled their ${page.title} appointment on ${new Intl.DateTimeFormat('es-ES', { dateStyle: 'full', timeStyle: 'short', timeZone: booking.timezone }).format(booking.startTime)}.</p>`,

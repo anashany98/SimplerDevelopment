@@ -34,3 +34,4 @@ export * from './clientLegacy';
 export * from './agentFlows';
 export * from './jobs';
 export * from './seo';
+export * from './settings';
