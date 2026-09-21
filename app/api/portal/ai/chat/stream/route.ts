@@ -507,8 +507,13 @@ export async function POST(req: Request) {
 
         await finalize();
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Stream error';
+        const raw = err instanceof Error ? err.message : 'Stream error';
         console.error('[ai/chat/stream] inference error', err);
+        // Mirror the non-streaming route: a missing provider key is a
+        // configuration state, not a generic stream failure.
+        const msg = raw.includes('No BYOK row and no platform env var')
+          ? 'El asistente de IA no está configurado todavía. Pide al administrador de tu espacio que añada una clave de IA (Ajustes → IA).'
+          : raw;
         await finalize(msg);
       }
     },

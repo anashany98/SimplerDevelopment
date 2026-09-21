@@ -445,6 +445,18 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error('[POST /api/portal/ai/chat]', err);
+    // A missing provider key is a configuration state, not an app failure —
+    // tell the client what to do instead of a bare "Internal server error".
+    if (err instanceof Error && err.message.includes('No BYOK row and no platform env var')) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            'El asistente de IA no está configurado todavía. Pide al administrador de tu espacio que añada una clave de IA (Ajustes → IA).',
+        },
+        { status: 503 },
+      );
+    }
     return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
