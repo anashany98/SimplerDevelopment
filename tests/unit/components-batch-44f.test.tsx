@@ -81,8 +81,8 @@ describe('CardActivity', () => {
     const { container, queryByText } = render(
       <CardActivity activities={[]} showActivity={false} setShowActivity={setShowActivity} />,
     );
-    // Header text includes the word "Activity" but no parenthesized count.
-    expect(container.textContent).toContain('Activity');
+    // Header text includes the word "Actividad" but no parenthesized count.
+    expect(container.textContent).toContain('Actividad');
     expect(container.textContent).not.toContain('(0)');
     // Collapsed branch: empty-state text should NOT appear.
     expect(queryByText('No activity yet.')).toBeNull();
@@ -105,7 +105,7 @@ describe('CardActivity', () => {
         setShowActivity={setShowActivity}
       />,
     );
-    expect(container.textContent).toContain('Activity (3)');
+    expect(container.textContent).toContain('Actividad (3)');
   });
 
   it('renders the empty-state copy when expanded with no activities', () => {
@@ -142,8 +142,8 @@ describe('CardActivity', () => {
     );
     const items = container.querySelectorAll('li');
     expect(items.length).toBe(2);
-    expect(container.textContent).toContain('Grace renamed to "New title"');
-    expect(container.textContent).toContain('Linus added label "urgent"');
+    expect(container.textContent).toContain('Grace la renombró a "New title"');
+    expect(container.textContent).toContain('Linus añadió la etiqueta "urgent"');
     // Empty-state copy must NOT appear when activities exist.
     expect(container.textContent).not.toContain('No activity yet.');
   });

@@ -28,7 +28,7 @@ export default async function BrainTasksWidget({
       <div className="mb-3 flex items-center gap-4 flex-wrap">
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{openTasks}</span>
-          <span className="ml-1.5 text-sm text-muted-foreground">open</span>
+          <span className="ml-1.5 text-sm text-muted-foreground">abiertas</span>
         </div>
         {overdueCount > 0 && (
           <div>
@@ -40,15 +40,15 @@ export default async function BrainTasksWidget({
         )}
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-primary">{aiCreatedTasks}</span>
-          <span className="ml-1.5 text-sm text-muted-foreground">AI-created</span>
+          <span className="ml-1.5 text-sm text-muted-foreground">creadas por IA</span>
         </div>
       </div>
 
       {allSorted.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No open tasks.{' '}
+          Sin tareas abiertas.{' '}
           <Link href="/portal/brain/tasks" className="text-primary hover:underline">
-            Create one
+            Crear una
           </Link>
         </p>
       ) : (
@@ -107,7 +107,7 @@ export default async function BrainTasksWidget({
             className="text-xs text-primary hover:underline flex items-center gap-1"
           >
             <span className="material-icons text-sm">arrow_forward</span>
-            View all tasks
+            Ver todas las tareas
           </Link>
         </div>
       )}

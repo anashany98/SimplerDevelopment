@@ -56,11 +56,11 @@ export default async function SurveyResponsesWidget({
       <div className="mb-3 flex gap-4">
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{liveTotal}</span>
-          <span className="ml-2 text-sm text-muted-foreground">total response{liveTotal !== 1 ? 's' : ''}</span>
+          <span className="ml-2 text-sm text-muted-foreground">{liveTotal === 1 ? 'respuesta en total' : 'respuestas en total'}</span>
         </div>
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{activeSurveyCount}</span>
-          <span className="ml-2 text-sm text-muted-foreground">active</span>
+          <span className="ml-2 text-sm text-muted-foreground">activas</span>
         </div>
       </div>
       {clientSurveys.length === 0 ? (
@@ -71,7 +71,7 @@ export default async function SurveyResponsesWidget({
             className="text-sm text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-base">add_circle_outline</span>
-            Create a survey
+            Crear una encuesta
           </Link>
         </div>
       ) : (
@@ -87,7 +87,7 @@ export default async function SurveyResponsesWidget({
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{s.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      {respCount} response{respCount !== 1 ? 's' : ''}
+                      {respCount} {respCount === 1 ? 'respuesta' : 'respuestas'}
                     </p>
                   </div>
                   <span

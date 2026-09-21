@@ -19,7 +19,7 @@ export function CardActivity({ activities, showActivity, setShowActivity }: Prop
         onClick={() => setShowActivity(v => !v)}
         className="flex items-center justify-between w-full mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground"
       >
-        <span>Activity {activities.length > 0 && `(${activities.length})`}</span>
+        <span>Actividad {activities.length > 0 && `(${activities.length})`}</span>
         <span
           className={`material-icons text-sm transition-transform ${showActivity ? 'rotate-90' : ''}`}
         >

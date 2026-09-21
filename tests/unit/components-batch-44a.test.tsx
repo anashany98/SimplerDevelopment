@@ -177,17 +177,17 @@ describe('CardArtifacts', () => {
 
     // Filter buttons rendered for every ARTIFACT_LABELS key plus "All".
     expect(getByText('Todos')).toBeTruthy();
-    // "Website" appears as a filter button AND as a row label suffix — both fine.
-    expect(getAllByText('Website').length).toBeGreaterThanOrEqual(1);
-    expect(getAllByText('Pitch Deck').length).toBeGreaterThanOrEqual(1);
+    // "Web" aparece como botón de filtro Y como sufijo de fila — ambas correctas.
+    expect(getAllByText('Web').length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText('Presentación').length).toBeGreaterThanOrEqual(1);
 
     // Selecting an available artifact calls addArtifact with type+id.
     fireEvent.click(getByText('Acme HQ'));
     expect(baseProps.addArtifact).toHaveBeenCalledWith('website', 11);
 
     // Type filter button calls setArtifactTypeFilter. The filter button is the
-    // FIRST "Website" element (it appears before the row suffix).
-    fireEvent.click(getAllByText('Website')[0]);
+    // FIRST "Web" element (it appears before the row suffix).
+    fireEvent.click(getAllByText('Web')[0]);
     expect(baseProps.setArtifactTypeFilter).toHaveBeenCalledWith('website');
   });
 
@@ -235,7 +235,7 @@ describe('CardArtifacts', () => {
       />,
     );
     expect(container.textContent).toContain('No available artifacts');
-    expect(container.textContent).toContain('Survey');
+    expect(container.textContent).toContain('Encuesta');
   });
 
   it('renders linked artifacts with an external link, pin button, and remove button', () => {
@@ -479,7 +479,7 @@ describe('CardSidebar', () => {
         showAssigneeMenu={true}
       />,
     );
-    expect(container.textContent).toContain('No hay nadie mas que añadir');
+    expect(container.textContent).toContain('No hay nadie más que añadir');
   });
 
   it('toggles the watch button copy based on the watching prop', () => {

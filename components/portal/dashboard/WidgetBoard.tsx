@@ -237,7 +237,7 @@ export default function WidgetBoard({
         <h2 className="text-[13px] font-semibold text-foreground">Widgets del panel</h2>
         <div className="flex items-center gap-2">
           {saving && (
-            <span className="text-[11px] font-mono text-muted-foreground">Saving…</span>
+            <span className="text-[11px] font-mono text-muted-foreground">Guardando…</span>
           )}
           <button
             type="button"

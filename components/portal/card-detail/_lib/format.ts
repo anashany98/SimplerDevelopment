@@ -28,16 +28,16 @@ export const ARTIFACT_ICONS: Record<string, string> = {
 export const AGENT_LINKED_ARTIFACT_TYPES = new Set(['agent_flow_run']);
 
 export const ARTIFACT_LABELS: Record<string, string> = {
-  website: 'Website',
-  email_campaign: 'Email Campaign',
-  pitch_deck: 'Pitch Deck',
-  proposal: 'Proposal',
-  booking: 'Booking',
-  survey: 'Survey',
-  project: 'Project',
-  post: 'Doc / Post',
+  website: 'Web',
+  email_campaign: 'Campaña de email',
+  pitch_deck: 'Presentación',
+  proposal: 'Propuesta',
+  booking: 'Reserva',
+  survey: 'Encuesta',
+  project: 'Proyecto',
+  post: 'Doc / Artículo',
   path_chart: 'Path chart',
-  agent_flow_run: 'Workflow run',
+  agent_flow_run: 'Ejecución de workflow',
 };
 
 export function artifactUrl(type: string, id: number): string | null {
@@ -78,7 +78,7 @@ export function formatMinutes(mins: number): string {
 }
 
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', {
+  return new Date(iso).toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -93,54 +93,54 @@ export function formatSize(bytes: number): string {
 
 /** Render the human-readable activity line for one activity row. */
 export function formatActivity(a: Activity): string {
-  const who = a.userName ?? 'Someone';
+  const who = a.userName ?? 'Alguien';
   const p = a.payload ?? {};
   const q = (v: unknown) => (typeof v === 'string' ? `"${v}"` : String(v));
   switch (a.type) {
     case 'card.created':
-      return `${who} created this card`;
+      return `${who} creó esta tarjeta`;
     case 'card.title_changed':
-      return `${who} renamed to ${q(p.to)}`;
+      return `${who} la renombró a ${q(p.to)}`;
     case 'card.description_changed':
-      return `${who} edited the description`;
+      return `${who} editó la descripción`;
     case 'card.priority_changed':
-      return `${who} set priority to ${p.to ?? 'none'}`;
+      return `${who} puso la prioridad en ${p.to ?? 'ninguna'}`;
     case 'card.due_date_changed':
       return p.to
-        ? `${who} set due date to ${new Date(String(p.to)).toLocaleDateString()}`
-        : `${who} cleared the due date`;
+        ? `${who} puso vencimiento para el ${new Date(String(p.to)).toLocaleDateString('es-ES')}`
+        : `${who} quitó el vencimiento`;
     case 'card.assigned':
-      return `${who} assigned the card`;
+      return `${who} asignó la tarjeta`;
     case 'card.unassigned':
-      return `${who} unassigned the card`;
+      return `${who} desasignó la tarjeta`;
     case 'card.sprint_changed':
-      return p.to ? `${who} moved to a sprint` : `${who} removed from the sprint`;
+      return p.to ? `${who} la movió a un sprint` : `${who} la quitó del sprint`;
     case 'card.column_changed':
-      return `${who} moved the card to another column`;
+      return `${who} movió la tarjeta a otra columna`;
     case 'card.label_added':
-      return `${who} added label "${p.name}"`;
+      return `${who} añadió la etiqueta "${p.name}"`;
     case 'card.label_removed':
-      return `${who} removed label "${p.name}"`;
+      return `${who} quitó la etiqueta "${p.name}"`;
     case 'card.commented':
-      return `${who} commented`;
+      return `${who} comentó`;
     case 'card.file_added':
-      return `${who} attached a file`;
+      return `${who} adjuntó un archivo`;
     case 'card.checklist_item_added':
-      return `${who} added checklist item "${p.text}"`;
+      return `${who} añadió el ítem "${p.text}"`;
     case 'card.checklist_item_completed':
-      return `${who} completed "${p.text}"`;
+      return `${who} completó "${p.text}"`;
     case 'card.checklist_item_uncompleted':
-      return `${who} reopened "${p.text}"`;
+      return `${who} reabrió "${p.text}"`;
     case 'card.checklist_item_removed':
-      return `${who} removed checklist item "${p.text}"`;
+      return `${who} quitó el ítem "${p.text}"`;
     case 'card.assignee_added':
-      return `${who} assigned ${p.name ?? 'someone'}`;
+      return `${who} asignó a ${p.name ?? 'alguien'}`;
     case 'card.assignee_removed':
-      return `${who} removed ${p.name ?? 'someone'}`;
+      return `${who} quitó a ${p.name ?? 'alguien'}`;
     case 'card.dependency_added':
-      return `${who} added blocker "${p.title ?? p.blockerCardId}"`;
+      return `${who} añadió el bloqueante "${p.title ?? p.blockerCardId}"`;
     case 'card.dependency_removed':
-      return `${who} removed a blocker`;
+      return `${who} quitó un bloqueante`;
     default:
       return `${who} ${a.type}`;
   }

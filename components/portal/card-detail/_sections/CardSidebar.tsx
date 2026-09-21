@@ -106,7 +106,7 @@ export function CardSidebar({
                     </button>
                   ))}
                   {assigneeCandidates.length === 0 && (
-                    <p className="text-xs text-muted-foreground italic p-3">No hay nadie mas que añadir</p>
+                    <p className="text-xs text-muted-foreground italic p-3">No hay nadie más que añadir</p>
                   )}
                 </div>
               )}
