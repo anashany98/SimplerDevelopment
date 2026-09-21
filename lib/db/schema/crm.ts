@@ -103,7 +103,7 @@ export const crmDeals = pgTable('crm_deals', {
   companyId: integer('company_id').references(() => crmCompanies.id, { onDelete: 'set null' }),
   title: varchar('title', { length: 255 }).notNull(),
   value: integer('value'), // in cents
-  currency: varchar('currency', { length: 3 }).default('USD'),
+  currency: varchar('currency', { length: 3 }).default('EUR'),
   status: varchar('status', { length: 50 }).default('open').notNull(), // open, won, lost
   priority: varchar('priority', { length: 20 }).default('medium'), // low, medium, high
   expectedCloseDate: timestamp('expected_close_date'),
@@ -194,7 +194,7 @@ export const crmProposals = pgTable('crm_proposals', {
   sections: json('sections').$type<ProposalSection[]>().default([]),
   lineItems: json('line_items').$type<ProposalLineItem[]>().default([]),
   fees: json('fees').$type<ProposalFee[]>().default([]),
-  currency: varchar('currency', { length: 3 }).default('USD'),
+  currency: varchar('currency', { length: 3 }).default('EUR'),
   validUntil: timestamp('valid_until'),
   // Client-facing access
   clientToken: varchar('client_token', { length: 64 }).notNull().unique(), // secret URL token
@@ -264,7 +264,7 @@ export const crmContracts = pgTable('crm_contracts', {
   clauses: json('clauses').$type<ContractClause[]>().default([]),
   lineItems: json('line_items').$type<ProposalLineItem[]>().default([]),
   fees: json('fees').$type<ProposalFee[]>().default([]),
-  currency: varchar('currency', { length: 3 }).default('USD'),
+  currency: varchar('currency', { length: 3 }).default('EUR'),
   validUntil: timestamp('valid_until'),
   // Generated at creation (app/api/portal/crm/contracts/route.ts) and echoed
   // into the `contractUrl` field of send/route.ts's response, but no route

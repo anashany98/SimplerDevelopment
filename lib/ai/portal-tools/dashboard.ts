@@ -40,7 +40,7 @@ export const dashboardHandlers: Record<string, DashboardHandler> = {
       openTickets,
       totalTickets: ticketRows.length,
       unpaidInvoiceCount: unpaidInvoices.length,
-      amountDueDollars: (amountDue / 100).toFixed(2),
+      amountDueEur: (amountDue / 100).toFixed(2),
     };
   },
 };

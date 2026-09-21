@@ -415,7 +415,7 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
 
 function formatCents(cents: number, currency: string): string {
   try {
-    return new Intl.NumberFormat('es-ES', { style: 'currency', currency }).format(cents / 100);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: currency || 'EUR' }).format(cents / 100);
   } catch {
     return `${(cents / 100).toFixed(2)} ${currency}`;
   }

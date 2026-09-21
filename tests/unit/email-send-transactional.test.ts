@@ -215,15 +215,15 @@ afterEach(() => {
 // ---------------------------------------------------------------------------
 
 describe('formatCents', () => {
-  it('renders dollars + cents with $ prefix', () => {
-    expect(formatCents(14999)).toBe('$149.99');
-    expect(formatCents(0)).toBe('$0.00');
-    expect(formatCents(50)).toBe('$0.50');
+  it('renders euros + cents with € suffix', () => {
+    expect(formatCents(14999)).toBe('149,99\u00A0€');
+    expect(formatCents(0)).toBe('0,00\u00A0€');
+    expect(formatCents(50)).toBe('0,50\u00A0€');
   });
 
   it('rounds to 2 decimals', () => {
-    expect(formatCents(99)).toBe('$0.99');
-    expect(formatCents(1001)).toBe('$10.01');
+    expect(formatCents(99)).toBe('0,99\u00A0€');
+    expect(formatCents(1001)).toBe('10,01\u00A0€');
   });
 });
 
@@ -297,7 +297,7 @@ describe('buildItemsHtml', () => {
     expect(html).toContain('Cant.');
     expect(html).toContain('Total');
     expect(html).toContain('Mug');
-    expect(html).toContain('$20.00');
+    expect(html).toContain('20,00\u00A0€');
   });
 
   it('includes variantName in the product line when present', () => {

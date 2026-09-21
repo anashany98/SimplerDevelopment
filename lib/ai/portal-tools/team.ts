@@ -99,7 +99,7 @@ export const teamHandlers: Record<string, TeamHandler> = {
 
     return rows.map(p => ({
       ...p,
-      estimatedPriceDollars: p.estimatedPrice ? (p.estimatedPrice / 100).toFixed(2) : 'Quote on request',
+      estimatedPriceEur: p.estimatedPrice ? (p.estimatedPrice / 100).toFixed(2) : 'Presupuesto a consultar',
     }));
   },
 

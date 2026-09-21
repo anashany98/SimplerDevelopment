@@ -53,7 +53,7 @@ export const servicesHandlers: Record<string, ServicesHandler> = {
 
     return rows.map(s => ({
       ...s,
-      priceDollars: (s.price / 100).toFixed(2),
+      priceEur: (s.price / 100).toFixed(2),
     }));
   },
 
@@ -74,7 +74,7 @@ export const servicesHandlers: Record<string, ServicesHandler> = {
 
     return rows.map(r => ({
       ...r,
-      priceDollars: (r.price / 100).toFixed(2),
+      priceEur: (r.price / 100).toFixed(2),
     }));
   },
 

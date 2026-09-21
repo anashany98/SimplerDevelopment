@@ -56,7 +56,7 @@ export interface CheckoutPageClientProps {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-export function formatPrice(cents: number, currency = 'USD') {
+export function formatPrice(cents: number, currency = 'EUR') {
   return formatMoney(cents, { currency });
 }
 

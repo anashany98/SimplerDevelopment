@@ -141,7 +141,7 @@ export const crmTools: PortalTool[] = [
       type: 'object' as const,
       properties: {
         title: { type: 'string', description: 'Deal title' },
-        value: { type: 'number', description: 'Deal value in dollars (will be stored as cents)' },
+        value: { type: 'number', description: 'Deal value in euros (will be stored as cents)' },
         pipeline_id: { type: 'number', description: 'Pipeline ID (optional — defaults to client\'s default pipeline)' },
         stage_id: { type: 'number', description: 'Stage ID within the pipeline (optional — defaults to first stage)' },
         contact_id: { type: 'number', description: 'Associated contact ID' },
@@ -162,7 +162,7 @@ export const crmTools: PortalTool[] = [
       properties: {
         deal_id: { type: 'number', description: 'The deal ID to update' },
         title: { type: 'string' },
-        value: { type: 'number', description: 'Value in dollars' },
+        value: { type: 'number', description: 'Value in euros' },
         stage_id: { type: 'number', description: 'Move to this stage' },
         status: { type: 'string', description: 'Set status: open, won, lost' },
         priority: { type: 'string' },

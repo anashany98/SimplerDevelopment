@@ -901,7 +901,7 @@ export async function applyPendingChange(change: typeof mcpPendingChanges.$infer
         sections: ((payload.sections as ProposalSection[] | undefined) ?? []) as ProposalSection[],
         lineItems: ((payload.lineItems as ProposalLineItem[] | undefined) ?? []) as ProposalLineItem[],
         fees: ((payload.fees as ProposalFee[] | undefined) ?? []) as ProposalFee[],
-        currency: (payload.currency as string | undefined) ?? 'USD',
+        currency: (payload.currency as string | undefined) ?? 'EUR',
         validUntil: payload.validUntil ? new Date(payload.validUntil as string) : null,
         clientToken: crypto.randomBytes(32).toString('hex'),
         accentColor: (payload.accentColor as string | undefined) ?? '#2563eb',

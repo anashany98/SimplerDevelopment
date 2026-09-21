@@ -29,7 +29,7 @@ export const storeSettings = pgTable('store_settings', {
   websiteId: integer('website_id').notNull().references(() => clientWebsites.id, { onDelete: 'cascade' }).unique(),
   enabled: boolean('enabled').default(false).notNull(),
   storeName: varchar('store_name', { length: 255 }),
-  currency: varchar('currency', { length: 3 }).default('USD').notNull(),
+  currency: varchar('currency', { length: 3 }).default('EUR').notNull(),
   taxRate: numeric('tax_rate', { precision: 5, scale: 4 }).default('0'), // e.g. 0.0825 = 8.25%
   taxInclusive: boolean('tax_inclusive').default(false).notNull(),
   // Stripe Connect for payouts to the website owner

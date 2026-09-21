@@ -279,9 +279,9 @@ async function renderDefaultTemplate(
 
 // ─── CONVENIENCE HELPERS ─────────────────────────────────────────────────────
 
-/** Format cents to dollars (e.g. 14999 -> "$149.99") */
+/** Format cents as euros (e.g. 14999 -> "149,99 €") */
 export function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 /** Format an address object to a single-line string */

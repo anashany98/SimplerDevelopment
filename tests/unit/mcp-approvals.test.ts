@@ -858,7 +858,7 @@ describe('applyPendingChange — proposal:create', () => {
     expect(r).toEqual({ id: 11 });
     const c = captured as Record<string, unknown>;
     expect(c.title).toBe('Proposal A');
-    expect(c.currency).toBe('USD');
+    expect(c.currency).toBe('EUR');
     expect(c.accentColor).toBe('#2563eb');
     expect(c.sections).toEqual([]);
     expect(c.lineItems).toEqual([]);

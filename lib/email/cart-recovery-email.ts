@@ -17,12 +17,12 @@ export async function sendCartRecoveryEmail(opts: {
   cartValue: number;
 }): Promise<void> {
   const link = `${BASE_URL}/api/storefront/${opts.websiteId}/cart/recover?token=${encodeURIComponent(opts.recoveryToken)}`;
-  const dollars = (opts.cartValue / 100).toFixed(2);
+  const amount = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(opts.cartValue / 100);
   await resend.emails.send({
     from: `Tu carrito <${(await getConfiguredFromEmail()) || 'store@simplerdevelopment.com'}>`,
     to: opts.to,
     subject: 'Dejaste artículos en tu carrito',
-    html: `<p>Todavía tienes ${opts.itemCount} ${opts.itemCount === 1 ? 'artículo' : 'artículos'} esperando en tu carrito (total $${dollars}).</p>
+    html: `<p>Todavía tienes ${opts.itemCount} ${opts.itemCount === 1 ? 'artículo' : 'artículos'} esperando en tu carrito (total ${amount}).</p>
 <p><a href="${link}">Vuelve a tu carrito</a> para terminar la compra.</p>`,
   });
 }

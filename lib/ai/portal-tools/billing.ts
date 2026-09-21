@@ -61,7 +61,7 @@ export const billingHandlers: Record<string, BillingHandler> = {
 
     return rows.map(inv => ({
       ...inv,
-      totalDollars: (inv.total / 100).toFixed(2),
+      totalEur: (inv.total / 100).toFixed(2),
     }));
   },
 
@@ -78,17 +78,17 @@ export const billingHandlers: Record<string, BillingHandler> = {
       id: inv.id,
       number: inv.number,
       status: inv.status,
-      subtotalDollars: (inv.subtotal / 100).toFixed(2),
-      taxDollars: (inv.tax / 100).toFixed(2),
-      totalDollars: (inv.total / 100).toFixed(2),
+      subtotalEur: (inv.subtotal / 100).toFixed(2),
+      taxEur: (inv.tax / 100).toFixed(2),
+      totalEur: (inv.total / 100).toFixed(2),
       dueDate: inv.dueDate,
       paidAt: inv.paidAt,
       notes: inv.notes,
       items: items.map(it => ({
         description: it.description,
         quantity: it.quantity,
-        unitPriceDollars: (it.unitPrice / 100).toFixed(2),
-        totalDollars: (it.total / 100).toFixed(2),
+        unitPriceEur: (it.unitPrice / 100).toFixed(2),
+        totalEur: (it.total / 100).toFixed(2),
       })),
     };
   },
