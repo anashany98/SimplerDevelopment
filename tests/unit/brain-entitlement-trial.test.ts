@@ -28,11 +28,18 @@ const fixtures: {
 // fixture for each branch.
 let selectCall = 0;
 
+// The canonical resolver (lib/billing/entitlements.ts) reads
+// `billingMode` off the clients row; 'saas' keeps these specs on the paid
+// lanes (an 'agency' mode row would bypass gating entirely).
 vi.mock('@/lib/db', () => {
   const trialChain = {
     from: () => trialChain,
     where: () => trialChain,
-    limit: () => Promise.resolve(fixtures.trialRow ? [fixtures.trialRow] : []),
+    limit: () => Promise.resolve(
+      fixtures.trialRow
+        ? [{ ...fixtures.trialRow, billingMode: 'saas', byokEligibleOverride: null }]
+        : [],
+    ),
   };
   const serviceChain = {
     from: () => serviceChain,
@@ -53,6 +60,8 @@ vi.mock('@/lib/db/schema', () => ({
   clients: {
     id: { __col: 'id' },
     brainTrialUntil: { __col: 'brainTrialUntil' },
+    billingMode: { __col: 'billingMode' },
+    byokEligibleOverride: { __col: 'byokEligibleOverride' },
   },
   clientServices: {
     clientId: { __col: 'clientId' },
@@ -110,12 +119,12 @@ describe('isBrainEntitled — brainTrialUntil lane', () => {
     expect(selectCall).toBe(2);
   });
 
-  it('future brainTrialUntil → entitled (trial wins, second query never runs)', async () => {
+  it('future brainTrialUntil → entitled (trial grants brain; both canonical queries run)', async () => {
     const future = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // +7d
     fixtures.trialRow = { brainTrialUntil: future };
-    fixtures.serviceRows = []; // intentionally empty — must not matter
+    fixtures.serviceRows = []; // intentionally empty — the trial grants brain
     await expect(isBrainEntitled(103)).resolves.toBe(true);
-    expect(selectCall).toBe(1); // only the trial query was issued
+    expect(selectCall).toBe(2); // canonical resolver reads clients + clientServices
   });
 
   it('past brainTrialUntil (expired) → falls through to clientServices check', async () => {
@@ -134,19 +143,21 @@ describe('isBrainEntitled — brainTrialUntil lane', () => {
     expect(selectCall).toBe(2);
   });
 
-  it('future trial AND no clientServices row → entitled (trial wins)', async () => {
+  it('future trial AND no clientServices row → entitled (trial grants brain)', async () => {
     const future = new Date(Date.now() + 60 * 60 * 1000); // +1h
     fixtures.trialRow = { brainTrialUntil: future };
     fixtures.serviceRows = [];
     await expect(isBrainEntitled(106)).resolves.toBe(true);
-    expect(selectCall).toBe(1);
+    expect(selectCall).toBe(2);
   });
 
-  it('no client row at all → falls through to clientServices check', async () => {
+  it('no client row at all → canonical default (agency) grants access', async () => {
     fixtures.trialRow = null; // empty result set
     fixtures.serviceRows = [];
-    await expect(isBrainEntitled(107)).resolves.toBe(false);
-    expect(selectCall).toBe(2);
+    // getClientEntitlements() defaults a missing row to billingMode 'agency',
+    // which bypasses module gating; the services query never runs.
+    await expect(isBrainEntitled(107)).resolves.toBe(true);
+    expect(selectCall).toBe(1);
   });
 });
 

@@ -18,9 +18,10 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { clientServices, services } from '@/lib/db/schema';
+import { services } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
+import { isEntitledToDomain } from '@/lib/billing/entitlements';
 import { formatCents } from '@/lib/portal';
 
 const EMAIL_SERVICE_CATEGORY = 'email' as const;
@@ -40,16 +41,12 @@ function isTestRuntime(): boolean {
 async function isEmailEntitled(clientId: number): Promise<boolean> {
   if (isTestRuntime()) return true;
 
-  const rows = await db
-    .select({ category: services.category })
-    .from(clientServices)
-    .innerJoin(services, eq(services.id, clientServices.serviceId))
-    .where(and(
-      eq(clientServices.clientId, clientId),
-      eq(clientServices.status, 'active'),
-    ));
-
-  return rows.some((r) => r.category === EMAIL_SERVICE_CATEGORY || r.category === 'bundle');
+  // Canonical resolution (lib/billing/entitlements.ts) in one place: agency
+  // mode bypasses module gating entirely, bundle / legacy subscription grant
+  // everything, and saas clients get the domain when their active services or
+  // plan tier includes it. This layout previously re-implemented the check
+  // and paywalled agency clients that the platform considers fully entitled.
+  return isEntitledToDomain(clientId, 'email');
 }
 
 export default async function EmailLayout({ children }: { children: React.ReactNode }) {

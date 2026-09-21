@@ -84,12 +84,12 @@ function BrainUpsell({
   const price = brainService ? formatCents(brainService.price) : formatCents(4900);
   const cycle: string = brainService?.billingCycle ?? 'monthly';
   const description = brainService?.description
-    ?? 'A structured AI operating layer for your business. Capture meetings, decisions, and commitments; AI proposes tasks and connections; humans approve.';
+    ?? 'Una capa operativa de IA para tu negocio. Captura reuniones, decisiones y compromisos; la IA propone tareas y conexiones; las personas aprueban.';
   const features = (brainService?.features as string[] | undefined) ?? [
-    'Meeting transcript ingestion',
-    'AI-extracted tasks & decisions (human approval required)',
-    'Cross-record search with citations',
-    'Confidentiality controls',
+    'Ingesta de transcripciones de reuniones',
+    'Tareas y decisiones extraídas por IA (con aprobación humana)',
+    'Búsqueda transversal con citas',
+    'Controles de confidencialidad',
   ];
 
   return (
@@ -103,9 +103,9 @@ function BrainUpsell({
           <div className="mb-6 flex items-start gap-3 text-left bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 max-w-xl mx-auto">
             <span className="material-icons text-amber-600 dark:text-amber-400 text-xl shrink-0">schedule</span>
             <div className="text-sm">
-              <div className="font-semibold text-foreground">Your trial ended on {formatTrialDate(trialUntil)}.</div>
+              <div className="font-semibold text-foreground">Tu prueba terminó el {formatTrialDate(trialUntil)}.</div>
               <p className="text-muted-foreground mt-0.5">
-                Your notes and history are preserved. Subscribe below to keep working with Brain.
+                Tus notas y tu historial se conservan. Suscríbete para seguir trabajando con Cerebro de empresa.
               </p>
             </div>
           </div>
@@ -132,25 +132,24 @@ function BrainUpsell({
               className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <span className="material-icons text-base">shopping_cart</span>
-              Subscribe to Company Brain
-            </Link>
+              Suscribirse a Cerebro de empresa</Link>
           ) : (
             <Link
               href="/portal/services"
               className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
             >
               <span className="material-icons text-base">storefront</span>
-              View Services
+              Ver servicios
             </Link>
           )}
 
           <Link href="/portal/dashboard" className="text-xs text-muted-foreground hover:underline">
-            Back to dashboard
+            Volver al panel
           </Link>
         </div>
 
         <p className="text-xs text-muted-foreground mt-6">
-          Already subscribed but seeing this page? Refresh — provisioning can take a moment after checkout completes.
+          ¿Ya estás suscrito pero ves esta página? Actualiza — el aprovisionamiento puede tardar un momento tras completar el pago.
         </p>
       </div>
     </div>
