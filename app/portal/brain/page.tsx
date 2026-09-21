@@ -25,6 +25,12 @@ import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnGhost } from '@/components/portal/portal-ui';
 import DomainGetStarted from '@/components/portal/onboarding/DomainGetStarted';
 
+const CONFIDENTIALITY_LABELS: Record<string, string> = {
+  standard: 'estándar',
+  restricted: 'restringida',
+  confidential: 'confidencial',
+};
+
 export default async function BrainDashboardPage() {
   const session = await auth();
   if (!session?.user?.id) redirect('/portal/login');
@@ -37,7 +43,7 @@ export default async function BrainDashboardPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load Company Brain
+            No se pudo cargar Cerebro de empresa
           </div>
           <p>No se encontró un perfil de cliente para este usuario.</p>
         </div>
@@ -56,15 +62,15 @@ export default async function BrainDashboardPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">psychology</span>
           <h1 className="text-2xl font-bold text-foreground mb-2">Cerebro de empresa</h1>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">
-            Company Brain isn&apos;t included on your current plan. Upgrade or start a trial to
-            enable it.
+            Cerebro de empresa no está incluido en tu plan actual. Mejora tu plan o inicia una
+            prueba para activarlo.
           </p>
           <Link
             href="/portal/services"
             className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
           >
             <span className="material-icons text-base">storefront</span>
-            View services
+            Ver servicios
           </Link>
         </div>
       </div>
@@ -80,23 +86,24 @@ export default async function BrainDashboardPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">psychology</span>
           <h1 className="text-2xl font-bold text-foreground mb-2">Cerebro de empresa</h1>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">
-            A structured operating layer for your business. Capture communications, decisions, commitments,
-            and tasks into a secure, AI-queryable command center. AI proposes — you approve.
+            Una capa operativa estructurada para tu negocio. Captura comunicaciones, decisiones,
+            compromisos y tareas en un centro de mando seguro y consultable por IA. La IA propone
+            — tú apruebas.
           </p>
           <div className="grid sm:grid-cols-3 gap-3 max-w-2xl mx-auto mb-8">
-            <FeatureBullet icon="forum" title="Notes → tasks">
-              Paste a transcript or forward an email. AI extracts decisions, commitments, and follow-ups for your review.
+            <FeatureBullet icon="forum" title="Notas → tareas">
+              Pega una transcripción o reenvía un email. La IA extrae decisiones, compromisos y seguimientos para tu revisión.
             </FeatureBullet>
-            <FeatureBullet icon="reviews" title="Human approval">
-              Nothing is written to your records until a human approves it. Every approval is audited.
+            <FeatureBullet icon="reviews" title="Aprobación humana">
+              Nada se escribe en tus registros hasta que una persona lo aprueba. Cada aprobación queda auditada.
             </FeatureBullet>
-            <FeatureBullet icon="search" title="Ask anything">
-              Search across communications, decisions, and follow-ups with citations back to source records.
+            <FeatureBullet icon="search" title="Pregunta lo que quieras">
+              Busca en comunicaciones, decisiones y seguimientos con citas a los registros originales.
             </FeatureBullet>
           </div>
           <EnableBrainButton />
           <p className="text-xs text-muted-foreground mt-3">
-            You can configure industry template, modules, and confidentiality after enabling.
+            Puedes configurar la plantilla del sector, los módulos y la confidencialidad después de activarlo.
           </p>
         </div>
       </div>
@@ -115,7 +122,7 @@ export default async function BrainDashboardPage() {
             {profile.name}
           </span>
         }
-        subtitle={`${template?.label ?? 'Generic'} template · Confidentiality default: ${profile.defaultConfidentiality}`}
+          subtitle={`${template?.label ?? 'Genérica'} · Confidencialidad por defecto: ${CONFIDENTIALITY_LABELS[profile.defaultConfidentiality] ?? profile.defaultConfidentiality}`}
         actions={
           <Link
             href="/portal/brain/settings"
