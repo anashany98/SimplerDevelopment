@@ -114,6 +114,19 @@ test.describe('Onboarding wizard browser flow @onboarding', () => {
     await expect(page.getByTestId('onboarding-step-welcome')).toBeVisible();
   });
 
+  test('Clientless users are redirected from module pages to onboarding', async ({ page, adminApi, loginAsAdmin }) => {
+    // In environments where the admin has no portal client (fresh seeds), every
+    // module page used to render error cards ("Client not found" 404s) instead
+    // of sending the user to the wizard. PortalShell now gates the whole tree
+    // on client presence. Skip where a dev-seeded membership exists.
+    const clients = await adminApi.get('/api/portal/clients');
+    test.skip(clients.data?.activeClientId != null, 'admin has a portal client in this environment');
+    await loginAsAdmin(page);
+    await page.goto(`${BASE_URL}/portal/crm`);
+    await expect(page).toHaveURL(/\/portal\/onboarding$/);
+    await expect(page.getByTestId('onboarding-step-welcome')).toBeVisible();
+  });
+
   test('Skip button stamps complete and bounces to dashboard', async ({ page, loginAsOtherClient }) => {
     await loginAsOtherClient(page);
     // beforeEach above reopens clientApi's user; stamp reopenedAt on this page's

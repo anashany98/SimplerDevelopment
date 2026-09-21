@@ -42,6 +42,9 @@ type Fixtures = {
   /** Log the current `page` in as a non-content client (Acme Corp /
    *  `client@example.com` from the standard portal seed). */
   loginAsOtherClient: (page: Page) => Promise<void>;
+  /** Log the current `page` in as the platform admin — seeded WITHOUT a portal
+   *  client, so portal pages exercise the clientless (pre-onboarding) paths. */
+  loginAsAdmin: (page: Page) => Promise<void>;
 };
 
 export const test = base.extend<Fixtures>({
@@ -78,6 +81,11 @@ export const test = base.extend<Fixtures>({
   loginAsOtherClient: async ({}, use) => {
     await use(async (page: Page) => {
       await loginPage(page, CLIENT_EMAIL, CLIENT_PASSWORD);
+    });
+  },
+  loginAsAdmin: async ({}, use) => {
+    await use(async (page: Page) => {
+      await loginPage(page, ADMIN_EMAIL, ADMIN_PASSWORD);
     });
   },
 });
