@@ -124,20 +124,25 @@ export default function MediaLibraryPage() {
           </select>
 
           <div className="flex gap-2">
-            {['all', 'image', 'video', 'application'].map((type) => (
+            {[
+              { key: 'all', label: 'Todos' },
+              { key: 'image', label: 'Imágenes' },
+              { key: 'video', label: 'Vídeos' },
+              { key: 'application', label: 'Documentos' },
+            ].map(({ key, label }) => (
               <button
-                key={type}
+                key={key}
                 onClick={() => {
-                  setFilter(type);
+                  setFilter(key);
                   setOffset(0);
                 }}
                 className={`px-4 py-2 text-sm rounded-md ${
-                  filter === type
+                  filter === key
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-foreground hover:bg-muted/80'
                 }`}
               >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                {label}
               </button>
             ))}
           </div>
