@@ -49,19 +49,35 @@ export default function SettingsBillingPage() {
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [loadingMethods, setLoadingMethods] = useState(true);
   const [removingId, setRemovingId] = useState<number | null>(null);
+  const [paymentsDisabled, setPaymentsDisabled] = useState(false);
   const [section, setSection] = useState<'invoices' | 'payment-methods'>('invoices');
   const [openingPortal, setOpeningPortal] = useState(false);
 
   useEffect(() => {
-    fetch('/api/portal/settings/billing')
-      .then(r => r.json())
-      .then(res => { if (res.success) setInvoices(res.data.invoices); })
-      .finally(() => setLoadingInvoices(false));
+    void (async () => {
+      const settings = await fetch('/api/portal/settings/billing')
+        .then(r => r.json())
+        .catch(() => null);
+      if (settings?.success) {
+        setInvoices(settings.data.invoices);
+        // Payments disabled (billing removed): the payment-methods endpoint
+        // 403s by design — skip the call so the console stays clean and the
+        // section renders its dedicated state instead.
+        if (settings.data.paymentsDisabled) {
+          setPaymentsDisabled(true);
+          setLoadingInvoices(false);
+          setLoadingMethods(false);
+          return;
+        }
+      }
+      setLoadingInvoices(false);
 
-    fetch('/api/portal/billing/payment-methods')
-      .then(r => r.json())
-      .then(res => { if (res.success) setMethods(res.data); })
-      .finally(() => setLoadingMethods(false));
+      const methodsRes = await fetch('/api/portal/billing/payment-methods')
+        .then(r => r.json())
+        .catch(() => null);
+      if (methodsRes?.success) setMethods(methodsRes.data);
+      setLoadingMethods(false);
+    })();
   }, []);
 
   const totalDue = invoices
@@ -223,7 +239,13 @@ export default function SettingsBillingPage() {
       )}
 
       {section === 'payment-methods' && (
-        loadingMethods ? (
+        paymentsDisabled ? (
+          <div className="bg-card border border-border rounded-2xl p-12 text-center">
+            <span className="material-icons text-5xl text-muted-foreground/40">credit_card_off</span>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Pagos deshabilitados</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Esta instancia gestiona la facturación manualmente; los pagos con tarjeta están desactivados.</p>
+          </div>
+        ) : loadingMethods ? (
           <div className="flex items-center justify-center py-16">
             <span className="material-icons animate-spin text-primary text-2xl">refresh</span>
           </div>

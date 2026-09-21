@@ -56,6 +56,7 @@ export default function EmailDomainsPage() {
   const [newDomain, setNewDomain] = useState('');
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState('');
+  const [configMessage, setConfigMessage] = useState('');
 
   // Selected domain for detail view
   const [selected, setSelected] = useState<Domain | null>(null);
@@ -71,6 +72,7 @@ export default function EmailDomainsPage() {
     setLoading(true);
     const data = await fetch('/api/admin/email/domains').then(r => r.json());
     setDomains(data.data ?? []);
+    setConfigMessage(data.configured === false ? (data.message ?? '') : '');
     setLoading(false);
   }
 
@@ -161,6 +163,16 @@ export default function EmailDomainsPage() {
           Añadir dominio
         </button>
       </div>
+
+      {configMessage && (
+        <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-foreground">
+          <span className="material-icons text-amber-600 dark:text-amber-400 text-lg shrink-0">warning</span>
+          <div>
+            <p className="font-medium">Envío de correo no configurado</p>
+            <p className="text-muted-foreground mt-0.5">{configMessage}</p>
+          </div>
+        </div>
+      )}
 
       {showAddForm && (
         <form onSubmit={addDomain} className="bg-card border border-border rounded-lg p-5 space-y-4">

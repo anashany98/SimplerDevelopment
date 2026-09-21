@@ -25,11 +25,32 @@ export default function MediaLibraryPage() {
   const [filter, setFilter] = useState('all');
   const [offset, setOffset] = useState(0);
   const [total, setTotal] = useState(0);
+  const [clients, setClients] = useState<Array<{ id: number; label: string }>>([]);
+  const [selectedClientId, setSelectedClientId] = useState('');
   const limit = 20;
 
   useEffect(() => {
+    // Client filter options — the admin panel is cross-tenant and this page
+    // talks to the staff-scoped /api/admin/media (the portal endpoint 403s for
+    // staff sessions, which is why the library used to render empty).
+    fetch('/api/admin/portal/clients?limit=100')
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success) {
+          setClients(
+            (res.data as Array<{ id: number; company: string | null; userName: string | null; userEmail: string | null }>).map((c) => ({
+              id: c.id,
+              label: c.company || c.userName || c.userEmail || `Cliente #${c.id}`,
+            })),
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     fetchMedia();
-  }, [search, filter, offset]);
+  }, [search, filter, offset, selectedClientId]);
 
   const fetchMedia = async () => {
     setLoading(true);
@@ -40,8 +61,9 @@ export default function MediaLibraryPage() {
 
     if (search) params.append('search', search);
     if (filter !== 'all') params.append('mimeType', filter);
+    if (selectedClientId) params.append('clientId', selectedClientId);
 
-    const response = await fetch(`/api/media?${params}`);
+    const response = await fetch(`/api/admin/media?${params}`);
     const data = await response.json();
 
     if (data.success) {
@@ -63,7 +85,9 @@ export default function MediaLibraryPage() {
           <h1 className="text-3xl font-bold text-foreground">Biblioteca de medios</h1>
           <button
             onClick={() => setShowUpload(true)}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            disabled={!selectedClientId}
+            title={selectedClientId ? undefined : 'Selecciona un cliente para subir medios'}
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Subir medios
           </button>
@@ -81,6 +105,23 @@ export default function MediaLibraryPage() {
             }}
             className="block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
           />
+
+          <select
+            value={selectedClientId}
+            onChange={(e) => {
+              setSelectedClientId(e.target.value);
+              setOffset(0);
+            }}
+            aria-label="Filtrar por cliente"
+            className="block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
+          >
+            <option value="">Todos los clientes</option>
+            {clients.map((c) => (
+              <option key={c.id} value={String(c.id)}>
+                {c.label}
+              </option>
+            ))}
+          </select>
 
           <div className="flex gap-2">
             {['all', 'image', 'video', 'application'].map((type) => (
@@ -132,6 +173,7 @@ export default function MediaLibraryPage() {
           <MediaUploadModal
             onClose={() => setShowUpload(false)}
             onComplete={handleUploadComplete}
+            apiEndpoint={`/api/admin/media/upload?clientId=${selectedClientId}`}
           />
         )}
       </div>

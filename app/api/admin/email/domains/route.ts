@@ -24,10 +24,15 @@ export async function GET() {
 
   const resend = await resolveResendClient();
   if (!resend) {
-    return NextResponse.json(
-      { success: false, message: 'Resend API key is not configured (Admin → Email → Ajustes).' },
-      { status: 400 },
-    );
+    // Configuration state, not a client error: return an empty list plus a
+    // flag so the page can render the actionable message without a failed
+    // request in the browser console.
+    return NextResponse.json({
+      success: true,
+      data: [],
+      configured: false,
+      message: 'Resend API key is not configured (Admin → Email → Ajustes).',
+    });
   }
 
   const { data, error } = await resend.domains.list();
