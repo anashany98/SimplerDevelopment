@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import type { StepProps } from './types';
 import { BUNDLE, BUNDLE_SLUG, FEATURE_DOMAINS, applyVolumeDiscount } from '@/lib/billing/domain-catalog';
 import { obPrimaryBtn } from '../ob-styles';
+import { formatCents } from '@/lib/portal-utils';
 import { verifyCheckoutSession } from '@/components/portal/billing/verify-checkout-session';
 
 const BUNDLE_KEY = 'bundle';
@@ -143,7 +144,7 @@ export function StepPayment({
   }
 
   const formatPrice = (cents: number) => stripeEnabled
-    ? `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mes`
+    ? `${formatCents(cents)}/mes`
     : 'Incluido';
 
   if (checkoutSuccess) {

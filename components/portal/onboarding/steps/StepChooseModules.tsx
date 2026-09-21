@@ -12,6 +12,7 @@ import {
   VOLUME_TIERS,
   SEAT_PRICE_CAP_CENTS,
 } from '@/lib/billing/domain-catalog';
+import { formatCents } from '@/lib/portal-utils';
 
 interface ModuleItem {
   key: string;
@@ -168,7 +169,7 @@ export function StepChooseModules({
   }
 
   const formatPrice = (cents: number) => stripeEnabled
-    ? `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`
+    ? `${formatCents(cents)}/mes`
     : 'Incluido';
 
   return (
@@ -394,7 +395,7 @@ export function StepChooseModules({
             )}
             <span className="block text-xs mt-1 text-muted-foreground">
               {stripeEnabled
-                ? `El precio es por tu asiento. Añade compañeros cuando quieras — cada asiento extra es tu total de módulos, con tope de $${SEAT_PRICE_CAP_CENTS / 100}/mes, facturado cuando aceptan.`
+                ? `El precio es por tu asiento. Añade compañeros cuando quieras — cada asiento extra es tu total de módulos, con tope de ${formatCents(SEAT_PRICE_CAP_CENTS)}/mes, facturado cuando aceptan.`
                 : 'No se requiere suscripción ni tarjeta en esta instancia autoalojada.'}
             </span>
           </div>

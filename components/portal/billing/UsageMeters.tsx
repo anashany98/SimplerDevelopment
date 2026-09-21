@@ -37,7 +37,7 @@ function formatNumber(n: number): string {
 }
 
 function formatCents(cents: number): string {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 /** Compute estimated overage cost for a snapshot row. */

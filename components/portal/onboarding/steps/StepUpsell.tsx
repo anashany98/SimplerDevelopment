@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { StepProps } from './types';
 import { BUNDLE, BUNDLE_SLUG, FEATURE_DOMAINS } from '@/lib/billing/domain-catalog';
 import { obPrimaryBtn, obChip, obFootbar } from '../ob-styles';
+import { formatCents } from '@/lib/portal-utils';
 
 interface ModuleItem {
   key: string;
@@ -136,8 +137,7 @@ export function StepUpsell({ next }: StepProps) {
     void addModule(BUNDLE_SLUG, '__bundle__', setBundleState);
   }
 
-  const formatPrice = (cents: number) =>
-    `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mes`;
+  const formatPrice = (cents: number) => `${formatCents(cents)}/mes`;
 
   if (!mounted) {
     return (

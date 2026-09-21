@@ -95,4 +95,35 @@ describe('self-hosted onboarding', () => {
     expect(screen.queryByText(/contacta con ventas/i)).toBeNull();
     expect(container.textContent).not.toContain('/mo');
   });
+
+  it('renders module prices in euros (es-ES) when billing is enabled', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({
+      json: async () => ({
+        success: true,
+        data: {
+          modules: [
+            {
+              key: 'websites',
+              slug: 'module-websites',
+              name: 'Websites',
+              tagline: 'Build and publish sites.',
+              icon: 'language',
+              monthlyPriceCents: 2900,
+              purchasable: true,
+            },
+          ],
+        },
+      }),
+    })));
+
+    const { container } = render(
+      <StepChooseModules {...makeProps('choose-modules')} stripeEnabled={true} />,
+    );
+
+    await waitFor(() => expect(screen.queryByText('Cargando módulos…')).toBeNull());
+    expect(container.textContent).toContain('29,00');
+    expect(container.textContent).toContain('€');
+    expect(container.textContent).not.toContain('$');
+    expect(container.textContent).not.toContain('/mo');
+  });
 });
