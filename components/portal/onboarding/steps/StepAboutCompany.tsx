@@ -6,8 +6,16 @@ import { COMPANY_SIZES } from '@/lib/onboarding/types';
 import { obLabel, obPill, obPillSel, obSelect, obInput, obPrimaryBtn } from '../ob-styles';
 
 const INDUSTRY_OPTIONS = [
-  'Agency / Consulting', 'Coaching', 'E-commerce', 'Education', 'Healthcare',
-  'Real Estate', 'SaaS / Tech', 'Services', 'Non-profit', 'Other',
+  { value: 'Agency / Consulting', label: 'Agencia / Consultoría' },
+  { value: 'Coaching', label: 'Coaching' },
+  { value: 'E-commerce', label: 'E-commerce' },
+  { value: 'Education', label: 'Educación' },
+  { value: 'Healthcare', label: 'Salud' },
+  { value: 'Real Estate', label: 'Inmobiliaria' },
+  { value: 'SaaS / Tech', label: 'SaaS / Tecnología' },
+  { value: 'Services', label: 'Servicios' },
+  { value: 'Non-profit', label: 'Sin ánimo de lucro' },
+  { value: 'Other', label: 'Otro' },
 ];
 
 export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
@@ -44,7 +52,7 @@ export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
       </div>
 
       <div>
-        <label className={obLabel}>Industry (optional)</label>
+        <label className={obLabel}>Sector (opcional)</label>
         <select
           value={industry}
           onChange={(e) => { setIndustry(e.target.value); setAnswers({ industry: e.target.value }); }}
@@ -52,17 +60,17 @@ export function StepAboutCompany({ state, setAnswers, next }: StepProps) {
           className={obSelect}
         >
           <option value="">Elige uno…</option>
-          {INDUSTRY_OPTIONS.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+          {INDUSTRY_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </div>
 
       <div>
-        <label className={obLabel}>Website (optional)</label>
+        <label className={obLabel}>Web (opcional)</label>
         <input
           type="url"
           value={website}
           onChange={(e) => { setWebsite(e.target.value); setAnswers({ websiteUrl: e.target.value }); }}
-          placeholder="https://yourcompany.com"
+          placeholder="https://tuempresa.com"
           data-testid="onboarding-website"
           className={obInput}
         />

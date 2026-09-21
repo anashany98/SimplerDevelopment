@@ -88,11 +88,11 @@ describe('self-hosted onboarding', () => {
       <StepChooseModules {...makeProps('choose-modules')} stripeEnabled={false} />,
     );
 
-    await waitFor(() => expect(screen.queryByText('Loading modules…')).toBeNull());
-    expect(screen.getAllByText('Included').length).toBeGreaterThan(0);
-    expect(screen.getByText(/no subscription or card is required/i)).toBeTruthy();
-    expect(screen.queryByText(/after your 14-day free trial/i)).toBeNull();
-    expect(screen.queryByText(/contact sales/i)).toBeNull();
+    await waitFor(() => expect(screen.queryByText('Cargando módulos…')).toBeNull());
+    expect(screen.getAllByText('Incluido').length).toBeGreaterThan(0);
+    expect(screen.getByText(/no se requiere suscripción ni tarjeta/i)).toBeTruthy();
+    expect(screen.queryByText(/tras tu prueba gratuita de 14 días/i)).toBeNull();
+    expect(screen.queryByText(/contacta con ventas/i)).toBeNull();
     expect(container.textContent).not.toContain('/mo');
   });
 });

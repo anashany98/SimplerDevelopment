@@ -104,7 +104,7 @@ export default function GetStartedChecklist() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="material-icons text-primary text-xl">rocket_launch</span>
-          <h2 className="font-semibold text-foreground text-base">Get started</h2>
+          <h2 className="font-semibold text-foreground text-base">Primeros pasos</h2>
         </div>
         <button
           type="button"

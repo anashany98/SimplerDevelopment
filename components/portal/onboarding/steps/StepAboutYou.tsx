@@ -41,7 +41,7 @@ export function StepAboutYou({ state, setAnswers, next }: StepProps) {
       </div>
       <p className={obHint}>
         <span className="material-icons text-[16px]">bolt</span>
-        Tap a role to continue automátically
+        Toca un rol para continuar automáticamente
       </p>
     </div>
   );

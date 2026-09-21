@@ -169,14 +169,14 @@ export function StepChooseModules({
 
   const formatPrice = (cents: number) => stripeEnabled
     ? `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`
-    : 'Included';
+    : 'Incluido';
 
   return (
     <div className="space-y-5">
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
           <span className="material-icons animate-spin mr-2 text-base">refresh</span>
-          Loading modules…
+          Cargando módulos…
         </div>
       ) : (
         <>
@@ -199,7 +199,7 @@ export function StepChooseModules({
                       <span className="material-icons text-sm">
                         {unlocked ? 'check_circle' : 'lock'}
                       </span>
-                      {t.minModules}+ → {t.percentOff}% off
+                      {t.minModules}+ → {t.percentOff}% dto
                     </span>
                   );
                 })}
@@ -207,7 +207,7 @@ export function StepChooseModules({
               <p className="text-xs text-muted-foreground mt-2">
                 {discountPercent > 0 ? (
                   <span className="text-primary font-medium">
-                    {discountPercent}% volume discount unlocked
+                    Descuento por volumen del {discountPercent}% desbloqueado
                   </span>
                 ) : (
                   <span>Agrupa módulos para ahorrar: cuanto más añades, mayor es el descuento.</span>
@@ -215,11 +215,11 @@ export function StepChooseModules({
                 {upcoming && (
                   <>
                     {' '}
-                    Add{' '}
+                    Añade{' '}
                     <strong className="text-foreground">
-                      {upcoming.minModules - moduleCount} more
+                      {upcoming.minModules - moduleCount} más
                     </strong>{' '}
-                    to unlock {upcoming.percentOff}% off.
+                    para desbloquear un {upcoming.percentOff}% de descuento.
                   </>
                 )}
               </p>
@@ -239,7 +239,7 @@ export function StepChooseModules({
             aria-pressed={isBundle}
           >
             <span className="inline-block font-mono text-[10px] font-semibold uppercase tracking-[0.12em] bg-foreground text-background px-2 py-0.5 rounded-[5px] mb-2">
-              {stripeEnabled ? 'Best value' : 'All modules'}
+              {stripeEnabled ? 'Mejor precio' : 'Todos los módulos'}
             </span>
             <div className="flex items-start gap-3">
               <span className={isBundle ? obChipOn : obChip}>
@@ -250,7 +250,7 @@ export function StepChooseModules({
                   <span className="font-semibold text-sm">{BUNDLE.name}</span>
                   {stripeEnabled && (
                     <span className="text-[11px] bg-emerald-500/10 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
-                      Save {Math.round((1 - bundlePriceCents / sumOfParts) * 100)}%
+                      Ahorra {Math.round((1 - bundlePriceCents / sumOfParts) * 100)}%
                     </span>
                   )}
                 </div>
@@ -265,7 +265,7 @@ export function StepChooseModules({
 
           <div className="relative flex items-center gap-3">
             <div className="flex-1 h-px bg-border" />
-            <span className="text-xs text-muted-foreground">or pick individually</span>
+            <span className="text-xs text-muted-foreground">o elige módulo a módulo</span>
             <div className="flex-1 h-px bg-border" />
           </div>
 
@@ -279,7 +279,7 @@ export function StepChooseModules({
                   type="button"
                   onClick={() => toggle(mod.key)}
                   disabled={!mod.purchasable}
-                  title={mod.purchasable ? undefined : 'Not available for self-serve checkout yet — contact us'}
+                  title={mod.purchasable ? undefined : 'Aún no disponible para autocompra — contáctanos'}
                   className={[
                     'w-full text-left rounded-2xl border p-4 transition-all disabled:opacity-40 disabled:cursor-not-allowed',
                     checked
@@ -301,7 +301,7 @@ export function StepChooseModules({
                       {!mod.purchasable && (
                         <p className="text-[11.5px] text-amber-600 dark:text-amber-500 mt-1 flex items-center gap-1">
                           <span className="material-icons text-xs">info</span>
-                          Not available for self-serve checkout yet — contact us
+                          Aún no disponible para autocompra — contáctanos
                         </p>
                       )}
                     </div>
@@ -325,16 +325,16 @@ export function StepChooseModules({
                   <span className="font-medium text-sm">Usa tu propia clave de IA (BYOK)</span>
                   {stripeEnabled ? (
                     <a href={BYOK_MAILTO} className="text-xs font-medium text-primary whitespace-nowrap hover:underline">
-                      Contact sales →
+                      Contacta con ventas →
                     </a>
                   ) : (
-                    <span className="text-xs font-medium text-primary whitespace-nowrap">Configure later</span>
+                    <span className="text-xs font-medium text-primary whitespace-nowrap">Configúralo después</span>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {stripeEnabled
-                    ? 'Spend AI tokens at cost on your own provider key, plus white-label & governance. Custom pricing — email us to set it up.'
-                    : 'Connect your own provider key during setup. No platform subscription is required.'}
+                    ? 'Usa tokens de IA a precio de coste con tu propia clave de proveedor, además de marca blanca y gobernanza. Precio personalizado — escríbenos para configurarlo.'
+                    : 'Conecta tu propia clave de proveedor durante la configuración. No se requiere suscripción a la plataforma.'}
                 </p>
               </div>
             </div>
@@ -345,13 +345,13 @@ export function StepChooseModules({
             <div className="rounded-2xl border border-primary/20 bg-primary/[0.06] p-4 flex items-center gap-3">
               <span className="material-icons text-primary">star</span>
               <p className="flex-1 text-sm text-foreground">
-                Get <strong>everything</strong> for {formatPrice(bundlePriceCents)} —{' '}
+                Consigue <strong>todo</strong> por {formatPrice(bundlePriceCents)} —{' '}
                 <button
                   type="button"
                   onClick={switchToBundle}
                   className="underline text-primary hover:text-primary/80 font-medium"
                 >
-                  switch to CRM AGENTS Complete
+                  cambiar a CRM AGENTS Complete
                 </button>
               </p>
             </div>
@@ -372,7 +372,7 @@ export function StepChooseModules({
             ) : (
               <p className="text-sm font-medium flex items-baseline gap-2 flex-wrap">
                 <span className="text-muted-foreground font-normal">
-                  {selected.size} module{selected.size !== 1 ? 's' : ''}
+                  {selected.size} {selected.size === 1 ? 'módulo' : 'módulos'}
                 </span>
                 {discountPercent > 0 && (
                   <span className="text-muted-foreground/70 font-normal line-through">
@@ -382,20 +382,20 @@ export function StepChooseModules({
                 <span>{formatPrice(totalCents)}</span>
                 {discountPercent > 0 && (
                   <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
-                    {discountPercent}% off · save {formatPrice(discountCents)}
+                    {discountPercent}% dto · ahorras {formatPrice(discountCents)}
                   </span>
                 )}
               </p>
             )}
             {stripeEnabled && selected.size > 0 && (
               <span className="block text-xs mt-0.5 text-muted-foreground/70">
-                after your 14-day free trial
+                tras tu prueba gratuita de 14 días
               </span>
             )}
             <span className="block text-xs mt-1 text-muted-foreground">
               {stripeEnabled
-                ? `Pricing is for your seat. Add teammates any time — each extra seat is your module total, capped at $${SEAT_PRICE_CAP_CENTS / 100}/mo, billed when they accept.`
-                : 'No subscription or card is required on this self-hosted instance.'}
+                ? `El precio es por tu asiento. Añade compañeros cuando quieras — cada asiento extra es tu total de módulos, con tope de $${SEAT_PRICE_CAP_CENTS / 100}/mes, facturado cuando aceptan.`
+                : 'No se requiere suscripción ni tarjeta en esta instancia autoalojada.'}
             </span>
           </div>
           <button
@@ -405,7 +405,7 @@ export function StepChooseModules({
             className={`${obPrimaryBtn} shrink-0`}
           >
             {saving ? <span className="material-icons text-base animate-spin">refresh</span> : null}
-            Continue
+            Continuar
             <span className="material-icons text-base">arrow_forward</span>
           </button>
         </div>

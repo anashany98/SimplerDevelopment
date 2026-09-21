@@ -5,9 +5,9 @@ import type { StepProps } from './types';
 import { obLabel, obHint, obTextarea, obPrimaryBtn } from '../ob-styles';
 
 const EXAMPLES = [
-  'We help small landlords manage tenants without spreadsheets.',
-  'Boutique design studio for indie SaaS launches.',
-  'AI-powered tutoring for high school students learning to code.',
+  'Ayudamos a pequeños propietarios a gestionar inquilinos sin hojas de cálculo.',
+  'Estudio de diseño boutique para lanzamientos de SaaS indie.',
+  'Clases de programación con IA para estudiantes de secundaria.',
 ];
 
 export function StepMission({ state, setAnswers, next }: StepProps) {
@@ -17,7 +17,7 @@ export function StepMission({ state, setAnswers, next }: StepProps) {
     <div className="space-y-5">
       <div>
         <label className={obLabel}>
-          In one sentence — what does your company actually do?
+          En una frase — ¿a qué se dedica tu empresa realmente?
         </label>
         <textarea
           value={mission}
@@ -33,7 +33,7 @@ export function StepMission({ state, setAnswers, next }: StepProps) {
 
       <div>
         <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-3">
-          Need a nudge? Try one of these:
+          ¿Necesitas una idea? Prueba con una de estas:
         </p>
         <ul className="flex flex-col gap-2">
           {EXAMPLES.map((ex) => (
@@ -53,7 +53,7 @@ export function StepMission({ state, setAnswers, next }: StepProps) {
       <div className="flex items-center justify-between pt-1">
         <p className={obHint}>
           <span className="material-icons" style={{ fontSize: 15 }}>lightbulb</span>
-          You can refine this anytime from your dashboard.
+          Puedes refinarlo cuando quieras desde tu panel.
         </p>
         <button
           type="button"
@@ -61,7 +61,7 @@ export function StepMission({ state, setAnswers, next }: StepProps) {
           data-testid="onboarding-mission-next"
           className={obPrimaryBtn}
         >
-          {mission.trim() ? 'Continue' : 'Skip this'}
+          {mission.trim() ? 'Continuar' : 'Omitir esto'}
           <span className="material-icons" style={{ fontSize: 18 }}>arrow_forward</span>
         </button>
       </div>
