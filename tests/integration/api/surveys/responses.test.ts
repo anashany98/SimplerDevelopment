@@ -116,7 +116,10 @@ describe('GET /api/portal/surveys/[id]/responses @surveys @tenancy', () => {
     expect(res.status).toBe(401);
   });
 
-  it('rejects without surveys subscription (403)', async () => {
+  it('tenant outside the survey scope gets 404 (billing removed 2e0e4e5)', async () => {
+    // Service gates always grant since billing was removed, so the request
+    // reaches tenant scoping: survey 1 is not this tenant's → 404, no leak.
+    // When billing returns, restore the 403 assertion.
     const noSvc = await sessionForNewClientUser('surv-resp-no-svc');
     await asTenant(noSvc);
     const route = await import('@/app/api/portal/surveys/[id]/responses/route');
@@ -124,7 +127,7 @@ describe('GET /api/portal/surveys/[id]/responses @surveys @tenancy', () => {
       route as unknown as Record<string, unknown>, 'GET',
       { params: { id: '1' } },
     );
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(404);
   });
 
   it('cross-tenant: A cannot read B\'s survey responses (404)', async () => {
@@ -312,7 +315,9 @@ describe('GET /api/portal/surveys/[id]/export @surveys @tenancy', () => {
     expect(res.status).toBe(401);
   });
 
-  it('rejects without surveys subscription (403)', async () => {
+  it('tenant outside the survey scope gets 404 on export (billing removed 2e0e4e5)', async () => {
+    // Same as the responses case above: gates grant, tenant scoping answers.
+    // When billing returns, restore the 403 assertion.
     const noSvc = await sessionForNewClientUser('surv-exp-no-svc');
     await asTenant(noSvc);
     const route = await import('@/app/api/portal/surveys/[id]/export/route');
@@ -320,7 +325,7 @@ describe('GET /api/portal/surveys/[id]/export @surveys @tenancy', () => {
       route as unknown as Record<string, unknown>, 'GET',
       { params: { id: '1' } },
     );
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(404);
   });
 
   it('cross-tenant: A cannot export B\'s survey (404)', async () => {

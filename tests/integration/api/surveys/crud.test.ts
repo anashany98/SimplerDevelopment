@@ -96,14 +96,17 @@ describe('POST /api/portal/surveys @surveys @tenancy', () => {
     expect(res.status).toBe(401);
   });
 
-  it('rejects without the surveys subscription (403)', async () => {
+  it('creates without the surveys subscription (billing removed 2e0e4e5)', async () => {
+    // Service gates always grant since billing was removed; the request now
+    // behaves like any subscribed tenant. When billing returns, restore the
+    // 403 assertion (see vault ADR paid-module-entitlement-vs-scope-gating).
     await asTenant(A);
     const route = await import('@/app/api/portal/surveys/route');
     const res = await callHandler(
       route as unknown as Record<string, unknown>, 'POST',
       { body: { title: 'X' } },
     );
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(201);
   });
 
   it('rejects missing/blank title with 400', async () => {

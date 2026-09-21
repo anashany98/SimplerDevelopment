@@ -82,15 +82,18 @@ describe('GET /api/portal/hosting @hosting @tenancy', () => {
     expect(res.status).toBe(401);
   });
 
-  it('returns 403 when caller has no active hosting service', async () => {
-    // No subscription → authorizePortal blocks the call.
+  it('grants access without a hosting subscription (billing removed 2e0e4e5)', async () => {
+    // Service gates always grant since billing was removed — the request
+    // falls through to normal tenant scoping (empty list for a tenant with
+    // no sites). When billing returns, restore the 403 + requiresService
+    // assertion (see vault ADR paid-module-entitlement-vs-scope-gating).
     await asTenant(A);
     const route = await import('@/app/api/portal/hosting/route');
-    const res = await callHandler<{ success: boolean; requiresService?: string }>(
+    const res = await callHandler<{ success: boolean; data?: unknown[] }>(
       route as unknown as Record<string, unknown>, 'GET',
     );
-    expect(res.status).toBe(403);
-    expect(res.data?.requiresService).toBe('hosting');
+    expect(res.status).toBe(200);
+    expect(res.data?.success).toBe(true);
   });
 
   it('happy path: returns only the caller tenant\'s hosted sites', async () => {
