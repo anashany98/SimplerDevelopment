@@ -119,7 +119,7 @@ export default function GetStartedChecklist() {
       {/* Progress bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span>{completedCount} of {totalActions} steps complete</span>
+          <span>{completedCount} de {totalActions} pasos completados</span>
           <span>{progressPct}%</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">

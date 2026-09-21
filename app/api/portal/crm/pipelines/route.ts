@@ -4,7 +4,7 @@ import { getPortalClient } from '@/lib/portal-client';
 import { db } from '@/lib/db';
 import { crmPipelines, crmPipelineStages } from '@/lib/db/schema';
 import { eq, asc, inArray } from 'drizzle-orm';
-import { ensureDefaultPipeline } from '@/lib/crm/default-pipeline';
+import { ensureDefaultPipeline, DEFAULT_STAGES } from '@/lib/crm/default-pipeline';
 import { crmEntitlementError } from '@/lib/crm/entitlement';
 
 export async function GET() {
@@ -91,20 +91,11 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  // Create default stages
-  const defaultStages = [
-    { name: 'Lead', color: '#94a3b8', sortOrder: 0, probability: 10 },
-    { name: 'Qualified', color: '#3b82f6', sortOrder: 1, probability: 25 },
-    { name: 'Proposal', color: '#8b5cf6', sortOrder: 2, probability: 50 },
-    { name: 'Negotiation', color: '#f59e0b', sortOrder: 3, probability: 75 },
-    { name: 'Closed Won', color: '#22c55e', sortOrder: 4, probability: 100 },
-    { name: 'Closed Lost', color: '#ef4444', sortOrder: 5, probability: 0 },
-  ];
-
+  // Create default stages (shared definition — keep in sync via lib/crm/default-pipeline)
   const stages = await db
     .insert(crmPipelineStages)
     .values(
-      defaultStages.map((s) => ({
+      DEFAULT_STAGES.map((s) => ({
         pipelineId: pipeline.id,
         name: s.name,
         color: s.color,

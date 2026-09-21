@@ -52,9 +52,9 @@ export default async function ProjectsOverviewWidget({
       </div>
       {recent.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No projects yet.{' '}
+          Aún no hay proyectos.{' '}
           <Link href="/portal/projects" className="text-primary hover:underline">
-            Create one
+            Crear uno
           </Link>
         </p>
       ) : (

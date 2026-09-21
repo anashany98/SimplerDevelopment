@@ -2,15 +2,15 @@ import { db } from '@/lib/db';
 import { crmPipelines, crmPipelineStages } from '@/lib/db/schema';
 import { eq, desc, asc } from 'drizzle-orm';
 
-const DEFAULT_PIPELINE_NAME = 'Sales Pipeline';
+const DEFAULT_PIPELINE_NAME = 'Embudo de ventas';
 
-const DEFAULT_STAGES = [
-  { name: 'Lead', color: '#94a3b8', sortOrder: 0, probability: 10 },
-  { name: 'Qualified', color: '#3b82f6', sortOrder: 1, probability: 25 },
-  { name: 'Proposal', color: '#8b5cf6', sortOrder: 2, probability: 50 },
-  { name: 'Negotiation', color: '#f59e0b', sortOrder: 3, probability: 75 },
-  { name: 'Closed Won', color: '#22c55e', sortOrder: 4, probability: 100 },
-  { name: 'Closed Lost', color: '#ef4444', sortOrder: 5, probability: 0 },
+export const DEFAULT_STAGES = [
+  { name: 'Prospecto', color: '#94a3b8', sortOrder: 0, probability: 10 },
+  { name: 'Calificado', color: '#3b82f6', sortOrder: 1, probability: 25 },
+  { name: 'Propuesta', color: '#8b5cf6', sortOrder: 2, probability: 50 },
+  { name: 'Negociación', color: '#f59e0b', sortOrder: 3, probability: 75 },
+  { name: 'Ganado', color: '#22c55e', sortOrder: 4, probability: 100 },
+  { name: 'Perdido', color: '#ef4444', sortOrder: 5, probability: 0 },
 ];
 
 /**

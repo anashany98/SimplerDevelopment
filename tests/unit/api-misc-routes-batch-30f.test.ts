@@ -29,9 +29,13 @@ vi.mock('@/lib/portal-client', () => ({
 }));
 
 const ensureDefaultPipelineMock = vi.fn();
-vi.mock('@/lib/crm/default-pipeline', () => ({
-  ensureDefaultPipeline: (...args: unknown[]) => ensureDefaultPipelineMock(...args),
-}));
+vi.mock('@/lib/crm/default-pipeline', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/crm/default-pipeline')>();
+  return {
+    ...actual,
+    ensureDefaultPipeline: (...args: unknown[]) => ensureDefaultPipelineMock(...args),
+  };
+});
 
 vi.mock('@/lib/crm/entitlement', () => ({
   crmEntitlementError: vi.fn(async () => null),
@@ -1081,12 +1085,12 @@ describe('POST /api/portal/crm/pipelines', () => {
     expect(body.data.stages).toHaveLength(6);
     const names = body.data.stages.map((s: { name: string }) => s.name);
     expect(names).toEqual([
-      'Lead',
-      'Qualified',
-      'Proposal',
-      'Negotiation',
-      'Closed Won',
-      'Closed Lost',
+      'Prospecto',
+      'Calificado',
+      'Propuesta',
+      'Negociación',
+      'Ganado',
+      'Perdido',
     ]);
     // Verify state side-effects
     expect(state.crmPipelines).toHaveLength(1);

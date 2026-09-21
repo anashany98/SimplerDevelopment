@@ -724,7 +724,7 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
 
     render(<RealStepModuleSetup {...makeStepProps({ state })} />);
 
-    await waitFor(() => expect(screen.getByText('Surveys enabled')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Encuestas activado')).toBeTruthy());
     expect(
       screen.getByText('Crea tu primera encuesta cuando la necesites — Encuestas está en tu barra lateral.'),
     ).toBeTruthy();

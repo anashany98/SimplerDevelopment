@@ -154,7 +154,7 @@ test.describe('Per-domain onboarding cards @onboarding', () => {
 
       // "N of M steps complete" — must never read "0 of ..." (goal gradient /
       // pre-credited-step invariant, spec "Per-Domain Onboarding" UX req 1).
-      const progressRow = page.getByText(/steps complete/);
+      const progressRow = page.getByText(/pasos completados/);
       await expect(progressRow).toBeVisible();
       const progressText = (await progressRow.textContent())?.trim() ?? '';
       expect(progressText).not.toBe('');

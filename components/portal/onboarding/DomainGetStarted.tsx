@@ -94,7 +94,7 @@ export default function DomainGetStarted({ domainKey }: { domainKey: string }) {
 
       <div className="mb-4">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span>{status.done} of {status.total} steps complete</span>
+          <span>{status.done} de {status.total} pasos completados</span>
           <span>{progressPct}%</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
