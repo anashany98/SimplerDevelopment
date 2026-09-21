@@ -116,7 +116,7 @@ export function TaskRow({
       <div className="text-foreground truncate flex items-center gap-2">
         <span className="truncate">{task.title}</span>
         {task.createdByAi && (
-          <span className="material-icons text-sm text-muted-foreground" title="AI-created">
+          <span className="material-icons text-sm text-muted-foreground" title="Creada por IA">
             auto_awesome
           </span>
         )}

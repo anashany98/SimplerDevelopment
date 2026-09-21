@@ -81,7 +81,7 @@ export default function PortalTopbar({ collapsed, onToggleCollapse, onOpenMobile
         onClick={onOpenMobile}
         className="lg:hidden w-8 h-8 grid place-items-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
         title="Menú"
-        aria-label="Open navigation"
+        aria-label="Abrir navegación"
       >
         <span className="material-icons text-xl">menu</span>
       </button>

@@ -32,16 +32,16 @@ export function SeoSection({ siteId, formData, setFormData }: SeoSectionProps) {
           placeholder={formData.excerpt || 'Description for search engines...'}
           className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary resize-none"
         />
-        <p className="text-xs text-muted-foreground mt-1">{(formData.seoDescription || '').length}/160 characters</p>
+        <p className="text-xs text-muted-foreground mt-1">{(formData.seoDescription || '').length}/160 caracteres</p>
       </div>
       <MediaPicker
         value={formData.ogImage}
         onChange={(url) => setFormData(prev => ({ ...prev, ogImage: url }))}
-        label="Social Share Image (OG Image)"
+        label="Imagen para compartir (OG)"
         apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
       />
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Canonical URL</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">URL canónica</label>
         <input
           value={formData.canonicalUrl}
           onChange={e => setFormData(prev => ({ ...prev, canonicalUrl: e.target.value }))}

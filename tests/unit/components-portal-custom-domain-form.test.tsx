@@ -114,7 +114,7 @@ describe('CustomDomainForm — empty state', () => {
 
   it('renders the domain input placeholder', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     expect(input).toBeInTheDocument();
   });
 
@@ -145,21 +145,21 @@ describe('CustomDomainForm — empty state', () => {
 describe('CustomDomainForm — input', () => {
   it('enables Add Domain button once input is non-empty', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'mysite.com' } });
     expect(screen.getByRole('button', { name: /Añadir dominio/i })).not.toBeDisabled();
   });
 
   it('strips leading https:// from typed value', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'https://mysite.com' } });
     expect(input.value).toBe('mysite.com');
   });
 
   it('strips leading http:// from typed value', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'http://mysite.com' } });
     expect(input.value).toBe('mysite.com');
   });
@@ -167,7 +167,7 @@ describe('CustomDomainForm — input', () => {
   it('pressing Enter with non-empty input calls fetch (POST)', async () => {
     setupFetch({ addBody: { success: true, data: { id: 5, domain: 'enter.com' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'enter.com' } });
     await act(async () => {
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -183,7 +183,7 @@ describe('CustomDomainForm — input', () => {
 
   it('pressing Enter with empty input does NOT call fetch', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.keyDown(input, { key: 'Enter' });
     const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
     expect(calls.length).toBe(0);
@@ -197,7 +197,7 @@ describe('CustomDomainForm — add domain success', () => {
   it('POSTs to the domains endpoint with the typed domain', async () => {
     setupFetch({ addBody: { success: true, data: { id: 10, domain: 'newsite.io' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
@@ -219,7 +219,7 @@ describe('CustomDomainForm — add domain success', () => {
       listBody: { success: true, data: [makeDomain({ id: 10, domain: 'newsite.io' })] },
     });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
@@ -232,7 +232,7 @@ describe('CustomDomainForm — add domain success', () => {
   it('clears the input after successful add', async () => {
     setupFetch({ addBody: { success: true, data: { id: 10, domain: 'newsite.io' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
@@ -246,7 +246,7 @@ describe('CustomDomainForm — add domain success', () => {
     // Use a never-resolving fetch so the button stays in the loading state
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'slow.com' } });
     fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     expect(screen.getByRole('button', { name: /Añadiendo\.\.\./i })).toBeInTheDocument();
@@ -260,7 +260,7 @@ describe('CustomDomainForm — add domain error', () => {
   it('shows error message when add returns success=false', async () => {
     setupFetch({ addBody: { success: false, message: 'Domain already exists' } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'taken.com' } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
@@ -273,7 +273,7 @@ describe('CustomDomainForm — add domain error', () => {
   it('shows fallback error when message is missing', async () => {
     setupFetch({ addBody: { success: false } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'bad.com' } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));

@@ -237,7 +237,7 @@ export default function NewPortalCampaignPage() {
                     </div>
                     <div>
                       <label className={labelClass}>Email del remitente *</label>
-                      <input type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hello@yourdomain.com" />
+                      <input type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hola@tudominio.com" />
                     </div>
                     <div>
                       <label className={labelClass}>Correo de respuesta</label>

@@ -191,7 +191,7 @@ describe('UploadHtmlDeckButton', () => {
   it('renders the default idle label and secondary styling', () => {
     const { container } = render(<UploadHtmlDeckButton />);
     const btn = container.querySelector('button');
-    expect(btn?.textContent).toContain('Upload HTML / Zip');
+    expect(btn?.textContent).toContain('Subir HTML / Zip');
     expect(btn?.className).toContain('border');
   });
 

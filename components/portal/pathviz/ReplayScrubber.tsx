@@ -37,8 +37,8 @@ function tickColor(tone: ScrubberTick['tone']): string {
 
 function modeBadgeStyle(mode: PathVizMode): { label: string; color: string } {
   if (mode === 'live') return { label: 'LIVE', color: '#6EE86E' };
-  if (mode === 'paused') return { label: 'PAUSED', color: '#ECA83D' };
-  return { label: 'REPLAY', color: '#22B8E6' };
+  if (mode === 'paused') return { label: 'PAUSA', color: '#ECA83D' };
+  return { label: 'REPETICIÓN', color: '#22B8E6' };
 }
 
 export default function ReplayScrubber({
@@ -108,7 +108,7 @@ export default function ReplayScrubber({
         data-testid="pathviz-scrubber-live-btn"
         className="flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-[.12em] px-2 py-1 rounded-full border shrink-0"
         style={{ borderColor: `${badge.color}88`, color: badge.color, background: `${badge.color}14` }}
-        title="Jump back to live streaming"
+        title="Volver a la emisión en vivo"
       >
         <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: badge.color, boxShadow: `0 0 6px ${badge.color}` }} />
         {badge.label}
@@ -118,7 +118,7 @@ export default function ReplayScrubber({
         type="button"
         onClick={onTogglePlay}
         data-testid="pathviz-scrubber-playpause"
-        aria-label={playing ? 'Pause' : 'Play'}
+        aria-label={playing ? 'Pausar' : 'Reproducir'}
         className="shrink-0"
         style={{ color: THEME.ink2 }}
       >

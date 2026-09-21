@@ -45,8 +45,8 @@ export function BrainDashboardWidgetsServer({ clientId }: Props) {
       <Suspense
         fallback={
           <div className="grid md:grid-cols-2 gap-4">
-            <TileSkeleton title="Active automations" />
-            <TileSkeleton title="Recent automation runs" />
+            <TileSkeleton title="Automatizaciones activas" />
+            <TileSkeleton title="Ejecuciones recientes de automatizaciones" />
           </div>
         }
       >

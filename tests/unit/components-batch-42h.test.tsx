@@ -520,7 +520,7 @@ describe('UploadHtmlPageButton', () => {
   it('renders the default idle label and accepts html/zip', () => {
     const { container } = render(<UploadHtmlPageButton siteId={3} />);
     const btn = container.querySelector('button');
-    expect(btn?.textContent).toContain('Upload HTML / Zip');
+    expect(btn?.textContent).toContain('Subir HTML / Zip');
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(input).toBeTruthy();
     expect(input.accept).toContain('.html');

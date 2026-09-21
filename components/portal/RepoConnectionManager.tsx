@@ -163,7 +163,7 @@ export default function RepoConnectionManager({
             <input
               value={repoUrl}
               onChange={e => handleRepoUrlChange(e.target.value)}
-              placeholder="https://github.com/your-org/your-repo"
+              placeholder="https://github.com/tu-org/tu-repo"
               className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-foreground outline-none focus:border-primary text-sm font-mono"
             />
             <p className="text-xs text-muted-foreground mt-1">

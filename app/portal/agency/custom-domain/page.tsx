@@ -164,7 +164,7 @@ export default function CustomDomainPage() {
               type="text"
               value={domainInput}
               onChange={e => setDomainInput(e.target.value)}
-              placeholder="portal.your-agency.com"
+              placeholder="portal.tuagencia.com"
               required
               className={`mt-1 ${pInput}`}
             />

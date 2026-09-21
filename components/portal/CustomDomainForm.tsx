@@ -144,7 +144,7 @@ export default function CustomDomainForm({
           <input
             value={newDomain}
             onChange={e => setNewDomain(e.target.value.replace(/^https?:\/\//, ''))}
-            placeholder="yoursite.com"
+            placeholder="tusitio.com"
             className="bg-transparent outline-none flex-1 text-sm text-foreground font-mono"
             onKeyDown={e => e.key === 'Enter' && handleAddDomain()}
           />

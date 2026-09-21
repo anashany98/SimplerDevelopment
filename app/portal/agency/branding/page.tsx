@@ -125,7 +125,7 @@ export default function AgencyBrandingPage() {
               type="url"
               value={state.agencyLogoUrl ?? ''}
               onChange={e => setState(s => ({ ...s, agencyLogoUrl: e.target.value }))}
-              placeholder="https://cdn.your-agency.com/logo.png"
+              placeholder="https://cdn.tuagencia.com/logo.png"
               maxLength={500}
               className={`mt-1 ${pInput}`}
             />

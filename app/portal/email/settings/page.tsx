@@ -108,12 +108,12 @@ export default function EmailSettingsPage() {
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground">Email del remitente</label>
-            <input value={defaultFromEmail} onChange={e => setDefaultFromEmail(e.target.value)} placeholder="hello@yourdomain.com" className={`mt-1 ${pInput}`} />
+            <input value={defaultFromEmail} onChange={e => setDefaultFromEmail(e.target.value)} placeholder="hola@tudominio.com" className={`mt-1 ${pInput}`} />
           </div>
         </div>
         <div>
           <label className="text-xs font-medium text-muted-foreground">Email de respuesta (Reply-To)</label>
-          <input value={defaultReplyTo} onChange={e => setDefaultReplyTo(e.target.value)} placeholder="replies@yourdomain.com" className={`mt-1 ${pInput}`} />
+          <input value={defaultReplyTo} onChange={e => setDefaultReplyTo(e.target.value)} placeholder="respuestas@tudominio.com" className={`mt-1 ${pInput}`} />
         </div>
         <p className="text-xs text-muted-foreground flex items-center gap-1">
           <span className="material-icons text-xs">info</span>El correo del remitente debe usar un dominio de envío verificado</p>
