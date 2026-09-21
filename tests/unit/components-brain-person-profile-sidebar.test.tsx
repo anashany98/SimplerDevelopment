@@ -62,7 +62,7 @@ describe('PersonProfileSidebar', () => {
     });
 
     expect(
-      screen.getByText(/link this person to a user account/i),
+      screen.getByText(/vincula esta persona a una cuenta de usuario/i),
     ).toBeInTheDocument();
   });
 
@@ -171,7 +171,7 @@ describe('PersonProfileSidebar', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('No open tasks.')).toBeInTheDocument();
+      expect(screen.getByText('Sin tareas abiertas.')).toBeInTheDocument();
     });
   });
 
@@ -332,7 +332,7 @@ describe('PersonProfileSidebar', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('No open tasks.')).toBeInTheDocument();
+      expect(screen.getByText('Sin tareas abiertas.')).toBeInTheDocument();
     });
   });
 
@@ -391,7 +391,7 @@ describe('PersonProfileSidebar', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('No open tasks.')).toBeInTheDocument();
+      expect(screen.getByText('Sin tareas abiertas.')).toBeInTheDocument();
     });
   });
 
