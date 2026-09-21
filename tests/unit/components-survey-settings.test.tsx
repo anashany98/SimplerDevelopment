@@ -314,7 +314,7 @@ describe('SurveySettings — completion screen fields', () => {
 
   it('calls setEditRedirectUrl when redirect URL changes', () => {
     const props = renderSettings();
-    const urlInput = screen.getByPlaceholderText('https://example.com/thank-you');
+    const urlInput = screen.getByPlaceholderText('https://ejemplo.com/gracias');
     fireEvent.change(urlInput, { target: { value: 'https://example.com/done' } });
     expect(props.setEditRedirectUrl).toHaveBeenCalledWith('https://example.com/done');
   });

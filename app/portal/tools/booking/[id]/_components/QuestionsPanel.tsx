@@ -96,7 +96,7 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
                   type="text"
                   value={q.label}
                   onChange={(e) => updateQuestion(q.id, 'label', e.target.value)}
-                  placeholder="e.g. What would you like to discuss?"
+                  placeholder="p. ej. ¿De qué te gustaría hablar?"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>

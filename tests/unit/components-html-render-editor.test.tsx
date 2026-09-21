@@ -1120,7 +1120,7 @@ describe('HtmlRenderUrlAutocomplete', () => {
       json: async () => ({ success: true, data: { posts: [], decks: [], bookings: [], proposals: [] } }),
     }) as any;
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} siteId={9} />);
-    const input = container.querySelector('input[placeholder*="pick a link"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="elige un enlace"]') as HTMLInputElement;
     expect(input).toBeTruthy();
   });
 
@@ -1142,7 +1142,7 @@ describe('HtmlRenderUrlAutocomplete', () => {
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} siteId={9} />);
     await act(async () => { await Promise.resolve(); });
     await act(async () => { await Promise.resolve(); });
-    const input = container.querySelector('input[placeholder*="pick a link"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="elige un enlace"]') as HTMLInputElement;
     fireEvent.focus(input);
     expect(container.textContent).toContain('About');
   });

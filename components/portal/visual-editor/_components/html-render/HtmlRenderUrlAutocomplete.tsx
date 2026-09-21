@@ -97,7 +97,7 @@ export function HtmlRenderUrlAutocomplete({
           value={value || ''}
           onChange={(e) => { onChange(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
-          placeholder="https:// or pick a link below"
+          placeholder="https:// o elige un enlace de abajo"
           className="mt-1 block w-full rounded border border-border px-2.5 py-1.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </label>

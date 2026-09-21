@@ -880,7 +880,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               <form onSubmit={addDomain} className="p-5 space-y-3 border-b border-border bg-muted/20">
                 {addDomainError && <p className="text-sm text-red-600">{addDomainError}</p>}
                 <p className="text-sm text-muted-foreground">
-                  Introduce el dominio desde el que enviar (p. ej. <code className="bg-muted px-1 rounded text-xs">yourdomain.com</code>). Se generarán los registros DNS.
+                  Introduce el dominio desde el que enviar (p. ej. <code className="bg-muted px-1 rounded text-xs">tudominio.com</code>). Se generarán los registros DNS.
                 </p>
                 <div className="flex gap-3">
                   <input required value={newDomain} onChange={e => setNewDomain(e.target.value)}

@@ -218,7 +218,7 @@ function LoginForm() {
                 required
                 autoComplete="email"
                 className={authInput}
-                placeholder="you@company.com"
+                placeholder="tu@empresa.com"
               />
             </AuthField>
           </div>

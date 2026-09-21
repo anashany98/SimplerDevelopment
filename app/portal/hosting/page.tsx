@@ -50,7 +50,7 @@ export default async function PortalHostingPage() {
       <PortalPageHeader
         eyebrow="Infraestructura"
         title="Alojamiento"
-        subtitle="Your managed hosting environments, powered by Railway and managed by CRM AGENTS."
+        subtitle="Tus entornos de hosting gestionados, con Railway y administrados por CRM AGENTS."
       />
 
       {sites.length === 0 ? (

@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
                 autoComplete="email"
                 autoFocus
                 className={authInput}
-                placeholder="you@company.com"
+                placeholder="tu@empresa.com"
               />
             </AuthField>
           </div>

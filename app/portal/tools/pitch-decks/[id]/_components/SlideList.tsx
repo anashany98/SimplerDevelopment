@@ -125,7 +125,7 @@ export function SlideList(props: SlideListProps) {
                 <button
                   onClick={onUploadHtmlSlide}
                   className="text-primary hover:text-primary/80"
-                  title="Upload HTML slide"
+                  title="Subir diapositiva HTML"
                 >
                   <span className="material-icons text-lg">upload_file</span>
                 </button>

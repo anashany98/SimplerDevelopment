@@ -217,7 +217,7 @@ export default function AdminOAuthClientsPage() {
               value={form.redirect_uris}
               onChange={e => setForm({ ...form, redirect_uris: e.target.value })}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-mono"
-              placeholder="https://your-integration.example.com/oauth/callback"
+              placeholder="https://tu-integracion.example.com/oauth/callback"
             />
             <p className="text-xs text-muted-foreground mt-1">Uno por línea. Debe usar https, http://localhost o un esquema nativo.</p>
           </div>
@@ -239,7 +239,7 @@ export default function AdminOAuthClientsPage() {
               value={form.client_uri}
               onChange={e => setForm({ ...form, client_uri: e.target.value })}
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-              placeholder="https://your-integration.example.com"
+              placeholder="https://tu-integracion.example.com"
             />
           </div>
           {error && <div className="text-sm text-destructive">{error}</div>}

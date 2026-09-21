@@ -116,7 +116,7 @@ export default function StandupPage() {
       <PortalPageHeader
         eyebrow="Equipo"
         title="Standup"
-        subtitle="What you did, what you're doing, and what's blocking you. Use this on the daily."
+        subtitle="Qué hiciste, qué estás haciendo y qué te bloquea. Úsalo a diario."
       />
 
       {loading || !data ? (

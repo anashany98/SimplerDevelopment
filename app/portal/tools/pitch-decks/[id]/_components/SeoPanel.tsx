@@ -105,7 +105,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
           <MediaPicker
             value={deck.ogImage ?? undefined}
             onChange={(url) => void patchField({ ogImage: url || null })}
-            label="Social Share Image (OG Image)"
+            label="Imagen para compartir (OG)"
           />
 
           <div>
