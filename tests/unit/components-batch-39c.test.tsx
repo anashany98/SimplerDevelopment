@@ -75,7 +75,7 @@ describe('MediaGrid', () => {
   it('shows the empty-state message when media is empty', () => {
     render(<MediaGrid media={[]} onUpdate={() => {}} />);
     expect(
-      screen.getByText('No media found. Upload some files to get started!'),
+        screen.getByText('No se encontraron medios. Sube archivos para empezar.'),
     ).toBeTruthy();
   });
 
