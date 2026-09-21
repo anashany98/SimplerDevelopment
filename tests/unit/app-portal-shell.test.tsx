@@ -13,6 +13,7 @@ const H = vi.hoisted(() => ({
   session: null as unknown,
   client: null as unknown,
   pathname: '/portal/crm',
+  onboardingRows: [{ completedAt: null as Date | null }],
   redirectMock: vi.fn(),
 }));
 
@@ -27,6 +28,18 @@ vi.mock('next/navigation', () => ({
   redirect: (url: string) => {
     H.redirectMock(url);
     throw new Error('NEXT_REDIRECT');
+  },
+}));
+
+vi.mock('@/lib/db', () => ({
+  db: {
+    select: () => ({
+      from: () => ({
+        where: () => ({
+          limit: async () => H.onboardingRows,
+        }),
+      }),
+    }),
   },
 }));
 
@@ -57,6 +70,7 @@ beforeEach(() => {
   H.session = { user: { id: '4' } };
   H.client = { id: 2 };
   H.pathname = '/portal/crm';
+  H.onboardingRows = [{ completedAt: null }];
 });
 
 describe('PortalShell pre-onboarding gate', () => {
@@ -81,6 +95,13 @@ describe('PortalShell pre-onboarding gate', () => {
   });
 
   it('does not redirect when the user has a portal client', async () => {
+    await renderShell();
+    expect(H.redirectMock).not.toHaveBeenCalled();
+  });
+
+  it('does not redirect a clientless user who already completed onboarding (no wizard loop)', async () => {
+    H.client = null;
+    H.onboardingRows = [{ completedAt: new Date() }];
     await renderShell();
     expect(H.redirectMock).not.toHaveBeenCalled();
   });

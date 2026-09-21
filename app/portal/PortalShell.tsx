@@ -19,6 +19,9 @@
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { db } from '@/lib/db';
+import { userOnboarding } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
 import { loadUserApps, type UserAppNavMeta } from '@/lib/plugins/load-user-apps';
 import { getClientEntitlements } from '@/lib/billing/entitlements';
@@ -56,7 +59,15 @@ export default async function PortalShell({ children }: { children: React.ReactN
       if (!Number.isNaN(userId)) {
         const client = await getPortalClient(userId);
         if (!client) {
-          clientless = true;
+          // Only PRE-onboarding users get the wizard. A user who already
+          // completed onboarding but still has no client (e.g. a staff account
+          // that walked the portal wizard) must NOT loop dashboard→wizard.
+          const [ob] = await db
+            .select({ completedAt: userOnboarding.completedAt })
+            .from(userOnboarding)
+            .where(eq(userOnboarding.userId, userId))
+            .limit(1);
+          clientless = !ob?.completedAt;
         } else {
           apps = await loadUserApps(client.id);
           const ent = await getClientEntitlements(client.id, client);
