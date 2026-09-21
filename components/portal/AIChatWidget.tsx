@@ -2,165 +2,12 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
-import Link from 'next/link';
 import { AgentHeader, AgentWelcome } from './AIChatAgentChrome';
+import { ChatMessage } from './ai-chat/ChatMessage';
+import { ChatComposer } from './ai-chat/ChatComposer';
+import { ChatHistory } from './ai-chat/ChatHistory';
+import type { ChatMessageItem, ChatConversation } from './ai-chat/types';
 import { PORTAL_AGENT_PROFILES, getPortalAgent, getPortalAgentForPathname, type PortalAgentId } from '@/lib/ai/portal-agents';
-
-interface Message {
-  id?: number;
-  role: 'user' | 'assistant';
-  content: string;
-  toolCalls?: { name: string; input: Record<string, unknown>; success?: boolean }[] | null;
-  injectedBy?: number | null;
-  createdAt?: string;
-}
-
-interface Conversation {
-  id: number;
-  title: string;
-  updatedAt: string;
-}
-
-const TOOL_LABELS: Record<string, string> = {
-  // Read tools
-  get_dashboard_summary: 'Consultó el panel',
-  get_my_projects: 'Buscó proyectos',
-  get_project_board: 'Consultó el tablero',
-  get_project_cards: 'Consultó las tarjetas',
-  get_sprint_progress: 'Consultó el progreso del sprint',
-  get_project_files: 'Buscó archivos',
-  get_my_invoices: 'Consultó las facturas',
-  get_invoice_details: 'Consultó el detalle de la factura',
-  get_payment_methods: 'Consultó los métodos de pago',
-  get_my_tickets: 'Consultó los tickets',
-  get_ticket_details: 'Consultó el detalle del ticket',
-  get_services_catalog: 'Exploró los servicios',
-  get_my_services: 'Consultó las suscripciones',
-  get_my_websites: 'Consultó las webs',
-  get_website_pages: 'Consultó las páginas',
-  get_website_categories: 'Consultó las categorías',
-  get_website_tags: 'Consultó las etiquetas',
-  get_website_media: 'Consultó los medios',
-  get_my_hosted_sites: 'Consultó el alojamiento',
-  get_my_email_campaigns: 'Consultó las campañas',
-  get_my_email_lists: 'Consultó las listas de email',
-  get_my_pitch_decks: 'Consultó los pitch decks',
-  get_my_booking_pages: 'Consultó las páginas de reservas',
-  get_bookings_for_page: 'Consultó las reservas',
-  get_suggested_projects: 'Exploró los proyectos sugeridos',
-  get_my_team: 'Consultó el equipo',
-  get_my_profile: 'Consultó el perfil',
-  get_inbox_channels: 'Consultó los canales',
-  get_inbox_conversations: 'Consultó las conversaciones',
-  get_inbox_conversation: 'Leyó la conversación',
-  // Write tools
-  create_support_ticket: 'Creó el ticket',
-  reply_to_ticket: 'Respondió al ticket',
-  add_card_comment: 'Añadió un comentario',
-  create_website: 'Creó la web',
-  create_website_page: 'Creó la página',
-  publish_page: 'Actualizó la página',
-  create_website_category: 'Creó la categoría',
-  create_website_tag: 'Creó la etiqueta',
-  request_service: 'Solicitó el servicio',
-  request_suggested_project: 'Solicitó el proyecto',
-  update_profile: 'Actualizó el perfil',
-  invite_team_member: 'Invitó a un miembro',
-  send_inbox_message: 'Respuesta en cola para aprobación',
-  assign_inbox_conversation: 'Asignó la conversación',
-  take_over_inbox_conversation: 'Asumió la conversación',
-  pause_inbox_ai: 'Pausó la IA',
-  return_inbox_conversation_to_ai: 'Reanudación de IA en cola para aprobación',
-  close_inbox_conversation: 'Cerró la conversación',
-  // Navigation
-  navigate_to: 'Abriendo página',
-  pay_invoice: 'Abriendo factura',
-};
-
-const TOOL_FAILURE_LABELS: Record<string, string> = {
-  create_website: 'No se creó la web',
-  create_website_page: 'No se creó la página',
-};
-
-function ToolChips({ toolCalls }: { toolCalls: { name: string; success?: boolean }[] }) {
-  return (
-    <div className="flex flex-wrap gap-1 mt-1 mb-2">
-      {toolCalls.map((tc, i) => (
-        <span
-          key={i}
-          className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
-            tc.success === false
-              ? 'bg-destructive/10 text-destructive'
-              : 'bg-primary/10 text-primary'
-          }`}
-        >
-          <span className="material-icons text-xs">
-            {tc.success === false ? 'error_outline' : 'check_circle'}
-          </span>
-          {tc.success === false
-            ? TOOL_FAILURE_LABELS[tc.name] ?? 'Acción fallida'
-            : TOOL_LABELS[tc.name] ?? tc.name}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function MessageBubble({ msg }: { msg: Message }) {
-  const isUser = msg.role === 'user';
-  const isInjected = !isUser && msg.injectedBy;
-
-  return (
-    <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} gap-1`}>
-      {!isUser && msg.toolCalls && msg.toolCalls.length > 0 && <ToolChips toolCalls={msg.toolCalls} />}
-      <div
-        className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm break-words ${
-          isUser ? 'bg-primary text-primary-foreground rounded-tr-sm' : isInjected ? 'bg-amber-50 border border-amber-200 text-foreground rounded-tl-sm dark:bg-amber-950/30 dark:border-amber-800' : 'bg-muted text-foreground rounded-tl-sm'
-        }`}
-      >
-        {isInjected && (
-          <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mb-1 flex items-center gap-1">
-            <span className="material-icons text-xs">support_agent</span>
-            CRM AGENTS Team
-          </p>
-        )}
-        {isUser ? (
-          <span className="whitespace-pre-wrap">{msg.content}</span>
-        ) : (
-          <ReactMarkdown
-            components={{
-              p: ({ children }) => <p className="mb-1.5 last:mb-0">{children}</p>,
-              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-              em: ({ children }) => <em className="italic">{children}</em>,
-              ul: ({ children }) => <ul className="list-disc pl-4 mb-1.5 space-y-0.5">{children}</ul>,
-              ol: ({ children }) => <ol className="list-decimal pl-4 mb-1.5 space-y-0.5">{children}</ol>,
-              li: ({ children }) => <li>{children}</li>,
-              code: ({ children }) => <code className="bg-black/10 dark:bg-white/10 rounded px-1 py-0.5 text-xs font-mono">{children}</code>,
-              a: ({ href, children }) => {
-                const isInternal = href?.startsWith('/');
-                if (isInternal) {
-                  return (
-                    <Link href={href!} className="underline font-medium text-primary hover:opacity-80 transition-opacity">
-                      {children}
-                    </Link>
-                  );
-                }
-                return (
-                  <a href={href} className="underline opacity-80 hover:opacity-100" target="_blank" rel="noopener noreferrer">
-                    {children}
-                  </a>
-                );
-              },
-            }}
-          >
-            {msg.content}
-          </ReactMarkdown>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export interface AIChatWidgetProps {
   /** `page` mounts the existing conversation experience as a full portal page. */
@@ -173,17 +20,22 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
   const contextualAgent = getPortalAgentForPathname(pathname);
   const [open, setOpen] = useState(() => mode === 'page');
   const [view, setView] = useState<'chat' | 'history'>('chat');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [messages, setMessages] = useState<ChatMessageItem[]>([]);
+  const [conversations, setConversations] = useState<ChatConversation[]>([]);
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [backgroundLoading, setBackgroundLoading] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [selectedAgentId, setSelectedAgentId] = useState<PortalAgentId | null>(null);
+  const [atBottom, setAtBottom] = useState(true);
+  const [unseen, setUnseen] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const scrollBoxRef = useRef<HTMLDivElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const prevCountRef = useRef(0);
   const activeAgent = getPortalAgent(selectedAgentId) ?? contextualAgent;
 
   useEffect(() => {
@@ -195,21 +47,59 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
     setMessages([]);
     setConversationId(null);
     setView('chat');
+    prevCountRef.current = 0;
   }, [pathname]);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
+  const isNearBottom = useCallback(() => {
+    const el = scrollBoxRef.current;
+    if (!el) return true;
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 120;
+  }, []);
+
+  // Auto-scroll on new messages — only when the reader is already at the
+  // bottom; otherwise surface a "jump to latest" affordance with a counter.
   useEffect(() => {
-    if (open && messages.length > 0) scrollToBottom();
-  }, [messages, open, scrollToBottom]);
+    if (!open || view !== 'chat') return;
+    const grew = messages.length > prevCountRef.current;
+    prevCountRef.current = messages.length;
+    if (messages.length === 0) return;
+    if (isNearBottom()) {
+      scrollToBottom();
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- keep the badge in sync with scroll position
+      setUnseen(0);
+    } else if (grew) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- count messages arriving while scrolled up
+      setUnseen((u) => u + 1);
+    }
+  }, [messages, open, view, isNearBottom, scrollToBottom]);
+
+  // Focus the composer when the floating panel opens.
+  useEffect(() => {
+    if (open && mode === 'floating') {
+      const t = setTimeout(() => inputRef.current?.focus(), 150);
+      return () => clearTimeout(t);
+    }
+  }, [open, mode]);
+
+  // Esc closes the floating panel.
+  useEffect(() => {
+    if (mode !== 'floating' || !open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mode, open]);
 
   async function pollMessages(convId: number) {
     const res = await fetch(`/api/portal/ai/conversations/${convId}`);
     const data = await res.json();
     if (data.success) {
-      const fresh: Message[] = data.data.messages.map((m: Message & { tool_calls?: typeof m.toolCalls }) => ({
+      const fresh: ChatMessageItem[] = data.data.messages.map((m: ChatMessageItem & { tool_calls?: typeof m.toolCalls }) => ({
         ...m,
         toolCalls: m.toolCalls ?? null,
       }));
@@ -253,6 +143,7 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
     setMessages([]);
     setConversationId(null);
     setView('chat');
+    prevCountRef.current = 0;
   }
 
   function selectAgent(id: PortalAgentId) {
@@ -270,6 +161,9 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
     // Optimistically add user message
     setMessages((prev) => [...prev, { role: 'user', content: text }]);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const res = await fetch('/api/portal/ai/chat', {
         method: 'POST',
@@ -279,6 +173,7 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
           conversationId,
           agentId: activeAgent.id,
         }),
+        signal: controller.signal,
       });
       const data = await res.json();
 
@@ -320,7 +215,9 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
           },
         ]);
       }
-    } catch {
+    } catch (err) {
+      // A user-pressed "Detener" aborts the fetch — that's not a failure.
+      if ((err as { name?: string })?.name === 'AbortError') return;
       setMessages((prev) => [
         ...prev,
         {
@@ -329,9 +226,14 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
         },
       ]);
     } finally {
+      abortRef.current = null;
       setLoading(false);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
+  }
+
+  function stopMessage() {
+    abortRef.current?.abort();
   }
 
   async function runCeoInBackground() {
@@ -374,20 +276,14 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
     }
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }
-
   return (
     <>
       {/* The dedicated Chat route owns the visible panel, so it does not need a second floating launcher. */}
       {mode === 'floating' && (
         <button
+          type="button"
           onClick={() => setOpen(!open)}
-          className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-50 min-w-14 h-14 px-4 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2"
+          className="fixed bottom-2 right-2 sm:bottom-6 sm:right-6 z-50 min-w-14 h-14 px-4 rounded-full bg-gradient-to-br from-primary to-blue-600 text-primary-foreground shadow-lg shadow-primary/25 ring-1 ring-white/20 hover:shadow-xl hover:scale-[1.03] active:scale-95 transition-all flex items-center justify-center gap-2"
           title={activeAgent.name}
           aria-label={open ? 'Cerrar agente de IA' : `Abrir ${activeAgent.name}`}
         >
@@ -396,37 +292,41 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
         </button>
       )}
 
-      {/* Chat panel */}
+      {/* Chat panel — full-screen on mobile, floating card from `sm` up; embedded card in page mode. */}
       {open && (
         <div
           data-testid="portal-ai-chat-panel"
           className={mode === 'page'
             ? 'relative flex-1 min-h-[32rem] w-full bg-card border border-border rounded-2xl shadow-sm flex flex-col overflow-hidden'
-            : 'fixed bottom-20 right-2 sm:bottom-24 sm:right-6 z-50 w-[calc(100vw-1rem)] sm:w-[380px] max-w-[380px] max-h-[600px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden'}
+            : 'fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 w-full sm:w-[380px] sm:max-w-[380px] h-full sm:h-auto sm:max-h-[600px] bg-card sm:border sm:border-border rounded-none sm:rounded-3xl shadow-2xl sm:ring-1 sm:ring-black/5 flex flex-col overflow-hidden'}
         >
-          <AgentHeader agent={activeAgent} profiles={PORTAL_AGENT_PROFILES} view={view} onSelectAgent={selectAgent} onToggleHistory={() => setView(view === 'history' ? 'chat' : 'history')} onNewConversation={startNewConversation} />
+          <AgentHeader
+            agent={activeAgent}
+            profiles={PORTAL_AGENT_PROFILES}
+            view={view}
+            onSelectAgent={selectAgent}
+            onToggleHistory={() => setView(view === 'history' ? 'chat' : 'history')}
+            onNewConversation={startNewConversation}
+            onClose={mode === 'floating' ? () => setOpen(false) : undefined}
+          />
 
-          {/* History view */}
           {view === 'history' ? (
-            <div className="flex-1 overflow-y-auto p-3 space-y-1">
-              <p className="text-xs font-medium text-muted-foreground px-2 pb-1">Conversaciones recientes</p>
-              {loadingHistory ? (
-                <p className="text-xs text-muted-foreground text-center py-4">Cargando…</p>
-              ) : conversations.length === 0 ? (
-                <p className="text-xs text-muted-foreground text-center py-4">Todavía no hay conversaciones.</p>
-              ) : (
-                conversations.map((conv) => (
-                  <button key={conv.id} onClick={() => loadConversation(conv.id)} className={`w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-accent transition-colors ${conv.id === conversationId ? 'bg-accent' : ''}`}>
-                    <p className="font-medium text-foreground truncate">{conv.title}</p>
-                    <p className="text-xs text-muted-foreground">{new Date(conv.updatedAt).toLocaleDateString()}</p>
-                  </button>
-                ))
-              )}
-            </div>
+            <ChatHistory conversations={conversations} loading={loadingHistory} activeId={conversationId} onSelect={loadConversation} />
           ) : (
             <>
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+              <div
+                ref={scrollBoxRef}
+                role="log"
+                aria-live="polite"
+                aria-label="Conversación"
+                onScroll={() => {
+                  const near = isNearBottom();
+                  setAtBottom(near);
+                  if (near) setUnseen(0);
+                }}
+                className="relative flex-1 overflow-y-auto p-4 space-y-3 min-h-0"
+              >
                 {messages.length === 0 ? (
                   <AgentWelcome
                     agent={activeAgent}
@@ -436,67 +336,58 @@ export default function AIChatWidget({ mode = 'floating' }: AIChatWidgetProps) {
                     }}
                   />
                 ) : (
-                  messages.map((msg, i) => <MessageBubble key={i} msg={msg} />)
+                  messages.map((msg, i) => <ChatMessage key={msg.id ?? i} msg={msg} agent={activeAgent} />)
                 )}
 
                 {loading && (
-                  <div className="flex items-start gap-2">
-                    <div className="bg-muted rounded-2xl rounded-tl-sm px-3 py-2">
+                  <div className="flex items-end gap-2">
+                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <span className="material-icons text-sm text-primary">{activeAgent.icon}</span>
+                    </div>
+                    <div className="bg-muted rounded-2xl rounded-tl-sm px-3 py-2.5 flex items-center gap-2">
                       <div className="flex gap-1 items-center h-4">
-                        <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:0ms]" />
-                        <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:150ms]" />
-                        <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:300ms]" />
+                        <span className="w-1.5 h-1.5 bg-muted-foreground/60 rounded-full animate-bounce [animation-delay:0ms] motion-reduce:animate-none" />
+                        <span className="w-1.5 h-1.5 bg-muted-foreground/60 rounded-full animate-bounce [animation-delay:150ms] motion-reduce:animate-none" />
+                        <span className="w-1.5 h-1.5 bg-muted-foreground/60 rounded-full animate-bounce [animation-delay:300ms] motion-reduce:animate-none" />
                       </div>
+                      <span className="text-[11px] text-muted-foreground">Escribiendo…</span>
                     </div>
                   </div>
                 )}
 
                 <div ref={messagesEndRef} />
+
+                {!atBottom && messages.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      scrollToBottom();
+                      setUnseen(0);
+                      setAtBottom(true);
+                    }}
+                    aria-label="Ir al final"
+                    title="Ir al final"
+                    className="sticky bottom-1 left-1/2 -translate-x-1/2 z-10 h-8 min-w-8 px-2 rounded-full bg-card border border-border shadow-lg flex items-center justify-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <span className="material-icons text-base">arrow_downward</span>
+                    {unseen > 0 && <span className="text-[10px] font-semibold text-primary tabular-nums">{unseen > 9 ? '9+' : unseen}</span>}
+                  </button>
+                )}
               </div>
 
               {/* Input */}
               {!activeAgent.handoffPath && (
-                <div className="border-t border-border p-3">
-                  <div className="flex items-end gap-2">
-                    <textarea
-                      ref={inputRef}
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder={`Pregunta a ${activeAgent.shortName}…`}
-                      rows={1}
-                      disabled={loading || backgroundLoading}
-                      className="flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 max-h-28 overflow-y-auto"
-                      style={{ height: 'auto' }}
-                      onInput={(e) => {
-                        const el = e.currentTarget;
-                        el.style.height = 'auto';
-                        el.style.height = `${Math.min(el.scrollHeight, 112)}px`;
-                      }}
-                    />
-                    <button
-                      onClick={sendMessage}
-                      disabled={loading || backgroundLoading || !input.trim()}
-                      className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-50 transition-colors shrink-0"
-                      aria-label="Enviar mensaje"
-                    >
-                      <span className="material-icons text-base">send</span>
-                    </button>
-                  </div>
-                  {activeAgent.id === 'ceo' && (
-                    <button
-                      onClick={runCeoInBackground}
-                      disabled={loading || backgroundLoading || !input.trim()}
-                      className="mt-2 w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-primary/30 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
-                    >
-                      <span className={`material-icons text-sm ${backgroundLoading ? 'animate-spin' : ''}`}>
-                        {backgroundLoading ? 'progress_activity' : 'schedule'}
-                      </span>
-                      {backgroundLoading ? 'Encolando análisis…' : 'Ejecutar análisis en segundo plano'}
-                    </button>
-                  )}
-                  <p className="text-xs text-muted-foreground text-center mt-2">Enter para enviar · Shift+Enter para nueva línea</p>
-                </div>
+                <ChatComposer
+                  agent={activeAgent}
+                  input={input}
+                  onInputChange={setInput}
+                  onSend={sendMessage}
+                  onStop={stopMessage}
+                  loading={loading}
+                  backgroundLoading={backgroundLoading}
+                  onBackgroundRun={runCeoInBackground}
+                  inputRef={inputRef}
+                />
               )}
             </>
           )}
