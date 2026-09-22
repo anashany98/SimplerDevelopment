@@ -134,7 +134,7 @@ export function EditorHeader(props: EditorHeaderProps) {
             {!saving && hasUnsavedChanges && (
               <>
                 <span>·</span>
-                <span className="text-yellow-600 dark:text-yellow-400">Unsaved changes</span>
+                <span className="text-yellow-600 dark:text-yellow-400">Cambios sin guardar</span>
               </>
             )}
           </div>
@@ -191,7 +191,7 @@ export function EditorHeader(props: EditorHeaderProps) {
           ) : (
             <span className="material-icons text-base">save</span>
           )}
-          <span className="hidden sm:inline">{saving ? 'Saving...' : hasUnsavedChanges ? 'Update' : 'Saved'}</span>
+          <span className="hidden sm:inline">{saving ? 'Guardando…' : hasUnsavedChanges ? 'Actualizar' : 'Guardado'}</span>
         </button>
 
         {/* Publish-all-drafts — always visible when there are drafts (high-signal action) */}
@@ -207,7 +207,7 @@ export function EditorHeader(props: EditorHeaderProps) {
             title={
               draftSlideCount === 0
                 ? 'No hay borradores de diapositivas para publicar'
-                : `Publish ${draftSlideCount} draft slide${draftSlideCount === 1 ? '' : 's'} to make them live`
+                : `Publicar ${draftSlideCount} diapositiva${draftSlideCount === 1 ? '' : 's'} en borrador para hacerlas visibles`
             }
           >
             {publishingAllDrafts ? (
@@ -217,10 +217,10 @@ export function EditorHeader(props: EditorHeaderProps) {
             )}
             <span className="hidden sm:inline">
               {publishingAllDrafts
-                ? 'Publishing...'
+                ? 'Publicando…'
                 : draftSlideCount > 0
-                  ? `Publish ${draftSlideCount} draft${draftSlideCount === 1 ? '' : 's'}`
-                  : 'No drafts'}
+                  ? `Publicar ${draftSlideCount} borrador${draftSlideCount === 1 ? '' : 'es'}`
+                  : 'Sin borradores'}
             </span>
             {/* Phone-only compact count */}
             {!publishingAllDrafts && draftSlideCount > 0 && (
@@ -236,15 +236,15 @@ export function EditorHeader(props: EditorHeaderProps) {
           className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
         >
           <span className="material-icons text-base">{deck.status === 'published' ? 'open_in_new' : 'visibility'}</span>
-          {deck.status === 'published' ? 'Ver en vivo' : 'Preview'}
+          {deck.status === 'published' ? 'Ver en vivo' : 'Vista previa'}
         </Link>
         <button
           onClick={onPresent}
           className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-          title={`Open presenter view (${presenterUrl})`}
+          title={`Abrir vista de presentador (${presenterUrl})`}
         >
           <span className="material-icons text-base">co_present</span>
-          Present
+          Presentar
         </button>
         {onStartAbTest && (
           <button
@@ -268,7 +268,7 @@ export function EditorHeader(props: EditorHeaderProps) {
           <span className="material-icons text-base">
             {deck.status === 'published' ? 'unpublished' : 'publish'}
           </span>
-          <span className="hidden sm:inline">{deck.status === 'published' ? 'Unpublish' : 'Publish'}</span>
+          <span className="hidden sm:inline">{deck.status === 'published' ? 'Despublicar' : 'Publicar'}</span>
         </button>
 
         {/* Delete — desktop inline; phone reaches via overflow */}
@@ -287,13 +287,13 @@ export function EditorHeader(props: EditorHeaderProps) {
           </summary>
           <div className="absolute right-0 top-full mt-1 z-50 w-56 rounded-lg border border-border bg-card shadow-lg overflow-hidden">
             <button onClick={onToggleTheme} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
-              <span className="material-icons text-base">palette</span>Theme
+              <span className="material-icons text-base">palette</span>Tema
             </button>
             <button onClick={onToggleRegenerate} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
-              <span className="material-icons text-base">auto_awesome</span>Regenerate
+              <span className="material-icons text-base">auto_awesome</span>Regenerar
             </button>
             <button onClick={onToggleHistory} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
-              <span className="material-icons text-base">history</span>History
+              <span className="material-icons text-base">history</span>Historial
             </button>
             <button onClick={onToggleSeo} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
               <span className="material-icons text-base">search</span>SEO
@@ -305,10 +305,10 @@ export function EditorHeader(props: EditorHeaderProps) {
               className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2"
             >
               <span className="material-icons text-base">{deck.status === 'published' ? 'open_in_new' : 'visibility'}</span>
-              {deck.status === 'published' ? 'Ver en vivo' : 'Preview'}
+              {deck.status === 'published' ? 'Ver en vivo' : 'Vista previa'}
             </Link>
             <button onClick={onPresent} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
-              <span className="material-icons text-base">co_present</span>Present
+              <span className="material-icons text-base">co_present</span>Presentar
             </button>
             {onStartAbTest && (
               <button onClick={onStartAbTest} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2">
@@ -316,7 +316,7 @@ export function EditorHeader(props: EditorHeaderProps) {
             )}
             <div className="h-px bg-border" />
             <button onClick={onDelete} className="w-full text-left px-3 py-2.5 text-sm hover:bg-accent flex items-center gap-2 text-red-600 dark:text-red-400">
-              <span className="material-icons text-base">delete</span>Eliminar deck
+              <span className="material-icons text-base">delete</span>Eliminar presentación
             </button>
           </div>
         </details>

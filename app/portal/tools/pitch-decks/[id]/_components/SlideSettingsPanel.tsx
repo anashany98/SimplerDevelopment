@@ -88,8 +88,8 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
                 }}
                 className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="cover">Cover</option>
-                <option value="contain">Contain</option>
+                <option value="cover">Cubrir</option>
+                <option value="contain">Contener</option>
                 <option value="auto">Automático</option>
                 <option value="custom">Personalizado</option>
               </select>
@@ -98,22 +98,22 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
                   type="text"
                   value={slide.pageSettings?.backgroundSize || ''}
                   onChange={(e) => updatePageSettings({ backgroundSize: e.target.value as 'cover' })}
-                  placeholder="e.g. 200px, 50%, 100px auto"
+                  placeholder="p. ej. 200px, 50%, 100px auto"
                   className="mt-1 w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               )}
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Repeat</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Repetición</label>
               <select
                 value={slide.pageSettings?.backgroundRepeat || 'no-repeat'}
                 onChange={(e) => updatePageSettings({ backgroundRepeat: e.target.value as 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y' })}
                 className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
                 <option value="no-repeat">Sin repetición</option>
-                <option value="repeat">Repeat</option>
-                <option value="repeat-x">Repeat X</option>
-                <option value="repeat-y">Repeat Y</option>
+                <option value="repeat">Repetir</option>
+                <option value="repeat-x">Repetir X</option>
+                <option value="repeat-y">Repetir Y</option>
               </select>
             </div>
           </div>

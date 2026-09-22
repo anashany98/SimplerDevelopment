@@ -41,9 +41,9 @@ export function RegenerateModal({ prompt, regenerating, error, onPromptChange, o
         className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50"
       >
         {regenerating ? (
-          <><span className="material-icons animate-spin text-base">autorenew</span>Generating...</>
+          <><span className="material-icons animate-spin text-base">autorenew</span>Generando…</>
         ) : (
-          <><span className="material-icons text-base">auto_awesome</span>Regenerate Deck</>
+          <><span className="material-icons text-base">auto_awesome</span>Regenerar presentación</>
         )}
       </button>
     </form>

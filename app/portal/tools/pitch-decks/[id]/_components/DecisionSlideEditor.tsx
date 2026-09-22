@@ -60,14 +60,14 @@ export function DecisionSlideEditor({
                   value={opt.label}
                   onChange={(e) => onUpdateOption(opt.id, { label: e.target.value })}
                   className="w-full px-2.5 py-1.5 bg-background border border-border rounded text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="Option label"
+                  placeholder="Texto de la opción"
                 />
                 <input
                   type="text"
                   value={opt.description || ''}
                   onChange={(e) => onUpdateOption(opt.id, { description: e.target.value })}
                   className="w-full px-2.5 py-1.5 bg-background border border-border rounded text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="Description (optional)"
+                  placeholder="Descripción (opcional)"
                 />
                 <div className="flex gap-2">
                   <input

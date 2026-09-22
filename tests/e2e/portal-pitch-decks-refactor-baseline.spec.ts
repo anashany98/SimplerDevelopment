@@ -179,8 +179,8 @@ test.describe('Pitch Deck Editor Page — refactor baseline @pitch-decks @critic
 
     await gotoEditor(page, id);
 
-    await page.getByRole('button', { name: /^auto_awesome Regenerate$/ }).click();
-    await expect(page.getByRole('heading', { name: 'Regenerate All Slides' })).toBeVisible({ timeout: 10_000 });
+    await page.getByRole('button', { name: /^auto_awesome Regenerar$/ }).click();
+    await expect(page.getByRole('heading', { name: 'Regenerar todas las diapositivas' })).toBeVisible({ timeout: 10_000 });
     await expect(page.getByPlaceholder('Describe what the new deck should focus on...')).toBeVisible();
   });
 
