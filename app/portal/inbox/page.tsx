@@ -4,6 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pBtnGhost, pCard } from '@/components/portal/portal-ui';
+import {
+  chatAiModeLabel,
+  chatChannelLabel,
+  chatConversationStatusLabel,
+  chatPriorityLabel,
+} from '@/lib/portal-utils';
 
 interface Site {
   id: number;
@@ -241,7 +247,7 @@ export default function InboxPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium truncate">{c.visitorName || 'Visitante anónimo'}</span>
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{c.channel}</span>
+                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{chatChannelLabel(c.channel)}</span>
                     <span
                       className={`text-xs px-1.5 py-0.5 rounded ${
                         c.status === 'open'
@@ -251,11 +257,11 @@ export default function InboxPage() {
                           : 'bg-gray-100 text-gray-700'
                       }`}
                     >
-                      {c.status}
+                      {chatConversationStatusLabel(c.status)}
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground truncate">
-                    {c.visitorEmail || c.visitorId || 'Identidad desconocida'} · {c.aiMode.toUpperCase()} · {c.priority} prioridad
+                    {c.visitorEmail || c.visitorId || 'Identidad desconocida'} · {chatAiModeLabel(c.aiMode)} · Prioridad {chatPriorityLabel(c.priority).toLowerCase()}
                   </div>
                 </div>
                 <div className="text-xs text-muted-foreground whitespace-nowrap">

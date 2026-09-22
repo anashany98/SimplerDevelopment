@@ -61,6 +61,75 @@ export function ticketPriorityLabel(priority: string): string {
   return map[priority] ?? priority;
 }
 
+/** Spanish labels for chat channels (UI shows these, not the enum). */
+export function chatChannelLabel(channel: string): string {
+  const map: Record<string, string> = {
+    whatsapp: 'WhatsApp',
+    instagram: 'Instagram',
+    messenger: 'Messenger',
+    email: 'Correo',
+    webchat: 'Chat web',
+  };
+  return map[channel] ?? channel;
+}
+
+/** Spanish labels for inbox conversation statuses (UI shows these, not the enum). */
+export function chatConversationStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    open: 'Abierto',
+    assigned: 'Asignado',
+    closed: 'Cerrado',
+  };
+  return map[status] ?? status;
+}
+
+/** Spanish labels for inbox AI modes (UI shows these, not the enum). */
+export function chatAiModeLabel(mode: string): string {
+  const map: Record<string, string> = {
+    ai: 'IA',
+    human: 'Humano',
+    hybrid: 'Híbrido',
+    paused: 'En pausa',
+    closed: 'Cerrado',
+  };
+  return map[mode] ?? mode;
+}
+
+/** Spanish labels for chat message delivery statuses (UI shows these, not the enum). */
+export function chatMessageStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    received: 'Recibido',
+    sent: 'Enviado',
+    delivered: 'Entregado',
+    read: 'Leído',
+    failed: 'Fallido',
+    pending: 'Pendiente',
+  };
+  return map[status] ?? status;
+}
+
+/** Spanish labels for chat message author kinds (UI shows these, not the enum). */
+export function chatAuthorKindLabel(kind: string): string {
+  const map: Record<string, string> = {
+    visitor: 'Visitante',
+    agent: 'Agente',
+    system: 'Sistema',
+    ai: 'IA',
+  };
+  return map[kind] ?? kind;
+}
+
+/** Spanish labels for inbox conversation priorities (UI shows these, not the enum). */
+export function chatPriorityLabel(priority: string): string {
+  const map: Record<string, string> = {
+    low: 'Baja',
+    normal: 'Normal',
+    high: 'Alta',
+    urgent: 'Urgente',
+  };
+  return map[priority] ?? priority;
+}
+
 export function orderStatusColor(status: string): string {
   const map: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',

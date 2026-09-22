@@ -786,4 +786,63 @@ describe('lib/portal-utils', () => {
       expect(stripMarkdown('')).toBe('');
     });
   });
+
+  describe('chat label helpers', () => {
+    it('chatChannelLabel maps channels to Spanish labels', async () => {
+      const { chatChannelLabel } = await import('@/lib/portal-utils');
+      expect(chatChannelLabel('whatsapp')).toBe('WhatsApp');
+      expect(chatChannelLabel('instagram')).toBe('Instagram');
+      expect(chatChannelLabel('messenger')).toBe('Messenger');
+      expect(chatChannelLabel('email')).toBe('Correo');
+      expect(chatChannelLabel('webchat')).toBe('Chat web');
+      expect(chatChannelLabel('unknown')).toBe('unknown');
+    });
+
+    it('chatConversationStatusLabel maps statuses to Spanish labels', async () => {
+      const { chatConversationStatusLabel } = await import('@/lib/portal-utils');
+      expect(chatConversationStatusLabel('open')).toBe('Abierto');
+      expect(chatConversationStatusLabel('assigned')).toBe('Asignado');
+      expect(chatConversationStatusLabel('closed')).toBe('Cerrado');
+      expect(chatConversationStatusLabel('weird')).toBe('weird');
+    });
+
+    it('chatAiModeLabel maps AI modes to Spanish labels', async () => {
+      const { chatAiModeLabel } = await import('@/lib/portal-utils');
+      expect(chatAiModeLabel('ai')).toBe('IA');
+      expect(chatAiModeLabel('human')).toBe('Humano');
+      expect(chatAiModeLabel('hybrid')).toBe('Híbrido');
+      expect(chatAiModeLabel('paused')).toBe('En pausa');
+      expect(chatAiModeLabel('closed')).toBe('Cerrado');
+      expect(chatAiModeLabel('weird')).toBe('weird');
+    });
+
+    it('chatMessageStatusLabel maps delivery statuses to Spanish labels', async () => {
+      const { chatMessageStatusLabel } = await import('@/lib/portal-utils');
+      expect(chatMessageStatusLabel('received')).toBe('Recibido');
+      expect(chatMessageStatusLabel('sent')).toBe('Enviado');
+      expect(chatMessageStatusLabel('delivered')).toBe('Entregado');
+      expect(chatMessageStatusLabel('read')).toBe('Leído');
+      expect(chatMessageStatusLabel('failed')).toBe('Fallido');
+      expect(chatMessageStatusLabel('pending')).toBe('Pendiente');
+      expect(chatMessageStatusLabel('weird')).toBe('weird');
+    });
+
+    it('chatAuthorKindLabel maps author kinds to Spanish labels', async () => {
+      const { chatAuthorKindLabel } = await import('@/lib/portal-utils');
+      expect(chatAuthorKindLabel('visitor')).toBe('Visitante');
+      expect(chatAuthorKindLabel('agent')).toBe('Agente');
+      expect(chatAuthorKindLabel('system')).toBe('Sistema');
+      expect(chatAuthorKindLabel('ai')).toBe('IA');
+      expect(chatAuthorKindLabel('weird')).toBe('weird');
+    });
+
+    it('chatPriorityLabel maps conversation priorities to Spanish labels', async () => {
+      const { chatPriorityLabel } = await import('@/lib/portal-utils');
+      expect(chatPriorityLabel('low')).toBe('Baja');
+      expect(chatPriorityLabel('normal')).toBe('Normal');
+      expect(chatPriorityLabel('high')).toBe('Alta');
+      expect(chatPriorityLabel('urgent')).toBe('Urgente');
+      expect(chatPriorityLabel('weird')).toBe('weird');
+    });
+  });
 });

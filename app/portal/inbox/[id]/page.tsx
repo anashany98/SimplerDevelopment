@@ -4,6 +4,13 @@ import { use, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pBtnGhost, pCard } from '@/components/portal/portal-ui';
+import {
+  chatAiModeLabel,
+  chatAuthorKindLabel,
+  chatChannelLabel,
+  chatConversationStatusLabel,
+  chatMessageStatusLabel,
+} from '@/lib/portal-utils';
 
 interface Conversation {
   id: number;
@@ -157,7 +164,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
               {conversation.visitorName || 'Visitante anónimo'}
             </div>
             <div className="text-xs text-muted-foreground">
-              {conversation.visitorEmail || '—'} · {conversation.channel} · {conversation.status} · {conversation.aiMode.toUpperCase()}
+              {conversation.visitorEmail || '—'} · {chatChannelLabel(conversation.channel)} · {chatConversationStatusLabel(conversation.status)} · {chatAiModeLabel(conversation.aiMode)}
             </div>
           </div>
           <div className="flex flex-wrap justify-end gap-2">
@@ -235,10 +242,10 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
               }`}
             >
               <div className="text-[10px] opacity-70">
-                {m.authorName || m.authorKind} · {new Date(m.occurredAt).toLocaleString()}
+                {m.authorName || chatAuthorKindLabel(m.authorKind)} · {new Date(m.occurredAt).toLocaleString()}
               </div>
               <div className="whitespace-pre-wrap break-words">{m.body}</div>
-              <div className="mt-1 text-right text-[9px] opacity-60">{m.status}</div>
+              <div className="mt-1 text-right text-[9px] opacity-60">{chatMessageStatusLabel(m.status)}</div>
             </div>
           </div>
         ))}
