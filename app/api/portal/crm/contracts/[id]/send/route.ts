@@ -73,21 +73,21 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       await resend.emails.send({
         from: `${client.company || 'CRM AGENTS'} <${fromEmail}>`,
         to: signer.email,
-        subject: `Contract for your signature: ${contract.title}`,
+        subject: `Contrato pendiente de tu firma: ${contract.title}`,
         html: `
           <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;">
             <div style="padding:32px;background:#f8fafc;border-bottom:1px solid #e2e8f0;text-align:center;">
-              <h1 style="margin:0;font-size:22px;color:#0f172a;">Contract Ready for Signature</h1>
+              <h1 style="margin:0;font-size:22px;color:#0f172a;">Contrato listo para firmar</h1>
             </div>
             <div style="padding:32px;">
-              <p style="color:#334155;">Hi ${signer.name},</p>
-              <p style="color:#334155;">${client.company || 'We'} have sent you a contract to review and sign:</p>
+              <p style="color:#334155;">Hola ${signer.name},</p>
+              <p style="color:#334155;">${client.company || 'Te'} hemos enviado un contrato para revisar y firmar:</p>
               <div style="background:#f1f5f9;border-radius:8px;padding:20px;margin:24px 0;">
                 <p style="margin:0;font-weight:600;color:#0f172a;">${contract.title}</p>
                 ${contract.summary ? `<p style="margin:8px 0 0;color:#64748b;font-size:14px;">${contract.summary}</p>` : ''}
               </div>
-              <a href="${signingUrl}" style="display:inline-block;background:#2563eb;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600;">Review & Sign</a>
-              <p style="margin-top:24px;font-size:13px;color:#94a3b8;">This link is unique to you. Do not share it.</p>
+              <a href="${signingUrl}" style="display:inline-block;background:#2563eb;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:600;">Revisar y firmar</a>
+              <p style="margin-top:24px;font-size:13px;color:#94a3b8;">Este enlace es único para ti. No lo compartas.</p>
             </div>
           </div>
         `,
@@ -101,7 +101,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     success: true,
     data: {
       status: 'sent',
-      contractUrl: `${baseUrl}/contract/${contract.clientToken}`,
+      // One link per signer — /contract/[token] resolves by SIGNER token, not
+      // by the contract's clientToken (no route accepts that one). This field
+      // used to carry the dead clientToken URL.
+      contractUrl: signers.length > 0 ? `${baseUrl}/contract/${signers[0].token}` : null,
+      signerUrls: signers.map((s) => ({
+        signerId: s.id,
+        name: s.name,
+        email: s.email,
+        url: `${baseUrl}/contract/${s.token}`,
+      })),
       signerCount: signers.length,
     },
   });
