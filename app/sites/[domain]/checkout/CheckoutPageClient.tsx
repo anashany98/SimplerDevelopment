@@ -9,7 +9,7 @@ import { OrderSuccess } from './CheckoutSuccess';
 import { CheckoutPaymentSection } from './CheckoutPaymentSection';
 import { CheckoutOrderSummary } from './CheckoutOrderSummary';
 
-export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) {
+export function CheckoutPageClient({ siteId, domain, storeCurrency = 'EUR' }: CheckoutPageClientProps) {
   const basePath = `/sites/${domain}`;
 
   // Cart
@@ -240,7 +240,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
     ? (selectedRate.rateType === 'free' || (selectedRate.freeAbove != null && cartSubtotal >= selectedRate.freeAbove) ? 0 : selectedRate.price)
     : 0;
   const displayTotal = checkoutResult?.total ?? (cartSubtotal + shippingCost);
-  const displayCurrency = checkoutResult?.currency ?? 'USD';
+  const displayCurrency = checkoutResult?.currency ?? storeCurrency;
 
   return (
     <div className="container mx-auto px-4 py-10 max-w-4xl">

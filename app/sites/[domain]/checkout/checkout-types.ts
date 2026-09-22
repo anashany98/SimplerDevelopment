@@ -52,6 +52,8 @@ export interface ContactForm {
 export interface CheckoutPageClientProps {
   siteId: number;
   domain: string;
+  /** The store's currency (from store settings) — used for pre-payment totals. */
+  storeCurrency?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
