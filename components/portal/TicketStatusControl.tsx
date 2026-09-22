@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ticketStatusColor } from '@/lib/portal-utils';
+import { ticketStatusColor, ticketStatusLabel } from '@/lib/portal-utils';
 
 interface Assignee {
   userId: number;
@@ -18,11 +18,11 @@ interface Props {
 }
 
 const STATUS_OPTIONS: { value: string; label: string; icon: string }[] = [
-  { value: 'open', label: 'Abrir', icon: 'inbox' },
-  { value: 'in_progress', label: 'In progress', icon: 'autorenew' },
-  { value: 'waiting_on_customer', label: 'Waiting on customer', icon: 'hourglass_empty' },
-  { value: 'resolved', label: 'Resolved', icon: 'task_alt' },
-  { value: 'closed', label: 'Cerrado', icon: 'lock' },
+  { value: 'open', label: ticketStatusLabel('open'), icon: 'inbox' },
+  { value: 'in_progress', label: ticketStatusLabel('in_progress'), icon: 'autorenew' },
+  { value: 'waiting_on_customer', label: ticketStatusLabel('waiting_on_customer'), icon: 'hourglass_empty' },
+  { value: 'resolved', label: ticketStatusLabel('resolved'), icon: 'task_alt' },
+  { value: 'closed', label: ticketStatusLabel('closed'), icon: 'lock' },
 ];
 
 export default function TicketStatusControl({ ticketId, initialStatus, initialAssigneeId }: Props) {
@@ -60,12 +60,12 @@ export default function TicketStatusControl({ ticketId, initialStatus, initialAs
       });
       const json = await res.json();
       if (!json.success) {
-        setError(json.message ?? 'Update failed');
+        setError(json.message ?? 'No se pudo actualizar');
       } else {
         router.refresh();
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Update failed');
+      setError(e instanceof Error ? e.message : 'No se pudo actualizar');
     } finally {
       setLoading(null);
     }

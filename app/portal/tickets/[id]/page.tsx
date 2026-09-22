@@ -4,7 +4,7 @@ import { clients, supportTickets, ticketMessages, users } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ticketStatusColor, priorityColor } from '@/lib/portal';
+import { ticketStatusColor, priorityColor, ticketStatusLabel, ticketPriorityLabel } from '@/lib/portal';
 import TicketReplyForm from '@/components/portal/TicketReplyForm';
 import TicketStatusControl from '@/components/portal/TicketStatusControl';
 import TicketSlaBadge from '@/components/portal/TicketSlaBadge';
@@ -84,7 +84,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
           <div>
             <h1 className="font-display text-xl font-extrabold tracking-[-0.02em] text-foreground">{ticket.subject}</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Opened {new Date(ticket.createdAt).toLocaleDateString()} &bull; {ticket.category} &bull; #{ticket.number}
+              Abierto el {new Date(ticket.createdAt).toLocaleDateString()} &bull; {ticket.category} &bull; #{ticket.number}
               {assigneeName && (
                 <>
                   {' '}&bull;{' '}
@@ -98,10 +98,10 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <span className={`text-xs px-2 py-1 rounded-full font-medium ${priorityColor(ticket.priority)}`}>
-              {ticket.priority}
+              {ticketPriorityLabel(ticket.priority)}
             </span>
             <span className={`text-xs px-2 py-1 rounded-full font-medium ${ticketStatusColor(ticket.status)}`}>
-              {ticket.status.replace(/_/g, ' ')}
+              {ticketStatusLabel(ticket.status)}
             </span>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
                 </div>
                 <div className="flex items-center gap-2">
                   {msg.isInternal && (
-                    <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded font-medium">Internal Note</span>
+                    <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded font-medium">Nota interna</span>
                   )}
                   <span className="text-xs text-muted-foreground">
                     {new Date(msg.createdAt).toLocaleString()}
@@ -192,7 +192,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
 
       {ticket.status === 'closed' && (
         <div className="bg-muted/50 border border-border rounded-2xl p-4 text-center text-sm text-muted-foreground">
-          This ticket is closed. <Link href="/portal/tickets/new" className="text-primary hover:underline">Abrir un ticket nuevo</Link> if you need further help.
+          Este ticket está cerrado. <Link href="/portal/tickets/new" className="text-primary hover:underline">Abre un ticket nuevo</Link> si necesitas más ayuda.
         </div>
       )}
     </div>

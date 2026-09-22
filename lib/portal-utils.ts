@@ -37,6 +37,30 @@ export function priorityColor(priority: string): string {
   return map[priority] ?? 'bg-muted text-muted-foreground';
 }
 
+/** Spanish labels for support-ticket statuses (UI shows these, not the enum). */
+export function ticketStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    open: 'Abierto',
+    in_progress: 'En curso',
+    waiting: 'Esperando al cliente',
+    waiting_on_customer: 'Esperando al cliente',
+    resolved: 'Resuelto',
+    closed: 'Cerrado',
+  };
+  return map[status] ?? status.replace(/_/g, ' ');
+}
+
+/** Spanish labels for support-ticket priorities (UI shows these, not the enum). */
+export function ticketPriorityLabel(priority: string): string {
+  const map: Record<string, string> = {
+    low: 'Baja',
+    medium: 'Media',
+    high: 'Alta',
+    urgent: 'Urgente',
+  };
+  return map[priority] ?? priority;
+}
+
 export function orderStatusColor(status: string): string {
   const map: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',
