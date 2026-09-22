@@ -260,13 +260,13 @@ export function SurveyFormInline({
           // already sits right next to the box — echoing it back as a banner is
           // redundant. Use a short, clear prompt instead.
           return field.type === 'checkbox'
-            ? 'Please check the box to agree before continuing.'
-            : `${field.label} is required`;
+            ? 'Marca la casilla para aceptar antes de continuar.'
+            : `El campo «${field.label}» es obligatorio.`;
         }
       }
     }
     if (pageIndex === 0 && survey?.requireEmail && !email?.trim()) {
-      return 'Email is required';
+      return 'El correo electrónico es obligatorio.';
     }
     return null;
   }
@@ -290,7 +290,7 @@ export function SurveyFormInline({
 
   function handleNext() {
     if (hasInflightUpload) {
-      setError('Please wait for file uploads to finish');
+      setError('Espera a que terminen las subidas de archivos');
       return;
     }
     const err = validateCurrentPage();
@@ -319,7 +319,7 @@ export function SurveyFormInline({
     // See pageEnteredAtRef — swallow the double-click-Next ghost submit.
     if (Date.now() - pageEnteredAtRef.current < 500) return;
     if (hasInflightUpload) {
-      setError('Please wait for file uploads to finish');
+      setError('Espera a que terminen las subidas de archivos');
       return;
     }
     const err = validateCurrentPage();
@@ -361,7 +361,7 @@ export function SurveyFormInline({
     }
 
     setThankYou({
-      title: data.data.thankYouTitle || 'Thank you!',
+        title: data.data.thankYouTitle || '¡Gracias!',
       message: data.data.thankYouMessage || '',
     });
     // PDF-01: only offer the certificate when the survey has it enabled

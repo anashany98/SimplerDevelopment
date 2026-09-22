@@ -194,8 +194,8 @@ export const surveys = pgTable('surveys', {
   fields: json('fields').$type<SurveyFieldDef[]>().default([]),
   pages: json('pages').$type<SurveyPageDef[]>().default([{ title: 'Page 1' }]),
   // Appearance
-  thankYouTitle: varchar('thank_you_title', { length: 255 }).default('Thank you!'),
-  thankYouMessage: text('thank_you_message').default('Your response has been recorded.'),
+  thankYouTitle: varchar('thank_you_title', { length: 255 }).default('¡Gracias!'),
+  thankYouMessage: text('thank_you_message').default('Tu respuesta se ha registrado.'),
   redirectUrl: varchar('redirect_url', { length: 500 }),
   color: varchar('color', { length: 7 }).default('#2563eb'),
   brandingProfileId: integer('branding_profile_id').references(() => brandingProfiles.id, { onDelete: 'set null' }),

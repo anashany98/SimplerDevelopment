@@ -66,7 +66,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
   if (!sessionId) return corsJson({ success: true, data: null });
 
   const survey = await loadActiveSurvey(slug);
-  if (!survey) return corsJson({ success: false, message: 'Survey not found' }, { status: 404 });
+    if (!survey) return corsJson({ success: false, message: 'Encuesta no encontrada.' }, { status: 404 });
 
   const [partial] = await db
     .select({
@@ -108,15 +108,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   try {
     body = (await req.json()) as Record<string, unknown>;
   } catch {
-    return corsJson({ success: false, message: 'Invalid JSON' }, { status: 400 });
+    return corsJson({ success: false, message: 'JSON no válido.' }, { status: 400 });
   }
 
   const sessionId = validateSessionId(body.sessionId);
-  if (!sessionId) return corsJson({ success: false, message: 'Invalid sessionId' }, { status: 400 });
+    if (!sessionId) return corsJson({ success: false, message: 'Sesión no válida.' }, { status: 400 });
 
   const answers = body.answers;
   if (!answers || typeof answers !== 'object' || Array.isArray(answers)) {
-    return corsJson({ success: false, message: 'answers must be an object' }, { status: 400 });
+    return corsJson({ success: false, message: 'Las respuestas deben ser un objeto.' }, { status: 400 });
   }
 
   const lastPageRaw = body.lastPage;
@@ -126,7 +126,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       : 0;
 
   const survey = await loadActiveSurvey(slug);
-  if (!survey) return corsJson({ success: false, message: 'Survey not found' }, { status: 404 });
+    if (!survey) return corsJson({ success: false, message: 'Encuesta no encontrada.' }, { status: 404 });
 
   // Approval-mode shim (PUX-067): a reviewer typing through a draft form must
   // not leave partial-response rows behind. Reuses the lookup above rather than
@@ -140,7 +140,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   // Closed/draft surveys shouldn't accumulate partials — the visitor can't
   // submit anyway, so saving progress is wasted writes.
   if (survey.status !== 'active') {
-    return corsJson({ success: false, message: 'Survey is not active' }, { status: 403 });
+    return corsJson({ success: false, message: 'La encuesta no está activa.' }, { status: 403 });
   }
 
   const respondentEmail =

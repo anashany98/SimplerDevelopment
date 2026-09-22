@@ -205,7 +205,7 @@ describe('POST /api/surveys/[slug]/partial', () => {
     expect(res.status).toBe(400);
     const json = (await res.json()) as { success: boolean; message?: string };
     expect(json.success).toBe(false);
-    expect(json.message).toMatch(/invalid json/i);
+    expect(json.message).toMatch(/json no válido/i);
   });
 
   it('400s when sessionId is too long (> 64 chars)', async () => {
@@ -219,7 +219,7 @@ describe('POST /api/surveys/[slug]/partial', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as { message?: string };
-    expect(json.message).toMatch(/sessionid/i);
+    expect(json.message).toMatch(/sesión no válida/i);
     // The validator runs before any DB hit.
     expect(selectMock).not.toHaveBeenCalled();
   });

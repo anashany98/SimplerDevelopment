@@ -580,7 +580,7 @@ describe('SurveyFormInline — interactions', () => {
     await act(async () => {
       fireEvent.click(btn);
     });
-    expect(container.textContent).toContain('Yes');
+    expect(container.textContent).toContain('Sí');
   });
 
   it('rating button updates value', async () => {
@@ -638,7 +638,7 @@ describe('SurveyFormInline — validation', () => {
     await act(async () => {
       fireEvent.submit(form);
     });
-    expect(container.textContent).toContain('Required Q is required');
+    expect(container.textContent).toContain('El campo «Required Q» es obligatorio.');
   });
 
   it('shows error if requireEmail but no email entered', async () => {
@@ -648,7 +648,7 @@ describe('SurveyFormInline — validation', () => {
     await act(async () => {
       fireEvent.submit(form);
     });
-    expect(container.textContent).toContain('Email is required');
+    expect(container.textContent).toContain('El correo electrónico es obligatorio.');
   });
 
   it('skips hidden (showIf failing) fields during validation', async () => {
@@ -671,7 +671,7 @@ describe('SurveyFormInline — validation', () => {
       fireEvent.submit(form);
     });
     // Hidden field shouldn't block submit (will hit API instead)
-    expect(container.textContent).not.toContain('Hidden is required');
+    expect(container.textContent).not.toContain('El campo «Hidden» es obligatorio.');
   });
 });
 
@@ -804,7 +804,7 @@ describe('SurveyFormInline — submit', () => {
       fireEvent.submit(utils!.container.querySelector('form') as HTMLFormElement);
       await flushPromises();
     });
-    expect(utils!.container.textContent).toContain('Thank you!');
+    expect(utils!.container.textContent).toContain('¡Gracias!');
   });
 });
 
@@ -908,7 +908,7 @@ describe('SurveyFormInline — multi-page', () => {
     await act(async () => {
       fireEvent.click(next);
     });
-    expect(container.textContent).toContain('Req is required');
+    expect(container.textContent).toContain('El campo «Req» es obligatorio.');
   });
 
   it('shows Submit (not Next) on the last page', async () => {

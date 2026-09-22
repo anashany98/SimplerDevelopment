@@ -728,7 +728,7 @@ describe('GET /api/surveys/[slug]', () => {
     expect(res.status).toBe(404);
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
     const body = await res.json();
-    expect(body.message).toBe('Survey not found');
+    expect(body.message).toBe('Encuesta no encontrada.');
   });
 
   it('returns 403 when survey is not active', async () => {
@@ -736,7 +736,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey is not active');
+    expect(body.message).toBe('La encuesta no está activa.');
   });
 
   it('returns 403 when survey has closed (closesAt in the past)', async () => {
@@ -746,7 +746,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey is closed');
+    expect(body.message).toBe('La encuesta está cerrada.');
   });
 
   it('returns 403 when survey has reached max responses', async () => {
@@ -756,7 +756,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey has reached maximum responses');
+    expect(body.message).toBe('La encuesta ha alcanzado el máximo de respuestas.');
   });
 
   it('returns 200 with branding when available', async () => {
@@ -917,7 +917,7 @@ describe('POST /api/surveys/[slug]', () => {
     const res = await POST(makeBodyReq({ formName: 'f' }), makeParams({ slug: 's' }));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Answers are required');
+    expect(body.message).toBe('Las respuestas son obligatorias.');
   });
 
   it('returns 400 when formName is missing', async () => {
@@ -927,7 +927,7 @@ describe('POST /api/surveys/[slug]', () => {
     const res = await POST(makeBodyReq({ answers: {} }), makeParams({ slug: 's' }));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('formName is required');
+    expect(body.message).toBe('El nombre del formulario es obligatorio.');
   });
 
   it('returns 400 when formName exceeds 100 characters', async () => {
@@ -941,7 +941,7 @@ describe('POST /api/surveys/[slug]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toContain('100 characters');
+    expect(body.message).toContain('100 caracteres');
   });
 
   it('returns 400 when requireEmail is true and email is missing', async () => {
@@ -954,7 +954,7 @@ describe('POST /api/surveys/[slug]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Email is required');
+    expect(body.message).toBe('El correo electrónico es obligatorio.');
   });
 
   it('returns 400 when a required structured field is missing', async () => {
