@@ -15,8 +15,8 @@ import { TitleSection } from './TitleSection';
 const SETTINGS_TABS: { id: SettingsTab; label: string; icon: string }[] = [
   { id: 'general', label: 'General', icon: 'tune' },
   { id: 'seo', label: 'SEO', icon: 'search' },
-  { id: 'taxonomy', label: 'Taxonomy', icon: 'label' },
-  { id: 'custom-fields', label: 'Custom Fields', icon: 'input' },
+  { id: 'taxonomy', label: 'Taxonomía', icon: 'label' },
+  { id: 'custom-fields', label: 'Campos personalizados', icon: 'input' },
 ];
 
 interface SettingsSlideOverProps {
@@ -93,23 +93,23 @@ export function SettingsSlideOver({
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border shrink-0">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-semibold text-foreground">Page Details</h3>
+            <h3 className="text-base font-semibold text-foreground">Detalles de la página</h3>
             {saveStatus === 'saving' && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground animate-pulse">
                 <span className="material-icons text-sm animate-spin">progress_activity</span>
-                Saving
+                Guardando
               </span>
             )}
             {saveStatus === 'saved' && (
               <span className="flex items-center gap-1 text-xs text-green-600">
                 <span className="material-icons text-sm">check_circle</span>
-                Saved
+                Guardado
               </span>
             )}
             {saveStatus === 'error' && (
               <span className="flex items-center gap-1 text-xs text-destructive">
                 <span className="material-icons text-sm">error</span>
-                Save failed
+                Error al guardar
               </span>
             )}
           </div>

@@ -65,24 +65,24 @@ test.describe('Portal Websites Navigation Page — refactor baseline @navigation
     await page.waitForLoadState('networkidle');
 
     // Header copy is stable
-    await expect(page.getByRole('heading', { name: 'Navigation Editor' })).toBeVisible({
+    await expect(page.getByRole('heading', { name: 'Editor de navegación' })).toBeVisible({
       timeout: 30_000,
     });
 
-    // Tabs: Menu Items / Branding
-    const itemsTab = page.getByRole('button', { name: /Menu Items/ });
-    const brandingTab = page.getByRole('button', { name: /Branding/ });
+    // Tabs: Elementos del menú / Marca
+    const itemsTab = page.getByRole('button', { name: /Elementos del menú/ });
+    const brandingTab = page.getByRole('button', { name: /Marca/ });
     await expect(itemsTab).toBeVisible();
     await expect(brandingTab).toBeVisible();
 
     // Tab switching works (Branding tab shows the brand colors heading)
     await brandingTab.click();
-    await expect(page.getByRole('heading', { name: /Brand Colors/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Colores de marca/ })).toBeVisible();
     await itemsTab.click();
-    await expect(page.getByRole('button', { name: /Add Menu Item/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Añadir elemento al menú/ })).toBeVisible();
 
     // Save button is rendered
-    await expect(page.getByRole('button', { name: /Save Changes/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Guardar cambios/ })).toBeVisible();
 
     // ── Act: add a top-level menu item via API (the page's Save button hits
     //    the same PUT). Reload, assert it persists.

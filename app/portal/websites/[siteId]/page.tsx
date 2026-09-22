@@ -77,8 +77,8 @@ export default async function PortalCmsDashboardPage({
           <div className="flex-1 min-w-0">
             <p className="font-medium text-sm">Hosting aún no activado</p>
             <p className="text-xs mt-0.5 text-yellow-700 dark:text-yellow-400">
-              Your site has been created but hosting infrastructure has not been provisioned.
-              Request activation to make it live.
+              Tu web se ha creado, pero la infraestructura de alojamiento aún no está aprovisionada.
+              Solicita la activación para publicarla.
             </p>
           </div>
           <RequestActivationButton siteId={site.id} />
@@ -213,10 +213,10 @@ export default async function PortalCmsDashboardPage({
         <div className="px-5 py-4 border-b border-border">
           <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm flex items-center gap-2">
             <span className="material-icons text-base">code</span>
-            Developer API Keys
+            Claves API de desarrollo
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
-            Create API keys to access your site data via the SDK or REST API.
+            Crea claves API para acceder a los datos de tu web mediante el SDK o la API REST.
           </p>
         </div>
         <div className="p-5">

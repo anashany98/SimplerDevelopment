@@ -733,7 +733,7 @@ describe('SettingsSlideOver', () => {
     expect(getByTestId('title-section')).toBeTruthy();
     expect(getByTestId('content-type-select')).toBeTruthy();
     expect(getByTestId('featured-image-section')).toBeTruthy();
-    expect(container.textContent).toContain('Page Details');
+    expect(container.textContent).toContain('Detalles de la página');
   });
 
   it('clicking the backdrop fires onClose', () => {
@@ -767,7 +767,7 @@ describe('SettingsSlideOver', () => {
   it('clicking the Taxonomy tab renders the real TaxonomySection', () => {
     const { Wrapper } = harness();
     const { getByText, container } = render(<Wrapper />);
-    fireEvent.click(getByText('Taxonomy'));
+    fireEvent.click(getByText('Taxonomía'));
     expect(container.textContent).toContain('Categories');
     expect(container.textContent).toContain('Etiquetas');
   });
@@ -778,7 +778,7 @@ describe('SettingsSlideOver', () => {
     const { Wrapper } = harness();
     const { getByText, findByTestId } = render(<Wrapper />);
     await act(async () => {
-      fireEvent.click(getByText('Custom Fields'));
+      fireEvent.click(getByText('Campos personalizados'));
     });
     const cf = await findByTestId('custom-fields-section');
     expect(cf.getAttribute('data-defs')).toBe('1');
@@ -800,7 +800,7 @@ describe('SettingsSlideOver', () => {
     const { Wrapper } = harness(postNoId);
     const { getByText } = render(<Wrapper />);
     await act(async () => {
-      fireEvent.click(getByText('Custom Fields'));
+      fireEvent.click(getByText('Campos personalizados'));
     });
     expect(fetchCustomFieldDefsMock).toHaveBeenCalled();
     expect(fetchCustomFieldValuesMock).not.toHaveBeenCalled();
@@ -814,19 +814,19 @@ describe('SettingsSlideOver', () => {
     const { Wrapper } = harness();
     const { container, getByText, getByTestId, findByTestId } = render(<Wrapper />);
     await act(async () => {
-      fireEvent.click(getByText('Custom Fields'));
+      fireEvent.click(getByText('Campos personalizados'));
     });
     const trigger = await findByTestId('cf-update-trigger');
     await act(async () => {
       fireEvent.click(trigger);
     });
     expect(saveCustomFieldValueMock).toHaveBeenCalledWith(11, 7, 'cf-new-value');
-    // After the resolved save the status should land on "Saved" (or already cleared if timer fired);
+    // After the resolved save the status should land on "Guardado" (or already cleared if timer fired);
     // we settle by waiting for the section to reflect the new local value either way.
     const cf = getByTestId('custom-fields-section');
     expect(cf.getAttribute('data-values')).toContain('cf-new-value');
-    // The save-status message lifecycle: at minimum we saw a render with status "Saved" or "Saving".
-    expect(container.textContent).toMatch(/Saving|Saved|Save failed|Page Details/);
+    // The save-status message lifecycle: at minimum we saw a render with status "Guardado" or "Guardando".
+    expect(container.textContent).toMatch(/Guardando|Guardado|Error al guardar|Detalles de la página/);
   });
 
   it('updateCustomFieldValue surfaces an error state when saveCustomFieldValue rejects', async () => {
@@ -837,7 +837,7 @@ describe('SettingsSlideOver', () => {
     const { Wrapper } = harness();
     const { container, getByText, findByTestId } = render(<Wrapper />);
     await act(async () => {
-      fireEvent.click(getByText('Custom Fields'));
+      fireEvent.click(getByText('Campos personalizados'));
     });
     const trigger = await findByTestId('cf-update-trigger');
     await act(async () => {
@@ -848,7 +848,7 @@ describe('SettingsSlideOver', () => {
     });
     expect(saveCustomFieldValueMock).toHaveBeenCalled();
     await waitFor(() => {
-      expect(container.textContent).toContain('Save failed');
+      expect(container.textContent).toContain('Error al guardar');
     });
   });
 });

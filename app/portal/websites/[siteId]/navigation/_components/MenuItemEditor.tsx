@@ -242,7 +242,7 @@ function ColumnEditFields({
           className="text-xs text-primary hover:underline flex items-center gap-1"
         >
           <span className="material-icons text-sm">add</span>
-          Add menu item
+          Añadir elemento al menú
         </button>
       )}
     </>

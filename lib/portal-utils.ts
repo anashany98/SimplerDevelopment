@@ -130,6 +130,27 @@ export function chatPriorityLabel(priority: string): string {
   return map[priority] ?? priority;
 }
 
+/** Spanish labels for content-calendar statuses (UI shows these, not the enum). */
+export function calendarStatusLabel(status: string): string {
+  const map: Record<string, string> = {
+    published: 'Publicado',
+    scheduled: 'Programado',
+    draft: 'Borrador',
+  };
+  return map[status] ?? status;
+}
+
+/** Spanish labels for post types (UI shows these, not the slug). */
+export function postTypeLabel(postType: string): string {
+  const map: Record<string, string> = {
+    blog: 'Entrada de blog',
+    page: 'Página',
+    'case-study': 'Caso de estudio',
+    landing: 'Landing page',
+  };
+  return map[postType] ?? postType;
+}
+
 export function orderStatusColor(status: string): string {
   const map: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',

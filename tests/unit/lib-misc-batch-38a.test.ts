@@ -845,4 +845,23 @@ describe('lib/portal-utils', () => {
       expect(chatPriorityLabel('weird')).toBe('weird');
     });
   });
+
+  describe('calendar label helpers', () => {
+    it('calendarStatusLabel maps statuses to Spanish labels', async () => {
+      const { calendarStatusLabel } = await import('@/lib/portal-utils');
+      expect(calendarStatusLabel('published')).toBe('Publicado');
+      expect(calendarStatusLabel('scheduled')).toBe('Programado');
+      expect(calendarStatusLabel('draft')).toBe('Borrador');
+      expect(calendarStatusLabel('weird')).toBe('weird');
+    });
+
+    it('postTypeLabel maps post types to Spanish labels', async () => {
+      const { postTypeLabel } = await import('@/lib/portal-utils');
+      expect(postTypeLabel('blog')).toBe('Entrada de blog');
+      expect(postTypeLabel('page')).toBe('Página');
+      expect(postTypeLabel('case-study')).toBe('Caso de estudio');
+      expect(postTypeLabel('landing')).toBe('Landing page');
+      expect(postTypeLabel('weird')).toBe('weird');
+    });
+  });
 });

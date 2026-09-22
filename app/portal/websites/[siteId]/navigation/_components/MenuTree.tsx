@@ -143,7 +143,7 @@ export function MenuTree({
         className="w-full py-2.5 border-2 border-dashed border-border rounded-lg text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-1.5"
       >
         <span className="material-icons text-base">add</span>
-        Add Menu Item
+        Añadir elemento al menú
       </button>
     </div>
   );

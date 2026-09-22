@@ -30,11 +30,11 @@ export default async function PortalCalendarPage({
       <PortalPageHeader
         eyebrow="Sitio web"
         title="Calendario de contenido"
-        subtitle={`Plan, schedule, and manage content for ${site.name}.`}
+        subtitle={`Planifica, programa y gestiona el contenido de ${site.name}.`}
         actions={
           <Link href={`${basePath}/posts/new`} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            New Post
+            Nueva entrada
           </Link>
         }
       />

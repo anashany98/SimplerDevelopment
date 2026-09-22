@@ -54,7 +54,7 @@ export default function NavigationEditorPage() {
           <div>
             <h1 className="text-xl font-bold text-foreground">Editor de navegación</h1>
             <p className="text-sm text-muted-foreground">
-              Customize your site navigation, branding, and layout
+              Personaliza la navegación, la marca y el diseño de tu web
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function NavigationEditorPage() {
                 }`}
               >
                 <span className="material-icons text-base mr-1.5 align-middle">menu</span>
-                Menu Items
+                Elementos del menú
               </button>
               <button
                 onClick={() => setActiveTab('branding')}

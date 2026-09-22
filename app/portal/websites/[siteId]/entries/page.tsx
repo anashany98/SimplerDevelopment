@@ -44,7 +44,7 @@ export default async function PortalCmsEntriesPage({
       <PortalPageHeader
         eyebrow="Sitio web"
         title="Entradas"
-        subtitle={<>{sitePosts.length} total &middot; {sitePosts.filter(p => p.published).length} published &middot; {sitePosts.filter(p => !p.published).length} drafts</>}
+        subtitle={<>{sitePosts.length} total &middot; {sitePosts.filter(p => p.published).length} publicadas &middot; {sitePosts.filter(p => !p.published).length} borradores</>}
         actions={
           <div className="flex items-center gap-2">
             <Link href={`/portal/websites/${site.id}/calendar`} className={pBtnGhost}>
@@ -52,7 +52,7 @@ export default async function PortalCmsEntriesPage({
             <UploadHtmlPageButton siteId={site.id} />
             <Link href={`/portal/websites/${site.id}/posts/new`} className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New Entry
+              Nueva entrada
             </Link>
           </div>
         }

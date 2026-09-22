@@ -42,7 +42,7 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">palette</span>
-          Brand Colors
+          Colores de marca
         </h3>
         <div className="space-y-3">
           <ColorField
@@ -67,7 +67,7 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">format_color_fill</span>
-          Navigation Colors
+          Colores de navegación
         </h3>
         <div className="space-y-3">
           <ColorField
@@ -87,7 +87,7 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">web</span>
-          Site Colors
+          Colores del sitio
         </h3>
         <div className="space-y-3">
           <ColorField
