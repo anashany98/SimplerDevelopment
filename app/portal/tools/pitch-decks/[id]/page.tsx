@@ -193,7 +193,8 @@ function PitchDeckEditorContent({ id }: { id: string }) {
     (async () => {
       const navData = await loadNavServices();
       if (!mounted || !navData?.success) return;
-      const hasSurveys = navData.data?.some(s =>
+      // Agency mode bypasses module gating — every module counts as available.
+      const hasSurveys = navData.gatingBypassed === true || navData.data?.some(s =>
         (s.category === 'surveys' || s.category === 'bundle') && s.subscribed
       );
       if (!hasSurveys) return;

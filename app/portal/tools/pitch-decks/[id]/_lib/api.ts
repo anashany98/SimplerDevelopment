@@ -161,7 +161,9 @@ export async function loadBrandingProfile(profileId: number) {
 export async function loadNavServices() {
   const res = await fetch('/api/portal/services/nav');
   if (!res.ok) return null;
-  return res.json() as Promise<ApiEnvelope<Array<{ category: string; subscribed: boolean }>>>;
+  return res.json() as Promise<
+    ApiEnvelope<Array<{ category: string; subscribed: boolean }>> & { gatingBypassed?: boolean }
+  >;
 }
 
 export async function loadSurveys() {

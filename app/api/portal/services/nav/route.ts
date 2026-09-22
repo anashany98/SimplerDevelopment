@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { services, clientServices } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
+import { getClientEntitlements } from '@/lib/billing/entitlements';
 
 const categoryIcon: Record<string, string> = {
   cms: 'language',
@@ -45,6 +46,11 @@ export async function GET() {
 
   const activeIds = new Set(myServices.filter(s => s.status === 'active').map(s => s.serviceId));
 
+  // Agency mode (legacy default) bypasses module gating entirely — surface it
+  // so feature toggles that key off `subscribed` (e.g. the pitch-deck survey
+  // link) don't hide in a mode where every module is unlocked.
+  const entitlements = await getClientEntitlements(client.id);
+
   // 'plugins' is surfaced via the dedicated Apps group (see lib/portal-nav.ts
   // + loadUserApps + isClientEntitledToApp). Keeping it in this generic
   // services list leaks the plugin row to every tenant as a top-level item,
@@ -65,5 +71,5 @@ export async function GET() {
     subscribed: activeIds.has(svc.id),
   }));
 
-  return NextResponse.json({ success: true, data });
+  return NextResponse.json({ success: true, data, gatingBypassed: entitlements.gatingBypassed });
 }
