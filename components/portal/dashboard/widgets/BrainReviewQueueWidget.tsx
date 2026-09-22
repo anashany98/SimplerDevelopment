@@ -16,15 +16,15 @@ export default async function BrainReviewQueueWidget({
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{pendingCount}</span>
         <span className="ml-2 text-sm text-muted-foreground">
-          pending review item{pendingCount !== 1 ? 's' : ''}
+          {pendingCount === 1 ? 'pendiente de revisión' : 'pendientes de revisión'}
         </span>
       </div>
 
       {items.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2 text-center">
-          Nothing waiting for review.{' '}
+          Nada pendiente de revisión.{' '}
           <Link href="/portal/brain/communications/new" className="text-primary hover:underline">
-            Add a note
+            Añadir una nota
           </Link>
         </p>
       ) : (
@@ -64,7 +64,7 @@ export default async function BrainReviewQueueWidget({
             className="text-xs text-primary hover:underline flex items-center gap-1"
           >
             <span className="material-icons text-sm">arrow_forward</span>
-            View all pending reviews
+            Ver todas las revisiones pendientes
           </Link>
         </div>
       )}

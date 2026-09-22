@@ -70,7 +70,7 @@ export function AuthShell({
             <img
               src="/screenshots/product/dashboard.webp"
               alt="Vista previa del panel"
-              className="w-full"
+              className="h-[280px] w-full object-cover object-top"
               loading="lazy"
             />
           </div>

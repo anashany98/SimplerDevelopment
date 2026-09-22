@@ -465,7 +465,7 @@ describe('DecisionForm — topic tree', () => {
     });
     render(<DecisionForm {...makeProps()} />);
     await waitFor(() =>
-      expect(screen.getByText(/No topics yet/i)).toBeInTheDocument(),
+      expect(screen.getByText(/Aún no hay temas/i)).toBeInTheDocument(),
     );
   });
 
