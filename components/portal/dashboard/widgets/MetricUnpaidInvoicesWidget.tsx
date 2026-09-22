@@ -14,12 +14,9 @@ export default async function MetricUnpaidInvoicesWidget({
     .from(invoices)
     .where(and(eq(invoices.clientId, clientId), eq(invoices.status, 'sent')));
 
+  const unpaid = result?.count ?? 0;
+
   return (
-    <MetricBlock
-      icon="receipt_long"
-      color="text-red-600"
-      value={result?.count ?? 0}
-      label="Facturas pendientes"
-    />
+    <MetricBlock value={unpaid} tone={unpaid > 0 ? 'bad' : 'default'} />
   );
 }

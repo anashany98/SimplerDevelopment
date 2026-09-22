@@ -104,7 +104,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
     if (error) return <p className="text-sm text-destructive">{error}</p>;
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin text-2xl">progress_activity</span>
+        <span className="material-icons animate-spin text-2xl">autorenew</span>
       </div>
     );
   }
@@ -125,7 +125,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
         <button type="button" onClick={generate} disabled={generating} className={`${pBtnPrimary} mx-auto`}>
           {generating ? (
             <>
-              <span className="material-icons text-base animate-spin">progress_activity</span>
+              <span className="material-icons text-base animate-spin">autorenew</span>
               Generando…
             </>
           ) : (
@@ -159,7 +159,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
               <button type="button" onClick={generate} disabled={generating} className={pBtnPrimary}>
                 {generating ? (
                   <>
-                    <span className="material-icons text-base animate-spin">progress_activity</span>
+                    <span className="material-icons text-base animate-spin">autorenew</span>
                     Generando…
                   </>
                 ) : (

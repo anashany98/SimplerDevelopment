@@ -225,7 +225,7 @@ export default function PlaybookDetailPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -729,7 +729,7 @@ function StartRunDialog({
             >
               {submitting ? (
                 <>
-                  <span className="material-icons animate-spin text-base">progress_activity</span>
+                  <span className="material-icons animate-spin text-base">autorenew</span>
                   Iniciando…
                 </>
               ) : (

@@ -297,7 +297,7 @@ function LinkPickerDialog({
         <div className="max-h-48 overflow-y-auto bg-muted/30 border border-border rounded-md">
           {loading ? (
             <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-              <span className="material-icons animate-spin text-base mr-1.5">progress_activity</span>Cargando…</div>
+              <span className="material-icons animate-spin text-base mr-1.5">autorenew</span>Cargando…</div>
           ) : options.length === 0 ? (
             <div className="text-center py-6 text-xs text-muted-foreground">
               No se han encontrado {META[type].plural.toLowerCase()}.
@@ -353,7 +353,7 @@ function LinkPickerDialog({
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Vinculando…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Vinculando…</>
               : <><span className="material-icons text-base">add_link</span>Enlace</>}
           </button>
         </div>

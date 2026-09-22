@@ -255,7 +255,7 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Saving…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Saving…</>
             : <><span className="material-icons text-base">{mode === 'create' ? 'add' : 'save'}</span>
                 {submitLabel ?? (mode === 'create' ? 'Create initiative' : 'Save changes')}
               </>}
@@ -382,7 +382,7 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Closing…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Closing…</>
             : <><span className="material-icons text-base">archive</span>{submitLabel ?? 'Close initiative'}</>}
         </button>
       </div>

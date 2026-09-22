@@ -443,7 +443,7 @@ export default function GlossaryTermForm({
             <div className="absolute z-10 mt-1 left-0 right-0 max-h-60 overflow-y-auto bg-popover border border-border rounded-lg shadow-md">
               {relatedSearching && (
                 <div className="px-3 py-2 text-xs text-muted-foreground flex items-center gap-2">
-                  <span className="material-icons text-base animate-spin">progress_activity</span>
+                  <span className="material-icons text-base animate-spin">autorenew</span>
                   Searching…
                 </div>
               )}
@@ -484,7 +484,7 @@ export default function GlossaryTermForm({
           className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons text-base animate-spin">progress_activity</span>Saving…</>
+            ? <><span className="material-icons text-base animate-spin">autorenew</span>Saving…</>
             : <><span className="material-icons text-base">save</span>{mode === 'create' ? 'Create term' : 'Save changes'}</>
           }
         </button>

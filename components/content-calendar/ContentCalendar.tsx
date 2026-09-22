@@ -671,7 +671,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
 
         {loading ? (
           <div className="flex items-center justify-center py-24 text-muted-foreground">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>
+            <span className="material-icons animate-spin mr-2">autorenew</span>
             Cargando calendario…
           </div>
         ) : (

@@ -31,16 +31,14 @@ export function AuthShell({
     <div className="grid min-h-screen w-full lg:grid-cols-[46%_54%]">
       {/* LEFT — form */}
       <div className="relative flex flex-col justify-center bg-background px-6 py-16 sm:px-12 lg:px-[7vw]">
-        {/* wordmark — the main-site logo (icon + CRM AGENTS), from the
-            top-nav. Note: this is the platform mark, not the tenant brand. */}
+        {/* wordmark — the tenant brand (falls back to the platform mark), so
+            the login page never shows two different brand names at once. */}
         <Link
           href="/"
           className="absolute left-5 top-6 flex items-center font-heading text-xl text-foreground sm:left-11 lg:left-[6.5vw]"
         >
           <Image src="/iconLogo.png" alt="" width={56} height={56} className="nav-logo-icon" priority />
-          <span>
-            <b>Simpler</b> Development
-          </span>
+          <span className="font-bold">{brandName}</span>
         </Link>
 
         <div className="mx-auto w-full max-w-[400px] lg:mx-0">{children}</div>
@@ -64,6 +62,32 @@ export function AuthShell({
             {panelTitle ?? brandName}
           </h2>
           <p className="mt-5 max-w-[420px] text-[17px] leading-relaxed text-white/65">{panelSubtitle}</p>
+
+          {/* Product proof — the panel used to be mostly empty; a real preview
+              plus capability bullets makes it earn its half of the screen. */}
+          <div className="mt-8 max-w-[460px] overflow-hidden rounded-xl border border-white/10 shadow-2xl shadow-black/40">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/screenshots/product/dashboard.webp"
+              alt="Vista previa del panel"
+              className="w-full"
+              loading="lazy"
+            />
+          </div>
+
+          <ul className="mt-7 grid gap-2.5 text-[14px] text-white/70">
+            {[
+              'Webs, CRM, reservas, encuestas y tienda en un solo lugar',
+              'Tu Cerebro de empresa responde con IA sobre tus datos',
+              'Automatizaciones y agentes que trabajan por ti',
+              'Facturación, propuestas y firma electrónica incluidas',
+            ].map((line) => (
+              <li key={line} className="flex items-start gap-2.5">
+                <span className="material-icons mt-0.5 text-[17px] leading-none text-emerald-400">check_circle</span>
+                {line}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

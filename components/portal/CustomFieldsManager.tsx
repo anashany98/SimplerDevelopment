@@ -338,7 +338,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
       {/* Loading / empty / list */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <span className="material-icons animate-spin text-muted-foreground">progress_activity</span>
+          <span className="material-icons animate-spin text-muted-foreground">autorenew</span>
         </div>
       ) : topLevelFields.length === 0 && !showForm ? (
         <div className="text-center py-12 border border-dashed border-border rounded-lg">

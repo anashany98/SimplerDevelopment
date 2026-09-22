@@ -247,7 +247,7 @@ export default function InboxPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium truncate">{c.visitorName || 'Visitante anónimo'}</span>
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground">{chatChannelLabel(c.channel)}</span>
+                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground whitespace-nowrap shrink-0">{chatChannelLabel(c.channel)}</span>
                     <span
                       className={`text-xs px-1.5 py-0.5 rounded ${
                         c.status === 'open'

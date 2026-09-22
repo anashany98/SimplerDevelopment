@@ -178,7 +178,7 @@ export function PersonPicker({
         <div className="absolute z-20 left-0 right-0 mt-1 max-h-64 overflow-y-auto bg-card border border-border rounded-md shadow-lg">
           {loading ? (
             <div className="flex items-center gap-2 px-3 py-2 text-xs text-muted-foreground">
-              <span className="material-icons animate-spin text-sm">progress_activity</span>
+              <span className="material-icons animate-spin text-sm">autorenew</span>
               Searching…
             </div>
           ) : rows.length === 0 ? (

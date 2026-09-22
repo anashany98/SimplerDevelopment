@@ -93,7 +93,7 @@ export default function DocumentComplianceCard({ report }: Props) {
         <div className="mt-4 space-y-4 border-t border-border pt-4">
           {loadingPeople && (
             <div className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
-              <span className="material-icons animate-spin text-sm">progress_activity</span>
+              <span className="material-icons animate-spin text-sm">autorenew</span>
               Loading names…
             </div>
           )}

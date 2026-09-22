@@ -1330,7 +1330,7 @@ describe('AddMemberDialog', () => {
     const { container } = renderPage();
     await openAddMember(container);
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Añadir' || /^progress_activity\s*Añadir/.test(b.textContent || ''),
+      (b) => b.textContent?.trim() === 'Añadir' || /^autorenew\s*Añadir/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     expect(addBtn.disabled).toBe(true);
   });

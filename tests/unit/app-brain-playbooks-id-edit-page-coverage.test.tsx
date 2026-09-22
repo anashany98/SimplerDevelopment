@@ -283,10 +283,10 @@ describe('PlaybookEditPage — loading state', () => {
     expect(container.textContent).toContain('Cargando…');
   });
 
-  it('shows progress_activity icon in loading state', () => {
+  it('shows autorenew icon in loading state', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 

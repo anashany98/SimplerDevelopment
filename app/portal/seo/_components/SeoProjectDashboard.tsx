@@ -124,7 +124,7 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
   if (!project) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        {error ? <p className="text-sm text-destructive">{error}</p> : <span className="material-icons animate-spin text-2xl">progress_activity</span>}
+        {error ? <p className="text-sm text-destructive">{error}</p> : <span className="material-icons animate-spin text-2xl">autorenew</span>}
       </div>
     );
   }
@@ -159,7 +159,7 @@ export default function SeoProjectDashboard({ projectId }: { projectId: number }
             <button type="button" onClick={runAudit} disabled={active || starting} className={pBtnPrimary}>
               {active || starting ? (
                 <>
-                  <span className="material-icons text-base animate-spin">progress_activity</span>
+                  <span className="material-icons text-base animate-spin">autorenew</span>
                   {active ? 'Auditando…' : 'Iniciando…'}
                 </>
               ) : (

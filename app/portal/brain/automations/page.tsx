@@ -1198,7 +1198,7 @@ export default function BrainAutomationsPage() {
                 <button
                   onClick={handleSaveRule}
                   disabled={saving}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-xl text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
                 >
                   {saving ? (
                     <span className="material-icons text-base animate-spin">autorenew</span>
@@ -1296,7 +1296,7 @@ export default function BrainAutomationsPage() {
                 <button
                   onClick={handleSaveScheduledRule}
                   disabled={schedSaving || !schedName.trim() || !schedTemplateId}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-xl text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
                 >
                   {schedSaving ? (
                     <span className="material-icons text-base animate-spin">autorenew</span>

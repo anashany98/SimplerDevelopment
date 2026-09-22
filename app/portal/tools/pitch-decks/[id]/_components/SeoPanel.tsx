@@ -56,7 +56,7 @@ export function SeoPanel({ deck, onUpdateDeck, onClose }: SeoPanelProps) {
             <h3 className="text-base font-semibold text-foreground">SEO</h3>
             {saveStatus === 'saving' && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground animate-pulse">
-                <span className="material-icons text-sm animate-spin">progress_activity</span>
+                <span className="material-icons text-sm animate-spin">autorenew</span>
                 Saving
               </span>
             )}

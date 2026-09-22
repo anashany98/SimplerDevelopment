@@ -176,7 +176,7 @@ const configs: Record<string, CategoryConfig> = {
     process: [
       { icon: 'description', label: 'Especificación y alcance', desc: 'Requisitos documentados en detalle antes de escribir una línea de código. Sin sorpresas de alcance.' },
       { icon: 'code', label: 'Desarrollo y revisión', desc: 'Desarrollo ágil con demos periódicas para que veas el progreso y des retroalimentación durante todo el proceso.' },
-      { icon: 'deployed_code', label: 'Despliegue y entrega', desc: 'Despliegue en producción con documentación completa, propiedad del código y una sesión de capacitación.' },
+      { icon: 'rocket_launch', label: 'Despliegue y entrega', desc: 'Despliegue en producción con documentación completa, propiedad del código y una sesión de capacitación.' },
     ],
     faqs: [
       { q: '¿Seré dueño del código?', a: 'Sí, por completo. Recibes la propiedad total de todo el código fuente, la documentación y los scripts de despliegue.' },

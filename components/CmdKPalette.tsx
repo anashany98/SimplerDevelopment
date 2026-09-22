@@ -414,7 +414,7 @@ export default function CmdKPalette({ apps, entitlements, open: controlledOpen, 
           />
           {loading && (
             <span className="material-icons animate-spin text-muted-foreground text-base">
-              progress_activity
+              autorenew
             </span>
           )}
           <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-border text-[10px] text-muted-foreground font-mono">

@@ -84,7 +84,7 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
   if (loading) {
     return (
       <div className="bg-card border border-border rounded-xl p-5 flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="material-icons text-base animate-spin">progress_activity</span>
+        <span className="material-icons text-base animate-spin">autorenew</span>
         Cargando resumen por IA…
       </div>
     );
@@ -110,7 +110,7 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
             className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 shrink-0"
           >
             <span className="material-icons text-base">
-              {generating ? 'progress_activity' : 'auto_awesome'}
+              {generating ? 'autorenew' : 'auto_awesome'}
             </span>
             {generating ? 'Generating…' : 'Generate'}
           </button>
@@ -146,7 +146,7 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
           title={data.stale ? `${newResponses} ${newResponses === 1 ? 'respuesta nueva' : 'respuestas nuevas'} desde la última generación` : 'Regenerar resumen'}
         >
           <span className={`material-icons text-base ${generating ? 'animate-spin' : ''}`}>
-            {generating ? 'progress_activity' : 'refresh'}
+            {generating ? 'autorenew' : 'refresh'}
           </span>
           {generating ? 'Generando…' : data.stale ? `Regenerar (+${newResponses})` : 'Regenerar'}
         </button>

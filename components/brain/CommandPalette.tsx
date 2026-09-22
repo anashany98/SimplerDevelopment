@@ -339,7 +339,7 @@ export default function CommandPalette({
           />
           {loading && (
             <span className="material-icons animate-spin text-sm text-muted-foreground">
-              progress_activity
+              autorenew
             </span>
           )}
           <kbd className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-foreground bg-muted/50">

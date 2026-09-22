@@ -145,13 +145,13 @@ function renderPage() {
 // ─── Loading state ────────────────────────────────────────────────────────────
 
 describe('PlaybookRunsPage — loading', () => {
-  it('shows spinner (progress_activity) while fetch is pending', () => {
+  it('shows spinner (autorenew) while fetch is pending', () => {
     fetchMock.mockImplementation(async (url: string) => {
       if (url.includes('/api/portal/brain/playbooks')) return defaultFetch(url);
       return new Promise(() => {});
     });
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 
   it('shows "Loading" text while fetch is pending', () => {

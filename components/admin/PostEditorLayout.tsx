@@ -183,7 +183,7 @@ export function PostEditorLayout({
                 className="flex items-center justify-center gap-1.5 px-3 py-1.5 min-w-[104px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0 disabled:opacity-50"
               >
                 {saveStatus === 'saving' ? (
-                  <span className="material-icons text-base animate-spin">progress_activity</span>
+                  <span className="material-icons text-base animate-spin">autorenew</span>
                 ) : (
                   <span className="material-icons text-base">check</span>
                 )}
@@ -246,7 +246,7 @@ export function PostEditorLayout({
                     className="flex items-center justify-center gap-2 px-4 py-1.5 min-w-[116px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
                   >
                     {saveStatus === 'saving' ? (
-                      <span className="material-icons text-base animate-spin">progress_activity</span>
+                      <span className="material-icons text-base animate-spin">autorenew</span>
                     ) : (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

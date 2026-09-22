@@ -133,7 +133,7 @@ export default function DocumentRequiredReadsPanel({ documentId, versions, onCha
 
       {loading ? (
         <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
-          <span className="material-icons animate-spin text-sm">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin text-sm">autorenew</span>Cargando…</div>
       ) : rows.length === 0 ? (
         <p className="text-xs text-muted-foreground mt-3">No required-reads yet.</p>
       ) : (
@@ -441,7 +441,7 @@ function AssignDialog({
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Assigning…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Assigning…</>
               : <><span className="material-icons text-base">person_add</span>Asignar</>}
           </button>
         </div>

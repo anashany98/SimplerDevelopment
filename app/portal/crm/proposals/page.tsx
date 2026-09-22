@@ -428,7 +428,7 @@ export default function ProposalsPage() {
       {/* Table */}
       {proposalsLoading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
+          <span className="material-icons animate-spin mr-2">autorenew</span>
           Cargando propuestas...
         </div>
       ) : proposals.length === 0 ? (

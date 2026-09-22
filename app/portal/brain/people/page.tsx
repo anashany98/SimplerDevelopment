@@ -272,7 +272,7 @@ export default function BrainPeoplePage() {
       <div className="mt-4">
         {loading ? (
           <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+            <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
         ) : error ? (
           <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
             <div className="flex items-center gap-2 font-medium mb-1">

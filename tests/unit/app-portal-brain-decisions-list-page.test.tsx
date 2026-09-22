@@ -7,7 +7,7 @@
  * Filters live in the URL query string; useSearchParams + useRouter are mocked.
  *
  * Covers:
- *  - Loading state (spinner, progress_activity icon)
+ *  - Loading state (spinner, autorenew icon)
  *  - Error state (API !ok, success=false, network throw)
  *  - Empty state (EmptyState component, "Record decision" link)
  *  - List renders DecisionCard stubs for returned items
@@ -158,10 +158,10 @@ describe('DecisionsListPage — loading', () => {
     expect(container.textContent).toContain('Cargando decisiones');
   });
 
-  it('shows progress_activity icon in loading state', () => {
+  it('shows autorenew icon in loading state', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 

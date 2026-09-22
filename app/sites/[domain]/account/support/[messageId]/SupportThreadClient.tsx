@@ -102,7 +102,7 @@ export function SupportThreadClient({ siteId, domain, messageId }: { siteId: num
 
           {loading ? (
             <div className="text-center py-12">
-              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>progress_activity</span>
+              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>autorenew</span>
             </div>
           ) : !thread ? (
             <div className="border border-gray-200 rounded-xl p-12 text-center">

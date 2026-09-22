@@ -303,7 +303,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
                 className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
               >
                 {submitting
-                  ? <><span className="material-icons text-base animate-spin">progress_activity</span>Importing…</>
+                  ? <><span className="material-icons text-base animate-spin">autorenew</span>Importing…</>
                   : <><span className="material-icons text-base">cloud_upload</span>Confirm import {parsed.rows.length > 0 ? `(${parsed.rows.length})` : ''}</>
                 }
               </button>

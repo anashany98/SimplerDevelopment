@@ -182,7 +182,7 @@ export function EditorHeader(props: EditorHeaderProps) {
           disabled={saving || !hasUnsavedChanges}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg font-medium transition-all disabled:opacity-40 ${
             hasUnsavedChanges
-              ? 'bg-green-600 text-white hover:bg-green-700 shadow-sm'
+              ? 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'
               : 'border border-border text-muted-foreground'
           }`}
         >

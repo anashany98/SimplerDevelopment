@@ -165,7 +165,7 @@ export default function GraphHoverBacklinks({
       <div className="flex-1 overflow-y-auto">
         {items === null && !error && (
           <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="material-icons animate-spin text-base">progress_activity</span>
+            <span className="material-icons animate-spin text-base">autorenew</span>
             Loading backlinks…
           </div>
         )}

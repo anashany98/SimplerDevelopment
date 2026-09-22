@@ -58,7 +58,7 @@ export function EnableBrainBanner() {
           className={`${pBtnPrimary} shrink-0`}
         >
           {enabling
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Enabling…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Enabling…</>
             : <><span className="material-icons text-base">power_settings_new</span>Activar Cerebro de empresa</>
           }
         </button>

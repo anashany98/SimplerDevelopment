@@ -131,7 +131,7 @@ export function RecommendationCard({ rec, onMarkDone, onDismiss, busy, error, re
             <span className="material-icons text-sm">close</span>
             Descartar
           </button>
-          {busy && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
+          {busy && <span className="material-icons text-sm animate-spin text-muted-foreground">autorenew</span>}
           {error && <p className="text-xs text-destructive ml-auto">{error}</p>}
         </div>
       )}

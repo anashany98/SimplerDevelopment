@@ -110,7 +110,13 @@ function DonutChart({ won, lost, open }: { won: number; lost: number; open: numb
 }
 
 function LineChart({ data }: { data: RevenueMonth[] }) {
-  if (data.length === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">Aún no hay datos de ingresos</div>;
+  if (data.length === 0) return (
+    <div className="flex flex-col items-center justify-center h-40 text-center gap-1">
+      <span className="material-icons text-3xl text-muted-foreground/50">show_chart</span>
+      <p className="text-sm font-medium text-foreground">Aún no hay datos de ingresos</p>
+      <p className="text-xs text-muted-foreground">Cuando ganes tu primer negocio, aquí verás su evolución.</p>
+    </div>
+  );
 
   const values = data.map((d) => Number(d.won_value));
   const maxVal = Math.max(...values, 1);
@@ -282,7 +288,11 @@ export default function CrmDashboardPage() {
         <div className="bg-card border border-border rounded-2xl p-5">
           <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Actividad reciente</h2>
           {(dashboard?.recentActivities ?? []).length === 0 ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">Sin actividad reciente.</p>
+            <div className="flex flex-col items-center justify-center py-6 text-center gap-1">
+              <span className="material-icons text-2xl text-muted-foreground/50">history</span>
+              <p className="text-xs font-medium text-foreground">Sin actividad reciente</p>
+              <p className="text-[11px] text-muted-foreground">Los cambios en contactos y negocios aparecerán aquí.</p>
+            </div>
           ) : (
             <ul className="space-y-2 max-h-64 overflow-y-auto">
               {(dashboard?.recentActivities ?? []).slice(0, 8).map(a => (

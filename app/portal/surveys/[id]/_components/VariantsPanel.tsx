@@ -181,7 +181,7 @@ export default function VariantsPanel({ surveyId }: Props) {
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             {creating ? (
-              <span className="material-icons text-lg animate-spin">progress_activity</span>
+              <span className="material-icons text-lg animate-spin">autorenew</span>
             ) : (
               <span className="material-icons text-lg">add</span>
             )}
@@ -192,7 +192,7 @@ export default function VariantsPanel({ surveyId }: Props) {
 
       {loading ? (
         <div className="flex items-center justify-center py-10">
-          <span className="material-icons text-2xl animate-spin text-primary">progress_activity</span>
+          <span className="material-icons text-2xl animate-spin text-primary">autorenew</span>
         </div>
       ) : variants.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-10 text-center">

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import NotifyDeliveryFields from './NotifyDeliveryFields';
 
 /**
@@ -36,8 +37,7 @@ interface Props {
 
   editStyling: Record<string, string | boolean | undefined>;
   setEditStyling: (
-    next:
-      | Record<string, string | boolean | undefined>
+    next: Record<string, string | boolean | undefined>
       | ((prev: Record<string, string | boolean | undefined>) => Record<string, string | boolean | undefined>),
   ) => void;
 
@@ -195,9 +195,9 @@ export default function SurveySettings(props: Props) {
             {brandingProfiles.length === 0 && (
               <>
                 {' '}
-                <a href="/portal/branding" className="text-primary hover:underline">
+                <Link href="/portal/branding" className="text-primary hover:underline">
                   Crear un perfil de marca
-                </a>{' '}
+                </Link>{' '}
                 primero.
               </>
             )}
@@ -696,7 +696,7 @@ export default function SurveySettings(props: Props) {
                 {pipelinesLoaded && pipelines.length === 0 && (
                   <p className="text-xs text-muted-foreground mt-1">
                     No hay pipelines de CRM todavía.{' '}
-                    <a href="/portal/crm/pipelines" className="text-primary hover:underline">Crea uno</a>.
+                    <Link href="/portal/crm/pipelines" className="text-primary hover:underline">Crea uno</Link>.
                   </p>
                 )}
               </div>
@@ -768,7 +768,7 @@ export default function SurveySettings(props: Props) {
         >
           {saving ? (
             <>
-              <span className="material-icons text-lg animate-spin">progress_activity</span>Guardando...</>
+              <span className="material-icons text-lg animate-spin">autorenew</span>Guardando...</>
           ) : (
             <>
               <span className="material-icons text-lg">save</span>Guardar ajustes

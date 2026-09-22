@@ -335,7 +335,7 @@ function TasksTab() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : (
         <DndContext
           sensors={sensors}
@@ -606,7 +606,7 @@ function PromoteModal({
 
         {!targets ? (
           <div className="flex items-center justify-center py-6 text-muted-foreground text-sm">
-            <span className="material-icons animate-spin mr-2 text-base">progress_activity</span>
+            <span className="material-icons animate-spin mr-2 text-base">autorenew</span>
             Cargando proyectos…
           </div>
         ) : targets.length === 0 ? (
@@ -656,7 +656,7 @@ function PromoteModal({
             className={pBtnPrimary}
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Promoviendo…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Promoviendo…</>
               : <><span className="material-icons text-base">view_kanban</span>Promover</>
             }
           </button>
@@ -912,7 +912,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
                 className={`${pBtnPrimary} !py-1 !px-3 !text-xs`}
               >
                 {bulkBusy
-                  ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Procesando…</>
+                  ? <><span className="material-icons animate-spin text-sm">autorenew</span>Procesando…</>
                   : <><span className="material-icons text-sm">check</span>Aprobar {selected.size}</>}
               </button>
             </div>
@@ -928,7 +928,7 @@ function ReviewTab({ onPendingChange }: { onPendingChange: (n: number) => void }
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : items.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">inbox</span>

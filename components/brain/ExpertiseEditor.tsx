@@ -203,7 +203,7 @@ export function ExpertiseEditor({ personId, expertise, onChange }: ExpertiseEdit
               <div className="mt-2 max-h-56 overflow-y-auto">
                 {searching ? (
                   <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground">
-                    <span className="material-icons animate-spin text-sm">progress_activity</span>
+                    <span className="material-icons animate-spin text-sm">autorenew</span>
                     Searching…
                   </div>
                 ) : visibleOptions.length === 0 ? (

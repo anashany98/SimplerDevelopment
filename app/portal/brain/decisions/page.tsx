@@ -314,7 +314,7 @@ export default function DecisionsListPage() {
       {/* Body */}
       {loading && items === null ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
+          <span className="material-icons animate-spin mr-2">autorenew</span>
           Cargando decisiones…
         </div>
       ) : error ? (

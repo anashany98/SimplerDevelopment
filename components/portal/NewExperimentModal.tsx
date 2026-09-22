@@ -279,7 +279,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             </label>
             {loading ? (
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground">
-                <span className="material-icons animate-spin text-base">progress_activity</span>Cargando...</div>
+                <span className="material-icons animate-spin text-base">autorenew</span>Cargando...</div>
             ) : loadError ? (
               <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg px-3 py-2">
                 <span className="material-icons text-base">error</span>
@@ -369,7 +369,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             >
               {submitting ? (
                 <>
-                  <span className="material-icons animate-spin text-base">progress_activity</span>
+                  <span className="material-icons animate-spin text-base">autorenew</span>
                   Creando...
                 </>
               ) : (

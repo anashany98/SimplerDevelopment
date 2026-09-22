@@ -234,7 +234,7 @@ export default function GoalProgress({ goal, ownerLookup, onCheckin, onEdit, onD
               className="px-2.5 py-1 text-xs rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 inline-flex items-center gap-1"
             >
               {submitting
-                ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Saving…</>
+                ? <><span className="material-icons animate-spin text-sm">autorenew</span>Saving…</>
                 : <><span className="material-icons text-sm">check</span>Save check-in</>}
             </button>
           </div>

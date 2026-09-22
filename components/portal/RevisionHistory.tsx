@@ -102,7 +102,7 @@ export default function RevisionHistory({ siteId, postId, open, onClose, onRever
       <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <span className="material-icons text-2xl animate-spin text-muted-foreground">progress_activity</span>
+            <span className="material-icons text-2xl animate-spin text-muted-foreground">autorenew</span>
           </div>
         ) : revisions.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
@@ -155,7 +155,7 @@ export default function RevisionHistory({ siteId, postId, open, onClose, onRever
                       className="shrink-0 text-xs px-2 py-1 rounded border border-border hover:bg-accent transition-colors disabled:opacity-50"
                     >
                       {reverting === rev.id ? (
-                        <span className="material-icons text-xs animate-spin">progress_activity</span>
+                        <span className="material-icons text-xs animate-spin">autorenew</span>
                       ) : (
                         'Restore'
                       )}

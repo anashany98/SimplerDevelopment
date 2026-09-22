@@ -53,7 +53,7 @@ export default function InitiativesListPage() {
 function ListFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-muted-foreground">
-      <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+      <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
   );
 }
 

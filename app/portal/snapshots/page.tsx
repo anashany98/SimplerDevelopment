@@ -150,7 +150,7 @@ export default function PortalSnapshotsPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
+        <span className="material-icons animate-spin mr-2">autorenew</span>
         Cargando instantáneas...
       </div>
     );

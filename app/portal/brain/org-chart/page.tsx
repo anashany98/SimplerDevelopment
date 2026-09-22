@@ -163,7 +163,7 @@ export default function BrainOrgChartPage() {
   if (loading && tree.length === 0) {
     return (
       <div className="max-w-7xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -391,7 +391,7 @@ function UnitSidePanel({
   if (loading && !details) {
     return (
       <div className={`${pCard} p-6 text-center text-sm text-muted-foreground`}>
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
+        <span className="material-icons animate-spin mr-2">autorenew</span>
         Cargando unidad…
       </div>
     );
@@ -909,7 +909,7 @@ function NewUnitModal({
             disabled={submitting || !name.trim()}
             className={pBtnPrimary}
           >
-            {submitting && <span className="material-icons animate-spin text-sm">progress_activity</span>}
+            {submitting && <span className="material-icons animate-spin text-sm">autorenew</span>}
             Crear
           </button>
         </div>
@@ -1024,7 +1024,7 @@ function AddMemberDialog({
             }}
             className={pBtnPrimary}
           >
-            {submitting && <span className="material-icons animate-spin text-sm">progress_activity</span>}
+            {submitting && <span className="material-icons animate-spin text-sm">autorenew</span>}
             Añadir
           </button>
         </div>

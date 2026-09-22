@@ -312,7 +312,7 @@ export default function WorkflowEditorPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto p-6 text-sm text-muted-foreground">
-        <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
+        <span className="material-icons text-base align-middle animate-spin mr-2">autorenew</span>
         Cargando flujo...
       </div>
     );
@@ -487,7 +487,7 @@ export default function WorkflowEditorPage() {
                     <div className="border-t border-border px-2 py-2">
                       {stepsLoading ? (
                         <div className="flex items-center gap-1 text-muted-foreground py-1">
-                          <span className="material-icons text-sm animate-spin">progress_activity</span>
+                          <span className="material-icons text-sm animate-spin">autorenew</span>
                           Cargando pasos…
                         </div>
                       ) : runSteps.length === 0 ? (

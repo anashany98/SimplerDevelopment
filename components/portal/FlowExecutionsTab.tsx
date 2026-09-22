@@ -26,7 +26,7 @@ import {
 } from '@/lib/agent-flows/types';
 
 const STATUS_META: Record<AgentFlowRunStatus, { label: string; cls: string; icon: string }> = {
-  running:   { label: 'En ejecución',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'progress_activity' },
+  running:   { label: 'En ejecución',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'autorenew' },
   // Amber matches the human-node colour on the canvas — the same "a person is
   // needed here" signal in both places.
   waiting:   { label: 'Waiting',   cls: 'text-amber-600 dark:text-amber-400',   icon: 'how_to_reg' },
@@ -97,7 +97,7 @@ export default function FlowExecutionsTab({ projectId }: { projectId: number }) 
   if (loading) {
     return (
       <div className="p-8 text-sm text-muted-foreground">
-        <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
+        <span className="material-icons text-base align-middle animate-spin mr-2">autorenew</span>
         Loading executions…
       </div>
     );

@@ -196,7 +196,7 @@ export default function PitchDecksPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
+          <span className="material-icons animate-spin mr-2">autorenew</span>
           Cargando presentaciones...
         </div>
       ) : decks.length === 0 ? (

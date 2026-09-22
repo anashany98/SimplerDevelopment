@@ -105,7 +105,7 @@ export default function SeoProjectsList() {
 
       {projects === null ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin text-2xl">progress_activity</span>
+          <span className="material-icons animate-spin text-2xl">autorenew</span>
         </div>
       ) : projects.length === 0 ? (
         <div className={`${pCard} p-10 flex flex-col items-center text-center`}>
@@ -180,7 +180,7 @@ export default function SeoProjectsList() {
                   >
                     {startingIds.has(p.id) || active ? (
                       <>
-                        <span className="material-icons text-sm animate-spin">progress_activity</span>
+                        <span className="material-icons text-sm animate-spin">autorenew</span>
                         {active ? 'Auditando…' : 'Iniciando…'}
                       </>
                     ) : (

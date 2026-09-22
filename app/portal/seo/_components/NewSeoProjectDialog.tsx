@@ -234,7 +234,7 @@ export function NewSeoProjectDialog({ open, onClose, onCreated }: Props) {
             <button type="submit" disabled={submitting} className={pBtnPrimary}>
               {submitting ? (
                 <>
-                  <span className="material-icons animate-spin text-base">progress_activity</span>
+                  <span className="material-icons animate-spin text-base">autorenew</span>
                   Creando…
                 </>
               ) : (

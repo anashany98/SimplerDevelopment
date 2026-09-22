@@ -203,7 +203,7 @@ export default function SurveyDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-20">
-        <span className="material-icons text-3xl animate-spin text-primary">progress_activity</span>
+        <span className="material-icons text-3xl animate-spin text-primary">autorenew</span>
       </div>
     );
   }

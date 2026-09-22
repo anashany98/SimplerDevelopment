@@ -476,7 +476,7 @@ function ContractsPage() {
       {/* ─── Table / Empty State ─────────────────────────────────────────────── */}
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
+          <span className="material-icons animate-spin mr-2">autorenew</span>
           Cargando contratos...
         </div>
       ) : contracts.length === 0 && !search && !statusFilter ? (

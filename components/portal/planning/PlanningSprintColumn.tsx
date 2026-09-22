@@ -117,9 +117,9 @@ export default function PlanningSprintColumn({
                 <button
                   disabled={isUpdating}
                   onClick={() => onUpdateStatus(sprint.id, 'active')}
-                  className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
+                  className="text-xs px-3 py-1.5 bg-foreground text-background rounded-lg font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                 >
-                  Start Sprint
+                  Iniciar sprint
                 </button>
               )}
               {sprint.status === 'active' && (

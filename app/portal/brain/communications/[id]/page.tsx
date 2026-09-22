@@ -161,7 +161,7 @@ export default function BrainMeetingDetailPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
   if (!meeting) {
@@ -225,7 +225,7 @@ export default function BrainMeetingDetailPage() {
                 className={pBtnPrimary}
               >
                 {processing
-                  ? <><span className="material-icons animate-spin text-base">progress_activity</span>Procesando…</>
+                  ? <><span className="material-icons animate-spin text-base">autorenew</span>Procesando…</>
                   : <><span className="material-icons text-base">auto_awesome</span>{meeting.aiSummary ? 'Reprocesar con IA' : 'Procesar con IA'}</>
                 }
               </button>

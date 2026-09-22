@@ -181,7 +181,7 @@ export function GoogleFontPicker({ value, onChange }: GoogleFontPickerProps) {
             ))}
             {loading && (
               <div className="flex items-center justify-center py-3">
-                <span className="material-icons text-sm text-muted-foreground animate-spin">progress_activity</span>
+                <span className="material-icons text-sm text-muted-foreground animate-spin">autorenew</span>
               </div>
             )}
             {!loading && fonts.length === 0 && (

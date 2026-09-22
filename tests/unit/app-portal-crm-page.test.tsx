@@ -560,7 +560,7 @@ describe('CrmDashboardPage — Recent Activity section', () => {
       return makeRes(makeAnalyticsData());
     });
     const { container } = await renderLoaded();
-    expect(container.textContent).toContain('Sin actividad reciente.');
+    expect(container.textContent).toContain('Sin actividad reciente');
   });
 
   it('renders phone icon for "call" activity type', async () => {

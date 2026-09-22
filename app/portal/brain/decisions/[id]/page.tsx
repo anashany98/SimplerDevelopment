@@ -300,7 +300,7 @@ export default function DecisionDetailPage() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
+        <span className="material-icons animate-spin mr-2">autorenew</span>
         Cargando decisión…
       </div>
     );
@@ -530,7 +530,7 @@ export default function DecisionDetailPage() {
               disabled={rejecting}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-xl bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-50"
             >
-              {rejecting && <span className="material-icons animate-spin text-base">progress_activity</span>}
+              {rejecting && <span className="material-icons animate-spin text-base">autorenew</span>}
               Confirmar rechazo
             </button>
             <button

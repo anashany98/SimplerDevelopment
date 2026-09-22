@@ -67,7 +67,7 @@ export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: str
                 className="material-icons text-gray-300 animate-spin"
                 style={{ fontSize: '32px' }}
               >
-                progress_activity
+                autorenew
               </span>
             </div>
           ) : designs.length === 0 ? (

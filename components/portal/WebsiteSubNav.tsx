@@ -125,7 +125,7 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
           )}
           <Link
             href={`${sitePrefix}/posts/new`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-sm">add</span>
             Nueva entrada

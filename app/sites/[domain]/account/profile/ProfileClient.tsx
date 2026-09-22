@@ -169,7 +169,7 @@ export function ProfileClient({ siteId, domain }: { siteId: number; domain: stri
 
           {loading ? (
             <div className="text-center py-12">
-              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>progress_activity</span>
+              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>autorenew</span>
             </div>
           ) : (
             <>

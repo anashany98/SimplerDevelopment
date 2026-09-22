@@ -245,7 +245,7 @@ export default function InitiativeDetailPage({ params }: { params: Promise<{ id:
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-16 flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -711,7 +711,7 @@ function AddGoalForm({
           className={pBtnPrimary}
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Añadiendo…</>
+            ? <><span className="material-icons animate-spin text-sm">autorenew</span>Añadiendo…</>
             : <><span className="material-icons text-sm">add</span>Añadir objetivo</>}
         </button>
       </div>

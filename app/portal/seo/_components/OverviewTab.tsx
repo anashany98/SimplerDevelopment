@@ -51,7 +51,7 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
   if (isRunActive(run.status) && run.pagesCrawled === 0) {
     return (
       <div className={`${pCard} p-10 text-center`}>
-        <span className="material-icons animate-spin text-3xl text-primary mb-2">progress_activity</span>
+        <span className="material-icons animate-spin text-3xl text-primary mb-2">autorenew</span>
         <p className="text-sm text-muted-foreground">Rastreo en curso — los resultados aparecerán a medida que se obtengan las páginas.</p>
       </div>
     );

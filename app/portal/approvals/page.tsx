@@ -434,7 +434,7 @@ export default function PortalApprovalsPage() {
           <div className="divide-y divide-border">
             {loading ? (
               <div className="p-8 text-center text-muted-foreground flex items-center justify-center gap-2">
-                <span className="material-icons animate-spin text-base">progress_activity</span>
+                <span className="material-icons animate-spin text-base">autorenew</span>
                 Cargando...
               </div>
             ) : items.length === 0 ? (

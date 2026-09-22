@@ -96,7 +96,7 @@ describe('OrderDetailClient', () => {
     // Never-resolving fetch keeps loading=true
     global.fetch = vi.fn().mockReturnValue(new Promise(() => {}));
     render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
-    expect(screen.getByText(/progress_activity/i) ?? document.querySelector('.animate-spin')).toBeTruthy();
+    expect(screen.getByText(/autorenew/i) ?? document.querySelector('.animate-spin')).toBeTruthy();
   });
 
   // ── Not-found state ────────────────────────────────────────────────────────

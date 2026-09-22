@@ -15,11 +15,6 @@ export default async function MetricActiveProjectsWidget({
     .where(and(eq(projects.clientId, clientId), ne(projects.status, 'archived')));
 
   return (
-    <MetricBlock
-      icon="view_kanban"
-      color="text-blue-600"
-      value={result?.count ?? 0}
-      label="Proyectos activos"
-    />
+    <MetricBlock value={result?.count ?? 0} />
   );
 }

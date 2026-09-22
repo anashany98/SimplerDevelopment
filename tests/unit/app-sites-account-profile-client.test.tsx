@@ -133,7 +133,7 @@ describe('ProfileClient', () => {
     renderProfile();
     const spinner = document.querySelector('.material-icons.animate-spin');
     expect(spinner).toBeTruthy();
-    expect(spinner?.textContent).toBe('progress_activity');
+    expect(spinner?.textContent).toBe('autorenew');
   });
 
   it('does not fetch when token is null', () => {
@@ -709,7 +709,7 @@ describe('ProfileClient', () => {
     await act(async () => { renderProfile(); });
     await flush();
     // Should not throw; loading state resolves
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles fetch errors silently on profile save', async () => {

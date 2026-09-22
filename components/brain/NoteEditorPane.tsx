@@ -274,7 +274,7 @@ export default function NoteEditorPane({
   if (loading) {
     return (
       <div className="h-full flex items-center justify-center text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -358,7 +358,7 @@ function SaveStatus({
   if (state === 'saving') {
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-        <span className="material-icons animate-spin text-sm">progress_activity</span>
+        <span className="material-icons animate-spin text-sm">autorenew</span>
         Saving
       </span>
     );

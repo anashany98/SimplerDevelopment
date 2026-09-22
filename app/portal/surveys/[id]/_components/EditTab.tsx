@@ -64,7 +64,7 @@ export default function EditTab(props: Props) {
         >
           {saving ? (
             <>
-              <span className="material-icons text-lg animate-spin">progress_activity</span>Guardando...</>
+              <span className="material-icons text-lg animate-spin">autorenew</span>Guardando...</>
           ) : (
             <>
               <span className="material-icons text-lg">save</span>Guardar cambios

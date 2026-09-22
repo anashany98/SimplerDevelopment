@@ -14,12 +14,9 @@ export default async function MetricOpenTicketsWidget({
     .from(supportTickets)
     .where(and(eq(supportTickets.clientId, clientId), ne(supportTickets.status, 'closed')));
 
+  const openCount = result?.count ?? 0;
+
   return (
-    <MetricBlock
-      icon="support_agent"
-      color="text-orange-600"
-      value={result?.count ?? 0}
-      label="Tickets abiertos"
-    />
+    <MetricBlock value={openCount} tone={openCount > 0 ? 'warn' : 'default'} />
   );
 }

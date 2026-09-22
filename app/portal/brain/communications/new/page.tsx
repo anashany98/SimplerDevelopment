@@ -287,9 +287,9 @@ export default function NewBrainMeetingPage() {
           className={pBtnPrimary}
         >
           {processing
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Procesando…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Procesando…</>
             : creating
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Guardando…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Guardando…</>
               : <><span className="material-icons text-base">auto_awesome</span>Guardar y procesar con IA</>
           }
         </button>

@@ -541,7 +541,7 @@ function NewEventModal({
             className={pBtnPrimary}
           >
             {saving
-              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Creando…</>
+              ? <><span className="material-icons text-base animate-spin">autorenew</span>Creando…</>
               : <><span className="material-icons text-base">check</span>Crear evento</>
             }
           </button>
@@ -583,7 +583,7 @@ function EventDetailModal({
 
         {loading || !event ? (
           <div className="flex items-center justify-center py-10 text-muted-foreground">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+            <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
         ) : (
           <>
             <h4 className="text-lg font-semibold">{event.title}</h4>

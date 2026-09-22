@@ -3,6 +3,7 @@ import { supportTickets } from '@/lib/db/schema';
 import { eq, and, ne, count, desc } from 'drizzle-orm';
 import Link from 'next/link';
 import { ticketStatusColor } from '@/lib/portal';
+import { ticketStatusLabel } from '@/lib/portal-utils';
 
 export default async function SupportTicketsWidget({
   clientId,
@@ -52,7 +53,7 @@ export default async function SupportTicketsWidget({
                 <span
                   className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${ticketStatusColor(t.status)}`}
                 >
-                  {t.status.replace('_', ' ')}
+                  {ticketStatusLabel(t.status)}
                 </span>
               </Link>
             </li>

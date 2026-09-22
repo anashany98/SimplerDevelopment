@@ -131,10 +131,10 @@ describe('NoteCustomFieldsPanel — loading state', () => {
     expect(screen.getByText(/loading fields/i)).toBeInTheDocument();
   });
 
-  it('renders the progress_activity icon while loading', () => {
+  it('renders the autorenew icon while loading', () => {
     (global as unknown as { fetch: () => Promise<never> }).fetch = vi.fn(() => new Promise(() => {}));
     render(<NoteCustomFieldsPanel noteId={1} />);
-    expect(screen.getByText('progress_activity')).toBeInTheDocument();
+    expect(screen.getByText('autorenew')).toBeInTheDocument();
   });
 });
 

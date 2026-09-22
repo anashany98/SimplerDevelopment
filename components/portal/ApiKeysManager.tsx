@@ -119,7 +119,7 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
             <code className="flex-1 text-xs bg-white dark:bg-black/20 p-2 rounded border font-mono break-all">
               {createdKey}
             </code>
-            <button onClick={copyKey} className="px-3 py-2 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700">
+            <button onClick={copyKey} className="px-3 py-2 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90">
               {copied ? '¡Copiada!' : 'Copiar'}
             </button>
           </div>

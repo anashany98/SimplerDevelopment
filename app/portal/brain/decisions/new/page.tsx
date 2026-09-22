@@ -181,7 +181,7 @@ export default function NewDecisionPage() {
   if (isSupersede && loadingInitial) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center gap-2 text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
+        <span className="material-icons animate-spin mr-2">autorenew</span>
         Cargando la decisión anterior…
       </div>
     );

@@ -70,8 +70,10 @@ function SortableWidgetItem({
     opacity: isDragging ? 0.45 : 1,
   };
 
+  const isMetric = widget.id.startsWith('metric-');
+
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className={isMetric ? undefined : 'sm:col-span-2 lg:col-span-2'}>
       <WidgetShell
         id={widget.id}
         title={widget.title}
@@ -266,7 +268,7 @@ export default function WidgetBoard({
           {/* Panel head */}
           <div className="flex items-start justify-between gap-3 px-[18px] py-4 border-b border-border">
             <div>
-              <h3 className="font-display text-[15px] font-extrabold tracking-[-0.01em] text-foreground">Screen Options</h3>
+              <h3 className="font-display text-[15px] font-extrabold tracking-[-0.01em] text-foreground">Opciones de pantalla</h3>
               <p className="text-[12px] text-muted-foreground mt-0.5">Activa o desactiva widgets. Arrastra para reordenar.</p>
             </div>
             <button
@@ -364,7 +366,7 @@ export default function WidgetBoard({
           and client render, producing a hydration mismatch. */}
       <DndContext id="dashboard-widget-board" sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={order} strategy={verticalListSortingStrategy}>
-          <div className="grid lg:grid-cols-2 gap-4 items-start">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
             {visibleWidgets.map((w) => (
               <SortableWidgetItem
                 key={w.id}
@@ -388,7 +390,7 @@ export default function WidgetBoard({
           </div>
           <p className="text-[14px] font-semibold text-foreground">No hay widgets visibles</p>
           <p className="mt-1 text-[12.5px] text-muted-foreground max-w-[240px] mx-auto leading-relaxed">
-            Use Personalizar to enable widgets on your dashboard.
+            Usa «Personalizar» para activar widgets en tu panel.
           </p>
         </div>
       )}

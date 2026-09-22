@@ -135,8 +135,8 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
 
-    // Spinner uses material-icon text "progress_activity"
-    expect(screen.getByText('progress_activity')).toBeTruthy();
+    // Spinner uses material-icon text "autorenew"
+    expect(screen.getByText('autorenew')).toBeTruthy();
 
     // Resolve so component can clean up
     act(() => {
@@ -177,7 +177,7 @@ describe('CustomFieldsManager — initial load', () => {
       expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
     // Loading spinner is gone — component handled the error without crashing
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles load failure (success:false with no message) without crashing', async () => {
@@ -189,7 +189,7 @@ describe('CustomFieldsManager — initial load', () => {
     await waitFor(() =>
       expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles network error during load without crashing', async () => {
@@ -199,7 +199,7 @@ describe('CustomFieldsManager — initial load', () => {
     await waitFor(() =>
       expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles non-Error thrown value during load without crashing', async () => {
@@ -209,7 +209,7 @@ describe('CustomFieldsManager — initial load', () => {
     await waitFor(() =>
       expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 });
 

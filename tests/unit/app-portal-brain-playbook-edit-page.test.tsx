@@ -4,7 +4,7 @@
  * Unit tests for `app/portal/brain/playbooks/[id]/edit/page.tsx`.
  *
  * Covers:
- *   - Loading state (spinner, progress_activity icon)
+ *   - Loading state (spinner, autorenew icon)
  *   - Error-only state (no playbook loaded) — API !ok, success=false, network
  *     throw, invalid id
  *   - Happy-path render: back link, heading, status chip, slug, metadata
@@ -268,10 +268,10 @@ describe('PlaybookEditPage — loading state', () => {
     expect(container.textContent).toContain('Cargando…');
   });
 
-  it('shows progress_activity icon in loading state', () => {
+  it('shows autorenew icon in loading state', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 

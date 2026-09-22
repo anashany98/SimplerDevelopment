@@ -159,7 +159,7 @@ export function StepPowerUp({ state, setAnswers, next, persist }: StepProps) {
             >
               {generating ? (
                 <>
-                  <span className="material-icons text-[18px] animate-spin">progress_activity</span>
+                  <span className="material-icons text-[18px] animate-spin">autorenew</span>
                   Generando…
                 </>
               ) : (

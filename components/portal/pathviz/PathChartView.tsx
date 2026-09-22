@@ -143,7 +143,7 @@ export default function PathChartView({ chartId, onBack }: PathChartViewProps) {
         <div className="flex-1 min-w-0 relative">
           {loadState === 'loading' && (
             <div className="p-16 text-center text-sm" style={{ color: THEME.ink3 }} data-testid="pathviz-chart-loading">
-              <span className="material-icons text-3xl align-middle mr-2 animate-spin">progress_activity</span>
+              <span className="material-icons text-3xl align-middle mr-2 animate-spin">autorenew</span>
               Cargando gráfico…
             </div>
           )}

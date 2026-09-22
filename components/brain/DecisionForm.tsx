@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /**
  * DecisionForm — shared form for creating, editing, and superseding a
  * brain_decisions record.
@@ -422,11 +424,11 @@ export default function DecisionForm({
         <Field label="Temas" hint="Tag this decision with one or more topics from your taxonomy.">
           {flatTopics.length === 0 ? (
             <p className="text-xs text-muted-foreground italic">
-              No topics yet. Create some in{' '}
-              <a className="underline hover:text-foreground" href="/portal/brain/topics">
-                Topics
-              </a>{' '}
-              to make decisions easier to find.
+              Aún no hay temas. Crea alguno en{' '}
+              <Link className="underline hover:text-foreground" href="/portal/brain/topics">
+                Temas
+              </Link>{' '}
+              para que las decisiones sean más fáciles de encontrar.
             </p>
           ) : (
             <div className="max-h-48 overflow-y-auto rounded-md border border-border bg-background p-2 flex flex-wrap gap-1.5">
@@ -477,7 +479,7 @@ export default function DecisionForm({
             className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {submitting && (
-              <span className="material-icons animate-spin text-base">progress_activity</span>
+              <span className="material-icons animate-spin text-base">autorenew</span>
             )}
             {submitLabel ?? (isSupersede ? 'Supersede' : isEdit ? 'Save changes' : 'Record decision')}
           </button>

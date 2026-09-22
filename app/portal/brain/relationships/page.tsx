@@ -201,7 +201,7 @@ export default function BrainRelationshipsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : sorted.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">{emptyCopy.icon}</span>
@@ -515,7 +515,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
             className={pBtnPrimary}
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creando…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Creando…</>
               : <>Crear relación</>
             }
           </button>

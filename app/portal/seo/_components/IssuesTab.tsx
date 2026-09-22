@@ -54,7 +54,7 @@ export function IssuesTab({ runId, runStatus }: { runId: number | null; runStatu
   if (issues === null) {
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin text-2xl">progress_activity</span>
+        <span className="material-icons animate-spin text-2xl">autorenew</span>
       </div>
     );
   }

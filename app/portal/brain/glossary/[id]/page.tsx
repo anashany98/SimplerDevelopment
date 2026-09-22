@@ -152,7 +152,7 @@ export default function BrainGlossaryDetailPage({
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -233,7 +233,7 @@ export default function BrainGlossaryDetailPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md border border-destructive/40 text-destructive hover:bg-destructive/10 disabled:opacity-50"
             >
               {deleting
-                ? <span className="material-icons text-base animate-spin">progress_activity</span>
+                ? <span className="material-icons text-base animate-spin">autorenew</span>
                 : <span className="material-icons text-base">delete</span>
               }
               Eliminar

@@ -267,7 +267,7 @@ export default function BrainDocumentsListPage() {
       {/* Body */}
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       )}
 
       {error && !loading && (

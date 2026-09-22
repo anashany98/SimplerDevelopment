@@ -321,7 +321,7 @@ export const SKILLS: readonly AgenticOsSkill[] = [
     description:
       'Register a new MCP tool in lib/mcp/server.ts (or an adapter file) with handler + Zod schema + scope guard, slim-by-default.',
     source: { kind: 'repo-skill', path: '.claude/skills/simplerdev-mcp-tool/SKILL.md' },
-    icon: 'plug_connect',
+    icon: 'extension',
     estimatedRuntime: '5-10 min',
     appliesRules: ['mcp-slim-payloads'],
     trigger: 'on-demand',

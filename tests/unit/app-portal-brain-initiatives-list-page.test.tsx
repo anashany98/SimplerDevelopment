@@ -147,10 +147,10 @@ function renderPage() {
 // ─── Loading state ─────────────────────────────────────────────────────────
 
 describe('InitiativesListPage — loading', () => {
-  it('shows progress_activity icon while initiatives fetch is pending', () => {
+  it('shows autorenew icon while initiatives fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 
   it('shows "Loading" text while fetch is pending', () => {

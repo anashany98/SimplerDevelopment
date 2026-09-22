@@ -206,7 +206,7 @@ export default function NewSurveyPage() {
               className={pBtnPrimary}
             >
               {saving ? (
-                <><span className="material-icons text-lg animate-spin">progress_activity</span>Creando...</>
+                <><span className="material-icons text-lg animate-spin">autorenew</span>Creando...</>
               ) : (
                 <><span className="material-icons text-lg">add_circle</span>Crear encuesta</>
               )}

@@ -199,7 +199,7 @@ describe('WorkflowEditorPage', () => {
     it('loading state includes the animated spinner icon', () => {
       setFetchHandler(() => new Promise(() => {}));
       const { container } = render(<WorkflowEditorPage />);
-      expect(container.textContent).toContain('progress_activity');
+      expect(container.textContent).toContain('autorenew');
     });
   });
 

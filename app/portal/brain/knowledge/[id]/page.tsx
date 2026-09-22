@@ -213,7 +213,7 @@ export default function BrainNoteDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-16 flex items-center justify-center gap-2 text-muted-foreground">
-        <span className="material-icons animate-spin">progress_activity</span>
+        <span className="material-icons animate-spin">autorenew</span>
         Cargando nota…
       </div>
     );
@@ -329,7 +329,7 @@ function SaveStatus({
   if (state === 'saving') {
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-        <span className="material-icons animate-spin text-sm">progress_activity</span>
+        <span className="material-icons animate-spin text-sm">autorenew</span>
         Guardando…
       </span>
     );

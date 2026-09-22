@@ -116,7 +116,7 @@ async function renderAndLoad() {
   const result = render(<PortalSnapshotsPage />);
   await waitFor(() => {
     // loading spinner disappears
-    expect(result.container.textContent).not.toContain('progress_activity');
+    expect(result.container.textContent).not.toContain('autorenew');
   });
   return result;
 }
@@ -615,7 +615,7 @@ describe('PortalSnapshotsPage', () => {
       vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('Network error'))));
       const { container } = render(<PortalSnapshotsPage />);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('progress_activity');
+        expect(container.textContent).not.toContain('autorenew');
       });
       // Should show empty state without crashing
       expect(container.textContent).toContain('Aún no hay instantáneas.');

@@ -86,7 +86,7 @@ export function ChatComposer({
           className="mt-2 w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-primary/30 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
         >
           <span className={`material-icons text-sm ${backgroundLoading ? 'animate-spin' : ''}`}>
-            {backgroundLoading ? 'progress_activity' : 'schedule'}
+            {backgroundLoading ? 'autorenew' : 'schedule'}
           </span>
           {backgroundLoading ? 'Encolando análisis…' : 'Ejecutar análisis en segundo plano'}
         </button>

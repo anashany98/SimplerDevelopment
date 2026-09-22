@@ -57,7 +57,7 @@ export function EnableBrainButton() {
       >
         {enabling ? (
           <>
-            <span className="material-icons animate-spin text-base">progress_activity</span>
+            <span className="material-icons animate-spin text-base">autorenew</span>
             Activando…
           </>
         ) : (

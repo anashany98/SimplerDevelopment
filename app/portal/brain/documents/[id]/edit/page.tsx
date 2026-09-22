@@ -224,7 +224,7 @@ export default function BrainDocumentEditPage({
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -285,7 +285,7 @@ export default function BrainDocumentEditPage({
             className={pBtnPrimary}
           >
             {publishing
-              ? <><span className="material-icons text-base animate-spin">progress_activity</span>Publicando…</>
+              ? <><span className="material-icons text-base animate-spin">autorenew</span>Publicando…</>
               : <><span className="material-icons text-base">publish</span>Publicar</>}
           </button>
         </div>

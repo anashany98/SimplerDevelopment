@@ -96,7 +96,7 @@ export function SettingsSlideOver({
             <h3 className="text-base font-semibold text-foreground">Detalles de la página</h3>
             {saveStatus === 'saving' && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground animate-pulse">
-                <span className="material-icons text-sm animate-spin">progress_activity</span>
+                <span className="material-icons text-sm animate-spin">autorenew</span>
                 Guardando
               </span>
             )}

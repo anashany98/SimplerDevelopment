@@ -304,7 +304,7 @@ export function ComposeBox(props: ComposeBoxProps): JSX.Element {
                     className="material-icons animate-spin"
                     style={{ fontSize: '14px' }}
                   >
-                    progress_activity
+                    autorenew
                   </span>
                   Enviando…
                 </>

@@ -166,7 +166,7 @@ export function PersonProfileSidebar({ person }: PersonProfileSidebarProps) {
             </h3>
             {tasksLoading ? (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="material-icons animate-spin text-sm">progress_activity</span>Cargando…</div>
+                <span className="material-icons animate-spin text-sm">autorenew</span>Cargando…</div>
             ) : noTasksPossible ? (
               <p className="text-xs text-muted-foreground">
                 No linked user account.

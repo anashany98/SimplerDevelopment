@@ -118,7 +118,7 @@ export default function AdminAiCreditsPage() {
 
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin text-3xl">progress_activity</span>
+          <span className="material-icons animate-spin text-3xl">autorenew</span>
           <p className="mt-2">Cargando créditos de IA...</p>
         </div>
       ) : tab === 'overview' ? (

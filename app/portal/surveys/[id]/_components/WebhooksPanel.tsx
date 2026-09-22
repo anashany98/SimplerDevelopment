@@ -269,7 +269,7 @@ export default function WebhooksPanel({ surveyId }: Props) {
       <div className="bg-card border border-border rounded-xl divide-y divide-border">
         {loading && (
           <div className="p-6 text-sm text-muted-foreground flex items-center gap-2">
-            <span className="material-icons animate-spin text-base">progress_activity</span>
+            <span className="material-icons animate-spin text-base">autorenew</span>
             Cargando…
           </div>
         )}

@@ -311,7 +311,7 @@ export default function AdminSubscriptionsPage() {
 
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin text-3xl">progress_activity</span>
+          <span className="material-icons animate-spin text-3xl">autorenew</span>
           <p className="mt-2">Cargando suscripciones...</p>
         </div>
       ) : filtered.length === 0 ? (

@@ -366,7 +366,7 @@ export default function TicketReportsPage() {
                 value={fmtMinutes(data.firstResponse.medianMinutes)}
               />
               <StatCard
-                icon="avg_pace"
+                icon="speed"
                 label="Primera respuesta promedio"
                 value={fmtMinutes(data.firstResponse.avgMinutes)}
               />

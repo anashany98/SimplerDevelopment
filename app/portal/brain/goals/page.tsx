@@ -46,7 +46,7 @@ export default function GoalsListPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     }>
       <GoalsListContent />
     </Suspense>
@@ -229,7 +229,7 @@ function GoalsListContent() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : visibleGoals.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-2xl">
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">track_changes</span>

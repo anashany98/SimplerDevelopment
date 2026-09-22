@@ -800,7 +800,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
               >
                 {deleting ? (
                   <>
-                    <span className="material-icons text-base animate-spin">progress_activity</span>
+                    <span className="material-icons text-base animate-spin">autorenew</span>
                     Eliminando…
                   </>
                 ) : (

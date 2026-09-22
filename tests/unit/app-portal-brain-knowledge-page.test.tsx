@@ -207,10 +207,10 @@ describe('BrainNoteDetailPage — loading state', () => {
     expect(container.textContent).toContain('Cargando nota');
   });
 
-  it('shows the progress_activity icon in loading state', async () => {
+  it('shows the autorenew icon in loading state', async () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 

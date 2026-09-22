@@ -103,7 +103,7 @@ function Gallery({
 
       {loadState === 'loading' && (
         <div className="py-16 text-center text-sm" style={{ color: THEME.ink3 }} data-testid="pathviz-loading">
-          <span className="material-icons text-3xl align-middle mr-2 animate-spin">progress_activity</span>
+          <span className="material-icons text-3xl align-middle mr-2 animate-spin">autorenew</span>
           Cargando gráficos…
         </div>
       )}

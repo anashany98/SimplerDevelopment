@@ -79,7 +79,7 @@ export default function AdminBookingPage() {
   const statCards = [
     { label: 'Páginas totales', value: stats.totalPages, icon: 'calendar_month' },
     { label: 'Páginas activas', value: stats.activePages, icon: 'event_available' },
-    { label: 'Reservas próximas', value: stats.totalUpcoming, icon: 'event_upcoming' },
+    { label: 'Reservas próximas', value: stats.totalUpcoming, icon: 'event' },
   ];
 
   return (

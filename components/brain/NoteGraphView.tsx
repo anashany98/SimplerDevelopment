@@ -563,7 +563,7 @@ export default function NoteGraphView() {
       >
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground pointer-events-none">
-            <span className="material-icons animate-spin mr-2 text-base">progress_activity</span>
+            <span className="material-icons animate-spin mr-2 text-base">autorenew</span>
             Loading graph…
           </div>
         )}

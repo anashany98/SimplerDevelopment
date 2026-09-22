@@ -74,7 +74,7 @@ export function getNavSections(): NavSection[] {
     {
       label: 'Ventas y CRM',
       items: [
-        { href: '/admin/crm', label: 'Panel CRM', icon: 'monitoring' },
+        { href: '/admin/crm', label: 'Panel CRM', icon: 'insights' },
         { href: '/admin/crm/contacts', label: 'Contactos', icon: 'contacts' },
         { href: '/admin/crm/companies', label: 'Empresas', icon: 'apartment' },
         { href: '/admin/crm/deals', label: 'Negocios', icon: 'handshake' },
@@ -97,7 +97,7 @@ export function getNavSections(): NavSection[] {
         },
         { href: '/admin/portal-tickets', label: 'Tickets de soporte', icon: 'support_agent' },
         { href: '/admin/automations', label: 'Automatizaciones', icon: 'bolt' },
-        { href: '/admin/agent-runs', label: 'Ejecuciones de agentes', icon: 'network_node' },
+        { href: '/admin/agent-runs', label: 'Ejecuciones de agentes', icon: 'device_hub' },
         { href: '/admin/system-health', label: 'Estado del sistema', icon: 'monitor_heart' },
         { href: '/admin/oauth-clients', label: 'Clientes OAuth', icon: 'key' },
         ...(process.env.NODE_ENV === 'development'

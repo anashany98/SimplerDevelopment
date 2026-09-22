@@ -242,7 +242,7 @@ export default function BrainDocumentDetailPage({
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -333,7 +333,7 @@ export default function BrainDocumentDetailPage({
                 className={`${pBtnPrimary} disabled:opacity-50`}
               >
                 {busyAction === 'publish'
-                  ? <span className="material-icons text-base animate-spin">progress_activity</span>
+                  ? <span className="material-icons text-base animate-spin">autorenew</span>
                   : <span className="material-icons text-base">publish</span>}
                 Publicar
               </button>
@@ -365,7 +365,7 @@ export default function BrainDocumentDetailPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-xl border border-destructive/40 text-destructive hover:bg-destructive/10 disabled:opacity-50"
             >
               {busyAction === 'delete'
-                ? <span className="material-icons text-base animate-spin">progress_activity</span>
+                ? <span className="material-icons text-base animate-spin">autorenew</span>
                 : <span className="material-icons text-base">delete</span>}
               Eliminar
             </button>
@@ -402,7 +402,7 @@ export default function BrainDocumentDetailPage({
         </div>
         {selectedVersionLoading ? (
           <div className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
-            <span className="material-icons animate-spin text-sm">progress_activity</span>
+            <span className="material-icons animate-spin text-sm">autorenew</span>
             Cargando versión…
           </div>
         ) : displayedVersion && displayedVersion.body ? (

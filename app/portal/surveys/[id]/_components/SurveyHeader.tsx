@@ -44,7 +44,7 @@ export default function SurveyHeader({ survey, onToggleStatus }: Props) {
         {survey.status === 'draft' && (
           <button
             onClick={() => onToggleStatus('active')}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-lg">publish</span>Publicar</button>
         )}
@@ -58,10 +58,10 @@ export default function SurveyHeader({ survey, onToggleStatus }: Props) {
         {survey.status === 'closed' && (
           <button
             onClick={() => onToggleStatus('active')}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-lg">play_arrow</span>
-            Reopen
+            Reabrir
           </button>
         )}
       </div>

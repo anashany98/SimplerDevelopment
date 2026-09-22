@@ -184,7 +184,7 @@ export default function BrainPersonProfilePage({
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -298,7 +298,7 @@ export default function BrainPersonProfilePage({
               >
                 {saving ? (
                   <>
-                    <span className="material-icons animate-spin text-base">progress_activity</span>
+                    <span className="material-icons animate-spin text-base">autorenew</span>
                     Guardando…
                   </>
                 ) : (
@@ -543,7 +543,7 @@ export default function BrainPersonProfilePage({
               >
                 {deleting ? (
                   <>
-                    <span className="material-icons animate-spin text-base">progress_activity</span>
+                    <span className="material-icons animate-spin text-base">autorenew</span>
                     Eliminando…
                   </>
                 ) : (

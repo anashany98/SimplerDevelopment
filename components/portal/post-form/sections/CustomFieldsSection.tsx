@@ -488,7 +488,7 @@ function ManageCustomFieldsModal({
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <span className="material-icons animate-spin text-muted-foreground">progress_activity</span>
+              <span className="material-icons animate-spin text-muted-foreground">autorenew</span>
             </div>
           ) : !postTypeId ? (
             <div className="text-center py-8">

@@ -151,7 +151,7 @@ export default function AdminMcpUsagePage() {
 
       {loading || !data ? (
         <div className="text-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin text-3xl">progress_activity</span>
+          <span className="material-icons animate-spin text-3xl">autorenew</span>
           <p className="mt-2">Cargando uso de MCP…</p>
         </div>
       ) : (

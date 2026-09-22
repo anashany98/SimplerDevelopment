@@ -268,7 +268,7 @@ export default function BrainDocumentNewPage() {
               <div className="max-h-48 overflow-y-auto bg-background border border-border rounded-md">
                 {noteSearchLoading ? (
                   <div className="text-center py-4 text-xs text-muted-foreground inline-flex items-center gap-1.5">
-                    <span className="material-icons animate-spin text-sm">progress_activity</span>
+                    <span className="material-icons animate-spin text-sm">autorenew</span>
                     Buscando…
                   </div>
                 ) : noteOptions.length === 0 ? (
@@ -305,7 +305,7 @@ export default function BrainDocumentNewPage() {
           <Link href="/portal/brain/documents" className={pBtnGhost}>Cancelar</Link>
           <button type="submit" disabled={submitting} className={pBtnPrimary}>
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creando…</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Creando…</>
               : <><span className="material-icons text-base">add</span>Crear y abrir el editor</>}
           </button>
         </div>

@@ -523,7 +523,7 @@ export default function AgentFlowTab({ projectId, canEdit }: { projectId: number
   if (flowsLoading) {
     return (
       <div className="p-8 text-sm text-muted-foreground">
-        <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
+        <span className="material-icons text-base align-middle animate-spin mr-2">autorenew</span>
         Cargando el diseñador de flujos...
       </div>
     );

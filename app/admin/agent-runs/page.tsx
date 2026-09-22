@@ -39,7 +39,7 @@ interface AdminRunRow {
 type Filter = 'active' | 'all' | 'terminal';
 
 const STATUS_META: Record<AgentFlowRunStatus, { label: string; icon: string; cls: string; spin?: boolean }> = {
-  running: { label: 'En ejecución', icon: 'progress_activity', cls: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', spin: true },
+  running: { label: 'En ejecución', icon: 'autorenew', cls: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', spin: true },
   waiting: { label: 'Waiting', icon: 'pause_circle', cls: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
   succeeded: { label: 'Exitoso', icon: 'check_circle', cls: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
   failed: { label: 'Fallido', icon: 'error', cls: 'bg-red-500/10 text-red-600 dark:text-red-400' },
@@ -164,7 +164,7 @@ export default function AdminAgentRunsPage() {
 
         {loading ? (
           <div className="p-8 text-center text-muted-foreground">
-            <span className="material-icons animate-spin align-middle mr-2">progress_activity</span>Cargando…</div>
+            <span className="material-icons animate-spin align-middle mr-2">autorenew</span>Cargando…</div>
         ) : rows.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground text-sm">
             No {filter === 'all' ? '' : filter} runs. A run appears here once a Claude Code session calls

@@ -251,7 +251,7 @@ describe('SurveyDetailPage', () => {
     it('renders a spinner while loading', () => {
       useSurveyReturnValue = makeUseSurveyValue({ loading: true, survey: null });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('progress_activity');
+      expect(container.textContent).toContain('autorenew');
     });
 
     it('does not render tab bar while loading', () => {

@@ -1009,13 +1009,13 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
             <div className="text-[11px] text-muted-foreground flex items-center gap-1">
               <span className="material-icons text-sm">history_toggle_off</span>
               <span>
-                Trashed notes are kept until you empty trash.{' '}
-                <a
+                Las notas en la papelera se conservan hasta que la vacíes.{' '}
+                <Link
                   href="/portal/brain/settings#retention"
                   className="underline hover:text-foreground"
                 >
-                  Retention policy
-                </a>
+                  Política de retención
+                </Link>
               </span>
             </div>
             <button
@@ -1303,7 +1303,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
       {/* Footer */}
       <div className="border-t border-border px-2 py-1 text-[11px] text-muted-foreground flex items-center justify-between">
         <span>{total} {total === 1 ? 'note' : 'notes'}{trashed ? ' in trash' : ''}</span>
-        {loading && <span className="material-icons text-sm animate-spin">progress_activity</span>}
+        {loading && <span className="material-icons text-sm animate-spin">autorenew</span>}
       </div>
 
       {/* Empty-trash confirmation. Modal-style overlay scoped to the pane —
@@ -1344,7 +1344,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                   className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded bg-destructive text-destructive-foreground hover:opacity-90 disabled:opacity-50"
                 >
                   {emptyTrashBusy && (
-                    <span className="material-icons text-sm animate-spin">progress_activity</span>
+                    <span className="material-icons text-sm animate-spin">autorenew</span>
                   )}
                   Empty trash
                 </button>
@@ -1733,7 +1733,7 @@ function TopicsLandingView({
   if (loading && !tree) {
     return (
       <div className="p-6 text-center text-xs text-muted-foreground">
-        <span className="material-icons text-sm animate-spin align-middle mr-1">progress_activity</span>
+        <span className="material-icons text-sm animate-spin align-middle mr-1">autorenew</span>
         Loading topics…
       </div>
     );

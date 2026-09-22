@@ -94,7 +94,7 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
     if (error) return <p className="text-sm text-destructive">{error}</p>;
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin text-2xl">progress_activity</span>
+        <span className="material-icons animate-spin text-2xl">autorenew</span>
       </div>
     );
   }
@@ -125,7 +125,7 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
         <button type="button" onClick={importNow} disabled={importing} className={`${pBtnPrimary} mx-auto`}>
           {importing ? (
             <>
-              <span className="material-icons text-base animate-spin">progress_activity</span>
+              <span className="material-icons text-base animate-spin">autorenew</span>
                 Importando…
             </>
           ) : (
@@ -156,7 +156,7 @@ export function SearchPerformanceTab({ projectId, data, onDataChange }: Props) {
           <button type="button" onClick={importNow} disabled={importing || loading} className={pBtnGhost}>
             {importing ? (
               <>
-                <span className="material-icons text-base animate-spin">progress_activity</span>
+                <span className="material-icons text-base animate-spin">autorenew</span>
               Importando…
               </>
             ) : (

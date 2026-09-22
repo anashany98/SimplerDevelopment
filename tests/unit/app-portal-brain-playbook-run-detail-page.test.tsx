@@ -238,7 +238,7 @@ describe('PlaybookRunDetailPage — loading', () => {
   it('shows spinner icon while fetch is pending', () => {
     fetchMock.mockImplementation(async () => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 
   it('shows "Loading" text while fetch is pending', () => {

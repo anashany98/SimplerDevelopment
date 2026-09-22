@@ -176,7 +176,7 @@ export default function BrainDocumentsQueuePage() {
 
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>Cargando…</div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       )}
 
       {error && !loading && (
@@ -340,7 +340,7 @@ function QueueSection({
                 className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-xl bg-foreground text-background hover:shadow-sm disabled:opacity-50 shrink-0"
               >
                 {actingId === r.requiredReadId
-                  ? <span className="material-icons text-sm animate-spin">progress_activity</span>
+                  ? <span className="material-icons text-sm animate-spin">autorenew</span>
                   : <span className="material-icons text-sm">check</span>}
                 Marcar como leído
               </button>

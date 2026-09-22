@@ -244,7 +244,7 @@ export default function PlaybookForm({
         >
           {submitting ? (
             <>
-              <span className="material-icons animate-spin text-base">progress_activity</span>
+              <span className="material-icons animate-spin text-base">autorenew</span>
               Saving…
             </>
           ) : (

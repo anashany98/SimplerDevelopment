@@ -247,7 +247,7 @@ export default function BrainTopicsAdminPage() {
           </div>
           {loading ? (
             <div className="p-8 text-center text-sm text-muted-foreground">
-              <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
+              <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>
               Cargando temas…
             </div>
           ) : (
@@ -429,7 +429,7 @@ function TopicDetailPanel({
   if (loading) {
     return (
       <div className="p-6 text-center text-sm text-muted-foreground">
-        <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>Cargando…</div>
+        <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>Cargando…</div>
     );
   }
 
@@ -480,7 +480,7 @@ function TopicDetailPanel({
             }}
             className="flex-1 min-w-0 text-base font-semibold bg-transparent border-0 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-primary/40 rounded"
           />
-          {saving === 'name' && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
+          {saving === 'name' && <span className="material-icons text-sm animate-spin text-muted-foreground">autorenew</span>}
         </div>
         <div className="text-[11px] text-muted-foreground font-mono">{topic.path}</div>
       </div>
@@ -504,7 +504,7 @@ function TopicDetailPanel({
             placeholder="Opcional — ¿qué abarca este tema?"
             className={`${pInput} resize-none`}
           />
-          {saving === 'desc' && <div className="text-[10px] text-muted-foreground mt-1"><span className="material-icons text-sm animate-spin align-middle">progress_activity</span> Guardando…</div>}
+          {saving === 'desc' && <div className="text-[10px] text-muted-foreground mt-1"><span className="material-icons text-sm animate-spin align-middle">autorenew</span> Guardando…</div>}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -567,7 +567,7 @@ function TopicDetailPanel({
           <div className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1">
             <span className="material-icons text-sm text-primary">attach_file</span>
             Entidades asociadas
-            {entitiesLoading && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
+            {entitiesLoading && <span className="material-icons text-sm animate-spin text-muted-foreground">autorenew</span>}
           </div>
           {entities && entities.items.length === 0 && !entitiesLoading && (
             <div className="text-xs text-muted-foreground italic px-1 py-2">Aún no hay entidades asociadas.</div>
@@ -699,7 +699,7 @@ function ImportFromTagsWizard({
               className={`${pBtnGhost} px-2 py-1.5 text-xs disabled:opacity-50`}
             >
               {busy && step === 'preview' ? (
-                <span className="material-icons text-sm animate-spin">progress_activity</span>
+                <span className="material-icons text-sm animate-spin">autorenew</span>
               ) : (
                 <span className="material-icons text-sm">refresh</span>
               )}
@@ -728,7 +728,7 @@ function ImportFromTagsWizard({
               </div>
             ) : !report ? (
               <div className="text-center py-8 text-muted-foreground">
-                <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
+                <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>
                 Generando vista previa…
               </div>
             ) : (
@@ -808,7 +808,7 @@ function ImportFromTagsWizard({
                   className={`${pBtnPrimary} disabled:opacity-50 disabled:hover:translate-y-0`}
                 >
                   {busy && step === 'confirm' ? (
-                    <span className="material-icons text-sm animate-spin">progress_activity</span>
+                    <span className="material-icons text-sm animate-spin">autorenew</span>
                   ) : (
                     <span className="material-icons text-sm">file_download</span>
                   )}

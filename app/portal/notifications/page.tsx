@@ -24,7 +24,7 @@ const kindIcon: Record<string, string> = {
   'comment.mention': 'alternate_email',
   'card.assignee_added': 'person_add',
   'card.due_date_changed': 'event',
-  'card.sprint_changed': 'sprint',
+  'card.sprint_changed': 'speed',
   'card.column_changed': 'swap_horiz',
   'card.dependency_added': 'block',
 };

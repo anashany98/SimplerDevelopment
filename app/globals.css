@@ -65,6 +65,16 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Ligature safety: an icon name that is missing from the subset renders as
+ * blank literal text — one em PER LETTER — which blows out flex rows (the
+ * sidebar's theme-toggle label escaped the rail and floated over the page).
+ * Clamp every icon box to a single em so a missing ligature reads blank
+ * instead of breaking the layout. */
+.material-icons {
+  max-width: 1em;
+  overflow: hidden;
+}
+
 :root {
   /* Neutral secondary surface for the button `secondary` variant — VEQA-039. */
   --secondary: #e7e5e4;

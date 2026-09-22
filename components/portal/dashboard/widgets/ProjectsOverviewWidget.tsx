@@ -10,6 +10,14 @@ const statusColors: Record<string, string> = {
   archived: 'bg-muted text-muted-foreground',
 };
 
+/** Spanish labels for project statuses (UI shows these, not the enum). */
+const statusLabels: Record<string, string> = {
+  active: 'Activo',
+  paused: 'Pausado',
+  completed: 'Completado',
+  archived: 'Archivado',
+};
+
 export default async function ProjectsOverviewWidget({
   clientId,
 }: {
@@ -47,7 +55,7 @@ export default async function ProjectsOverviewWidget({
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{activeCount}</span>
         <span className="ml-2 text-sm text-muted-foreground">
-          proyecto activo{activeCount !== 1 ? 's' : ''}
+          {activeCount === 1 ? 'proyecto activo' : 'proyectos activos'}
         </span>
       </div>
       {recent.length === 0 ? (
@@ -67,11 +75,11 @@ export default async function ProjectsOverviewWidget({
               >
                 <p className="text-sm font-medium text-foreground truncate min-w-0">{p.name}</p>
                 <span
-                  className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium capitalize ${
+                  className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${
                     statusColors[p.status] ?? statusColors.archived
                   }`}
                 >
-                  {p.status}
+                  {statusLabels[p.status] ?? p.status}
                 </span>
               </Link>
             </li>

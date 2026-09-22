@@ -115,7 +115,7 @@ export const EMAIL_ONLY_BLOCK_TYPES: BlockRegistryEntry[] = [
   {
     type: 'email-header',
     label: 'Email Header',
-    icon: 'top_panel_open',
+    icon: 'keyboard_arrow_up',
     category: 'Layout',
     description: 'Logo + tagline header — only valid as the first block in an email.',
     emailOnly: true,
@@ -123,7 +123,7 @@ export const EMAIL_ONLY_BLOCK_TYPES: BlockRegistryEntry[] = [
   {
     type: 'email-footer',
     label: 'Email Footer',
-    icon: 'bottom_panel_open',
+    icon: 'keyboard_arrow_down',
     category: 'Layout',
     description: 'Address / legal / unsubscribe footer. Auto-injected at send time if missing.',
     emailOnly: true,

@@ -168,7 +168,7 @@ export default function WorkflowsListPage() {
 
       {loading ? (
         <div className={`${pCard} p-10 text-center`}>
-          <span className="material-icons text-3xl text-muted-foreground animate-spin">progress_activity</span>
+          <span className="material-icons text-3xl text-muted-foreground animate-spin">autorenew</span>
           <p className="text-sm text-muted-foreground mt-2">Cargando flujos de trabajo...</p>
         </div>
       ) : rows.length === 0 ? (
