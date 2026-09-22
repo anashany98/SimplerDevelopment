@@ -232,7 +232,7 @@ test.describe('Storefront checkout — golden path @ecommerce @critical', () => 
       });
 
       expect(res.status).toBe(404);
-      expect(res.data.message).toMatch(/cart not found/i);
+      expect(res.data.message).toMatch(/carrito no encontrado/i);
     } finally {
       await runCleanups(cleanups);
     }

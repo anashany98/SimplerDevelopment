@@ -201,7 +201,7 @@ export async function POST(
     // which is what gets stored in the cartItems.designId uuid column.
     if (designId !== undefined && designId !== null) {
       if (typeof designId !== 'string' || !/^[0-9a-fA-F-]{36}$/.test(designId)) {
-        return NextResponse.json({ success: false, message: 'Invalid designId' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'Diseño no válido.' }, { status: 400 });
       }
 
       const [design] = await db.select().from(productDesigns)
@@ -214,7 +214,7 @@ export async function POST(
         .limit(1);
 
       if (!design) {
-        return NextResponse.json({ success: false, message: 'Design not found' }, { status: 404 });
+        return NextResponse.json({ success: false, message: 'Diseño no encontrado.' }, { status: 404 });
       }
 
       // Authorize: either logged-in customer matches OR sessionId matches
@@ -230,7 +230,7 @@ export async function POST(
         authorized = true;
       }
       if (!authorized) {
-        return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
+        return NextResponse.json({ success: false, message: 'No autorizado.' }, { status: 403 });
       }
     }
 
@@ -244,7 +244,7 @@ export async function POST(
       .limit(1);
 
     if (!product) {
-      return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Producto no encontrado.' }, { status: 404 });
     }
 
     // Determine price and stock
@@ -261,7 +261,7 @@ export async function POST(
         .limit(1);
 
       if (!variant) {
-        return NextResponse.json({ success: false, message: 'Variant not found' }, { status: 404 });
+        return NextResponse.json({ success: false, message: 'Variante no encontrada.' }, { status: 404 });
       }
 
       unitPrice = variant.price;
@@ -271,7 +271,7 @@ export async function POST(
     if (product.trackInventory && quantity > availableStock) {
       return NextResponse.json({
         success: false,
-        message: `Only ${availableStock} available in stock`,
+        message: `No hay suficiente stock (disponibles: ${availableStock}).`,
       }, { status: 400 });
     }
 
@@ -315,7 +315,7 @@ export async function POST(
       if (product.trackInventory && newQty > availableStock) {
         return NextResponse.json({
           success: false,
-          message: `Only ${availableStock} available in stock`,
+          message: `No hay suficiente stock (disponibles: ${availableStock}).`,
         }, { status: 400 });
       }
 
@@ -384,7 +384,7 @@ export async function PUT(
       .limit(1);
 
     if (!item) {
-      return NextResponse.json({ success: false, message: 'Cart item not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Artículo del carrito no encontrado.' }, { status: 404 });
     }
 
     // Remove if quantity is 0
@@ -407,7 +407,7 @@ export async function PUT(
       if (quantity > stock) {
         return NextResponse.json({
           success: false,
-          message: `Only ${stock} available in stock`,
+          message: `No hay suficiente stock (disponibles: ${stock}).`,
         }, { status: 400 });
       }
     }

@@ -39,6 +39,7 @@ export async function POST(
     // to construct it first turned this expected configuration state into 500.
     const [paymentConfig] = await db.select({
       enabled: storeSettings.enabled,
+      currency: storeSettings.currency,
       stripeMode: storeSettings.stripeMode,
       stripeAccountId: storeSettings.stripeAccountId,
       stripeOnboardingComplete: storeSettings.stripeOnboardingComplete,
@@ -51,7 +52,7 @@ export async function POST(
       (!paymentConfig.stripeAccountId || !paymentConfig.stripeOnboardingComplete)
     ) {
       return NextResponse.json(
-        { success: false, message: 'Store has not completed Stripe Connect onboarding' },
+        { success: false, message: 'La tienda aún no ha completado la configuración de pagos con Stripe.' },
         { status: 400 },
       );
     }
@@ -83,7 +84,7 @@ export async function POST(
     if (ctx.mode === 'connect') {
       if (!ctx.stripeAccountId || !store.stripeOnboardingComplete) {
         return NextResponse.json(
-          { success: false, message: 'Store has not completed Stripe Connect onboarding' },
+          { success: false, message: 'La tienda aún no ha completado la configuración de pagos con Stripe.' },
           { status: 400 },
         );
       }
@@ -110,7 +111,7 @@ export async function POST(
       .limit(1);
 
     if (!cart) {
-      return NextResponse.json({ success: false, message: 'Cart not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Carrito no encontrado.' }, { status: 404 });
     }
 
     const items = await db.select({
@@ -125,7 +126,7 @@ export async function POST(
       .where(eq(cartItems.cartId, cart.id));
 
     if (items.length === 0) {
-      return NextResponse.json({ success: false, message: 'Cart is empty' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El carrito está vacío.' }, { status: 400 });
     }
 
     // Load product details for each item — fence to THIS store's websiteId so a
@@ -187,7 +188,7 @@ export async function POST(
       if (!product || product.status !== 'active') {
         return NextResponse.json({
           success: false,
-          message: `Product "${product?.name || item.productId}" is no longer available`,
+          message: `El producto «${product?.name || item.productId}» ya no está disponible.`,
         }, { status: 400 });
       }
 
@@ -199,7 +200,7 @@ export async function POST(
         if (item.quantity > stock) {
           return NextResponse.json({
             success: false,
-            message: `Insufficient stock for "${product.name}". Only ${stock} available.`,
+            message: `Stock insuficiente para «${product.name}» (disponibles: ${stock}).`,
           }, { status: 400 });
         }
       }
@@ -276,7 +277,7 @@ export async function POST(
         .limit(1);
 
       if (!rate) {
-        return NextResponse.json({ success: false, message: 'Invalid shipping rate' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'Tarifa de envío no válida.' }, { status: 400 });
       }
 
       shippingMethodName = rate.name;
@@ -303,23 +304,23 @@ export async function POST(
         .limit(1);
 
       if (!discount) {
-        return NextResponse.json({ success: false, message: 'Invalid discount code' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'Código de descuento no válido.' }, { status: 400 });
       }
 
       const now = new Date();
       if (discount.startsAt && now < discount.startsAt) {
-        return NextResponse.json({ success: false, message: 'Discount code is not yet active' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'El código de descuento aún no está activo.' }, { status: 400 });
       }
       if (discount.expiresAt && now > discount.expiresAt) {
-        return NextResponse.json({ success: false, message: 'Discount code has expired' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'El código de descuento ha caducado.' }, { status: 400 });
       }
       if (discount.maxUses && discount.usedCount >= discount.maxUses) {
-        return NextResponse.json({ success: false, message: 'Discount code has been fully redeemed' }, { status: 400 });
+        return NextResponse.json({ success: false, message: 'El código de descuento ya se ha agotado.' }, { status: 400 });
       }
       if (discount.minOrderAmount && subtotal < discount.minOrderAmount) {
         return NextResponse.json({
           success: false,
-          message: `Minimum order amount of ${discount.minOrderAmount} not met`,
+          message: `El pedido mínimo para este código es ${(discount.minOrderAmount / 100).toFixed(2)} ${paymentConfig.currency}.`,
         }, { status: 400 });
       }
 
@@ -367,7 +368,7 @@ export async function POST(
     const total = subtotal - discountTotal - giftCertAmount + shippingTotal + taxTotal;
 
     if (total <= 0) {
-      return NextResponse.json({ success: false, message: 'Order total must be greater than zero' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El total del pedido debe ser mayor que cero.' }, { status: 400 });
     }
 
     // 7. Create Stripe PaymentIntent. Connect mode adds platform fee +

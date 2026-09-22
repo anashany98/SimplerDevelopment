@@ -282,7 +282,7 @@ describe('POST /api/storefront/[siteId]/cart', () => {
       paramsFor('1'),
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Product not found');
+    expect((await res.json()).message).toBe('Producto no encontrado.');
   });
 
   it('returns 404 when a variantId is supplied but no matching variant exists', async () => {
@@ -294,7 +294,7 @@ describe('POST /api/storefront/[siteId]/cart', () => {
       paramsFor('1'),
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Variant not found');
+    expect((await res.json()).message).toBe('Variante no encontrada.');
   });
 
   it('returns 400 when requested quantity exceeds tracked stock', async () => {
@@ -305,7 +305,7 @@ describe('POST /api/storefront/[siteId]/cart', () => {
       paramsFor('1'),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Only 2 available in stock');
+    expect((await res.json()).message).toBe('No hay suficiente stock (disponibles: 2).');
   });
 
   it('creates a new cart and inserts a new item when no cart and no existing line', async () => {
@@ -362,7 +362,7 @@ describe('POST /api/storefront/[siteId]/cart', () => {
       paramsFor('1'),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Only 4 available in stock');
+    expect((await res.json()).message).toBe('No hay suficiente stock (disponibles: 4).');
     expect(mocks.update).not.toHaveBeenCalled();
   });
 
@@ -426,7 +426,7 @@ describe('PUT /api/storefront/[siteId]/cart', () => {
     queue([STORE], []);
     const res = await PUT(putReq({ cartItemId: 99, quantity: 2 }), paramsFor('1'));
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Cart item not found');
+    expect((await res.json()).message).toBe('Artículo del carrito no encontrado.');
   });
 
   it('removes the item when quantity <= 0', async () => {
@@ -447,7 +447,7 @@ describe('PUT /api/storefront/[siteId]/cart', () => {
 
     const res = await PUT(putReq({ cartItemId: 50, quantity: 5 }), paramsFor('1'));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Only 3 available in stock');
+    expect((await res.json()).message).toBe('No hay suficiente stock (disponibles: 3).');
   });
 
   it('rejects based on variant stock when item has a variantId', async () => {
@@ -459,7 +459,7 @@ describe('PUT /api/storefront/[siteId]/cart', () => {
 
     const res = await PUT(putReq({ cartItemId: 50, quantity: 4 }), paramsFor('1'));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Only 1 available in stock');
+    expect((await res.json()).message).toBe('No hay suficiente stock (disponibles: 1).');
   });
 
   it('updates quantity when valid and tracked stock is sufficient', async () => {

@@ -351,7 +351,7 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/stripe connect onboarding/i);
+    expect(json.message).toMatch(/configuración de pagos con stripe/i);
   });
 
   it('returns 400 when the store has not completed Stripe onboarding', async () => {
@@ -362,7 +362,7 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/stripe connect onboarding/i);
+    expect(json.message).toMatch(/configuración de pagos con stripe/i);
   });
 
   it('returns 400 when sessionId is missing from the body', async () => {
@@ -408,7 +408,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(404);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/cart not found/i);
+    expect(json.message).toMatch(/carrito no encontrado/i);
   });
 
   it('returns 400 when cart is empty', async () => {
@@ -421,7 +421,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/cart is empty/i);
+    expect(json.message).toMatch(/carrito está vacío/i);
   });
 
   it('returns 400 when a product on the cart is inactive', async () => {
@@ -436,7 +436,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/no longer available/i);
+    expect(json.message).toMatch(/ya no está disponible/i);
   });
 
   it('returns 400 when a product on the cart is missing from the products table', async () => {
@@ -450,7 +450,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/no longer available/i);
+    expect(json.message).toMatch(/ya no está disponible/i);
   });
 
   it('returns 400 when an item exceeds available stock (non-variant)', async () => {
@@ -464,8 +464,8 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/insufficient stock/i);
-    expect(json.message).toMatch(/only 3 available/i);
+    expect(json.message).toMatch(/stock insuficiente/i);
+    expect(json.message).toMatch(/disponibles: 3/i);
   });
 
   it('returns 400 when a variant has insufficient stock', async () => {
@@ -480,7 +480,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/insufficient stock/i);
+    expect(json.message).toMatch(/stock insuficiente/i);
   });
 });
 
@@ -663,7 +663,7 @@ describe('POST /api/storefront/[siteId]/checkout — shipping', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/invalid shipping rate/i);
+    expect(json.message).toMatch(/tarifa de envío no válida/i);
   });
 
   it('adds the shipping price for a paid rate', async () => {
@@ -753,7 +753,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/invalid discount code/i);
+    expect(json.message).toMatch(/código de descuento no válido/i);
   });
 
   it('returns 400 when the discount is scheduled to start in the future', async () => {
@@ -770,7 +770,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/not yet active/i);
+    expect(json.message).toMatch(/aún no está activo/i);
   });
 
   it('returns 400 when the discount has expired', async () => {
@@ -787,7 +787,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/expired/i);
+    expect(json.message).toMatch(/caducado/i);
   });
 
   it('returns 400 when the discount has been fully redeemed', async () => {
@@ -803,7 +803,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/fully redeemed/i);
+    expect(json.message).toMatch(/agotado/i);
   });
 
   it('returns 400 when the subtotal is below the discount minimum order amount', async () => {
@@ -819,7 +819,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/minimum order amount/i);
+    expect(json.message).toMatch(/pedido mínimo/i);
   });
 
   it('applies a percent discount and reports it in the total', async () => {
@@ -862,7 +862,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/greater than zero/i);
+    expect(json.message).toMatch(/mayor que cero/i);
   });
 
   it('applies a free-shipping discount and zeroes the shipping component', async () => {

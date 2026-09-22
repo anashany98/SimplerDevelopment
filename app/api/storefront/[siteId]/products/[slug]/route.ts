@@ -41,7 +41,7 @@ export async function GET(
         .limit(1);
 
       if (!product || product.websiteId !== websiteId) {
-        return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+        return NextResponse.json({ success: false, message: 'Producto no encontrado.' }, { status: 404 });
       }
 
       const styles = await db.select()
@@ -103,7 +103,7 @@ export async function GET(
       .limit(1);
 
     if (!product) {
-      return NextResponse.json({ success: false, message: 'Product not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Producto no encontrado.' }, { status: 404 });
     }
 
     // Fetch related data in parallel
