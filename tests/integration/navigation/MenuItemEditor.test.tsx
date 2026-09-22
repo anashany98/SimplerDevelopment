@@ -52,34 +52,34 @@ describe('MenuItemEditor', () => {
 
   it('shows the Button badge when isButton is true', () => {
     renderEditor({ item: { ...baseItem, isButton: true } });
-    expect(screen.getByText(/Button/i)).toBeTruthy();
+    expect(screen.getByText(/Botón/i)).toBeTruthy();
   });
 
   it('fires onMoveUp when the up arrow is clicked', () => {
     const onMoveUp = vi.fn();
     renderEditor({ onMoveUp });
-    fireEvent.click(screen.getByTitle('Move up'));
+    fireEvent.click(screen.getByTitle('Mover hacia arriba'));
     expect(onMoveUp).toHaveBeenCalledTimes(1);
   });
 
   it('fires onMoveDown when the down arrow is clicked', () => {
     const onMoveDown = vi.fn();
     renderEditor({ onMoveDown });
-    fireEvent.click(screen.getByTitle('Move down'));
+    fireEvent.click(screen.getByTitle('Mover hacia abajo'));
     expect(onMoveDown).toHaveBeenCalledTimes(1);
   });
 
   it('fires onRemove when the delete button is clicked', () => {
     const onRemove = vi.fn();
     renderEditor({ onRemove });
-    fireEvent.click(screen.getByTitle('Remove'));
+    fireEvent.click(screen.getByTitle('Quitar'));
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
   it('fires onEdit when the edit button is clicked', () => {
     const onEdit = vi.fn();
     renderEditor({ onEdit });
-    fireEvent.click(screen.getByTitle('Edit'));
+    fireEvent.click(screen.getByTitle('Editar'));
     expect(onEdit).toHaveBeenCalledTimes(1);
   });
 
@@ -109,7 +109,7 @@ describe('MenuItemEditor', () => {
   it('toggles openInNewTab via the checkbox', () => {
     const onUpdate = vi.fn();
     renderEditor({ editing: true, onUpdate });
-    const newTabBox = screen.getByLabelText(/Open in new tab/);
+    const newTabBox = screen.getByLabelText(/Abrir en nueva pestaña/);
     fireEvent.click(newTabBox);
     expect(onUpdate).toHaveBeenCalledWith({ openInNewTab: true });
   });
@@ -117,7 +117,7 @@ describe('MenuItemEditor', () => {
   it('toggles isButton via the checkbox', () => {
     const onUpdate = vi.fn();
     renderEditor({ editing: true, onUpdate });
-    const buttonBox = screen.getByLabelText(/Display as button/);
+    const buttonBox = screen.getByLabelText(/Mostrar como botón/);
     fireEvent.click(buttonBox);
     expect(onUpdate).toHaveBeenCalledWith({ isButton: true });
   });
@@ -129,7 +129,7 @@ describe('MenuItemEditor', () => {
       depth: 1,
       item: { ...baseItem, label: 'Products', parentId: 99 },
     });
-    expect(screen.getByText(/Column Heading/i)).toBeTruthy();
+    expect(screen.getByText(/Encabezado de columna/i)).toBeTruthy();
     // URL label is not rendered for column rows
     expect(screen.queryByText(/^URL$/)).toBeNull();
   });
@@ -141,17 +141,17 @@ describe('MenuItemEditor', () => {
       depth: 2,
       item: { ...baseItem, parentId: 5 },
     });
-    expect(screen.getByText(/Description/i)).toBeTruthy();
-    expect(screen.getByText(/Icon/i)).toBeTruthy();
+    expect(screen.getByText(/Descripción/i)).toBeTruthy();
+    expect(screen.getByText(/Icono/i)).toBeTruthy();
   });
 
   it('top-level + onAddChild: renders "Add dropdown item" (non-mega)', () => {
     renderEditor({ editing: true, onAddChild: noop, depth: 0, isMegaMenu: false });
-    expect(screen.getByText(/Add dropdown item/i)).toBeTruthy();
+    expect(screen.getByText(/Agregar elemento desplegable/i)).toBeTruthy();
   });
 
   it('top-level + onAddChild + mega: renders "Add column"', () => {
     renderEditor({ editing: true, onAddChild: noop, depth: 0, isMegaMenu: true });
-    expect(screen.getByText(/Add column/i)).toBeTruthy();
+    expect(screen.getByText(/Agregar columna/i)).toBeTruthy();
   });
 });

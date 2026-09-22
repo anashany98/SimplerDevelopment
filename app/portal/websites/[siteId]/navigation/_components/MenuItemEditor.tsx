@@ -29,12 +29,12 @@ function formatDraftTooltip(item: NavItem): string {
   const parts: string[] = [];
   if (updatedAt) {
     try {
-      parts.push(`Updated ${new Date(updatedAt).toLocaleString()}`);
+      parts.push(`Actualizado el ${new Date(updatedAt).toLocaleString()}`);
     } catch {
-      parts.push(`Updated ${updatedAt}`);
+      parts.push(`Actualizado el ${updatedAt}`);
     }
   }
-  if (updatedBy != null) parts.push(`by user ${updatedBy}`);
+  if (updatedBy != null) parts.push(`por el usuario ${updatedBy}`);
   return parts.length > 0 ? parts.join(' ') : 'Borrador sin publicar';
 }
 
@@ -113,7 +113,7 @@ export function MenuItemEditor({
                   className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-destructive/10 text-destructive leading-none"
                   title={draftTooltip}
                 >
-                  Pending delete
+                  Eliminación pendiente
                 </span>
               )}
             </div>
@@ -139,7 +139,7 @@ export function MenuItemEditor({
               <button
                 onClick={onPublish}
                 className="p-1 hover:bg-amber-100 dark:hover:bg-amber-900/30 rounded"
-                title={`Publish this item${draftTooltip ? ` — ${draftTooltip}` : ''}`}
+                title={`Publicar este elemento${draftTooltip ? ` — ${draftTooltip}` : ''}`}
               >
                 <span className="material-icons text-sm text-amber-700 dark:text-amber-300">
                   publish
@@ -214,7 +214,7 @@ function ColumnEditFields({
     <>
       <div>
         <label className="block text-xs font-medium text-muted-foreground mb-1">
-          Column Heading
+          Encabezado de columna
         </label>
         <input
           type="text"
@@ -309,7 +309,7 @@ function LinkEditFields({
                 value={item.icon || ''}
                 onChange={(e) => onUpdate({ icon: e.target.value })}
                 className="flex-1 px-3 py-1.5 rounded-md border border-border bg-background text-sm text-foreground"
-                placeholder="e.g. rocket_launch"
+                placeholder="p. ej. rocket_launch"
               />
               {item.icon && (
                 <span className="material-icons text-xl text-muted-foreground">{item.icon}</span>
@@ -341,7 +341,7 @@ function LinkEditFields({
               onChange={(e) => onUpdate({ openInNewTab: e.target.checked })}
               className="rounded border-border"
             />
-            Open in new tab
+            Abrir en nueva pestaña
           </label>
           <label className="flex items-center gap-2 text-sm text-foreground">
             <input
@@ -350,7 +350,7 @@ function LinkEditFields({
               onChange={(e) => onUpdate({ isButton: e.target.checked })}
               className="rounded border-border accent-primary"
             />
-            Display as button
+            Mostrar como botón
           </label>
         </div>
       )}

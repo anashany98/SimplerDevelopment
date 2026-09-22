@@ -349,12 +349,12 @@ describe('useNavigation', () => {
 
     const col = result.current.items.find((i) => i.parentId === 1);
     expect(col).toBeDefined();
-    expect(col!.label).toBe('Column 1');
+    expect(col!.label).toBe('Columna 1');
     expect(result.current.dirty).toBe(true);
   });
 
   it('addColumn: increments column label with existing children', async () => {
-    const existingCol = makeNavItem({ id: 2, parentId: 1, label: 'Column 1' });
+    const existingCol = makeNavItem({ id: 2, parentId: 1, label: 'Columna 1' });
     setupHappyPath([makeNavItem({ id: 1 }), existingCol]);
     const { result } = renderHook(() => useNavigation(SITE_ID));
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -365,7 +365,7 @@ describe('useNavigation', () => {
 
     const cols = result.current.items.filter((i) => i.parentId === 1);
     expect(cols.length).toBe(2);
-    expect(cols[1].label).toBe('Column 2');
+    expect(cols[1].label).toBe('Columna 2');
   });
 
   // ── addMegaItem ───────────────────────────────────────────────────────────
@@ -381,7 +381,7 @@ describe('useNavigation', () => {
 
     const mega = result.current.items.find((i) => i.parentId === 1);
     expect(mega).toBeDefined();
-    expect(mega!.label).toBe('New Item');
+    expect(mega!.label).toBe('Nuevo elemento');
     expect(mega!.href).toBe('/');
   });
 

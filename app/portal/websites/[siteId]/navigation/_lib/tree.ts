@@ -87,7 +87,7 @@ export function appendItem(
 ): NavItem[] {
   const newItem: NavItem = {
     id: newId,
-    label: defaults?.label || 'New Link',
+    label: defaults?.label || 'Nuevo enlace',
     href: defaults?.href || '/',
     parentId,
     sortOrder: items.length,

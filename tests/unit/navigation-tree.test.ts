@@ -160,7 +160,7 @@ describe('appendItem', () => {
     expect(result.length).toBe(1);
     expect(result[0]).toMatchObject({
       id: -1,
-      label: 'New Link',
+      label: 'Nuevo enlace',
       href: '/',
       parentId: null,
       openInNewTab: false,

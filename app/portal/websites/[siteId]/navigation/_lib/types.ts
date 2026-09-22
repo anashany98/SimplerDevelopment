@@ -58,13 +58,13 @@ export interface NavTemplate {
 }
 
 export const TEMPLATES: NavTemplate[] = [
-  { id: 'classic', label: 'Classic', description: 'Logo left, links right' },
-  { id: 'centered', label: 'Centered', description: 'Logo centered, links below' },
-  { id: 'minimal', label: 'Minimal', description: 'Clean and simple' },
-  { id: 'modern', label: 'Modern', description: 'Bold with accent line' },
-  { id: 'transparent', label: 'Transparent', description: 'Overlay on hero' },
-  { id: 'mega', label: 'Mega Menu', description: 'Full-width dropdowns' },
-  { id: 'none', label: 'None', description: 'Hide the top navigation entirely' },
+  { id: 'classic', label: 'Clásico', description: 'Logo a la izquierda, enlaces a la derecha' },
+  { id: 'centered', label: 'Centrado', description: 'Logo centrado, enlaces debajo' },
+  { id: 'minimal', label: 'Minimalista', description: 'Limpio y sencillo' },
+  { id: 'modern', label: 'Moderno', description: 'Audaz con línea de acento' },
+  { id: 'transparent', label: 'Transparente', description: 'Superpuesto sobre el hero' },
+  { id: 'mega', label: 'Mega menú', description: 'Desplegables a ancho completo' },
+  { id: 'none', label: 'Ninguno', description: 'Oculta por completo la navegación superior' },
 ];
 
 export const DEFAULT_BRANDING: Branding = {

@@ -120,7 +120,7 @@ export function useNavigation(siteId: string) {
         const id = nextTempId--;
         setEditingId(id);
         return appendItem(prev, id, parentId, {
-          label: `Column ${columnCount + 1}`,
+          label: `Columna ${columnCount + 1}`,
           href: '#',
         });
       });
@@ -131,7 +131,7 @@ export function useNavigation(siteId: string) {
 
   const addMegaItem = useCallback(
     (columnId: number) => {
-      addItem(columnId, { label: 'New Item', href: '/' });
+      addItem(columnId, { label: 'Nuevo elemento', href: '/' });
     },
     [addItem],
   );
