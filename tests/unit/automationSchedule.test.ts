@@ -150,19 +150,19 @@ describe('computeNextRunAt — cron', () => {
 
 describe('describeSchedule', () => {
   it('daily', () => {
-    expect(describeSchedule({ cadence: 'daily', time: '09:30' })).toBe('Daily at 09:30 UTC');
+    expect(describeSchedule({ cadence: 'daily', time: '09:30' })).toBe('Cada día a las 09:30 UTC');
   });
   it('weekly', () => {
-    expect(describeSchedule({ cadence: 'weekly', time: '09:30', dayOfWeek: 1 })).toBe('Mondays at 09:30 UTC');
+    expect(describeSchedule({ cadence: 'weekly', time: '09:30', dayOfWeek: 1 })).toBe('Lunes a las 09:30 UTC');
   });
   it('monthly', () => {
-    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 1 })).toBe('1st of each month at 09:30 UTC');
-    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 2 })).toBe('2nd of each month at 09:30 UTC');
-    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 3 })).toBe('3rd of each month at 09:30 UTC');
-    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 11 })).toBe('11th of each month at 09:30 UTC');
-    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 21 })).toBe('21st of each month at 09:30 UTC');
+    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 1 })).toBe('1 de cada mes a las 09:30 UTC');
+    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 2 })).toBe('2 de cada mes a las 09:30 UTC');
+    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 3 })).toBe('3 de cada mes a las 09:30 UTC');
+    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 11 })).toBe('11 de cada mes a las 09:30 UTC');
+    expect(describeSchedule({ cadence: 'monthly', time: '09:30', dayOfMonth: 21 })).toBe('21 de cada mes a las 09:30 UTC');
   });
   it('cron', () => {
-    expect(describeSchedule({ cadence: 'cron', cronExpression: '*/15 * * * *' })).toBe('Custom: */15 * * * *');
+    expect(describeSchedule({ cadence: 'cron', cronExpression: '*/15 * * * *' })).toBe('Personalizado: */15 * * * *');
   });
 });

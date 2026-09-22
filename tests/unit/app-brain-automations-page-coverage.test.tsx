@@ -1044,7 +1044,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Wednesday');
+      expect(container.textContent).toContain('Miércoles');
     });
   });
 
@@ -1062,7 +1062,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('11th');
+      expect(container.textContent).toContain('11 de cada mes');
     });
   });
 
@@ -1080,7 +1080,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1st');
+      expect(container.textContent).toContain('1 de cada mes');
     });
   });
 
@@ -1098,7 +1098,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('2nd');
+      expect(container.textContent).toContain('2 de cada mes');
     });
   });
 
@@ -1116,7 +1116,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('3rd');
+      expect(container.textContent).toContain('3 de cada mes');
     });
   });
 

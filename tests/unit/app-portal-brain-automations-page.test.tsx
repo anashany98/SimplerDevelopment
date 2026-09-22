@@ -307,7 +307,7 @@ describe('Rules tab — rules list', () => {
     })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Daily at 08:00 UTC');
+      expect(container.textContent).toContain('Cada día a las 08:00 UTC');
     });
   });
 
@@ -318,7 +318,7 @@ describe('Rules tab — rules list', () => {
     })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Mondays at 10:00 UTC');
+      expect(container.textContent).toContain('Lunes a las 10:00 UTC');
     });
   });
 
@@ -329,7 +329,7 @@ describe('Rules tab — rules list', () => {
     })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1st of each month');
+      expect(container.textContent).toContain('1 de cada mes');
     });
   });
 
@@ -340,7 +340,7 @@ describe('Rules tab — rules list', () => {
     })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Custom: */30 * * * *');
+      expect(container.textContent).toContain('Personalizado: */30 * * * *');
     });
   });
 

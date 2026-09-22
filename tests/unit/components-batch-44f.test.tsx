@@ -193,9 +193,9 @@ describe('WebsiteNotificationSettings', () => {
     const { getByTestId } = render(<WebsiteNotificationSettings />);
     const el = getByTestId('product-automation-settings');
     expect(el.getAttribute('data-scope')).toBe('website');
-    expect(el.getAttribute('data-title')).toBe('Notifications');
+    expect(el.getAttribute('data-title')).toBe('Notificaciones');
     expect(el.getAttribute('data-description')).toBe(
-      'Get alerted about important website and store events',
+      'Recibe avisos sobre eventos importantes de tu web y tu tienda',
     );
     expect(el.getAttribute('data-preset-count')).toBe('5');
     const keys = el.getAttribute('data-preset-keys')!.split(',');

@@ -76,32 +76,30 @@ interface AutomationRule {
 }
 
 const DAYS_OF_WEEK = [
-  { value: 0, label: 'Sunday' },
-  { value: 1, label: 'Monday' },
-  { value: 2, label: 'Tuesday' },
-  { value: 3, label: 'Wednesday' },
-  { value: 4, label: 'Thursday' },
-  { value: 5, label: 'Friday' },
-  { value: 6, label: 'Saturday' },
+  { value: 0, label: 'Domingo' },
+  { value: 1, label: 'Lunes' },
+  { value: 2, label: 'Martes' },
+  { value: 3, label: 'Miércoles' },
+  { value: 4, label: 'Jueves' },
+  { value: 5, label: 'Viernes' },
+  { value: 6, label: 'Sábado' },
 ];
 
 function describeScheduleClient(s: AutomationSchedule): string {
   switch (s.cadence) {
     case 'daily':
-      return `Daily at ${s.time ?? '??:??'} UTC`;
+      return `Cada día a las ${s.time ?? '??:??'} UTC`;
     case 'weekly': {
-      const day = s.dayOfWeek != null ? `${DAYS_OF_WEEK[s.dayOfWeek]?.label}s` : 'Unknown day';
-      return `${day} at ${s.time ?? '??:??'} UTC`;
+      const day = s.dayOfWeek != null ? `${DAYS_OF_WEEK[s.dayOfWeek]?.label}` : 'Día desconocido';
+      return `${day} a las ${s.time ?? '??:??'} UTC`;
     }
     case 'monthly': {
-      const n = s.dayOfMonth;
-      const suffix = n == null ? '' : ((n % 100 >= 11 && n % 100 <= 13) ? 'th' : (['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'));
-      return `${n ?? '?'}${suffix} of each month at ${s.time ?? '??:??'} UTC`;
+      return `${s.dayOfMonth ?? '?'} de cada mes a las ${s.time ?? '??:??'} UTC`;
     }
     case 'cron':
-      return `Custom: ${s.cronExpression ?? '?'}`;
+      return `Personalizado: ${s.cronExpression ?? '?'}`;
     default:
-      return 'Unknown schedule';
+      return 'Programación desconocida';
   }
 }
 
@@ -293,8 +291,12 @@ function getEventScope(event: string | null | undefined): string {
   return 'other';
 }
 
+/** Spanish labels for known automation action tools (UI shows these, not the slug). */
+const TOOL_LABELS: Record<string, string> = { create_support_ticket: 'Crear ticket de soporte', create_crm_deal: 'Crear negocio en el CRM', create_crm_contact: 'Crear contacto en el CRM', run_plugin_script: 'Ejecutar script del plugin' };
+
 function formatToolName(tool?: string | null): string { // untyped JSON — a row missing `tool` crashed the whole rules list
-  return tool ? tool.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) : 'Acción desconocida';
+  if (!tool) return 'Acción desconocida';
+  return TOOL_LABELS[tool] ?? tool.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function timeAgo(dateStr: string): string {
