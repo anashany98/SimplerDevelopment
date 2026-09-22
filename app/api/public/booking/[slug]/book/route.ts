@@ -68,7 +68,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     return NextResponse.json({
       success: true,
       approvalPreview: true,
-      message: 'Draft preview — no booking was made.',
+      message: 'Vista previa de borrador: no se ha realizado ninguna reserva.',
       data: {
         id: null,
         guestName: 'Draft preview',
@@ -86,7 +86,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
 
   // Past this point the caller is a real visitor, so the page must be live.
   if (!page.active) {
-    return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
+    return NextResponse.json({ success: false, message: 'Página de reservas no encontrada.' }, { status: 404 });
   }
 
   const body = await req.json();
@@ -108,13 +108,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     ? Math.max(1, parseInt(String(rawSeats ?? attendees.length ?? 1)) || 1)
     : 1;
 
-  if (!name?.trim()) return NextResponse.json({ success: false, message: 'Name is required' }, { status: 400 });
-  if (!email?.trim()) return NextResponse.json({ success: false, message: 'Email is required' }, { status: 400 });
-  if (!startTime) return NextResponse.json({ success: false, message: 'Start time is required' }, { status: 400 });
+    if (!name?.trim()) return NextResponse.json({ success: false, message: 'El nombre es obligatorio.' }, { status: 400 });
+    if (!email?.trim()) return NextResponse.json({ success: false, message: 'El correo electrónico es obligatorio.' }, { status: 400 });
+    if (!startTime) return NextResponse.json({ success: false, message: 'La hora de inicio es obligatoria.' }, { status: 400 });
 
   const slotStart = new Date(startTime);
   if (isNaN(slotStart.getTime())) {
-    return NextResponse.json({ success: false, message: 'Invalid start time' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Hora de inicio no válida.' }, { status: 400 });
   }
 
   const slotEnd = new Date(slotStart.getTime() + page.duration * 60 * 1000);
@@ -124,20 +124,20 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   const now = new Date();
   const minNoticeTime = new Date(now.getTime() + page.minNoticeMins * 60 * 1000);
   if (slotStart < minNoticeTime) {
-    return NextResponse.json({ success: false, message: 'This time slot is no longer available' }, { status: 409 });
+    return NextResponse.json({ success: false, message: 'Esta franja horaria ya no está disponible.' }, { status: 409 });
   }
 
   // Check maxAdvanceDays
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + page.maxAdvanceDays);
   if (slotStart > maxDate) {
-    return NextResponse.json({ success: false, message: 'This date is too far in advance' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Esta fecha está demasiado lejos en el futuro.' }, { status: 400 });
   }
 
   // Enforce configured availability server-side (mirrors slots/route.ts).
   const reqStaffId = staffId ? parseInt(String(staffId)) || null : null;
   if (!(await isSlotWithinAvailability(page, slotStart, reqStaffId))) {
-    return NextResponse.json({ success: false, message: 'This time slot is no longer available' }, { status: 409 });
+    return NextResponse.json({ success: false, message: 'Esta franja horaria ya no está disponible.' }, { status: 409 });
   }
 
   // Check capacity or conflicts
@@ -145,14 +145,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     // Group / class booking: validate against booking_attendees seat count.
     if (attendees.length > 0 && attendees.length !== seats) {
       return NextResponse.json(
-        { success: false, message: 'Number of attendees must match seat count' },
+        { success: false, message: 'El número de asistentes debe coincidir con las plazas seleccionadas.' },
         { status: 400 },
       );
     }
     for (const a of attendees) {
       if (!a?.name?.trim() || !a?.email?.trim()) {
         return NextResponse.json(
-          { success: false, message: 'Each attendee needs a name and email' },
+          { success: false, message: 'Cada asistente necesita nombre y correo electrónico.' },
           { status: 400 },
         );
       }
@@ -160,7 +160,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     const cap = await checkSlotCapacity(page.id, slotStart, seats);
     if (!cap.available) {
       return NextResponse.json(
-        { success: false, message: `Only ${cap.remaining} seats remaining for this slot` },
+        { success: false, message: `Solo quedan ${cap.remaining} plazas para esta franja.` },
         { status: 409 },
       );
     }
@@ -174,7 +174,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       ));
     const booked = existingForSlot.reduce((sum, b) => sum + (b.groupSize ?? 1), 0);
     if (booked + groupSize > page.maxGuests) {
-      return NextResponse.json({ success: false, message: `Only ${page.maxGuests - booked} spots remaining` }, { status: 409 });
+      return NextResponse.json({ success: false, message: `Solo quedan ${page.maxGuests - booked} plazas disponibles.` }, { status: 409 });
     }
   } else {
     // 1:1 mode — conflict check with buffers
@@ -191,7 +191,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .limit(1);
 
     if (conflicting.length > 0) {
-      return NextResponse.json({ success: false, message: 'This time slot is no longer available' }, { status: 409 });
+      return NextResponse.json({ success: false, message: 'Esta franja horaria ya no está disponible.' }, { status: 409 });
     }
   }
 
@@ -388,7 +388,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   } catch (err) {
     if ((err as { code?: string })?.code === '23505') {
       return NextResponse.json(
-        { success: false, message: 'This time slot is no longer available' },
+        { success: false, message: 'Esta franja horaria ya no está disponible.' },
         { status: 409 },
       );
     }

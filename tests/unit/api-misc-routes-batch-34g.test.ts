@@ -183,7 +183,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.success).toBe(false);
-    expect(body.message).toBe('Booking page not found');
+    expect(body.message).toBe('Página de reservas no encontrada.');
   });
 
   it('returns 400 when discount codes are not enabled', async () => {
@@ -201,7 +201,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount codes are not enabled');
+    expect((await res.json()).message).toBe('Los códigos de descuento no están habilitados.');
   });
 
   it('falls back to first active website when page.websiteId is null', async () => {
@@ -256,7 +256,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('No website configured for discount codes');
+    expect((await res.json()).message).toBe('No hay una web configurada para los códigos de descuento.');
   });
 
   it('returns 400 when code is missing from body', async () => {
@@ -274,7 +274,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount code is required');
+    expect((await res.json()).message).toBe('Introduce un código de descuento.');
   });
 
   it('returns 400 when discount code not found', async () => {
@@ -293,7 +293,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Invalid discount code');
+    expect((await res.json()).message).toBe('Código de descuento no válido.');
   });
 
   it('returns 400 when discount has not started yet', async () => {
@@ -325,7 +325,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount code is not yet active');
+    expect((await res.json()).message).toBe('El código de descuento aún no está activo.');
   });
 
   it('returns 400 when discount has expired', async () => {
@@ -357,7 +357,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount code has expired');
+    expect((await res.json()).message).toBe('El código de descuento ha caducado.');
   });
 
   it('returns 400 when discount has been fully redeemed', async () => {
@@ -388,7 +388,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount code has been fully redeemed');
+    expect((await res.json()).message).toBe('El código de descuento ya se ha agotado.');
   });
 
   it('returns 400 when subtotal is below minOrderAmount', async () => {
@@ -419,7 +419,7 @@ describe('POST /api/public/booking/[slug]/validate-discount', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/Minimum order amount of 5000 not met/);
+    expect((await res.json()).message).toMatch(/pedido mínimo para este código es 50.00/);
   });
 
   it('returns success with no discountAmount when subtotal not provided', async () => {
@@ -549,7 +549,7 @@ describe('POST /api/public/booking/[slug]/waiver', () => {
       { params: Promise.resolve({ slug: 'nope' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking page not found');
+    expect((await res.json()).message).toBe('Página de reservas no encontrada.');
   });
 
   it('returns 400 when waivers are not enabled', async () => {
@@ -572,7 +572,7 @@ describe('POST /api/public/booking/[slug]/waiver', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Waivers are not enabled');
+    expect((await res.json()).message).toBe('Los consentimientos no están habilitados.');
   });
 
   it('returns 400 when bookingId missing', async () => {
@@ -594,7 +594,7 @@ describe('POST /api/public/booking/[slug]/waiver', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/bookingId, signerName, signerEmail, and signatureData are required/);
+    expect((await res.json()).message).toMatch(/Faltan datos obligatorios del consentimiento/);
   });
 
   it('returns 400 when signerName is empty/whitespace', async () => {
@@ -683,7 +683,7 @@ describe('POST /api/public/booking/[slug]/waiver', () => {
       { params: Promise.resolve({ slug: 'consult' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking not found');
+    expect((await res.json()).message).toBe('Reserva no encontrada.');
   });
 
   it('inserts waiver with trimmed signer name/email and uses x-forwarded-for first IP', async () => {

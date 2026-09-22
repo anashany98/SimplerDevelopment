@@ -274,7 +274,7 @@ describe('POST — availability check (isSlotWithinAvailability)', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
     expect(isSlotWithinAvailability).toHaveBeenCalledWith(
       expect.objectContaining({ id: 100 }),
       expect.any(Date),
@@ -623,7 +623,7 @@ describe('POST — 404 / validation branches', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/name/i);
+    expect((await res.json()).message).toMatch(/nombre es obligatorio/i);
   });
 
   it('returns 400 for missing email', async () => {
@@ -633,14 +633,14 @@ describe('POST — 404 / validation branches', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/email/i);
+    expect((await res.json()).message).toMatch(/correo electrónico es obligatorio/i);
   });
 
   it('returns 400 for missing startTime', async () => {
     selectQueue.push([basePage()]);
     const res = await POST(makeReq({ name: 'Alice', email: 'a@b.com' }), makeParams());
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio es obligatoria/i);
   });
 
   it('returns 400 for invalid startTime', async () => {
@@ -650,7 +650,7 @@ describe('POST — 404 / validation branches', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/invalid start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio no válida/i);
   });
 
   it('returns 409 when slot is within minNoticeMins window', async () => {
@@ -734,7 +734,7 @@ describe('POST — maxGuests capacity enforcement', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/spots remaining/i);
+    expect((await res.json()).message).toMatch(/plazas disponibles/i);
   });
 
   it('accepts booking when capacity allows groupSize', async () => {

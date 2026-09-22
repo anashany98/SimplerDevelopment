@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const { token } = await req.json();
 
   if (!token) {
-    return NextResponse.json({ success: false, message: 'Cancel token is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Falta el token de cancelación.' }, { status: 400 });
   }
 
   const [booking] = await db.select().from(bookings)
@@ -19,16 +19,16 @@ export async function POST(req: Request) {
     .limit(1);
 
   if (!booking) {
-    return NextResponse.json({ success: false, message: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Reserva no encontrada.' }, { status: 404 });
   }
 
   if (booking.status === 'cancelled') {
-    return NextResponse.json({ success: false, message: 'This booking has already been cancelled' }, { status: 409 });
+      return NextResponse.json({ success: false, message: 'Esta reserva ya ha sido cancelada.' }, { status: 409 });
   }
 
   // Don't allow cancelling past bookings
   if (booking.startTime < new Date()) {
-    return NextResponse.json({ success: false, message: 'Cannot cancel a past booking' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'No se puede cancelar una reserva pasada.' }, { status: 400 });
   }
 
   // Cancel the booking
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     success: true,
-    data: { message: 'Booking cancelled successfully' },
+      data: { message: 'Reserva cancelada correctamente.' },
   });
 }
 
@@ -112,7 +112,7 @@ export async function GET(req: Request) {
   const token = searchParams.get('token');
 
   if (!token) {
-    return NextResponse.json({ success: false, message: 'Token is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Falta el token.' }, { status: 400 });
   }
 
   const [booking] = await db.select({
@@ -129,7 +129,7 @@ export async function GET(req: Request) {
     .limit(1);
 
   if (!booking) {
-    return NextResponse.json({ success: false, message: 'Booking not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Reserva no encontrada.' }, { status: 404 });
   }
 
   return NextResponse.json({ success: true, data: booking });

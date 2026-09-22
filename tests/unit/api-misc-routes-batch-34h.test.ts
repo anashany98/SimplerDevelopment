@@ -288,7 +288,7 @@ describe('POST /api/public/booking/cancel', () => {
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.success).toBe(false);
-    expect(body.message).toBe('Cancel token is required');
+    expect(body.message).toBe('Falta el token de cancelación.');
   });
 
   it('returns 404 when booking not found', async () => {
@@ -297,7 +297,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking not found');
+    expect((await res.json()).message).toBe('Reserva no encontrada.');
   });
 
   it('returns 409 when booking already cancelled', async () => {
@@ -313,7 +313,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/already been cancelled/);
+    expect((await res.json()).message).toMatch(/ya ha sido cancelada/);
   });
 
   it('returns 400 when booking is in the past', async () => {
@@ -329,7 +329,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Cannot cancel a past booking');
+    expect((await res.json()).message).toBe('No se puede cancelar una reserva pasada.');
   });
 
   it('cancels future booking with page and host: sends emails, deletes calendar + zoom', async () => {
@@ -359,7 +359,7 @@ describe('POST /api/public/booking/cancel', () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.success).toBe(true);
-    expect(body.data.message).toBe('Booking cancelled successfully');
+    expect(body.data.message).toBe('Reserva cancelada correctamente.');
 
     // Update set status=cancelled
     expect(updateCalls).toHaveLength(1);
@@ -484,14 +484,14 @@ describe('GET /api/public/booking/cancel', () => {
   it('returns 400 when token query param is missing', async () => {
     const res = await cancelRoute.GET(makeRawReq('http://x/cancel'));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Token is required');
+    expect((await res.json()).message).toBe('Falta el token.');
   });
 
   it('returns 404 when booking not found', async () => {
     selectQueue.push([]);
     const res = await cancelRoute.GET(makeRawReq('http://x/cancel?token=abc'));
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking not found');
+    expect((await res.json()).message).toBe('Reserva no encontrada.');
   });
 
   it('returns booking + page details when found', async () => {
@@ -533,7 +533,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toMatch(/not found or already paid/);
+    expect((await res.json()).message).toMatch(/no encontrado o ya pagado/i);
   });
 
   it('returns 410 when quote has expired', async () => {
@@ -552,7 +552,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(410);
-    expect((await res.json()).message).toMatch(/expired/);
+    expect((await res.json()).message).toMatch(/caducado/i);
   });
 
   it('creates plain Stripe PI when no Stripe Connect website / store', async () => {
@@ -752,7 +752,7 @@ describe('GET /api/public/booking/quote/[slug]', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Quote not found');
+    expect((await res.json()).message).toBe('Presupuesto no encontrado.');
   });
 
   it('returns the quote with alreadyPaid=true when status is paid', async () => {
@@ -802,7 +802,7 @@ describe('GET /api/public/booking/quote/[slug]', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(410);
-    expect((await res.json()).message).toMatch(/expired/);
+    expect((await res.json()).message).toMatch(/caducado/i);
   });
 
   it('returns the quote when pending and not expired', async () => {

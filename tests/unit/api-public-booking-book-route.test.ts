@@ -257,7 +257,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/name/i);
+    expect((await res.json()).message).toMatch(/nombre es obligatorio/i);
   });
 
   it('rejects whitespace-only name (400)', async () => {
@@ -276,7 +276,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/email/i);
+    expect((await res.json()).message).toMatch(/correo electrónico es obligatorio/i);
   });
 
   it('rejects missing startTime (400)', async () => {
@@ -286,7 +286,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio es obligatoria/i);
   });
 
   it('rejects unparseable startTime (400)', async () => {
@@ -296,7 +296,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/invalid start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio no válida/i);
   });
 });
 
@@ -308,7 +308,7 @@ describe('POST — scheduling window validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('rejects slots beyond maxAdvanceDays (400)', async () => {
@@ -319,7 +319,7 @@ describe('POST — scheduling window validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/too far in advance/i);
+    expect((await res.json()).message).toMatch(/demasiado lejos en el futuro/i);
   });
 });
 
@@ -364,7 +364,7 @@ describe('POST — 1:1 individual booking (free)', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('returns 409 when the exclusive-slot unique index rejects a racing insert (23505)', async () => {
@@ -379,7 +379,7 @@ describe('POST — 1:1 individual booking (free)', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('trims guest name/email/phone and stores them on the booking', async () => {
@@ -439,7 +439,7 @@ describe('POST — legacy maxGuests capacity mode', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/spots remaining/i);
+    expect((await res.json()).message).toMatch(/plazas disponibles/i);
   });
 
   it('treats null groupSize as 1 when counting against maxGuests', async () => {
@@ -478,7 +478,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/match seat count/i);
+    expect((await res.json()).message).toMatch(/coincidir con las plazas/i);
   });
 
   it('rejects when an attendee is missing name/email', async () => {
@@ -497,7 +497,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/name and email/i);
+    expect((await res.json()).message).toMatch(/nombre y correo electrónico/i);
   });
 
   it('rejects when capacity helper reports the slot is full', async () => {
@@ -513,7 +513,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/seats remaining/i);
+    expect((await res.json()).message).toMatch(/plazas para esta franja/i);
   });
 
   it('inserts one attendee row per seat when no explicit attendees passed (legacy widget)', async () => {

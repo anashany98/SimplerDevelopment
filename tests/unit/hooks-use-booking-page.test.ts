@@ -212,7 +212,7 @@ describe('useBookingPage', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.page).toBeNull();
-    expect(result.current.error).toBe('Booking page not found');
+    expect(result.current.error).toBe('Página de reservas no encontrada.');
   });
 
   it('sets error when getBookingPage throws', async () => {
@@ -227,7 +227,7 @@ describe('useBookingPage', () => {
     const { result } = renderHook(() => useBookingPage('1'));
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.error).toBe('Failed to load booking page');
+    expect(result.current.error).toBe('No se pudo cargar la página de reservas.');
   });
 
   it('loads bookings list from listBookings on mount', async () => {
@@ -431,7 +431,7 @@ describe('useBookingPage', () => {
       await result.current.save();
     });
 
-    expect(result.current.error).toBe('Failed to save changes');
+    expect(result.current.error).toBe('No se pudieron guardar los cambios.');
     expect(result.current.saving).toBe(false);
   });
 
@@ -449,7 +449,7 @@ describe('useBookingPage', () => {
       await result.current.save();
     });
 
-    expect(result.current.error).toBe('Failed to save');
+    expect(result.current.error).toBe('No se pudo guardar.');
   });
 
   // ── remove ────────────────────────────────────────────────────────────────

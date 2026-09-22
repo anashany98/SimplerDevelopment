@@ -203,7 +203,7 @@ describe('public booking — backward compat (individual + fixed defaults) @book
       { params: { slug }, body: { name: 'Bob', email: 'bob@t.l', startTime: slot.toISOString() } },
     );
     expect(second.status).toBe(409);
-    expect(second.data?.message ?? '').toMatch(/no longer available/i);
+    expect(second.data?.message ?? '').toMatch(/ya no está disponible/i);
 
     const sql = getTestSql();
     const rows = await sql<{ id: number }[]>`

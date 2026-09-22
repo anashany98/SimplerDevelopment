@@ -15,10 +15,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .where(and(eq(bookingQuotes.slug, slug), eq(bookingQuotes.status, 'pending')))
       .limit(1);
 
-    if (!quote) return NextResponse.json({ success: false, message: 'Quote not found or already paid' }, { status: 404 });
+    if (!quote) return NextResponse.json({ success: false, message: 'Presupuesto no encontrado o ya pagado.' }, { status: 404 });
 
     if (quote.expiresAt && new Date() > quote.expiresAt) {
-      return NextResponse.json({ success: false, message: 'This quote has expired' }, { status: 410 });
+      return NextResponse.json({ success: false, message: 'Este presupuesto ha caducado.' }, { status: 410 });
     }
 
     const Stripe = (await import('stripe')).default;

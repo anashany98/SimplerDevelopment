@@ -380,7 +380,7 @@ test.describe('Email Events - Booking Emails @email @booking', () => {
 
     // Accept both success (first cancel) and 409 (already cancelled)
     if (res.status() === 409) {
-      expect(data.message).toContain('already been cancelled');
+      expect(data.message).toContain('ya ha sido cancelada');
     } else {
       expect(res.status()).toBe(200);
       expect(data.success).toBe(true);

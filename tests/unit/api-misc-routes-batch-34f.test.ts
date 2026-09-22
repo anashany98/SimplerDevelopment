@@ -634,7 +634,7 @@ describe('GET /api/public/booking/[slug]/add-ons', () => {
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.success).toBe(false);
-    expect(body.message).toBe('Booking page not found');
+    expect(body.message).toBe('Página de reservas no encontrada.');
   });
 
   it('returns empty data array when add-ons disabled on page', async () => {
@@ -898,7 +898,7 @@ describe('GET /api/public/booking/[slug]', () => {
     expect(res.status).toBe(404);
     const body = await res.json();
     expect(body.success).toBe(false);
-    expect(body.message).toBe('Booking page not found');
+    expect(body.message).toBe('Página de reservas no encontrada.');
   });
 
   it('returns merged branding from per-page styling (overrides everything)', async () => {

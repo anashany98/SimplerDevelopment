@@ -25,14 +25,14 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     ))
     .limit(1);
 
-  if (!quote) return NextResponse.json({ success: false, message: 'Quote not found' }, { status: 404 });
+  if (!quote) return NextResponse.json({ success: false, message: 'Presupuesto no encontrado.' }, { status: 404 });
 
   if (quote.status === 'paid') {
     return NextResponse.json({ success: true, data: { ...quote, alreadyPaid: true } });
   }
 
   if (quote.expiresAt && new Date() > quote.expiresAt) {
-    return NextResponse.json({ success: false, message: 'This quote has expired' }, { status: 410 });
+    return NextResponse.json({ success: false, message: 'Este presupuesto ha caducado.' }, { status: 410 });
   }
 
   return NextResponse.json({ success: true, data: quote });
