@@ -10,8 +10,8 @@ const ITEMS: Array<{ label: string; icon: string; seg: string }> = [
   { label: 'Panel', icon: 'dashboard', seg: '' },
   { label: 'Productos', icon: 'inventory_2', seg: 'products' },
   { label: 'Pedidos', icon: 'receipt_long', seg: 'orders' },
-  { label: 'Envío', icon: 'local_shipping', seg: 'shipping' },
-  { label: 'Discounts', icon: 'sell', seg: 'discounts' },
+  { label: 'Envíos', icon: 'local_shipping', seg: 'shipping' },
+  { label: 'Descuentos', icon: 'sell', seg: 'discounts' },
   { label: 'Categorías', icon: 'category', seg: 'categories' },
   { label: 'Ajustes', icon: 'settings', seg: 'settings' },
 ];

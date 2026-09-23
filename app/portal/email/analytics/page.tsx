@@ -78,16 +78,16 @@ export default function EmailAnalyticsPage() {
       {/* Overview stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <StatCard icon="send" label="Correos enviados" value={overview.totalSent.toLocaleString()} />
-        <StatCard icon="mark_email_read" label="Tasa de apertura" value={`${overview.openRate}%`} sub={`${overview.totalOpened.toLocaleString()} opened`} color="text-green-500" />
-        <StatCard icon="ads_click" label="Tasa de clics" value={`${overview.clickRate}%`} sub={`${overview.totalClicked.toLocaleString()} clicked`} color="text-blue-500" />
-        <StatCard icon="people" label="Suscriptores" value={subscribers.active.toLocaleString()} sub={`${subscribers.total.toLocaleString()} total across ${subscribers.totalLists} lists`} color="text-purple-500" />
+        <StatCard icon="mark_email_read" label="Tasa de apertura" value={`${overview.openRate}%`} sub={`${overview.totalOpened.toLocaleString()} abiertos`} color="text-green-500" />
+        <StatCard icon="ads_click" label="Tasa de clics" value={`${overview.clickRate}%`} sub={`${overview.totalClicked.toLocaleString()} clics`} color="text-blue-500" />
+        <StatCard icon="people" label="Suscriptores" value={subscribers.active.toLocaleString()} sub={`${subscribers.total.toLocaleString()} en total · ${subscribers.totalLists} listas`} color="text-purple-500" />
       </div>
 
       {/* Secondary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard icon="campaign" label="Campañas enviadas" value={overview.totalCampaigns} />
-        <StatCard icon="error_outline" label="Bounced" value={overview.totalBounced.toLocaleString()} color="text-red-500" />
-        <StatCard icon="unsubscribe" label="Unsubscribed" value={overview.totalUnsubscribed.toLocaleString()} color="text-amber-500" />
+        <StatCard icon="error_outline" label="Rebotados" value={overview.totalBounced.toLocaleString()} color="text-red-500" />
+        <StatCard icon="unsubscribe" label="Bajas" value={overview.totalUnsubscribed.toLocaleString()} color="text-amber-500" />
       </div>
 
       {/* List breakdown */}
@@ -134,7 +134,7 @@ export default function EmailAnalyticsPage() {
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Enviado</th>
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Opened</th>
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Clicked</th>
-                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Bounced</th>
+                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Rebotados</th>
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Tasa de apertura</th>
                 </tr>
               </thead>

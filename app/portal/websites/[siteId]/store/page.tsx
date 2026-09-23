@@ -143,11 +143,11 @@ export default function StoreDashboardPage() {
       <PortalPageHeader
         eyebrow="Tienda"
         title="Panel de la tienda"
-        subtitle={`${settings.storeName || 'Tu tienda'} — last 30 days overview`}
+        subtitle={`${settings.storeName || 'Tu tienda'} — resumen de los últimos 30 días`}
         actions={
           <Link href={`/portal/websites/${siteId}/store/products/new`} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            Add Product
+            Añadir producto
           </Link>
         }
       />
