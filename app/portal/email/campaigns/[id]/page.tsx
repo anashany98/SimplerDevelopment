@@ -61,14 +61,11 @@ interface Send {
   bouncedAt: string | null;
 }
 
-const statusColor: Record<string, string> = {
-  draft: 'bg-muted text-muted-foreground',
-  scheduled: 'bg-blue-100 text-blue-700',
-  sending: 'bg-yellow-100 text-yellow-700',
-  ab_testing: 'bg-purple-100 text-purple-700',
-  sent: 'bg-green-100 text-green-700',
-  cancelled: 'bg-red-100 text-red-700',
-};
+const statusColor: Record<string, string> = { draft: 'bg-muted text-muted-foreground', scheduled: 'bg-blue-100 text-blue-700', sending: 'bg-yellow-100 text-yellow-700', ab_testing: 'bg-purple-100 text-purple-700', sent: 'bg-green-100 text-green-700', cancelled: 'bg-red-100 text-red-700' };
+
+/** Spanish labels for the campaign status badge + detail tabs (UI shows these, not the enums). */
+const statusLabel: Record<string, string> = { draft: 'Borrador', scheduled: 'Programada', sending: 'Enviando…', ab_testing: 'Test A/B', sent: 'Enviada', cancelled: 'Cancelada' };
+const tabLabel: Record<'overview' | 'content' | 'sends', string> = { overview: 'Resumen', content: 'Contenido', sends: 'Envíos' };
 
 export default function PortalCampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -301,7 +298,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
           title={
             <span className="flex items-center gap-2 flex-wrap">
               {campaign.name}
-              <span className={`text-base font-normal px-2 py-0.5 rounded-full ${statusColor[campaign.status] ?? 'bg-muted text-muted-foreground'}`}>{campaign.status}</span>
+              <span className={`text-base font-normal px-2 py-0.5 rounded-full ${statusColor[campaign.status] ?? 'bg-muted text-muted-foreground'}`}>{statusLabel[campaign.status] ?? campaign.status}</span>
             </span>
           }
           subtitle={campaign.subject}
@@ -373,8 +370,8 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
       <div className="border-b border-border flex gap-1">
         {(['overview', 'content', 'sends'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
-            {t}
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}>
+            {tabLabel[t]}
           </button>
         ))}
       </div>

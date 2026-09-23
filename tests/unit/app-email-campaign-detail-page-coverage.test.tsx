@@ -275,7 +275,7 @@ describe('PortalCampaignDetailPage — initial render', () => {
   it('renders status badge with correct label', async () => {
     const { container } = await renderPage();
     const spans = Array.from(container.querySelectorAll('span'));
-    const badge = spans.find(s => s.textContent === 'draft');
+    const badge = spans.find(s => s.textContent === 'Borrador');
     expect(badge).toBeTruthy();
     expect(badge?.className).toContain('bg-muted');
   });
@@ -288,9 +288,9 @@ describe('PortalCampaignDetailPage — initial render', () => {
 
   it('renders tabs: overview, content, sends', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('overview');
-    expect(container.textContent).toContain('content');
-    expect(container.textContent).toContain('sends');
+    expect(container.textContent).toContain('Resumen');
+    expect(container.textContent).toContain('Contenido');
+    expect(container.textContent).toContain('Envíos');
   });
 
   it('renders overview fields (From, Reply-To, List)', async () => {
@@ -335,8 +335,15 @@ describe('PortalCampaignDetailPage — statusColor map', () => {
   for (const [status, expectedClass] of cases) {
     it(`status "${status}" renders with class ${expectedClass}`, async () => {
       await renderPage({ status, totalSent: 100, totalOpened: 50, totalClicked: 10, totalBounced: 2 });
+      const LABELS: Record<string, string> = {
+        scheduled: 'Programada',
+        sending: 'Enviando…',
+        ab_testing: 'Test A/B',
+        sent: 'Enviada',
+        cancelled: 'Cancelada',
+      };
       const spans = Array.from(document.querySelectorAll('span'));
-      const badge = spans.find(s => s.textContent === status);
+      const badge = spans.find(s => s.textContent === (LABELS[status] ?? status));
       expect(badge?.className).toContain(expectedClass);
     });
   }
@@ -387,21 +394,21 @@ describe('PortalCampaignDetailPage — stats panel', () => {
 describe('PortalCampaignDetailPage — tab switching', () => {
   it('clicking "content" tab renders html content preview', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('content'));
+    fireEvent.click(screen.getByText('Contenido'));
     expect(container.textContent).toContain('Vista previa del correo');
   });
 
   it('clicking "sends" tab renders the send log', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(container.textContent).toContain('Registro de envíos');
     expect(container.textContent).toContain('alice@example.com');
   });
 
   it('clicking "overview" tab returns to overview content', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('content'));
-    fireEvent.click(screen.getByText('overview'));
+    fireEvent.click(screen.getByText('Contenido'));
+    fireEvent.click(screen.getByText('Resumen'));
     expect(container.textContent).toContain('Remitente');
     expect(container.textContent).toContain('Correo de respuesta');
   });
@@ -412,14 +419,14 @@ describe('PortalCampaignDetailPage — tab switching', () => {
 describe('PortalCampaignDetailPage — sends tab', () => {
   it('renders recipient emails in sends table', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(container.textContent).toContain('alice@example.com');
     expect(container.textContent).toContain('bob@example.com');
   });
 
   it('renders recipient name when available', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(container.textContent).toContain('Alice');
   });
 
@@ -433,13 +440,13 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const params = { id: '1' } as unknown as Promise<{ id: string }>;
     render(<PortalCampaignDetailPage params={params} />);
     await waitFor(() => screen.getByText('My Campaign'));
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(screen.getByText(/Aún no hay envíos registrados/i)).toBeTruthy();
   });
 
   it('renders check_circle icons for sent/opened sends', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     const checks = Array.from(container.querySelectorAll('.material-icons')).filter(
       el => el.textContent === 'check_circle',
     );
@@ -448,7 +455,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
 
   it('renders error icon for bounced send', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     const errorIcons = Array.from(container.querySelectorAll('.material-icons')).filter(
       el => el.textContent === 'error',
     );
@@ -536,7 +543,7 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
     const { container } = await renderPage();
     fireEvent.click(screen.getByText('Editar'));
     await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
-    fireEvent.click(screen.getByText('content'));
+    fireEvent.click(screen.getByText('Contenido'));
     const textareas = container.querySelectorAll('textarea');
     expect(textareas.length).toBeGreaterThan(0);
   });
@@ -845,7 +852,7 @@ describe('PortalCampaignDetailPage — branding defaults', () => {
 describe('PortalCampaignDetailPage — content tab (non-edit)', () => {
   it('shows sanitized html content in the preview pane', async () => {
     const { container } = await renderPage({ htmlContent: '<p>Hello from HTML</p>' });
-    fireEvent.click(screen.getByText('content'));
+    fireEvent.click(screen.getByText('Contenido'));
     expect(container.innerHTML).toContain('Hello from HTML');
   });
 });

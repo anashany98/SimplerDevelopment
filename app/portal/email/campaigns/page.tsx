@@ -26,6 +26,15 @@ const statusColor: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-700',
 };
 
+/** Spanish labels for the campaign status badge (UI shows these, not the enum). */
+const statusLabel: Record<string, string> = {
+  draft: 'Borrador',
+  scheduled: 'Programada',
+  sending: 'Enviando…',
+  sent: 'Enviada',
+  cancelled: 'Cancelada',
+};
+
 export default function PortalCampaignsPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +99,7 @@ export default function PortalCampaignsPage() {
                     <td className="px-4 py-3 text-muted-foreground hidden sm:table-cell">{c.listName ?? '—'}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[c.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                        {c.status}
+                        {statusLabel[c.status] ?? c.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right text-muted-foreground hidden md:table-cell">

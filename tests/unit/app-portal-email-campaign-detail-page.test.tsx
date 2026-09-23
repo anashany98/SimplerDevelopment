@@ -339,7 +339,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
 
   it('renders status badge for draft', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('draft'));
+    await waitFor(() => expect(container.textContent).toContain('Borrador'));
   });
 
   it('renders back link to campaigns list', async () => {
@@ -406,7 +406,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.trim() === 'Enviar ahora',
     );
@@ -434,6 +434,14 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
 // ─── Status badge variants ────────────────────────────────────────────────────
 
 describe('PortalCampaignDetailPage — status badge', () => {
+  const LABELS: Record<string, string> = {
+    draft: 'Borrador',
+    scheduled: 'Programada',
+    sending: 'Enviando…',
+    sent: 'Enviada',
+    ab_testing: 'Test A/B',
+    cancelled: 'Cancelada',
+  };
   const statuses = ['draft', 'scheduled', 'sending', 'sent', 'ab_testing', 'cancelled'];
 
   for (const status of statuses) {
@@ -456,7 +464,7 @@ describe('PortalCampaignDetailPage — status badge', () => {
       });
       const { container } = renderPage();
       await waitFor(() => {
-        expect(container.textContent).toContain(status);
+        expect(container.textContent).toContain(LABELS[status]);
       });
     });
   }
@@ -534,7 +542,7 @@ describe('PortalCampaignDetailPage — stats section', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
     const text = container.textContent ?? '';
     const zeroRates = (text.match(/0%/g) ?? []).length;
     expect(zeroRates).toBeGreaterThanOrEqual(3);
@@ -554,9 +562,9 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const buttons = Array.from(container.querySelectorAll('button'));
-      expect(buttons.some((b) => b.textContent?.includes('overview'))).toBe(true);
-      expect(buttons.some((b) => b.textContent?.includes('content'))).toBe(true);
-      expect(buttons.some((b) => b.textContent?.includes('sends'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Resumen'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Contenido'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Envíos'))).toBe(true);
     });
   });
 
@@ -571,7 +579,7 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
@@ -583,7 +591,7 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -703,7 +711,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
     expect(container.textContent).not.toContain('Plantilla / HTML');
   });
 });
@@ -739,7 +747,7 @@ describe('PortalCampaignDetailPage — content tab (view mode)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
@@ -751,7 +759,7 @@ describe('PortalCampaignDetailPage — content tab (view mode)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
@@ -1215,7 +1223,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1234,7 +1242,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1253,7 +1261,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1272,7 +1280,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1291,7 +1299,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
