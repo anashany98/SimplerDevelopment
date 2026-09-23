@@ -22,6 +22,10 @@ export interface PortalNavChild {
   /** Render a section divider above this item (separates product nav from the
    *  account cluster at the bottom of the sidebar). */
   dividerBefore?: boolean;
+  /** Renders as a non-clickable section label inside an accordion (used to
+   *  sub-group long child lists like Brain's). Not navigable, skipped by the
+   *  Cmd+K palette. */
+  groupHeader?: boolean;
 }
 
 export interface PortalNavItem extends PortalNavChild {
@@ -36,9 +40,11 @@ export interface PortalNavItem extends PortalNavChild {
  * The tree is consolidated into a small set of top-level groups (Brain,
  * Projects, CRM, Marketing, Websites) followed by an account cluster
  * (Support, Billing, Agency, Settings) below a divider, so the sidebar stays
- * scannable. Single-feature areas (Email, Publishing, Surveys, Pitches) live
- * inside the "Marketing" group; Media + A/B + the active-site tree live inside
- * "Websites".
+ * scannable. Brain's long child list is sub-grouped with non-clickable
+ * `groupHeader` labels (Trabajo / Conocimiento / Equipo / IA y automatización).
+ * Email + Publishing + Branding live inside "Marketing"; Pitch decks and
+ * Proposals live inside "CRM" (sales surfaces); Media + A/B + the active-site
+ * tree live inside "Websites".
  *
  * The optional `apps` param injects an "Apps" group (one parent + one child
  * per installed plugin + grandchildren for each plugin's manifest nav items)
@@ -78,6 +84,7 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
         // /portal/brain/calendar still renders for direct URL navigation.
         // Relationships is intentionally hidden from sidebar + cmd-k. The page
         // at /portal/brain/relationships still renders for direct URL access.
+        { href: '', label: 'Trabajo', icon: '', groupHeader: true },
         {
           href: '/portal/brain/tasks',
           label: 'Tareas',
@@ -105,10 +112,11 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
         },
         {
           href: '/portal/brain/playbook-runs',
-          label: 'Ejecuciones de playbooks',
+          label: 'Ejecuciones',
           icon: 'playlist_play',
           keywords: ['runs', 'instances', 'in-flight', 'monitor'],
         },
+        { href: '', label: 'Conocimiento', icon: '', groupHeader: true },
         {
           href: '/portal/brain/knowledge',
           label: 'Conocimiento',
@@ -127,6 +135,7 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'account_tree',
           keywords: ['taxonomy', 'tags', 'categories', 'tree'],
         },
+        { href: '', label: 'Equipo', icon: '', groupHeader: true },
         {
           href: '/portal/brain/people',
           label: 'Personas',
@@ -163,12 +172,7 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'auto_stories',
           keywords: ['note templates', 'forms', 'structured notes'],
         },
-        {
-          href: '/portal/branding',
-          label: 'Marca y mensajes',
-          icon: 'palette',
-          keywords: ['brand', 'theme', 'colors', 'logo', 'voice', 'messaging'],
-        },
+        { href: '', label: 'IA y automatización', icon: '', groupHeader: true },
         {
           href: '/portal/brain/automations',
           label: 'Automatizaciones',
@@ -251,6 +255,8 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'description',
           keywords: ['agreements', 'esign', 'documents'],
         },
+        { href: '/portal/crm/proposals', label: 'Propuestas', icon: 'request_quote', exact: true, requiredDomain: 'pitch-decks', keywords: ['quotes'] },
+        { href: '/portal/tools/pitch-decks', label: 'Pitch decks', icon: 'slideshow', exact: true, requiredDomain: 'pitch-decks', keywords: ['slides', 'presentations'] },
         {
           href: '/portal/crm/settings',
           label: 'Ajustes',
@@ -377,20 +383,10 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           ],
         },
         {
-          href: '/portal/tools/pitch-decks',
-          label: 'Pitch decks',
-          icon: 'slideshow',
-          exact: true,
-          requiredDomain: 'pitch-decks',
-          keywords: ['slides', 'presentations'],
-        },
-        {
-          href: '/portal/crm/proposals',
-          label: 'Propuestas',
-          icon: 'request_quote',
-          exact: true,
-          requiredDomain: 'pitch-decks',
-          keywords: ['quotes'],
+          href: '/portal/branding',
+          label: 'Marca y mensajes',
+          icon: 'palette',
+          keywords: ['brand', 'theme', 'colors', 'logo', 'voice', 'messaging'],
         },
       ],
     },
@@ -536,7 +532,7 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
         },
         {
           href: '/portal/inbox',
-          label: 'Chat en directo',
+          label: 'Bandeja de entrada',
           icon: 'forum',
           keywords: ['chat', 'conversations', 'messages', 'live chat', 'inbox'],
         },
@@ -555,18 +551,6 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'receipt_long',
           exact: true,
           keywords: ['billing', 'payments', 'charges'],
-        },
-        {
-          href: '/portal/services',
-          label: 'Servicios',
-          icon: 'miscellaneous_services',
-          keywords: ['subscriptions', 'add-ons'],
-        },
-        {
-          href: '/portal/hosting',
-          label: 'Hosting',
-          icon: 'dns',
-          keywords: ['dns', 'domains', 'servers'],
         },
       ],
     },
@@ -597,6 +581,8 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'palette',
           keywords: ['logo', 'wordmark', 'agency name'],
         },
+        { href: '/portal/services', label: 'Servicios', icon: 'miscellaneous_services', keywords: ['subscriptions', 'add-ons'] },
+        { href: '/portal/hosting', label: 'Hosting', icon: 'dns', keywords: ['dns', 'domains', 'servers'] },
       ],
     },
     {
@@ -694,6 +680,8 @@ export function flattenPortalNav(items: PortalNavItem[]): PortalNavTarget[] {
 
   const walk = (nodes: PortalNavChild[], trail: string[]) => {
     for (const node of nodes) {
+      // Section labels are not destinations — skip them entirely.
+      if (node.groupHeader) continue;
       // Locked nodes are not surfaced in the Cmd+K palette — their href is not
       // a reachable destination for ungated users.
       if (node.locked) continue;

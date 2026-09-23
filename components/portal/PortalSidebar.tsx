@@ -46,6 +46,8 @@ const EXCLUDED_SERVICES = new Set([
 ]);
 
 function isItemActive(item: { href: string; exact?: boolean; alsoActiveOn?: string }, pathname: string): boolean {
+  // Section labels (groupHeader) carry no href — they are never "active".
+  if (!item.href) return false;
   if (item.exact) return pathname === item.href;
   if (pathname === item.href || pathname.startsWith(item.href + '/')) return true;
   if (item.alsoActiveOn && pathname.startsWith(item.alsoActiveOn)) return true;
@@ -299,9 +301,18 @@ export default function PortalSidebar({
 
   // Renders a nav item link (or parent toggle)
   const renderNavLink = (
-    item: { href: string; label: string; icon: string; exact?: boolean; alsoActiveOn?: string; children?: NavChild[]; locked?: boolean; requiredDomain?: string },
+    item: { href: string; label: string; icon: string; exact?: boolean; alsoActiveOn?: string; children?: NavChild[]; locked?: boolean; requiredDomain?: string; groupHeader?: boolean },
     depth: number,
   ) => {
+    // Non-clickable section label inside an accordion (e.g. Brain's subgroups).
+    if (item.groupHeader) {
+      return (
+        <div className="pl-8 pr-3 pt-3 pb-1 font-mono text-[10px] uppercase tracking-[0.14em] font-semibold text-muted-foreground/60 group-data-[collapsed=true]/sb:lg:hidden">
+          {item.label}
+        </div>
+      );
+    }
+
     const hasChildren = item.children && item.children.length > 0;
     const isLocked = !!item.locked;
     const active = !isLocked && isItemActive(item, pathname);
@@ -420,7 +431,7 @@ export default function PortalSidebar({
 
     return (
       <li
-        key={`${depth}-${item.href}`}
+        key={`${depth}-${item.href || item.label}`}
         className={item.dividerBefore && depth === 0 ? 'mt-3 pt-3 border-t border-border' : undefined}
       >
         {renderNavLink(item, depth)}

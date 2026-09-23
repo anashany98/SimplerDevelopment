@@ -172,6 +172,8 @@ function deepestNavMatch(pathname: string): { href: string; label: string } | nu
   let best: { href: string; label: string } | null = null;
   const walk = (items: Array<PortalNavItem | { href: string; label: string; children?: unknown[] }>) => {
     for (const item of items) {
+      // Section labels (groupHeader) carry no href — they are not destinations.
+      if (!item.href) continue;
       if (pathname === item.href || pathname.startsWith(item.href + '/')) {
         if (!best || item.href.length > best.href.length) best = { href: item.href, label: item.label };
       }

@@ -19,7 +19,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   surveys: 'Encuestas',
   websites: 'Webs',
   tickets: 'Soporte',
-  inbox: 'Chat en directo',
+  inbox: 'Bandeja de entrada',
   invoices: 'Facturación',
   services: 'Servicios',
   hosting: 'Alojamiento',

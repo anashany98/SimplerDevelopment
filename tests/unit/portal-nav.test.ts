@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { buildPortalNavItems } from '@/lib/portal-nav';
+import { buildPortalNavItems, flattenPortalNav } from '@/lib/portal-nav';
 import type { UserAppNavMeta } from '@/lib/plugins/load-user-apps';
 
 const APP_FIXTURE: UserAppNavMeta = {
@@ -143,5 +143,64 @@ describe('buildPortalNavItems — apps injection', () => {
     const items = buildPortalNavItems(null, null, [APP_FIXTURE]);
     const apps = items.find((i) => i.label === 'Aplicaciones');
     expect(apps?.keywords).toEqual(expect.arrayContaining(['plugins', 'integrations']));
+  });
+});
+
+// ─── Reorganized IA (Brain subgroups + cross-group moves) ───────────────────
+
+describe('buildPortalNavItems — reorganized IA', () => {
+  const items = buildPortalNavItems(null, null);
+  const byLabel = (label: string) => items.find((i) => i.label === label);
+
+  it('sub-groups Brain children with non-clickable section headers', () => {
+    const brain = byLabel('Cerebro de empresa');
+    const headers = brain!.children!.filter((c) => c.groupHeader).map((c) => c.label);
+    expect(headers).toEqual(['Trabajo', 'Conocimiento', 'Equipo', 'IA y automatización']);
+    for (const h of brain!.children!.filter((c) => c.groupHeader)) {
+      expect(h.href).toBe('');
+      expect(h.groupHeader).toBe(true);
+    }
+  });
+
+  it('shortens the playbook-runs label to avoid sidebar truncation', () => {
+    const brain = byLabel('Cerebro de empresa');
+    const runs = brain!.children!.find((c) => c.href === '/portal/brain/playbook-runs');
+    expect(runs?.label).toBe('Ejecuciones');
+  });
+
+  it('moves Propuestas + Pitch decks into CRM (sales surfaces)', () => {
+    const crmHrefs = byLabel('CRM')!.children!.map((c) => c.href);
+    expect(crmHrefs).toContain('/portal/crm/proposals');
+    expect(crmHrefs).toContain('/portal/tools/pitch-decks');
+    const marketingHrefs = byLabel('Marketing')!.children!.map((c) => c.href);
+    expect(marketingHrefs).not.toContain('/portal/crm/proposals');
+    expect(marketingHrefs).not.toContain('/portal/tools/pitch-decks');
+  });
+
+  it('moves Marca y mensajes from Brain into Marketing', () => {
+    expect(byLabel('Cerebro de empresa')!.children!.some((c) => c.href === '/portal/branding')).toBe(false);
+    expect(byLabel('Marketing')!.children!.some((c) => c.href === '/portal/branding')).toBe(true);
+  });
+
+  it('renames the inbox entry to "Bandeja de entrada"', () => {
+    const inbox = byLabel('Soporte')!.children!.find((c) => c.href === '/portal/inbox');
+    expect(inbox?.label).toBe('Bandeja de entrada');
+  });
+
+  it('moves Servicios + Hosting from Facturación into Agencia', () => {
+    const billingHrefs = byLabel('Facturación')!.children!.map((c) => c.href);
+    expect(billingHrefs).not.toContain('/portal/services');
+    expect(billingHrefs).not.toContain('/portal/hosting');
+    const agencyHrefs = byLabel('Agencia')!.children!.map((c) => c.href);
+    expect(agencyHrefs).toContain('/portal/services');
+    expect(agencyHrefs).toContain('/portal/hosting');
+  });
+});
+
+describe('flattenPortalNav — skips section labels', () => {
+  it('never emits groupHeader entries as palette targets', () => {
+    const targets = flattenPortalNav(buildPortalNavItems(null, null));
+    expect(targets.some((t) => t.label === 'Trabajo' || t.label === 'IA y automatización')).toBe(false);
+    expect(targets.every((t) => t.href.startsWith('/'))).toBe(true);
   });
 });
