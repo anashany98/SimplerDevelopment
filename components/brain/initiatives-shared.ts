@@ -5,6 +5,8 @@
  * pull in lib/db / drizzle just to render a status chip.
  */
 
+import { relativeTimeEs } from '@/lib/portal-utils';
+
 export type BrainInitiativeStatus =
   | 'planned'
   | 'active'
@@ -179,28 +181,13 @@ export function linkEntityTypeMeta(t: BrainInitiativeLinkType): { label: string;
 // ─── formatters ──────────────────────────────────────────────────────────────
 
 /**
- * Tiny relative-time formatter. Matches the shape used elsewhere in the portal
- * (see components/portal/comments/ThreadCard.tsx). Returns 'just now', '7m',
- * '3h', '5d', '2mo', '1y'. Pass `signed: true` to flip past/future ('in 2d',
- * '3d ago') — useful for target dates.
+ * Spanish relative time ("hace 5 min", "en 2 d"). Pass `signed: true` to
+ * render future target dates too.
  */
 export function relativeTime(d: Date | string, opts: { signed?: boolean } = {}): string {
   const date = typeof d === 'string' ? new Date(d) : d;
-  const diffMs = date.getTime() - Date.now();
-  const future = diffMs > 0;
-  const abs = Math.abs(diffMs);
-  const s = Math.floor(abs / 1000);
-  if (s < 45) return opts.signed ? (future ? 'soon' : 'just now') : 'just now';
-  const m = Math.floor(s / 60);
-  if (m < 60) return opts.signed ? (future ? `in ${m}m` : `${m}m ago`) : `${m}m`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return opts.signed ? (future ? `in ${h}h` : `${h}h ago`) : `${h}h`;
-  const days = Math.floor(h / 24);
-  if (days < 30) return opts.signed ? (future ? `in ${days}d` : `${days}d ago`) : `${days}d`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return opts.signed ? (future ? `in ${months}mo` : `${months}mo ago`) : `${months}mo`;
-  const years = Math.floor(months / 12);
-  return opts.signed ? (future ? `in ${years}y` : `${years}y ago`) : `${years}y`;
+  if (Number.isNaN(date.getTime())) return '—';
+  return relativeTimeEs(date, opts);
 }
 
 /** Days remaining (signed). Returns null if no targetDate. */

@@ -504,7 +504,7 @@ describe('CommandPalette — note row display', () => {
     });
     const { getByLabelText, findByText } = renderPalette();
     fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
-    expect(await findByText('just now')).toBeInTheDocument();
+    expect(await findByText('ahora mismo')).toBeInTheDocument();
   });
 
   it('renders "Nm ago" for minute-range timestamps', async () => {
@@ -523,7 +523,7 @@ describe('CommandPalette — note row display', () => {
     });
     const { getByLabelText, findByText } = renderPalette();
     fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
-    expect(await findByText('5m ago')).toBeInTheDocument();
+    expect(await findByText('hace 5 min')).toBeInTheDocument();
   });
 
   it('renders "Nh ago" for hour-range timestamps', async () => {
@@ -542,7 +542,7 @@ describe('CommandPalette — note row display', () => {
     });
     const { getByLabelText, findByText } = renderPalette();
     fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
-    expect(await findByText('3h ago')).toBeInTheDocument();
+    expect(await findByText('hace 3 h')).toBeInTheDocument();
   });
 
   it('renders "Nd ago" for day-range timestamps', async () => {
@@ -561,7 +561,7 @@ describe('CommandPalette — note row display', () => {
     });
     const { getByLabelText, findByText } = renderPalette();
     fireEvent.change(getByLabelText('Buscar'), { target: { value: 'q' } });
-    expect(await findByText('4d ago')).toBeInTheDocument();
+    expect(await findByText('hace 4 d')).toBeInTheDocument();
   });
 
   it('renders empty time for invalid timestamps', async () => {

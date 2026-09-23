@@ -228,7 +228,7 @@ describe('NoteHistoryPanel', () => {
     render(<NoteHistoryPanel noteId={5} />);
     expect(await screen.findByText('Created')).toBeTruthy();
     expect(screen.getByText('user #42')).toBeTruthy();
-    expect(screen.getByText(/just now|ago/)).toBeTruthy();
+    expect(screen.getByText(/ahora mismo|hace/)).toBeTruthy();
   });
 
   it('renders "system" actor when actorId is null and falls back for unknown actions', async () => {
@@ -299,7 +299,7 @@ describe('NoteHistoryPanel', () => {
       },
     });
     render(<NoteHistoryPanel noteId={5} />);
-    expect(await screen.findByText(/5d ago/)).toBeTruthy();
+    expect(await screen.findByText(/hace 5 d/)).toBeTruthy();
   });
 });
 

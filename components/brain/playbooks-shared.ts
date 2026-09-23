@@ -5,6 +5,8 @@
  * just to render a status chip. Mirrors the shape of initiatives-shared.ts.
  */
 
+import { relativeTimeEs } from '@/lib/portal-utils';
+
 export type BrainPlaybookStatus = 'draft' | 'active' | 'archived';
 export type BrainPlaybookTriggerKind = 'manual' | 'event' | 'scheduled';
 export type BrainPlaybookStepKind =
@@ -432,21 +434,7 @@ export function playbookLinkEntityMeta(
 export function relativeTime(d: Date | string, opts: { signed?: boolean } = {}): string {
   const date = typeof d === 'string' ? new Date(d) : d;
   if (Number.isNaN(date.getTime())) return '—';
-  const diffMs = date.getTime() - Date.now();
-  const future = diffMs > 0;
-  const abs = Math.abs(diffMs);
-  const s = Math.floor(abs / 1000);
-  if (s < 45) return opts.signed ? (future ? 'soon' : 'just now') : 'just now';
-  const m = Math.floor(s / 60);
-  if (m < 60) return opts.signed ? (future ? `in ${m}m` : `${m}m ago`) : `${m}m`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return opts.signed ? (future ? `in ${h}h` : `${h}h ago`) : `${h}h`;
-  const days = Math.floor(h / 24);
-  if (days < 30) return opts.signed ? (future ? `in ${days}d` : `${days}d ago`) : `${days}d`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return opts.signed ? (future ? `in ${months}mo` : `${months}mo ago`) : `${months}mo`;
-  const years = Math.floor(months / 12);
-  return opts.signed ? (future ? `in ${years}y` : `${years}y ago`) : `${years}y`;
+  return relativeTimeEs(date, opts);
 }
 
 export function durationBetween(

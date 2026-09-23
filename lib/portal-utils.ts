@@ -151,6 +151,42 @@ export function postTypeLabel(postType: string): string {
   return map[postType] ?? postType;
 }
 
+/**
+ * Spanish relative time for UI labels — "ahora mismo", "hace 5 min",
+ * "hace 3 h", "hace 2 d", "hace 4 meses", "hace 2 años". Pass
+ * `{ signed: true }` to render future values too ("en 5 min", "en un
+ * momento"); the default only describes the past. `null`/invalid → "—".
+ */
+export function relativeTimeEs(
+  value: string | number | Date | null | undefined,
+  opts: { signed?: boolean } = {},
+): string {
+  if (value == null) return '—';
+  const then = new Date(value).getTime();
+  if (Number.isNaN(then)) return '—';
+  const diffMs = Date.now() - then; // positive = past
+  const future = diffMs < 0;
+  const abs = Math.abs(diffMs);
+  const s = Math.floor(abs / 1000);
+  if (s < 45) {
+    if (!opts.signed) return 'ahora mismo';
+    return future ? 'en un momento' : 'ahora mismo';
+  }
+  const m = Math.floor(s / 60);
+  const h = Math.floor(m / 60);
+  const d = Math.floor(h / 24);
+  const mo = Math.floor(d / 30);
+  const y = Math.floor(mo / 12);
+  const unit =
+    m < 60 ? `${m} min` :
+    h < 24 ? `${h} h` :
+    d < 30 ? `${d} d` :
+    mo < 12 ? `${mo} meses` :
+    `${y} años`;
+  if (!opts.signed) return `hace ${unit}`;
+  return future ? `en ${unit}` : `hace ${unit}`;
+}
+
 export function orderStatusColor(status: string): string {
   const map: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',
