@@ -416,7 +416,7 @@ describe('PlaybookEditPage — happy-path render', () => {
   it('renders the draft status chip', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Draft');
+      expect(container.textContent).toContain('Borrador');
     });
   });
 
@@ -432,7 +432,7 @@ describe('PlaybookEditPage — happy-path render', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activo');
     });
   });
 
@@ -448,7 +448,7 @@ describe('PlaybookEditPage — happy-path render', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Archived');
+      expect(container.textContent).toContain('Archivado');
     });
   });
 
@@ -483,10 +483,10 @@ describe('PlaybookEditPage — happy-path render', () => {
   it('renders add-step buttons for all step kinds', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Task');
-      expect(container.textContent).toContain('Note');
-      expect(container.textContent).toContain('Meeting');
-      expect(container.textContent).toContain('Decision');
+      expect(container.textContent).toContain('Tarea');
+      expect(container.textContent).toContain('Nota');
+      expect(container.textContent).toContain('Reunión');
+      expect(container.textContent).toContain('Decisión');
     });
   });
 
@@ -952,7 +952,7 @@ describe('PlaybookEditPage — onRemoveStep', () => {
 // ─── onAddStep ────────────────────────────────────────────────────────────
 
 describe('PlaybookEditPage — onAddStep', () => {
-  it('POSTs to /steps when "Task" add-step button clicked', async () => {
+  it('POSTs to /steps when "Tarea" add-step button clicked', async () => {
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
       if (/\/api\/portal\/brain\/playbooks\/\d+$/.test(url) && !init?.method) {
         return makeRes({ success: true, data: { playbook: makePlaybook(), steps: [] } });
@@ -966,7 +966,7 @@ describe('PlaybookEditPage — onAddStep', () => {
     await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
 
     const taskBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Task'),
+      (b) => b.textContent?.includes('Tarea'),
     ) as HTMLButtonElement;
     fireEvent.click(taskBtn);
 
@@ -997,7 +997,7 @@ describe('PlaybookEditPage — onAddStep', () => {
     await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
 
     const taskBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Task'),
+      (b) => b.textContent?.includes('Tarea'),
     ) as HTMLButtonElement;
     fireEvent.click(taskBtn);
 
@@ -1026,7 +1026,7 @@ describe('PlaybookEditPage — onAddStep', () => {
     await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
 
     const taskBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Task'),
+      (b) => b.textContent?.includes('Tarea'),
     ) as HTMLButtonElement;
     fireEvent.click(taskBtn);
 
@@ -1050,7 +1050,7 @@ describe('PlaybookEditPage — onAddStep', () => {
     await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
 
     const taskBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Task'),
+      (b) => b.textContent?.includes('Tarea'),
     ) as HTMLButtonElement;
     fireEvent.click(taskBtn);
 

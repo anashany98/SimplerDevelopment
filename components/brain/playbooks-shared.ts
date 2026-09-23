@@ -213,21 +213,21 @@ export function playbookStatusChip(
   switch (status) {
     case 'draft':
       return {
-        label: 'Draft',
+        label: 'Borrador',
         icon: 'edit_note',
         className:
           'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300',
       };
     case 'active':
       return {
-        label: 'Active',
+        label: 'Activo',
         icon: 'play_circle',
         className:
           'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
       };
     case 'archived':
       return {
-        label: 'Archived',
+        label: 'Archivado',
         icon: 'archive',
         className:
           'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400',
@@ -248,14 +248,14 @@ export function playbookTriggerKindChip(
       };
     case 'event':
       return {
-        label: 'Event',
+        label: 'Evento',
         icon: 'bolt',
         className:
           'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
       };
     case 'scheduled':
       return {
-        label: 'Scheduled',
+        label: 'Programado',
         icon: 'schedule',
         className:
           'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
@@ -269,49 +269,49 @@ export function playbookStepKindChip(
   switch (kind) {
     case 'task':
       return {
-        label: 'Task',
+        label: 'Tarea',
         icon: 'task_alt',
         className:
           'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
       };
     case 'note':
       return {
-        label: 'Note',
+        label: 'Nota',
         icon: 'sticky_note_2',
         className:
           'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
       };
     case 'meeting':
       return {
-        label: 'Meeting',
+        label: 'Reunión',
         icon: 'forum',
         className:
           'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300',
       };
     case 'decision':
       return {
-        label: 'Decision',
+        label: 'Decisión',
         icon: 'gavel',
         className:
           'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
       };
     case 'review_item':
       return {
-        label: 'Review',
+        label: 'Revisión',
         icon: 'fact_check',
         className:
           'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
       };
     case 'wait':
       return {
-        label: 'Wait',
+        label: 'Espera',
         icon: 'hourglass_top',
         className:
           'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300',
       };
     case 'branch':
       return {
-        label: 'Branch',
+        label: 'Bifurcación',
         icon: 'alt_route',
         className:
           'bg-zinc-100 text-zinc-700 dark:bg-zinc-700/40 dark:text-zinc-300',
@@ -325,42 +325,42 @@ export function playbookRunStatusChip(
   switch (status) {
     case 'pending':
       return {
-        label: 'Pending',
+        label: 'Pendiente',
         icon: 'pending',
         className:
           'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300',
       };
     case 'active':
       return {
-        label: 'Active',
+        label: 'Activo',
         icon: 'play_circle',
         className:
           'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
       };
     case 'paused':
       return {
-        label: 'Paused',
+        label: 'Pausado',
         icon: 'pause_circle',
         className:
           'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
       };
     case 'completed':
       return {
-        label: 'Completed',
+        label: 'Completado',
         icon: 'check_circle',
         className:
           'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
       };
     case 'aborted':
       return {
-        label: 'Aborted',
+        label: 'Abortado',
         icon: 'cancel',
         className:
           'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400',
       };
     case 'failed':
       return {
-        label: 'Failed',
+        label: 'Fallido',
         icon: 'error',
         className:
           'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
@@ -374,35 +374,35 @@ export function playbookRunStepStatusChip(
   switch (status) {
     case 'pending':
       return {
-        label: 'Pending',
+        label: 'Pendiente',
         icon: 'schedule',
         className:
           'bg-slate-100 text-slate-600 dark:bg-slate-500/15 dark:text-slate-300',
       };
     case 'active':
       return {
-        label: 'Active',
+        label: 'Activo',
         icon: 'play_arrow',
         className:
           'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
       };
     case 'completed':
       return {
-        label: 'Completed',
+        label: 'Completado',
         icon: 'check_circle',
         className:
           'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300',
       };
     case 'skipped':
       return {
-        label: 'Skipped',
+        label: 'Omitido',
         icon: 'skip_next',
         className:
           'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400',
       };
     case 'failed':
       return {
-        label: 'Failed',
+        label: 'Fallido',
         icon: 'error',
         className:
           'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
@@ -415,17 +415,17 @@ export function playbookLinkEntityMeta(
 ): { label: string; pluralLabel: string; icon: string } {
   switch (type) {
     case 'initiative':
-      return { label: 'Initiative', pluralLabel: 'Initiatives', icon: 'flag' };
+      return { label: 'Iniciativa', pluralLabel: 'Iniciativas', icon: 'flag' };
     case 'person':
-      return { label: 'Person', pluralLabel: 'People', icon: 'person' };
+      return { label: 'Persona', pluralLabel: 'Personas', icon: 'person' };
     case 'crm_company':
-      return { label: 'Company', pluralLabel: 'Companies', icon: 'business' };
+      return { label: 'Empresa', pluralLabel: 'Empresas', icon: 'business' };
     case 'crm_deal':
-      return { label: 'Deal', pluralLabel: 'Deals', icon: 'handshake' };
+      return { label: 'Negocio', pluralLabel: 'Negocios', icon: 'handshake' };
     case 'meeting':
-      return { label: 'Meeting', pluralLabel: 'Meetings', icon: 'forum' };
+      return { label: 'Reunión', pluralLabel: 'Meetings', icon: 'forum' };
     case 'decision':
-      return { label: 'Decision', pluralLabel: 'Decisions', icon: 'gavel' };
+      return { label: 'Decisión', pluralLabel: 'Decisions', icon: 'gavel' };
   }
 }
 

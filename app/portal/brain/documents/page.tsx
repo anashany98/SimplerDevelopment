@@ -34,6 +34,14 @@ import { pBtnPrimary, pBtnGhost, pInput, pSelect } from '@/components/portal/por
 
 type StatusFilter = 'all' | BrainDocumentStatus;
 
+/** Spanish labels for the status filter pills (UI shows these, not the enum). */
+const DOC_STATUS_LABELS: Record<StatusFilter, string> = {
+  all: 'Todos',
+  draft: 'Borrador',
+  published: 'Publicado',
+  archived: 'Archivado',
+};
+
 const CATEGORIES: BrainDocumentCategory[] = ['sop', 'policy', 'guide', 'reference', 'announcement', 'other'];
 const CATEGORY_LABEL: Record<BrainDocumentCategory, string> = {
   sop: 'SOP',
@@ -216,7 +224,7 @@ export default function BrainDocumentsListPage() {
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
-                {s}
+                {DOC_STATUS_LABELS[s]}
               </button>
             ))}
           </div>

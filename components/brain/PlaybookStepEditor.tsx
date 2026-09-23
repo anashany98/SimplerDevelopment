@@ -566,7 +566,7 @@ export default function PlaybookStepEditor({
 
           <div>
             <span className="block text-[11px] font-medium text-muted-foreground mb-1">
-              {kindChip.label} config
+              Configuración de {kindChip.label.toLowerCase()}
             </span>
             <StepConfigForm
               kind={step.kind}

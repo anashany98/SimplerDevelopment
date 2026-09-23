@@ -388,7 +388,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
   it('renders the status chip label for "draft"', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Draft');
+      expect(container.textContent).toContain('Borrador');
     });
   });
 
@@ -399,7 +399,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activo');
     });
   });
 
@@ -410,7 +410,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Archived');
+      expect(container.textContent).toContain('Archivado');
     });
   });
 
@@ -446,7 +446,7 @@ describe('PlaybookEditPage — happy-path shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // playbookStepKindChip labels: Task, Note, Meeting, Decision, Review, Wait, Branch
-      ['Task', 'Note', 'Meeting', 'Decision', 'Review', 'Wait', 'Branch'].forEach((label) => {
+      ['Tarea', 'Nota', 'Reunión', 'Decisión', 'Revisión', 'Espera', 'Bifurcación'].forEach((label) => {
         expect(container.textContent).toContain(label);
       });
     });
@@ -532,7 +532,7 @@ describe('PlaybookEditPage — add step', () => {
 
   it('POSTs to /steps when an add-step button is clicked', async () => {
     const { container } = await renderAndWaitLoaded();
-    const btn = findAddButton(container, 'Task');
+    const btn = findAddButton(container, 'Tarea');
     fireEvent.click(btn);
     await waitFor(() => {
       const call = fetchMock.mock.calls.find(
@@ -544,7 +544,7 @@ describe('PlaybookEditPage — add step', () => {
 
   it('sends the correct kind in the POST body', async () => {
     const { container } = await renderAndWaitLoaded();
-    const btn = findAddButton(container, 'Note');
+    const btn = findAddButton(container, 'Nota');
     fireEvent.click(btn);
     await waitFor(() => {
       const call = fetchMock.mock.calls.find(
@@ -569,7 +569,7 @@ describe('PlaybookEditPage — add step', () => {
     });
     const r = renderPage();
     await waitFor(() => expect(r.container.textContent).toContain('Añadir paso'));
-    const btn = findAddButton(r.container, 'Task');
+    const btn = findAddButton(r.container, 'Tarea');
     fireEvent.click(btn);
     await waitFor(() => {
       const postCall = fetchMock.mock.calls.find(
@@ -595,7 +595,7 @@ describe('PlaybookEditPage — add step', () => {
       return makeRes({ success: true });
     });
     const { container } = await renderAndWaitLoaded();
-    const btn = findAddButton(container, 'Task');
+    const btn = findAddButton(container, 'Tarea');
     fireEvent.click(btn);
     await waitFor(() => {
       expect(container.textContent).toContain('Step add failed');
@@ -605,7 +605,7 @@ describe('PlaybookEditPage — add step', () => {
   it('re-fetches playbook data after a successful add', async () => {
     const { container } = await renderAndWaitLoaded();
     const before = fetchMock.mock.calls.length;
-    const btn = findAddButton(container, 'Decision');
+    const btn = findAddButton(container, 'Decisión');
     fireEvent.click(btn);
     await waitFor(() => {
       // At least one more GET call than before.
@@ -1052,7 +1052,7 @@ describe('PlaybookEditPage — inline error banner', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Añadir paso'));
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Task'),
+      b.textContent?.includes('Tarea'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {

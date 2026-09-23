@@ -317,10 +317,10 @@ describe('PlaybookDetailPage — happy path (draft, manual)', () => {
     });
   });
 
-  it('renders "Draft" status chip', async () => {
+  it('renders "Borrador" status chip', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Draft');
+      expect(container.textContent).toContain('Borrador');
     });
   });
 
@@ -583,7 +583,7 @@ describe('PlaybookDetailPage — trigger variants', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Event');
+      expect(container.textContent).toContain('Evento');
       expect(container.textContent).toContain('crm.deal.closed');
     });
   });
@@ -628,7 +628,7 @@ describe('PlaybookDetailPage — trigger variants', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Scheduled');
+      expect(container.textContent).toContain('Programado');
       expect(container.textContent).toContain('0 9 * * 1');
     });
   });
@@ -674,11 +674,11 @@ describe('PlaybookDetailPage — active status', () => {
     });
   }
 
-  it('renders "Active" status chip', async () => {
+  it('renders "Activo" status chip', async () => {
     setupActive();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activo');
     });
   });
 

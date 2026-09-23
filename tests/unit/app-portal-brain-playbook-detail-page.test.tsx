@@ -318,7 +318,7 @@ describe('PlaybookDetailPage — successful render', () => {
   it('renders the status chip (Draft)', async () => {
     const { container } = renderWithId();
     await waitFor(() => {
-      expect(container.textContent).toContain('Draft');
+      expect(container.textContent).toContain('Borrador');
     });
   });
 

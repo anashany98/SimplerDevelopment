@@ -347,7 +347,7 @@ describe('PlaybooksListPage — header', () => {
 // ─── Status filter pills ──────────────────────────────────────────────────────
 
 describe('PlaybooksListPage — status filter pills', () => {
-  const statusLabels = ['Active', 'Draft', 'Archived', 'Todos'];
+  const statusLabels = ['Activo', 'Borrador', 'Archivado', 'Todos'];
 
   statusLabels.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -358,11 +358,11 @@ describe('PlaybooksListPage — status filter pills', () => {
     });
   });
 
-  it('clicking "Draft" pill calls router.replace', async () => {
+  it('clicking "Borrador" pill calls router.replace', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Draft',
+      (b) => b.textContent?.trim() === 'Borrador',
     ) as HTMLButtonElement;
     expect(btn).toBeTruthy();
     fireEvent.click(btn);
@@ -381,11 +381,11 @@ describe('PlaybooksListPage — status filter pills', () => {
   });
 
   it('active status pill has highlighted styling (bg-primary/10)', async () => {
-    // Default status is "active", so "Active" pill should carry highlight class
+    // Default status is "active", so "Activo" pill should carry highlight class
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const activeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Active',
+      (b) => b.textContent?.trim() === 'Activo',
     ) as HTMLButtonElement;
     expect(activeBtn?.className).toContain('bg-primary');
   });
@@ -400,16 +400,16 @@ describe('PlaybooksListPage — trigger-kind filter', () => {
     expect(container.textContent).toContain('Manual');
   });
 
-  it('renders "Event" trigger filter button', async () => {
+  it('renders "Evento" trigger filter button', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Event');
+    expect(container.textContent).toContain('Evento');
   });
 
-  it('renders "Scheduled" trigger filter button', async () => {
+  it('renders "Programado" trigger filter button', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Scheduled');
+    expect(container.textContent).toContain('Programado');
   });
 
   it('clicking "Manual" trigger filter calls router.replace', async () => {
@@ -854,7 +854,7 @@ describe('PlaybooksListPage — re-fetch on filter change', () => {
       String(c[0]).includes('/api/portal/brain/playbooks'),
     ).length;
     const draftBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Draft',
+      (b) => b.textContent?.trim() === 'Borrador',
     ) as HTMLButtonElement;
     fireEvent.click(draftBtn);
     // The setParam → router.replace updates the URL; simulate rerender

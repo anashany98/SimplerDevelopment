@@ -242,10 +242,10 @@ describe('BrainDocumentsListPage — status filter', () => {
   it('renders all four status pills', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('all');
-      expect(container.textContent).toContain('draft');
-      expect(container.textContent).toContain('published');
-      expect(container.textContent).toContain('archived');
+      expect(container.textContent).toContain('Todos');
+      expect(container.textContent).toContain('Borrador');
+      expect(container.textContent).toContain('Publicado');
+      expect(container.textContent).toContain('Archivado');
     });
   });
 
@@ -253,7 +253,7 @@ describe('BrainDocumentsListPage — status filter', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const publishedBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'published',
+        (b) => b.textContent?.trim() === 'Publicado',
       ) as HTMLButtonElement;
       expect(publishedBtn).toBeTruthy();
       expect(publishedBtn.className).toContain('bg-foreground');
@@ -264,7 +264,7 @@ describe('BrainDocumentsListPage — status filter', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const allBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'all',
+        (b) => b.textContent?.trim() === 'Todos',
     ) as HTMLButtonElement;
     fireEvent.click(allBtn);
     await waitFor(() => {
@@ -278,7 +278,7 @@ describe('BrainDocumentsListPage — status filter', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const draftBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'draft',
+        (b) => b.textContent?.trim() === 'Borrador',
     ) as HTMLButtonElement;
     fireEvent.click(draftBtn);
     await waitFor(() => {
@@ -292,7 +292,7 @@ describe('BrainDocumentsListPage — status filter', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Documentos'));
     const archivedBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'archived',
+        (b) => b.textContent?.trim() === 'Archivado',
     ) as HTMLButtonElement;
     fireEvent.click(archivedBtn);
     await waitFor(() => {
@@ -308,8 +308,8 @@ describe('BrainDocumentsListPage — status filter', () => {
     await waitFor(() => expect(container.textContent).toContain('Documentos'));
     replaceMock.mockReset();
     const publishedBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'published',
-    ) as HTMLButtonElement;
+        (b) => b.textContent?.trim() === 'Publicado',
+      ) as HTMLButtonElement;
     fireEvent.click(publishedBtn);
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalled();

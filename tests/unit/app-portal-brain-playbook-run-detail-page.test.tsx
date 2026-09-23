@@ -343,8 +343,8 @@ describe('PlaybookRunDetailPage — populated state', () => {
   it('renders status chip label (Active)', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      // playbookRunStatusChip('active') returns label 'Active'
-      expect(container.textContent).toContain('Active');
+      // playbookRunStatusChip('active') returns label 'Activo'
+      expect(container.textContent).toContain('Activo');
     });
   });
 

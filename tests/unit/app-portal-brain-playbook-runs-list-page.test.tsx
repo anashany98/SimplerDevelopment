@@ -280,7 +280,7 @@ describe('PlaybookRunsPage — list with items', () => {
   it('renders run status chip label', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
+      expect(container.textContent).toContain('Activo');
     });
   });
 
@@ -362,7 +362,7 @@ describe('PlaybookRunsPage — header', () => {
 // ─── Status filter pills ──────────────────────────────────────────────────────
 
 describe('PlaybookRunsPage — status filter pills', () => {
-  const expectedLabels = ['Active', 'Pending', 'Paused', 'Completed', 'Aborted', 'Failed', 'Todos'];
+  const expectedLabels = ['Activo', 'Pendiente', 'Pausado', 'Completado', 'Abortado', 'Fallido', 'Todos'];
 
   expectedLabels.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -377,7 +377,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Active');
+    const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Activo');
     expect(activeBtn?.className).toContain('bg-primary');
   });
 
@@ -391,30 +391,30 @@ describe('PlaybookRunsPage — status filter pills', () => {
     expect(replaceMock).toHaveBeenCalled();
   });
 
-  it('clicking "Pending" pill calls router.replace', async () => {
+  it('clicking "Pendiente" pill calls router.replace', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const pendingBtn = buttons.find((b) => b.textContent?.trim() === 'Pending') as HTMLButtonElement;
+    const pendingBtn = buttons.find((b) => b.textContent?.trim() === 'Pendiente') as HTMLButtonElement;
     expect(pendingBtn).toBeTruthy();
     fireEvent.click(pendingBtn);
     expect(replaceMock).toHaveBeenCalled();
   });
 
-  it('clicking "Failed" pill calls router.replace', async () => {
+  it('clicking "Fallido" pill calls router.replace', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const failedBtn = buttons.find((b) => b.textContent?.trim() === 'Failed') as HTMLButtonElement;
+    const failedBtn = buttons.find((b) => b.textContent?.trim() === 'Fallido') as HTMLButtonElement;
     fireEvent.click(failedBtn);
     expect(replaceMock).toHaveBeenCalled();
   });
 
-  it('clicking "Completed" pill calls router.replace', async () => {
+  it('clicking "Completado" pill calls router.replace', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completed') as HTMLButtonElement;
+    const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completado') as HTMLButtonElement;
     fireEvent.click(completedBtn);
     expect(replaceMock).toHaveBeenCalled();
   });
@@ -424,7 +424,7 @@ describe('PlaybookRunsPage — status filter pills', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Ejecuciones de playbook'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completed');
+    const completedBtn = buttons.find((b) => b.textContent?.trim() === 'Completado');
     expect(completedBtn?.className).toContain('bg-primary');
   });
 });
