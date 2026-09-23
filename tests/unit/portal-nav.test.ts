@@ -162,6 +162,21 @@ describe('buildPortalNavItems — reorganized IA', () => {
     }
   });
 
+  it('keeps knowledge items inside the Conocimiento section (not Equipo)', () => {
+    const kids = byLabel('Cerebro de empresa')!.children!;
+    const start = kids.findIndex((c) => c.groupHeader && c.label === 'Conocimiento');
+    const end = kids.findIndex((c) => c.groupHeader && c.label === 'Equipo');
+    expect(kids.slice(start + 1, end).map((c) => c.href)).toEqual([
+      '/portal/brain/knowledge',
+      '/portal/brain/decisions',
+      '/portal/brain/topics',
+      '/portal/brain/glossary',
+      '/portal/brain/documents',
+      '/portal/brain/documents/queue',
+      '/portal/brain/templates',
+    ]);
+  });
+
   it('shortens the playbook-runs label to avoid sidebar truncation', () => {
     const brain = byLabel('Cerebro de empresa');
     const runs = brain!.children!.find((c) => c.href === '/portal/brain/playbook-runs');

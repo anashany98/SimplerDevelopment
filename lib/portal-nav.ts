@@ -135,19 +135,6 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           icon: 'account_tree',
           keywords: ['taxonomy', 'tags', 'categories', 'tree'],
         },
-        { href: '', label: 'Equipo', icon: '', groupHeader: true },
-        {
-          href: '/portal/brain/people',
-          label: 'Personas',
-          icon: 'groups',
-          keywords: ['team', 'employees', 'staff', 'expertise', 'who knows'],
-        },
-        {
-          href: '/portal/brain/org-chart',
-          label: 'Organigrama',
-          icon: 'account_tree',
-          keywords: ['org units', 'departments', 'hierarchy', 'reporting structure'],
-        },
         {
           href: '/portal/brain/glossary',
           label: 'Glosario',
@@ -171,6 +158,19 @@ export function buildPortalNavItems(activeSiteId: string | null, activeSiteName:
           label: 'Plantillas',
           icon: 'auto_stories',
           keywords: ['note templates', 'forms', 'structured notes'],
+        },
+        { href: '', label: 'Equipo', icon: '', groupHeader: true },
+        {
+          href: '/portal/brain/people',
+          label: 'Personas',
+          icon: 'groups',
+          keywords: ['team', 'employees', 'staff', 'expertise', 'who knows'],
+        },
+        {
+          href: '/portal/brain/org-chart',
+          label: 'Organigrama',
+          icon: 'account_tree',
+          keywords: ['org units', 'departments', 'hierarchy', 'reporting structure'],
         },
         { href: '', label: 'IA y automatización', icon: '', groupHeader: true },
         {
