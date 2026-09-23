@@ -74,7 +74,7 @@ describe('OrgUnitTree', () => {
   describe('empty state', () => {
     it('renders the empty-state message when tree is empty', () => {
       const { getByText } = render(<OrgUnitTree tree={[]} />);
-      expect(getByText(/No org units yet/i)).toBeTruthy();
+      expect(getByText(/Aún no hay unidades organizativas/i)).toBeTruthy();
     });
 
     it('does not render a tree list when empty', () => {

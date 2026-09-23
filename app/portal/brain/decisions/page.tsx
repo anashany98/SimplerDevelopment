@@ -212,7 +212,7 @@ export default function DecisionsListPage() {
               onClick={() => updateUrl({ status: s.key === 'accepted' ? null : s.key }, { resetPage: true })}
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                 status === s.key
-                  ? 'bg-primary text-primary-foreground border-primary'
+                  ? 'bg-foreground text-background border-primary'
                   : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
               }`}
             >
@@ -232,7 +232,7 @@ export default function DecisionsListPage() {
                 onClick={() => updateUrl({ reversibility: r === 'all' ? null : r }, { resetPage: true })}
                 className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   reversibility === r
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >

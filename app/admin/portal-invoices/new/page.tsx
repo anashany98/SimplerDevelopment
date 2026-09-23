@@ -164,7 +164,7 @@ export default function NewInvoicePage() {
           <div className="flex justify-end gap-3">
             <Link href="/admin/portal-invoices" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</Link>
             <button type="submit" disabled={saving}
-              className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors">
+              className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors">
               {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creando...</> : 'Crear factura'}
             </button>
           </div>

@@ -563,7 +563,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
         <button
           onClick={saveSplit}
           disabled={savingId === 'experiment'}
-          className="text-sm px-3 py-1.5 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="text-sm px-3 py-1.5 rounded bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           Guardar reparto
         </button>
@@ -633,7 +633,7 @@ export default function ExperimentDetailClient({ experiment: initial, variants: 
                     </button>
                     <button
                       type="button"
-                      className="text-xs px-2 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                      className="text-xs px-2 py-1 rounded bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
                       disabled={savingId === `variant-${v.key}`}
                       onClick={() => saveVariant(v.key)}
                     >

@@ -389,7 +389,7 @@ describe('ProductsListPage — status filter tabs', () => {
     await waitFor(() => expect(container.textContent).toContain('Todos'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const allBtn = buttons.find((b) => b.textContent?.trim() === 'Todos');
-    expect(allBtn?.className).toContain('bg-primary');
+    expect(allBtn?.className).toContain('bg-foreground');
   });
 
   it('clicking "Active" tab highlights it', async () => {
@@ -398,7 +398,7 @@ describe('ProductsListPage — status filter tabs', () => {
     const buttons = Array.from(container.querySelectorAll('button'));
     const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Activo') as HTMLButtonElement;
     await act(async () => { fireEvent.click(activeBtn); });
-    expect(activeBtn.className).toContain('bg-primary');
+    expect(activeBtn.className).toContain('bg-foreground');
   });
 
   it('clicking "Draft" tab triggers re-fetch', async () => {

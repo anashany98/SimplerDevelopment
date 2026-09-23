@@ -311,7 +311,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
               type="button"
               onClick={createSequence}
               disabled={creating}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-foreground text-background hover:opacity-90 disabled:opacity-50"
             >
               <span className="material-icons text-base">add</span>
               {creating ? 'Añadiendo…' : 'Añadir secuencia'}
@@ -454,7 +454,7 @@ export default function EmailSequencesPanel({ surveyId, surveyFields }: Props) {
                     type="button"
                     onClick={() => saveEdit(seq)}
                     disabled={savingId === seq.id}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-foreground text-background hover:opacity-90 disabled:opacity-50"
                   >
                     <span className="material-icons text-base">save</span>
                     {savingId === seq.id ? 'Guardando…' : 'Guardar'}

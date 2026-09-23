@@ -59,7 +59,7 @@ export function ResendVerificationButton({ prefillEmail = '' }: Props) {
           type="button"
           onClick={handleResend}
           disabled={status === 'sending' || !inputEmail.trim()}
-          className="shrink-0 px-3 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
+          className="shrink-0 px-3 py-1 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
         >
           {status === 'sending' ? (
             <>

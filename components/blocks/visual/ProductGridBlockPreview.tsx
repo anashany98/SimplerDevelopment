@@ -83,7 +83,7 @@ export function ProductGridBlockPreview({ block, isSelected, onChange }: Product
                   </div>
                 )}
                 {block.buttonText && (
-                  <div className="mt-3 w-full px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium text-center">
+                  <div className="mt-3 w-full px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium text-center">
                     {block.buttonText}
                   </div>
                 )}

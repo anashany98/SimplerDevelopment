@@ -209,7 +209,7 @@ export default function NewDealModal({
                 type="button"
                 onClick={handleCreateCompany}
                 disabled={creatingCompany}
-                className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
               >
                 <span className="material-icons text-base">{creatingCompany ? 'refresh' : 'check'}</span>
               </button>
@@ -280,7 +280,7 @@ export default function NewDealModal({
                   type="button"
                   onClick={handleCreateContact}
                   disabled={creatingContact || !newContactFirst.trim()}
-                  className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                  className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
                 >
                   <span className="material-icons text-base">{creatingContact ? 'refresh' : 'check'}</span>
                 </button>
@@ -415,7 +415,7 @@ export default function NewDealModal({
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
           {saving && <span className="material-icons animate-spin text-sm">refresh</span>}
           Crear negocio

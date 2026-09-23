@@ -279,7 +279,7 @@ export function CustomCodeForm({
               type="button"
               onClick={publishDraft}
               disabled={!canPublish}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
               title={!canPublish ? 'No hay cambios en el borrador para publicar' : undefined}
             >
               {publishing ? (

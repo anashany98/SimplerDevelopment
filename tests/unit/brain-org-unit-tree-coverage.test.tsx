@@ -66,7 +66,7 @@ function renderTree(overProps: Partial<OrgUnitTreeProps> = {}) {
 describe('OrgUnitTree — empty state', () => {
   it('renders the empty-state message when tree is empty', () => {
     const { getByText } = renderTree({ tree: [] });
-    expect(getByText(/No org units yet/)).toBeInTheDocument();
+    expect(getByText(/Aún no hay unidades organizativas/)).toBeInTheDocument();
   });
 
   it('renders a tree list when nodes are provided', () => {

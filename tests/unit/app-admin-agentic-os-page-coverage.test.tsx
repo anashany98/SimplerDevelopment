@@ -893,7 +893,7 @@ function findCardRunButton(container: HTMLElement): HTMLButtonElement | undefine
   return Array.from(container.querySelectorAll('button')).find(
     (b) =>
       b.textContent?.includes('Ejecutar') &&
-      b.className.includes('bg-primary') &&
+      b.className.includes('bg-foreground') &&
       // Not in the <footer> of the drawer
       !b.closest('footer') &&
       // Not the drawer's footer run button (disabled or not)

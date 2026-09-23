@@ -78,7 +78,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
           <button
             type="submit"
             disabled={loading || !body.trim()}
-            className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             {loading ? (
               <><span className="material-icons text-base animate-spin">refresh</span>Enviando...</>

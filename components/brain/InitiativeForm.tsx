@@ -252,7 +252,7 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
             ? <><span className="material-icons animate-spin text-base">autorenew</span>Saving…</>
@@ -379,7 +379,7 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
             ? <><span className="material-icons animate-spin text-base">autorenew</span>Closing…</>

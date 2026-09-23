@@ -406,7 +406,7 @@ export default function AISettingsPage() {
               <button
                 key={f.value}
                 onClick={() => { setSource(f.value); setSelectedConv(null); }}
-                className={`px-2.5 py-1 text-xs rounded-md transition-colors ${source === f.value ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-2.5 py-1 text-xs rounded-md transition-colors ${source === f.value ? 'bg-foreground text-background font-medium' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {f.label}
               </button>

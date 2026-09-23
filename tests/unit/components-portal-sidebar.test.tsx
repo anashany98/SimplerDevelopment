@@ -370,7 +370,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
     // No badge span with primary background (badge only renders when count > 0)
     await waitFor(() => {
-      const badges = document.querySelectorAll('.bg-primary.rounded-full');
+      const badges = document.querySelectorAll('.bg-foreground.rounded-full');
       expect(badges.length).toBe(0);
     });
   });
@@ -386,7 +386,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
 
     await waitFor(() => {
-      const badge = document.querySelector('.rounded-full.bg-primary');
+      const badge = document.querySelector('.rounded-full.bg-foreground');
       expect(badge).toBeTruthy();
       expect(badge?.textContent).toBe('5');
     });
@@ -403,7 +403,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
 
     await waitFor(() => {
-      const badge = document.querySelector('.rounded-full.bg-primary');
+      const badge = document.querySelector('.rounded-full.bg-foreground');
       expect(badge?.textContent).toBe('99+');
     });
   });

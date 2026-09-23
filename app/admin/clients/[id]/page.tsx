@@ -635,7 +635,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 <div className="flex justify-end">
                   <button
                     type="submit" disabled={meteredSaving}
-                    className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground disabled:opacity-50"
+                    className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-foreground text-background disabled:opacity-50"
                   >
                     <span className="material-icons text-base">save</span>
                     {meteredSaving ? 'Guardando…' : 'Guardar artículo medido'}
@@ -720,7 +720,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     }
                   }}
                   disabled={rollupRunning}
-                  className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground disabled:opacity-50"
+                  className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-foreground text-background disabled:opacity-50"
                 >
                   <span className="material-icons text-base">cloud_upload</span>
                   Ejecutar rollup ahora
@@ -855,7 +855,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               </div>
               <div className="flex gap-2">
                 <button type="submit" disabled={settingsSaving}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+                  className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
                   {settingsSaving ? 'Guardando…' : 'Guardar cambios'}
                 </button>
               </div>
@@ -870,7 +870,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 <p className="text-xs text-muted-foreground mt-0.5">Gestiona dominios verificados para envío de email de marca blanca.</p>
               </div>
               <button onClick={() => setShowAddDomainForm(!showAddDomainForm)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
+                className="flex items-center gap-2 px-3 py-1.5 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 transition-colors">
                 <span className="material-icons text-base">add</span>
                 Añadir dominio
               </button>
@@ -886,7 +886,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   <input required value={newDomain} onChange={e => setNewDomain(e.target.value)}
                     placeholder="yourdomain.com" className={`${ic} flex-1`} />
                   <button type="submit" disabled={addingDomain}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+                    className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
                     {addingDomain ? 'Añadiendo…' : 'Añadir dominio'}
                   </button>
                   <button type="button" onClick={() => setShowAddDomainForm(false)}
@@ -952,7 +952,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                       </div>
                       {selectedDomain.status !== 'verified' && (
                         <button onClick={() => verifyDomain(selectedDomain.id)} disabled={verifying}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors">
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors">
                           <span className="material-icons text-base">{verifying ? 'hourglass_empty' : 'verified'}</span>
                           {verifying ? 'Comprobando…' : 'Verificar ahora'}
                         </button>
@@ -1109,7 +1109,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               <p className="text-xs text-muted-foreground">Si el email ya existe en el sistema, el usuario existente se añadirá a este cliente.</p>
               <div className="flex gap-2">
                 <button type="submit" disabled={memberSaving}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+                  className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
                   {memberSaving ? 'Añadiendo…' : 'Añadir miembro'}
                 </button>
                 <button type="button" onClick={() => setShowAddMember(false)}
@@ -1168,7 +1168,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   placeholder="Nombre de la lista" className={ic} />
                 <input value={listForm.description} onChange={e => setListForm(p => ({ ...p, description: e.target.value }))}
                   placeholder="Descripción (opcional)" className={ic} />
-                <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90">Crear</button>
+                <button type="submit" className="px-3 py-2 bg-foreground text-background rounded-md text-sm hover:bg-foreground/90">Crear</button>
                 <button type="button" onClick={() => setShowListForm(false)} className="px-3 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
               </form>
             )}
@@ -1206,7 +1206,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                         placeholder="Correo" className={`${ic} flex-1`} />
                       <input value={subForm.name} onChange={e => setSubForm(p => ({ ...p, name: e.target.value }))}
                         placeholder="Nombre" className={`${ic} w-28`} />
-                      <button type="submit" disabled={subSaving} className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 disabled:opacity-50">
+                      <button type="submit" disabled={subSaving} className="px-3 py-2 bg-foreground text-background rounded-md text-sm hover:bg-foreground/90 disabled:opacity-50">
                         <span className="material-icons text-base">add</span>
                       </button>
                     </form>
@@ -1266,7 +1266,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                       rows={6} className={`${ic} font-mono text-xs`} placeholder="<h1>Hola</h1><p>Tu mensaje aquí...</p>" /></div>
                 </div>
                 <div className="flex gap-2">
-                  <button type="submit" disabled={campSaving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+                  <button type="submit" disabled={campSaving} className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
                     {campSaving ? 'Guardando…' : 'Crear campaña'}
                   </button>
                   <button type="button" onClick={() => setShowCampForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>

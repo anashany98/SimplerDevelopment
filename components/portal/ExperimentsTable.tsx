@@ -98,7 +98,7 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
               onClick={() => setStatusFilter(opt.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 statusFilter === opt.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >
@@ -118,7 +118,7 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
               onClick={() => setTargetFilter(opt.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 targetFilter === opt.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >

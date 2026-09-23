@@ -135,7 +135,7 @@ export default function MediaPicker({
             <button
               type="button"
               onClick={() => setShowPicker(true)}
-              className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="px-3 py-1 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90"
             >
               Change
             </button>
@@ -187,7 +187,7 @@ export default function MediaPicker({
                 />
                 <button
                   onClick={() => setShowUpload(true)}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                  className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90"
                 >
                   Upload New
                 </button>

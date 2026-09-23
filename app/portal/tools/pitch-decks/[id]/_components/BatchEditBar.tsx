@@ -51,7 +51,7 @@ export function BatchEditBar({ selectedCount, totalSlides, prompt, generating, o
           <button
             type="submit"
             disabled={generating || !prompt.trim()}
-            className="px-3 sm:px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50 shrink-0 flex items-center gap-1.5"
+            className="px-3 sm:px-4 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium disabled:opacity-50 shrink-0 flex items-center gap-1.5"
           >
             {generating ? (
               <><span className="material-icons animate-spin text-base">autorenew</span><span className="hidden sm:inline">Editing {selectedCount}...</span></>

@@ -80,7 +80,7 @@ export function BoardView(props: BoardViewProps) {
                 key={n}
                 onClick={() => onSetColumns(n)}
                 className={`w-7 h-7 flex items-center justify-center rounded text-xs font-medium transition-colors ${
-                  boardColumns === n ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                  boardColumns === n ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
                 title={`${n} columns`}
               >

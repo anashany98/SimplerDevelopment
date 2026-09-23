@@ -294,7 +294,7 @@ export default function BrainCalendarPage() {
               >
                 <div className="flex items-center justify-between">
                   <span className={`text-xs font-medium ${
-                    isToday ? 'inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground' : ''
+                    isToday ? 'inline-flex items-center justify-center w-6 h-6 rounded-full bg-foreground text-background' : ''
                   }`}>
                     {d.getDate()}
                   </span>

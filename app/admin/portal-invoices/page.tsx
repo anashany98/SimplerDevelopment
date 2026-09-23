@@ -66,7 +66,7 @@ export default function AdminPortalInvoicesPage() {
           <p className="text-muted-foreground text-sm mt-0.5">Gestiona la facturación y pagos de clientes en la plataforma.</p>
         </div>
         <Link href="/admin/portal-invoices/new"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors">
           <span className="material-icons text-base">add</span>Nueva factura
         </Link>
       </div>
@@ -120,7 +120,7 @@ export default function AdminPortalInvoicesPage() {
               key={s}
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-                statusFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                statusFilter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {s}
@@ -141,7 +141,7 @@ export default function AdminPortalInvoicesPage() {
             {search || statusFilter !== 'all' ? 'Prueba a ajustar los filtros.' : 'Crea tu primera factura.'}
           </p>
           {!search && statusFilter === 'all' && (
-            <Link href="/admin/portal-invoices/new" className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium">
+            <Link href="/admin/portal-invoices/new" className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium">
               Crear primera factura
             </Link>
           )}

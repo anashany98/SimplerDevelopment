@@ -153,7 +153,7 @@ export function AIGeneratorPanel({ profile, update, setMessaging }: GeneratorPro
             <button
               onClick={generateWithAI}
               disabled={aiGenerating || !aiDescription.trim() || (!aiTargets.visual && !aiTargets.messaging)}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
             >
               {aiGenerating ? (
                 <>
@@ -286,7 +286,7 @@ export function RewriteModal({ modal, messaging, onAccept, onClose }: RewriteMod
               </button>
               <button
                 onClick={accept}
-                className="px-4 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+                className="px-4 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
               >
                 Accept
               </button>
@@ -295,7 +295,7 @@ export function RewriteModal({ modal, messaging, onAccept, onClose }: RewriteMod
             <button
               onClick={runRewrite}
               disabled={rewriteLoading || !rewritePrompt.trim()}
-              className="px-4 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 flex items-center gap-1.5"
+              className="px-4 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 flex items-center gap-1.5"
             >
               {rewriteLoading ? (
                 <>

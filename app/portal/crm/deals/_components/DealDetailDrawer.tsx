@@ -572,7 +572,7 @@ export default function DealDetailDrawer({
                       type="button"
                       onClick={handleCreateCompany}
                       disabled={creatingCompany}
-                      className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                      className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
                     >
                       <span className="material-icons text-base">{creatingCompany ? 'refresh' : 'check'}</span>
                     </button>
@@ -648,7 +648,7 @@ export default function DealDetailDrawer({
                         type="button"
                         onClick={handleCreateContact}
                         disabled={creatingContact || !newContactFirst.trim()}
-                        className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                        className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
                       >
                         <span className="material-icons text-base">
                           {creatingContact ? 'refresh' : 'check'}
@@ -800,7 +800,7 @@ export default function DealDetailDrawer({
                   <button
                     type="submit"
                     disabled={editSaving}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {editSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
                     Guardar cambios
@@ -825,7 +825,7 @@ export default function DealDetailDrawer({
                 <p className="text-sm font-medium text-foreground">Adjuntos vinculados</p>
                 <button
                   onClick={() => setShowArtifactPicker((p) => !p)}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors"
                 >
                   <span className="material-icons text-sm">{showArtifactPicker ? 'close' : 'add'}</span>
                   {showArtifactPicker ? 'Cancelar' : 'Vincular adjunto'}
@@ -839,7 +839,7 @@ export default function DealDetailDrawer({
                       onClick={() => setArtifactTypeFilter('')}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         !artifactTypeFilter
-                          ? 'bg-primary text-primary-foreground'
+                          ? 'bg-foreground text-background'
                           : 'bg-accent text-foreground hover:bg-accent/80'
                       }`}
                     >
@@ -851,7 +851,7 @@ export default function DealDetailDrawer({
                         onClick={() => setArtifactTypeFilter(type)}
                         className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                           artifactTypeFilter === type
-                            ? 'bg-primary text-primary-foreground'
+                            ? 'bg-foreground text-background'
                             : 'bg-accent text-foreground hover:bg-accent/80'
                         }`}
                       >
@@ -1072,7 +1072,7 @@ export default function DealDetailDrawer({
                   <button
                     onClick={handlePostComment}
                     disabled={postingComment || (!commentBody.trim() && commentFiles.length === 0)}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {postingComment ? (
                       <span className="material-icons animate-spin text-sm">refresh</span>

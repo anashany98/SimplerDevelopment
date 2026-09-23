@@ -386,7 +386,7 @@ export default function PortalApprovalsPage() {
               }}
               className={`px-2.5 py-1.5 ${
                 timeFilter === value
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:bg-accent'
               }`}
             >
@@ -548,13 +548,13 @@ export default function PortalApprovalsPage() {
                   <div className="flex gap-0.5 rounded-md border border-border overflow-hidden text-[11px]">
                     <button
                       onClick={() => setView('diff')}
-                      className={`px-2 py-1 ${view === 'diff' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+                      className={`px-2 py-1 ${view === 'diff' ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent'}`}
                     >
                       Diferencia
                     </button>
                     <button
                       onClick={() => setView('raw')}
-                      className={`px-2 py-1 ${view === 'raw' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}
+                      className={`px-2 py-1 ${view === 'raw' ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent'}`}
                     >
                       JSON crudo
                     </button>
@@ -636,7 +636,7 @@ export default function PortalApprovalsPage() {
           <button
             onClick={() => setBulkAction('approve')}
             disabled={checkedIds.size > MAX_BULK || busy}
-            className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-full bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             <span className="material-icons text-sm">check</span>
             Aprobar
@@ -699,7 +699,7 @@ export default function PortalApprovalsPage() {
                 disabled={busy}
                 className={`flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md disabled:opacity-50 ${
                   bulkAction === 'approve'
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                    ? 'bg-foreground text-background hover:bg-foreground/90'
                     : 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
                 }`}
               >

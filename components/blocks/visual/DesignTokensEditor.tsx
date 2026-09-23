@@ -103,7 +103,7 @@ export function DesignTokensEditor() {
             type="button"
             onClick={handleAdd}
             disabled={!newName.trim()}
-            className="px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:opacity-40 transition-colors"
+            className="px-2 py-1 text-xs bg-foreground text-background rounded hover:bg-foreground/90 disabled:opacity-40 transition-colors"
           >Añadir</button>
         </div>
       </div>

@@ -290,7 +290,7 @@ describe('CrmDashboardPage — header and period selector', () => {
     const { container } = await renderLoaded();
     const buttons = Array.from(container.querySelectorAll('button'));
     const btn12m = buttons.find((b) => b.textContent?.trim() === '12M');
-    expect(btn12m?.className).toContain('bg-primary');
+    expect(btn12m?.className).toContain('bg-foreground');
   });
 
   it('clicking "30D" period button triggers a new fetch with period=30d', async () => {

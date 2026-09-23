@@ -193,7 +193,7 @@ export default function NotificationPreferencesPage() {
                         onClick={() => updateDelivery(pref.notificationType, opt.value)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-colors disabled:opacity-50 ${
                           isActive
-                            ? 'bg-primary text-primary-foreground border-primary'
+                            ? 'bg-foreground text-background border-primary'
                             : 'bg-background text-foreground border-border hover:border-primary/50 hover:bg-accent'
                         }`}
                       >

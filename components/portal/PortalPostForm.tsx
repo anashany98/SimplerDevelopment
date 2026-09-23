@@ -255,7 +255,7 @@ function PortalPostFormInner({
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50"
+          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50"
         >
           {loading ? 'Guardando...' : mode === 'create' ? 'Crear página' : 'Guardar cambios'}
         </button>

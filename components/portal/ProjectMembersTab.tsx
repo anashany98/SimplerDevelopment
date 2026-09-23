@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 type ProjectRole = 'owner' | 'editor' | 'commenter' | 'viewer';
 
@@ -122,7 +123,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
         {canManage && (
           <button
             onClick={() => setShowAdd(!showAdd)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-base">{showAdd ? 'close' : 'person_add'}</span>
             {showAdd ? 'Cancelar' : 'Añadir miembro'}
@@ -142,7 +143,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
           {availableTeam.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Todo tu equipo ya es miembro de este proyecto. Invita a nuevos compañeros desde{' '}
-              <a href="/portal/settings/team" className="text-primary hover:underline">Ajustes del equipo</a>.
+              <Link href="/portal/settings/team" className="text-primary hover:underline">Ajustes del equipo</Link>.
             </p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -179,7 +180,7 @@ export default function ProjectMembersTab({ projectId, canManage }: { projectId:
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
               >
                 {submitting && <span className="material-icons text-base animate-spin">refresh</span>}
                 Añadir miembro

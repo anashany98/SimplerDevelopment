@@ -85,7 +85,7 @@ export default function ApiKeysManager({ siteId }: { siteId: number }) {
         <button
           onClick={createKey}
           disabled={creating || !newKeyName.trim()}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+          className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
         >
           {creating ? 'Creando...' : 'Crear clave'}
         </button>

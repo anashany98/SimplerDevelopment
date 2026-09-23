@@ -187,7 +187,7 @@ function SuggestedProjectForm({
       <div className="sm:col-span-2 flex justify-end gap-3">
         <button type="button" onClick={onCancel} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
         <button type="submit" disabled={saving}
-          className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+          className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
           {saving
             ? <><span className="material-icons text-base animate-spin">refresh</span>Guardando...</>
             : submitLabel}
@@ -340,7 +340,7 @@ export default function AdminSuggestedProjectsPage() {
         </div>
         <button
           onClick={() => { setShowCreate(!showCreate); setEditingId(null); }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>Nueva sugerencia
         </button>

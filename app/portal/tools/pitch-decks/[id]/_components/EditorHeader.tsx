@@ -262,7 +262,7 @@ export function EditorHeader(props: EditorHeaderProps) {
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg font-medium transition-colors disabled:opacity-50 ${
             deck.status === 'published'
               ? 'border border-border text-muted-foreground hover:text-foreground hover:bg-accent'
-              : 'bg-primary text-primary-foreground hover:bg-primary/90'
+              : 'bg-foreground text-background hover:bg-foreground/90'
           }`}
         >
           <span className="material-icons text-base">

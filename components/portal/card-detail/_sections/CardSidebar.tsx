@@ -149,7 +149,7 @@ export function CardSidebar({
                 disabled={savingField === 'storyPoints'}
                 className={`min-w-[28px] h-7 px-1.5 rounded text-xs font-medium border transition-colors ${
                   card.storyPoints === p
-                    ? 'bg-primary text-primary-foreground border-primary'
+                    ? 'bg-foreground text-background border-primary'
                     : 'bg-background text-foreground border-border hover:border-primary/50'
                 }`}
                 aria-label={`${p} puntos${card.storyPoints === p ? ' (seleccionado, haz clic para quitar)' : ''}`}

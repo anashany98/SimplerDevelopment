@@ -202,7 +202,7 @@ export default function BrainPeoplePage() {
                 onClick={() => setParam({ status: t.key === 'active' ? null : t.key })}
                 className={`px-3 py-1.5 transition-colors ${
                   status === t.key
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:bg-accent'
                 }`}
               >

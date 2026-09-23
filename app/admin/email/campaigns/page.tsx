@@ -57,7 +57,7 @@ export default function CampaignsPage() {
         </div>
         <Link
           href="/admin/email/campaigns/new"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
           Nueva campaña
@@ -71,7 +71,7 @@ export default function CampaignsPage() {
           <div className="p-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground mb-3 block">campaign</span>
             <p className="text-muted-foreground mb-4">Aún no hay campañas.</p>
-            <Link href="/admin/email/campaigns/new" className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">
+            <Link href="/admin/email/campaigns/new" className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">
               Crear campaña
             </Link>
           </div>

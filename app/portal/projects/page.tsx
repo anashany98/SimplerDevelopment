@@ -186,7 +186,7 @@ export default function PortalProjectsPage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors capitalize ${
                 statusFilter === s
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
@@ -205,7 +205,7 @@ export default function PortalProjectsPage() {
               aria-pressed={viewMode === mode}
               className={`p-1.5 rounded-xl transition-colors ${
                 viewMode === mode
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >

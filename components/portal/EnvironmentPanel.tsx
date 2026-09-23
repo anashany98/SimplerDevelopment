@@ -244,7 +244,7 @@ export default function EnvironmentPanel({
           <button
             onClick={handleSync}
             disabled={syncing || vars.length === 0}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             <span className={`material-icons text-sm ${syncing ? 'animate-spin' : ''}`}>
               {syncing ? 'refresh' : 'cloud_upload'}
@@ -355,7 +355,7 @@ export default function EnvironmentPanel({
                 <button
                   onClick={handleAddVar}
                   disabled={adding || !newKey.trim()}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                  className="px-3 py-2 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                 >
                   {adding ? 'Añadiendo...' : 'Añadir'}
                 </button>

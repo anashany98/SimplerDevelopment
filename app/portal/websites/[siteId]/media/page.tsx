@@ -259,7 +259,7 @@ export default function PortalMediaPage() {
         </div>
         <button
           onClick={() => setShowUpload(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">cloud_upload</span>Subir</button>
       </div>
@@ -280,7 +280,7 @@ export default function PortalMediaPage() {
               onClick={() => { setFilter(type); setOffset(0); }}
               className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                 filter === type
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-accent text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -432,7 +432,7 @@ export default function PortalMediaPage() {
                     <button
                       onClick={handleUpload}
                       disabled={uploading}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                     >
                       {uploading && <span className="material-icons text-base animate-spin">refresh</span>}
                       {uploading ? 'Subiendo…' : 'Subir'}
@@ -503,7 +503,7 @@ export default function PortalMediaPage() {
                     <button
                       onClick={handleSaveDetail}
                       disabled={savingDetail}
-                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                      className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                     >
                       {savingDetail ? 'Guardando…' : 'Guardar'}
                     </button>
@@ -533,7 +533,7 @@ export default function PortalMediaPage() {
                 />
                 <button
                   onClick={() => copyUrl(detail.url)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
                   <span className="material-icons text-base">content_copy</span>
                   Copy URL

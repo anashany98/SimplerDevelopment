@@ -34,7 +34,7 @@ export default function AdminError({
         <div className="flex items-center justify-center gap-3 pt-1">
           <button
             onClick={reset}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-base">refresh</span>
             Reintentar

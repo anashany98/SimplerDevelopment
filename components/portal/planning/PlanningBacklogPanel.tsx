@@ -88,7 +88,7 @@ export default function PlanningBacklogPanel({
           <button
             onClick={() => onTypeFilterChange('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-              typeFilter === 'all' ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+              typeFilter === 'all' ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
           >Todos</button>
           {CARD_TYPE_OPTIONS.map(t => (
@@ -96,7 +96,7 @@ export default function PlanningBacklogPanel({
               key={t}
               onClick={() => onTypeFilterChange(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 capitalize ${
-                typeFilter === t ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                typeFilter === t ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               <span className={`material-icons text-sm ${typeFilter === t ? '' : CARD_TYPE_META[t].color}`}>{CARD_TYPE_META[t].icon}</span>

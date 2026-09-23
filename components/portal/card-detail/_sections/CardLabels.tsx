@@ -115,7 +115,7 @@ export function CardLabels({
                   <button
                     onClick={createAndAttachLabel}
                     disabled={!newLabelName.trim()}
-                    className="px-2 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+                    className="px-2 py-1 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
                   >Añadir</button>
                 </div>
               </div>

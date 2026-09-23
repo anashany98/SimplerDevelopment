@@ -1132,7 +1132,7 @@ function PitchDeckEditorContent({ id }: { id: string }) {
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => setShowRegenerate(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium"
             >
               <span className="material-icons text-base">auto_awesome</span>Generar con IA</button>
             <button
@@ -1328,14 +1328,14 @@ function PitchDeckEditorContent({ id }: { id: string }) {
                   <button
                     onClick={() => setEditorMode('preview')}
                     className={`px-3 py-1.5 text-xs font-medium flex items-center gap-1 transition-colors ${
-                      editorMode === 'preview' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'
+                      editorMode === 'preview' ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent'
                     }`}
                   >
                     <span className="material-icons text-sm">visibility</span>Vista previa</button>
                   <button
                     onClick={() => setEditorMode('edit')}
                     className={`px-3 py-1.5 text-xs font-medium flex items-center gap-1 transition-colors ${
-                      editorMode === 'edit' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'
+                      editorMode === 'edit' ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent'
                     }`}
                   >
                     <span className="material-icons text-sm">edit</span>Editar bloques</button>

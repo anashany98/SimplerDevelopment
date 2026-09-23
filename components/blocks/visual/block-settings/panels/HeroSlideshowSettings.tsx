@@ -58,7 +58,7 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
               key={s.id}
               onClick={() => setActiveSlide(i)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                i === activeSlide ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'
+                i === activeSlide ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               {i + 1}
@@ -128,7 +128,7 @@ export function HeroSlideshowBlockSettings({ block, onChange }: { block: HeroSli
               <div className="space-y-2">
                 <img src={slide.backgroundImage} alt="Fondo de la diapositiva" className="w-full h-24 object-cover rounded border border-border" />
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-1.5 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90">Cambiar</button>
+                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-1.5 text-xs bg-foreground text-background rounded hover:bg-foreground/90">Cambiar</button>
                   <button type="button" onClick={() => updateSlide(activeSlide, { backgroundImage: '' })} className="px-3 py-1.5 text-xs border border-border rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>

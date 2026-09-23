@@ -315,7 +315,7 @@ function CaseRow({ c, isAdmin, onToggle, onSave }: EditRowProps) {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <span className={`material-icons text-base leading-none ${saving ? 'animate-spin' : ''}`}>
                       {saving ? 'refresh' : 'save'}
@@ -584,7 +584,7 @@ function AddCasePanel({ datasetId, onCreated }: AddCasePanelProps) {
           <button
             type="submit"
             disabled={saving || datasetId === null}
-            className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <span className={`material-icons text-base leading-none ${saving ? 'animate-spin' : ''}`}>
               {saving ? 'refresh' : 'add'}
@@ -954,7 +954,7 @@ export default function PromptCasesPage() {
                       <button
                         onClick={handleCreateDataset}
                         disabled={datasetActionBusy || !newDatasetName.trim()}
-                        className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                        className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                       >
                         <span className={`material-icons text-sm leading-none ${datasetActionBusy ? 'animate-spin' : ''}`}>
                           {datasetActionBusy ? 'refresh' : 'check'}
@@ -995,7 +995,7 @@ export default function PromptCasesPage() {
                         <button
                           onClick={handleRenameDataset}
                           disabled={datasetActionBusy || !renameName.trim()}
-                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
                         >
                           <span className={`material-icons text-sm leading-none ${datasetActionBusy ? 'animate-spin' : ''}`}>
                             {datasetActionBusy ? 'refresh' : 'check'}

@@ -33,7 +33,7 @@ export function EmbedPanel({ publicUrl, iframeCode }: EmbedPanelProps) {
           </code>
           <button
             onClick={() => copyText(publicUrl, 'link')}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors flex-shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors flex-shrink-0"
           >
             <span className="material-icons text-lg">
               {copied === 'link' ? 'check' : 'content_copy'}
@@ -54,7 +54,7 @@ export function EmbedPanel({ publicUrl, iframeCode }: EmbedPanelProps) {
           </pre>
           <button
             onClick={() => copyText(iframeCode, 'iframe')}
-            className="absolute top-2 right-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
+            className="absolute top-2 right-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-sm">
               {copied === 'iframe' ? 'check' : 'content_copy'}

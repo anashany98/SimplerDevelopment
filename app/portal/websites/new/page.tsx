@@ -61,8 +61,8 @@ export default function PortalCmsNewPage() {
         {([1, 2, 3] as const).map((s) => (
           <div key={s} className="flex items-center gap-2">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-              step > s ? 'bg-primary text-primary-foreground' :
-              step === s ? 'bg-primary text-primary-foreground' :
+              step > s ? 'bg-foreground text-background' :
+              step === s ? 'bg-foreground text-background' :
               'bg-muted text-muted-foreground'
             }`}>
               {step > s ? <span className="material-icons text-sm">check</span> : s}

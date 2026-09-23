@@ -102,7 +102,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
         </div>
         {canEdit && (
           <button onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
             {showForm ? 'Cancelar' : 'Nuevo webhook'}
           </button>
@@ -134,14 +134,14 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
             <div className="flex flex-wrap gap-1.5">
               {EVENT_OPTIONS.map(ev => (
                 <button key={ev} onClick={() => toggleEvent(ev)}
-                  className={`text-xs px-2 py-0.5 rounded-full border font-mono ${newEvents.has(ev) ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  className={`text-xs px-2 py-0.5 rounded-full border font-mono ${newEvents.has(ev) ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
                   {ev}
                 </button>
               ))}
             </div>
           </div>
           <button onClick={create} disabled={creating || !newUrl.trim()}
-            className="px-4 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+            className="px-4 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
             {creating ? 'Creando…' : 'Crear webhook'}
           </button>
         </div>

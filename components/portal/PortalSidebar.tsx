@@ -414,7 +414,7 @@ export default function PortalSidebar({
         <span className="material-icons text-xl shrink-0">{item.icon}</span>
         <span className="flex-1 truncate group-data-[collapsed=true]/sb:lg:hidden">{item.label}</span>
         {badgeCount > 0 && (
-          <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
+          <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-foreground text-background text-[10px] font-bold flex items-center justify-center shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
             {badgeCount > 99 ? '99+' : badgeCount}
           </span>
         )}
@@ -553,7 +553,7 @@ export default function PortalSidebar({
             <Link
               href={`/portal/settings/billing/plans?highlight=${lockPopover.key}`}
               onClick={() => { setLockPopover(null); onCloseMobile?.(); }}
-              className="flex items-center justify-center gap-1 w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2 hover:bg-primary/90 transition-colors"
+              className="flex items-center justify-center gap-1 w-full rounded-md bg-foreground text-background text-sm font-medium py-2 hover:bg-foreground/90 transition-colors"
               style={agencyActiveStyle}
             >
               Añadir al plan

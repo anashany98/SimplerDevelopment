@@ -90,7 +90,7 @@ function TextBlockSettings({ block, onChange, currentViewport }: { block: TextBl
               onClick={() => onChange({ alignment: align })}
               className={`flex-1 px-3 py-2 text-sm rounded ${
                 (block.alignment || 'left') === align
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-background border border-border text-foreground hover:bg-accent'
               }`}
             >
@@ -135,7 +135,7 @@ function HeadingBlockSettings({ block, onChange, currentViewport }: { block: Hea
               onClick={() => onChange({ alignment: align })}
               className={`flex-1 px-3 py-2 text-sm rounded ${
                 (block.alignment || 'left') === align
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-background border border-border text-foreground hover:bg-accent'
               }`}
             >

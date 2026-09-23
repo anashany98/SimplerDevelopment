@@ -198,7 +198,7 @@ describe('UploadHtmlDeckButton', () => {
   it('applies the primary variant styles when variant="primary"', () => {
     const { container } = render(<UploadHtmlDeckButton variant="primary" />);
     const btn = container.querySelector('button');
-    expect(btn?.className).toContain('bg-primary');
+    expect(btn?.className).toContain('bg-foreground');
   });
 
   it('hidden input accepts html and zip', () => {

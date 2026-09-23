@@ -14,7 +14,7 @@ export function ShoppingCartBlockPreview({ block, isSelected, onChange }: Shoppi
       <div className="py-4 px-6 flex flex-col items-center gap-2">
         <div className="relative inline-flex items-center p-2 rounded-lg hover:bg-accent transition-colors">
           <span className="material-icons text-2xl">shopping_cart</span>
-          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-foreground text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
             3
           </span>
         </div>
@@ -36,7 +36,7 @@ export function ShoppingCartBlockPreview({ block, isSelected, onChange }: Shoppi
               <span className="font-bold">$129.97</span>
             )}
           </div>
-          <div className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium text-center">
+          <div className="block w-full px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium text-center">
             {block.checkoutButtonText || 'Checkout'}
           </div>
         </div>
@@ -83,7 +83,7 @@ export function ShoppingCartBlockPreview({ block, isSelected, onChange }: Shoppi
           )}
 
           <div className="p-4 border-t border-border">
-            <div className="block w-full px-4 py-3 bg-primary text-primary-foreground rounded-md text-sm font-medium text-center">
+            <div className="block w-full px-4 py-3 bg-foreground text-background rounded-md text-sm font-medium text-center">
               {block.checkoutButtonText || 'Proceed to Checkout'}
             </div>
           </div>

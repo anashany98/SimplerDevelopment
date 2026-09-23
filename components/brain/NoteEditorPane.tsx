@@ -260,7 +260,7 @@ export default function NoteEditorPane({
             <button
               type="button"
               onClick={onCreate}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               <span className="material-icons text-base">add</span>
               New note

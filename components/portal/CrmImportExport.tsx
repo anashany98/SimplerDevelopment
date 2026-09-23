@@ -289,7 +289,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                     >Cancelar</button>
                     <button
                       onClick={handleImport}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                     >
                       <span className="material-icons text-sm">upload</span>Importar</button>
                   </div>
@@ -322,7 +322,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                   <div className="flex justify-end">
                     <button
                       onClick={reset}
-                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                      className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                     >Listo</button>
                   </div>
                 </div>

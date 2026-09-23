@@ -469,7 +469,7 @@ describe('KanbanBoard — filters', () => {
     const { container } = render(<KanbanBoard {...defaultProps()} />);
     const allBtn = Array.from(container.querySelectorAll('button'))
       .find(b => b.textContent === 'Todos' && b.className.includes('rounded-full'));
-    expect(allBtn?.className).toContain('bg-primary');
+    expect(allBtn?.className).toContain('bg-foreground');
   });
 });
 

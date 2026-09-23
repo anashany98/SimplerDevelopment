@@ -35,7 +35,7 @@ export function HistoryPanel({ versions, savingVersion, restoring, slideCount, o
           <button
             onClick={onSaveCheckpoint}
             disabled={savingVersion || slideCount === 0}
-            className="inline-flex items-center gap-1.5 px-3 py-1 text-xs bg-primary text-primary-foreground rounded-lg font-medium disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3 py-1 text-xs bg-foreground text-background rounded-lg font-medium disabled:opacity-50"
           >
             {savingVersion ? (
               <span className="material-icons animate-spin text-xs">autorenew</span>

@@ -231,7 +231,7 @@ export default function GoalProgress({ goal, ownerLookup, onCheckin, onEdit, onD
               type="button"
               onClick={submitCheckin}
               disabled={submitting}
-              className="px-2.5 py-1 text-xs rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 inline-flex items-center gap-1"
+              className="px-2.5 py-1 text-xs rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 inline-flex items-center gap-1"
             >
               {submitting
                 ? <><span className="material-icons animate-spin text-sm">autorenew</span>Saving…</>

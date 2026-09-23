@@ -65,7 +65,7 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
         </div>
         <button
           onClick={addQuestion}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-lg">add</span>Agregar pregunta</button>
       </div>

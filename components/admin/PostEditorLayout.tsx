@@ -109,7 +109,7 @@ export function PostEditorLayout({
                   onClick={onPreviewToggle}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border transition-colors shrink-0 ${
                     previewMode
-                      ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                      ? 'bg-foreground text-background border-primary hover:bg-foreground/90'
                       : 'border-border hover:bg-accent'
                   }`}
                   title={previewMode ? 'Salir de la vista previa' : 'Vista previa en vivo'}
@@ -125,7 +125,7 @@ export function PostEditorLayout({
                   onClick={onHistoryToggle}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border transition-colors shrink-0 ${
                     historyOpen
-                      ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                      ? 'bg-foreground text-background border-primary hover:bg-foreground/90'
                       : 'border-border hover:bg-accent'
                   }`}
                   title="Historial de revisiones"
@@ -180,7 +180,7 @@ export function PostEditorLayout({
                 type="button"
                 onClick={onPublish}
                 disabled={saveStatus === 'saving'}
-                className="flex items-center justify-center gap-1.5 px-3 py-1.5 min-w-[104px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0 disabled:opacity-50"
+                className="flex items-center justify-center gap-1.5 px-3 py-1.5 min-w-[104px] text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors shrink-0 disabled:opacity-50"
               >
                 {saveStatus === 'saving' ? (
                   <span className="material-icons text-base animate-spin">autorenew</span>
@@ -243,7 +243,7 @@ export function PostEditorLayout({
                     type="button"
                     onClick={onPublish}
                     disabled={saveStatus === 'saving'}
-                    className="flex items-center justify-center gap-2 px-4 py-1.5 min-w-[116px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 px-4 py-1.5 min-w-[116px] text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {saveStatus === 'saving' ? (
                       <span className="material-icons text-base animate-spin">autorenew</span>

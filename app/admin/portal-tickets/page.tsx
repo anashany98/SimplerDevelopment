@@ -98,7 +98,7 @@ export default function AdminPortalTicketsPage() {
               key={s}
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                statusFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                statusFilter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {s === 'all' ? 'Todos' : s.replace('_', ' ')}
@@ -111,7 +111,7 @@ export default function AdminPortalTicketsPage() {
               key={p}
               onClick={() => setPriorityFilter(p)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-                priorityFilter === p ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                priorityFilter === p ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {p}

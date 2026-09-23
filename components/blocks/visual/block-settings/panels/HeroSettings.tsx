@@ -68,7 +68,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
               <button
                 type="button"
                 onClick={() => setShowImagePicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Image
               </button>
@@ -106,7 +106,7 @@ export function HeroBlockSettings({ block, onChange, currentViewport }: { block:
               <button
                 type="button"
                 onClick={() => setShowVideoPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Video
               </button>

@@ -157,7 +157,7 @@ export default function MediaDetailModal({
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                  className="px-4 py-2 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90"
                 >
                   {saving ? 'Guardando...' : 'Guardar'}
                 </button>
@@ -187,7 +187,7 @@ export default function MediaDetailModal({
           <div className="flex gap-2 pt-4 border-t border-border">
             <button
               onClick={copyUrl}
-              className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="px-4 py-2 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90"
             >
               Copiar URL
             </button>

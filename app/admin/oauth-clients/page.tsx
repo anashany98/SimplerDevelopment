@@ -128,7 +128,7 @@ export default function AdminOAuthClientsPage() {
         </div>
         <button
           onClick={() => setShowForm(s => !s)}
-          className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90"
+          className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium hover:opacity-90"
         >
           <span className="material-icons text-sm align-middle mr-1">add</span>
           Nuevo cliente confidencial
@@ -247,7 +247,7 @@ export default function AdminOAuthClientsPage() {
             <button
               type="submit"
               disabled={saving}
-              className="rounded-md bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+              className="rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
             >
               {saving ? 'Creando…' : 'Crear cliente y mostrar secreto'}
             </button>

@@ -199,7 +199,7 @@ export default function CrmDashboardPage() {
       <div className="flex flex-col items-center justify-center py-20 gap-3">
         <span className="material-icons text-3xl text-destructive">error</span>
         <p className="text-sm text-muted-foreground">{error}</p>
-        <button onClick={() => setPeriod(p => p)} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">Reintentar</button>
+        <button onClick={() => setPeriod(p => p)} className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">Reintentar</button>
       </div>
     );
   }
@@ -226,7 +226,7 @@ export default function CrmDashboardPage() {
         actions={
           <div className="flex items-center gap-1 bg-accent rounded-lg p-1">
             {periods.map((p) => (
-              <button key={p.value} onClick={() => setPeriod(p.value)} className={`px-3 py-1.5 text-xs rounded-md transition-colors ${period === p.value ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}>
+              <button key={p.value} onClick={() => setPeriod(p.value)} className={`px-3 py-1.5 text-xs rounded-md transition-colors ${period === p.value ? 'bg-foreground text-background font-medium' : 'text-muted-foreground hover:text-foreground'}`}>
                 {p.label}
               </button>
             ))}

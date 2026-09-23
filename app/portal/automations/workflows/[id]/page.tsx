@@ -372,7 +372,7 @@ export default function WorkflowEditorPage() {
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-60"
         >
           <span className="material-icons text-sm">save</span>
           {saving ? 'Guardando...' : 'Guardar'}

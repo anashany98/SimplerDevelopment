@@ -316,7 +316,7 @@ export function StaffPanel({
           <button
             onClick={addMember}
             disabled={!addMemberUserId}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50 whitespace-nowrap"
           >
             <span className="material-icons text-lg align-middle mr-1">person_add</span>Agregar</button>
         </div>

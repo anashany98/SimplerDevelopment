@@ -672,7 +672,7 @@ export default function PromptDetailPage() {
                 <button
                   onClick={() => { if (!mock) { setConfirmingReal(true); } else { handleRunEval(); } }}
                   disabled={inFlight}
-                  className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <span className={`material-icons text-base leading-none ${inFlight ? 'animate-spin' : ''}`}>
                     {inFlight ? 'refresh' : 'play_arrow'}
@@ -755,7 +755,7 @@ export default function PromptDetailPage() {
                     <button
                       onClick={handleSaveDraft}
                       disabled={editorSaving || !editorBody.trim()}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       <span className={`material-icons text-base leading-none ${editorSaving ? 'animate-spin' : ''}`}>
                         {editorSaving ? 'refresh' : 'save'}
@@ -800,7 +800,7 @@ export default function PromptDetailPage() {
                 <button
                   onClick={handleSaveSchedule}
                   disabled={scheduleSaving}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <span className={`material-icons text-base leading-none ${scheduleSaving ? 'animate-spin' : ''}`}>
                     {scheduleSaving ? 'refresh' : 'save'}
@@ -1159,7 +1159,7 @@ export default function PromptDetailPage() {
                               <button
                                 onClick={() => { setPromoteConfirm(v.id); setRollbackConfirm(null); setVersionActionError(null); }}
                                 disabled={isInFlight || versionActionInFlight !== null}
-                                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                               >
                                 <span className={`material-icons text-sm leading-none ${isInFlight ? 'animate-spin' : ''}`}>
                                   {isInFlight ? 'refresh' : 'trending_up'}
@@ -1189,7 +1189,7 @@ export default function PromptDetailPage() {
                           <button
                             onClick={() => handlePromote(v.id)}
                             disabled={isInFlight}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors font-medium"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 transition-colors font-medium"
                           >Confirmar</button>
                           <button
                             onClick={() => setPromoteConfirm(null)}

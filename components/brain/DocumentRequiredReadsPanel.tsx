@@ -351,7 +351,7 @@ function AssignDialog({
                 onClick={() => setTargetType(t)}
                 className={`flex-1 px-2 py-1 rounded text-xs font-medium capitalize transition-colors ${
                   targetType === t
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
@@ -438,7 +438,7 @@ function AssignDialog({
           <button
             onClick={submit}
             disabled={submitting}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {submitting
               ? <><span className="material-icons animate-spin text-base">autorenew</span>Assigning…</>

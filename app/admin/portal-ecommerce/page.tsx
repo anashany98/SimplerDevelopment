@@ -100,7 +100,7 @@ export default function AdminEcommercePage() {
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors capitalize ${
-              tab === t ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+              tab === t ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
             }`}
           >
             {t}

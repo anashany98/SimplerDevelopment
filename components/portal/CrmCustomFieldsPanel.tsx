@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import Link from 'next/link';
 
 type EntityType = 'contact' | 'company' | 'deal';
 type FieldType =
@@ -220,9 +221,9 @@ export default function CrmCustomFieldsPanel({
     return (
       <p className="text-sm text-muted-foreground py-2">
         No hay campos personalizados definidos.{' '}
-        <a href="/portal/crm/settings" className="text-primary hover:underline">
+        <Link href="/portal/crm/settings" className="text-primary hover:underline">
           Añade algunos en ajustes
-        </a>
+        </Link>
         .
       </p>
     );
@@ -444,7 +445,7 @@ export default function CrmCustomFieldsPanel({
                             onClick={() => toggleMulti(d.id, o)}
                             className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                               checked
-                                ? 'bg-primary text-primary-foreground border-primary'
+                                ? 'bg-foreground text-background border-primary'
                                 : 'bg-background text-foreground border-border hover:bg-accent'
                             }`}
                           >
@@ -480,7 +481,7 @@ export default function CrmCustomFieldsPanel({
             type="button"
             onClick={() => { save(); }}
             disabled={!dirty || saving}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
           >
             {saving && <span className="material-icons animate-spin text-sm">refresh</span>}
             Guardar campos personalizados

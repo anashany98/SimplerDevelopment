@@ -148,9 +148,9 @@ describe('HeroSlideshowBlockSettings', () => {
       renderSettings(block);
       const tab1 = screen.getByText('1');
       const tab2 = screen.getByText('2');
-      // Tab 1 should have the active class (bg-primary)
-      expect(tab1.className).toContain('bg-primary');
-      expect(tab2.className).not.toContain('bg-primary');
+      // Tab 1 should have the active class (bg-foreground)
+      expect(tab1.className).toContain('bg-foreground');
+      expect(tab2.className).not.toContain('bg-foreground');
     });
   });
 

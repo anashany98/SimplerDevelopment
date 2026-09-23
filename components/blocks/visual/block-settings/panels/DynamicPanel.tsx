@@ -201,7 +201,7 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Cambiar imagen
               </button>
@@ -693,7 +693,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
             <div className="space-y-2">
               <img src={block.backgroundImage} alt="Fondo del banner" className="w-full h-24 object-cover rounded border border-border" />
               <div className="flex gap-2">
-                <button type="button" onClick={() => setShowMediaPicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Cambiar</button>
+                <button type="button" onClick={() => setShowMediaPicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Cambiar</button>
                 <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
               </div>
             </div>

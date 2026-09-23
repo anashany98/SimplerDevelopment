@@ -178,7 +178,7 @@ export default function VariantsPanel({ surveyId }: Props) {
           <button
             onClick={() => void createVariant()}
             disabled={creating || !newName.trim()}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
           >
             {creating ? (
               <span className="material-icons text-lg animate-spin">autorenew</span>
@@ -291,7 +291,7 @@ export default function VariantsPanel({ surveyId }: Props) {
                     <div className="flex justify-end mt-4">
                       <button
                         onClick={() => void updateVariant(variant.id, { fields: variant.fields })}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                       >
                         <span className="material-icons text-base">save</span>
                         Guardar campos

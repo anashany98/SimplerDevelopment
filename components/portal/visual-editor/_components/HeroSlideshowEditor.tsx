@@ -46,7 +46,7 @@ export function HeroSlideshowEditor({ block, onUpdate, siteId }: { block: Block;
         <div className="flex flex-wrap gap-1 mt-1">
           {slides.map((_, i) => (
             <button key={i} type="button" onClick={() => setActiveSlide(i)}
-              className={`px-2.5 py-1 text-xs font-medium rounded ${i === activeSlide ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}
+              className={`px-2.5 py-1 text-xs font-medium rounded ${i === activeSlide ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}
             >{i + 1}</button>
           ))}
           <button type="button" onClick={addSlide} className="px-2.5 py-1 text-xs rounded bg-muted text-muted-foreground hover:text-foreground">+</button>

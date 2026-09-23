@@ -38,7 +38,7 @@ export function RegenerateModal({ prompt, regenerating, error, onPromptChange, o
       <button
         type="submit"
         disabled={regenerating || !prompt.trim()}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium disabled:opacity-50"
       >
         {regenerating ? (
           <><span className="material-icons animate-spin text-base">autorenew</span>Generando…</>

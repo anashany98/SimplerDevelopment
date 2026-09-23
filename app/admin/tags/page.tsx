@@ -72,7 +72,7 @@ export default function TagsPage() {
               setEditingTag(null);
               setFormData({ name: '', slug: '' });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
             {showForm ? 'Cancelar' : 'Añadir etiqueta'}
           </button>
@@ -103,7 +103,7 @@ export default function TagsPage() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
               >
                 {editingTag ? 'Actualizar' : 'Crear'} etiqueta
               </button>

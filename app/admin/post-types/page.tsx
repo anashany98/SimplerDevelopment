@@ -133,7 +133,7 @@ export default function PostTypesPage() {
               setEditingPostType(null);
               setFormData({ name: '', slug: '', description: '', icon: 'article', active: true });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
             Añadir tipo de contenido
           </button>
@@ -236,7 +236,7 @@ export default function PostTypesPage() {
                 <div className="flex gap-2 pt-4">
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                    className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
                   >
                     {editingPostType ? 'Actualizar' : 'Crear'} tipo de contenido
                   </button>

@@ -550,9 +550,9 @@ describe('BrainPeoplePage — status tabs', () => {
   it('default status is "active" when no URL param', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      // The "Active" tab should have primary styling (bg-primary class)
+      // The "Active" tab should have primary styling (bg-foreground class)
       const activeBtns = Array.from(container.querySelectorAll('button')).filter((b) =>
-        b.textContent?.includes('Activo') && b.className.includes('bg-primary'),
+        b.textContent?.includes('Activo') && b.className.includes('bg-foreground'),
       );
       expect(activeBtns.length).toBeGreaterThanOrEqual(1);
     });

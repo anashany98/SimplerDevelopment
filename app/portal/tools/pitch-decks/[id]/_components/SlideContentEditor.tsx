@@ -61,7 +61,7 @@ export function SlideContentEditor({
         <button
           type="submit"
           disabled={slideGenerating || !slidePrompt.trim()}
-          className="px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50 shrink-0"
+          className="px-4 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium disabled:opacity-50 shrink-0"
         >
           {slideGenerating ? (
             <span className="material-icons animate-spin text-base">autorenew</span>

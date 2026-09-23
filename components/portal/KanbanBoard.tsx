@@ -444,7 +444,7 @@ function KanbanColumn({
               <button
                 type="submit"
                 disabled={!newCardTitle.trim()}
-                className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+                className="px-3 py-1 bg-foreground text-background rounded text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
               >Añadir</button>
               <button
                 type="button"
@@ -924,7 +924,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
             <button
               key={p}
               onClick={() => toggleSetValue(setFilterPriority, p)}
-              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${filterPriority.has(p) ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${filterPriority.has(p) ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}
             >
               {p}
             </button>
@@ -941,13 +941,13 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
               <div className="flex items-center gap-1.5 flex-wrap">
                 <span className="text-muted-foreground">Sprint:</span>
                 <button onClick={() => setFilterSprintId(null)}
-                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === null ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>Todos</button>
+                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === null ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>Todos</button>
                 {sprints.map(s => (
                   <button key={s.id} onClick={() => setFilterSprintId(s.id)}
-                    className={`px-2 py-0.5 rounded-full border ${filterSprintId === s.id ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>{s.name}</button>
+                    className={`px-2 py-0.5 rounded-full border ${filterSprintId === s.id ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>{s.name}</button>
                 ))}
                 <button onClick={() => setFilterSprintId('backlog')}
-                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === 'backlog' ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>Backlog</button>
+                  className={`px-2 py-0.5 rounded-full border ${filterSprintId === 'backlog' ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>Backlog</button>
               </div>
             )}
             {allAssignees.length > 0 && (
@@ -955,7 +955,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
                 <span className="text-muted-foreground">Assignee:</span>
                 {allAssignees.map(a => (
                   <button key={a.id} onClick={() => toggleSetValue(setFilterAssignees, a.id)}
-                    className={`px-2 py-0.5 rounded-full border ${filterAssignees.has(a.id) ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                    className={`px-2 py-0.5 rounded-full border ${filterAssignees.has(a.id) ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
                     {a.name}
                   </button>
                 ))}
@@ -1039,7 +1039,7 @@ export default function KanbanBoard({ projectId, initialColumns, isStaff, canEdi
                     <button
                       type="submit"
                       disabled={!newColumnName.trim()}
-                      className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+                      className="px-3 py-1 bg-foreground text-background rounded text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
                     >Añadir</button>
                     <button
                       type="button"

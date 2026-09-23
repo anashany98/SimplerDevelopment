@@ -429,7 +429,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                           weight: field.scoring?.type === 'numeric' ? field.scoring.weight : 1,
                                         },
                                       })}
-                                      className={`px-2.5 py-1 ${field.scoring?.type === 'numeric' ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground hover:bg-muted/50'}`}
+                                      className={`px-2.5 py-1 ${field.scoring?.type === 'numeric' ? 'bg-foreground text-background' : 'bg-background text-foreground hover:bg-muted/50'}`}
                                     >
                                         Ponderado
                                     </button>
@@ -437,7 +437,7 @@ export default function SurveyBuilder({ fields, onChange }: Props) {
                                       <button
                                         type="button"
                                         onClick={() => updateField(field.id, { scoring: { type: 'nps' } })}
-                                        className={`px-2.5 py-1 border-l border-border ${field.scoring?.type === 'nps' ? 'bg-primary text-primary-foreground' : 'bg-background text-foreground hover:bg-muted/50'}`}
+                                        className={`px-2.5 py-1 border-l border-border ${field.scoring?.type === 'nps' ? 'bg-foreground text-background' : 'bg-background text-foreground hover:bg-muted/50'}`}
                                         title="0-6 → -1 (detractor), 7-8 → 0 (pasivo), 9-10 → +1 (promotor)"
                                       >
                                         NPS

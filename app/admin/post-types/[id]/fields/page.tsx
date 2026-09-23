@@ -248,7 +248,7 @@ export default function CustomFieldsPage() {
                 });
               }
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
             {showForm ? 'Cancelar' : 'Añadir campo personalizado'}
           </button>
@@ -371,7 +371,7 @@ export default function CustomFieldsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Guardando...' : editingField ? 'Actualizar campo' : 'Crear campo'}
               </button>

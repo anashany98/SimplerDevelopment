@@ -29,7 +29,7 @@ export default function BuyServiceButton({ serviceId, label = 'Comprar ahora' }:
       <button
         onClick={handleBuy}
         disabled={loading}
-        className="flex items-center gap-1 text-xs px-3 py-1.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-1 text-xs px-3 py-1.5 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:opacity-50 transition-colors"
       >
         {loading ? (
           <><span className="material-icons text-xs animate-spin">refresh</span>Redirigiendo...</>

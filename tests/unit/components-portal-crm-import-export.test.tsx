@@ -306,9 +306,9 @@ describe('CrmImportExport — import submit', () => {
     vi.resetAllMocks();
   });
 
-    /** Find the modal's "Import" submit button (has bg-primary class, inside the modal) */
+    /** Find the modal's "Import" submit button (has bg-foreground class, inside the modal) */
   function clickModalImportBtn() {
-    const btn = document.querySelector('.fixed .flex.justify-end.gap-2 button.bg-primary') as HTMLButtonElement;
+    const btn = document.querySelector('.fixed .flex.justify-end.gap-2 button.bg-foreground') as HTMLButtonElement;
     if (!btn) throw new Error('Modal import button not found');
     fireEvent.click(btn);
   }

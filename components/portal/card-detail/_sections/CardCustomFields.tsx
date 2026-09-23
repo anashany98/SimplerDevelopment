@@ -191,7 +191,7 @@ function FieldInput({ field, canEdit, onChange, onBlur }: {
             disabled={disabled}
             onClick={() => toggle(o)}
             className={`px-2 py-1 rounded text-xs font-medium transition-colors disabled:opacity-60 ${
-              selected.includes(o) ? 'bg-primary text-primary-foreground' : 'border border-border text-foreground hover:bg-accent'
+              selected.includes(o) ? 'bg-foreground text-background' : 'border border-border text-foreground hover:bg-accent'
             }`}
           >
             {o}

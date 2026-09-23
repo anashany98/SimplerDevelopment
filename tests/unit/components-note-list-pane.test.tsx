@@ -598,7 +598,7 @@ describe('NoteListPane — saved searches', () => {
   it('renders saved-search empty hint when no saved searches exist', async () => {
     render(<NoteListPane selectedId={null} onSelect={() => {}} onCreate={() => {}} />);
     await flush();
-    expect(screen.getByText(/No saved searches yet/)).toBeTruthy();
+    expect(screen.getByText(/Aún no hay búsquedas guardadas/)).toBeTruthy();
   });
 
   it('renders saved search items when present', async () => {

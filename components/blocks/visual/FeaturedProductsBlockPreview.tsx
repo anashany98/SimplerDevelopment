@@ -62,7 +62,7 @@ export function FeaturedProductsBlockPreview({ block, isSelected, onChange }: Fe
           {displayProducts.map((product, i) => (
             <div key={i} className="relative h-full rounded-lg border bg-card overflow-hidden transition-all hover:shadow-xl">
               {block.showBadge !== false && (
-                <div className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute top-3 left-3 z-10 bg-foreground text-background text-xs font-bold px-3 py-1 rounded-full">
                   {block.badgeText || 'Featured'}
                 </div>
               )}
@@ -85,7 +85,7 @@ export function FeaturedProductsBlockPreview({ block, isSelected, onChange }: Fe
                   </div>
                 )}
                 {block.buttonText && (
-                  <div className="mt-4 w-full px-4 py-2.5 bg-primary text-primary-foreground rounded-md text-sm font-medium text-center">
+                  <div className="mt-4 w-full px-4 py-2.5 bg-foreground text-background rounded-md text-sm font-medium text-center">
                     {block.buttonText}
                   </div>
                 )}

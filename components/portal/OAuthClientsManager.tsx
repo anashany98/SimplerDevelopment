@@ -169,7 +169,7 @@ export default function OAuthClientsManager({
         </div>
         <button
           onClick={() => { setShowCreate(v => !v); setRevealed(null); setCreateError(null); }}
-          className="inline-flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90 whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:opacity-90 whitespace-nowrap"
         >
           <span className="material-icons text-base">add</span>
           Nueva aplicación
@@ -305,7 +305,7 @@ export default function OAuthClientsManager({
             <button
               onClick={handleCreate}
               disabled={creating}
-              className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium disabled:opacity-60"
+              className="px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium disabled:opacity-60"
             >
               {creating ? 'Creando…' : 'Crear aplicación'}
             </button>

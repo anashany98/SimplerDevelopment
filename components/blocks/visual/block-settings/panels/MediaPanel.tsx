@@ -51,7 +51,7 @@ function ImageBlockSettings({ block, onChange, currentViewport }: { block: Image
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Image
               </button>
@@ -212,7 +212,7 @@ function GalleryBlockSettings({ block, onChange }: { block: GalleryBlock; onChan
       <div className="border-t border-border pt-4">
         <div className="flex items-center justify-between mb-2">
           <label className="text-sm font-medium text-foreground">Images ({block.images.length})</label>
-          <button type="button" onClick={addImage} className="text-xs px-2 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90">Add Image</button>
+          <button type="button" onClick={addImage} className="text-xs px-2 py-1 bg-foreground text-background rounded hover:bg-foreground/90">Add Image</button>
         </div>
         <div className="space-y-3 max-h-[400px] overflow-y-auto">
           {block.images.map((image, index) => (
@@ -270,7 +270,7 @@ function VideoBlockSettings({ block, onChange, currentViewport }: { block: Video
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Video
               </button>

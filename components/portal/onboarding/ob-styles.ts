@@ -61,7 +61,7 @@ export const obPillSoft = `${obPillBase} border-primary bg-primary/[0.08] text-p
 export const obChip =
   'grid h-9 w-9 flex-none place-items-center rounded-xl bg-muted text-muted-foreground transition';
 export const obChipOn =
-  'grid h-9 w-9 flex-none place-items-center rounded-xl bg-primary text-primary-foreground transition';
+  'grid h-9 w-9 flex-none place-items-center rounded-xl bg-foreground text-background transition';
 
 // ── surfaces ────────────────────────────────────────────────────────────────
 export const obPanel = 'rounded-2xl border border-border bg-card p-4';

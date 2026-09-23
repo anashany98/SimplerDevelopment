@@ -223,7 +223,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                       }}
                       className={`px-3 py-1.5 text-sm border rounded-md transition-colors ${
                         metric === m
-                          ? 'border-primary bg-primary text-primary-foreground'
+                          ? 'border-foreground bg-foreground text-background'
                           : 'border-border text-foreground hover:bg-accent'
                       }`}
                     >
@@ -309,7 +309,7 @@ export function EmailAbConfig({ campaign, onChange }: Props) {
                       type="button"
                       onClick={() => promoteWinner(false)}
                       disabled={!status.ready || promoting || isSent}
-                      className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md disabled:opacity-50"
+                      className="px-3 py-1.5 text-sm bg-foreground text-background rounded-md disabled:opacity-50"
                       title={status.ready ? 'Promover al ganador y enviar el resto' : 'La ventana de decisión aún no se ha alcanzado (4 h)'}
                     >
                       {promoting ? 'Promoviendo…' : 'Promover ganador'}

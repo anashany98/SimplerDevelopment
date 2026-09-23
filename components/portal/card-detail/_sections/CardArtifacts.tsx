@@ -59,7 +59,7 @@ export function CardArtifacts({
           <div className="flex flex-wrap gap-1">
             <button
               onClick={() => setArtifactTypeFilter('')}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!artifactTypeFilter ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
+              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!artifactTypeFilter ? 'bg-foreground text-background' : 'bg-accent text-foreground hover:bg-accent/80'}`}
             >Todos</button>
             {Object.entries(ARTIFACT_LABELS)
               .filter(([type]) => !AGENT_LINKED_ARTIFACT_TYPES.has(type))
@@ -67,7 +67,7 @@ export function CardArtifacts({
                 <button
                   key={type}
                   onClick={() => setArtifactTypeFilter(type)}
-                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${artifactTypeFilter === type ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${artifactTypeFilter === type ? 'bg-foreground text-background' : 'bg-accent text-foreground hover:bg-accent/80'}`}
                 >
                   {label}
                 </button>

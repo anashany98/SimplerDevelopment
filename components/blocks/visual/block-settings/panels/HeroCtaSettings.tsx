@@ -84,7 +84,7 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
               <div className="space-y-2">
                 <img src={block.backgroundImage} alt="Fondo" className="w-full h-32 object-cover rounded border border-border" />
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change Image</button>
+                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Change Image</button>
                   <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>
@@ -104,7 +104,7 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
                   <video src={block.backgroundVideo} controls className="w-full h-full" />
                 </div>
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setShowVideoPicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change Video</button>
+                  <button type="button" onClick={() => setShowVideoPicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Change Video</button>
                   <button type="button" onClick={() => onChange({ backgroundVideo: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>

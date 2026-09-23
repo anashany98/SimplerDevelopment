@@ -119,7 +119,7 @@ export default function EmailListsPage() {
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
           Nueva lista
@@ -152,7 +152,7 @@ export default function EmailListsPage() {
             </div>
           </div>
           <div className="flex gap-2">
-            <button type="submit" disabled={saving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+            <button type="submit" disabled={saving} className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
               {saving ? 'Creando…' : 'Crear lista'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
@@ -220,7 +220,7 @@ export default function EmailListsPage() {
                   placeholder="Nombre (opcional)"
                   className="w-32 border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                <button type="submit" disabled={subSaving} className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 disabled:opacity-50">
+                <button type="submit" disabled={subSaving} className="px-3 py-2 bg-foreground text-background rounded-md text-sm hover:bg-foreground/90 disabled:opacity-50">
                   <span className="material-icons text-base">add</span>
                 </button>
               </form>

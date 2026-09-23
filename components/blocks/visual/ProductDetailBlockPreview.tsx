@@ -117,7 +117,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
                   {['Small', 'Medium', 'Large'].map((s, i) => (
                     <div
                       key={s}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border ${i === 0 ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background text-foreground'}`}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border ${i === 0 ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground'}`}
                       style={getElementCSS(block.elementStyles, 'optionButton')}
                     >
                       {s}
@@ -130,7 +130,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
             {showAddToCart && (
               <div className="border-t border-border pt-5">
                 <div
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-foreground text-background text-lg font-semibold rounded-xl"
                   style={getElementCSS(block.elementStyles, 'addToCartButton')}
                 >
                   <span className="material-icons text-xl">shopping_cart</span>

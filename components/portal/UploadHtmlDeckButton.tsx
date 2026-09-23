@@ -36,7 +36,7 @@ export default function UploadHtmlDeckButton({ variant = 'secondary' }: UploadHt
 
   const styles =
     variant === 'primary'
-      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+      ? 'bg-foreground text-background hover:bg-foreground/90'
       : 'border border-border text-foreground hover:bg-accent';
 
   return (

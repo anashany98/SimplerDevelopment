@@ -466,7 +466,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Guardando...' : mode === 'create' ? 'Crear entrada' : 'Actualizar entrada'}
         </button>

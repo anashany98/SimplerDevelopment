@@ -133,7 +133,7 @@ export default function AdminAutomationsPage() {
               key={t}
               onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                tab === t ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                tab === t ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {t === 'rules' ? 'Reglas' : 'Registros'}
@@ -227,7 +227,7 @@ export default function AdminAutomationsPage() {
                 key={s}
                 onClick={() => setLogFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  logFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                  logFilter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
                 }`}
               >
                 {s}

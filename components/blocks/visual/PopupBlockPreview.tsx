@@ -53,7 +53,7 @@ export function PopupBlockPreview({ block, isSelected, onChange }: Props) {
             />
           )}
           {block.ctaLabel && (
-            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium">
+            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-foreground text-background text-sm font-medium">
               {block.ctaLabel}
               <span className="material-icons text-base">arrow_forward</span>
             </div>

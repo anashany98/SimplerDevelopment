@@ -283,7 +283,7 @@ export function MessagingTab({ messaging, updateMessaging, openRewrite }: Props)
               <button
                 onClick={addDifferentiator}
                 disabled={!newDifferentiator.trim()}
-                className="px-3 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                className="px-3 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
               >
                 <span className="material-icons text-base">add</span>
               </button>

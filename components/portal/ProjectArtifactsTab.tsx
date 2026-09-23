@@ -236,7 +236,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
             <button
               type="button"
               onClick={() => setShowPicker(v => !v)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors"
             >
               <span className="material-icons text-base">{showPicker ? 'close' : 'add'}</span>
               {showPicker ? 'Cerrar' : 'Vincular artefacto'}
@@ -257,14 +257,14 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
                   <button
                     type="button"
                     onClick={() => setTypeFilter('')}
-                    className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!typeFilter ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
+                    className={`px-2 py-1 rounded text-xs font-medium transition-colors ${!typeFilter ? 'bg-foreground text-background' : 'bg-accent text-foreground hover:bg-accent/80'}`}
                   >Todos</button>
                   {availableTypes.map(type => (
                     <button
                       key={type}
                       type="button"
                       onClick={() => setTypeFilter(type)}
-                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${typeFilter === type ? 'bg-primary text-primary-foreground' : 'bg-accent text-foreground hover:bg-accent/80'}`}
+                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${typeFilter === type ? 'bg-foreground text-background' : 'bg-accent text-foreground hover:bg-accent/80'}`}
                     >
                       {ARTIFACT_LABELS[type] ?? type}
                     </button>
@@ -318,7 +318,7 @@ export default function ProjectArtifactsTab({ projectId, canEdit }: Props) {
             <button
               type="button"
               onClick={() => setShowPicker(true)}
-              className="mt-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="mt-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors"
             >
               <span className="material-icons text-base">add</span>
               Vincula tu primer artefacto

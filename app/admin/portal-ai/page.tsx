@@ -238,7 +238,7 @@ export default function AdminAIConversationsPage() {
                   </button>
                   <button
                     onClick={() => setShowInjectModal(true)}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-foreground text-background text-sm font-medium hover:bg-foreground/90 transition-colors"
                   >
                     <span className="material-icons text-base">reply</span>
                     Inyectar respuesta
@@ -288,7 +288,7 @@ export default function AdminAIConversationsPage() {
 
                       <div className={`max-w-lg rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap break-words ${
                         msg.role === 'user'
-                          ? 'bg-primary text-primary-foreground rounded-tr-sm'
+                          ? 'bg-foreground text-background rounded-tr-sm'
                           : msg.injectedBy
                           ? 'bg-amber-50 border border-amber-200 text-foreground rounded-tl-sm dark:bg-amber-950/30 dark:border-amber-800'
                           : 'bg-muted text-foreground rounded-tl-sm'
@@ -330,7 +330,7 @@ export default function AdminAIConversationsPage() {
               <button
                 onClick={injectReply}
                 disabled={injecting || !injectMessage.trim()}
-                className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+                className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
               >
                 {injecting ? <><span className="material-icons text-base animate-spin">refresh</span>Enviando…</> : 'Enviar respuesta'}
               </button>

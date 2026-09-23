@@ -101,7 +101,7 @@ export function InlineSettingsPanel({
                     }))}
                     className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                       selected
-                        ? 'bg-primary text-primary-foreground border-primary'
+                        ? 'bg-foreground text-background border-primary'
                         : 'bg-background text-muted-foreground border-border hover:border-primary/40'
                     }`}
                   >
@@ -132,7 +132,7 @@ export function InlineSettingsPanel({
                     }))}
                     className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
                       selected
-                        ? 'bg-primary text-primary-foreground border-primary'
+                        ? 'bg-foreground text-background border-primary'
                         : 'bg-background text-muted-foreground border-border hover:border-primary/40'
                     }`}
                   >

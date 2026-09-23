@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ClientEntry {
   id: number;
@@ -102,7 +103,7 @@ export default function CompanySwitcher() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2.5 min-w-0 w-full text-left rounded-lg px-1.5 py-1 -mx-1.5 hover:bg-accent/50 transition-colors"
       >
-        <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-foreground text-background flex items-center justify-center text-xs font-bold shrink-0">
           {initial}
         </div>
         <div className="min-w-0 flex-1">
@@ -156,7 +157,7 @@ function DropdownContent({
         return (
           <div className="px-3 py-3 border-b border-border">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-foreground text-background flex items-center justify-center text-sm font-bold shrink-0">
                 {active.company.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
@@ -200,14 +201,14 @@ function DropdownContent({
 
       {/* Footer actions */}
       <div className="border-t border-border px-3 py-2">
-        <a
+        <Link
           href="/portal/settings/team"
           onClick={onClose}
           className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
         >
           <span className="material-icons text-sm">group_add</span>
           Invitar personas
-        </a>
+        </Link>
       </div>
     </>
   );

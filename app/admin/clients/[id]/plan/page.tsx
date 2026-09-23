@@ -296,7 +296,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                     'px-4 py-2 font-medium transition-colors disabled:cursor-not-allowed',
                     idx < arr.length - 1 ? 'border-r border-border' : '',
                     isActive
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-foreground text-background'
                       : 'bg-background text-foreground hover:bg-muted disabled:opacity-50',
                   ].join(' ')}
                 >
@@ -435,7 +435,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                   <button
                     onClick={() => assign(tier.id)}
                     disabled={saving !== null || isActive}
-                    className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 ${isActive ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'bg-primary text-primary-foreground hover:bg-primary/90'}`}
+                    className={`w-full px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 ${isActive ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'bg-foreground text-background hover:bg-foreground/90'}`}
                   >
                     {isActive ? 'Plan actual' : isSaving ? 'Cambiando…' : (active ? 'Cambiar a este nivel' : 'Asignar nivel')}
                   </button>
@@ -611,7 +611,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                   billingAction({ action: 'set-seats', override: val });
                 }}
                 disabled={billingInFlight}
-                className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+                className="px-3 py-1.5 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90 disabled:opacity-50"
               >
                 Definir
               </button>
@@ -650,7 +650,7 @@ export default function ClientPlanPage({ params }: { params: Promise<{ id: strin
                   billingAction({ action: 'set-comp', percent: val });
                 }}
                 disabled={billingInFlight}
-                className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+                className="px-3 py-1.5 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90 disabled:opacity-50"
               >
                 Definir
               </button>

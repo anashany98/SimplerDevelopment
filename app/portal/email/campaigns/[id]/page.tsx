@@ -427,7 +427,7 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
             <h3 className="font-semibold text-foreground">{editing ? 'Editar contenido' : 'Vista previa del correo'}</h3>
             {editing && hasBlockContent && (
               <button type="button" onClick={() => setShowPreview(!showPreview)}
-                className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors ${showPreview ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-accent'}`}>
+                className={`px-3 py-1 text-xs font-medium rounded-xl transition-colors ${showPreview ? 'bg-foreground text-background' : 'text-muted-foreground hover:bg-accent'}`}>
                 <span className="material-icons text-sm align-middle mr-1">preview</span>Vista previa</button>
             )}
           </div>

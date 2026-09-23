@@ -442,7 +442,7 @@ export default function DecisionForm({
                     title={t.path}
                     className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border transition-colors ${
                       selected
-                        ? 'bg-primary text-primary-foreground border-primary'
+                        ? 'bg-foreground text-background border-primary'
                         : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
                     }`}
                   >
@@ -476,7 +476,7 @@ export default function DecisionForm({
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {submitting && (
               <span className="material-icons animate-spin text-base">autorenew</span>
@@ -530,7 +530,7 @@ function RadioPill({
       aria-pressed={checked}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium border transition-colors ${
         checked
-          ? 'bg-primary text-primary-foreground border-primary'
+          ? 'bg-foreground text-background border-primary'
           : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
       }`}
     >

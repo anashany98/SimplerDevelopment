@@ -119,7 +119,7 @@ export function HtmlRenderFullJson({
             type="button"
             onClick={handleApply}
             disabled={!dirty}
-            className="inline-flex items-center gap-1.5 rounded bg-primary text-primary-foreground px-2.5 py-1 text-xs hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded bg-foreground text-background px-2.5 py-1 text-xs hover:bg-foreground/90 disabled:opacity-50"
           >
             <span className="material-icons text-sm">play_arrow</span>Aplicar</button>
         </div>

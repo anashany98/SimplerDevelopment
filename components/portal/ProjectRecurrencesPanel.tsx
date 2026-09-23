@@ -124,7 +124,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
         {canEdit && (
           <button
             onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-foreground text-background hover:bg-foreground/90"
           >
             <span className="material-icons text-sm">{showForm ? 'close' : 'add'}</span>
             {showForm ? 'Cancelar' : 'Nueva'}
@@ -203,7 +203,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
+            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50">
               {saving ? 'Guardando…' : 'Añadir recurrencia'}
             </button>
           </div>

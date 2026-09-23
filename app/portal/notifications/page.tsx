@@ -105,7 +105,7 @@ export default function NotificationsPage() {
             <button
               onClick={() => setUnreadOnly(v => !v)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                unreadOnly ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                unreadOnly ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               <span className="material-icons text-sm">filter_list</span>

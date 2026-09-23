@@ -262,7 +262,7 @@ describe('GlossaryTermForm — field edits', () => {
     )!;
     fireEvent.click(deprBtn);
     // The deprecated button should now have primary styling
-    expect(deprBtn.className).toContain('bg-primary');
+    expect(deprBtn.className).toContain('bg-foreground');
   });
 
   it('toggles status back to active', () => {
@@ -271,7 +271,7 @@ describe('GlossaryTermForm — field edits', () => {
       b.textContent?.trim() === 'active',
     )!;
     fireEvent.click(activeBtn);
-    expect(activeBtn.className).toContain('bg-primary');
+    expect(activeBtn.className).toContain('bg-foreground');
   });
 });
 

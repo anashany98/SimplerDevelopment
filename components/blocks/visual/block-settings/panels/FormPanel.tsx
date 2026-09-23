@@ -219,7 +219,7 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
               onClick={() => onChange({ alignment: align })}
               className={`flex-1 px-3 py-2 text-sm rounded ${
                 (block.alignment || 'left') === align
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-background border border-border text-foreground hover:bg-accent'
               }`}
             >

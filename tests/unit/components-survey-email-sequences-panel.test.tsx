@@ -545,7 +545,7 @@ describe('EmailSequencesPanel — inline edit', () => {
 
     // Edit form should appear — Save and Cancel buttons become visible
     // Save button accessible name includes material-icon text "save" + label "Save"
-    await waitFor(() => expect(document.querySelector('button[class*="bg-primary"]')).toBeTruthy());
+    await waitFor(() => expect(document.querySelector('button[class*="bg-foreground"]')).toBeTruthy());
     expect(screen.getByRole('button', { name: /Cancelar/i })).toBeTruthy();
   });
 

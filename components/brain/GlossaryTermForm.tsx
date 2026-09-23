@@ -352,7 +352,7 @@ export default function GlossaryTermForm({
                 onClick={() => set('status', s)}
                 className={`flex-1 px-3 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${
                   value.status === s
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
@@ -481,7 +481,7 @@ export default function GlossaryTermForm({
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
             ? <><span className="material-icons text-base animate-spin">autorenew</span>Saving…</>

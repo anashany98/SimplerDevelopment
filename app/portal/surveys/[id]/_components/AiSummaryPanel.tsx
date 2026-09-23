@@ -107,7 +107,7 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
             type="button"
             onClick={() => generate(false)}
             disabled={generating}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50 shrink-0"
           >
             <span className="material-icons text-base">
               {generating ? 'autorenew' : 'auto_awesome'}

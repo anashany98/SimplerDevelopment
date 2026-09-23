@@ -118,7 +118,7 @@ export function CustomCodeModal({ open, initialCss, initialJs, onClose, onApply 
                 onClose();
               }}
               disabled={!dirty}
-              className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
             >
               <span className="material-icons text-base">check</span>Aplicar</button>
           </div>

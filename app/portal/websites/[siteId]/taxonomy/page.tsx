@@ -215,7 +215,7 @@ export default function TaxonomyPage() {
                 onClick={() => { setSelectedTaxonomy(tax); setShowTermForm(false); }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left transition-colors ${
                   selectedTaxonomy?.id === tax.id
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-foreground hover:bg-accent'
                 }`}
               >
@@ -291,7 +291,7 @@ export default function TaxonomyPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-full py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+                  className="w-full py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
                 >
                   {saving ? 'Creando…' : 'Crear taxonomía'}
                 </button>

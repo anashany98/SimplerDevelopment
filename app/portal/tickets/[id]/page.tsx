@@ -146,7 +146,7 @@ export default async function TicketDetailPage({ params }: { params: Promise<{ i
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${isStaffMsg ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${isStaffMsg ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'}`}>
                     {msg.authorName[0].toUpperCase()}
                   </div>
                   <div>

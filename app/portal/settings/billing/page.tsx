@@ -168,12 +168,12 @@ export default function SettingsBillingPage() {
         <button
           onClick={() => setSection('invoices')}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-            section === 'invoices' ? 'bg-primary text-primary-foreground' : 'bg-accent text-muted-foreground hover:text-foreground'
+            section === 'invoices' ? 'bg-foreground text-background' : 'bg-accent text-muted-foreground hover:text-foreground'
           }`}>Facturas</button>
         <button
           onClick={() => setSection('payment-methods')}
           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-            section === 'payment-methods' ? 'bg-primary text-primary-foreground' : 'bg-accent text-muted-foreground hover:text-foreground'
+            section === 'payment-methods' ? 'bg-foreground text-background' : 'bg-accent text-muted-foreground hover:text-foreground'
           }`}>Métodos de pago</button>
       </div>
 

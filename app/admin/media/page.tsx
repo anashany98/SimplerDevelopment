@@ -87,7 +87,7 @@ export default function MediaLibraryPage() {
             onClick={() => setShowUpload(true)}
             disabled={!selectedClientId}
             title={selectedClientId ? undefined : 'Selecciona un cliente para subir medios'}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Subir medios
           </button>
@@ -138,7 +138,7 @@ export default function MediaLibraryPage() {
                 }}
                 className={`px-4 py-2 text-sm rounded-md ${
                   filter === key
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'bg-muted text-foreground hover:bg-muted/80'
                 }`}
               >

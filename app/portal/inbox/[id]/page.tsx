@@ -235,7 +235,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
             <div
               className={`max-w-[75%] px-3 py-2 rounded-lg ${
                 m.direction === 'outbound' || m.authorKind === 'agent'
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : m.authorKind === 'system'
                   ? 'bg-amber-100 text-amber-900'
                   : 'bg-card border'

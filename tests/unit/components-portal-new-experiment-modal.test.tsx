@@ -589,7 +589,7 @@ describe('NewExperimentModal — state reset on close/reopen', () => {
     // Reopen
     rerender(<NewExperimentModal open={true} onClose={vi.fn()} />);
 
-    // Default type should be page — the Page toggle button has bg-primary.
+    // Default type should be page — the Page toggle button has bg-foreground.
     // The button contains an icon <span> so accessible name includes icon text;
     // find it by matching textContent instead.
     await waitFor(() => {
@@ -598,7 +598,7 @@ describe('NewExperimentModal — state reset on close/reopen', () => {
         b.textContent?.includes('Página') && !b.textContent?.includes('Presentación'),
       ) as HTMLButtonElement | undefined;
       expect(pageBtn).toBeDefined();
-      expect(pageBtn!.className).toContain('bg-primary');
+      expect(pageBtn!.className).toContain('bg-foreground');
     });
   });
 });

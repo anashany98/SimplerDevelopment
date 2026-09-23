@@ -957,7 +957,7 @@ export default function ProductEditPage() {
                           <p className="text-xs text-muted-foreground truncate">{item.filename}</p>
                         </div>
                         {isSelected && (
-                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center">
                             <span className="material-icons text-sm">check</span>
                           </div>
                         )}

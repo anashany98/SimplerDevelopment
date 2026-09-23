@@ -106,12 +106,12 @@ export default function AdminProjectRequestsPage() {
       {/* Filter pills */}
       <div className="flex items-center gap-2 flex-wrap">
         <button onClick={() => setFilterStatus('all')}
-          className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
+          className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === 'all' ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
           Todas ({requests.length})
         </button>
         {STATUSES.map(s => (
           <button key={s} onClick={() => setFilterStatus(s)}
-            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
+            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === s ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
             {STATUS_CONFIG[s].label} ({counts[s] ?? 0})
           </button>
         ))}
@@ -222,7 +222,7 @@ export default function AdminProjectRequestsPage() {
                           />
                           <div className="flex gap-2">
                             <button onClick={() => saveNotes(req)} disabled={savingId === req.id}
-                              className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
+                              className="px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50">
                               {savingId === req.id ? 'Guardando...' : 'Guardar notas'}
                             </button>
                             <button onClick={() => setEditingNotes(prev => { const n = { ...prev }; delete n[req.id]; return n; })}

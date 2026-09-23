@@ -115,13 +115,13 @@ function EmailUpsell({
           {emailService ? (
             <Link
               href={`/portal/services/${emailService.id}/request`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               <span className="material-icons text-base">shopping_cart</span>Suscribirse a Email marketing</Link>
           ) : (
             <Link
               href="/portal/services"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               <span className="material-icons text-base">storefront</span>
               Ver servicios

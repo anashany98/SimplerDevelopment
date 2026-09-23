@@ -91,7 +91,7 @@ export default function OrdersListPage() {
             onClick={() => { setStatusFilter(tab.value); setPage(1); }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors whitespace-nowrap ${
               statusFilter === tab.value
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'text-muted-foreground hover:text-foreground hover:bg-accent'
             }`}
           >

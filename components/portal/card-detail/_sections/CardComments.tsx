@@ -119,7 +119,7 @@ export function CardComments({
             disabled={
               (!commentBody.trim() && pendingCommentFiles.length === 0) || submittingComment
             }
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             {submittingComment ? (
               <span className="material-icons text-sm animate-spin">refresh</span>

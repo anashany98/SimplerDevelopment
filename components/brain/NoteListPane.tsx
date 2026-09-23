@@ -841,7 +841,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                     type="button"
                     onClick={createSavedFromCurrent}
                     disabled={!savedFormName.trim() || savedFormBusy}
-                    className="w-full px-2 py-1 rounded bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                    className="w-full px-2 py-1 rounded bg-foreground text-background hover:opacity-90 disabled:opacity-50"
                   >
                     {savedFormBusy ? 'Saving…' : 'Save'}
                   </button>
@@ -1209,7 +1209,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                           type="button"
                           disabled={!bulkTagInput.trim() || bulkBusy}
                           onClick={() => runBulk({ kind: 'add_tags', tags: [bulkTagInput.trim()] })}
-                          className="flex-1 px-2 py-1 rounded bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                          className="flex-1 px-2 py-1 rounded bg-foreground text-background hover:opacity-90 disabled:opacity-50"
                         >Añadir</button>
                         <button
                           type="button"
@@ -1276,7 +1276,7 @@ export default function NoteListPane({ selectedId, onSelect, onCreate, onTemplat
                           // prefix or empty to let the backend decide.
                           runBulk({ kind: 'replace_tag_prefix', from: '', to });
                         }}
-                        className="w-full px-2 py-1 rounded bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                        className="w-full px-2 py-1 rounded bg-foreground text-background hover:opacity-90 disabled:opacity-50"
                       >Mover</button>
                     </div>
                   </>
@@ -1977,7 +1977,7 @@ function SavedSearchesSection({
       {!collapsed && (
         items.length === 0 ? (
           <div className="px-3 py-2 text-[11px] text-muted-foreground italic">
-            No saved searches yet — apply filters and click <span className="material-icons text-[13px] align-middle">bookmark_add</span> to save this view.
+            Aún no hay búsquedas guardadas — aplica filtros y pulsa <span className="material-icons text-[13px] align-middle">bookmark_add</span> para guardar esta vista.
           </div>
         ) : (
           <ul>

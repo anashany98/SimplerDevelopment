@@ -343,10 +343,10 @@ export default function OrgUnitTree({
       >
         {tree.length === 0 ? (
           <div className="text-xs text-muted-foreground p-4 italic">
-            No org units yet. Click &ldquo;New unit&rdquo; to add the first one.
+            Aún no hay unidades organizativas. Pulsa &ldquo;Nueva unidad&rdquo; para añadir la primera.
           </div>
         ) : (
-          <ul role="tree" aria-label="Org units" className="list-none p-1">
+          <ul role="tree" aria-label="Unidades organizativas" className="list-none p-1">
             {tree.map((node) => renderRow(node, 0))}
           </ul>
         )}

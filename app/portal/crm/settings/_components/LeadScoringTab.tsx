@@ -178,7 +178,7 @@ export default function LeadScoringTab() {
                     <div className="flex items-center gap-1 shrink-0">
                       <button
                         onClick={() => saveScoringRule(rule.id)}
-                        className="px-3 py-1 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 transition-colors"
+                        className="px-3 py-1 bg-foreground text-background rounded text-xs font-medium hover:bg-foreground/90 transition-colors"
                       >
                         Guardar
                       </button>
@@ -287,7 +287,7 @@ export default function LeadScoringTab() {
               <button
                 type="submit"
                 disabled={scoringSaving || !newEventType.trim()}
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
               >
                 {scoringSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
                 <span className="material-icons text-sm">add</span>

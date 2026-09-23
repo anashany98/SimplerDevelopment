@@ -239,7 +239,7 @@ function MessageBubble({ msg }: { msg: Message }) {
   if (isUser) {
     return (
       <div className="flex flex-col items-end gap-1">
-        <div className="max-w-[80%] rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm break-words bg-primary text-primary-foreground">
+        <div className="max-w-[80%] rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm break-words bg-foreground text-background">
           <span className="whitespace-pre-wrap">{msg.content}</span>
         </div>
       </div>
@@ -598,7 +598,7 @@ export default function BrainAgentChat() {
           <button
             onClick={() => void sendMessage()}
             disabled={streaming || !input.trim()}
-            className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 disabled:opacity-40 transition-colors shrink-0"
+            className="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center hover:bg-foreground/90 disabled:opacity-40 transition-colors shrink-0"
             title="Send message"
           >
             {streaming ? (

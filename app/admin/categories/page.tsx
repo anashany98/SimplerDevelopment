@@ -79,7 +79,7 @@ export default function CategoriesPage() {
               setEditingCategory(null);
               setFormData({ name: '', slug: '', description: '' });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
             {showForm ? 'Cancelar' : 'Añadir categoría'}
           </button>
@@ -119,7 +119,7 @@ export default function CategoriesPage() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
               >
                 {editingCategory ? 'Actualizar' : 'Crear'} categoría
               </button>

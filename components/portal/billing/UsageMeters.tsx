@@ -217,7 +217,7 @@ export default function UsageMeters() {
         <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
           <Link
             href="/portal/settings/billing"
-            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-sm">add</span>
             Comprar créditos

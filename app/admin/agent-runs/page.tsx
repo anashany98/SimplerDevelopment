@@ -135,7 +135,7 @@ export default function AdminAgentRunsPage() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 text-sm rounded-lg border capitalize ${
-                filter === f ? 'bg-primary text-primary-foreground border-primary' : 'bg-card border-border hover:bg-accent'
+                filter === f ? 'bg-foreground text-background border-primary' : 'bg-card border-border hover:bg-accent'
               }`}
             >
               {f}

@@ -179,7 +179,7 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
                 onClick={() => setSourceFilter(s)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md transition-colors ${
                   active
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -202,7 +202,7 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
                 onClick={() => setStatusFilter(s)}
                 className={`px-2.5 py-1 text-xs rounded-md capitalize transition-colors ${
                   active
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >

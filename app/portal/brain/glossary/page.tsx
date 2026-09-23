@@ -226,7 +226,7 @@ export default function BrainGlossaryListPage() {
                 onClick={() => updateParams({ status: s === 'active' ? null : s, page: null })}
                 className={`flex-1 px-2 py-1 rounded text-xs font-medium capitalize transition-colors ${
                   statusParam === s
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >

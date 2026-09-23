@@ -295,7 +295,7 @@ function MyTasksPageInner() {
               aria-pressed={filters.source === s}
               className={`text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1 ${
                 filters.source === s
-                  ? 'bg-primary text-primary-foreground border-primary'
+                  ? 'bg-foreground text-background border-primary'
                   : 'bg-background text-muted-foreground border-border hover:border-primary/50'
               }`}
             >
@@ -351,7 +351,7 @@ function MyTasksPageInner() {
                   aria-pressed={active}
                   className={`text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1 ${
                     active
-                      ? 'bg-primary text-primary-foreground border-primary'
+                      ? 'bg-foreground text-background border-primary'
                       : 'bg-background text-muted-foreground border-border hover:border-primary/50'
                   }`}
                   title={p.name}

@@ -77,7 +77,7 @@ export function ChatMessage({ msg, agent }: { msg: ChatMessageItem; agent: Porta
         <div
           className={`rounded-2xl px-3.5 py-2.5 text-sm break-words ${
             isUser
-              ? 'bg-primary text-primary-foreground rounded-tr-sm shadow-sm'
+              ? 'bg-foreground text-background rounded-tr-sm shadow-sm'
               : isInjected
                 ? 'bg-amber-50 border border-amber-200 text-foreground rounded-tl-sm dark:bg-amber-950/30 dark:border-amber-800'
                 : 'bg-muted text-foreground rounded-tl-sm'

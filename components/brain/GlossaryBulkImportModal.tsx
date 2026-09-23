@@ -300,7 +300,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
                 type="button"
                 disabled={submitting || parsed.rows.length === 0}
                 onClick={handleConfirm}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
               >
                 {submitting
                   ? <><span className="material-icons text-base animate-spin">autorenew</span>Importing…</>
@@ -312,7 +312,7 @@ export default function GlossaryBulkImportModal({ open, onClose, onImported }: P
             <button
               type="button"
               onClick={handleDone}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               <span className="material-icons text-base">done</span>Listo</button>
           )}

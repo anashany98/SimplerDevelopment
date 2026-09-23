@@ -316,7 +316,7 @@ describe('EmailAbConfig — draft + enabled: winner metric', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'draft', abWinnerMetric: null }));
     // "Open rate" should have the primary styling (active)
     const openBtn = screen.getByText('Tasa de apertura');
-    expect(openBtn.className).toContain('bg-primary');
+    expect(openBtn.className).toContain('bg-foreground');
   });
 
   it('clicking Click rate updates metric and sends PATCH', async () => {
@@ -682,7 +682,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    expect(screen.getByText('Tasa de apertura').className).toContain('bg-primary');
+    expect(screen.getByText('Tasa de apertura').className).toContain('bg-foreground');
 
     rerender(
       <EmailAbConfig
@@ -690,6 +690,6 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    expect(screen.getByText('Tasa de clics').className).toContain('bg-primary');
+    expect(screen.getByText('Tasa de clics').className).toContain('bg-foreground');
   });
 });

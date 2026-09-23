@@ -99,7 +99,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
         <button
           onClick={onCreateRetro}
           disabled={creatingRetro}
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+          className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded bg-foreground text-background text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
         >
           <span className="material-icons text-base">add</span>
           {creatingRetro ? 'Iniciando…' : 'Iniciar retrospectiva'}
@@ -140,7 +140,7 @@ export default function SprintRetroPanel({ sprintId, sprintName }: { sprintId: n
                 <button
                   type="submit"
                   disabled={!drafts[kind].trim()}
-                  className="w-full px-2 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-30"
+                  className="w-full px-2 py-1 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-30"
                 >Añadir</button>
               </form>
 

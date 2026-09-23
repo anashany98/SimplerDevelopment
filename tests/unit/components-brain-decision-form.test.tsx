@@ -495,10 +495,10 @@ describe('DecisionForm — topic toggle', () => {
     await waitFor(() => expect(screen.getByText('Engineering')).toBeInTheDocument());
 
     const chip = screen.getByText('Engineering').closest('button')!;
-    expect(chip.className).not.toContain('bg-primary');
+    expect(chip.className).not.toContain('bg-foreground');
     fireEvent.click(chip);
     await waitFor(() =>
-      expect(screen.getByText('Engineering').closest('button')!.className).toContain('bg-primary'),
+      expect(screen.getByText('Engineering').closest('button')!.className).toContain('bg-foreground'),
     );
   });
 
@@ -509,11 +509,11 @@ describe('DecisionForm — topic toggle', () => {
     const chip = screen.getByText('Product').closest('button')!;
     fireEvent.click(chip);
     await waitFor(() =>
-      expect(chip.className).toContain('bg-primary'),
+      expect(chip.className).toContain('bg-foreground'),
     );
     fireEvent.click(chip);
     await waitFor(() =>
-      expect(chip.className).not.toContain('bg-primary text-primary-foreground border-primary'),
+      expect(chip.className).not.toContain('bg-foreground text-background border-primary'),
     );
   });
 
@@ -545,7 +545,7 @@ describe('DecisionForm — topic toggle', () => {
     );
     await waitFor(() => expect(screen.getByText('Product')).toBeInTheDocument());
     const chip = screen.getByText('Product').closest('button')!;
-    expect(chip.className).toContain('bg-primary');
+    expect(chip.className).toContain('bg-foreground');
   });
 });
 

@@ -109,7 +109,7 @@ export function AgentWelcome({ agent, onSuggestion }: AgentWelcomeProps) {
       {agent.handoffPath ? (
         <Link
           href={agent.handoffPath}
-          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-medium text-primary-foreground hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-sm">open_in_new</span>
           Abrir agente dedicado

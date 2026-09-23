@@ -94,7 +94,7 @@ export function CardChecklist({
           <button
             onClick={addChecklist}
             disabled={!newChecklistText.trim()}
-            className="px-3 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+            className="px-3 py-1.5 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
           >Añadir</button>
         </div>
       )}

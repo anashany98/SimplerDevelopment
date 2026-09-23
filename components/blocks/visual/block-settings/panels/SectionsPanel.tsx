@@ -350,7 +350,7 @@ function TestimonialBlockSettings({ block, onChange, currentViewport }: { block:
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Cambiar avatar
               </button>

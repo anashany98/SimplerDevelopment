@@ -16,7 +16,7 @@ export default async function PostsPage() {
           <h1 className="text-3xl font-bold text-foreground">Posts</h1>
           <Link
             href="/admin/posts/new"
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
             Create New Post
           </Link>

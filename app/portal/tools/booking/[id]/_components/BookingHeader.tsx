@@ -41,7 +41,7 @@ export function BookingHeader({ title, slug, publicUrl, saving, saved, onSave }:
         <button
           onClick={onSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
           {saving ? (
             <>

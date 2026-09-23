@@ -182,7 +182,7 @@ export default function McpApiKeysManager({
         </div>
         <button
           onClick={() => { setShowCreate(v => !v); setNewKey(null); setError(null); }}
-          className="inline-flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:opacity-90"
         >
           <span className="material-icons text-base">add</span>
           Nueva clave
@@ -310,7 +310,7 @@ export default function McpApiKeysManager({
           <div className="flex gap-2">
             <button
               onClick={handleCreate}
-              className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium"
+              className="px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium"
             >
               Generar clave
             </button>

@@ -385,8 +385,8 @@ describe('AgenticOsPage', () => {
 
     it('renders Run button for on-demand skills', async () => {
       await renderPage();
-      // The skill card Run button has class bg-primary.text-primary-foreground
-      const runBtn = document.querySelector('button.bg-primary.text-primary-foreground');
+      // The skill card Run button has class bg-foreground.text-background
+      const runBtn = document.querySelector('button.bg-foreground.text-background');
       expect(runBtn).toBeTruthy();
     });
 

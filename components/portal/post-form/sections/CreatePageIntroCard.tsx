@@ -77,7 +77,7 @@ export function CreatePageIntroCard({
           <button
             onClick={onSubmit}
             disabled={loading || !formData.title.trim()}
-            className="w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="w-full mt-2 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
           >
             <span className="material-icons text-lg">save</span>
             {loading ? 'Creando…' : 'Crear y abrir el editor'}

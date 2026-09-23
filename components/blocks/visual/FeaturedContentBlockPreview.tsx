@@ -89,7 +89,7 @@ export function FeaturedContentBlockPreview({ block, isSelected, onChange }: Fea
 
           {(block.buttonText || isSelected) && (
             <span
-              className={`inline-flex items-center justify-center bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors ${!btnRadius ? 'rounded-md' : ''}`}
+              className={`inline-flex items-center justify-center bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-foreground/90 transition-colors ${!btnRadius ? 'rounded-md' : ''}`}
               style={{
                 ...getElementCSS(block.elementStyles, 'button'),
                 ...(bs?.primaryBg ? { backgroundColor: bs.primaryBg } : {}),

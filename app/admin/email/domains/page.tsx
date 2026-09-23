@@ -157,7 +157,7 @@ export default function EmailDomainsPage() {
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
           Añadir dominio
@@ -191,7 +191,7 @@ export default function EmailDomainsPage() {
               className="flex-1 border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button type="submit" disabled={adding}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
+              className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
               {adding ? 'Añadiendo…' : 'Añadir dominio'}
             </button>
             <button type="button" onClick={() => setShowAddForm(false)}
@@ -273,7 +273,7 @@ export default function EmailDomainsPage() {
                     <button
                       onClick={() => verifyDomain(selected.id)}
                       disabled={verifying}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                     >
                       <span className="material-icons text-base">{verifying ? 'hourglass_empty' : 'verified'}</span>
                       {verifying ? 'Comprobando…' : 'Verificar ahora'}

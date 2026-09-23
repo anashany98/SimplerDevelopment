@@ -425,7 +425,7 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
                 onClick={() => setView(v)}
                 className={`px-3 py-1.5 text-xs font-medium capitalize ${
                   view === v
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'bg-background text-foreground hover:bg-accent'
                 }`}
               >
@@ -471,7 +471,7 @@ export default function PublishingCalendar(_props: PublishingCalendarProps) {
                     <span
                       className={`text-xs font-medium ${
                         today
-                          ? 'bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center'
+                          ? 'bg-foreground text-background w-6 h-6 rounded-full flex items-center justify-center'
                           : isCurrentMonth
                             ? 'text-foreground'
                             : 'text-muted-foreground'

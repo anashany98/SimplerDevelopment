@@ -26,7 +26,7 @@ export default function PluginNotFound() {
         <div className="flex flex-col items-center gap-3">
           <Link
             href="/portal/dashboard"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
           >
             <span className="material-icons text-base">arrow_back</span>
             Back to dashboard

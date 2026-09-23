@@ -169,7 +169,7 @@ export default function ProductsListPage() {
               onClick={() => { setStatusFilter(tab.value); setPage(1); }}
               className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                 statusFilter === tab.value
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >

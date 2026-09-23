@@ -209,7 +209,7 @@ function SkillCard({
         {isOnDemand ? (
           <button
             onClick={() => onRun(skill.id)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-foreground text-background hover:opacity-90 transition-opacity"
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               play_arrow
@@ -510,7 +510,7 @@ function RunDrawer({
           <button
             onClick={startRun}
             disabled={!executorAvailable || !requiredOk || submitting}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-foreground text-background hover:opacity-90 disabled:opacity-40"
             title={
               !executorAvailable
                 ? 'Ejecutor deshabilitado en este host'
@@ -661,7 +661,7 @@ export default function AgenticOsPage() {
             onClick={() => setShowRules((v) => !v)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               showRules
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
           >
@@ -735,7 +735,7 @@ export default function AgenticOsPage() {
             onClick={() => setFilter(f.id)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               filter === f.id
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
           >

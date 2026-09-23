@@ -256,7 +256,7 @@ describe('BrainDocumentsListPage — status filter', () => {
         (b) => b.textContent?.trim() === 'published',
       ) as HTMLButtonElement;
       expect(publishedBtn).toBeTruthy();
-      expect(publishedBtn.className).toContain('bg-primary');
+      expect(publishedBtn.className).toContain('bg-foreground');
     });
   });
 

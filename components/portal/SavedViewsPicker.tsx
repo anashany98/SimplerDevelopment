@@ -140,7 +140,7 @@ export default function SavedViewsPicker<T extends Record<string, unknown>>({ pr
           <button
             type="submit"
             disabled={saving}
-            className="px-3 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+            className="px-3 py-1 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
           >
             {saving ? '…' : 'Guardar'}
           </button>

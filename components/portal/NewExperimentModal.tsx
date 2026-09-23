@@ -54,8 +54,8 @@ export function NewExperimentLauncher({
   const [open, setOpen] = useState(false);
   const baseClass =
     variant === 'cta'
-      ? 'inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors'
-      : 'flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shrink-0';
+      ? 'inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors'
+      : 'flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors shrink-0';
   return (
     <>
       <button type="button" onClick={() => setOpen(true)} className={baseClass}>
@@ -250,7 +250,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 onClick={() => handleTargetTypeChange('post')}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   targetType === 'post'
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
@@ -262,7 +262,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
                 onClick={() => handleTargetTypeChange('deck')}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   targetType === 'deck'
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
@@ -365,7 +365,7 @@ export default function NewExperimentModal({ open, onClose }: Props) {
             <button
               type="submit"
               disabled={submitting || loading || selectedTargetId == null}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <>

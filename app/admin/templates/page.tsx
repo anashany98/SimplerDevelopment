@@ -215,7 +215,7 @@ export default function TemplatesPage() {
               setEditingTemplate(null);
               setFormData({ name: '', slug: '', description: '', category: 'custom', scope: 'block', tags: '' });
             }}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+            className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
           >
             + Nueva plantilla
           </button>
@@ -230,7 +230,7 @@ export default function TemplatesPage() {
                 onClick={() => setFilter(scope)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   filter === scope
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'bg-card border border-border text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -325,7 +325,7 @@ export default function TemplatesPage() {
               <div className="col-span-2 flex gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+                  className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
                 >
                   {editingTemplate ? 'Actualizar' : 'Crear'}
                 </button>
@@ -358,7 +358,7 @@ export default function TemplatesPage() {
             </p>
             <button
               onClick={() => setShowForm(true)}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+              className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
             >
               Crear tu primera plantilla
             </button>
