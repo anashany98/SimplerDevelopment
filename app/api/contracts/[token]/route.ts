@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { crmContracts, crmContractSigners, clients } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { emitEvent } from '@/lib/automation';
 
 // GET — fetch contract for public signing view (signer token)
@@ -132,14 +132,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
     }).where(eq(crmContractSigners.id, signer.id));
 
     // Check if all signers have signed
-    const allSigners = await db.select({ status: crmContractSigners.status })
-      .from(crmContractSigners)
-      .where(eq(crmContractSigners.contractId, contract.id));
-
-    const allSigned = allSigners.every(s =>
-      s.status === 'signed' || (s.status === 'pending' && false) // only count after our update
-    );
-
     // Re-check after our update
     const updatedSigners = await db.select({ status: crmContractSigners.status })
       .from(crmContractSigners)
@@ -154,7 +146,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
         updatedAt: new Date(),
       }).where(eq(crmContracts.id, contract.id));
 
-      emitEvent('proposal.accepted', contract.clientId, 0, {
+      await emitEvent('proposal.accepted', contract.clientId, 0, {
         id: contract.id,
         title: contract.title,
         type: 'contract',

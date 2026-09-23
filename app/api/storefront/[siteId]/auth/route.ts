@@ -84,7 +84,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sit
       }).catch(err => console.error('[auth] account.welcome email failed:', err));
 
       // Emit automation event
-      emitEvent('crm.contact.created', websiteId, 0, {
+      await emitEvent('crm.contact.created', websiteId, 0, {
         customerId: customer.id,
         email: customer.email,
         firstName: customer.firstName,

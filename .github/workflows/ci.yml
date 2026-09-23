@@ -63,16 +63,11 @@ jobs:
             echo "code=false" >> "$GITHUB_OUTPUT"; echo "==> doc-only diff: doc-drift + gitleaks only"
           fi
           # Tenancy is scoped tighter than `code`, because it only proves
-          # something about diffs that can actually reach a tenant-scoped query.
-          # Restyling a component is a code change but cannot leak a clientId,
-          # and running the suite for it spent ~18 min of CI on a result that
-          # could not have failed for a reason the diff caused. Paths mirror the
-          # trigger .githooks/pre-push used before the gate became CI-only,
-          # plus lib/mcp/: 31 tool registrars run tenant-scoped queries behind
-          # `ctx.client.id`, so a scoping bug there leaks exactly what this suite
-          # exists to catch — and none of them matched the paths above.
+          # something about diffs that can reach tenant-scoped queries. Portal
+          # pages and domain services also query data directly; limiting this to
+          # API routes missed those paths. Fail closed for all product source.
           # Fails OPEN with the block above: an unresolvable base runs it.
-          if grep -qE '^(lib/db/|app/api/|lib/mcp/|lib/active-client\.ts)' <<<"$CHANGED"; then
+          if grep -qE '^(app/|lib/|drizzle/|components/)' <<<"$CHANGED"; then
             echo "data_access=true" >> "$GITHUB_OUTPUT"; echo "==> data-access change: tenancy suite runs"
           else
             echo "data_access=false" >> "$GITHUB_OUTPUT"; echo "==> no data-access change: skipping tenancy"
@@ -82,8 +77,8 @@ jobs:
           # is how a 2-line "copy fix" takes prod down, so refuse the label there
           # rather than trusting the labeller. Fails the run => red board.
           if [ "${{ contains(github.event.pull_request.labels.*.name, 'hotfix') }}" = "true" ] \
-             && grep -qE '^(lib/db/|lib/mcp/|lib/billing/|lib/auth|drizzle/|app/.*/api/|auth\.|middleware\.)' <<<"$CHANGED"; then
-            echo "::error::hotfix label is not allowed on a diff touching schema/auth/billing/tenancy/API routes. Remove the label and run the full suite."
+             && grep -qE '^(app/|lib/|drizzle/|components/|auth\.|middleware\.)' <<<"$CHANGED"; then
+            echo "::error::hotfix label is not allowed on product routes, shared components, domain services, or schema. Remove the label and run the full suite."
             exit 1
           fi
   # ── Secret scan (gitleaks) — cheap, fails fast ──────────────────────────────
@@ -127,7 +122,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
       - name: Cache bun global install cache
         uses: actions/cache@v6
         with:
@@ -136,6 +131,9 @@ jobs:
           restore-keys: bun-${{ runner.os }}-
       - name: Install dependencies
         run: bun install --frozen-lockfile
+      - name: Architecture boundaries
+        if: needs.changes.outputs.code == 'true'
+        run: bunx depcruise app lib components --config .dependency-cruiser.cjs
       - name: Lint
         if: needs.changes.outputs.code == 'true'
         run: bun run lint
@@ -159,7 +157,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
       - name: Cache bun global install cache
         uses: actions/cache@v6
         with:
@@ -195,7 +193,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
       - name: Cache bun global install cache
         uses: actions/cache@v6
         with:
@@ -245,7 +243,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
       - name: Cache bun global install cache
         uses: actions/cache@v6
         with:
@@ -295,7 +293,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
 
       - name: Cache bun global install cache
         uses: actions/cache@v6
@@ -366,7 +364,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
 
       - name: Cache bun global install cache
         uses: actions/cache@v6
@@ -470,7 +468,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.3.11
+          bun-version: 1.3.14
 
       - name: Cache bun global install cache
         uses: actions/cache@v6

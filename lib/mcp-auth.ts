@@ -1,10 +1,19 @@
 import crypto from 'crypto';
 import { db } from '@/lib/db';
-import { portalApiKeys, oauthAccessTokens, clients } from '@/lib/db/schema';
+import { portalApiKeys, oauthAccessTokens, clients, users } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 
 export const PORTAL_KEY_PREFIX = 'sd_mcp_';
 export const OAUTH_TOKEN_PREFIX = 'sd_oauth_';
+
+async function isActivePortalUser(userId: number): Promise<boolean> {
+  const [user] = await db
+    .select({ active: users.active })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  return user?.active === true;
+}
 
 /**
  * Which table `keyId` came from. `key_id` is POLYMORPHIC — portal API keys and
@@ -122,6 +131,7 @@ export async function resolvePortalApiKey(rawKey: string): Promise<PortalMcpCont
   if (!record) return null;
   if (record.revokedAt) return null;
   if (record.expiresAt && record.expiresAt < new Date()) return null;
+  if (!(await isActivePortalUser(record.userId))) return null;
 
   const [client] = await db
     .select()
@@ -172,6 +182,7 @@ export async function resolveOAuthToken(rawToken: string): Promise<PortalMcpCont
   if (!record) return null;
   if (record.revokedAt) return null;
   if (record.expiresAt && record.expiresAt < new Date()) return null;
+  if (!(await isActivePortalUser(record.userId))) return null;
 
   const [client] = await db
     .select()

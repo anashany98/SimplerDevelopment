@@ -2,25 +2,17 @@
 // (id, clientId) so a tenant can never read or mutate another tenant's link.
 
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { triggerLinks, triggerLinkClicks } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { and, desc, eq, sql } from 'drizzle-orm';
 
 const RECENT_CLICKS_LIMIT = 25;
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const linkId = parseInt(id, 10);
@@ -63,15 +55,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'write' });
+  const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const linkId = parseInt(id, 10);
@@ -105,15 +91,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'admin' });
+  const authResult = await authorizePortal({ action: 'admin', scope: 'automations:delete' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const linkId = parseInt(id, 10);

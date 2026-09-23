@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { workflows } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, and } from 'drizzle-orm';
 import { runWorkflow } from '@/lib/workflows/runtime';
@@ -12,15 +10,9 @@ import { runWorkflow } from '@/lib/workflows/runtime';
 // schedule via app/api/cron/process-workflow-schedules) go through the
 // durable queue instead; this is the manual "fire it now" path.
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'write' });
+  const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const workflowId = parseInt(id, 10);

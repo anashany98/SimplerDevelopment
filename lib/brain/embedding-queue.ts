@@ -19,8 +19,7 @@
  */
 
 import { db } from '@/lib/db';
-import { brainEmbeddingJobs } from '@/lib/db/schema';
-import { sql, eq, and, lt, or, asc } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { embedById } from './embeddings';
 import type { EntityType } from './embeddings';
 
@@ -42,6 +41,17 @@ export interface DrainResult {
  */
 export async function drainQueue(maxJobs = DEFAULT_BATCH_SIZE): Promise<DrainResult> {
   const result: DrainResult = { picked: 0, succeeded: 0, failed: 0, errors: [] };
+
+  // A worker may be terminated after claiming rows. Reap those leases so the
+  // queue can retry them, counting the abandoned run against the same retry cap.
+  await db.execute(sql`
+    UPDATE brain_embedding_jobs
+    SET status = 'failed',
+        attempts = attempts + 1,
+        last_error = 'Processing lease expired after 15 minutes'
+    WHERE status = 'processing'
+      AND started_at < now() - interval '15 minutes'
+  `);
 
   // Atomically pick a batch of jobs and mark them processing. Using a CTE
   // with `FOR UPDATE SKIP LOCKED` lets multiple concurrent workers run

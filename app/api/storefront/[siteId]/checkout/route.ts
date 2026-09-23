@@ -12,6 +12,7 @@ import { eq, and, desc, sql, inArray, isNull } from 'drizzle-orm';
 import { resolveSiteStripe, SiteStripeError, type SiteStripeContext } from '@/lib/stripe/site-stripe';
 import { revalidateAdminDashboard } from '@/lib/admin/dashboard-cache';
 import { emitEvent } from '@/lib/automation/event-bus';
+import { PAYMENTS_DISABLED, billingDisabledResponse } from '@/lib/billing/disabled';
 
 function generateOrderNumber(prefix: string, lastNumber: string | null): string {
   if (!lastNumber) {
@@ -28,6 +29,11 @@ export async function POST(
   { params }: { params: Promise<{ siteId: string }> }
 ) {
   try {
+    // The webhook deliberately acknowledges payment events without processing
+    // them while billing is disabled. Reject checkout before creating a Stripe
+    // PaymentIntent or a permanently pending order.
+    if (PAYMENTS_DISABLED) return billingDisabledResponse(503);
+
     const { siteId } = await params;
     const websiteId = parseInt(siteId, 10);
     if (isNaN(websiteId)) {
@@ -466,23 +472,19 @@ export async function POST(
     });
 
     // Emit order.placed at order-row creation (before payment confirmation).
-    // Resolving clientId from clientWebsites so automation rules can filter
-    // by tenant. Fire-and-forget — the response is not blocked.
-    db.select({ clientId: clientWebsites.clientId })
+    // Journal it before returning so the automation worker can recover it.
+    const [website] = await db.select({ clientId: clientWebsites.clientId })
       .from(clientWebsites)
       .where(eq(clientWebsites.id, websiteId))
-      .limit(1)
-      .then(([website]) => {
-        emitEvent('order.placed', website?.clientId ?? 0, 0, {
-          orderId: order.id,
-          orderNumber,
-          customerEmail,
-          customerName,
-          total,
-          websiteId,
-        });
-      })
-      .catch((err) => console.error('[checkout] order.placed emit failed:', err));
+      .limit(1);
+    await emitEvent('order.placed', website?.clientId ?? 0, 0, {
+      orderId: order.id,
+      orderNumber,
+      customerEmail,
+      customerName,
+      total,
+      websiteId,
+    });
 
     // Redeem gift certificate if used
     if (appliedGiftCertId && appliedGiftCertCode && giftCertAmount > 0) {

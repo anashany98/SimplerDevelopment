@@ -256,11 +256,11 @@ export async function PUT(
   // Emit specific event for won/lost, generic for other updates
   const eventPayload = { id: updated.id, title: updated.title, value: updated.value, status: updated.status, stageId: updated.stageId, contactId: updated.contactId };
   if (body.status === 'won') {
-    emitEvent('crm.deal.won', client.id, result.userId, eventPayload);
+    await emitEvent('crm.deal.won', client.id, result.userId, eventPayload);
   } else if (body.status === 'lost') {
-    emitEvent('crm.deal.lost', client.id, result.userId, eventPayload);
+    await emitEvent('crm.deal.lost', client.id, result.userId, eventPayload);
   } else {
-    emitEvent('crm.deal.updated', client.id, result.userId, eventPayload);
+    await emitEvent('crm.deal.updated', client.id, result.userId, eventPayload);
   }
 
   return NextResponse.json({ success: true, data: updated });

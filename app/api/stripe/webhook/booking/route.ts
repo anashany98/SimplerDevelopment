@@ -178,7 +178,7 @@ export async function POST(req: Request) {
         }
       }
 
-      emitEvent('booking.confirmed', page.clientId, 0, {
+      await emitEvent('booking.confirmed', page.clientId, 0, {
         bookingId: booking.id,
         bookingPageId: page.id,
         pageTitle: page.title,

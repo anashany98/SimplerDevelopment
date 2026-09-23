@@ -366,7 +366,7 @@ export const crmHandlers: Record<string, CrmHandler> = {
       // the FK. Coalesce to null so the row inserts with no owner.
       ownerId: userId > 0 ? userId : null,
     }).returning();
-    emitEvent('crm.contact.created', clientId, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email });
+    await emitEvent('crm.contact.created', clientId, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email });
     return { success: true, contactId: contact.id, message: `Contact "${contact.firstName} ${contact.lastName || ''}" created.` };
   },
 
@@ -465,7 +465,7 @@ export const crmHandlers: Record<string, CrmHandler> = {
       ownerId: userId,
       status: 'open',
     }).returning();
-    emitEvent('crm.deal.created', clientId, userId, { id: deal.id, title: deal.title, value: deal.value });
+    await emitEvent('crm.deal.created', clientId, userId, { id: deal.id, title: deal.title, value: deal.value });
     return { success: true, dealId: deal.id, message: `Deal "${deal.title}" created.` };
   },
 
@@ -487,9 +487,9 @@ export const crmHandlers: Record<string, CrmHandler> = {
     if (input.notes !== undefined) updates.notes = (input.notes as string).trim() || null;
     await db.update(crmDeals).set(updates).where(eq(crmDeals.id, dealId));
     const newStatus = input.status as string | undefined;
-    if (newStatus === 'won') emitEvent('crm.deal.won', clientId, userId, { id: dealId });
-    else if (newStatus === 'lost') emitEvent('crm.deal.lost', clientId, userId, { id: dealId });
-    else emitEvent('crm.deal.updated', clientId, userId, { id: dealId });
+    if (newStatus === 'won') await emitEvent('crm.deal.won', clientId, userId, { id: dealId });
+    else if (newStatus === 'lost') await emitEvent('crm.deal.lost', clientId, userId, { id: dealId });
+    else await emitEvent('crm.deal.updated', clientId, userId, { id: dealId });
     return { success: true, message: `Deal updated.` };
   },
 

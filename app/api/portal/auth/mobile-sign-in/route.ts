@@ -3,7 +3,7 @@
  *
  * Native credentials sign-in for the CRM AGENTS Chat mobile app. Skips the
  * in-app browser bounce + workspace picker that `/portal/mobile-auth` requires:
- * accepts `{ email, password }`, validates against `users` using the same
+ * accepts `{ email, password, totpCode? }`, validates against `users` using the same
  * bcrypt compare as the NextAuth credentials provider in `lib/auth.ts`, then
  * auto-selects the caller's primary client (owned > member, first match wins)
  * and mints a 90-day `portal_api_keys` row.
@@ -25,11 +25,12 @@
 
 import { NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { users, clients, clientMembers, portalApiKeys } from '@/lib/db/schema';
 import { generatePortalApiKey } from '@/lib/mcp-auth';
 import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
+import { verifyTOTP } from '@/lib/totp';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -101,6 +102,7 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}));
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
     const password = typeof body.password === 'string' ? body.password : '';
+    const totpCode = typeof body.totpCode === 'string' ? body.totpCode.trim() : '';
 
     if (!email || !EMAIL_RE.test(email)) {
       return NextResponse.json(
@@ -131,6 +133,17 @@ export async function POST(req: Request) {
 
     const isValid = await compare(password, user.password);
     if (!isValid) {
+      return NextResponse.json(
+        { success: false, error: 'invalid_credentials', message: 'Wrong email or password' },
+        { status: 401 },
+      );
+    }
+
+    // This endpoint mints a long-lived, full-scope API key, so it must apply
+    // the same MFA check as the normal credentials provider. An enabled MFA
+    // account with a missing secret is locked out until an administrator
+    // repairs enrollment; it never falls back to password-only sign-in.
+    if (user.mfaEnabled && (!user.totpSecret || !verifyTOTP(user.totpSecret, totpCode))) {
       return NextResponse.json(
         { success: false, error: 'invalid_credentials', message: 'Wrong email or password' },
         { status: 401 },

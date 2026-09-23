@@ -11,7 +11,7 @@
  * media-not-implemented) is caught, written to `error`, and the row is marked
  * `failed`. It never aborts the rest of the batch.
  *
- * Auth: Vercel cron header OR `Authorization: Bearer ${CRON_SECRET}`.
+ * Auth: `Authorization: Bearer ${CRON_SECRET}`; caller-supplied Vercel headers are not trusted.
  */
 import { NextResponse } from 'next/server';
 import { withCronHealth } from '@/lib/cron-health';
@@ -20,6 +20,7 @@ import { linkedinPosts } from '@/lib/db/schema';
 import { and, asc, eq, lte } from 'drizzle-orm';
 import { publishPost } from '@/lib/linkedin/api';
 import { getValidAccessToken } from '@/lib/linkedin/connections';
+import { isAuthorizedCron } from '@/lib/cron-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -28,16 +29,28 @@ const MAX_PER_TICK = 10;
 const MAX_ERROR_LEN = 1000;
 
 async function _GET(req: Request): Promise<Response> {
-  const isVercelCron = req.headers.get('x-vercel-cron') === '1';
-  if (!isVercelCron) {
-    const cronSecret = process.env.CRON_SECRET;
-    const authz = req.headers.get('authorization');
-    if (!cronSecret || authz !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    }
+  if (!isAuthorizedCron(req)) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
   const now = new Date();
+
+  // Do not retry a stale publishing row automatically: LinkedIn may have
+  // accepted the request before this process died. Stop the stuck state and
+  // require a human to verify the remote post before re-queuing it.
+  const staleCutoff = new Date(now.getTime() - 30 * 60_000);
+  const stalePublishing = await db
+    .update(linkedinPosts)
+    .set({
+      status: 'failed',
+      error: 'Publishing worker timed out. Verify LinkedIn before re-queuing this post.',
+      updatedAt: now,
+    })
+    .where(and(
+      eq(linkedinPosts.status, 'publishing'),
+      lte(linkedinPosts.updatedAt, staleCutoff),
+    ))
+    .returning({ id: linkedinPosts.id });
 
   // Select due rows — oldest first so no post starves.
   const due = await db
@@ -54,7 +67,7 @@ async function _GET(req: Request): Promise<Response> {
 
   let processed = 0;
   let published = 0;
-  let failed = 0;
+  let failed = stalePublishing.length;
 
   for (const row of due) {
     // CAS: flip to 'publishing' only when still 'scheduled'. If a parallel

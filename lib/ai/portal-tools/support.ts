@@ -146,7 +146,7 @@ export const supportHandlers: Record<string, SupportHandler> = {
       isInternal: false,
     });
 
-    emitEvent('ticket.created', clientId, userId, {
+    await emitEvent('ticket.created', clientId, userId, {
       id: ticket.id,
       number: ticket.number,
       subject: ticket.subject,

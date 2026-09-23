@@ -64,6 +64,8 @@ services:
     depends_on:
       minio:
         condition: service_healthy
+    volumes:
+      - ../../backups/minio:/backup
     entrypoint:
       - /bin/sh
       - -ec

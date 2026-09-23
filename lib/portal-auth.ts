@@ -136,29 +136,46 @@ export async function authorizePortal(opts?: {
     client = resolved;
   }
 
-  // OAuth scope enforcement (AUTH79-011) — bearer tokens only. A session user has
-  // no consented-scope restriction. Rollout is LOG-ONLY: we record would-be
-  // denials against real sd_oauth_ traffic and only 403 once AUTH_SCOPE_ENFORCE=1.
-  // Existing sd_mcp_ keys are minted with ['*'] so hasScope is always true for them.
+  // A bearer key remains usable only while its user is active and still belongs
+  // to this client. MCP target selection has its own membership intersection;
+  // this check closes the legacy REST paths that previously fell back to viewer.
+  if (bearer && !(await getPortalRole(userId, client.id))) {
+    return { response: NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 }) };
+  }
+
+  // OAuth consent scopes are enforced by default in production. AUTH_SCOPE_ENFORCE=0
+  // is an explicit temporary rollback switch; local/dev remains log-only unless
+  // AUTH_SCOPE_ENFORCE=1. OAuth routes without a declared scope fail closed in
+  // production, so they cannot silently become unrestricted during rollout.
   if (bearer) {
     const requiredScope = requiredScopeFor(opts);
-    if (requiredScope && !hasScope(bearer.scopes, requiredScope)) {
+    const oauthScopeMissing =
+      bearer.credentialKind === 'oauth_access_token' && requiredScope === null;
+    const insufficientScope = requiredScope !== null && !hasScope(bearer.scopes, requiredScope);
+    const enforceScopes = process.env.AUTH_SCOPE_ENFORCE === '1' ||
+      (process.env.NODE_ENV === 'production' && process.env.AUTH_SCOPE_ENFORCE !== '0');
+
+    if (oauthScopeMissing || insufficientScope) {
       console.warn(
         JSON.stringify({
           level: 'warn',
-          event: 'oauth.scope.insufficient',
+          event: oauthScopeMissing ? 'oauth.scope.unconfigured' : 'oauth.scope.insufficient',
           keyId: bearer.keyId,
           required_scope: requiredScope,
           granted_scopes: bearer.scopes,
           clientId: client.id,
           userId,
-          enforced: process.env.AUTH_SCOPE_ENFORCE === '1',
+          enforced: enforceScopes,
         }),
       );
-      if (process.env.AUTH_SCOPE_ENFORCE === '1') {
+      if (enforceScopes) {
         return {
           response: NextResponse.json(
-            { success: false, error: 'insufficient_scope', required_scope: requiredScope },
+            {
+              success: false,
+              error: oauthScopeMissing ? 'route_scope_unconfigured' : 'insufficient_scope',
+              ...(requiredScope ? { required_scope: requiredScope } : {}),
+            },
             { status: 403 },
           ),
         };

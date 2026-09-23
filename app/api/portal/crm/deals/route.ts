@@ -183,7 +183,7 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  emitEvent('crm.deal.created', client.id, userId, { id: deal.id, title: deal.title, value: deal.value, status: deal.status, stageId: deal.stageId, contactId: deal.contactId });
+  await emitEvent('crm.deal.created', client.id, userId, { id: deal.id, title: deal.title, value: deal.value, status: deal.status, stageId: deal.stageId, contactId: deal.contactId });
 
   return NextResponse.json({ success: true, data: deal }, { status: 201 });
 }

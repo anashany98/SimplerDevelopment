@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { withCronHealth } from '@/lib/cron-health';
 import { db } from '@/lib/db';
-import { promptRegistry, evalRuns } from '@/lib/db/schema';
-import { and, desc, eq, isNotNull } from 'drizzle-orm';
+import { promptRegistry } from '@/lib/db/schema';
+import { isNotNull } from 'drizzle-orm';
 import { CronExpressionParser } from 'cron-parser';
-import { enqueueEvalRun } from '@/lib/ai/evals/job';
+import { enqueueScheduledEvalRun } from '@/lib/ai/evals/job';
+import { isAuthorizedCron } from '@/lib/cron-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -22,17 +23,12 @@ export const runtime = 'nodejs';
  * Idempotent within a fire window: re-running this tick before the next cron
  * boundary finds the just-enqueued schedule run newer than `prev()` and skips.
  *
- * Auth: Vercel cron header OR `Authorization: Bearer ${CRON_SECRET}`.
+ * Auth: `Authorization: Bearer ${CRON_SECRET}`; caller-supplied Vercel headers are not trusted.
  * Suggested schedule: every few minutes.
  */
 async function _GET(req: Request) {
-  const isVercelCron = req.headers.get('x-vercel-cron') === '1';
-  if (!isVercelCron) {
-    const cronSecret = process.env.CRON_SECRET;
-    const auth = req.headers.get('authorization');
-    if (!cronSecret || auth !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    }
+  if (!isAuthorizedCron(req)) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
   const now = new Date();
@@ -66,25 +62,17 @@ async function _GET(req: Request) {
       continue;
     }
 
-    const [last] = await db
-      .select({ createdAt: evalRuns.createdAt })
-      .from(evalRuns)
-      .where(and(eq(evalRuns.promptId, prompt.id), eq(evalRuns.trigger, 'schedule')))
-      .orderBy(desc(evalRuns.createdAt))
-      .limit(1);
-
-    if (last && last.createdAt >= prevFire) {
-      skipped += 1; // already enqueued for this fire window
-      continue;
-    }
-
     try {
-      const runId = await enqueueEvalRun({
+      const runId = await enqueueScheduledEvalRun({
         suiteId: prompt.key,
         promptId: prompt.id,
         promptVersionId: prompt.activeVersionId,
-        trigger: 'schedule',
+        scheduledFireAt: prevFire,
       });
+      if (runId === null) {
+        skipped += 1; // another tick already enqueued this fire window
+        continue;
+      }
       enqueued += 1;
       fired.push({ promptId: prompt.id, runId });
     } catch (err) {

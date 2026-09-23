@@ -1,22 +1,14 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { workflowRuns, workflows } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, and, desc } from 'drizzle-orm';
 
 // GET /api/portal/workflows/[id]/runs — list runs for a workflow.
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const workflowId = parseInt(id, 10);

@@ -243,7 +243,7 @@ export async function PUT(req: Request, { params }: Params) {
     }
 
     // Emit automation event
-    emitEvent(`order.${body.status}`, order.websiteId, parseInt(session.user.id, 10), {
+    await emitEvent(`order.${body.status}`, order.websiteId, parseInt(session.user.id, 10), {
       orderId: order.id,
       orderNumber: order.orderNumber,
       customerEmail: order.customerEmail,

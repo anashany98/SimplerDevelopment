@@ -20,7 +20,7 @@
  * are naturally skipped by `grantMonthlyCredits` itself (it returns
  * `{ granted: 0 }` early).
  *
- * Auth: Vercel cron header OR `Authorization: Bearer ${CRON_SECRET}`.
+ * Auth: `Authorization: Bearer ${CRON_SECRET}`; caller-supplied Vercel headers are not trusted.
  * Schedule: 0 6 2 * * — 06:00 UTC on the 2nd of every month.
  */
 
@@ -30,15 +30,13 @@ import { db } from '@/lib/db';
 import { aiCreditLedger, clientServices, services } from '@/lib/db/schema';
 import { grantMonthlyCredits } from '@/lib/ai-credits';
 import { and, eq, gt, inArray, sql } from 'drizzle-orm';
+import { isAuthorizedCron } from '@/lib/cron-auth';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 async function _GET(req: Request) {
-  const cronSecret = process.env.CRON_SECRET;
-  const auth = req.headers.get('authorization');
-  const isVercelCron = req.headers.get('x-vercel-cron') === '1';
-  if (!isVercelCron && cronSecret && auth !== `Bearer ${cronSecret}`) {
+  if (!isAuthorizedCron(req)) {
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 

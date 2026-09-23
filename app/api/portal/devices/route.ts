@@ -17,7 +17,7 @@ import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 const TOKEN_RE = /^ExponentPushToken\[.+\]$|^ExpoPushToken\[.+\]$/;
 
 export async function POST(req: Request) {
-  const authResult = await authorizePortal({ action: 'read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'notifications:write' });
   if (isAuthError(authResult)) return authResult.response;
   const { client, userId } = authResult;
 
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const authResult = await authorizePortal({ action: 'read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'notifications:write' });
   if (isAuthError(authResult)) return authResult.response;
   const { client } = authResult;
 
@@ -59,7 +59,11 @@ export async function DELETE(req: Request) {
   await db
     .update(devicePushTokens)
     .set({ revokedAt: new Date() })
-    .where(and(eq(devicePushTokens.token, token), eq(devicePushTokens.clientId, client.id)));
+    .where(and(
+      eq(devicePushTokens.token, token),
+      eq(devicePushTokens.clientId, client.id),
+      eq(devicePushTokens.userId, authResult.userId),
+    ));
 
   return NextResponse.json({ success: true });
 }

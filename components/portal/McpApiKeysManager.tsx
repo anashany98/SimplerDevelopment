@@ -84,6 +84,7 @@ const SCOPE_GROUPS: ScopeGroup[] = [
       { value: 'automations:read', label: 'Leer automatizaciones' },
       { value: 'automations:write', label: 'Escribir automatizaciones' },
       { value: 'billing:read', label: 'Leer facturación' },
+      { value: 'billing:write', label: 'Gestionar facturación y suscripciones' },
       { value: 'ai:read', label: 'Leer uso y funciones de IA' },
     ],
   },

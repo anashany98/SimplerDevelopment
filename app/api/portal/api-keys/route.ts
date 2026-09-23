@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { portalApiKeys } from '@/lib/db/schema';
 import { and, desc, eq } from 'drizzle-orm';
-import { getPortalClient, getPortalClientForCredentials, getPortalClientsWithRoles } from '@/lib/portal-client';
+import { getPortalClientForCredentials, getPortalClientsWithRoles } from '@/lib/portal-client';
 import { generatePortalApiKey } from '@/lib/mcp-auth';
 
 const DEFAULT_SCOPES = ['*'];
@@ -13,7 +13,7 @@ export async function GET() {
   if (!session?.user?.id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
   const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
+  const client = await getPortalClientForCredentials(userId);
   if (!client) return NextResponse.json({ success: false, message: 'Client not found' }, { status: 404 });
 
   const keys = await db
@@ -30,7 +30,7 @@ export async function GET() {
       createdAt: portalApiKeys.createdAt,
     })
     .from(portalApiKeys)
-    .where(eq(portalApiKeys.clientId, client.id))
+    .where(and(eq(portalApiKeys.clientId, client.id), eq(portalApiKeys.userId, userId)))
     .orderBy(desc(portalApiKeys.createdAt));
 
   return NextResponse.json({ success: true, data: keys });
@@ -114,7 +114,7 @@ export async function DELETE(req: Request) {
   if (!session?.user?.id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
   const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
+  const client = await getPortalClientForCredentials(userId);
   if (!client) return NextResponse.json({ success: false, message: 'Client not found' }, { status: 404 });
 
   const url = new URL(req.url);
@@ -123,7 +123,11 @@ export async function DELETE(req: Request) {
 
   await db.update(portalApiKeys)
     .set({ active: false, revokedAt: new Date() })
-    .where(and(eq(portalApiKeys.id, id), eq(portalApiKeys.clientId, client.id)));
+    .where(and(
+      eq(portalApiKeys.id, id),
+      eq(portalApiKeys.clientId, client.id),
+      eq(portalApiKeys.userId, userId),
+    ));
 
   return NextResponse.json({ success: true });
 }

@@ -332,7 +332,7 @@ function alertBody(alert: PendingAlert, clientEmail: string): string {
 ${alert.level === 'exceeded'
   ? `<p>Additional usage is being billed at the overage rate. Visit your billing page to review charges or upgrade your plan.</p>`
   : alert.level === 'hard_limit'
-    ? `<p>Usage has been stopped at your configured hard limit. Contact support or adjust your limit to resume.</p>`
+    ? `<p>Your configured usage alert threshold has been reached. This alert does not block further usage; additional activity may incur charges under your plan.</p>`
     : `<p>You can upgrade or purchase additional capacity from your billing page.</p>`
 }
 <p><a href="${billingUrl}" style="color:#6366f1;">View billing &amp; plans →</a></p>

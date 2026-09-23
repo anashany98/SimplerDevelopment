@@ -105,7 +105,7 @@ export async function POST(req: Request) {
     ...(body.checkinEnabled !== undefined && { checkinEnabled: body.checkinEnabled }),
   }).returning();
 
-  emitEvent('booking.created', client.id, userId, { id: page.id, title: page.title, slug: page.slug, duration: page.duration });
+  await emitEvent('booking.created', client.id, userId, { id: page.id, title: page.title, slug: page.slug, duration: page.duration });
 
   return NextResponse.json({ success: true, data: page });
 }

@@ -102,7 +102,7 @@ async function captureLead(input: {
       // userId 0 = unauthenticated public actor, matching the storefront
       // signup path. Only fired for genuinely new contacts so automation
       // rules keyed on this event don't re-fire for returning senders.
-      emitEvent('crm.contact.created', AGENCY_CLIENT_ID, 0, {
+      await emitEvent('crm.contact.created', AGENCY_CLIENT_ID, 0, {
         id: contactId,
         name: input.name,
         email: input.email,

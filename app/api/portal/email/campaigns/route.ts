@@ -108,7 +108,7 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  emitEvent('email.campaign.sent', client.id, 0, { campaignId: campaign.id, name: campaign.name, subject: campaign.subject, listId: campaign.listId });
+  await emitEvent('email.campaign.sent', client.id, 0, { campaignId: campaign.id, name: campaign.name, subject: campaign.subject, listId: campaign.listId });
 
   return NextResponse.json({ success: true, data: campaign }, { status: 201 });
 }

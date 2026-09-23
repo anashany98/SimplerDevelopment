@@ -63,9 +63,9 @@ export async function logCardActivity(
       // on every drag-around. The to-column id sits in payload.to for
       // card.column_changed.
       if (type === 'card.created') {
-        emitEvent('task.created', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
+        await emitEvent('task.created', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
       } else if (type === 'card.assignee_added') {
-        emitEvent('task.assigned', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
+        await emitEvent('task.assigned', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
       } else if (type === 'card.column_changed' && typeof payload.to === 'number') {
         const [col] = await db
           .select({ isDone: kanbanColumns.isDone })
@@ -73,7 +73,7 @@ export async function logCardActivity(
           .where(eq(kanbanColumns.id, payload.to))
           .limit(1);
         if (col?.isDone) {
-          emitEvent('task.completed', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
+          await emitEvent('task.completed', card.clientId, userId ?? 0, { cardId, projectId: card.projectId, ...payload });
         }
       }
     }

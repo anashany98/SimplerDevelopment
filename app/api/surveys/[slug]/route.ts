@@ -367,7 +367,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   });
 
   // NOTE: emitEvent intentionally outside transaction — slow handlers must not hold DB connection
-  emitEvent('survey.response_submitted', survey.clientId, 0, {
+  await emitEvent('survey.response_submitted', survey.clientId, 0, {
     surveyId: survey.id,
     responseId: response.id,
     surveyTitle: survey.title,
@@ -450,7 +450,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       // Only for genuinely new contacts: a returning respondent isn't one.
       // userId 0 = unauthenticated public actor, as above for the response event.
       if (created) {
-        emitEvent('crm.contact.created', survey.clientId, 0, {
+        await emitEvent('crm.contact.created', survey.clientId, 0, {
           id: contactId,
           name: response.respondentName || '',
           email: respondentEmail,

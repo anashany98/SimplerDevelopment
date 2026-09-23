@@ -219,7 +219,7 @@ export async function ingestInboundMessage(args: {
       conversationId: result.conversationId, status: 'open', visitorName: args.message.displayName,
       lastMessageAt: args.message.occurredAt, kind: 'updated',
     }).catch(() => {});
-    emitEvent('conversation.message_received', args.clientId, 0, {
+    await emitEvent('conversation.message_received', args.clientId, 0, {
       conversationId: result.conversationId, messageId: result.messageId, channel: args.message.channel, contactId: result.contactId,
     });
   }
@@ -362,7 +362,7 @@ export async function processOutboxItem(clientId: number, outboxId: number): Pro
       await tx.update(channelConnections).set({ lastOutboundAt: now, lastError: null, updatedAt: now })
         .where(and(eq(channelConnections.id, connection.id), eq(channelConnections.clientId, clientId)));
     });
-    emitEvent('conversation.message_sent', clientId, 0, { conversationId: item.conversationId, messageId: item.messageId, channel: connection.channel });
+    await emitEvent('conversation.message_sent', clientId, 0, { conversationId: item.conversationId, messageId: item.messageId, channel: connection.channel });
     return 'sent';
   } catch (error) {
     if (acceptedExternalMessageId) {

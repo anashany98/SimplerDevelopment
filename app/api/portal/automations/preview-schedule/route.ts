@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { computeNextRunAt, validateSchedule, describeSchedule } from '@/lib/automation/schedule';
 
@@ -14,10 +13,7 @@ import { computeNextRunAt, validateSchedule, describeSchedule } from '@/lib/auto
  * server-side — the editor doesn't need to bundle it.
  */
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
 
   const body = await req.json().catch(() => ({}));

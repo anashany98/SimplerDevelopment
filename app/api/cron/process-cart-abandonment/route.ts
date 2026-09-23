@@ -146,7 +146,7 @@ async function _GET(req: Request) {
     const clientId = website?.clientId ?? 0;
 
     // 7. Emit the automation event (fire-and-forget).
-    emitEvent('cart.abandoned', clientId, 0, {
+    await emitEvent('cart.abandoned', clientId, 0, {
       cartId: cart.id,
       websiteId: cart.websiteId,
       customerEmail: email,

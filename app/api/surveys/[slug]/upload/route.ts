@@ -30,6 +30,7 @@ import { db } from '@/lib/db';
 import { surveys } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { uploadToS3 } from '@/lib/s3/upload';
+import { checkRateLimit, getClientIp } from '@/lib/security/rate-limit';
 import {
   MAX_SURVEY_UPLOAD_BYTES,
   sanitizeUploadFilename,
@@ -67,6 +68,15 @@ export async function POST(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
+
+  // This endpoint accepts anonymous 10 MB uploads. Cap attempts per source IP
+  // before parsing multipart data or querying storage-backed survey metadata.
+  if (!(await checkRateLimit(`survey-upload:${getClientIp(req)}`, 10, 15 * 60_000))) {
+    return corsJson(
+      { success: false, message: 'Too many uploads. Please try again later.' },
+      { status: 429 },
+    );
+  }
 
   // Resolve survey by slug — we need clientId + id for the tenant-scoped S3
   // key, and we must enforce the active-status gate the same way the submit

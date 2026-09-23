@@ -40,7 +40,7 @@ Never invent data — if a tool returns nothing, say so. Format money as dollars
 
 export async function POST(req: Request) {
   // ── 1. Auth (session cookie or bearer). 'write' so the assistant may act.
-  const authed = await authorizePortal({ action: 'write' });
+  const authed = await authorizePortal({ action: 'write', scope: 'chat:write' });
   if (isAuthError(authed)) return authed.response;
   const { client } = authed;
 

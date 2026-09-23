@@ -422,7 +422,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     }
   }
 
-  emitEvent('booking.guest_booked', page.clientId, 0, {
+  await emitEvent('booking.guest_booked', page.clientId, 0, {
     bookingId: booking.id,
     bookingPageId: page.id,
     pageTitle: page.title,

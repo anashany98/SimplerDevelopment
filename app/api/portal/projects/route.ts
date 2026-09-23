@@ -184,7 +184,7 @@ export async function POST(req: Request) {
     }
   }
 
-  emitEvent('project.created', client.id, userId, { id: project.id, name: project.name, status: project.status, clonedFrom: source?.id ?? null });
+  await emitEvent('project.created', client.id, userId, { id: project.id, name: project.name, status: project.status, clonedFrom: source?.id ?? null });
 
   // E2 — invalidate the admin dashboard cache (active-project count bumped).
   revalidateAdminDashboard();

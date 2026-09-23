@@ -95,9 +95,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // is mandatory. Fail closed (return null) for a missing or wrong code —
         // same outcome as a bad password, so login never reveals whether MFA is
         // on for an account. The login form carries the code in `totpCode`.
-        if (user.mfaEnabled && user.totpSecret) {
+        if (user.mfaEnabled) {
           const totpCode = (credentials.totpCode as string | undefined)?.trim() ?? '';
-          if (!verifyTOTP(user.totpSecret, totpCode)) {
+          if (!user.totpSecret || !verifyTOTP(user.totpSecret, totpCode)) {
             return null;
           }
         }

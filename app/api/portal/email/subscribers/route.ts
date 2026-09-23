@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     .values({ listId: parseInt(listId), email: email.toLowerCase().trim(), name: name?.trim() || null, unsubscribeToken: generateUnsubscribeToken() })
     .returning();
 
-  emitEvent('email.subscriber.added', client.id, parseInt(session.user.id, 10), {
+  await emitEvent('email.subscriber.added', client.id, parseInt(session.user.id, 10), {
     subscriberId: subscriber.id,
     listId: subscriber.listId,
     email: subscriber.email,
@@ -92,7 +92,7 @@ export async function PUT(req: Request) {
   // Emit one event per newly-inserted subscriber so automations fire for each.
   const userId = parseInt(session.user.id, 10);
   for (const sub of inserted) {
-    emitEvent('email.subscriber.added', client.id, userId, {
+    await emitEvent('email.subscriber.added', client.id, userId, {
       subscriberId: sub.id,
       listId: sub.listId,
       email: sub.email,

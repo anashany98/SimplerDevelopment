@@ -175,6 +175,7 @@ export default async function AuthorizePage({ searchParams }: { searchParams: Pr
     'services:read': 'Read services and proposals',
     'services:write': 'Manage services and proposals',
     'billing:read': 'Read invoices and billing info',
+    'billing:write': 'Manage billing settings and subscriptions',
     'hosting:read': 'Read hosting and deployment status',
     'ai:read': 'Read AI credits balance',
     'email:send': 'Send email campaigns (higher privilege than editing)',

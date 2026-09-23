@@ -114,11 +114,10 @@ export const automationLogs = pgTable('automation_logs', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// Durable journal of emitted automation events. emitEvent() still dispatches
-// in-process for instant execution, but ALSO writes a row here and marks it
-// 'completed' once handlers finish. The process-automation-jobs cron re-runs any
-// row left 'pending' past a grace window — i.e. an event whose in-process
-// dispatch was dropped by a serverless cold-start — giving at-least-once
+// Durable journal of emitted automation events. emitEvent() writes a 'running'
+// row with a lease before returning, dispatches handlers in-process, and marks
+// the row 'completed' once they finish. The process-automation-jobs cron
+// reclaims expired leases and retries pending rows, giving at-least-once
 // delivery with retries instead of the old fire-and-forget that silently lost
 // events. (resource was previously: in-process, no retries, 5s cap.)
 export const automationJobs = pgTable('automation_jobs', {
@@ -127,7 +126,7 @@ export const automationJobs = pgTable('automation_jobs', {
   event: varchar('event', { length: 100 }).notNull(),
   userId: integer('user_id').default(0).notNull(),
   payload: json('payload').$type<Record<string, unknown>>().notNull(),
-  // 'pending' | 'completed' | 'failed' | 'dead_letter'
+  // 'pending' | 'running' | 'completed' | 'failed' | 'dead_letter'
   status: varchar('status', { length: 20 }).default('pending').notNull(),
   attemptCount: integer('attempt_count').default(0).notNull(),
   nextRetryAt: timestamp('next_retry_at', { withTimezone: true }),

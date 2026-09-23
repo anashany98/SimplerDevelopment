@@ -299,7 +299,7 @@ export async function POST(req: Request) {
       }).catch(err => console.error('[webhook] order.confirmed email failed:', err));
 
       // Emit automation event
-      emitEvent('order.paid', order.websiteId, 0, {
+      await emitEvent('order.paid', order.websiteId, 0, {
         orderId: order.id,
         orderNumber: order.orderNumber,
         customerEmail: order.customerEmail,

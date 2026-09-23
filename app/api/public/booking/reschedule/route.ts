@@ -328,7 +328,7 @@ export async function POST(req: Request) {
 
   // ── Emit automation event ──────────────────────────────────────────────────
 
-  emitEvent('booking.rescheduled', booking.clientId, 0, {
+  await emitEvent('booking.rescheduled', booking.clientId, 0, {
     bookingId: booking.id,
     bookingPageId: page.id,
     pageTitle: page.title,

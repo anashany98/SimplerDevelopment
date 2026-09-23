@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     }
   }
 
-  emitEvent('booking.cancelled', booking.clientId, 0, {
+  await emitEvent('booking.cancelled', booking.clientId, 0, {
     bookingId: booking.id,
     bookingPageId: booking.bookingPageId,
     pageTitle: page?.title ?? null,
