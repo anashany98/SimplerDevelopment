@@ -757,7 +757,10 @@ describe('DiscountsPage', () => {
       fireEvent.click(addBtn);
       const select = container.querySelector('select') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'fixed_amount' } });
-      expect(container.textContent).toContain('Monto ($)');
+      const amountLabel = Array.from(container.querySelectorAll('label')).find(
+        (l) => l.textContent?.trim() === 'Monto',
+      );
+      expect(amountLabel).toBeTruthy();
     });
 
     it('changing type to "free_shipping" disables amount input', async () => {

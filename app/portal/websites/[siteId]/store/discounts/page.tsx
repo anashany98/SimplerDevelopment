@@ -224,13 +224,13 @@ export default function DiscountsPage() {
                   <label className="text-sm font-medium text-foreground">Tipo</label>
                   <select value={form.discountType} onChange={(e) => setForm((p) => ({ ...p, discountType: e.target.value }))} className={inputClass}>
                     <option value="percent">Porcentaje</option>
-                    <option value="fixed_amount">Monto fijo ($)</option>
+                    <option value="fixed_amount">Monto fijo</option>
                     <option value="free_shipping">Envío gratis</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-foreground">
-                    {form.discountType === 'percent' ? 'Descuento (%)' : form.discountType === 'fixed_amount' ? 'Monto ($)' : 'Monto'}
+                    {form.discountType === 'percent' ? 'Descuento (%)' : 'Monto'}
                   </label>
                   <input
                     type="number"
@@ -246,7 +246,7 @@ export default function DiscountsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">Pedido mínimo ($)</label>
+                  <label className="text-sm font-medium text-foreground">Pedido mínimo</label>
                   <input
                     type="number"
                     step="0.01"
