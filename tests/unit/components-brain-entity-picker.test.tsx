@@ -116,7 +116,7 @@ describe('EntityPicker — closed state', () => {
     mockFetchWith(makeItemsResponse([]));
     render(<EntityPicker {...DEFAULT_PROPS} />);
     expect(screen.getByText('Company')).toBeTruthy();
-    expect(screen.getByText('— select —')).toBeTruthy();
+    expect(screen.getByText('— seleccionar —')).toBeTruthy();
   });
 
   it('does not render dropdown when closed', () => {
@@ -138,7 +138,7 @@ describe('EntityPicker — opening', () => {
   it('opens dropdown on select button click', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     expect(screen.getByRole('searchbox')).toBeTruthy();
   });
 
@@ -146,7 +146,7 @@ describe('EntityPicker — opening', () => {
     // Never resolves — dropdown stays open in loading state
     global.fetch = vi.fn().mockReturnValue(new Promise(() => {}));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     // The input is rendered synchronously on open
     expect(screen.getByRole('searchbox')).toBeTruthy();
   });
@@ -154,7 +154,7 @@ describe('EntityPicker — opening', () => {
   it('fires fetch with limit param when opening', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
     const url = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0][0] as string;
     expect(url).toContain('limit=20');
@@ -167,7 +167,7 @@ describe('EntityPicker — rows loaded', () => {
   it('displays rows after fetch resolves (items wrapper shape)', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     expect(screen.getByText('Beta LLC')).toBeTruthy();
     expect(screen.getByText('Gamma Inc')).toBeTruthy();
@@ -176,7 +176,7 @@ describe('EntityPicker — rows loaded', () => {
   it('displays rows after fetch resolves (flat array shape)', async () => {
     mockFetchWith(makeFlatResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     expect(screen.getByText('Beta LLC')).toBeTruthy();
   });
@@ -184,7 +184,7 @@ describe('EntityPicker — rows loaded', () => {
   it('renders secondary line when present', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     expect(screen.getByText('alpha.com')).toBeTruthy();
   });
@@ -192,7 +192,7 @@ describe('EntityPicker — rows loaded', () => {
   it('does not render secondary line when null', async () => {
     mockFetchWith(makeItemsResponse([{ id: 3, primary: 'Gamma Inc', secondary: null }]));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Gamma Inc');
     // Only 1 primary text, no secondary span for this row
     expect(screen.queryByText('null')).toBeNull();
@@ -206,7 +206,7 @@ describe('EntityPicker — rows loaded', () => {
     };
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} displayRow={strictDisplay} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     expect(screen.queryByText('Beta LLC')).toBeNull();
   });
@@ -219,7 +219,7 @@ describe('EntityPicker — selecting a row', () => {
     const onChange = vi.fn();
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker onChange={onChange} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     fireEvent.click(screen.getByText('Alpha Corp'));
     expect(onChange).toHaveBeenCalledWith(1);
@@ -228,17 +228,17 @@ describe('EntityPicker — selecting a row', () => {
   it('shows chip with selected row primary after selection', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Beta LLC');
     fireEvent.click(screen.getByText('Beta LLC'));
     expect(screen.getByText('Beta LLC')).toBeTruthy();
-    expect(screen.queryByText('— select —')).toBeNull();
+    expect(screen.queryByText('— seleccionar —')).toBeNull();
   });
 
   it('closes dropdown after selection', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     fireEvent.click(screen.getByText('Alpha Corp'));
     expect(screen.queryByRole('searchbox')).toBeNull();
@@ -247,7 +247,7 @@ describe('EntityPicker — selecting a row', () => {
   it('shows check icon on already-selected row when reopened', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     // Wait for rows, pick the list-item instance (not the chip)
     await screen.findAllByText('Alpha Corp');
     const rowBtns = screen.getAllByText('Alpha Corp');
@@ -277,24 +277,24 @@ describe('EntityPicker — clearing', () => {
     const onChange = vi.fn();
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker onChange={onChange} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     fireEvent.click(screen.getByText('Alpha Corp'));
     onChange.mockClear();
 
-    fireEvent.click(screen.getByLabelText('Clear Company'));
+    fireEvent.click(screen.getByLabelText('Quitar Company'));
     expect(onChange).toHaveBeenCalledWith(null);
   });
 
   it('shows select button again after clearing', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<ControlledPicker />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
     fireEvent.click(screen.getByText('Alpha Corp'));
 
-    fireEvent.click(screen.getByLabelText('Clear Company'));
-    expect(screen.getByText('— select —')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Quitar Company'));
+    expect(screen.getByText('— seleccionar —')).toBeTruthy();
   });
 });
 
@@ -304,7 +304,7 @@ describe('EntityPicker — server-side search', () => {
   it('includes search param in URL after typing', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} supportsServerSearch={true} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
 
     global.fetch = vi.fn().mockResolvedValue({
@@ -324,7 +324,7 @@ describe('EntityPicker — client-side filter', () => {
   it('filters rows client-side without re-fetching when supportsServerSearch=false', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} supportsServerSearch={false} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
 
     const callCountAfterOpen = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.length;
@@ -350,7 +350,7 @@ describe('EntityPicker — client-side filter', () => {
   it('filters by secondary field client-side', async () => {
     mockFetchWith(makeItemsResponse(ROWS));
     render(<EntityPicker {...DEFAULT_PROPS} supportsServerSearch={false} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'beta.io' } });
@@ -365,19 +365,19 @@ describe('EntityPicker — empty states', () => {
   it('shows "No X found" when no rows and no query', async () => {
     mockFetchWith(makeItemsResponse([]));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
-    await screen.findByText(/No company found/i);
+    fireEvent.click(screen.getByText('— seleccionar —'));
+    await screen.findByText(/Sin resultados/i);
   });
 
   it('shows "No X matches query" when no rows and query set', async () => {
     mockFetchWith(makeItemsResponse([]));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
-    await screen.findByText(/No company found/i);
+    fireEvent.click(screen.getByText('— seleccionar —'));
+    await screen.findByText(/Sin resultados/i);
 
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'zzz' } });
     await waitFor(() =>
-      expect(screen.queryByText(/No company matches "zzz"/i)).toBeTruthy(),
+      expect(screen.queryByText(/Sin resultados para "zzz"/i)).toBeTruthy(),
     );
   });
 });
@@ -388,7 +388,7 @@ describe('EntityPicker — error states', () => {
   it('shows error message on HTTP failure', async () => {
     mockFetchHttpError(403, 'Forbidden');
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Forbidden');
   });
 
@@ -399,21 +399,21 @@ describe('EntityPicker — error states', () => {
       json: () => Promise.resolve({ success: false }),
     } as Response);
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText(/HTTP 503/);
   });
 
   it('shows "Network error" on network throw', async () => {
     mockFetchReject('Network failure');
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Network failure');
   });
 
   it('shows "Network error" for non-Error throw', async () => {
     global.fetch = vi.fn().mockRejectedValue('plain string');
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Network error');
   });
 });
@@ -429,7 +429,7 @@ describe('EntityPicker — click-outside', () => {
         <div data-testid="outside">outside</div>
       </div>,
     );
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByText('Alpha Corp');
 
     fireEvent.mouseDown(screen.getByTestId('outside'));
@@ -453,7 +453,7 @@ describe('EntityPicker — externally provided value', () => {
     expect(screen.getByText('#99')).toBeTruthy();
 
     // Open so fetch fires
-    const chipBtn = screen.getByTitle('Loading…');
+    const chipBtn = screen.getByTitle('Cargando…');
     fireEvent.click(chipBtn);
     // Wait for at least one instance of 'Resolved Corp' (chip + row both fine)
     await screen.findAllByText('Resolved Corp');
@@ -464,7 +464,7 @@ describe('EntityPicker — externally provided value', () => {
   it('shows select button when value is null', () => {
     global.fetch = vi.fn();
     render(<EntityPicker {...DEFAULT_PROPS} value={null} />);
-    expect(screen.getByText('— select —')).toBeTruthy();
+    expect(screen.getByText('— seleccionar —')).toBeTruthy();
   });
 });
 
@@ -474,15 +474,15 @@ describe('EntityPicker — searchPlaceholder', () => {
   it('uses default placeholder derived from label', async () => {
     mockFetchWith(makeItemsResponse([]));
     render(<EntityPicker {...DEFAULT_PROPS} />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByRole('searchbox');
-    expect(screen.getByPlaceholderText('Search company…')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Buscar company…')).toBeTruthy();
   });
 
   it('uses custom placeholder when provided', async () => {
     mockFetchWith(makeItemsResponse([]));
     render(<EntityPicker {...DEFAULT_PROPS} searchPlaceholder="Find a company..." />);
-    fireEvent.click(screen.getByText('— select —'));
+    fireEvent.click(screen.getByText('— seleccionar —'));
     await screen.findByRole('searchbox');
     expect(screen.getByPlaceholderText('Find a company...')).toBeTruthy();
   });

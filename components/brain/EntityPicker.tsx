@@ -167,7 +167,7 @@ export default function EntityPicker({
       setSelectedRow(known);
     } else if (selectedRow?.id !== value) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- placeholder chip for an id whose row hasn't been fetched yet.
-      setSelectedRow({ id: value, primary: `#${value}`, secondary: 'Loading…' });
+      setSelectedRow({ id: value, primary: `#${value}`, secondary: 'Cargando…' });
     }
   }, [value, rows, selectedRow?.id]);
 
@@ -228,7 +228,7 @@ export default function EntityPicker({
             type="button"
             onClick={handleClear}
             className="h-7 w-7 inline-flex items-center justify-center rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive shrink-0"
-            aria-label={`Clear ${label}`}
+            aria-label={`Quitar ${label}`}
           >
             <span className="material-icons text-[16px]">close</span>
           </button>
@@ -240,7 +240,7 @@ export default function EntityPicker({
           className="w-full inline-flex items-center gap-1.5 px-2 py-1.5 text-sm bg-background border border-border rounded-md text-muted-foreground hover:text-foreground hover:border-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
         >
           <span className="material-icons text-[14px] leading-none">search</span>
-          <span className="text-xs">— select —</span>
+          <span className="text-xs">— seleccionar —</span>
         </button>
       )}
 
@@ -251,7 +251,7 @@ export default function EntityPicker({
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={searchPlaceholder ?? `Search ${label.toLowerCase()}…`}
+            placeholder={searchPlaceholder ?? `Buscar ${label.toLowerCase()}…`}
             className="w-full px-2 py-1.5 text-sm rounded border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
           {error && (
@@ -267,7 +267,7 @@ export default function EntityPicker({
             )}
             {!loading && filtered.length === 0 && (
               <div className="px-2 py-3 text-center text-xs text-muted-foreground">
-                {query.trim() ? `No ${label.toLowerCase()} matches "${query.trim()}"` : `No ${label.toLowerCase()} found.`}
+                {query.trim() ? `Sin resultados para "${query.trim()}"` : 'Sin resultados.'}
               </div>
             )}
             {!loading && filtered.map((row) => {

@@ -101,29 +101,29 @@ afterEach(async () => {
 describe('DecisionForm — create mode rendering', () => {
   it('renders the Title field', () => {
     render(<DecisionForm {...makeProps()} />);
-    expect(screen.getByPlaceholderText(/Adopt Drizzle ORM/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i)).toBeInTheDocument();
   });
 
   it('renders Decision and Rationale fields in create mode', () => {
     render(<DecisionForm {...makeProps()} />);
-    expect(screen.getByPlaceholderText(/concrete decision/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/decisión concreta/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/razonamiento, los intercambios clave/i)).toBeInTheDocument();
   });
 
   it('renders Alternatives field in create mode', () => {
     render(<DecisionForm {...makeProps()} />);
-    expect(screen.getByPlaceholderText(/One per line/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Una por línea/i)).toBeInTheDocument();
   });
 
   it('renders Reversibility pills in create mode', () => {
     render(<DecisionForm {...makeProps()} />);
-    expect(screen.getByText('Two-way door')).toBeInTheDocument();
-    expect(screen.getByText('One-way door')).toBeInTheDocument();
+    expect(screen.getByText('Puerta de doble sentido')).toBeInTheDocument();
+    expect(screen.getByText('Puerta de un solo sentido')).toBeInTheDocument();
   });
 
-  it('renders "Record decision" as default submit label', () => {
+  it('renders "Registrar decisión" as default submit label', () => {
     render(<DecisionForm {...makeProps()} />);
-    expect(screen.getByRole('button', { name: /Record decision/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Registrar decisión/i })).toBeInTheDocument();
   });
 
   it('renders custom submitLabel when provided', () => {
@@ -147,18 +147,18 @@ describe('DecisionForm — create mode rendering', () => {
 describe('DecisionForm — edit mode rendering', () => {
   it('hides Decision and Rationale in edit mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'edit' })} />);
-    expect(screen.queryByPlaceholderText(/concrete decision/i)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/decisión concreta/i)).not.toBeInTheDocument();
     expect(screen.queryByPlaceholderText(/razonamiento, los intercambios clave/i)).not.toBeInTheDocument();
   });
 
   it('hides Reversibility pills in edit mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'edit' })} />);
-    expect(screen.queryByText('Two-way door')).not.toBeInTheDocument();
+    expect(screen.queryByText('Puerta de doble sentido')).not.toBeInTheDocument();
   });
 
-  it('renders "Save changes" as default submit label in edit mode', () => {
+  it('renders "Guardar cambios" as default submit label in edit mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'edit' })} />);
-    expect(screen.getByRole('button', { name: /Save changes/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Guardar cambios/i })).toBeInTheDocument();
   });
 
   it('renders Alternatives field in edit mode', () => {
@@ -181,14 +181,14 @@ describe('DecisionForm — edit mode rendering', () => {
 });
 
 describe('DecisionForm — supersede mode', () => {
-  it('renders "Supersede" as default submit label in supersede mode', () => {
+  it('renders "Reemplazar" as default submit label in supersede mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'supersede' })} />);
-    expect(screen.getByRole('button', { name: /Supersede/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Reemplazar/i })).toBeInTheDocument();
   });
 
   it('shows Decision and Rationale fields in supersede mode', () => {
     render(<DecisionForm {...makeProps({ mode: 'supersede' })} />);
-    expect(screen.getByPlaceholderText(/concrete decision/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/decisión concreta/i)).toBeInTheDocument();
   });
 });
 
@@ -201,48 +201,48 @@ function submitForm() {
 }
 
 describe('DecisionForm — validation', () => {
-  it('shows "Title is required." when submitted with blank title', async () => {
+  it('shows "El título es obligatorio." when submitted with blank title', async () => {
     render(<DecisionForm {...makeProps()} />);
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText('Title is required.')).toBeInTheDocument(),
+      expect(screen.getByText('El título es obligatorio.')).toBeInTheDocument(),
     );
   });
 
-  it('shows "Decision is required." when title filled but decision blank (create)', async () => {
+  it('shows "La decisión es obligatoria." when title filled but decision blank (create)', async () => {
     render(<DecisionForm {...makeProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'My Title' },
     });
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText('Decision is required.')).toBeInTheDocument(),
+      expect(screen.getByText('La decisión es obligatoria.')).toBeInTheDocument(),
     );
   });
 
-  it('shows "Rationale is required." when title+decision filled but rationale blank (create)', async () => {
+  it('shows "La justificación es obligatoria." when title+decision filled but rationale blank (create)', async () => {
     render(<DecisionForm {...makeProps()} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'My Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'We decided X' },
     });
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText('Rationale is required.')).toBeInTheDocument(),
+      expect(screen.getByText('La justificación es obligatoria.')).toBeInTheDocument(),
     );
   });
 
   it('does NOT require decision/rationale in edit mode — submits with just a title', async () => {
     const onSubmit = vi.fn();
     render(<DecisionForm {...makeProps({ mode: 'edit', onSubmit })} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Updated Title' },
     });
     submitForm();
     await waitFor(() => expect(onSubmit).toHaveBeenCalled());
-    expect(screen.queryByText(/required/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/obligatori/i)).not.toBeInTheDocument();
   });
 });
 
@@ -251,10 +251,10 @@ describe('DecisionForm — successful submit payload', () => {
     const onSubmit = vi.fn();
     render(<DecisionForm {...makeProps({ onSubmit })} />);
 
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: ' My Decision Title ' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'We chose X' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento, los intercambios clave/i), {
@@ -282,10 +282,10 @@ describe('DecisionForm — successful submit payload', () => {
   it('sets context to null when blank', async () => {
     const onSubmit = vi.fn();
     render(<DecisionForm {...makeProps({ onSubmit })} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'Decision' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
@@ -299,10 +299,10 @@ describe('DecisionForm — successful submit payload', () => {
   it('sets alternativesConsidered to null when blank', async () => {
     const onSubmit = vi.fn();
     render(<DecisionForm {...makeProps({ onSubmit })} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'Decision' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
@@ -316,13 +316,13 @@ describe('DecisionForm — successful submit payload', () => {
   it('includes context when filled', async () => {
     const onSubmit = vi.fn();
     render(<DecisionForm {...makeProps({ onSubmit })} />);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/Background, constraints/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Antecedentes/i), {
       target: { value: 'Some context' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'Decision' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
@@ -344,7 +344,7 @@ describe('DecisionForm — initial values pre-fill', () => {
       />,
     );
     expect(
-      (screen.getByPlaceholderText(/Adopt Drizzle ORM/i) as HTMLInputElement).value,
+      (screen.getByPlaceholderText(/Adoptar Drizzle ORM/i) as HTMLInputElement).value,
     ).toBe('Pre-filled Title');
   });
 
@@ -354,7 +354,7 @@ describe('DecisionForm — initial values pre-fill', () => {
         {...makeProps({ initial: { reversibility: 'one_way' } })}
       />,
     );
-    const oneWay = screen.getByText('One-way door').closest('button');
+    const oneWay = screen.getByText('Puerta de un solo sentido').closest('button');
     expect(oneWay).toHaveAttribute('aria-pressed', 'true');
   });
 
@@ -372,10 +372,10 @@ describe('DecisionForm — initial values pre-fill', () => {
 });
 
 describe('DecisionForm — reversibility toggle', () => {
-  it('switches from two_way to one_way when One-way door is clicked', async () => {
+  it('switches from two_way to one_way when Puerta de un solo sentido is clicked', async () => {
     render(<DecisionForm {...makeProps()} />);
-    const twoWay = screen.getByText('Two-way door').closest('button')!;
-    const oneWay = screen.getByText('One-way door').closest('button')!;
+    const twoWay = screen.getByText('Puerta de doble sentido').closest('button')!;
+    const oneWay = screen.getByText('Puerta de un solo sentido').closest('button')!;
     expect(twoWay).toHaveAttribute('aria-pressed', 'true');
     expect(oneWay).toHaveAttribute('aria-pressed', 'false');
     fireEvent.click(oneWay);
@@ -410,7 +410,7 @@ describe('DecisionForm — team fetch', () => {
       expect((global as any).fetch).toHaveBeenCalled();
     });
     // Decision-maker select should only have the blank default option, no team members
-    const makerSelect = screen.getByRole('combobox', { name: /Decision maker/i });
+    const makerSelect = screen.getByRole('combobox', { name: /Quién decide/i });
     const makerOptions = Array.from(makerSelect.querySelectorAll('option')).filter(
       (o) => o.getAttribute('value') !== '',
     );
@@ -523,10 +523,10 @@ describe('DecisionForm — topic toggle', () => {
     await waitFor(() => expect(screen.getByText('Engineering')).toBeInTheDocument());
 
     fireEvent.click(screen.getByText('Engineering').closest('button')!);
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'Decision' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
@@ -564,7 +564,7 @@ describe('DecisionForm — error and submitting states', () => {
 
   it('disables the submit button when submitting=true', () => {
     render(<DecisionForm {...makeProps({ submitting: true })} />);
-    const btn = screen.getByRole('button', { name: /Record decision/i });
+    const btn = screen.getByRole('button', { name: /Registrar decisión/i });
     expect(btn).toBeDisabled();
   });
 
@@ -574,16 +574,16 @@ describe('DecisionForm — error and submitting states', () => {
     // Trigger validation error
     submitForm();
     await waitFor(() =>
-      expect(screen.getByText('Title is required.')).toBeInTheDocument(),
+      expect(screen.getByText('El título es obligatorio.')).toBeInTheDocument(),
     );
     // Fix and resubmit — validation message clears on next attempt
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
     submitForm();
-    // Now "Decision is required." replaces "Title is required."
+    // Now "La decisión es obligatoria." replaces "El título es obligatorio."
     await waitFor(() =>
-      expect(screen.queryByText('Title is required.')).not.toBeInTheDocument(),
+      expect(screen.queryByText('El título es obligatorio.')).not.toBeInTheDocument(),
     );
   });
 });
@@ -601,10 +601,10 @@ describe('DecisionForm — confidentiality select', () => {
     )!;
     fireEvent.change(confSelect, { target: { value: 'restricted' } });
 
-    fireEvent.change(screen.getByPlaceholderText(/Adopt Drizzle ORM/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Adoptar Drizzle ORM/i), {
       target: { value: 'Title' },
     });
-    fireEvent.change(screen.getByPlaceholderText(/concrete decision/i), {
+    fireEvent.change(screen.getByPlaceholderText(/decisión concreta/i), {
       target: { value: 'Decision' },
     });
     fireEvent.change(screen.getByPlaceholderText(/razonamiento/i), {
