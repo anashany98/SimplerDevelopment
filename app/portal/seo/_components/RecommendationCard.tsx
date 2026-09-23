@@ -5,7 +5,7 @@
 // "Done & dismissed" section (`readOnly` — no actions, a status pill instead).
 
 import { useState } from 'react';
-import { formatPct, splitParagraphs, tierClasses } from './format';
+import { formatPct, splitParagraphs, tierClasses, tierLabels } from './format';
 import type { Recommendation, RecommendationStatus } from './types';
 
 const btnDone =
@@ -54,10 +54,10 @@ export function RecommendationCard({ rec, onMarkDone, onDismiss, busy, error, re
 
       <div className="flex flex-wrap items-center gap-1.5 mt-2">
         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${tierClasses[rec.impact]}`}>
-          Impacto: {rec.impact}
+          Impacto: {tierLabels[rec.impact]}
         </span>
         <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${tierClasses[rec.effort]}`}>
-          Esfuerzo: {rec.effort}
+          Esfuerzo: {tierLabels[rec.effort]}
         </span>
         <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
           {formatPct(rec.confidence)} de confianza

@@ -22,13 +22,13 @@ export function HistoryTab({ runs }: { runs: SeoRun[] }) {
       <table className="w-full text-sm">
         <thead className="border-b border-border">
           <tr>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Fecha</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Pages</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Score</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Critical</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Warning</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Notice</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Fecha</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Páginas</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Puntuación</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Críticos</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Advertencias</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Avisos</th>
           </tr>
         </thead>
         <tbody>

@@ -43,9 +43,9 @@ function QueryStatTable({ rows }: { rows: QueryStat[] }) {
     <table className="w-full text-sm">
       <thead className="border-b border-border">
         <tr>
-          <Th>Query</Th>
-          <Th align="right">Clicks</Th>
-          <Th align="right">Impressions</Th>
+          <Th>Consulta</Th>
+          <Th align="right">Clics</Th>
+          <Th align="right">Impresiones</Th>
           <Th align="right">CTR</Th>
           <Th align="right">Posición</Th>
         </tr>
@@ -80,12 +80,12 @@ function QueryDeltaTable({ rows }: { rows: QueryDelta[] }) {
     <table className="w-full text-sm">
       <thead className="border-b border-border">
         <tr>
-          <Th>Query</Th>
-          <Th align="right">Clicks</Th>
-          <Th align="right">Δ Clicks</Th>
-          <Th align="right">Prev clicks</Th>
+          <Th>Consulta</Th>
+          <Th align="right">Clics</Th>
+          <Th align="right">Δ Clics</Th>
+          <Th align="right">Clics previos</Th>
           <Th align="right">Posición</Th>
-          <Th align="right">Prev position</Th>
+          <Th align="right">Posición previa</Th>
         </tr>
       </thead>
       <tbody>
@@ -121,11 +121,11 @@ function PageDecayTable({ rows }: { rows: PageDelta[] }) {
     <table className="w-full text-sm">
       <thead className="border-b border-border">
         <tr>
-          <Th>Page</Th>
-          <Th align="right">Clicks</Th>
-          <Th align="right">Prev clicks</Th>
-          <Th align="right">Δ Clicks</Th>
-          <Th align="right">Decline</Th>
+          <Th>Página</Th>
+          <Th align="right">Clics</Th>
+          <Th align="right">Clics previos</Th>
+          <Th align="right">Δ Clics</Th>
+          <Th align="right">Caída</Th>
         </tr>
       </thead>
       <tbody>
@@ -216,57 +216,57 @@ export function SearchPerformanceReportsView({ reports }: { reports: Reports }) 
     {
       id: 'ctrOpportunities',
       icon: 'ads_click',
-      title: 'CTR opportunities',
+      title: 'Oportunidades de CTR',
       count: reports.ctrOpportunities.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryStatTable rows={reports.ctrOpportunities} />,
     },
     {
       id: 'strikingDistance',
       icon: 'my_location',
-      title: 'Striking distance',
+      title: 'Distancia de impacto',
       count: reports.strikingDistance.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryStatTable rows={reports.strikingDistance} />,
     },
     {
       id: 'winners',
       icon: 'trending_up',
-      title: 'Winners',
+      title: 'Ganadoras',
       count: reports.winners.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryDeltaTable rows={reports.winners} />,
     },
     {
       id: 'losers',
       icon: 'trending_down',
-      title: 'Losers',
+      title: 'Perdedoras',
       count: reports.losers.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryDeltaTable rows={reports.losers} />,
     },
     {
       id: 'pageDecay',
       icon: 'south',
-      title: 'Page decay',
+      title: 'Decaimiento de páginas',
       count: reports.pageDecay.length,
-      unit: 'page',
+      unit: 'página',
       node: <PageDecayTable rows={reports.pageDecay} />,
     },
     {
       id: 'newQueries',
       icon: 'fiber_new',
-      title: 'New queries',
+      title: 'Consultas nuevas',
       count: reports.newQueries.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryStatTable rows={reports.newQueries} />,
     },
     {
       id: 'lostQueries',
       icon: 'remove_circle_outline',
-      title: 'Lost queries',
+      title: 'Consultas perdidas',
       count: reports.lostQueries.length,
-      unit: 'query',
+      unit: 'consulta',
       node: <QueryStatTable rows={reports.lostQueries} />,
     },
   ];

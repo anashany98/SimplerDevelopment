@@ -2,7 +2,7 @@ import type { SeoRunStatus } from './types';
 
 const CONFIG: Record<SeoRunStatus, { label: string; classes: string; icon: string; spin?: boolean }> = {
   queued: {
-    label: 'Queued',
+    label: 'En cola',
     classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
     icon: 'schedule',
   },
@@ -23,7 +23,7 @@ const CONFIG: Record<SeoRunStatus, { label: string; classes: string; icon: strin
     icon: 'error',
   },
   cancelled: {
-    label: 'Cancelled',
+    label: 'Cancelado',
     classes: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
     icon: 'cancel',
   },

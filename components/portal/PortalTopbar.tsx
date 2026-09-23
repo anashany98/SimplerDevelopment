@@ -18,6 +18,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   publishing: 'Publicaciones',
   surveys: 'Encuestas',
   websites: 'Webs',
+  seo: 'SEO Intelligence',
   tickets: 'Soporte',
   inbox: 'Bandeja de entrada',
   invoices: 'Facturación',

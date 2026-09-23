@@ -10,7 +10,7 @@ export function HealthScoreBadge({ score, size = 'sm' }: { score: number | null;
         <span className="font-display text-4xl font-extrabold tracking-[-0.02em] leading-none">
           {score ?? '—'}
         </span>
-        <span className="mt-1 text-[10px] font-semibold uppercase tracking-wide">Health score</span>
+        <span className="mt-1 text-[10px] font-semibold uppercase tracking-wide">Puntuación SEO</span>
       </div>
     );
   }

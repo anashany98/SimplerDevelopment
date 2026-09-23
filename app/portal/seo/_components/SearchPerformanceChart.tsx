@@ -17,11 +17,11 @@ export function SearchPerformanceChart({ series }: { series: GscOverviewPoint[] 
       <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block w-2.5 h-2.5 rounded-sm bg-primary/20" />
-          Impressions
+          Impresiones
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block w-2.5 h-2.5 rounded-sm bg-primary" />
-          Clicks
+          Clics
         </span>
       </div>
       <div className="h-32 flex items-end gap-[2px] overflow-x-auto">
