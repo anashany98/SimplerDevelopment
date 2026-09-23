@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
+    "icons:subset": "bun scripts/build-icon-subset.ts",
     "dev": "next dev",
     "build": "next build",
     "build:all": "turbo run build",
