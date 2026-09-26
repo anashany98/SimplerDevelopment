@@ -140,7 +140,7 @@
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.0.0",
     "yjs": "^13.6.32",
-    "zod": "^4.3.5"
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "16.3.3",
@@ -203,6 +203,7 @@
     "postcss": "8.5.28",
     "qs": "6.16.0",
     "sharp": "0.35.4",
+    "@modelcontextprotocol/sdk>zod": "4.3.6",
     "vite": "8.3.0"
   }
 }
