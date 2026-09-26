@@ -81,8 +81,8 @@ function currentPeriod(): string {
  *   1. Active meteredSubscriptionItems.includedQuantity for this resource (overrides catalog).
  *   2. Otherwise: bundleIncludedPerMonth if hasBundle, else includedPerMonth.
  *
- * For agency clients (gatingBypassed): only include meters that have at least
- * one usageMeterEvent row for the current period (don't alert on empty meters).
+ * For all-access clients (gatingBypassed): only include meters that have at
+ * least one usageMeterEvent row for the current period (don't alert on empty meters).
  *
  * ai_tokens: uses getMonthlyUsage() for `used` and sum of active
  * services.includedAiCredits for `included`.

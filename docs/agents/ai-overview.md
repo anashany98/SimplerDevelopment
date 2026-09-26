@@ -1,19 +1,19 @@
 # AI Overview — CRM AGENTS
 
-> Agent / LLM entry point. Factual, no marketing copy. Status flags are accurate as of 2026-06-27.
+> Agent / LLM entry point. Factual, no marketing copy. Recheck status against the current routes before release.
 > Cross-links: [glossary](./glossary.md) · [architecture](./architecture-for-agents.md) · [repository map](./repository-map.md) · [API index](./api-index.md) · [tool reference](./tool-reference.md) · [workflow reference](./workflow-reference.md) · [/llms.txt](/llms.txt)
 
 ---
 
 ## What This Is
 
-CRM AGENTS is a multi-tenant agency SaaS platform built on Next.js 16.1.1 (App Router) + Postgres. A single deployment serves three audiences from one monorepo: an internal agency-admin panel, a per-tenant client portal, and per-tenant public-facing websites. The platform covers content management (48+ block types, visual editor, custom post types), CRM (contacts/companies/deals/proposals/contracts), Company Brain AI knowledge base with RAG (notes, decisions, documents, goals, playbooks, org chart, semantic search), marketing (email campaigns, surveys, pitch decks, A/B testing), commerce (white-label storefront, bookings/scheduling), project management (kanban, sprints, tickets), automations (event-driven rules + visual workflow builder), and Stripe billing — all under a single MCP surface of 481 tools. It is not a no-code builder; every tenant customization happens through structured JSON (blocks, post types, branding profiles) rather than freeform HTML.
+CRM AGENTS is a multi-tenant agency SaaS platform built on Next.js (App Router) + Postgres. A single deployment serves three audiences from one monorepo: an internal agency-admin panel, a per-tenant client portal, and per-tenant public-facing websites. The platform covers content management, CRM, Company Brain AI knowledge base with RAG, marketing, commerce, project management, automations, and invoice and usage records — all under a single MCP surface. Stripe integration code and tenant payment settings remain in the repository, while customer checkout and subscription payments are disabled by `PAYMENTS_DISABLED`. Website and portal layouts use structured JSON (blocks, post types, branding profiles); email campaigns also accept imported HTML templates.
 
 ---
 
 ## Core Purpose
 
-The platform lets a software agency operate its own back office and deliver white-label digital infrastructure to its clients. The agency admin provisions tenants, manages billing, and monitors the whole system. Each client (tenant) gets a portal where they manage their own website(s), CRM, knowledge base, projects, email campaigns, store, and bookings. The agency and its clients can also drive the entire platform programmatically via the MCP tool surface or the REST v1 API.
+The platform lets a software agency operate its own back office and deliver white-label digital infrastructure to its clients. The agency admin provisions tenants, reviews invoice and usage data, and monitors the whole system. Each client (tenant) gets a portal where they manage their own website(s), CRM, knowledge base, projects, email campaigns, store, and bookings. Customer checkout and subscription payments are disabled in this release. The agency and its clients can also drive the platform programmatically via the MCP tool surface or the REST v1 API.
 
 ---
 
@@ -35,14 +35,14 @@ Portal users have one of two roles within their tenant: `admin` or `editor`. Sco
 **Self-hosted / open-source:**
 - Full control over Postgres schema (Drizzle ORM, migrations in `drizzle/`), hosting topology (Vercel or any Next.js host), and data residency.
 - pgvector extension required on every database for Company Brain embeddings.
-- BYOK (Bring Your Own Key) supported for AI providers and Stripe.
+- BYOK (Bring Your Own Key) supported for AI providers; tenant Stripe settings remain in the codebase, but customer payment flows are disabled.
 - The dev branch relaxes type/lint gates to allow fast iteration; `main`/`staging` enforce strict hooks.
 
 **Hosted SaaS:**
 - Agency-managed deployment; clients get a portal without any infrastructure concern.
-- Stripe billing for à-la-carte module subscriptions, AI credit packs, and per-seat pricing.
+- Invoice and usage records remain available. Customer charges and subscription payments are disabled by `PAYMENTS_DISABLED`.
 - White-label: custom portal domain, color/typography overrides, agency branding (Scale tier only; sub-account resale UI not yet built).
-- Scale-tier features are entitlement-gated via the billing module; individual modules can be toggled per tenant.
+- Paid subscriptions do not currently gate portal modules; user permissions and enabled integrations still apply.
 
 ---
 
@@ -97,7 +97,7 @@ See [API index](./api-index.md) for route groups. Known gaps: no SDK, no API cha
 |---|---|---|
 | **Google Workspace** | Gmail push/sync, Drive polling, Calendar availability, Contacts sync | Active — user-level tokens; org-level connection not yet populated |
 | **Microsoft 365 / Teams** | Transcript ingestion via Graph change notifications | Active — BYO-app credentials phase 3+ |
-| **Stripe** | Subscriptions, Checkout, webhooks, BYOK payment processing per tenant | Active |
+| **Stripe** | Legacy subscription, checkout, webhook, and per-tenant payment integration code | Charging disabled by `PAYMENTS_DISABLED` |
 | **Resend** | Transactional + campaign outbound email | Active |
 | **Cloudflare Email Worker** | Inbound email routing to Brain review queue | Active |
 | **Dropbox Sign** | E-signature on CRM contracts (embedded + per-signer links) | Active |
@@ -120,7 +120,7 @@ Publishing channels: email only is built. Social and webhook publishing channels
 | **CRM custom fields** | Per-tenant field definitions + values via `crm_custom_fields_*` and `crm_custom_field_values_*` tools. |
 | **Automations** | Event-driven rules (NLP creation) + ReactFlow visual workflow builder (durable Postgres queue, exponential-backoff retries). |
 | **Plugins** | Federation: independently-deployed Next.js apps embed under `/portal/apps/<slug>/` via HMAC-JWT proxy. |
-| **Outbound webhooks** | Per-project SSRF-guarded webhooks (no retry/signing-secret/delivery-log yet). |
+| **Outbound webhooks** | Project webhooks are SSRF-guarded. Survey webhooks use durable jobs, bounded retries, HMAC signatures, and delivery logs. |
 | **Inbound webhooks** | Stripe, Dropbox Sign, EasyPost, Printful, Google, Microsoft. |
 
 ---

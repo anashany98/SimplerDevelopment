@@ -6,7 +6,7 @@ Direct answers for developers and AI assistants evaluating or working with CRM A
 
 **What is CRM AGENTS?**
 
-An open-source, MCP-native, multi-tenant business platform. One Next.js codebase serves an internal admin panel, a per-tenant client portal, and per-tenant public websites, and bundles a block-based CMS, CRM, AI-powered Company Brain (RAG over client knowledge), workflow automations, bookings, a storefront, email campaigns, surveys, e-signatures, and Stripe billing. It exposes 450+ scoped MCP tools so an AI agent can operate the whole system.
+An open-source, MCP-native, multi-tenant business platform. One Next.js codebase serves an internal admin panel, a per-tenant client portal, and per-tenant public websites, and bundles a block-based CMS, CRM, AI-powered Company Brain (RAG over client knowledge), workflow automations, bookings, a storefront, email campaigns, surveys, e-signatures, and invoice and usage records. Stripe integration code remains, while customer checkout and subscription payments are disabled by `PAYMENTS_DISABLED`. It exposes scoped MCP tools so an AI agent can operate the system.
 
 **Who is it for?**
 
@@ -14,7 +14,7 @@ Agencies and operators running multiple client sites or businesses from one plat
 
 **How does it compare to WordPress plus plugins?**
 
-WordPress is a single-tenant CMS core extended by third-party plugins, each with its own data model, update cadence, and quality bar. CRM AGENTS is multi-tenant by design (one deployment serves many client sites, `clientId`/`siteId` scoped) and ships the CRM, brain, bookings, commerce, and billing as first-party modules sharing one Postgres database and one codebase, rather than a plugin ecosystem of varying provenance. It does not have WordPress's plugin marketplace or theme ecosystem; it has a typed block registry (`lib/blocks/registry.ts`) instead.
+WordPress is a single-tenant CMS core extended by third-party plugins, each with its own data model, update cadence, and quality bar. CRM AGENTS is multi-tenant by design (one deployment serves many client sites, `clientId`/`siteId` scoped) and ships the CRM, brain, bookings, commerce, and invoice and usage features as first-party modules sharing one Postgres database and one codebase, rather than a plugin ecosystem of varying provenance. Customer charges and subscription payments are disabled in this release. It does not have WordPress's plugin marketplace or theme ecosystem; it has a typed block registry (`lib/blocks/registry.ts`) instead.
 
 **How does it compare to closed SaaS site builders (e.g. Squarespace, Wix, HubSpot CMS)?**
 

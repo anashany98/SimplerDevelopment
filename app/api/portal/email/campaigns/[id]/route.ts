@@ -6,7 +6,7 @@ import { eq, and } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
 import { renderBlocksToEmailHtml } from '@/lib/email';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
-import { sanitizeRichHtml } from '@/lib/security/sanitize-html';
+import { EmailHtmlTooLargeError, sanitizeEmailHtml } from '@/lib/email/sanitize-email-html';
 
 async function requireClient() {
   const session = await auth();
@@ -176,11 +176,16 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (Array.isArray(contentBlocks)) {
     finalHtml = renderBlocksToEmailHtml(contentBlocks);
   }
-  // Strip <script>/<iframe>/<object>/<embed>/event handlers from any
-  // user-supplied HTML before it's stored or rendered. sanitizeRichHtml
-  // keeps inline styles + classes — the email-safe surface — but drops
-  // executable payloads.
-  if (finalHtml) finalHtml = sanitizeRichHtml(finalHtml);
+  // Keep email-safe style blocks while stripping executable markup and
+  // rejecting CSS that can run scripts or load non-image schemes.
+  try {
+    if (finalHtml) finalHtml = sanitizeEmailHtml(finalHtml);
+  } catch (error) {
+    if (error instanceof EmailHtmlTooLargeError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: 413 });
+    }
+    throw error;
+  }
 
   const [updated] = await db
     .update(emailCampaigns)

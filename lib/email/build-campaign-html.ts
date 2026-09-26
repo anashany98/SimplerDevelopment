@@ -11,8 +11,23 @@ export function buildCampaignHtmlString(
   unsubscribeUrl: string,
   previewText?: string | null,
 ): string {
+  const styles: string[] = [];
+  const withoutStyles = htmlContent.replace(
+    /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi,
+    (_style, css: string) => {
+      styles.push(`<style type="text/css">${css}</style>`);
+      return '';
+    },
+  );
+  const bodyMatch = withoutStyles.match(/<body\b[^>]*>([\s\S]*?)<\/body\s*>/i);
+  const bodyContent = bodyMatch
+    ? bodyMatch[1]
+    : withoutStyles
+      .replace(/<!doctype\b[^>]*>/gi, '')
+      .replace(/<head\b[^>]*>[\s\S]*?<\/head\s*>/gi, '')
+      .replace(/<\/?(?:html|body)\b[^>]*>/gi, '');
   const preview = previewText
-    ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${previewText}</div>`
+    ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtmlText(previewText)}</div>`
     : '';
   return `<!DOCTYPE html>
 <html lang="es">
@@ -20,6 +35,7 @@ export function buildCampaignHtmlString(
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  ${styles.join('\n  ')}
 </head>
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
   ${preview}
@@ -29,7 +45,7 @@ export function buildCampaignHtmlString(
         <table role="presentation" width="600" style="max-width:600px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;">
           <tr>
             <td style="padding:32px 40px;">
-              ${htmlContent}
+              ${bodyContent}
             </td>
           </tr>
           <tr>
@@ -46,4 +62,14 @@ export function buildCampaignHtmlString(
   </table>
 </body>
 </html>`;
+}
+
+function escapeHtmlText(value: string): string {
+  return value.replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character] ?? character);
 }

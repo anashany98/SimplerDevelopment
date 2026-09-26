@@ -10,6 +10,7 @@
  *   4. A plan-tier row grants the tier's curated domain set.
  *   5. An active `'brain'` SKU row grants brain.
  *   6. `clients.brainTrialUntil > now()` grants brain (PLG trial).
+ *   7. When `PAYMENTS_DISABLED` is true, paid subscriptions do not gate portal modules.
  *
  * Test bypasses (kept for integration specs that don't seed subscriptions):
  *   - `BRAIN_ENTITLEMENT_BYPASS=1`, or
@@ -48,10 +49,10 @@ function isTestRuntime(): boolean {
 }
 
 /**
- * Returns true if the client is entitled to Brain: an active `brain` /
+ * Returns true if the client can access Brain: an active `brain` /
  * `bundle` / legacy-subscription row, a plan tier that includes brain, an
  * active self-serve trial (`clients.brainTrialUntil > now()`), an agency-mode
- * client (gating bypassed), or a runtime test bypass.
+ * client, payments-disabled module access, or a runtime test bypass.
  */
 export async function isBrainEntitled(clientId: number): Promise<boolean> {
   if (isTestRuntime()) return true;

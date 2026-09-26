@@ -7,6 +7,7 @@ import { eq, and } from 'drizzle-orm';
 import type { OnboardingAnswers, OnboardingStep, OnboardingState } from './types';
 import { ONBOARDING_STEPS } from './types';
 import { fetchBrandData } from '@/lib/branding/brandfetch';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 function isStep(s: unknown): s is OnboardingStep {
   return typeof s === 'string' && (ONBOARDING_STEPS as string[]).includes(s);
@@ -55,7 +56,7 @@ export async function loadOnboarding(userId: number, clientId: number | null): P
     company = c?.company ?? '';
     website = c?.website ?? '';
 
-    if (c?.billingMode === 'saas') {
+    if (!PAYMENTS_DISABLED && c?.billingMode === 'saas') {
       // Show billing steps only while the client has no active module subscription.
       const [activeService] = await db
         .select({ id: clientServices.id })

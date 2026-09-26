@@ -17,6 +17,7 @@ import { siteWebhooks, siteWebhookDeliveries } from '@/lib/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import { assertSafeUrl } from '@/lib/ssrf-guard';
 import type { AutomationEvent } from '@/lib/automation/event-bus';
+import { readResponseBodyPreview } from '@/lib/webhooks/read-response-body-preview';
 
 export const RETRY_BACKOFF_MS = [1_000, 4_000, 16_000] as const;
 export const REQUEST_TIMEOUT_MS = 8_000;
@@ -67,30 +68,26 @@ async function attemptDelivery(
 
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT_MS);
-    const res = await fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-      signal: ctrl.signal,
-      redirect: 'manual',
-    });
-    clearTimeout(timer);
-
-    let respBody: string | undefined;
     try {
-      const txt = await res.text();
-      respBody = txt.length > MAX_RESPONSE_BODY_LEN ? txt.slice(0, MAX_RESPONSE_BODY_LEN) : txt;
-    } catch {
-      // body read failed — status code is what we record.
-    }
+      const res = await fetch(url, {
+        method: 'POST',
+        headers,
+        body,
+        signal: ctrl.signal,
+        redirect: 'manual',
+      });
+      const respBody = await readResponseBodyPreview(res.body, MAX_RESPONSE_BODY_LEN);
 
-    const ok = res.status >= 200 && res.status < 300;
-    return {
-      status: ok ? 'success' : 'failed',
-      statusCode: res.status,
-      responseBody: respBody,
-      error: ok ? undefined : `HTTP ${res.status}`,
-    };
+      const ok = res.status >= 200 && res.status < 300;
+      return {
+        status: ok ? 'success' : 'failed',
+        statusCode: res.status,
+        responseBody: respBody,
+        error: ok ? undefined : `HTTP ${res.status}`,
+      };
+    } finally {
+      clearTimeout(timer);
+    }
   } catch (err) {
     return { status: 'failed', error: err instanceof Error ? err.message : String(err) };
   }

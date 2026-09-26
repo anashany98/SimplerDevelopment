@@ -8,6 +8,8 @@
 //   carte modules); OR the domain set of an active plan-TIER row (category =
 //   tier.slug, e.g. 'plan-growth'); OR an active 'bundle' row (everything); OR
 //   an active legacy 'subscription' row (predates per-domain SKUs, full access).
+// - When PAYMENTS_DISABLED is true, subscriptions no longer gate product
+//   domains. Subscription rows remain available for billing/history views.
 // - byokEligible: only a Scale-tier client (or bundle / bypass) may enter byok
 //   mode and have the metered-AI waiver honored — the "BYOK inversion".
 // - brainTrialUntil still grants 'brain' while in the future (PLG trial).
@@ -16,6 +18,7 @@ import { db } from '@/lib/db';
 import { clients, clientServices, services } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { FEATURE_DOMAINS, getTierByCategory, tierDomainKeys, type BillingMode } from '@/lib/billing/domain-catalog';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 export interface ClientEntitlements {
   mode: BillingMode;
@@ -23,7 +26,7 @@ export interface ClientEntitlements {
   domains: Set<string>;
   /** True when access comes from the all-in bundle (or a bypass). */
   hasBundle: boolean;
-  /** True when module gating is not applied (agency / legacy tier). */
+  /** True when module gating is not applied (agency / legacy tier / payments disabled). */
   gatingBypassed: boolean;
   /** True when on a BYOK-eligible tier (Scale / bundle / bypass) — the gate for
    *  entering byok mode and honoring the metered-AI waiver (the inversion). */
@@ -71,6 +74,22 @@ export async function getClientEntitlements(
     .where(and(eq(clientServices.clientId, clientId), eq(clientServices.status, 'active')));
 
   const categories = new Set(rows.map((r) => r.category));
+
+  if (PAYMENTS_DISABLED) {
+    const byokEligible =
+      categories.has('bundle') ||
+      categories.has('subscription') ||
+      client?.byokEligibleOverride === true ||
+      [...categories].some((category) => getTierByCategory(category)?.byokEligible === true);
+
+    return {
+      mode,
+      domains: new Set(ALL_DOMAIN_KEYS),
+      hasBundle: categories.has('bundle'),
+      gatingBypassed: true,
+      byokEligible,
+    };
+  }
 
   if (categories.has('bundle')) return allEntitlements(mode, true, false);
   // Legacy all-access tier subs (category 'subscription') predate per-domain

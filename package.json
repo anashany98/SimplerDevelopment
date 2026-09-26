@@ -115,6 +115,7 @@
     "nodemailer": "^9.1.1",
     "octokit": "^5.0.5",
     "pdf-lib": "^1.17.1",
+    "postcss": "^8.5.28",
     "postgres": "^3.4.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",

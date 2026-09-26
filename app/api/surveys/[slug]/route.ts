@@ -360,8 +360,16 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
             eq(surveyPartialResponses.surveyId, survey.id),
             eq(surveyPartialResponses.sessionId, trimmedSessionId),
           ),
-        );
+      );
     }
+
+    // Persist webhook work with the response. Only the cron worker performs
+    // outbound HTTP, so the public request never waits on registered endpoints.
+    await dispatchSurveyResponseWebhooks({
+      ...inserted,
+      surveyTitle: survey.title,
+      surveySlug: survey.slug,
+    }, survey.clientId, tx);
 
     return [inserted];
   });
@@ -376,18 +384,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     respondentEmail: response.respondentEmail,
     source: response.source,
     answers: response.answers,
-  });
-
-  // HOOK-01: fire registered survey webhooks. Fire-and-forget — webhooks must
-  // never block (or fail) the public response submission.
-  // TODO(HOOK-02 / Phase 4): the dispatcher will swap inline retries for a
-  // BullMQ queue once Upstash Redis is provisioned.
-  setImmediate(() => {
-    dispatchSurveyResponseWebhooks({
-      ...response,
-      surveyTitle: survey.title,
-      surveySlug: survey.slug,
-    }).catch((err) => console.error('[survey-webhooks] dispatch failed', err));
   });
 
   // SCORE-02: evaluate the survey-level auto-route rule. Best-effort —

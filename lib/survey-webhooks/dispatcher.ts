@@ -1,28 +1,24 @@
 /**
  * Survey webhook dispatcher.
  *
- * Today: inline `fetch` with 3-attempt linear retry (1s, 4s, 16s).
- * Tomorrow (Phase 4 / HOOK-02): BullMQ queue, gated on Upstash Redis provisioning.
- * The interface boundary is intentionally narrow — `enqueueDelivery` is the only
- * call site that needs to swap once a queue exists.
- *
- * TODO(HOOK-02 / Phase 4): replace `enqueueDelivery` with a BullMQ producer that
- * pushes a job onto the `survey-webhooks` queue. The worker can reuse
- * `attemptDelivery` verbatim and persist into `survey_webhook_deliveries` on
- * each pickup. The `dispatchSurveyResponseWebhooks` entry-point stays unchanged.
+ * Submissions enqueue one durable job per subscribed webhook in the same
+ * transaction as the response. Each destination retries independently, so one
+ * failed endpoint cannot replay successful deliveries to other endpoints.
  */
 
 import { createHmac } from 'crypto';
 import { db } from '@/lib/db';
+import { enqueueJob, type JobExecutionContext, type JobQueueDatabase } from '@/lib/jobs';
 import {
   surveyWebhooks,
   surveyWebhookDeliveries,
   surveyResponses,
+  surveys,
 } from '@/lib/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
 import { assertSafeUrl } from '@/lib/ssrf-guard';
+import { readResponseBodyPreview } from '@/lib/webhooks/read-response-body-preview';
 
-export const RETRY_BACKOFF_MS = [1_000, 4_000, 16_000] as const;
 export const REQUEST_TIMEOUT_MS = 8_000;
 export const MAX_RESPONSE_BODY_LEN = 2_000;
 
@@ -65,6 +61,7 @@ async function attemptDelivery(
   secret: string | null,
   event: string,
   body: string,
+  deliveryId: string,
 ): Promise<AttemptResult> {
   try {
     await assertSafeUrl(url);
@@ -74,6 +71,7 @@ async function attemptDelivery(
       'X-SD-Event': event,
       'X-SimplerDev-Event': event,
       'X-SimplerDev-Webhook-Id': String(webhookId),
+      'X-SD-Delivery-Id': deliveryId,
     };
     if (secret) {
       const signature = signPayload(secret, body);
@@ -85,32 +83,29 @@ async function attemptDelivery(
 
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT_MS);
-    const res = await fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-      signal: ctrl.signal,
-      // An attacker could register a safe URL that 302s to a private address.
-      // Disable redirects; let the dispatcher record the 3xx as a failure.
-      redirect: 'manual',
-    });
-    clearTimeout(timer);
-
-    let respBody: string | undefined;
     try {
-      const txt = await res.text();
-      respBody = txt.length > MAX_RESPONSE_BODY_LEN ? txt.slice(0, MAX_RESPONSE_BODY_LEN) : txt;
-    } catch {
-      // body read failed — non-fatal, status code is what we record.
-    }
+      const res = await fetch(url, {
+        method: 'POST',
+        headers,
+        body,
+        signal: ctrl.signal,
+        // An attacker could register a safe URL that 302s to a private address.
+        // Disable redirects; let the dispatcher record the 3xx as a failure.
+        redirect: 'manual',
+      });
 
-    const ok = res.status >= 200 && res.status < 300;
-    return {
-      status: ok ? 'success' : 'failed',
-      statusCode: res.status,
-      responseBody: respBody,
-      error: ok ? undefined : `HTTP ${res.status}`,
-    };
+      const respBody = await readResponseBodyPreview(res.body, MAX_RESPONSE_BODY_LEN);
+
+      const ok = res.status >= 200 && res.status < 300;
+      return {
+        status: ok ? 'success' : 'failed',
+        statusCode: res.status,
+        responseBody: respBody,
+        error: ok ? undefined : `HTTP ${res.status}`,
+      };
+    } finally {
+      clearTimeout(timer);
+    }
   } catch (err) {
     return {
       status: 'failed',
@@ -119,91 +114,105 @@ async function attemptDelivery(
   }
 }
 
-/** Fixed sleep helper — used between attempts. Resolves regardless of caller awaiting. */
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export function surveyWebhookDeliveryDedupeKey(webhookId: number, responseId: number): string {
+  return `survey.webhook_delivery:${webhookId}:${responseId}`;
 }
 
 /**
- * Run the retry loop for one webhook. Persists one delivery row per attempt and
- * updates the `survey_webhooks` tracking columns at the end. Returns nothing —
- * errors are swallowed to delivery rows + console.error so the caller (a
- * fire-and-forget dispatch) can't crash the surrounding request.
- */
-async function deliverWithRetry(
-  webhook: typeof surveyWebhooks.$inferSelect,
-  event: string,
-  payload: SurveyResponseEventPayload,
-): Promise<void> {
-  const body = JSON.stringify(payload);
-  let last: AttemptResult = { status: 'failed', error: 'no attempts run' };
-
-  for (let attempt = 1; attempt <= RETRY_BACKOFF_MS.length; attempt++) {
-    last = await attemptDelivery(webhook.id, webhook.url, webhook.secret, event, body);
-
-    try {
-      await db.insert(surveyWebhookDeliveries).values({
-        webhookId: webhook.id,
-        event,
-        attempt,
-        status: last.status,
-        statusCode: last.statusCode ?? null,
-        requestBody: payload as unknown as Record<string, unknown>,
-        responseBody: last.responseBody ?? null,
-        error: last.error ?? null,
-      });
-    } catch (err) {
-      console.error('[survey-webhooks] failed to persist delivery row', err);
-    }
-
-    if (last.status === 'success') break;
-
-    // Backoff before the next attempt — but only if there is one.
-    if (attempt < RETRY_BACKOFF_MS.length) {
-      await sleep(RETRY_BACKOFF_MS[attempt - 1]);
-    }
-  }
-
-  const success = last.status === 'success';
-  try {
-    await db.update(surveyWebhooks).set({
-      lastFiredAt: new Date(),
-      lastStatus: last.statusCode ?? null,
-      failureCount: success ? 0 : sql`${surveyWebhooks.failureCount} + 1`,
-      updatedAt: new Date(),
-    }).where(eq(surveyWebhooks.id, webhook.id));
-  } catch (err) {
-    console.error('[survey-webhooks] failed to update webhook tracking', err);
-  }
-}
-
-/**
- * Public entry-point — fire-and-forget. Caller must NOT await this. Wrap in
- * `setImmediate` (or call inline followed by `.catch(console.error)`) so the
- * response submission isn't blocked by webhook latency.
- *
- * TODO(HOOK-02 / Phase 4): swap this body for `await enqueueDelivery(...)`
- * once BullMQ + Upstash Redis are wired up. The signature stays.
+ * Enqueue one job per subscribed destination. The survey route awaits this in
+ * the same transaction that stores the answer; external HTTP is deferred to cron.
  */
 export async function dispatchSurveyResponseWebhooks(
   response: SurveyResponseRow & { surveyTitle: string; surveySlug: string },
+  clientId: number,
+  queueDb: JobQueueDatabase = db,
 ): Promise<void> {
-  const event = 'response.submitted';
-
-  const hooks = await db.select().from(surveyWebhooks)
+  const hooks = await queueDb.select().from(surveyWebhooks)
     .where(and(
       eq(surveyWebhooks.surveyId, response.surveyId),
       eq(surveyWebhooks.enabled, true),
     ));
+  const subscribed = hooks.filter(isSubscribed);
+  if (subscribed.length === 0) return;
 
-  if (hooks.length === 0) return;
+  const dispatchRequestedAt = new Date().toISOString();
+  for (const webhook of subscribed) {
+    await enqueueJob({
+      clientId,
+      type: 'survey.webhook_delivery',
+      payload: {
+        responseId: response.id,
+        surveyId: response.surveyId,
+        clientId,
+        webhookId: webhook.id,
+        dispatchRequestedAt,
+      },
+      dedupeKey: surveyWebhookDeliveryDedupeKey(webhook.id, response.id),
+    }, queueDb);
+  }
+}
 
-  const payload: SurveyResponseEventPayload = {
+function positiveInteger(payload: Record<string, unknown>, field: string): number {
+  const value = payload[field];
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) {
+    throw new Error(`survey.webhook_delivery: payload.${field} must be a positive integer`);
+  }
+  return value;
+}
+
+function isSubscribed(webhook: typeof surveyWebhooks.$inferSelect): boolean {
+  const events = webhook.events ?? [];
+  return events.length === 0 || events.includes('response.submitted') || events.includes('*');
+}
+
+/**
+ * Internal-job handler. Each job represents one webhook/response pair and
+ * performs one HTTP attempt. Queue retry/dead-letter state and the delivery
+ * audit rows therefore describe the same attempt sequence.
+ */
+export async function runSurveyWebhookJob(
+  payload: Record<string, unknown>,
+  queueDb: typeof db,
+  context: JobExecutionContext,
+): Promise<void> {
+  const responseId = positiveInteger(payload, 'responseId');
+  const surveyId = positiveInteger(payload, 'surveyId');
+  const clientId = positiveInteger(payload, 'clientId');
+  const webhookId = positiveInteger(payload, 'webhookId');
+
+  const [survey] = await queueDb.select({
+    id: surveys.id,
+    title: surveys.title,
+    slug: surveys.slug,
+    clientId: surveys.clientId,
+  }).from(surveys)
+    .where(and(eq(surveys.id, surveyId), eq(surveys.clientId, clientId)))
+    .limit(1);
+  if (!survey) return;
+
+  const [response] = await queueDb.select().from(surveyResponses)
+    .where(and(eq(surveyResponses.id, responseId), eq(surveyResponses.surveyId, surveyId)))
+    .limit(1);
+  if (!response) return;
+
+  const [webhook] = await queueDb.select().from(surveyWebhooks).where(and(
+    eq(surveyWebhooks.id, webhookId),
+    eq(surveyWebhooks.surveyId, surveyId),
+    eq(surveyWebhooks.enabled, true),
+  )).limit(1);
+  if (!webhook || !isSubscribed(webhook)) return;
+
+  const event = 'response.submitted';
+  const dispatchRequestedAt = typeof payload.dispatchRequestedAt === 'string' &&
+    Number.isFinite(Date.parse(payload.dispatchRequestedAt))
+    ? payload.dispatchRequestedAt
+    : new Date().toISOString();
+  const eventPayload: SurveyResponseEventPayload = {
     event,
-    surveyId: response.surveyId,
-    surveyTitle: response.surveyTitle,
-    surveySlug: response.surveySlug,
-    responseId: response.id,
+    surveyId,
+    surveyTitle: survey.title,
+    surveySlug: survey.slug,
+    responseId,
     formName: response.formName,
     source: response.source,
     sourceId: response.sourceId,
@@ -211,21 +220,43 @@ export async function dispatchSurveyResponseWebhooks(
     respondentEmail: response.respondentEmail,
     answers: response.answers,
     completedAt: response.completedAt ? response.completedAt.toISOString() : null,
-    deliveredAt: new Date().toISOString(),
+    deliveredAt: dispatchRequestedAt,
   };
 
-  // Filter to webhooks subscribed to this event. An empty events array (or
-  // missing event in the array) means "not subscribed". '*' is a wildcard.
-  const subscribed = hooks.filter((h) => {
-    const events = h.events ?? [];
-    return events.length === 0 || events.includes(event) || events.includes('*');
+  const result = await attemptDelivery(
+    webhook.id,
+    webhook.url,
+    webhook.secret,
+    event,
+    JSON.stringify(eventPayload),
+    `${webhook.id}:${responseId}`,
+  );
+
+  await queueDb.insert(surveyWebhookDeliveries).values({
+    webhookId: webhook.id,
+    event,
+    attempt: context.attempt,
+    status: result.status,
+    statusCode: result.statusCode ?? null,
+    requestBody: eventPayload as unknown as Record<string, unknown>,
+    responseBody: result.responseBody ?? null,
+    error: result.error ?? null,
   });
 
-  // Run deliveries in parallel — each owns its own retry loop, errors are
-  // captured into delivery rows so a hang in one webhook can't starve another.
-  await Promise.all(subscribed.map((h) => deliverWithRetry(h, event, payload).catch((err) => {
-    console.error('[survey-webhooks] deliverWithRetry threw', err);
-  })));
+  await queueDb.update(surveyWebhooks).set({
+    lastFiredAt: new Date(),
+    lastStatus: result.statusCode ?? null,
+    ...(result.status === 'success'
+      ? { failureCount: 0 }
+      : context.isFinalAttempt
+        ? { failureCount: sql`${surveyWebhooks.failureCount} + 1` }
+        : {}),
+    updatedAt: new Date(),
+  }).where(eq(surveyWebhooks.id, webhook.id));
+
+  if (result.status === 'failed') {
+    throw new Error(`Survey webhook ${webhook.id} delivery failed: ${result.error ?? 'unknown error'}`);
+  }
 }
 
 /**

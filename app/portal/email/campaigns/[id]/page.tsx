@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback, use } from 'react';
 import { useCampaignSendingPoll } from '@/components/portal/email/use-campaign-sending-poll';
 import Link from 'next/link';
-import { sanitizeRichHtml } from '@/lib/security/sanitize-html';
 import type { Block, BlockType, BlockEditorData } from '@/types/blocks';
 import { VisualEditorShell } from '@/components/portal/VisualEditorShell';
 import { EmailPreviewPane } from '@/components/email/EmailPreviewPane';
@@ -498,8 +497,13 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
               ) : (
                 <div className="p-5 pt-0">
                   <label className="block text-sm font-medium text-foreground mb-1">Contenido HTML *</label>
-                  <textarea required value={editForm.htmlContent} onChange={e => setEditForm(p => ({ ...p, htmlContent: e.target.value }))}
-                    rows={16} className={`${inputClass} font-mono text-xs`} />
+                  <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_400px] gap-4">
+                    <textarea required value={editForm.htmlContent} onChange={e => setEditForm(p => ({ ...p, htmlContent: e.target.value }))}
+                      rows={16} className={`${inputClass} font-mono text-xs`} />
+                    <div className="h-[520px] border border-border rounded-xl overflow-hidden">
+                      <EmailPreviewPane blocks={[]} htmlContent={editForm.htmlContent} previewText={editForm.previewText} />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -514,8 +518,9 @@ function PortalCampaignDetailPageInner({ id }: { id: string }) {
             </div>
           ) : (
             <div className="p-5">
-              <div className="border border-border rounded-xl p-6 bg-white text-sm max-w-2xl mx-auto overflow-auto"
-                dangerouslySetInnerHTML={{ __html: sanitizeRichHtml(campaign.htmlContent) }} />
+              <div className="border border-border rounded-xl bg-white max-w-2xl mx-auto overflow-hidden h-[560px]">
+                <EmailPreviewPane blocks={[]} htmlContent={campaign.htmlContent} previewText={campaign.previewText} />
+              </div>
             </div>
           )}
         </div>

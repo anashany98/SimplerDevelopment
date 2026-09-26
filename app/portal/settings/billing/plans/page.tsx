@@ -5,7 +5,7 @@
 // Fetches GET /api/portal/billing/modules, renders:
 //   - Hero bundle card with savings badge
 //   - Responsive grid of per-domain module cards
-//   - Checkout (POST /checkout) and Cancel (POST /[id]/cancel) actions
+//   - Checkout and cancellation actions when customer payments are enabled
 //   - ?highlight=<key>   → scroll-to + ring highlight
 //   - ?status=success    → green toast
 //   - ?status=cancelled  → neutral banner
@@ -14,8 +14,7 @@
 
 import { type ReactNode, Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { VOLUME_TIERS, volumeTierFor, nextVolumeTier, SEAT_PRICE_CAP_CENTS, INCLUDED_SEATS } from '@/lib/billing/domain-catalog';
+import { BillingPlansNotices } from './BillingPlansNotices';
 import { formatMoney } from '@/lib/utils/money';
 import { pBtnPrimary, pBtnGhost } from '@/components/portal/portal-ui';
 import { verifyCheckoutSession } from '@/components/portal/billing/verify-checkout-session';
@@ -89,6 +88,7 @@ interface SeatsInfo {
 interface ModulesResponse {
   success: boolean;
   data?: {
+    paymentsEnabled: boolean;
     billingMode: string;
     entitlements: EntitlementsInfo;
     bundle: BundleInfo;
@@ -117,6 +117,7 @@ interface ModuleCardProps {
   mod: ModuleInfo;
   hasBundle: boolean;
   billingMode: string;
+  paymentsEnabled: boolean;
   highlight: boolean;
   onSubscribe: (slug: string) => void;
   onCancel: (clientServiceId: number) => void;
@@ -128,6 +129,7 @@ function ModuleCard({
   mod,
   hasBundle,
   billingMode,
+  paymentsEnabled,
   highlight,
   onSubscribe,
   onCancel,
@@ -160,7 +162,7 @@ function ModuleCard({
       <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
         <span className="material-icons text-sm">check_circle</span>Activo</span>
     );
-    if (!isAgency) {
+    if (!isAgency && paymentsEnabled) {
       actionButton = (
         <button
           onClick={() => mod.clientServiceId && onCancel(mod.clientServiceId)}
@@ -178,7 +180,7 @@ function ModuleCard({
         Gestionado
       </span>
     );
-  } else if (!isAgency && mod.purchasable) {
+  } else if (paymentsEnabled && !isAgency && mod.purchasable) {
     actionButton = (
       <button
         onClick={() => onSubscribe(mod.slug)}
@@ -188,7 +190,7 @@ function ModuleCard({
         {subscribing === mod.slug ? 'Redirigiendo…' : 'Suscribirse'}
       </button>
     );
-  } else if (!isAgency && !mod.purchasable) {
+  } else if (paymentsEnabled && !isAgency && !mod.purchasable) {
     actionButton = (
       <p
         className="text-xs text-amber-600 dark:text-amber-500 mt-3 flex items-center gap-1"
@@ -284,22 +286,39 @@ function BillingPlansInner() {
 
   useEffect(() => {
     let cancelled = false;
-    // OBQA-014: on Stripe-Checkout return, verify + activate server-side FIRST
-    // so the just-bought modules read active without waiting for the webhook.
-    verifyCheckoutSession(statusParam === 'success' ? searchParams.get('session_id') : null)
-      .then(() => fetch('/api/portal/billing/modules'))
-      .then((r) => r.json() as Promise<ModulesResponse>)
-      .then((d) => {
+    const loadModules = async () => {
+      try {
+        let response = await fetch('/api/portal/billing/modules');
+        let result = await response.json() as ModulesResponse;
+
+        // Verify a returned Checkout session only while portal payments are enabled.
+        if (result.success && result.data?.paymentsEnabled && statusParam === 'success') {
+          await verifyCheckoutSession(searchParams.get('session_id'));
+          response = await fetch('/api/portal/billing/modules');
+          result = await response.json() as ModulesResponse;
+        }
+
         if (cancelled) return;
-        if (!d.success) { setError(d.message ?? 'No se pudieron cargar los módulos'); setLoading(false); return; }
-        setData(d.data ?? null);
+        if (!result.success) {
+          setError(result.message ?? 'No se pudieron cargar los módulos');
+          setLoading(false);
+          return;
+        }
+        setData(result.data ?? null);
         setLoading(false);
-      })
-      .catch((err) => { if (!cancelled) { setError(String(err)); setLoading(false); } });
+      } catch (err) {
+        if (!cancelled) {
+          setError(String(err));
+          setLoading(false);
+        }
+      }
+    };
+    void loadModules();
     return () => { cancelled = true; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubscribe(slug: string) {
+    if (!data?.paymentsEnabled) return;
     setSubscribing(slug);
     setActionError('');
     try {
@@ -341,6 +360,7 @@ function BillingPlansInner() {
   }
 
   async function handleCancel(clientServiceId: number) {
+    if (!data?.paymentsEnabled) return;
     setCancelling(clientServiceId);
     setActionError('');
     try {
@@ -376,7 +396,7 @@ function BillingPlansInner() {
 
   if (!data) return null;
 
-  const { billingMode, entitlements, bundle, modules, seats } = data;
+  const { paymentsEnabled, billingMode, entitlements, bundle, modules, seats } = data;
   const isAgency = billingMode === 'agency';
   const { hasBundle, gatingBypassed } = entitlements;
 
@@ -386,138 +406,19 @@ function BillingPlansInner() {
 
   const bundleActive = bundle.status === 'active';
 
-  // Volume discount is a function of how many self-serve modules are active.
-  const activeModuleCount = modules.filter((m) => m.status === 'active' && m.selfServe).length;
-  const currentVolumeTier = volumeTierFor(activeModuleCount);
-  const upcomingVolumeTier = nextVolumeTier(activeModuleCount);
-  const showVolumeStrip = !isAgency && !gatingBypassed && !hasBundle && !bundleActive;
-
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="flex items-center gap-2">
-        <Link href="/portal/settings/billing" className="text-muted-foreground hover:text-foreground">
-          <span className="material-icons text-base align-middle">arrow_back</span>
-        </Link>
-        <div>
-          <h1 className="text-2xl font-display font-extrabold tracking-[-0.01em] text-foreground">Planes y módulos</h1>
-          <p className="text-sm text-muted-foreground">Suscríbete a módulos individuales o consigue todo de una vez.</p>
-        </div>
-      </div>
-
-      {/* Status banners */}
-      {statusParam === 'success' && (
-        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-md px-4 py-3">
-          <span className="material-icons text-base">check_circle</span>
-          Suscripción activa: ¡te damos la bienvenida!
-        </div>
-      )}
-      {statusParam === 'cancelled' && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted border border-border rounded-md px-4 py-3">
-          <span className="material-icons text-base">info</span>
-          Pago cancelado. No se ha hecho ningún cambio.
-        </div>
-      )}
-      {actionError && (
-        <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-md px-4 py-3">
-          <span className="material-icons text-base">error_outline</span>
-          {actionError}
-        </div>
-      )}
-
-      {/* Agency managed banner */}
-      {(isAgency || gatingBypassed) && (
-        <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl px-5 py-4">
-          <span className="material-icons text-2xl text-primary">verified</span>
-          <div>
-            <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Todo está incluido en tu plan gestionado</p>
-            <p className="text-sm text-muted-foreground">
-              Tu plan lo gestiona CRM AGENTS. Contacta con nosotros para hacer cambios.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Volume-discount strip — the more modules you run, the bigger the % off */}
-      {showVolumeStrip && (
-        <div className="rounded-2xl border border-border bg-muted/30 px-5 py-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="material-icons text-base text-primary">savings</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Precios por volumen — paga solo por lo que usas</h2>
-          </div>
-          <div className="flex items-center gap-1.5 flex-wrap text-xs">
-            {VOLUME_TIERS.slice().reverse().map((t) => {
-              const unlocked = activeModuleCount >= t.minModules;
-              return (
-                <span
-                  key={t.minModules}
-                  className={[
-                    'inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium',
-                    unlocked ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground',
-                  ].join(' ')}
-                >
-                  <span className="material-icons text-sm">{unlocked ? 'check_circle' : 'lock'}</span>
-                  {t.minModules}+ módulos → {t.percentOff}% dto.
-                </span>
-              );
-            })}
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            {currentVolumeTier ? (
-              <span className="text-primary font-medium">
-                Tienes {activeModuleCount} módulos: descuento por volumen del {currentVolumeTier.percentOff}% desbloqueado.
-              </span>
-            ) : (
-              <span>Tienes {activeModuleCount} módulo{activeModuleCount === 1 ? '' : 's'}.</span>
-            )}
-            {upcomingVolumeTier && (
-              <>
-                {' '}Añade{' '}
-                <strong className="text-foreground">{upcomingVolumeTier.minModules - activeModuleCount} más</strong>{' '}
-                para alcanzar el {upcomingVolumeTier.percentOff}% dto.
-              </>
-            )}
-          </p>
-        </div>
-      )}
-
-      {/* Team seats — only for self-serve accounts */}
-      {!isAgency && !gatingBypassed && seats && (
-        <div className="rounded-2xl border border-border bg-muted/30 px-5 py-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="material-icons text-base text-primary">groups</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Asientos de equipo</h2>
-          </div>
-          <p className="text-sm text-foreground mb-1">
-            {seats.count} asiento{seats.count !== 1 ? 's' : ''} —{' '}
-            {INCLUDED_SEATS} incluidos
-            {seats.additional > 0 && `, ${seats.additional} de más`}
-          </p>
-          <div className="flex items-baseline gap-4 text-xs text-muted-foreground flex-wrap">
-            <span>
-              Por asiento adicional:{' '}
-              <span className="font-medium text-foreground">{formatCents(seats.perSeatCents)}/mes</span>
-              {seats.perSeatCents < seats.moduleSubtotalCents && (
-                <span className="ml-1">(limitado a ${SEAT_PRICE_CAP_CENTS / 100})</span>
-              )}
-            </span>
-            {seats.additional > 0 && (
-              <span>
-                Total de asientos:{' '}
-                <span className="font-semibold text-foreground">{formatCents(seats.seatTotalCents)}/mes</span>
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Cada{' '}
-            <Link href="/portal/settings/team" className="underline hover:text-foreground transition-colors">
-              miembro del equipo
-            </Link>{' '}
-            adicional se factura al total de tus módulos, con un límite de ${SEAT_PRICE_CAP_CENTS / 100}/asiento, desde que acepta su invitación.
-          </p>
-        </div>
-      )}
-
+      <BillingPlansNotices
+        paymentsEnabled={paymentsEnabled}
+        statusParam={statusParam}
+        actionError={actionError}
+        billingMode={billingMode}
+        gatingBypassed={gatingBypassed}
+        hasBundle={hasBundle}
+        bundleActive={bundleActive}
+        modules={modules}
+        seats={seats}
+      />
       {/* Hero bundle card */}
       <div className={`bg-card border rounded-2xl p-6 ${bundleActive ? 'border-primary ring-2 ring-primary/20' : 'border-border'}`}>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -555,16 +456,22 @@ function BillingPlansInner() {
             {!isAgency && !gatingBypassed && (
               bundleActive ? (
                 bundle.selfServe && bundle.clientServiceId ? (
-                  <button
-                    onClick={() => handleCancel(bundle.clientServiceId!)}
-                    disabled={cancelling === bundle.clientServiceId}
-                    className={pBtnGhost}
-                  >
-                    {cancelling === bundle.clientServiceId ? 'Cancelando…' : 'Cancelar al final del periodo'}
-                  </button>
+                  paymentsEnabled ? (
+                    <button
+                      onClick={() => handleCancel(bundle.clientServiceId!)}
+                      disabled={cancelling === bundle.clientServiceId}
+                      className={pBtnGhost}
+                    >
+                      {cancelling === bundle.clientServiceId ? 'Cancelando…' : 'Cancelar al final del periodo'}
+                    </button>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">Gestión en línea desactivada</span>
+                  )
                 ) : (
                   <span className="text-sm text-muted-foreground">Gestionado</span>
                 )
+              ) : !paymentsEnabled ? (
+                <span className="text-xs text-muted-foreground">Contratación en línea desactivada</span>
               ) : bundle.purchasable ? (
                 <button
                   onClick={() => handleSubscribe(bundle.slug)}
@@ -603,6 +510,7 @@ function BillingPlansInner() {
               mod={mod}
               hasBundle={hasBundle || bundleActive}
               billingMode={billingMode}
+              paymentsEnabled={paymentsEnabled}
               highlight={highlight === mod.key}
               onSubscribe={handleSubscribe}
               onCancel={handleCancel}
@@ -633,7 +541,9 @@ function BillingPlansInner() {
       )}
 
       <p className="text-xs text-muted-foreground pb-4">
-        Las suscripciones se facturan mensualmente a través de Stripe. Puedes cancelar en cualquier momento; el acceso continúa hasta el final del periodo de facturación.
+        {paymentsEnabled
+          ? 'Las suscripciones se facturan mensualmente a través de Stripe. Puedes cancelar en cualquier momento; el acceso continúa hasta el final del periodo de facturación.'
+          : 'Los precios mostrados son de referencia. Para consultar la disponibilidad de contratación, contacta con la administración de la plataforma.'}
       </p>
     </div>
   );

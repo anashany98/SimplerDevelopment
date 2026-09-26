@@ -20,13 +20,15 @@ import {
   computeAccountBilling,
 } from '@/lib/billing/domain-catalog';
 import { countBillableSeats } from '@/lib/billing/seats';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 export async function GET() {
   const auth = await authorizePortal({ action: 'read', scope: 'billing:read' });
   if (isAuthError(auth)) return auth.response;
 
   const { client } = auth;
-  const stripeEnabled = Boolean(process.env.STRIPE_SECRET_KEY);
+  const paymentsEnabled = !PAYMENTS_DISABLED;
+  const stripeEnabled = paymentsEnabled && Boolean(process.env.STRIPE_SECRET_KEY);
 
   // ── 1. Load all active services from DB once ──────────────────────────────
   const allServices = await db
@@ -91,7 +93,7 @@ export async function GET() {
       // Stripe-less instances grant modules locally (checkout bypass): a
       // catalog row suffices; a Stripe price is only required when Stripe is
       // configured and a real checkout will happen.
-      purchasable: stripeEnabled ? !!(svc?.stripePriceId) : !!svc,
+      purchasable: paymentsEnabled && (stripeEnabled ? !!(svc?.stripePriceId) : !!svc),
       // subscription state
       clientServiceId: clientSub?.id ?? null,
       status: clientSub?.status ?? null,
@@ -112,7 +114,7 @@ export async function GET() {
     monthlyPriceCents: bundleSvc?.price ?? BUNDLE.monthlyPriceCents,
     serviceId: bundleSvc?.id ?? null,
     stripePriceId: bundleSvc?.stripePriceId ?? null,
-    purchasable: stripeEnabled ? !!(bundleSvc?.stripePriceId) : !!bundleSvc,
+    purchasable: paymentsEnabled && (stripeEnabled ? !!(bundleSvc?.stripePriceId) : !!bundleSvc),
     clientServiceId: bundleClientSub?.id ?? null,
     status: bundleClientSub?.status ?? null,
     renewalDate: bundleClientSub?.renewalDate ?? null,
@@ -136,6 +138,7 @@ export async function GET() {
   return NextResponse.json({
     success: true,
     data: {
+      paymentsEnabled,
       billingMode: client.billingMode,
       entitlements: {
         domains: [...ent.domains],

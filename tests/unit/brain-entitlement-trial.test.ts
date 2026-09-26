@@ -79,6 +79,10 @@ vi.mock('@/lib/portal-auth', () => ({
   isAuthError: (r: unknown) => typeof r === 'object' && r !== null && 'response' in r,
 }));
 
+// This suite exercises the paid-entitlement behavior directly; keep the
+// current global payments-disabled policy out of these branch-specific cases.
+vi.mock('@/lib/billing/disabled', () => ({ PAYMENTS_DISABLED: false }));
+
 vi.mock('drizzle-orm', () => ({
   eq: (col: { __col: string }, val: unknown) => ({ kind: 'eq', col: col.__col, val }),
   and: (...parts: unknown[]) => ({ kind: 'and', parts }),

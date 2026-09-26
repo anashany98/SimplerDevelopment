@@ -299,12 +299,12 @@ async function resolveRole(userId: number, client: typeof clients.$inferSelect):
 }
 
 /**
- * Check if a client has access to a service category.
- * Returns true if they have a direct subscription OR an all-in-one bundle.
+ * Keep the service-gate call signature while platform billing is disabled.
+ * Subscription status does not currently restrict access to product modules.
  */
 export async function hasServiceAccess(_clientId: number, _category: string): Promise<boolean> {
-  // Billing removed (2026-08): every feature is free, so every service gate
-  // grants access. Args are kept so call sites keep type-checking.
+  // Payments and subscription gates are disabled by product policy. Keep this
+  // explicit so callers and customer-facing docs do not imply paid access.
   return true;
 }
 

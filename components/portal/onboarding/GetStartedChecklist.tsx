@@ -9,6 +9,8 @@ interface EntitlementData {
   domains: string[];
   hasBundle: boolean;
   gatingBypassed: boolean;
+  billingMode: string;
+  paymentsEnabled: boolean;
 }
 
 interface StatusStep {
@@ -48,7 +50,11 @@ export default function GetStartedChecklist() {
     ])
       .then(([billingJson, onboardingJson, statusJson]) => {
         if (billingJson.success) {
-          setEntitlements(billingJson.data?.entitlements as EntitlementData);
+          setEntitlements({
+            ...billingJson.data?.entitlements,
+            billingMode: billingJson.data?.billingMode,
+            paymentsEnabled: billingJson.data?.paymentsEnabled,
+          } as EntitlementData);
         }
         if (onboardingJson.success && onboardingJson.data?.answers?.checklistDismissedAt) {
           setDismissed(true);
@@ -83,7 +89,7 @@ export default function GetStartedChecklist() {
   }
 
   if (!entitlements) return null;
-  if (entitlements.gatingBypassed) return null;
+  if (entitlements.gatingBypassed && (entitlements.paymentsEnabled || entitlements.billingMode === 'agency')) return null;
   if (entitlements.domains.length === 0) return null;
   if (dismissed) return null;
 

@@ -50,6 +50,9 @@ export default function EmailTemplatesPage() {
   const [newCategory, setNewCategory] = useState('custom');
   const [newSubject, setNewSubject] = useState('');
   const [newHtml, setNewHtml] = useState('');
+  const [htmlFileName, setHtmlFileName] = useState('');
+  const [htmlImportError, setHtmlImportError] = useState('');
+  const [createError, setCreateError] = useState('');
   const [newBlocks, setNewBlocks] = useState<Block[]>([]);
   const [createMode, setCreateMode] = useState<'visual' | 'html'>('visual');
 
@@ -68,6 +71,7 @@ export default function EmailTemplatesPage() {
     if (createMode === 'html' && !newHtml.trim()) return;
     if (createMode === 'visual' && newBlocks.length === 0) return;
     setSaving(true);
+    setCreateError('');
     try {
       const payload: Record<string, unknown> = {
         name: newName, description: newDesc, category: newCategory, subject: newSubject,
@@ -86,9 +90,45 @@ export default function EmailTemplatesPage() {
       if (data.success) {
         setTemplates(prev => [data.data, ...prev]);
         setShowCreate(false);
-        setNewName(''); setNewDesc(''); setNewCategory('custom'); setNewSubject(''); setNewHtml(''); setNewBlocks([]);
+        setNewName(''); setNewDesc(''); setNewCategory('custom'); setNewSubject(''); setNewHtml(''); setHtmlFileName(''); setHtmlImportError(''); setNewBlocks([]);
+      } else {
+        setCreateError(data.message ?? 'No se pudo crear la plantilla.');
       }
+    } catch {
+      setCreateError('No se pudo guardar la plantilla. Inténtalo de nuevo.');
     } finally { setSaving(false); }
+  };
+
+  const handleHtmlFileImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+
+    setHtmlImportError('');
+    const isHtml = /\.(html?|xhtml)$/i.test(file.name)
+      || file.type === 'text/html'
+      || file.type === 'application/xhtml+xml';
+    if (!isHtml) {
+      setHtmlImportError('Selecciona un archivo .html, .htm o .xhtml.');
+      return;
+    }
+    if (file.size > 1_000_000) {
+      setHtmlImportError('El archivo no puede superar 1 MB.');
+      return;
+    }
+
+    try {
+      const html = await file.text();
+      if (!html.trim()) {
+        setHtmlImportError('El archivo está vacío.');
+        return;
+      }
+      setNewHtml(html);
+      setHtmlFileName(file.name);
+    } catch {
+      setHtmlImportError('No se pudo leer el archivo.');
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -157,9 +197,38 @@ export default function EmailTemplatesPage() {
                 <EmailBlockEditor blocks={newBlocks} onChange={setNewBlocks} />
               </div>
             ) : (
-              <textarea value={newHtml} onChange={e => setNewHtml(e.target.value)} placeholder="<html>...</html>" rows={8} className="w-full text-sm bg-background border border-border rounded-lg px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-primary/50" />
+              <>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                  <label htmlFor="email-template-html-file" className={`${pBtnGhost} cursor-pointer`}>
+                    <span className="material-icons text-base">upload_file</span>Importar archivo HTML
+                  </label>
+                  <input
+                    id="email-template-html-file"
+                    type="file"
+                    accept=".html,.htm,.xhtml,text/html,application/xhtml+xml"
+                    onChange={handleHtmlFileImport}
+                    className="sr-only"
+                    aria-describedby="email-template-html-help"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    {htmlFileName ? `Cargado: ${htmlFileName}` : 'HTML, HTM o XHTML · máximo 1 MB'}
+                  </span>
+                </div>
+                <textarea
+                  value={newHtml}
+                  onChange={e => { setNewHtml(e.target.value); setHtmlFileName(''); setHtmlImportError(''); }}
+                  placeholder="<html>...</html>"
+                  rows={8}
+                  className="w-full text-sm bg-background border border-border rounded-lg px-3 py-2 font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+                <p id="email-template-html-help" className="text-xs text-muted-foreground mt-1">
+                  Se conservarán los estilos de email permitidos; se eliminarán scripts, formularios, iframes y CSS peligroso.
+                </p>
+                {htmlImportError && <p role="alert" className="text-xs text-red-600 mt-1">{htmlImportError}</p>}
+              </>
             )}
           </div>
+          {createError && <p role="alert" className="text-sm text-red-600">{createError}</p>}
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className={pBtnPrimary}>
               {saving ? 'Guardando...' : 'Crear plantilla'}

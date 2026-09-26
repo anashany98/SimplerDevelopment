@@ -29,10 +29,7 @@ test.describe('Agentic OS — ai_conversations_get 404 for foreign id @agentic-o
   });
 });
 
-// ── Card 9: DELETE /api/portal/ai/conversations/[id] ──
-// The route handler at app/api/portal/ai/conversations/[id]/route.ts
-// only exports GET — no DELETE handler exists. This is a gap.
-// (No test written — feature not implemented.)
+// DELETE and PATCH coverage lives in gap-small-api-coverage.spec.ts.
 
 // ── Card 10: Credits purchase — POST /api/portal/credits/purchase ──
 

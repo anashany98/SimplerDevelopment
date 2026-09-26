@@ -17,6 +17,7 @@ import { WidgetSkeleton } from '@/components/portal/dashboard/skeletons';
 import GetStartedChecklist from '@/components/portal/onboarding/GetStartedChecklist';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnGhost } from '@/components/portal/portal-ui';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 // A first-impression page must never crash on a single optional data load.
 // Each widget count / pref lookup degrades to its natural fallback (and logs)
@@ -69,8 +70,8 @@ export default async function PortalDashboardPage() {
   const brainEnabled = brainProfile?.enabled ?? false;
 
   // Only the data the surviving dashboard needs: the service list + this
-  // client's subscriptions (to gate which widgets are on the board) and the
-  // user's saved widget prefs. Every item degrades independently (see `safe`).
+  // client's subscriptions (to gate widgets while payments are enabled) and
+  // the user's saved widget prefs. Every item degrades independently (see `safe`).
   const [allServices, mySubscriptions, dashboardPrefsRow] = await Promise.all([
     safe(db.select().from(services).where(eq(services.active, true)).orderBy(services.name), [], 'services'),
     safe(db.select({ serviceId: clientServices.serviceId, status: clientServices.status })
@@ -89,7 +90,10 @@ export default async function PortalDashboardPage() {
   // Compute active service categories for widget gating.
   const activeServiceCategories = new Set(
     allServices
-      .filter(s => activeIds.has(s.id) && s.category && s.category !== 'bundle')
+      .filter(s =>
+        s.category && s.category !== 'bundle' &&
+        (PAYMENTS_DISABLED || activeIds.has(s.id)),
+      )
       .map(s => s.category as string),
   );
 

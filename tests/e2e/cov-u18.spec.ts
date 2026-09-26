@@ -9,14 +9,14 @@
  *    handled for e-commerce / bookings only; no platform-subscription dunning).
  *
  *  Card 1 — Customer self-serve billing portal
- *    No billingPortal.sessions.create endpoint exists in any portal route.
+ *    The endpoint exists, but customer payment actions are disabled by policy.
  *
  *  Card 2 — Stripe Connect / BYOK flow
  *    The store-level stripe-connect route exists but the platform-level
  *    Stripe Connect / BYOK billing flow has no dedicated API endpoint.
  *
  *  Card 3 — Module subscription checkout
- *    POST /billing/modules/checkout does not exist.
+ *    The endpoint exists, but customer payment actions are disabled by policy.
  */
 
 import { test, expect } from './setup/fixtures';
@@ -36,13 +36,10 @@ test.describe('Billing — Failed-payment dunning + automatic retry @billing', (
 // ── Card 1: Customer self-serve billing portal ──
 
 test.describe('Billing — Customer self-serve billing portal @billing', () => {
-  test.skip(true, 'gap: no billingPortal.sessions endpoint implemented');
-
-  test('POST /billing/portal-session returns Stripe billing portal URL', async ({ clientApi }) => {
-    // No route to test — billingPortal.sessions.create is not wired
-    const res = await clientApi.post('/api/portal/billing/portal-session', {});
-    expect(res.status).toBe(200);
-    expect(res.data).toHaveProperty('url');
+  test('customer portal reports that payments are disabled', async ({ clientApi }) => {
+    const res = await clientApi.post('/api/portal/billing/customer-portal', {});
+    expect(res.status).toBe(403);
+    expect(res.data).toMatchObject({ success: false, message: 'Payments are disabled.' });
   });
 });
 
@@ -61,15 +58,11 @@ test.describe('Billing — Stripe Connect / BYOK flow @billing', () => {
 // ── Card 3: Module subscription checkout ──
 
 test.describe('Billing — Module subscription checkout @billing', () => {
-  test.skip(true, 'gap: POST /billing/modules/checkout route does not exist');
-
-  test('POST /billing/modules/checkout creates Stripe Checkout session', async ({ clientApi }) => {
-    // Route has not been implemented
-    const res = await clientApi.post('/api/billing/modules/checkout', {
-      moduleId: 'crm',
-      seats: 1,
+  test('module checkout reports that payments are disabled', async ({ clientApi }) => {
+    const res = await clientApi.post('/api/portal/billing/modules/checkout', {
+      slug: 'crm',
     });
-    expect(res.status).toBe(200);
-    expect(res.data).toHaveProperty('url');
+    expect(res.status).toBe(403);
+    expect(res.data).toMatchObject({ success: false, message: 'Payments are disabled.' });
   });
 });

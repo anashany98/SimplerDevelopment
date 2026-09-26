@@ -15,11 +15,21 @@ interface EmailList {
   subscriberCount: number;
 }
 
+interface SavedEmailTemplate {
+  id: number;
+  name: string;
+  subject: string | null;
+  htmlContent: string;
+  blockContent: { blocks?: Block[] } | null;
+}
+
 type EditorMode = 'visual' | 'html';
 
 export default function NewPortalCampaignPage() {
   const router = useRouter();
   const [lists, setLists] = useState<EmailList[]>([]);
+  const [templates, setTemplates] = useState<SavedEmailTemplate[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [form, setForm] = useState({
     name: '',
     subject: '',
@@ -58,6 +68,11 @@ export default function NewPortalCampaignPage() {
           setForm(p => ({ ...p, listId: String(fetchedLists[0].id) }));
         }
       });
+
+    fetch('/api/portal/email/templates')
+      .then(r => r.json())
+      .then(d => { if (d.success && Array.isArray(d.data)) setTemplates(d.data); })
+      .catch(() => {});
   }, []);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -86,6 +101,26 @@ export default function NewPortalCampaignPage() {
 
   function handleBlocksChange(newBlocks: Block[]) {
     setBlocks(newBlocks);
+  }
+
+  function applySavedTemplate(templateId: string) {
+    setSelectedTemplateId(templateId);
+    const template = templates.find(item => String(item.id) === templateId);
+    if (!template) return;
+
+    const templateBlocks = template.blockContent?.blocks;
+    if (Array.isArray(templateBlocks) && templateBlocks.length > 0) {
+      setBlocks(templateBlocks);
+      setEditorMode('visual');
+    } else {
+      setBlocks([]);
+      setEditorMode('html');
+    }
+    setForm(current => ({
+      ...current,
+      htmlContent: template.htmlContent,
+      ...(template.subject?.trim() && !current.subject.trim() ? { subject: template.subject } : {}),
+    }));
   }
 
   const inputClass = pInput;
@@ -141,15 +176,13 @@ export default function NewPortalCampaignPage() {
             </button>
           </div>
 
-          {editorMode === 'visual' && (
-            <button
-              onClick={() => setShowEmailPreview(!showEmailPreview)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-xl transition-colors ${
-                showEmailPreview ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
-              }`}
-            >
-              <span className="material-icons text-base">email</span>Vista previa del correo</button>
-          )}
+          <button
+            onClick={() => setShowEmailPreview(!showEmailPreview)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-xl transition-colors ${
+              showEmailPreview ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+          >
+            <span className="material-icons text-base">email</span>Vista previa del correo</button>
 
           <button
             onClick={save}
@@ -222,6 +255,25 @@ export default function NewPortalCampaignPage() {
                     <div>
                       <label className={labelClass}>Texto de vista previa</label>
                       <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Resumen breve en la bandeja de entrada" />
+                    </div>
+                    <div>
+                      <label htmlFor="campaign-email-template" className={labelClass}>Aplicar plantilla guardada</label>
+                      <select
+                        id="campaign-email-template"
+                        value={selectedTemplateId}
+                        onChange={e => applySavedTemplate(e.target.value)}
+                        className={inputClass}
+                      >
+                        <option value="">Selecciona una plantilla…</option>
+                        {templates.map(template => (
+                          <option key={template.id} value={template.id}>{template.name}</option>
+                        ))}
+                      </select>
+                      {templates.length === 0 && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Aún no hay plantillas. <Link href="/portal/email/templates" className="text-primary hover:underline">Crear una</Link>
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -315,20 +367,29 @@ export default function NewPortalCampaignPage() {
               )}
             </div>
           ) : (
-            <div className={`${pCard} overflow-hidden`}>
-              <div className="px-5 py-3 border-b border-border">
-                <h3 className="text-sm font-semibold text-foreground">Contenido HTML sin procesar</h3>
+            <div className={showEmailPreview ? 'flex flex-col md:flex-row gap-4' : ''}>
+              <div className={showEmailPreview ? 'flex-1 min-w-0' : 'w-full'}>
+                <div className={`${pCard} overflow-hidden`}>
+                  <div className="px-5 py-3 border-b border-border">
+                    <h3 className="text-sm font-semibold text-foreground">Contenido HTML sin procesar</h3>
+                  </div>
+                  <div className="p-5 space-y-3">
+                    <textarea
+                      value={form.htmlContent}
+                      onChange={set('htmlContent')}
+                      rows={24}
+                      className={`${inputClass} font-mono text-xs`}
+                      placeholder={`<h1>Hola,</h1>\n<p>El contenido de tu correo aquí...</p>`}
+                    />
+                    <p className="text-xs text-muted-foreground">Escribe o pega el HTML. Se añade el pie de cancelación de suscripción al enviar.</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-5 space-y-3">
-                <textarea
-                  value={form.htmlContent}
-                  onChange={set('htmlContent')}
-                  rows={24}
-                  className={`${inputClass} font-mono text-xs`}
-                  placeholder={`<h1>Hola,</h1>\n<p>El contenido de tu correo aquí...</p>`}
-                />
-                <p className="text-xs text-muted-foreground">Escribe el HTML directamente. Se agrega un pie de cancelación de suscripción automáticamente al enviar.</p>
-              </div>
+              {showEmailPreview && (
+                <div className={`w-full md:w-[400px] shrink-0 ${pCard} overflow-hidden`} style={{ height: 'calc(100vh - 180px)' }}>
+                  <EmailPreviewPane blocks={[]} htmlContent={form.htmlContent} previewText={form.previewText} />
+                </div>
+              )}
             </div>
           )}
         </div>

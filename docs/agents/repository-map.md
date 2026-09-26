@@ -213,7 +213,7 @@ lib/
 │   ├── playbooks, goals, initiatives, people, glossary, topics, ...
 │   └── mcp-sdk-adapter.ts ⚠ 5630-line god file — spawn subagent, do NOT read inline
 │
-├── billing/              Stripe billing logic (70% coverage floor)
+├── billing/              Invoice and usage logic plus Stripe integration code; customer charging is disabled (70% coverage floor)
 │   ├── entitlements.ts   Feature-gate entitlement checks
 │   ├── subscription-items.ts Subscription + seat management
 │   ├── usage-rollup.ts   Usage metering aggregation

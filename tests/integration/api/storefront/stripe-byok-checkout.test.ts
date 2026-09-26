@@ -33,6 +33,17 @@ process.env.STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_platfo
 
 vi.mock('@/lib/auth', () => ({ auth: vi.fn() }));
 
+// Exercise the dormant Stripe branches against the isolated test database.
+// The real disabled-policy response is covered by the current E2E suite.
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+      headers: { 'content-type': 'application/json' },
+    }),
+}));
+
 /**
  * Stripe SDK mock. We replace the entire `stripe` module export so that:
  *   - `new Stripe(secret)` (BYOK path in resolveSiteStripe) records its

@@ -1,8 +1,8 @@
 // @vitest-environment node
 /**
  * Unit tests for the pure parts of lib/survey-webhooks/dispatcher — HMAC
- * signing, secret generation, and retry-backoff schedule. DB-coupled paths
- * (dispatchSurveyResponseWebhooks) are integration territory.
+ * signing, secret generation, and durable-job idempotency keys. DB-coupled
+ * paths (dispatchSurveyResponseWebhooks) are integration territory.
  */
 import { describe, it, expect, vi } from 'vitest';
 
@@ -15,7 +15,11 @@ vi.mock('@/lib/db/schema', () => ({
 }));
 vi.mock('@/lib/ssrf-guard', () => ({ assertSafeUrl: vi.fn() }));
 
-const { signPayload, generateWebhookSecret, RETRY_BACKOFF_MS } = await import(
+const {
+  signPayload,
+  generateWebhookSecret,
+  surveyWebhookDeliveryDedupeKey,
+} = await import(
   '@/lib/survey-webhooks/dispatcher'
 );
 
@@ -52,15 +56,9 @@ describe('generateWebhookSecret', () => {
   });
 });
 
-describe('retry policy', () => {
-  it('schedules 3 attempts with linear-ish backoff (1s, 4s, 16s)', () => {
-    expect(RETRY_BACKOFF_MS).toEqual([1_000, 4_000, 16_000]);
-    expect(RETRY_BACKOFF_MS.length).toBe(3);
-  });
-
-  it('backoff steps are strictly increasing', () => {
-    for (let i = 1; i < RETRY_BACKOFF_MS.length; i++) {
-      expect(RETRY_BACKOFF_MS[i]).toBeGreaterThan(RETRY_BACKOFF_MS[i - 1]);
-    }
+describe('durable job idempotency keys', () => {
+  it('assigns one delivery job per webhook and response', () => {
+    expect(surveyWebhookDeliveryDedupeKey(7, 42)).toBe('survey.webhook_delivery:7:42');
+    expect(surveyWebhookDeliveryDedupeKey(8, 42)).not.toBe(surveyWebhookDeliveryDedupeKey(7, 42));
   });
 });

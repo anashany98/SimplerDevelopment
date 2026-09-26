@@ -49,7 +49,7 @@ export default function SettingsBillingPage() {
   const [loadingInvoices, setLoadingInvoices] = useState(true);
   const [loadingMethods, setLoadingMethods] = useState(true);
   const [removingId, setRemovingId] = useState<number | null>(null);
-  const [paymentsDisabled, setPaymentsDisabled] = useState(false);
+  const [paymentsDisabled, setPaymentsDisabled] = useState(true);
   const [section, setSection] = useState<'invoices' | 'payment-methods'>('invoices');
   const [openingPortal, setOpeningPortal] = useState(false);
 
@@ -60,6 +60,7 @@ export default function SettingsBillingPage() {
         .catch(() => null);
       if (settings?.success) {
         setInvoices(settings.data.invoices);
+        setPaymentsDisabled(Boolean(settings.data.paymentsDisabled));
         // Payments disabled (billing removed): the payment-methods endpoint
         // 403s by design — skip the call so the console stays clean and the
         // section renders its dedicated state instead.
@@ -85,6 +86,7 @@ export default function SettingsBillingPage() {
     .reduce((sum, i) => sum + i.total, 0);
 
   const handleManageBilling = async () => {
+    if (paymentsDisabled) return;
     setOpeningPortal(true);
     try {
       const res = await fetch('/api/portal/billing/customer-portal', { method: 'POST' });
@@ -118,11 +120,22 @@ export default function SettingsBillingPage() {
       {/* Usage meters */}
       <UsageMeters />
 
+      {paymentsDisabled && (
+        <div className="flex items-center gap-2 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-4 py-3 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-300">
+          <span className="material-icons text-base">info</span>
+          Los pagos en línea y la gestión de suscripciones están desactivados. Las facturas siguen disponibles para consulta.
+        </div>
+      )}
+
       {/* Plans & modules CTA */}
       <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
         <div>
           <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Planes y módulos</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Añade o elimina módulos de funciones de tu suscripción.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {paymentsDisabled
+              ? 'Consulta los módulos y sus precios de referencia.'
+              : 'Añade o elimina módulos de funciones de tu suscripción.'}
+          </p>
         </div>
         <Link
           href="/portal/settings/billing/plans"
@@ -133,24 +146,25 @@ export default function SettingsBillingPage() {
         </Link>
       </div>
 
-      {/* Stripe Billing Portal CTA */}
-      <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
-        <div>
-          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Gestionar facturación</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Actualiza métodos de pago, descarga recibos y gestiona suscripciones en Stripe.</p>
+      {!paymentsDisabled && (
+        <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
+          <div>
+            <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Gestionar facturación</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Actualiza métodos de pago, descarga recibos y gestiona suscripciones en Stripe.</p>
+          </div>
+          <button
+            onClick={handleManageBilling}
+            disabled={openingPortal}
+            className={`${pBtnGhost} flex-shrink-0`}
+          >
+            {openingPortal
+              ? <span className="material-icons text-base animate-spin">refresh</span>
+              : <span className="material-icons text-base">open_in_new</span>
+            }
+            Gestionar facturación
+          </button>
         </div>
-        <button
-          onClick={handleManageBilling}
-          disabled={openingPortal}
-          className={`${pBtnGhost} flex-shrink-0`}
-        >
-          {openingPortal
-            ? <span className="material-icons text-base animate-spin">refresh</span>
-            : <span className="material-icons text-base">open_in_new</span>
-          }
-          Gestionar facturación
-        </button>
-      </div>
+      )}
 
       {/* Outstanding balance */}
       {totalDue > 0 && (
@@ -158,7 +172,11 @@ export default function SettingsBillingPage() {
           <span className="material-icons text-orange-600">payments</span>
           <div>
             <p className="text-sm font-semibold text-orange-800 dark:text-orange-300">Saldo pendiente: {formatCents(totalDue)}</p>
-            <p className="text-xs text-orange-600 dark:text-orange-400">Haz clic en una factura para pagar de forma segura mediante Stripe.</p>
+            <p className="text-xs text-orange-600 dark:text-orange-400">
+              {paymentsDisabled
+                ? 'Los pagos con tarjeta están desactivados. Contacta con quien emitió la factura para acordar el pago.'
+                : 'Haz clic en una factura para pagar de forma segura mediante Stripe.'}
+            </p>
           </div>
         </div>
       )}
@@ -222,10 +240,10 @@ export default function SettingsBillingPage() {
                       {(inv.status === 'sent' || inv.status === 'overdue') && (
                         <Link
                           href={`/portal/invoices/${inv.id}`}
-                          className={`${pBtnPrimary} text-xs px-3 py-1 w-fit`}
+                          className={`${paymentsDisabled ? pBtnGhost : pBtnPrimary} text-xs px-3 py-1 w-fit`}
                         >
-                          <span className="material-icons text-xs">credit_card</span>
-                          Pagar ahora
+                          <span className="material-icons text-xs">{paymentsDisabled ? 'receipt_long' : 'credit_card'}</span>
+                          {paymentsDisabled ? 'Ver factura' : 'Pagar ahora'}
                         </Link>
                       )}
                     </td>

@@ -84,6 +84,18 @@ vi.mock('stripe', () => {
   return { default: Stripe };
 });
 
+// Keep the route's internal Stripe branches testable while platform billing
+// is disabled in production. This mock only opens the policy gate for this
+// isolated unit harness.
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+      headers: { 'content-type': 'application/json' },
+    }),
+}));
+
 vi.mock('@/lib/db/schema', () => {
   // The route imports these tables only to use as drizzle "references";
   // every column access (e.g. `storeSettings.websiteId`) needs to return

@@ -6,7 +6,7 @@ import { eq, or, desc } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { renderBlocksToEmailHtml } from '@/lib/email';
-import { sanitizeRichHtml } from '@/lib/security/sanitize-html';
+import { EmailHtmlTooLargeError, sanitizeEmailHtml } from '@/lib/email/sanitize-email-html';
 
 export async function GET() {
   const authResult = await authorizePortal({ action: 'read', requireService: 'email' });
@@ -41,11 +41,17 @@ export async function POST(req: Request) {
   if (blockContent?.blocks) {
     finalHtml = renderBlocksToEmailHtml(blockContent.blocks);
   }
-  // Strip <script>/<iframe>/<object>/<embed>/event handlers before storing.
-  // sanitizeRichHtml keeps inline styles + classes for email-safe rendering.
-  if (finalHtml) finalHtml = sanitizeRichHtml(finalHtml);
+  // Normalize full HTML documents and filter active markup/CSS before storage.
+  try {
+    if (finalHtml) finalHtml = sanitizeEmailHtml(finalHtml);
+  } catch (error) {
+    if (error instanceof EmailHtmlTooLargeError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: 413 });
+    }
+    throw error;
+  }
 
-  if (!name?.trim() || !finalHtml) {
+  if (!name?.trim() || !finalHtml?.trim()) {
     return NextResponse.json({ success: false, message: 'name and content are required' }, { status: 400 });
   }
 

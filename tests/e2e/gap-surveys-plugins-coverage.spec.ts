@@ -1,19 +1,11 @@
 /**
- * Gap coverage: surveys webhook dispatcher + survey styling + plugin signing-key lifecycle
+ * Gap coverage: durable survey webhooks + survey styling + plugin signing-key lifecycle
  *
- * Gap 1 — Survey webhook dispatcher fire-and-forget path
+ * Gap 1 — Survey webhook jobs are persisted with the response
  *   Route: POST /api/surveys/[slug]  (public submission)
- *   The dispatcher fires via setImmediate after a successful response insert.
- *   We cannot intercept the external fetch (SSRF guard blocks localhost;
- *   real external hosts may or may not respond). What we CAN assert:
- *     - A delivery row IS written into survey_webhook_deliveries (visible via
- *       GET /api/portal/surveys/[id]/webhooks/[webhookId]/deliveries).
- *     - The delivery row carries the correct event name, an attempt number,
- *       and a status of either 'success' or 'failed' (never missing).
- *   Strategy: create a fixture survey + active webhook pointing at a
- *   public domain that will reliably return a non-2xx (httpbin.org/status/503
- *   or the SSRF DNS failure path). Wait briefly for setImmediate to flush,
- *   then poll the deliveries endpoint until at least one row appears.
+ *   Assert one pending internal_jobs row exists for each enabled subscribed
+ *   webhook, keyed by (webhookId, responseId). No worker or external endpoint
+ *   is triggered from the public request.
  *
  * Gap 2 — Survey-level SurveyStyling jsonb override
  *   Route: PUT /api/portal/surveys/[id]  (body: { styling: {...} })
@@ -40,17 +32,34 @@
  */
 import { test, expect } from './setup/fixtures';
 import { runCleanups, createTestSurvey } from './setup/helpers';
+import { execFileSync } from 'child_process';
 
-// ─── Gap 1: Webhook dispatcher fire-and-forget ───────────────────────────────
+const DB_URL = process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/simplerdev_test';
 
-test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
+function psql(sql: string): string {
+  return execFileSync('psql', [DB_URL, '--no-psqlrc', '-t'], {
+    input: sql,
+    encoding: 'utf8',
+    timeout: 15_000,
+  }).trim();
+}
+
+function psqlRow(sql: string): string[] {
+  const raw = psql(sql);
+  const line = raw.split('\n').map((item) => item.trim()).find((item) => item.length > 0);
+  return line ? line.split('|').map((item) => item.trim()) : [];
+}
+
+// ─── Gap 1: durable survey webhook jobs ──────────────────────────────────────
+
+test.describe('Survey webhook durable jobs @gap @surveys', () => {
   const cleanups: Array<() => Promise<void>> = [];
 
   test.afterEach(async () => {
     await runCleanups(cleanups);
   });
 
-  test('delivery row written after submit with webhook configured', async ({ clientApi, unauthApi }) => {
+  test('submit stores one pending job per enabled subscribed webhook', async ({ clientApi, unauthApi }) => {
     // 1. Check survey access
     const accessCheck = await clientApi.get('/api/portal/surveys');
     test.skip(accessCheck.status !== 200, 'No surveys subscription on this client');
@@ -65,11 +74,11 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
     const activateRes = await clientApi.put(`/api/portal/surveys/${survey.id}`, { status: 'active' });
     expect(activateRes.status).toBe(200);
 
-    // 3. Register a webhook pointing at a public domain that will fail
-    //    dispatch (non-2xx) — proves the delivery row is written even on failure.
-    //    httpbin.org/status/503 returns 503 reliably and passes SSRF registration.
+    // The reserved .invalid host passes static registration checks but cannot
+    // resolve at dispatch, so even a concurrent cron tick cannot send response
+    // data to an external endpoint during this test.
     const hookRes = await clientApi.post(`/api/portal/surveys/${survey.id}/webhooks`, {
-      url: 'https://httpbin.org/status/503',
+      url: 'https://survey-webhook.invalid/response',
       events: ['response.submitted'],
       enabled: true,
     });
@@ -93,40 +102,19 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
     });
     expect(submitRes.status).toBe(201);
     expect(submitRes.data.success).toBe(true);
+    const responseId = (submitRes.data.data as { responseId: number }).responseId;
+    expect(responseId).toBeGreaterThan(0);
 
-    // 6. Poll the deliveries endpoint — setImmediate may need a moment to flush.
-    //    Retry up to 10 × 500ms = 5s.
-    let deliveries: Array<{ webhookId: number; event: string; attempt: number; status: string }> = [];
-    for (let i = 0; i < 10; i++) {
-      await new Promise((r) => setTimeout(r, 500));
-      const dlRes = await clientApi.get(
-        `/api/portal/surveys/${survey.id}/webhooks/${hook.id}/deliveries`,
-      );
-      expect(dlRes.status).toBe(200);
-      const rows = dlRes.data.data as typeof deliveries;
-      if (rows.length > 0) {
-        deliveries = rows;
-        break;
-      }
-    }
-
-    // 7. Assert at least one delivery row exists and has the expected shape.
-    //    The dispatch is fire-and-forget; if httpbin is unreachable the row may
-    //    not appear within 5s — in that case we assert the endpoint itself works
-    //    and accept 0 rows as a network-dependent partial pass.
-    if (deliveries.length > 0) {
-      const row = deliveries[0];
-      expect(row.webhookId).toBe(hook.id);
-      expect(row.event).toBe('response.submitted');
-      expect(typeof row.attempt).toBe('number');
-      expect(row.attempt).toBeGreaterThanOrEqual(1);
-      expect(['success', 'failed']).toContain(row.status);
-    } else {
-      // Delivery rows not yet flushed (httpbin latency or rate-limit).
-      // The deliveries endpoint still returns 200 + empty array — that alone
-      // proves the route exists and is accessible.
-      console.warn('[gap-surveys-plugins] No delivery rows flushed within 5s — network latency?');
-    }
+    const dedupeKey = `survey.webhook_delivery:${hook.id}:${responseId}`;
+    cleanups.push(async () => {
+      psql(`DELETE FROM internal_jobs WHERE dedupe_key = '${dedupeKey}'`);
+    });
+    const job = psqlRow(`
+      SELECT status, type, payload->>'responseId', payload->>'webhookId', payload->>'surveyId'
+      FROM internal_jobs
+      WHERE dedupe_key = '${dedupeKey}'
+    `);
+    expect(job).toEqual(['pending', 'survey.webhook_delivery', String(responseId), String(hook.id), String(survey.id)]);
   });
 
   test('no delivery row written when survey has no webhooks', async ({ clientApi, unauthApi }) => {
@@ -143,12 +131,18 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
     const surveyGet = await clientApi.get(`/api/portal/surveys/${survey.id}`);
     const slug = (surveyGet.data.data as { slug: string }).slug;
 
-    // Submit — no webhooks registered, dispatch should no-op
+    // Submit — no subscribed webhook exists, so no delivery job is enqueued.
     const submitRes = await unauthApi.post(`/api/surveys/${slug}`, {
       answers: {},
       formName: 'no-hook-test',
     });
     expect(submitRes.status).toBe(201);
+    const responseId = (submitRes.data.data as { responseId: number }).responseId;
+    const queuedJobs = psql(`
+      SELECT COUNT(*) FROM internal_jobs
+      WHERE type = 'survey.webhook_delivery' AND payload->>'responseId' = '${responseId}'
+    `);
+    expect(queuedJobs).toBe('0');
 
     // Webhook list should be empty (confirming no webhooks exist)
     const hookList = await clientApi.get(`/api/portal/surveys/${survey.id}/webhooks`);
@@ -156,7 +150,7 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
     expect(hookList.data.data).toHaveLength(0);
   });
 
-  test('disabled webhook does not generate delivery rows', async ({ clientApi, unauthApi }) => {
+  test('disabled webhook is excluded from the durable queue', async ({ clientApi, unauthApi }) => {
     const accessCheck = await clientApi.get('/api/portal/surveys');
     test.skip(accessCheck.status !== 200, 'No surveys subscription on this client');
 
@@ -169,7 +163,7 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
 
     // Register a webhook but immediately disable it
     const hookRes = await clientApi.post(`/api/portal/surveys/${survey.id}/webhooks`, {
-      url: 'https://httpbin.org/status/200',
+      url: 'https://example.com/survey-hook',
       events: ['response.submitted'],
       enabled: false,
     });
@@ -183,20 +177,18 @@ test.describe('Survey webhook dispatcher fire-and-forget @gap @surveys', () => {
     const slug = (surveyGet.data.data as { slug: string }).slug;
 
     // Submit a response
-    await unauthApi.post(`/api/surveys/${slug}`, {
+    const submitRes = await unauthApi.post(`/api/surveys/${slug}`, {
       answers: { q1: 'Disabled hook test' },
       formName: 'disabled-hook-form',
     });
+    expect(submitRes.status).toBe(201);
+    const responseId = (submitRes.data.data as { responseId: number }).responseId;
 
-    // Wait briefly then check — disabled hook should produce 0 deliveries
-    await new Promise((r) => setTimeout(r, 1000));
-    const dlRes = await clientApi.get(
-      `/api/portal/surveys/${survey.id}/webhooks/${hook.id}/deliveries`,
-    );
-    expect(dlRes.status).toBe(200);
-    // Disabled webhook: dispatcher filters it out, so deliveries array is empty
-    expect(Array.isArray(dlRes.data.data)).toBe(true);
-    expect((dlRes.data.data as unknown[]).length).toBe(0);
+    const queuedJobs = psql(`
+      SELECT COUNT(*) FROM internal_jobs
+      WHERE dedupe_key = 'survey.webhook_delivery:${hook.id}:${responseId}'
+    `);
+    expect(queuedJobs).toBe('0');
   });
 });
 

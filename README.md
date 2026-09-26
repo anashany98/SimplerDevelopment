@@ -19,7 +19,7 @@
 
 ## Overview
 
-CRM AGENTS is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **Stripe billing** all live in a single multi-tenant portal.
+CRM AGENTS is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **invoice records** all live in a single multi-tenant portal. Stripe integration code is present, while customer payments and subscription charges are disabled in this release.
 
 Here's the part that makes it different: every one of those modules is driveable by an AI agent. The platform ships **450+ Model Context Protocol (MCP) tools**, so Claude, Cursor, or any MCP client can build a page, move a deal, or send a campaign the same way you would by clicking. Apache-2.0, no per-seat pricing, no rug-pull — bring your own Postgres and API keys and run it yourself.
 
@@ -93,7 +93,7 @@ The unifying idea for building *your own* agents against the platform: **connect
 
 ## Deployment
 
-Production runs on Vercel (Next.js framework mode); every other pushed branch gets a preview deploy. Background work — embedding processing, Gmail/Drive watch renewal, automation scheduling, brain daily notes, usage rollup, booking reminders — runs as Vercel cron jobs defined in [`vercel.json`](vercel.json).
+Production runs on Vercel (Next.js framework mode); every other pushed branch gets a preview deploy. Background work — embedding processing, Gmail/Drive watch renewal, automation scheduling, scheduled email campaigns, internal jobs, brain daily notes, usage rollup, booking reminders, and monthly AI credit grants — runs as Vercel cron jobs defined in [`vercel.json`](vercel.json).
 
 Want a one-click host with Postgres included? Use the **[Railway template](https://railway.com/new/template/simpler-development)** — setup notes in **[`docs/deploy/railway.md`](docs/deploy/railway.md)**.
 
@@ -123,7 +123,7 @@ Dig deeper as you need it:
 | Tests | Vitest (unit/integration) · Playwright (e2e) |
 | Realtime | Yjs + y-websocket (`packages/realtime-server`) |
 | AI | Vercel AI SDK (`@ai-sdk/anthropic`) · Anthropic SDK · OpenAI API — embeddings + realtime voice |
-| Integrations | Stripe (billing) · AWS S3 (storage) · Resend (email) · Sentry (errors) |
+| Integrations | Stripe (payments disabled in this release) · AWS S3 (storage) · Resend (email) · Sentry (errors) |
 
 ## Contributing
 

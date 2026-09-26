@@ -6,6 +6,7 @@ import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { formatCents, invoiceStatusColor, invoiceStatusLabel } from '@/lib/portal';
 import PayInvoiceButton from '@/components/portal/PayInvoiceButton';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 export default async function InvoiceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -115,9 +116,13 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="font-semibold text-foreground">Importe pendiente: {formatCents(invoice.total)}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Paga de forma segura mediante Stripe; se aceptan las principales tarjetas.</p>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {PAYMENTS_DISABLED
+                    ? 'Los pagos con tarjeta están desactivados. Revisa las notas de la factura o contacta con quien la emitió para acordar el pago.'
+                    : 'Paga de forma segura mediante Stripe; se aceptan las principales tarjetas.'}
+                </p>
               </div>
-              <PayInvoiceButton invoiceId={invoiceId} total={invoice.total} />
+              {!PAYMENTS_DISABLED && <PayInvoiceButton invoiceId={invoiceId} total={invoice.total} />}
             </div>
           </div>
         )}

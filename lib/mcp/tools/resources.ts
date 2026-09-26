@@ -82,17 +82,17 @@ export function registerResourceDocs(server: McpServer, ctx: PortalMcpContext): 
     },
   );
 
-  // ── catalog://services — agency catalogue + this client's entitlements ────
-  // Tells the client which serviceId values are valid AND which features are
-  // actually enabled for this tenant (active subscriptions). Gated like
-  // service_catalog_list.
+  // ── catalog://services — agency catalogue + this client's subscription records ──
+  // Tells the client which serviceId values are valid and which active
+  // subscription records exist. While payments are disabled, these records do
+  // not determine whether a portal product module is accessible.
   singleClient && hasScope(ctx.scopes, 'services:read') && server.registerResource(
     'service-catalog',
     'catalog://services',
     {
-      title: 'Service catalog & entitlements',
+      title: 'Service catalog & subscription records',
       description:
-        'The services the agency offers (catalog) plus this client\'s active subscriptions (entitlements). Use to know which serviceId values are valid and which feature categories are enabled for this tenant.',
+        'The services the agency offers plus this client\'s active subscription records. These records are billing history; customer module access is not gated by subscriptions while payments are disabled.',
       mimeType: 'application/json',
     },
     async (uri) => {

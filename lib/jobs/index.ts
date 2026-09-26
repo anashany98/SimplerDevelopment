@@ -17,6 +17,8 @@ import { db as defaultDb } from '@/lib/db';
 import { internalJobs, type InternalJobType } from '@/lib/db/schema';
 
 type Db = typeof defaultDb;
+type Transaction = Parameters<Parameters<typeof defaultDb.transaction>[0]>[0];
+export type JobQueueDatabase = Db | Transaction;
 
 export const MAX_ATTEMPTS = 3;
 /** Attempt n → wait before attempt n+1. Beyond the table, hold at the last value. */
@@ -85,6 +87,11 @@ export const JOB_HANDLERS: Record<
     const { runBackgroundPortalAnalysis } = await import('@/lib/ai/ceo-background-job');
     await runBackgroundPortalAnalysis(payload, db, context);
   },
+
+  'survey.webhook_delivery': async (payload, db, context) => {
+    const { runSurveyWebhookJob } = await import('@/lib/survey-webhooks/dispatcher');
+    await runSurveyWebhookJob(payload, db, context);
+  },
 };
 
 // ─── enqueue ─────────────────────────────────────────────────────────────────
@@ -117,7 +124,7 @@ export interface EnqueueJobParams {
  */
 export async function enqueueJob(
   params: EnqueueJobParams,
-  db: Db = defaultDb,
+  db: JobQueueDatabase = defaultDb,
 ): Promise<void> {
   await db
     .insert(internalJobs)

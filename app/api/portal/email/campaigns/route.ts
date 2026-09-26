@@ -7,7 +7,7 @@ import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { emitEvent } from '@/lib/automation';
 import { renderBlocksToEmailHtml } from '@/lib/email';
-import { sanitizeRichHtml } from '@/lib/security/sanitize-html';
+import { EmailHtmlTooLargeError, sanitizeEmailHtml } from '@/lib/email/sanitize-email-html';
 
 async function requireClient() {
   const session = await auth();
@@ -71,13 +71,17 @@ export async function POST(req: Request) {
   if (Array.isArray(contentBlocks)) {
     finalHtml = renderBlocksToEmailHtml(contentBlocks);
   }
-  // Strip <script>/<iframe>/<object>/<embed>/event handlers from any
-  // user-supplied HTML before it's stored or rendered. sanitizeRichHtml
-  // keeps inline styles + classes — the email-safe surface — but drops
-  // executable payloads.
-  if (finalHtml) finalHtml = sanitizeRichHtml(finalHtml);
+  // Normalize full HTML documents and filter active markup/CSS before storage.
+  try {
+    if (finalHtml) finalHtml = sanitizeEmailHtml(finalHtml);
+  } catch (error) {
+    if (error instanceof EmailHtmlTooLargeError) {
+      return NextResponse.json({ success: false, message: error.message }, { status: 413 });
+    }
+    throw error;
+  }
 
-  if (!name?.trim() || !subject?.trim() || !fromName?.trim() || !fromEmail?.trim() || !listId || !finalHtml) {
+  if (!name?.trim() || !subject?.trim() || !fromName?.trim() || !fromEmail?.trim() || !listId || !finalHtml?.trim()) {
     return NextResponse.json({ success: false, message: 'name, subject, fromName, fromEmail, listId, and content are required' }, { status: 400 });
   }
 
