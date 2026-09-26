@@ -13,7 +13,7 @@ import { checkAiPlanGate } from '@/lib/ai/plan-gate';
 import { resolveClientApiKey, type AiProvider } from '@/lib/ai/resolve-client-key';
 import { resolveChoice, type AiTask } from '@/lib/ai/models';
 import { withSpan } from '@/lib/ai/tracer';
-import { enqueueJob, type JobExecutionContext } from '@/lib/jobs';
+import { enqueueJob, type JobExecutionContext } from '@/lib/jobs/queue';
 
 type Db = typeof defaultDb;
 

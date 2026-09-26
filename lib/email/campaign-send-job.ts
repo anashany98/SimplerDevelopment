@@ -16,7 +16,7 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import { db as defaultDb } from '@/lib/db';
 import { emailCampaigns, internalJobs } from '@/lib/db/schema';
-import { enqueueJob, MAX_ATTEMPTS } from '@/lib/jobs';
+import { enqueueJob, MAX_ATTEMPTS } from '@/lib/jobs/queue';
 
 type Db = typeof defaultDb;
 

@@ -63,7 +63,7 @@ vi.mock('@/lib/ai/agent-loop', () => ({
 }));
 vi.mock('@/lib/ai/tracer', () => ({ withSpan: (_name: unknown, _attrs: unknown, fn: () => unknown) => fn() }));
 const enqueueJobMock = vi.fn();
-vi.mock('@/lib/jobs', () => ({ enqueueJob: (...args: unknown[]) => enqueueJobMock(...args) }));
+vi.mock('@/lib/jobs/queue', () => ({ enqueueJob: (...args: unknown[]) => enqueueJobMock(...args) }));
 const selectBackgroundSpecialistsMock = vi.fn(() => []);
 vi.mock('@/lib/ai/background-agent-delegation', () => ({ selectBackgroundSpecialists: (...args: unknown[]) => selectBackgroundSpecialistsMock(...args) }));
 

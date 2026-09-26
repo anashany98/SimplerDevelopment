@@ -166,7 +166,7 @@ export async function executeAction(
   if (action.delay && action.delay > 0 && ruleId != null) {
     try {
       const runAt = new Date(Date.now() + action.delay * 1000);
-      const { enqueueJob } = await import('@/lib/jobs');
+      const { enqueueJob } = await import('@/lib/jobs/queue');
       await enqueueJob({
         clientId,
         type: 'automation.delayed_action',

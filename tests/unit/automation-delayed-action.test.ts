@@ -83,7 +83,7 @@ vi.mock('drizzle-orm', () => ({
 
 const mockEnqueueJob = vi.fn().mockResolvedValue(undefined);
 
-vi.mock('@/lib/jobs', () => ({
+vi.mock('@/lib/jobs/queue', () => ({
   enqueueJob: (...args: unknown[]) => mockEnqueueJob(...args),
 }));
 

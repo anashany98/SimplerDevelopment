@@ -15,26 +15,20 @@
 import { and, asc, eq, isNull, lt, lte, or } from 'drizzle-orm';
 import { db as defaultDb } from '@/lib/db';
 import { internalJobs, type InternalJobType } from '@/lib/db/schema';
+import { MAX_ATTEMPTS } from './queue';
+import type { JobExecutionContext } from './queue';
+
+export { enqueueJob, MAX_ATTEMPTS } from './queue';
+export type { EnqueueJobParams, JobExecutionContext, JobQueueDatabase } from './queue';
 
 type Db = typeof defaultDb;
-type Transaction = Parameters<Parameters<typeof defaultDb.transaction>[0]>[0];
-export type JobQueueDatabase = Db | Transaction;
 
-export const MAX_ATTEMPTS = 3;
 /** Attempt n → wait before attempt n+1. Beyond the table, hold at the last value. */
 export const BACKOFF_MS: Record<number, number> = { 1: 60_000, 2: 5 * 60_000 };
 /** A claimed job must finish within this or a later tick reclaims it. */
 export const LEASE_MS = 10 * 60_000;
 /** Cap per tick so one backlog can't run the function past its time limit. */
 export const DRAIN_BATCH = 50;
-
-/** Execution facts that a handler needs without giving it control of job state. */
-export interface JobExecutionContext {
-  /** One-based: 1 is the first execution attempt. */
-  attempt: number;
-  /** The current failure would move the job to dead_letter. */
-  isFinalAttempt: boolean;
-}
 
 // ─── handlers ────────────────────────────────────────────────────────────────
 
@@ -93,50 +87,6 @@ export const JOB_HANDLERS: Record<
     await runSurveyWebhookJob(payload, db, context);
   },
 };
-
-// ─── enqueue ─────────────────────────────────────────────────────────────────
-
-export interface EnqueueJobParams {
-  /** Tenant that owns the work. Cascade-deletes with the client. */
-  clientId: number;
-  type: InternalJobType;
-  payload: Record<string, unknown>;
-  /**
-   * Idempotency key, unique table-wide. Omit only when duplicate work is
-   * genuinely harmless. Convention: `<type>:<entity id>`.
-   */
-  dedupeKey?: string;
-  /**
-   * Earliest time the job may run. Maps onto the dual-purpose next_retry_at
-   * column: on a 'pending' row that column is the earliest claim time, and the
-   * drain's PASS 2 already honors it — so a future runAt is a delayed job for
-   * free. Omit to run on the next tick.
-   */
-  runAt?: Date;
-}
-
-/**
- * Enqueue a job. Safe to call twice with the same dedupeKey — the second is
- * dropped by the unique index, not by a read-then-write race.
- *
- * Callers should AWAIT this. It is one INSERT; making it fire-and-forget would
- * reintroduce exactly the durability hole the queue exists to close.
- */
-export async function enqueueJob(
-  params: EnqueueJobParams,
-  db: JobQueueDatabase = defaultDb,
-): Promise<void> {
-  await db
-    .insert(internalJobs)
-    .values({
-      clientId: params.clientId,
-      type: params.type,
-      payload: params.payload,
-      dedupeKey: params.dedupeKey ?? null,
-      nextRetryAt: params.runAt ?? null,
-    })
-    .onConflictDoNothing({ target: internalJobs.dedupeKey });
-}
 
 // ─── drain ───────────────────────────────────────────────────────────────────
 

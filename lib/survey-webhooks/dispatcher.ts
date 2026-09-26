@@ -8,7 +8,8 @@
 
 import { createHmac } from 'crypto';
 import { db } from '@/lib/db';
-import { enqueueJob, type JobExecutionContext, type JobQueueDatabase } from '@/lib/jobs';
+import { enqueueJob, type JobQueueDatabase } from '@/lib/jobs/queue';
+import type { JobExecutionContext } from '@/lib/jobs/queue';
 import {
   surveyWebhooks,
   surveyWebhookDeliveries,
